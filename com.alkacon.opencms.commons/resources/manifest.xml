@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<export>
+	<info>
+		<creator>Admin</creator>
+		<opencms_version>7.0.2 EBK</opencms_version>
+		<createdate>Thu, 06 Sep 2007 12:15:53 GMT</createdate>
+		<project>Offline</project>
+		<export_version>6</export_version>
+	</info>
+	<module>
+		<name>com.alkacon.opencms.commons</name>
+		<nicename><![CDATA[Alkacon OpenCms Utilities]]></nicename>
+		<group>Alkacon OpenCms Extensions</group>
+		<class/>
+		<description><![CDATA[Commonly used utilities for the Alkacon OpenCms Extension modules.]]></description>
+		<version>1.0.2</version>
+		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
+		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
+		<datecreated/>
+		<userinstalled/>
+		<dateinstalled/>
+		<dependencies/>
+		<exportpoints>
+			<exportpoint uri="/system/modules/com.alkacon.opencms.commons/lib/" destination="WEB-INF/lib/"/>
+		</exportpoints>
+		<resources>
+			<resource uri="/system/modules/com.alkacon.opencms.commons/"/>
+		</resources>
+		<parameters/>
+	</module>
+	<files>
+		<file>
+			<destination>system</destination>
+			<type>folder</type>
+			<uuidstructure>74ef98d9-4cab-11dc-bac3-5fc9fa232cc8</uuidstructure>
+			<datelastmodified>Mon, 27 Jun 2005 08:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 17 Aug 2007 10:20:20 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>GROUP.Users</uuidprincipal>
+					<flags>34</flags>
+					<permissionset>
+						<allowed>1</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<destination>system/modules</destination>
+			<type>folder</type>
+			<uuidstructure>deb7190f-502a-11d9-bbe0-c93f3446e280</uuidstructure>
+			<datelastmodified>Mon, 02 Aug 2004 16:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 25 Feb 2003 23:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>GROUP.Users</uuidprincipal>
+					<flags>38</flags>
+					<permissionset>
+						<allowed>5</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.commons</destination>
+			<type>folder</type>
+			<uuidstructure>6c509967-5aee-11dc-8be6-5fc9fa232cc8</uuidstructure>
+			<datelastmodified>Tue, 04 Sep 2007 13:54:58 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 Sep 2007 13:54:58 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.commons/lib</destination>
+			<type>folder</type>
+			<uuidstructure>6c9e6b49-5aee-11dc-8be6-5fc9fa232cc8</uuidstructure>
+			<datelastmodified>Tue, 04 Sep 2007 13:54:58 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 Sep 2007 13:54:58 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+	</files>
+</export>
