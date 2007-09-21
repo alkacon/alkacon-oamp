@@ -1,0 +1,62 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.newsletter/schemas/newsletter_front_confirm.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.newsletter/schemas/newsletter_front_par_sub.xsd"/>
+		
+	<xsd:element name="AlkaconNewsletterFronts" type="OpenCmsAlkaconNewsletterFronts"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconNewsletterFronts">
+		<xsd:sequence>
+			<xsd:element name="AlkaconNewsletterFront" type="OpenCmsAlkaconNewsletterFront" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconNewsletterFront">
+		<xsd:sequence>
+			<xsd:element name="Title" type="OpenCmsString" />
+			<xsd:element name="Subscribe" type="OpenCmsAlkaconNewsletterSubscription" />						
+			<xsd:element name="Confirm" type="OpenCmsAlkaconNewsletterConfirm" />		
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="required"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.newsletter.workplace"/>
+			<handler class="com.alkacon.opencms.newsletter.CmsNewsletterXmlContentHandler" />
+			<preview uri="${previewtempfile}" />
+			<defaults>
+				<default element="Title" value="%(key.default.alknewsletter.title)" />
+				<default element="Subscribe/Headline" value="%(key.default.alknewsletter.subscribe.headline)" />
+				<default element="Subscribe/Text" value="%(key.default.alknewsletter.subscribe.text)" />
+				<default element="Subscribe/SubscribeOk" value="%(key.default.alknewsletter.subscribe.ok)" />
+				<default element="Subscribe/SubscribeError" value="%(key.default.alknewsletter.subscribe.error)" />
+				<default element="Subscribe/UnSubscribeOk" value="%(key.default.alknewsletter.unsubscribe.ok)" />
+				<default element="Subscribe/UnSubscribeError" value="%(key.default.alknewsletter.unsubscribe.error)" />
+
+				<default element="Confirm/Confirm" value="true" />
+
+				<default element="Confirm/Subscribe/Headline" value="%(key.default.alknewsletter.confirm.sub.headline)" />
+				<default element="Confirm/Subscribe/Ok" value="%(key.default.alknewsletter.confirm.sub.ok)" />
+				<default element="Confirm/Subscribe/Error" value="%(key.default.alknewsletter.confirm.sub.error)" />
+				<default element="Confirm/Subscribe/MailSubject" value="%(key.default.alknewsletter.confirm.sub.mailsubject)" />
+				<default element="Confirm/Subscribe/MailText" value="%(key.default.alknewsletter.confirm.sub.mailtext)" />
+
+				<default element="Confirm/UnSubscribe/Headline" value="%(key.default.alknewsletter.confirm.unsub.headline)" />
+				<default element="Confirm/UnSubscribe/Ok" value="%(key.default.alknewsletter.confirm.unsub.ok)" />
+				<default element="Confirm/UnSubscribe/Error" value="%(key.default.alknewsletter.confirm.unsub.error)" />
+				<default element="Confirm/UnSubscribe/MailSubject" value="%(key.default.alknewsletter.confirm.unsub.mailsubject)" />
+				<default element="Confirm/UnSubscribe/MailText" value="%(key.default.alknewsletter.confirm.unsub.mailtext)" />
+
+				<default element="Confirm/Mail/MailFrom" value="%(key.default.alknewsletter.confirm.mail.from)" />
+				<default element="Confirm/Mail/MailHead" value="%(key.default.alknewsletter.confirm.mail.head)" />
+				<default element="Confirm/Mail/MailFoot" value="%(key.default.alknewsletter.confirm.mail.foot)" />
+			</defaults>
+			<mappings>
+				<mapping element="Title" mapto="property:Title" />
+			</mappings>
+		</xsd:appinfo>
+	</xsd:annotation>  
+	
+</xsd:schema>

@@ -1,0 +1,36 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+		
+	<xsd:element name="AlkaconNewsletterConfirmTexts" type="OpenCmsAlkaconNewsletterConfirmTexts"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconNewsletterConfirmTexts">
+		<xsd:sequence>
+			<xsd:element name="AlkaconNewsletterConfirmText" type="OpenCmsAlkaconNewsletterConfirmText" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconNewsletterConfirmText">
+		<xsd:sequence>
+			<xsd:element name="Headline" type="OpenCmsString" />					
+			<xsd:element name="Ok" type="OpenCmsString" />
+			<xsd:element name="Error" type="OpenCmsString" />
+			<xsd:element name="MailSubject" type="OpenCmsString" />
+			<xsd:element name="MailText" type="OpenCmsHtml" />						
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.newsletter.workplace"/>
+
+			<layouts>
+				<layout element="Ok" widget="TextareaWidget" configuration="3" />
+				<layout element="Error" widget="TextareaWidget" configuration="3" />
+				<layout element="MailText" widget="HtmlWidget" configuration="source,formatselect,height: 200px" />
+			</layouts>
+		</xsd:appinfo>
+	</xsd:annotation>  
+	
+</xsd:schema>

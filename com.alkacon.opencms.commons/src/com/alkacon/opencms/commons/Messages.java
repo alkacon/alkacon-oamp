@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.commons/src/com/alkacon/opencms/commons/Messages.java,v $
- * Date   : $Date: 2007/09/07 12:10:46 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/09/21 14:33:19 $
+ * Version: $Revision: 1.2 $
  *
  * Copyright (c) 2005 Alkacon Software GmbH (http://www.alkacon.com)
  * All rights reserved.
@@ -36,7 +36,7 @@ import org.opencms.i18n.I_CmsMessageBundle;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 6.0.0 
  */
@@ -47,6 +47,22 @@ public final class Messages extends A_CmsMessageBundle {
 
     /** Name of the used resource bundle. */
     private static final String BUNDLE_NAME = "com.alkacon.opencms.commons.messages";
+    
+    /** Message constant for key in the resource bundle. */
+    public static final String LOG_ERROR_DECRPYT_0 = "LOG_ERROR_DECRPYT_0";
+    
+    /** Message constant for key in the resource bundle. */
+    public static final String LOG_ERROR_ENCRYPT_0 = "LOG_ERROR_ENCRYPT_0";
+    
+    /** Message constant for key in the resource bundle. */
+    public static final String LOG_ERROR_CREATE_KEY_0 = "LOG_ERROR_CREATE_KEY_0";
+    
+    /** Message constant for key in the resource bundle. */
+    public static final String LOG_WARN_INVALID_DECRYPT_STRING_1 = "LOG_WARN_INVALID_DECRYPT_STRING_1";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String LOG_WARN_INVALID_ENCRYPT_STRING_1 = "LOG_WARN_INVALID_ENCRYPT_STRING_1";
+   
 
     /** Static instance member. */
     private static final I_CmsMessageBundle INSTANCE = new Messages();
