@@ -15,7 +15,7 @@ if (CmsStringUtil.isNotEmpty(template)) {
 }
 
 %>
-<div class="element">
+<div class="element newslettersubscription-wrapper">
 <%
 
 switch (cms.getAction()) {

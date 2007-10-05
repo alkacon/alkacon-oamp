@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterManager.java,v $
- * Date   : $Date: 2007/09/21 14:33:19 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/10/05 07:52:11 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -134,10 +134,11 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
      * The user will be activated or not depending on the activate parameter value.<p>
      * 
      * @param email the email address of the new user
+     * @param groupName the name of the group to add the user to
      * @param activate if true, the user will be activated directly to receive newsletters, otherwise not
      * @return the new created user or null if the creation failed
      */
-    protected CmsUser createNewsletterUser(String email, boolean activate) {
+    protected CmsUser createNewsletterUser(String email, String groupName, boolean activate) {
 
         CmsUser user = null;
         // create additional infos containing the active flag set to false
@@ -149,8 +150,8 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
             // set the users email address
             user.setEmail(email);
             getAdminCms().writeUser(user);
-            // add the user to the newsletter group
-            getAdminCms().addUserToGroup(user.getName(), "Newsletter");
+            // add the user to the given newsletter group
+            getAdminCms().addUserToGroup(user.getName(), groupName);
         } catch (CmsException e) {
             // error creating user
         }

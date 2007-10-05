@@ -1,3 +1,7 @@
+/* Block element surrounding complete subscription output html */
+div.newslettersubscription-wrapper {
+}
+
 /* The subscription form */
 form.newslettersubscription-form {
 	width: 350px;
@@ -22,6 +26,7 @@ div.newslettersubscription-buttons {
 	padding: 6px 0 0 0;
 	text-align: center;
 }
+
 /* Email text input field */
 input.newslettersubscription-email {
 	border: 1px solid #CCCCCC;
@@ -44,4 +49,48 @@ p.newslettersubscription-error {
 /* List fo the validation error messages */
 ul.newslettersubscription-error {
 	margin-top: 0;
+}
+
+
+/* SMALL form for side inclusion */
+
+/* The subscription form */
+form.newslettersubscription-form-sm {
+	width: 135px;
+	border: 1px solid #AAAAAA;
+	background-color: #EEEEEE;
+	padding: 2px;
+	margin: 5px;
+}
+
+/* Block around the form radio buttons and corresponding text */
+div.newslettersubscription-radio-sm {
+	padding: 0 0 2px 0;
+	font-size: 10px;
+}
+
+/* Block around the email input field and its text */
+div.newslettersubscription-email-sm {
+	padding: 2px 0 2px 0;
+	font-size: 10px;
+}
+
+/* Block around the form buttons */
+div.newslettersubscription-buttons-sm {
+	padding: 6px 0 0 0;
+	text-align: center;
+}
+
+/* Email text input field */
+input.newslettersubscription-email-sm {
+	border: 1px solid #CCCCCC;
+	width: 88px;
+	font-size: 10px;
+}
+
+/* Form buttons */
+div.newslettersubscription-buttons-sm input {
+	border: 1px solid #555555;
+	background-color: #CCCCCC;
+	font-size: 10px;
 }

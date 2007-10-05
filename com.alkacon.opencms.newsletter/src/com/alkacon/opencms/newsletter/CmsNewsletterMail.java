@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterMail.java,v $
- * Date   : $Date: 2007/09/21 14:33:19 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/10/05 07:52:11 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -39,19 +39,21 @@ import org.opencms.file.CmsUser;
 import org.opencms.mail.CmsHtmlMail;
 import org.opencms.mail.CmsSimpleMail;
 import org.opencms.main.CmsException;
+import org.opencms.main.CmsLog;
 import org.opencms.util.CmsHtmlExtractor;
 import org.opencms.util.CmsStringUtil;
 import org.opencms.xml.content.CmsXmlContent;
 import org.opencms.xml.content.CmsXmlContentFactory;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
+
+import org.apache.commons.logging.Log;
 
 /**
  * Generates newsletter emails and sends them to users that subscribed to the newsletter.<p>
@@ -91,6 +93,9 @@ public class CmsNewsletterMail {
 
     /** The xpath for the Config node including trailing "/". */
     protected static final String XPATH_CONFIG = "Config/";
+
+    /** The log object for this class. */
+    private static final Log LOG = CmsLog.getLog(CmsNewsletterMail.class);
 
     /** The OpenCms user context.<p> */
     private CmsObject m_cms;
@@ -219,10 +224,9 @@ public class CmsNewsletterMail {
     /**
      * Sends the newsletter mails to the recipients (members of the group specified in the constructor).<p>
      * 
-     * @throws MessagingException if sending the email fails
-     * @throws CmsException
+     * @throws CmsException if reading the group users or getting the email content fails
      */
-    public void sendMail() throws MessagingException, CmsException {
+    public void sendMail() throws CmsException {
 
         // get the email data from the content fields
         String from = getContent().getStringValue(getCms(), NODE_FROM, getLocale());
@@ -234,13 +238,34 @@ public class CmsNewsletterMail {
             CmsUser user = (CmsUser)i.next();
             if (CmsNewsletterManager.isActiveUser(user)) {
                 // add active users to the recipients
-                recipients.add(new InternetAddress(user.getEmail()));
+                try {
+                    recipients.add(new InternetAddress(user.getEmail()));
+                } catch (MessagingException e) {
+                    // log invalid email address
+                    if (LOG.isErrorEnabled()) {
+                        LOG.error(Messages.get().getBundle().key(
+                            Messages.LOG_ERROR_NEWSLETTER_EMAIL_3,
+                            user.getEmail(),
+                            user.getName(),
+                            getContent().getFile().getRootPath()));
+                    }
+                }
             }
         }
 
         if (getContent().hasValue(NODE_BCC, getLocale())) {
             // add the configured email address to the list of BCC recipients
-            recipients.add(new InternetAddress(getContent().getStringValue(getCms(), NODE_BCC, getLocale())));
+            try {
+                recipients.add(new InternetAddress(getContent().getStringValue(getCms(), NODE_BCC, getLocale())));
+            } catch (MessagingException e) {
+                // log invalid email address
+                if (LOG.isErrorEnabled()) {
+                    LOG.error(Messages.get().getBundle().key(
+                        Messages.LOG_ERROR_NEWSLETTER_EMAIL_BCC_2,
+                        getContent().getStringValue(getCms(), NODE_BCC, getLocale()),
+                        getContent().getFile().getRootPath()));
+                }
+            }
         }
 
         // get subject and mail text
@@ -251,8 +276,18 @@ public class CmsNewsletterMail {
         if (isHtmlMail) {
             // create and send HTML email
             CmsHtmlMail mail = new CmsHtmlMail();
-            mail.setFrom(from);
-            
+            try {
+                mail.setFrom(from);
+            } catch (MessagingException e) {
+                // log invalid from email address
+                if (LOG.isErrorEnabled()) {
+                    LOG.error(Messages.get().getBundle().key(
+                        Messages.LOG_ERROR_NEWSLETTER_EMAIL_FROM_2,
+                        from,
+                        getContent().getFile().getRootPath()));
+                }
+            }
+
             mail.setSubject(subject);
             // create the email content and use it as HTML message
             mail.setHtmlMsg(getEmailContent(getContent(), getCms(), getLocale()));
@@ -268,14 +303,35 @@ public class CmsNewsletterMail {
             i = recipients.iterator();
             while (i.hasNext()) {
                 InternetAddress to = (InternetAddress)i.next();
-                mail.setTo(Collections.EMPTY_LIST);
-                mail.addTo(to.getAddress());
-                mail.send();
+                List toList = new ArrayList(1);
+                toList.add(to);
+                mail.setTo(toList);
+                try {
+                    mail.send();
+                } catch (MessagingException e) {
+                    // log failed mail send process
+                    if (LOG.isErrorEnabled()) {
+                        LOG.error(Messages.get().getBundle().key(
+                            Messages.LOG_ERROR_NEWSLETTER_EMAIL_SEND_FAILED_2,
+                            to.getAddress(),
+                            getContent().getFile().getRootPath()));
+                    }
+                }
             }
         } else {
             // create and send text only email
             CmsSimpleMail mail = new CmsSimpleMail();
-            mail.setFrom(from);
+            try {
+                mail.setFrom(from);
+            } catch (MessagingException e) {
+                // log invalid from email address
+                if (LOG.isErrorEnabled()) {
+                    LOG.error(Messages.get().getBundle().key(
+                        Messages.LOG_ERROR_NEWSLETTER_EMAIL_FROM_2,
+                        from,
+                        getContent().getFile().getRootPath()));
+                }
+            }
             mail.setSubject(subject);
             // extract the text from the HTML field
             try {
@@ -289,9 +345,20 @@ public class CmsNewsletterMail {
             i = recipients.iterator();
             while (i.hasNext()) {
                 InternetAddress to = (InternetAddress)i.next();
-                mail.setTo(Collections.EMPTY_LIST);
-                mail.addTo(to.getAddress());
-                mail.send();
+                List toList = new ArrayList(1);
+                toList.add(to);
+                mail.setTo(toList);
+                try {
+                    mail.send();
+                } catch (MessagingException e) {
+                    // log failed mail send process
+                    if (LOG.isErrorEnabled()) {
+                        LOG.error(Messages.get().getBundle().key(
+                            Messages.LOG_ERROR_NEWSLETTER_EMAIL_SEND_FAILED_2,
+                            to.getAddress(),
+                            getContent().getFile().getRootPath()));
+                    }
+                }
             }
         }
     }

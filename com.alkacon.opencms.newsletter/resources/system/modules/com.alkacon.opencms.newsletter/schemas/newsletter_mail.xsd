@@ -30,7 +30,6 @@
 			<preview uri="${previewtempfile}" />
 			<defaults>
 				<default element="From" value="%(key.default.alknewslettermail.from)" />
-				<!-- <default element="To" value="%(key.default.alknewslettermail.to)" /> //-->
 				<default element="BCC" value="%(currentuser.email)" />
 				<default element="Subject" value="%(key.default.alknewslettermail.subject)" />
 				<default element="Text" value="%(key.default.alknewslettermail.text)" />
@@ -40,7 +39,7 @@
 				<default element="Config/MailFoot" value="%(key.default.alknewslettermail.conf.foot)" />
 			</defaults>
 			<layouts>
-				<layout element="Text" widget="HtmlWidget" configuration="source,formatselect,height: 250px" />
+				<layout element="Text" widget="HtmlWidget" configuration="source,formatselect,link,anchor,height: 250px" />
 			</layouts>
 			<mappings>
 				<mapping element="Subject" mapto="property:Title" />

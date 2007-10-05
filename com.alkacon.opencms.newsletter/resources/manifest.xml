@@ -4,7 +4,7 @@
 	<info>
 		<creator>Admin</creator>
 		<opencms_version>7.0.3</opencms_version>
-		<createdate>Fri, 21 Sep 2007 14:31:32 GMT</createdate>
+		<createdate>Fri, 05 Oct 2007 07:52:37 GMT</createdate>
 		<project>Offline</project>
 		<export_version>6</export_version>
 	</info>
@@ -14,7 +14,7 @@
 		<group>Alkacon OpenCms Extensions</group>
 		<class>com.alkacon.opencms.newsletter.CmsNewsletterManager</class>
 		<description><![CDATA[This module allows the creation of newsletters sent by email to specific user groups.]]></description>
-		<version>1.0.1</version>
+		<version>1.0.0</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
 		<datecreated/>
@@ -209,7 +209,7 @@
 			<type>plain</type>
 			<uuidstructure>8cbf7912-65ca-11dc-9b75-f5a391e6c891</uuidstructure>
 			<uuidresource>8cbf7913-65ca-11dc-9b75-f5a391e6c891</uuidresource>
-			<datelastmodified>Fri, 21 Sep 2007 09:09:53 GMT</datelastmodified>
+			<datelastmodified>Thu, 04 Oct 2007 14:00:54 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Tue, 18 Sep 2007 09:35:53 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -224,7 +224,7 @@
 			<type>plain</type>
 			<uuidstructure>30acf848-66c3-11dc-95db-f5a391e6c891</uuidstructure>
 			<uuidresource>30acf849-66c3-11dc-95db-f5a391e6c891</uuidresource>
-			<datelastmodified>Fri, 21 Sep 2007 09:09:26 GMT</datelastmodified>
+			<datelastmodified>Thu, 04 Oct 2007 14:00:07 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Wed, 19 Sep 2007 15:15:43 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -238,7 +238,7 @@
 			<type>plain</type>
 			<uuidstructure>3799955a-66c3-11dc-95db-f5a391e6c891</uuidstructure>
 			<uuidresource>8cbf7913-65ca-11dc-9b75-f5a391e6c891</uuidresource>
-			<datelastmodified>Fri, 21 Sep 2007 09:09:53 GMT</datelastmodified>
+			<datelastmodified>Thu, 04 Oct 2007 14:00:54 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Tue, 18 Sep 2007 09:35:53 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -257,6 +257,30 @@
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.newsletter/elements/subscribe-form.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.newsletter/elements/subscribe-form.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>bddbcf99-727d-11dc-9769-f5a391e6c891</uuidstructure>
+			<uuidresource>bddbcf9a-727d-11dc-9769-f5a391e6c891</uuidresource>
+			<datelastmodified>Thu, 04 Oct 2007 15:09:06 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 04 Oct 2007 13:28:49 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Subscribe / Unsubscribe form]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
 			<relations/>
 			<accesscontrol/>
 		</file>
@@ -307,7 +331,7 @@
 			<type>jsp</type>
 			<uuidstructure>b24f3ad3-6755-11dc-9780-f5a391e6c891</uuidstructure>
 			<uuidresource>b24f3ad4-6755-11dc-9780-f5a391e6c891</uuidresource>
-			<datelastmodified>Fri, 21 Sep 2007 09:07:07 GMT</datelastmodified>
+			<datelastmodified>Thu, 04 Oct 2007 10:36:26 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Thu, 20 Sep 2007 08:44:27 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -363,7 +387,7 @@
 			<type>jsp</type>
 			<uuidstructure>439ac980-6532-11dc-b10b-f5a391e6c891</uuidstructure>
 			<uuidresource>439ac981-6532-11dc-b10b-f5a391e6c891</uuidresource>
-			<datelastmodified>Fri, 21 Sep 2007 09:00:43 GMT</datelastmodified>
+			<datelastmodified>Thu, 04 Oct 2007 13:22:52 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 17 Sep 2007 15:25:47 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -404,7 +428,7 @@
 			<type>plain</type>
 			<uuidstructure>4f21115a-66ab-11dc-b6b4-f5a391e6c891</uuidstructure>
 			<uuidresource>4f21115b-66ab-11dc-b6b4-f5a391e6c891</uuidresource>
-			<datelastmodified>Wed, 19 Sep 2007 14:56:23 GMT</datelastmodified>
+			<datelastmodified>Thu, 04 Oct 2007 14:23:10 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Wed, 19 Sep 2007 12:24:46 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -557,7 +581,7 @@
 			<type>plain</type>
 			<uuidstructure>5bd774f3-6755-11dc-9780-f5a391e6c891</uuidstructure>
 			<uuidresource>5bd774f4-6755-11dc-9780-f5a391e6c891</uuidresource>
-			<datelastmodified>Fri, 21 Sep 2007 14:27:24 GMT</datelastmodified>
+			<datelastmodified>Thu, 04 Oct 2007 10:33:55 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Thu, 20 Sep 2007 08:42:02 GMT</datecreated>
 			<usercreated>Admin</usercreated>

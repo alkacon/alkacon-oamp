@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterSubscriptionBean.java,v $
- * Date   : $Date: 2007/09/21 14:33:19 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/10/05 07:52:11 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -40,6 +40,7 @@ import org.opencms.i18n.CmsMessages;
 import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.mail.CmsHtmlMail;
 import org.opencms.main.CmsException;
+import org.opencms.main.CmsLog;
 import org.opencms.main.OpenCms;
 import org.opencms.module.CmsModule;
 import org.opencms.util.CmsHtmlExtractor;
@@ -55,6 +56,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
+
+import org.apache.commons.logging.Log;
 
 /**
  * 
@@ -80,8 +83,14 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
     /** The name of the email request parameter. */
     public static final String PARAM_EMAIL = "email";
 
+    /** The name of the file request parameter. */
+    public static final String PARAM_FILE = "file";
+
     /** The password used for encryption and decryption actions. */
     private static final String CRYPT_PASSWORD = "YwqP-82h";
+
+    /** The log object for this class. */
+    private static final Log LOG = CmsLog.getLog(CmsNewsletterSubscriptionBean.class);
 
     /** The email macro that can be used in the configuration content. */
     private static final String MACRO_EMAIL = "email";
@@ -130,10 +139,10 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
 
     /** The xpath to the confirm mail subnodes. */
     private static final String XPATH_2_MAIL = XPATH_1_CONFIRM + "Mail/";
-    
+
     /** The xpath to the confirm subscribe subnodes. */
     private static final String XPATH_2_SUBSCRIBE = XPATH_1_CONFIRM + "Subscribe/";
-    
+
     /** The xpath to the confirm unsubscribe subnodes. */
     private static final String XPATH_2_UNSUBSCRIBE = XPATH_1_CONFIRM + "UnSubscribe/";
 
@@ -222,14 +231,20 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
         String result = getConfigText(XPATH_1_SUBSCRIBE + NODE_SUBSCRIBE_ERROR);
 
         if (CmsStringUtil.isNotEmpty(getEmail())) {
-            // create the newsletter user
-            CmsUser user = getNewsletterManager().createNewsletterUser(getEmail(), !isConfirmationEnabled());
+            // create the newsletter user in the newsletter group
+            String groupName = "Newsletter";
+            CmsUser user = getNewsletterManager().createNewsletterUser(getEmail(), groupName, !isConfirmationEnabled());
             if (user != null) {
-                setLinkMacro(ACTION_CONFIRMSUBSCRIPTION, getEmail());
-                sendConfirmationMail(
-                    getConfigText(XPATH_2_SUBSCRIBE + NODE_MAILSUBJECT),
-                    getConfigText(XPATH_2_SUBSCRIBE + NODE_MAILTEXT));
-                result = getConfigText(XPATH_1_SUBSCRIBE + NODE_SUBSCRIBE_OK);
+                if (isConfirmationEnabled()) {
+                    setLinkMacro(ACTION_CONFIRMSUBSCRIPTION, getEmail());
+                    if (sendConfirmationMail(
+                        getConfigText(XPATH_2_SUBSCRIBE + NODE_MAILSUBJECT),
+                        getConfigText(XPATH_2_SUBSCRIBE + NODE_MAILTEXT))) {
+                        result = getConfigText(XPATH_1_SUBSCRIBE + NODE_SUBSCRIBE_OK);
+                    }
+                } else {
+                    result = getConfigText(XPATH_1_SUBSCRIBE + NODE_SUBSCRIBE_OK);
+                }
             }
         }
         return result.toString();
@@ -248,10 +263,11 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
                 // email confirmation is enabled, mark the user to be deleted
                 if (getNewsletterManager().markToDeleteNewsletterUser(getEmail())) {
                     setLinkMacro(ACTION_CONFIRMUNSUBSCRIPTION, getEmail());
-                    sendConfirmationMail(
+                    if (sendConfirmationMail(
                         getConfigText(XPATH_2_UNSUBSCRIBE + NODE_MAILSUBJECT),
-                        getConfigText(XPATH_2_UNSUBSCRIBE + NODE_MAILTEXT));
-                    result = getConfigText(XPATH_1_SUBSCRIBE + NODE_UNSUBSCRIBE_OK);
+                        getConfigText(XPATH_2_UNSUBSCRIBE + NODE_MAILTEXT))) {
+                        result = getConfigText(XPATH_1_SUBSCRIBE + NODE_UNSUBSCRIBE_OK);
+                    }
                 }
             } else if (getNewsletterManager().deleteNewsletterUser(getEmail(), false)) {
                 result = getConfigText(XPATH_1_SUBSCRIBE + NODE_UNSUBSCRIBE_OK);
@@ -428,7 +444,11 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
 
         if (m_configContent == null) {
             try {
-                CmsFile file = getCmsObject().readFile(getRequestContext().getUri());
+                String uri = getRequestContext().getUri();
+                if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(getRequest().getParameter(PARAM_FILE))) {
+                    uri = getRequest().getParameter(PARAM_FILE);
+                }
+                CmsFile file = getCmsObject().readFile(uri);
                 m_configContent = CmsXmlContentFactory.unmarshal(getCmsObject(), file);
             } catch (CmsException e) {
                 // error reading configuration content
@@ -468,8 +488,9 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
      * 
      * @param subject the mail subject to use
      * @param text the mail text to use
+     * @return true if the confirmation mail was successfully sent, otherwise false
      */
-    private void sendConfirmationMail(String subject, String text) {
+    private boolean sendConfirmationMail(String subject, String text) {
 
         CmsHtmlMail mail = new CmsHtmlMail();
 
@@ -523,8 +544,13 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
             mail.setTextMsg(CmsHtmlExtractor.extractText(text, getCmsObject().getRequestContext().getEncoding()));
             // send the mail
             mail.send();
+            return true;
         } catch (Exception e) {
-            // TODO: error handling
+            // in case of an error, return false
+            if (LOG.isErrorEnabled()) {
+                LOG.error(Messages.get().getBundle().key(Messages.LOG_ERROR_MAIL_CONFIRMATION_1, getEmail()), e);
+            }
+            return false;
         }
     }
 

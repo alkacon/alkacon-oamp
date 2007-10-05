@@ -42,22 +42,19 @@
 	<div class="fieldlabel"><fmt:message key="label.AlkaconNewsletterMail.From" /></div>
 	<div class="fieldtext"><cms:contentshow element="From" /></div>
 </div>
-<div class="field">
-	<div class="fieldlabel"><fmt:message key="label.AlkaconNewsletterMail.To" /></div>
-	<div class="fieldtext"><cms:contentshow element="To" /></div>
-</div>
+
 <cms:contentcheck ifexists="BCC">
 <div class="field">
 	<div class="fieldlabel"><fmt:message key="label.AlkaconNewsletterMail.BCC" /></div>
 	<div class="fieldtext"><cms:contentshow element="BCC" /></div>
 </div>
 </cms:contentcheck>
+
 <div class="field">
 	<div class="fieldlabel"><fmt:message key="label.AlkaconNewsletterMail.Subject" /></div>
 	<div class="fieldtext"><strong><cms:contentshow element="Subject" /></strong></div>
 </div>
 <iframe name="email" src="<cms:link>detail-newsletter-iframe.jsp?uri=<cms:contentshow element="%(opencms.filename)" /></cms:link>" frameborder="0" ></iframe>
-
 
 </body>
 </html>
