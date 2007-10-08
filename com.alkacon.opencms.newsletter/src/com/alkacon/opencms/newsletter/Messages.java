@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/Messages.java,v $
- * Date   : $Date: 2007/10/05 07:52:11 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/10/08 15:38:47 $
+ * Version: $Revision: 1.2 $
  *
  * Copyright (c) 2005 Alkacon Software GmbH (http://www.alkacon.com)
  * All rights reserved.
@@ -36,29 +36,230 @@ import org.opencms.i18n.I_CmsMessageBundle;
  * 
  * @author Andreas Zahner
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 7.0.1 
  */
 public final class Messages extends A_CmsMessageBundle {
 
-    /** Name of the used resource bundle. */
-    private static final String BUNDLE_NAME = "com.alkacon.opencms.newsletter.messages";
-    
     /** Message constant for key in the resource bundle. */
-    public static final String LOG_ERROR_MAIL_CONFIRMATION_1 = "LOG_ERROR_MAIL_CONFIRMATION_1";   
-    
+    public static final String GUI_ALK_DELETEORGUNIT_ADMIN_TOOL_GROUP_0 = "GUI_ALK_DELETEORGUNIT_ADMIN_TOOL_GROUP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_DELETEORGUNIT_ADMIN_TOOL_HELP_0 = "GUI_ALK_DELETEORGUNIT_ADMIN_TOOL_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_DELETEORGUNIT_ADMIN_TOOL_NAME_0 = "GUI_ALK_DELETEORGUNIT_ADMIN_TOOL_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_EDITORGUNIT_ADMIN_TOOL_GROUP_0 = "GUI_ALK_EDITORGUNIT_ADMIN_TOOL_GROUP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_EDITORGUNIT_ADMIN_TOOL_HELP_0 = "GUI_ALK_EDITORGUNIT_ADMIN_TOOL_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_EDITORGUNIT_ADMIN_TOOL_NAME_0 = "GUI_ALK_EDITORGUNIT_ADMIN_TOOL_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLIST_ADMIN_TOOL_GROUP_0 = "GUI_ALK_MAILINGLIST_ADMIN_TOOL_GROUP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLIST_ADMIN_TOOL_HELP_0 = "GUI_ALK_MAILINGLIST_ADMIN_TOOL_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLIST_ADMIN_TOOL_NAME_0 = "GUI_ALK_MAILINGLIST_ADMIN_TOOL_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLIST_ADMIN_TOOL_NAVBARNAME_0 = "GUI_ALK_MAILINGLIST_ADMIN_TOOL_NAVBARNAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLIST_DELETE_ADMIN_TOOL_GROUP_0 = "GUI_ALK_MAILINGLIST_DELETE_ADMIN_TOOL_GROUP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLIST_DELETE_ADMIN_TOOL_HELP_0 = "GUI_ALK_MAILINGLIST_DELETE_ADMIN_TOOL_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLIST_DELETE_ADMIN_TOOL_NAME_0 = "GUI_ALK_MAILINGLIST_DELETE_ADMIN_TOOL_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLIST_DELETE_ADMIN_TOOL_NAVBARNAME_0 = "GUI_ALK_MAILINGLIST_DELETE_ADMIN_TOOL_NAVBARNAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLIST_OVERVIEW_ADMIN_TOOL_GROUP_0 = "GUI_ALK_MAILINGLIST_OVERVIEW_ADMIN_TOOL_GROUP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLIST_OVERVIEW_ADMIN_TOOL_HELP_0 = "GUI_ALK_MAILINGLIST_OVERVIEW_ADMIN_TOOL_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLIST_OVERVIEW_ADMIN_TOOL_NAME_0 = "GUI_ALK_MAILINGLIST_OVERVIEW_ADMIN_TOOL_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLIST_OVERVIEW_ADMIN_TOOL_NAVBARNAME_0 = "GUI_ALK_MAILINGLIST_OVERVIEW_ADMIN_TOOL_NAVBARNAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLIST_SUBSCRIBERS_ADMIN_TOOL_GROUP_0 = "GUI_ALK_MAILINGLIST_SUBSCRIBERS_ADMIN_TOOL_GROUP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLIST_SUBSCRIBERS_ADMIN_TOOL_HELP_0 = "GUI_ALK_MAILINGLIST_SUBSCRIBERS_ADMIN_TOOL_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLIST_SUBSCRIBERS_ADMIN_TOOL_NAME_0 = "GUI_ALK_MAILINGLIST_SUBSCRIBERS_ADMIN_TOOL_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLIST_SUBSCRIBERS_ADMIN_TOOL_NAVBARNAME_0 = "GUI_ALK_MAILINGLIST_SUBSCRIBERS_ADMIN_TOOL_NAVBARNAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLISTS_ADMIN_TOOL_GROUP_0 = "GUI_ALK_MAILINGLISTS_ADMIN_TOOL_GROUP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLISTS_ADMIN_TOOL_HELP_0 = "GUI_ALK_MAILINGLISTS_ADMIN_TOOL_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLISTS_ADMIN_TOOL_NAME_0 = "GUI_ALK_MAILINGLISTS_ADMIN_TOOL_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLISTS_ADMIN_TOOL_NAVBARNAME_0 = "GUI_ALK_MAILINGLISTS_ADMIN_TOOL_NAVBARNAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLISTS_DELETE_ADMIN_TOOL_GROUP_0 = "GUI_ALK_MAILINGLISTS_DELETE_ADMIN_TOOL_GROUP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLISTS_DELETE_ADMIN_TOOL_HELP_0 = "GUI_ALK_MAILINGLISTS_DELETE_ADMIN_TOOL_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLISTS_DELETE_ADMIN_TOOL_NAME_0 = "GUI_ALK_MAILINGLISTS_DELETE_ADMIN_TOOL_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_NEWMAILINGLIST_ADMIN_TOOL_GROUP_0 = "GUI_ALK_NEWMAILINGLIST_ADMIN_TOOL_GROUP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_NEWMAILINGLIST_ADMIN_TOOL_HELP_0 = "GUI_ALK_NEWMAILINGLIST_ADMIN_TOOL_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_NEWMAILINGLIST_ADMIN_TOOL_NAME_0 = "GUI_ALK_NEWMAILINGLIST_ADMIN_TOOL_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_NEWORGUNIT_ADMIN_TOOL_GROUP_0 = "GUI_ALK_NEWORGUNIT_ADMIN_TOOL_GROUP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_NEWORGUNIT_ADMIN_TOOL_HELP_0 = "GUI_ALK_NEWORGUNIT_ADMIN_TOOL_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_NEWORGUNIT_ADMIN_TOOL_NAME_0 = "GUI_ALK_NEWORGUNIT_ADMIN_TOOL_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_NEWSLETTER_ADMIN_TOOL_GROUP_0 = "GUI_ALK_NEWSLETTER_ADMIN_TOOL_GROUP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_NEWSLETTER_ADMIN_TOOL_HELP_0 = "GUI_ALK_NEWSLETTER_ADMIN_TOOL_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_NEWSLETTER_ADMIN_TOOL_NAME_0 = "GUI_ALK_NEWSLETTER_ADMIN_TOOL_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_NEWSUBSCRIBER_ADMIN_TOOL_GROUP_0 = "GUI_ALK_NEWSUBSCRIBER_ADMIN_TOOL_GROUP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_NEWSUBSCRIBER_ADMIN_TOOL_HELP_0 = "GUI_ALK_NEWSUBSCRIBER_ADMIN_TOOL_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_NEWSUBSCRIBER_ADMIN_TOOL_NAME_0 = "GUI_ALK_NEWSUBSCRIBER_ADMIN_TOOL_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_NOTMAILINGLISTSUBSCRIBERS_LIST_NAME_0 = "GUI_ALK_NOTMAILINGLISTSUBSCRIBERS_LIST_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_NOTSUBSCRIBERMAILINGLISTS_LIST_NAME_0 = "GUI_ALK_NOTSUBSCRIBERMAILINGLISTS_LIST_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_ORGUNIT_ADMIN_TOOL_HELP_0 = "GUI_ALK_ORGUNIT_ADMIN_TOOL_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_ORGUNIT_ADMIN_TOOL_NAME_0 = "GUI_ALK_ORGUNIT_ADMIN_TOOL_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_OVERVIEWORGUNIT_ADMIN_TOOL_GROUP_0 = "GUI_ALK_OVERVIEWORGUNIT_ADMIN_TOOL_GROUP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_OVERVIEWORGUNIT_ADMIN_TOOL_HELP_0 = "GUI_ALK_OVERVIEWORGUNIT_ADMIN_TOOL_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_OVERVIEWORGUNIT_ADMIN_TOOL_NAME_0 = "GUI_ALK_OVERVIEWORGUNIT_ADMIN_TOOL_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_SUBSCRIBER_DELETE_ADMIN_TOOL_GROUP_0 = "GUI_ALK_SUBSCRIBER_DELETE_ADMIN_TOOL_GROUP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_SUBSCRIBER_DELETE_ADMIN_TOOL_HELP_0 = "GUI_ALK_SUBSCRIBER_DELETE_ADMIN_TOOL_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_SUBSCRIBER_DELETE_ADMIN_TOOL_NAME_0 = "GUI_ALK_SUBSCRIBER_DELETE_ADMIN_TOOL_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_SUBSCRIBER_DELETE_ADMIN_TOOL_NAVBARNAME_0 = "GUI_ALK_SUBSCRIBER_DELETE_ADMIN_TOOL_NAVBARNAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_SUBSCRIBER_MAILINGLISTS_ADMIN_TOOL_GROUP_0 = "GUI_ALK_SUBSCRIBER_MAILINGLISTS_ADMIN_TOOL_GROUP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_SUBSCRIBER_MAILINGLISTS_ADMIN_TOOL_HELP_0 = "GUI_ALK_SUBSCRIBER_MAILINGLISTS_ADMIN_TOOL_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_SUBSCRIBER_MAILINGLISTS_ADMIN_TOOL_NAME_0 = "GUI_ALK_SUBSCRIBER_MAILINGLISTS_ADMIN_TOOL_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_SUBSCRIBER_MAILINGLISTS_ADMIN_TOOL_NAVBARNAME_0 = "GUI_ALK_SUBSCRIBER_MAILINGLISTS_ADMIN_TOOL_NAVBARNAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_SUBSCRIBER_OVERVIEW_ADMIN_TOOL_GROUP_0 = "GUI_ALK_SUBSCRIBER_OVERVIEW_ADMIN_TOOL_GROUP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_SUBSCRIBER_OVERVIEW_ADMIN_TOOL_HELP_0 = "GUI_ALK_SUBSCRIBER_OVERVIEW_ADMIN_TOOL_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_SUBSCRIBER_OVERVIEW_ADMIN_TOOL_NAME_0 = "GUI_ALK_SUBSCRIBER_OVERVIEW_ADMIN_TOOL_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_SUBSCRIBER_OVERVIEW_ADMIN_TOOL_NAVBARNAME_0 = "GUI_ALK_SUBSCRIBER_OVERVIEW_ADMIN_TOOL_NAVBARNAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_SUBSCRIBERS_ADMIN_TOOL_GROUP_0 = "GUI_ALK_SUBSCRIBERS_ADMIN_TOOL_GROUP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_SUBSCRIBERS_ADMIN_TOOL_HELP_0 = "GUI_ALK_SUBSCRIBERS_ADMIN_TOOL_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_SUBSCRIBERS_ADMIN_TOOL_NAME_0 = "GUI_ALK_SUBSCRIBERS_ADMIN_TOOL_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_SUBSCRIBERS_ADMIN_TOOL_NAVBARNAME_0 = "GUI_ALK_SUBSCRIBERS_ADMIN_TOOL_NAVBARNAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_SUBSCRIBERS_DELETE_ADMIN_TOOL_GROUP_0 = "GUI_ALK_SUBSCRIBERS_DELETE_ADMIN_TOOL_GROUP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_SUBSCRIBERS_DELETE_ADMIN_TOOL_HELP_0 = "GUI_ALK_SUBSCRIBERS_DELETE_ADMIN_TOOL_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_SUBSCRIBERS_DELETE_ADMIN_TOOL_NAME_0 = "GUI_ALK_SUBSCRIBERS_DELETE_ADMIN_TOOL_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String LOG_ERROR_MAIL_CONFIRMATION_1 = "LOG_ERROR_MAIL_CONFIRMATION_1";
+
     /** Message constant for key in the resource bundle. */
     public static final String LOG_ERROR_NEWSLETTER_EMAIL_3 = "LOG_ERROR_NEWSLETTER_EMAIL_3";
-    
+
     /** Message constant for key in the resource bundle. */
     public static final String LOG_ERROR_NEWSLETTER_EMAIL_BCC_2 = "LOG_ERROR_NEWSLETTER_EMAIL_BCC_2";
-    
+
     /** Message constant for key in the resource bundle. */
     public static final String LOG_ERROR_NEWSLETTER_EMAIL_FROM_2 = "LOG_ERROR_NEWSLETTER_EMAIL_FROM_2";
-    
+
     /** Message constant for key in the resource bundle. */
     public static final String LOG_ERROR_NEWSLETTER_EMAIL_SEND_FAILED_2 = "LOG_ERROR_NEWSLETTER_EMAIL_SEND_FAILED_2";
+
+    /** Name of the used resource bundle. */
+    private static final String BUNDLE_NAME = "com.alkacon.opencms.newsletter.messages";
 
     /** Static instance member. */
     private static final I_CmsMessageBundle INSTANCE = new Messages();

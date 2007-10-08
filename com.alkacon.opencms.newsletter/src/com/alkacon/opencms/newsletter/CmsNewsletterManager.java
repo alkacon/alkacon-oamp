@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterManager.java,v $
- * Date   : $Date: 2007/10/05 07:52:11 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2007/10/08 15:38:47 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -39,8 +39,12 @@ import org.opencms.main.CmsException;
 import org.opencms.main.OpenCms;
 import org.opencms.module.A_CmsModuleAction;
 import org.opencms.module.CmsModule;
+import org.opencms.security.CmsOrganizationalUnit;
+import org.opencms.security.CmsRole;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -54,14 +58,17 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
     /** The name of the newsletter module. */
     public static final String MODULE_NAME = CmsNewsletterManager.class.getPackage().getName();
 
+    /** Module parameter name for the project name to use for user deletion operations. */
+    public static final String MODULE_PARAM_PROJECT_NAME = "project_name";
+
+    /** Name of the sub-organizational unit for newsletter containing mailing lists and subscribers. */
+    public static final String NEWSLETTER_OU_SIMPLENAME = "newsletter/";
+
     /** Pattern to validate email addresses. */
     public static final Pattern PATTERN_VALIDATION_EMAIL = Pattern.compile("(\\w[-._\\w]*\\w@\\w[-._\\w]*\\w\\.\\w{2,4})");
 
     /** Module parameter name for the user password of the newsletter users. */
     private static final String MODULE_PARAM_PASSWORD_USER = "user_password";
-
-    /** Module parameter name for the project name to use for user deletion operations. */
-    private static final String MODULE_PARAM_PROJECT_NAME = "project_name";
 
     /** The default password for all newsletter users, should be overwritten in the module parameter. */
     private static final String PASSWORD_USER = "Uw82-QnM";
@@ -74,6 +81,28 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
 
     /** The admin CmsObject that is used for user/group operations. */
     private CmsObject m_adminCms;
+
+    /**
+     * Returns the organizational units that can contain mailing lists to display.<p>
+     * 
+     * @param cms the current cms context
+     * 
+     * @return the organizational units
+     * 
+     * @throws CmsException if something goes wrong
+     */
+    public static List getOrgUnits(CmsObject cms) throws CmsException {
+
+        List ous = OpenCms.getRoleManager().getOrgUnitsForRole(cms, CmsRole.ACCOUNT_MANAGER.forOrgUnit(""), true);
+        Iterator it = ous.iterator();
+        while (it.hasNext()) {
+            CmsOrganizationalUnit ou = (CmsOrganizationalUnit)it.next();
+            if (!ou.getSimpleName().equals(CmsNewsletterManager.NEWSLETTER_OU_SIMPLENAME)) {
+                it.remove();
+            }
+        }
+        return ous;
+    }
 
     /**
      * Returns if the email is a valid one using a regular expression pattern.<p>
