@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/Messages.java,v $
- * Date   : $Date: 2007/10/08 15:38:46 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/10/09 08:33:57 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -39,7 +39,7 @@ import org.opencms.i18n.I_CmsMessageBundle;
  * 
  * @author Michael Moossen 
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 6.0.0 
  */
@@ -328,22 +328,22 @@ public final class Messages extends A_CmsMessageBundle {
     public static final String GUI_GROUPS_LIST_ACTION_DEACTIVATE_NAME_0 = "GUI_GROUPS_LIST_ACTION_DEACTIVATE_NAME_0";
 
     /** Message constant for key in the resource bundle. */
-    public static final String GUI_GROUPS_LIST_ACTION_DELETE_HELP_0 = "GUI_GROUPS_LIST_ACTION_DELETE_HELP_0";
+    public static final String GUI_MAILINGLISTS_LIST_ACTION_DELETE_HELP_0 = "GUI_MAILINGLISTS_LIST_ACTION_DELETE_HELP_0";
 
     /** Message constant for key in the resource bundle. */
-    public static final String GUI_GROUPS_LIST_ACTION_DELETE_NAME_0 = "GUI_GROUPS_LIST_ACTION_DELETE_NAME_0";
+    public static final String GUI_MAILINGLISTS_LIST_ACTION_DELETE_NAME_0 = "GUI_MAILINGLISTS_LIST_ACTION_DELETE_NAME_0";
 
     /** Message constant for key in the resource bundle. */
-    public static final String GUI_GROUPS_LIST_ACTION_EDIT_HELP_0 = "GUI_GROUPS_LIST_ACTION_EDIT_HELP_0";
+    public static final String GUI_MAILINGLISTS_LIST_ACTION_EDIT_HELP_0 = "GUI_MAILINGLISTS_LIST_ACTION_EDIT_HELP_0";
 
     /** Message constant for key in the resource bundle. */
-    public static final String GUI_GROUPS_LIST_ACTION_EDIT_NAME_0 = "GUI_GROUPS_LIST_ACTION_EDIT_NAME_0";
+    public static final String GUI_MAILINGLISTS_LIST_ACTION_EDIT_NAME_0 = "GUI_MAILINGLISTS_LIST_ACTION_EDIT_NAME_0";
 
     /** Message constant for key in the resource bundle. */
-    public static final String GUI_GROUPS_LIST_ACTION_USERS_HELP_0 = "GUI_GROUPS_LIST_ACTION_USERS_HELP_0";
+    public static final String GUI_MAILINGLISTS_LIST_ACTION_SUBSCRIBERS_HELP_0 = "GUI_MAILINGLISTS_LIST_ACTION_SUBSCRIBERS_HELP_0";
 
     /** Message constant for key in the resource bundle. */
-    public static final String GUI_GROUPS_LIST_ACTION_USERS_NAME_0 = "GUI_GROUPS_LIST_ACTION_USERS_NAME_0";
+    public static final String GUI_MAILINGLISTS_LIST_ACTION_SUBSCRIBERS_NAME_0 = "GUI_MAILINGLISTS_LIST_ACTION_SUBSCRIBERS_NAME_0";
 
     /** Message constant for key in the resource bundle. */
     public static final String GUI_GROUPS_LIST_AVAILABLE_HELP_0 = "GUI_GROUPS_LIST_AVAILABLE_HELP_0";
@@ -358,19 +358,19 @@ public final class Messages extends A_CmsMessageBundle {
     public static final String GUI_GROUPS_LIST_COLS_ACTIVATE_HELP_0 = "GUI_GROUPS_LIST_COLS_ACTIVATE_HELP_0";
 
     /** Message constant for key in the resource bundle. */
-    public static final String GUI_GROUPS_LIST_COLS_DELETE_0 = "GUI_GROUPS_LIST_COLS_DELETE_0";
+    public static final String GUI_MAILINGLISTS_LIST_COLS_DELETE_0 = "GUI_MAILINGLISTS_LIST_COLS_DELETE_0";
 
     /** Message constant for key in the resource bundle. */
-    public static final String GUI_GROUPS_LIST_COLS_DELETE_HELP_0 = "GUI_GROUPS_LIST_COLS_DELETE_HELP_0";
+    public static final String GUI_MAILINGLISTS_LIST_COLS_DELETE_HELP_0 = "GUI_MAILINGLISTS_LIST_COLS_DELETE_HELP_0";
 
     /** Message constant for key in the resource bundle. */
     public static final String GUI_GROUPS_LIST_COLS_DESCRIPTION_0 = "GUI_GROUPS_LIST_COLS_DESCRIPTION_0";
 
     /** Message constant for key in the resource bundle. */
-    public static final String GUI_GROUPS_LIST_COLS_EDIT_0 = "GUI_GROUPS_LIST_COLS_EDIT_0";
+    public static final String GUI_MAILINGLISTS_LIST_COLS_EDIT_0 = "GUI_MAILINGLISTS_LIST_COLS_EDIT_0";
 
     /** Message constant for key in the resource bundle. */
-    public static final String GUI_GROUPS_LIST_COLS_EDIT_HELP_0 = "GUI_GROUPS_LIST_COLS_EDIT_HELP_0";
+    public static final String GUI_MAILINGLISTS_LIST_COLS_EDIT_HELP_0 = "GUI_MAILINGLISTS_LIST_COLS_EDIT_HELP_0";
 
     /** Message constant for key in the resource bundle. */
     public static final String GUI_GROUPS_LIST_COLS_ICON_0 = "GUI_GROUPS_LIST_COLS_ICON_0";
@@ -394,10 +394,10 @@ public final class Messages extends A_CmsMessageBundle {
     public static final String GUI_GROUPS_LIST_COLS_STATE_HELP_0 = "GUI_GROUPS_LIST_COLS_STATE_HELP_0";
 
     /** Message constant for key in the resource bundle. */
-    public static final String GUI_GROUPS_LIST_COLS_USERS_0 = "GUI_GROUPS_LIST_COLS_USERS_0";
+    public static final String GUI_MAILINGLISTS_LIST_COLS_SUBSCRIBERS_0 = "GUI_MAILINGLISTS_LIST_COLS_SUBSCRIBERS_0";
 
     /** Message constant for key in the resource bundle. */
-    public static final String GUI_GROUPS_LIST_COLS_USERS_HELP_0 = "GUI_GROUPS_LIST_COLS_USERS_HELP_0";
+    public static final String GUI_MAILINGLISTS_LIST_COLS_SUBSCRIBERS_HELP_0 = "GUI_MAILINGLISTS_LIST_COLS_SUBSCRIBERS_HELP_0";
 
     /** Message constant for key in the resource bundle. */
     public static final String GUI_GROUPS_LIST_DEFACTION_ADD_HELP_0 = "GUI_GROUPS_LIST_DEFACTION_ADD_HELP_0";

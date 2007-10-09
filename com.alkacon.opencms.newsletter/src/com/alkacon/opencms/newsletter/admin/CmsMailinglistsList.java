@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsMailinglistsList.java,v $
- * Date   : $Date: 2007/10/08 15:38:46 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/10/09 08:33:57 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -37,8 +37,9 @@ import org.opencms.main.OpenCms;
 import org.opencms.security.CmsPrincipal;
 import org.opencms.workplace.list.CmsListColumnDefinition;
 import org.opencms.workplace.list.CmsListDirectAction;
+import org.opencms.workplace.list.CmsListMetadata;
+import org.opencms.workplace.list.CmsListMultiAction;
 import org.opencms.workplace.tools.accounts.A_CmsGroupsList;
-import org.opencms.workplace.tools.accounts.A_CmsUsersList;
 
 import java.util.List;
 
@@ -51,7 +52,7 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Michael Moossen  
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 6.0.0 
  */
@@ -59,6 +60,9 @@ public class CmsMailinglistsList extends A_CmsGroupsList {
 
     /** list id constant. */
     public static final String LIST_ID = "lgl";
+
+    /** Path to the list buttons. */
+    public static final String PATH_BUTTONS = "tools/newsletter/buttons/";
 
     /**
      * Public constructor.<p>
@@ -91,13 +95,39 @@ public class CmsMailinglistsList extends A_CmsGroupsList {
     }
 
     /**
+     * @see org.opencms.workplace.tools.accounts.A_CmsGroupsList#setColumns(org.opencms.workplace.list.CmsListMetadata)
+     */
+    protected void setColumns(CmsListMetadata metadata) {
+
+        super.setColumns(metadata);
+
+        CmsListColumnDefinition editCol = metadata.getColumnDefinition(LIST_COLUMN_EDIT);
+        editCol.setName(Messages.get().container(Messages.GUI_MAILINGLISTS_LIST_COLS_EDIT_0));
+        editCol.setHelpText(Messages.get().container(Messages.GUI_MAILINGLISTS_LIST_COLS_EDIT_HELP_0));
+
+        CmsListColumnDefinition usersCol = metadata.getColumnDefinition(LIST_COLUMN_USERS);
+        usersCol.setName(Messages.get().container(Messages.GUI_MAILINGLISTS_LIST_COLS_SUBSCRIBERS_0));
+        usersCol.setHelpText(Messages.get().container(Messages.GUI_MAILINGLISTS_LIST_COLS_SUBSCRIBERS_HELP_0));
+        CmsListDirectAction usersAction = (CmsListDirectAction)usersCol.getDirectAction(LIST_ACTION_USERS);
+        usersAction.setName(Messages.get().container(Messages.GUI_MAILINGLISTS_LIST_ACTION_SUBSCRIBERS_NAME_0));
+        usersAction.setHelpText(Messages.get().container(Messages.GUI_MAILINGLISTS_LIST_ACTION_SUBSCRIBERS_HELP_0));
+        usersAction.setIconPath(PATH_BUTTONS + "subscriber.png");
+
+        metadata.getColumnDefinition(LIST_COLUMN_ACTIVATE).setVisible(false);
+
+        CmsListColumnDefinition deleteCol = metadata.getColumnDefinition(LIST_COLUMN_DELETE);
+        deleteCol.setName(Messages.get().container(Messages.GUI_MAILINGLISTS_LIST_COLS_DELETE_0));
+        deleteCol.setHelpText(Messages.get().container(Messages.GUI_MAILINGLISTS_LIST_COLS_DELETE_HELP_0));
+    }
+
+    /**
      * @see org.opencms.workplace.tools.accounts.A_CmsGroupsList#setDeleteAction(org.opencms.workplace.list.CmsListColumnDefinition)
      */
     protected void setDeleteAction(CmsListColumnDefinition deleteCol) {
 
         CmsListDirectAction deleteAction = new CmsListDirectAction(LIST_ACTION_DELETE);
-        deleteAction.setName(Messages.get().container(Messages.GUI_GROUPS_LIST_ACTION_DELETE_NAME_0));
-        deleteAction.setHelpText(Messages.get().container(Messages.GUI_GROUPS_LIST_ACTION_DELETE_HELP_0));
+        deleteAction.setName(Messages.get().container(Messages.GUI_MAILINGLISTS_LIST_ACTION_DELETE_NAME_0));
+        deleteAction.setHelpText(Messages.get().container(Messages.GUI_MAILINGLISTS_LIST_ACTION_DELETE_HELP_0));
         deleteAction.setIconPath(ICON_DELETE);
         deleteCol.addDirectAction(deleteAction);
     }
@@ -108,9 +138,22 @@ public class CmsMailinglistsList extends A_CmsGroupsList {
     protected void setEditAction(CmsListColumnDefinition editCol) {
 
         CmsListDirectAction editAction = new CmsListDirectAction(LIST_ACTION_EDIT);
-        editAction.setName(Messages.get().container(Messages.GUI_GROUPS_LIST_ACTION_EDIT_NAME_0));
-        editAction.setHelpText(Messages.get().container(Messages.GUI_GROUPS_LIST_ACTION_EDIT_HELP_0));
-        editAction.setIconPath(A_CmsUsersList.PATH_BUTTONS + "group.png");
+        editAction.setName(Messages.get().container(Messages.GUI_MAILINGLISTS_LIST_ACTION_EDIT_NAME_0));
+        editAction.setHelpText(Messages.get().container(Messages.GUI_MAILINGLISTS_LIST_ACTION_EDIT_HELP_0));
+        editAction.setIconPath(PATH_BUTTONS + "mailinglist.png");
         editCol.addDirectAction(editAction);
+    }
+
+    /**
+     * @see org.opencms.workplace.tools.accounts.A_CmsGroupsList#setMultiActions(org.opencms.workplace.list.CmsListMetadata)
+     */
+    protected void setMultiActions(CmsListMetadata metadata) {
+
+        super.setMultiActions(metadata);
+        CmsListMultiAction activateUser = metadata.getMultiAction(LIST_MACTION_ACTIVATE);
+        activateUser.setVisible(false);
+        CmsListMultiAction deactivateUser = metadata.getMultiAction(LIST_MACTION_DEACTIVATE);
+        deactivateUser.setVisible(false);
+        
     }
 }
