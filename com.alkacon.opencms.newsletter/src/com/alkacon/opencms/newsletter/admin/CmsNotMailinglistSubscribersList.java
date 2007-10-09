@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsNotMailinglistSubscribersList.java,v $
- * Date   : $Date: 2007/10/08 15:38:46 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/10/09 15:39:58 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -32,6 +32,12 @@
 package com.alkacon.opencms.newsletter.admin;
 
 import org.opencms.jsp.CmsJspActionElement;
+import org.opencms.util.CmsStringUtil;
+import org.opencms.workplace.list.CmsListColumnDefinition;
+import org.opencms.workplace.list.CmsListDefaultAction;
+import org.opencms.workplace.list.CmsListMetadata;
+import org.opencms.workplace.list.CmsListMultiAction;
+import org.opencms.workplace.list.I_CmsListDirectAction;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,7 +48,7 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Michael Moossen  
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 6.0.0 
  */
@@ -56,6 +62,7 @@ public class CmsNotMailinglistSubscribersList extends org.opencms.workplace.tool
     public CmsNotMailinglistSubscribersList(CmsJspActionElement jsp) {
 
         super(jsp, LIST_ID + "l");
+        getList().setName(Messages.get().container(Messages.GUI_NOTMAILINGLISTSUBSCRIBERS_LIST_NAME_0));
     }
 
     /**
@@ -79,6 +86,71 @@ public class CmsNotMailinglistSubscribersList extends org.opencms.workplace.tool
         addMessages(Messages.get().getBundleName());
         // add default resource bundles
         super.initMessages();
+    }
+
+    /**
+     * @see org.opencms.workplace.tools.accounts.A_CmsGroupUsersList#setColumns(org.opencms.workplace.list.CmsListMetadata)
+     */
+    protected void setColumns(CmsListMetadata metadata) {
+
+        super.setColumns(metadata);
+
+        CmsListColumnDefinition iconCol = metadata.getColumnDefinition(LIST_COLUMN_ICON);
+        iconCol.setName(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_COLS_ICON_0));
+        iconCol.setHelpText(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_COLS_ICON_HELP_0));
+
+        CmsListColumnDefinition nameCol = metadata.getColumnDefinition(LIST_COLUMN_NAME);
+        nameCol.setName(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_COLS_EMAIL_0));
+        nameCol.setWidth("100%");
+
+        CmsListDefaultAction addAction = nameCol.getDefaultAction(LIST_DEFACTION_ADD);
+        addAction.setName(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_DEFACTION_ADD_NAME_0));
+        addAction.setHelpText(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_DEFACTION_ADD_HELP_0));
+
+        I_CmsListDirectAction iconAction = iconCol.getDirectAction(LIST_ACTION_ICON);
+        iconAction.setName(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_AVAILABLE_NAME_0));
+        iconAction.setHelpText(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_AVAILABLE_HELP_0));
+
+        I_CmsListDirectAction stateAction = metadata.getColumnDefinition(LIST_COLUMN_STATE).getDirectAction(
+            LIST_ACTION_ADD);
+        stateAction.setName(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_DEFACTION_ADD_NAME_0));
+        stateAction.setHelpText(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_DEFACTION_ADD_HELP_0));
+
+        metadata.getColumnDefinition(LIST_COLUMN_FULLNAME).setVisible(false);
+    }
+
+    /**
+     * @see org.opencms.workplace.tools.accounts.CmsNotGroupUsersList#setIndependentActions(org.opencms.workplace.list.CmsListMetadata)
+     */
+    protected void setIndependentActions(CmsListMetadata metadata) {
+
+        // no independent actions needed
+    }
+
+    /**
+     * @see org.opencms.workplace.tools.accounts.CmsNotGroupUsersList#setMultiActions(org.opencms.workplace.list.CmsListMetadata)
+     */
+    protected void setMultiActions(CmsListMetadata metadata) {
+
+        super.setMultiActions(metadata);
+
+        CmsListMultiAction addMultiAction = metadata.getMultiAction(LIST_MACTION_ADD);
+        addMultiAction.setName(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_MACTION_ADD_NAME_0));
+        addMultiAction.setHelpText(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_MACTION_ADD_HELP_0));
+        addMultiAction.setConfirmationMessage(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_MACTION_ADD_CONF_0));
+    }
+
+    /**
+     * @see org.opencms.workplace.tools.accounts.A_CmsGroupUsersList#validateParamaters()
+     */
+    protected void validateParamaters() throws Exception {
+
+        super.validateParamaters();
+        // this is to prevent the switch to the root ou 
+        // if the oufqn param get lost (by reloading for example)
+        if (CmsStringUtil.isEmptyOrWhitespaceOnly(getParamOufqn())) {
+            throw new Exception();
+        }
     }
 
 }

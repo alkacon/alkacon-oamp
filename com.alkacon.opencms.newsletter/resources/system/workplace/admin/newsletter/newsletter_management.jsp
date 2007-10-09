@@ -1,5 +1,5 @@
-<%@ page import="org.opencms.workplace.administration.CmsAdminDialog" %><%
+<%@ page import="com.alkacon.opencms.newsletter.admin.*" %><%
 
-    CmsAdminDialog wp = new CmsAdminDialog(pageContext, request, response);
+    CmsNewsletterList wp = new CmsNewsletterList(pageContext, request, response);
     wp.displayDialog();
 %>

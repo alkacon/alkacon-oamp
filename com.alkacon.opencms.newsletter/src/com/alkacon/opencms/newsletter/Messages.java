@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/Messages.java,v $
- * Date   : $Date: 2007/10/08 15:38:47 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2007/10/09 15:39:58 $
+ * Version: $Revision: 1.3 $
  *
  * Copyright (c) 2005 Alkacon Software GmbH (http://www.alkacon.com)
  * All rights reserved.
@@ -36,7 +36,7 @@ import org.opencms.i18n.I_CmsMessageBundle;
  * 
  * @author Andreas Zahner
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.3 $ 
  * 
  * @since 7.0.1 
  */
@@ -155,6 +155,24 @@ public final class Messages extends A_CmsMessageBundle {
 
     /** Message constant for key in the resource bundle. */
     public static final String GUI_ALK_NEWSLETTER_ADMIN_TOOL_NAME_0 = "GUI_ALK_NEWSLETTER_ADMIN_TOOL_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_NEWSLETTERS_ADMIN_TOOL_GROUP_0 = "GUI_ALK_NEWSLETTERS_ADMIN_TOOL_GROUP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_NEWSLETTERS_ADMIN_TOOL_HELP_0 = "GUI_ALK_NEWSLETTERS_ADMIN_TOOL_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_NEWSLETTERS_ADMIN_TOOL_NAME_0 = "GUI_ALK_NEWSLETTERS_ADMIN_TOOL_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_NEW_NEWSLETTER_ADMIN_TOOL_GROUP_0 = "GUI_ALK_NEW_NEWSLETTER_ADMIN_TOOL_GROUP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_NEW_NEWSLETTER_ADMIN_TOOL_HELP_0 = "GUI_ALK_NEW_NEWSLETTER_ADMIN_TOOL_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_NEW_NEWSLETTER_ADMIN_TOOL_NAME_0 = "GUI_ALK_NEW_NEWSLETTER_ADMIN_TOOL_NAME_0";
 
     /** Message constant for key in the resource bundle. */
     public static final String GUI_ALK_NEWSUBSCRIBER_ADMIN_TOOL_GROUP_0 = "GUI_ALK_NEWSUBSCRIBER_ADMIN_TOOL_GROUP_0";

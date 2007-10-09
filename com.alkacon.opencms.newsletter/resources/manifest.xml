@@ -4,7 +4,7 @@
 	<info>
 		<creator>Admin</creator>
 		<opencms_version>7.0.3</opencms_version>
-		<createdate>Mon, 08 Oct 2007 15:41:58 GMT</createdate>
+		<createdate>Tue, 09 Oct 2007 15:40:53 GMT</createdate>
 		<project>Offline</project>
 		<export_version>6</export_version>
 	</info>
@@ -14,7 +14,7 @@
 		<group>Alkacon OpenCms Extensions</group>
 		<class>com.alkacon.opencms.newsletter.CmsNewsletterManager</class>
 		<description><![CDATA[This module allows the creation of newsletters sent by email to specific user groups.]]></description>
-		<version>1.0.5</version>
+		<version>1.0.6</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
 		<datecreated/>
@@ -807,7 +807,7 @@
 			<type>jsp</type>
 			<uuidstructure>45e82ea1-7359-11dc-b19f-0f1a3424ec8d</uuidstructure>
 			<uuidresource>45e82ea2-7359-11dc-b19f-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Mon, 08 Oct 2007 13:33:56 GMT</datelastmodified>
+			<datelastmodified>Tue, 09 Oct 2007 08:58:23 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Fri, 05 Oct 2007 15:40:17 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -819,7 +819,7 @@
 				</property>
 				<property>
 					<name>NavImage</name>
-					<value><![CDATA[tools/newsletter/icons/big/mailingslist_add.png]]></value>
+					<value><![CDATA[tools/newsletter/icons/big/mailinglist_add.png]]></value>
 				</property>
 				<property>
 					<name>NavInfo</name>
@@ -1054,8 +1054,104 @@
 			<accesscontrol/>
 		</file>
 		<file>
-			<source>system/workplace/admin/newsletter/newsletter_delete.jsp</source>
-			<destination>system/workplace/admin/newsletter/newsletter_delete.jsp</destination>
+			<source>system/workplace/admin/newsletter/newsletter_management.jsp</source>
+			<destination>system/workplace/admin/newsletter/newsletter_management.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>da32ac4f-7674-11dc-bdb7-0f1a3424ec8d</uuidstructure>
+			<uuidresource>da32ac50-7674-11dc-bdb7-0f1a3424ec8d</uuidresource>
+			<datelastmodified>Tue, 09 Oct 2007 14:47:11 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 09 Oct 2007 14:35:16 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Description</name>
+					<value><![CDATA[${key.GUI_ALK_NEWSLETTERS_ADMIN_TOOL_HELP_0}]]></value>
+				</property>
+				<property>
+					<name>NavImage</name>
+					<value><![CDATA[tools/newsletter/icons/big/newsletters.png]]></value>
+				</property>
+				<property>
+					<name>NavInfo</name>
+					<value><![CDATA[${key.GUI_ALK_NEWSLETTERS_ADMIN_TOOL_GROUP_0}]]></value>
+				</property>
+				<property>
+					<name>NavText</name>
+					<value><![CDATA[${key.GUI_ALK_NEWSLETTERS_ADMIN_TOOL_NAME_0}]]></value>
+				</property>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Newsletter Management]]></value>
+				</property>
+				<property>
+					<name>admintoolhandler-args</name>
+					<value><![CDATA[params:oufqn=${param.oufqn}&action=initial|path:/newsletter/orgunit/newsletter]]></value>
+				</property>
+				<property>
+					<name>admintoolhandler-class</name>
+					<value><![CDATA[com.alkacon.opencms.newsletter.admin.CmsNewsletterToolHandler]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/admin/newsletter/newsletter_new.jsp</source>
+			<destination>system/workplace/admin/newsletter/newsletter_new.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>0f8ecc88-7675-11dc-bdb7-0f1a3424ec8d</uuidstructure>
+			<uuidresource>0f8ecc89-7675-11dc-bdb7-0f1a3424ec8d</uuidresource>
+			<datelastmodified>Tue, 09 Oct 2007 14:48:14 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 09 Oct 2007 14:36:45 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Description</name>
+					<value><![CDATA[${key.GUI_ALK_NEW_NEWSLETTER_ADMIN_TOOL_HELP_0}]]></value>
+				</property>
+				<property>
+					<name>NavImage</name>
+					<value><![CDATA[tools/newsletter/icons/big/newsletter_new.png]]></value>
+				</property>
+				<property>
+					<name>NavInfo</name>
+					<value><![CDATA[${key.GUI_ALK_NEW_NEWSLETTER_ADMIN_TOOL_GROUP_0}]]></value>
+				</property>
+				<property>
+					<name>NavText</name>
+					<value><![CDATA[${key.GUI_ALK_NEW_NEWSLETTER_ADMIN_TOOL_NAME_0}]]></value>
+				</property>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[New Newsletter]]></value>
+				</property>
+				<property>
+					<name>admintoolhandler-args</name>
+					<value><![CDATA[params:oufqn=${param.oufqn}&action=initial|path:/newsletter/orgunit/newsletter/new]]></value>
+				</property>
+				<property>
+					<name>admintoolhandler-class</name>
+					<value><![CDATA[com.alkacon.opencms.newsletter.admin.CmsNewsletterToolHandler]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/admin/newsletter/orgunit_delete.jsp</source>
+			<destination>system/workplace/admin/newsletter/orgunit_delete.jsp</destination>
 			<type>jsp</type>
 			<uuidstructure>463e1729-7359-11dc-b19f-0f1a3424ec8d</uuidstructure>
 			<uuidresource>463e172a-7359-11dc-b19f-0f1a3424ec8d</uuidresource>
@@ -1102,8 +1198,8 @@
 			<accesscontrol/>
 		</file>
 		<file>
-			<source>system/workplace/admin/newsletter/newsletter_management.jsp</source>
-			<destination>system/workplace/admin/newsletter/newsletter_management.jsp</destination>
+			<source>system/workplace/admin/newsletter/orgunit_management.jsp</source>
+			<destination>system/workplace/admin/newsletter/orgunit_management.jsp</destination>
 			<type>jsp</type>
 			<uuidstructure>46585607-7359-11dc-b19f-0f1a3424ec8d</uuidstructure>
 			<uuidresource>46585608-7359-11dc-b19f-0f1a3424ec8d</uuidresource>
@@ -1138,8 +1234,8 @@
 			<accesscontrol/>
 		</file>
 		<file>
-			<source>system/workplace/admin/newsletter/newsletter_new.jsp</source>
-			<destination>system/workplace/admin/newsletter/newsletter_new.jsp</destination>
+			<source>system/workplace/admin/newsletter/orgunit_new.jsp</source>
+			<destination>system/workplace/admin/newsletter/orgunit_new.jsp</destination>
 			<type>jsp</type>
 			<uuidstructure>4668f7e8-7359-11dc-b19f-0f1a3424ec8d</uuidstructure>
 			<uuidresource>4668f7e9-7359-11dc-b19f-0f1a3424ec8d</uuidresource>
@@ -1186,8 +1282,8 @@
 			<accesscontrol/>
 		</file>
 		<file>
-			<source>system/workplace/admin/newsletter/newsletter_overview.jsp</source>
-			<destination>system/workplace/admin/newsletter/newsletter_overview.jsp</destination>
+			<source>system/workplace/admin/newsletter/orgunit_overview.jsp</source>
+			<destination>system/workplace/admin/newsletter/orgunit_overview.jsp</destination>
 			<type>jsp</type>
 			<uuidstructure>46726dd2-7359-11dc-b19f-0f1a3424ec8d</uuidstructure>
 			<uuidresource>46726dd3-7359-11dc-b19f-0f1a3424ec8d</uuidresource>
@@ -1239,7 +1335,7 @@
 			<type>jsp</type>
 			<uuidstructure>46a23096-7359-11dc-b19f-0f1a3424ec8d</uuidstructure>
 			<uuidresource>46a23097-7359-11dc-b19f-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Mon, 08 Oct 2007 09:07:17 GMT</datelastmodified>
+			<datelastmodified>Tue, 09 Oct 2007 13:37:37 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Fri, 05 Oct 2007 15:40:18 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -1251,7 +1347,7 @@
 				</property>
 				<property>
 					<name>NavImage</name>
-					<value><![CDATA[tools/newsletter/icons/big/user_delete.png]]></value>
+					<value><![CDATA[tools/newsletter/icons/big/subscriber_delete.png]]></value>
 				</property>
 				<property>
 					<name>NavInfo</name>
@@ -1291,7 +1387,7 @@
 			<type>jsp</type>
 			<uuidstructure>46b0888c-7359-11dc-b19f-0f1a3424ec8d</uuidstructure>
 			<uuidresource>46b0888d-7359-11dc-b19f-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Mon, 08 Oct 2007 09:07:18 GMT</datelastmodified>
+			<datelastmodified>Tue, 09 Oct 2007 13:36:52 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Fri, 05 Oct 2007 15:40:18 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -1307,7 +1403,7 @@
 				</property>
 				<property>
 					<name>NavInfo</name>
-					<value><![CDATA[${key.GUI_ALK_SUBSCRIBER_MAILINGLISTS_ADMIN_TOOL_MAILINGLIST_0}]]></value>
+					<value><![CDATA[${key.GUI_ALK_SUBSCRIBER_MAILINGLISTS_ADMIN_TOOL_GROUP_0}]]></value>
 				</property>
 				<property>
 					<name>NavPos</name>
@@ -1860,6 +1956,46 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<source>system/workplace/resources/tools/newsletter/icons/big/newsletter_new.png</source>
+			<destination>system/workplace/resources/tools/newsletter/icons/big/newsletter_new.png</destination>
+			<type>image</type>
+			<uuidstructure>41e9293e-7676-11dc-bdb7-0f1a3424ec8d</uuidstructure>
+			<uuidresource>41e9293f-7676-11dc-bdb7-0f1a3424ec8d</uuidresource>
+			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 09 Oct 2007 14:45:19 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:32,h:32]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/tools/newsletter/icons/big/newsletters.png</source>
+			<destination>system/workplace/resources/tools/newsletter/icons/big/newsletters.png</destination>
+			<type>image</type>
+			<uuidstructure>2f565eab-7676-11dc-bdb7-0f1a3424ec8d</uuidstructure>
+			<uuidresource>2f565eac-7676-11dc-bdb7-0f1a3424ec8d</uuidresource>
+			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 09 Oct 2007 14:44:48 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:32,h:32]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
 			<source>system/workplace/resources/tools/newsletter/icons/big/subscriber.png</source>
 			<destination>system/workplace/resources/tools/newsletter/icons/big/subscriber.png</destination>
 			<type>image</type>
@@ -2006,26 +2142,6 @@
 			<uuidstructure>9f6faf3f-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
 			<uuidresource>9f6faf40-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
 			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Mon, 08 Oct 2007 10:52:54 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property type="shared">
-					<name>image.size</name>
-					<value><![CDATA[w:32,h:32]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol/>
-		</file>
-		<file>
-			<source>system/workplace/resources/tools/newsletter/icons/big/user_disabled.png</source>
-			<destination>system/workplace/resources/tools/newsletter/icons/big/user_disabled.png</destination>
-			<type>image</type>
-			<uuidstructure>9fa1bbd1-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
-			<uuidresource>9fa1bbd2-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Tue, 13 Feb 2007 08:52:23 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 08 Oct 2007 10:52:54 GMT</datecreated>
 			<usercreated>Admin</usercreated>

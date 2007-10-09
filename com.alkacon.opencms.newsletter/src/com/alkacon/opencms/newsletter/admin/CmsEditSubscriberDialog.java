@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsEditSubscriberDialog.java,v $
- * Date   : $Date: 2007/10/08 15:38:46 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/10/09 15:39:58 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -31,9 +31,14 @@
 
 package com.alkacon.opencms.newsletter.admin;
 
+import com.alkacon.opencms.newsletter.CmsNewsletterManager;
+
 import org.opencms.file.CmsUser;
 import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.main.CmsException;
+import org.opencms.util.CmsStringUtil;
+import org.opencms.widgets.CmsInputWidget;
+import org.opencms.workplace.CmsWidgetDialogParameter;
 import org.opencms.workplace.tools.accounts.A_CmsEditUserDialog;
 
 import java.util.Map;
@@ -47,11 +52,14 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Michael Moossen 
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 6.0.0 
  */
 public class CmsEditSubscriberDialog extends A_CmsEditUserDialog {
+
+    /** localized messages Keys prefix. */
+    public static final String SB_KEY_PREFIX = "subscriber";
 
     /**
      * Public constructor with JSP action element.<p>
@@ -76,11 +84,72 @@ public class CmsEditSubscriberDialog extends A_CmsEditUserDialog {
     }
 
     /**
+     * @see org.opencms.workplace.tools.accounts.A_CmsEditUserDialog#actionCommit()
+     */
+    public void actionCommit() {
+
+        m_user.setName(getParamOufqn() + m_user.getEmail());
+        m_user.setFirstname("_");
+        m_user.setLastname("_");
+        m_user.setAdditionalInfo(CmsNewsletterManager.USER_ADDITIONALINFO_ACTIVE, Boolean.TRUE);
+        getPwdInfo().setNewPwd(CmsNewsletterManager.getPassword());
+        getPwdInfo().setConfirmation(CmsNewsletterManager.getPassword());
+
+        super.actionCommit();
+        // set the flag so that the new user does not appear in the accounts management view
+        try {
+            CmsUser newUser = getCms().readUser(getParamOufqn() + m_user.getSimpleName());
+            newUser.setFlags(newUser.getFlags() ^ CmsNewsletterManager.NEWSLETTER_PRINCIPAL_FLAG);
+            getCms().writeUser(newUser);
+        } catch (Exception e) {
+            // should never happen
+        }
+    }
+
+    /**
+     * @see org.opencms.workplace.tools.accounts.A_CmsEditUserDialog#createDialogHtml(java.lang.String)
+     */
+    protected String createDialogHtml(String dialog) {
+
+        StringBuffer result = new StringBuffer(1024);
+
+        result.append(createWidgetTableStart());
+        // show error header once if there were validation errors
+        result.append(createWidgetErrorHeader());
+
+        if (dialog.equals(PAGES[0])) {
+            // create the widgets for the first dialog page
+            result.append(dialogBlockStart(key(org.opencms.workplace.tools.accounts.Messages.GUI_USER_EDITOR_LABEL_IDENTIFICATION_BLOCK_0)));
+            result.append(createWidgetTableStart());
+            result.append(createDialogRowsHtml(0, 0));
+            result.append(createWidgetTableEnd());
+            result.append(dialogBlockEnd());
+        }
+
+        result.append(createWidgetTableEnd());
+        return result.toString();
+    }
+
+    /**
      * @see org.opencms.workplace.tools.accounts.A_CmsEditUserDialog#createUser(java.lang.String, java.lang.String, java.lang.String, java.util.Map)
      */
     protected CmsUser createUser(String name, String pwd, String desc, Map info) throws CmsException {
 
         return getCms().createUser(name, pwd, desc, info);
+    }
+
+    /**
+     * @see org.opencms.workplace.tools.accounts.A_CmsEditUserDialog#defineWidgets()
+     */
+    protected void defineWidgets() {
+
+        // initialize the user object to use for the dialog
+        initUserObject();
+
+        setKeyPrefix(SB_KEY_PREFIX);
+
+        // widgets to display
+        addWidget(new CmsWidgetDialogParameter(m_user, "email", PAGES[0], new CmsInputWidget()));
     }
 
     /**
@@ -96,7 +165,7 @@ public class CmsEditSubscriberDialog extends A_CmsEditUserDialog {
      */
     protected String getListRootPath() {
 
-        return "/accounts/orgunit/subscribers";
+        return "/newsletter/orgunit/subscribers";
     }
 
     /**
@@ -115,7 +184,20 @@ public class CmsEditSubscriberDialog extends A_CmsEditUserDialog {
      */
     protected boolean isEditable(CmsUser user) {
 
-        return true;
+        return false;
+    }
+
+    /**
+     * @see org.opencms.workplace.tools.accounts.A_CmsEditUserDialog#validateParamaters()
+     */
+    protected void validateParamaters() throws Exception {
+
+        super.validateParamaters();
+        // this is to prevent the switch to the root ou 
+        // if the oufqn param get lost (by reloading for example)
+        if (CmsStringUtil.isEmptyOrWhitespaceOnly(getParamOufqn())) {
+            throw new Exception();
+        }
     }
 
     /**

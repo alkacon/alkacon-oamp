@@ -1,6 +1,6 @@
 /*
- * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/Attic/CmSubscriberOverviewDialog.java,v $
- * Date   : $Date: 2007/10/08 15:38:46 $
+ * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsShowSubscriberMailinglistsList.java,v $
+ * Date   : $Date: 2007/10/09 15:39:58 $
  * Version: $Revision: 1.1 $
  *
  * This library is part of OpenCms -
@@ -32,31 +32,31 @@
 package com.alkacon.opencms.newsletter.admin;
 
 import org.opencms.jsp.CmsJspActionElement;
+import org.opencms.util.CmsStringUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 
 /**
- * The subscriber overview and subscriber info widget dialog.<p>
+ * Subscriber mailing lists overview view.<p>
  * 
- * @author Michael Moossen 
+ * @author Michael Moossen  
  * 
  * @version $Revision: 1.1 $ 
  * 
  * @since 6.0.0 
  */
-public class CmSubscriberOverviewDialog extends org.opencms.workplace.tools.accounts.CmsUserOverviewDialog {
+public class CmsShowSubscriberMailinglistsList extends org.opencms.workplace.tools.accounts.CmsShowUserGroupsList {
 
     /**
-     * Public constructor with JSP action element.<p>
+     * Public constructor.<p>
      * 
      * @param jsp an initialized JSP action element
      */
-    public CmSubscriberOverviewDialog(CmsJspActionElement jsp) {
+    public CmsShowSubscriberMailinglistsList(CmsJspActionElement jsp) {
 
-        super(jsp);
-
+        super(jsp, LIST_ID + "l");
     }
 
     /**
@@ -66,7 +66,7 @@ public class CmSubscriberOverviewDialog extends org.opencms.workplace.tools.acco
      * @param req the JSP request
      * @param res the JSP response
      */
-    public CmSubscriberOverviewDialog(PageContext context, HttpServletRequest req, HttpServletResponse res) {
+    public CmsShowSubscriberMailinglistsList(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         this(new CmsJspActionElement(context, req, res));
     }
@@ -80,5 +80,18 @@ public class CmSubscriberOverviewDialog extends org.opencms.workplace.tools.acco
         addMessages(Messages.get().getBundleName());
         // add default resource bundles
         super.initMessages();
+    }
+
+    /**
+     * @see org.opencms.workplace.tools.accounts.A_CmsUserGroupsList#validateParamaters()
+     */
+    protected void validateParamaters() throws Exception {
+
+        super.validateParamaters();
+        // this is to prevent the switch to the root ou 
+        // if the oufqn param get lost (by reloading for example)
+        if (CmsStringUtil.isEmptyOrWhitespaceOnly(getParamOufqn())) {
+            throw new Exception();
+        }
     }
 }

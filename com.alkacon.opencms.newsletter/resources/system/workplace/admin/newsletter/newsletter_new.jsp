@@ -1,5 +1,5 @@
-<%@ page import="com.alkacon.opencms.newsletter.admin.*"%><%
+<%@ page import="com.alkacon.opencms.newsletter.admin.*" %><%
 
-	CmsOrgUnitEditDialog wp = new CmsOrgUnitEditDialog(pageContext, request, response);	
-	wp.displayDialog();
+    CmsNewsletterNewDialog wp = new CmsNewsletterNewDialog(pageContext, request, response);
+    wp.displayDialog();
 %>

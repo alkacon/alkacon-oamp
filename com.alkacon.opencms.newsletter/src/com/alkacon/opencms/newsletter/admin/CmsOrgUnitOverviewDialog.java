@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsOrgUnitOverviewDialog.java,v $
- * Date   : $Date: 2007/10/08 15:38:46 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/10/09 15:39:58 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -31,6 +31,8 @@
 
 package com.alkacon.opencms.newsletter.admin;
 
+import org.opencms.util.CmsStringUtil;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
@@ -40,7 +42,7 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Michael Moossen  
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 6.0.0 
  */
@@ -56,6 +58,19 @@ public class CmsOrgUnitOverviewDialog extends org.opencms.workplace.tools.accoun
     public CmsOrgUnitOverviewDialog(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         super(context, req, res);
+    }
+
+    /**
+     * @see org.opencms.workplace.CmsWidgetDialog#validateParamaters()
+     */
+    protected void validateParamaters() throws Exception {
+
+        super.validateParamaters();
+        // this is to prevent the switch to the root ou 
+        // if the oufqn param get lost (by reloading for example)
+        if (CmsStringUtil.isEmptyOrWhitespaceOnly(getParamOufqn())) {
+            throw new Exception();
+        }
     }
 
 }

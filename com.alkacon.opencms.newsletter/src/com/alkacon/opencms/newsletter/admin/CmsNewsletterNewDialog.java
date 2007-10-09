@@ -1,7 +1,7 @@
 /*
- * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsEditMailinglistDialog.java,v $
+ * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/Attic/CmsNewsletterNewDialog.java,v $
  * Date   : $Date: 2007/10/09 15:39:58 $
- * Version: $Revision: 1.2 $
+ * Version: $Revision: 1.1 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -51,11 +51,11 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Michael Moossen 
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.1 $ 
  * 
  * @since 6.0.0 
  */
-public class CmsEditMailinglistDialog extends A_CmsEditGroupDialog {
+public class CmsNewsletterNewDialog extends A_CmsEditGroupDialog {
 
     /** localized messages Keys prefix. */
     public static final String ML_KEY_PREFIX = "mailinglist";
@@ -65,7 +65,7 @@ public class CmsEditMailinglistDialog extends A_CmsEditGroupDialog {
      * 
      * @param jsp an initialized JSP action element
      */
-    public CmsEditMailinglistDialog(CmsJspActionElement jsp) {
+    public CmsNewsletterNewDialog(CmsJspActionElement jsp) {
 
         super(jsp);
     }
@@ -77,7 +77,7 @@ public class CmsEditMailinglistDialog extends A_CmsEditGroupDialog {
      * @param req the JSP request
      * @param res the JSP response
      */
-    public CmsEditMailinglistDialog(PageContext context, HttpServletRequest req, HttpServletResponse res) {
+    public CmsNewsletterNewDialog(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         this(new CmsJspActionElement(context, req, res));
     }

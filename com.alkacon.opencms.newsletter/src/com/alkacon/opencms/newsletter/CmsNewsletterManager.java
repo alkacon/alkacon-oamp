@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterManager.java,v $
- * Date   : $Date: 2007/10/08 15:38:47 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2007/10/09 15:39:58 $
+ * Version: $Revision: 1.4 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -64,6 +64,9 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
     /** Name of the sub-organizational unit for newsletter containing mailing lists and subscribers. */
     public static final String NEWSLETTER_OU_SIMPLENAME = "newsletter/";
 
+    /** Name of the sub-organizational unit for newsletter containing mailing lists and subscribers. */
+    public static final int NEWSLETTER_PRINCIPAL_FLAG = (int)Math.pow(2, 18);
+
     /** Pattern to validate email addresses. */
     public static final Pattern PATTERN_VALIDATION_EMAIL = Pattern.compile("(\\w[-._\\w]*\\w@\\w[-._\\w]*\\w\\.\\w{2,4})");
 
@@ -74,7 +77,7 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
     private static final String PASSWORD_USER = "Uw82-QnM";
 
     /** Name of the additional user info: flag to determine if the newsletter user is active. */
-    private static final String USER_ADDITIONALINFO_ACTIVE = "AlkNewsletter_ActiveUser";
+    public static final String USER_ADDITIONALINFO_ACTIVE = "AlkNewsletter_ActiveUser";
 
     /** Name of the additional user info: flag to determine if the newsletter user is marked for deletion. */
     private static final String USER_ADDITIONALINFO_TODELETE = "AlkNewsletter_UserToDelete";
@@ -178,6 +181,8 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
             user = getAdminCms().createUser(email, getPassword(), "Alkacon OpenCms newsletter user", additionalInfos);
             // set the users email address
             user.setEmail(email);
+            // set the flag so that the new user does not appear in the accounts management view
+            user.setFlags(user.getFlags() ^ CmsNewsletterManager.NEWSLETTER_PRINCIPAL_FLAG);
             getAdminCms().writeUser(user);
             // add the user to the given newsletter group
             getAdminCms().addUserToGroup(user.getName(), groupName);
@@ -270,10 +275,8 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
      * 
      * @return the password to use for all newsletter users
      */
-    private String getPassword() {
+    public static String getPassword() {
 
         return OpenCms.getModuleManager().getModule(MODULE_NAME).getParameter(MODULE_PARAM_PASSWORD_USER, PASSWORD_USER);
-
     }
-
 }

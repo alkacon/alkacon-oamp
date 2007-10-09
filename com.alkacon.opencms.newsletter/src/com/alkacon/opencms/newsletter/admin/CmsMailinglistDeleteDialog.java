@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsMailinglistDeleteDialog.java,v $
- * Date   : $Date: 2007/10/08 15:38:46 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/10/09 15:39:58 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -31,10 +31,23 @@
 
 package com.alkacon.opencms.newsletter.admin;
 
+import org.opencms.file.CmsObject;
+import org.opencms.file.CmsUser;
 import org.opencms.jsp.CmsJspActionElement;
+import org.opencms.main.CmsException;
+import org.opencms.main.CmsRuntimeException;
+import org.opencms.util.CmsStringUtil;
+import org.opencms.workplace.list.CmsHtmlList;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 
 /**
@@ -42,7 +55,7 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Michael Moossen  
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 6.0.0 
  */
@@ -79,5 +92,60 @@ public class CmsMailinglistDeleteDialog extends org.opencms.workplace.tools.acco
         addMessages(Messages.get().getBundleName());
         // add default resource bundles
         super.initMessages();
+    }
+
+    /**
+     * @see org.opencms.workplace.tools.accounts.CmsGroupDependenciesList#getListItems()
+     */
+    protected List getListItems() {
+
+        // the list should never appear
+        return new ArrayList();
+    }
+
+    /**
+     * @see org.opencms.workplace.tools.accounts.CmsGroupDependenciesList#customHtmlStart()
+     */
+    protected String customHtmlStart() {
+
+        StringBuffer result = new StringBuffer(512);
+        result.append(dialogBlockStart(org.opencms.workplace.tools.accounts.Messages.get().container(
+            org.opencms.workplace.tools.accounts.Messages.GUI_GROUP_DEPENDENCIES_NOTICE_0).key(getLocale())));
+        result.append(key(Messages.GUI_MAILINGLIST_DELETE_0));
+        result.append(dialogBlockEnd());
+        return result.toString();
+    }
+
+    /**
+     * @see org.opencms.workplace.list.A_CmsListDialog#actionDialog()
+     */
+    public void actionDialog() throws JspException, ServletException, IOException {
+
+        switch (getAction()) {
+            case ACTION_DELETE:
+                Iterator it = CmsStringUtil.splitAsList(getGroupName(), CmsHtmlList.ITEM_SEPARATOR, true).iterator();
+                CmsObject cms = getCms();
+                while (it.hasNext()) {
+                    String name = (String)it.next();
+                    try {
+                        List users = cms.getUsersOfGroup(name);
+                        cms.deleteGroup(name);
+                        Iterator itUsers = users.iterator();
+                        while (itUsers.hasNext()) {
+                            CmsUser user = (CmsUser)itUsers.next();
+                            if (cms.getGroupsOfUser(user.getName(), true).isEmpty()) {
+                                cms.deleteUser(user.getId());
+                            }
+                        }
+                    } catch (CmsException e) {
+                        throw new CmsRuntimeException(e.getMessageContainer(), e);
+                    }
+                }
+                setAction(ACTION_CANCEL);
+                actionCloseDialog();
+                break;
+            default:
+                super.actionDialog();
+        }
     }
 }

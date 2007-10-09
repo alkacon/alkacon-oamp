@@ -1,7 +1,7 @@
 /*
- * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsMailinglistOverviewDialog.java,v $
+ * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsSubscriberOverviewDialog.java,v $
  * Date   : $Date: 2007/10/09 15:39:58 $
- * Version: $Revision: 1.2 $
+ * Version: $Revision: 1.1 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -34,75 +34,31 @@ package com.alkacon.opencms.newsletter.admin;
 import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.widgets.CmsDisplayWidget;
 import org.opencms.workplace.CmsWidgetDialogParameter;
-import org.opencms.workplace.tools.accounts.Messages;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 
 /**
- * The mailing list overview and mailing list info widget dialog.<p>
+ * The subscriber overview and subscriber info widget dialog.<p>
  * 
  * @author Michael Moossen 
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.1 $ 
  * 
  * @since 6.0.0 
  */
-public class CmsMailinglistOverviewDialog extends org.opencms.workplace.tools.accounts.CmsGroupOverviewDialog {
+public class CmsSubscriberOverviewDialog extends org.opencms.workplace.tools.accounts.CmsUserOverviewDialog {
 
     /**
      * Public constructor with JSP action element.<p>
      * 
      * @param jsp an initialized JSP action element
      */
-    public CmsMailinglistOverviewDialog(CmsJspActionElement jsp) {
+    public CmsSubscriberOverviewDialog(CmsJspActionElement jsp) {
 
         super(jsp);
 
-    }
-
-    /**
-     * @see org.opencms.workplace.tools.accounts.CmsGroupOverviewDialog#createDialogHtml(java.lang.String)
-     */
-    protected String createDialogHtml(String dialog) {
-
-        StringBuffer result = new StringBuffer(1024);
-
-        // create widget table
-        result.append(createWidgetTableStart());
-
-        // show error header once if there were validation errors
-        result.append(createWidgetErrorHeader());
-
-        if (dialog.equals(PAGES[0])) {
-            // create the widgets for the first dialog page
-            result.append(dialogBlockStart(key(Messages.GUI_GROUP_EDITOR_LABEL_IDENTIFICATION_BLOCK_0)));
-            result.append(createWidgetTableStart());
-            result.append(createDialogRowsHtml(0, 1));
-            result.append(createWidgetTableEnd());
-            result.append(dialogBlockEnd());
-        }
-
-        // close widget table
-        result.append(createWidgetTableEnd());
-
-        return result.toString();
-    }
-
-    /**
-     * Creates the list of widgets for this dialog.<p>
-     */
-    protected void defineWidgets() {
-
-        // initialize the user object to use for the dialog
-        initGroupObject();
-
-        setKeyPrefix(KEY_PREFIX);
-
-        // widgets to display
-        addWidget(new CmsWidgetDialogParameter(this, "name", PAGES[0], new CmsDisplayWidget()));
-        addWidget(new CmsWidgetDialogParameter(this, "description", PAGES[0], new CmsDisplayWidget()));
     }
 
     /**
@@ -112,9 +68,47 @@ public class CmsMailinglistOverviewDialog extends org.opencms.workplace.tools.ac
      * @param req the JSP request
      * @param res the JSP response
      */
-    public CmsMailinglistOverviewDialog(PageContext context, HttpServletRequest req, HttpServletResponse res) {
+    public CmsSubscriberOverviewDialog(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         this(new CmsJspActionElement(context, req, res));
+    }
+
+    /**
+     * @see org.opencms.workplace.tools.accounts.CmsUserOverviewDialog#createDialogHtml(java.lang.String)
+     */
+    protected String createDialogHtml(String dialog) {
+
+        StringBuffer result = new StringBuffer(1024);
+
+        result.append(createWidgetTableStart());
+        // show error header once if there were validation errors
+        result.append(createWidgetErrorHeader());
+
+        if (dialog.equals(PAGES[0])) {
+            // create the widgets for the first dialog page
+            result.append(dialogBlockStart(key(org.opencms.workplace.tools.accounts.Messages.GUI_USER_EDITOR_LABEL_IDENTIFICATION_BLOCK_0)));
+            result.append(createWidgetTableStart());
+            result.append(createDialogRowsHtml(0, 0));
+            result.append(createWidgetTableEnd());
+            result.append(dialogBlockEnd());
+        }
+
+        result.append(createWidgetTableEnd());
+        return result.toString();
+    }
+
+    /**
+     * @see org.opencms.workplace.tools.accounts.CmsUserOverviewDialog#defineWidgets()
+     */
+    protected void defineWidgets() {
+
+        // initialize the user object to use for the dialog
+        initUserObject();
+
+        setKeyPrefix(KEY_PREFIX);
+
+        // widgets to display
+        addWidget(new CmsWidgetDialogParameter(m_user, "email", PAGES[0], new CmsDisplayWidget()));
     }
 
     /**
