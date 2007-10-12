@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsSubscribersDeleteDialog.java,v $
- * Date   : $Date: 2007/10/08 15:38:46 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/10/12 15:19:08 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -42,7 +42,7 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Michael Moossen  
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 6.0.0 
  */
@@ -68,6 +68,19 @@ public class CmsSubscribersDeleteDialog extends org.opencms.workplace.tools.acco
     public CmsSubscribersDeleteDialog(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         this(new CmsJspActionElement(context, req, res));
+    }
+
+    /**
+     * @see org.opencms.workplace.list.A_CmsListDialog#customHtmlStart()
+     */
+    protected String customHtmlStart() {
+
+        StringBuffer result = new StringBuffer(512);
+        result.append(dialogBlockStart(key(org.opencms.workplace.tools.accounts.Messages.GUI_USER_DEPENDENCIES_NOTICE_0)));
+        result.append("\n");
+        result.append(key(Messages.GUI_SUBSCRIBERS_LIST_ACTION_DELETE_CONF_0));
+        result.append(dialogBlockEnd());
+        return result.toString();
     }
 
     /**

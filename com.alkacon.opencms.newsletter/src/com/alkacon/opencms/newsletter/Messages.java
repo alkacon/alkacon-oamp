@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/Messages.java,v $
- * Date   : $Date: 2007/10/09 15:39:58 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2007/10/12 15:19:09 $
+ * Version: $Revision: 1.4 $
  *
  * Copyright (c) 2005 Alkacon Software GmbH (http://www.alkacon.com)
  * All rights reserved.
@@ -36,11 +36,38 @@ import org.opencms.i18n.I_CmsMessageBundle;
  * 
  * @author Andreas Zahner
  * 
- * @version $Revision: 1.3 $ 
+ * @version $Revision: 1.4 $ 
  * 
  * @since 7.0.1 
  */
 public final class Messages extends A_CmsMessageBundle {
+    
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLISTSELECTION_LIST_NAME_0 = "GUI_ALK_MAILINGLISTSELECTION_LIST_NAME_0";
+    
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLISTSELECTION_INTRO_TITLE_0 = "GUI_ALK_MAILINGLISTSELECTION_INTRO_TITLE_0";
+    
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLISTSELECTION_LIST_COLS_ICON_0 = "GUI_ALK_MAILINGLISTSELECTION_LIST_COLS_ICON_0";
+    
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLISTSELECTION_LIST_COLS_ICON_HELP_0 = "GUI_ALK_MAILINGLISTSELECTION_LIST_COLS_ICON_HELP_0";
+    
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLISTSELECTION_LIST_ICON_NAME_0 = "GUI_ALK_MAILINGLISTSELECTION_LIST_ICON_NAME_0";
+    
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLISTSELECTION_LIST_ICON_HELP_0 = "GUI_ALK_MAILINGLISTSELECTION_LIST_ICON_HELP_0";
+    
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLISTSELECTION_LIST_COLS_NAME_0 = "GUI_ALK_MAILINGLISTSELECTION_LIST_COLS_NAME_0";
+    
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLISTSELECTION_LIST_ACTION_SELECT_NAME_0 = "GUI_ALK_MAILINGLISTSELECTION_LIST_ACTION_SELECT_NAME_0";
+    
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ALK_MAILINGLISTSELECTION_LIST_ACTION_SELECT_HELP_0 = "GUI_ALK_MAILINGLISTSELECTION_LIST_ACTION_SELECT_HELP_0";
 
     /** Message constant for key in the resource bundle. */
     public static final String GUI_ALK_DELETEORGUNIT_ADMIN_TOOL_GROUP_0 = "GUI_ALK_DELETEORGUNIT_ADMIN_TOOL_GROUP_0";

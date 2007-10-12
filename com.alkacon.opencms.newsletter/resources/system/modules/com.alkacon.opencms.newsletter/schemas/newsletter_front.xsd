@@ -15,6 +15,7 @@
 	<xsd:complexType name="OpenCmsAlkaconNewsletterFront">
 		<xsd:sequence>
 			<xsd:element name="Title" type="OpenCmsString" />
+			<xsd:element name="MailingList" type="OpenCmsString" />
 			<xsd:element name="Subscribe" type="OpenCmsAlkaconNewsletterSubscription" />						
 			<xsd:element name="Confirm" type="OpenCmsAlkaconNewsletterConfirm" />		
 		</xsd:sequence>
@@ -53,9 +54,16 @@
 				<default element="Confirm/Mail/MailHead" value="%(key.default.alknewsletter.confirm.mail.head)" />
 				<default element="Confirm/Mail/MailFoot" value="%(key.default.alknewsletter.confirm.mail.foot)" />
 			</defaults>
+			<layouts>
+				<layout element="MailingList" widget="MailinglistWidget" />
+			</layouts>
 			<mappings>
 				<mapping element="Title" mapto="property:Title" />
 			</mappings>
+			<validationrules>
+				<rule element="MailingList" regex="(?s).+" type="error" message="${key.error.alknewsletter.MailingList.notempty}" />
+			</validationrules>
+
 		</xsd:appinfo>
 	</xsd:annotation>  
 	

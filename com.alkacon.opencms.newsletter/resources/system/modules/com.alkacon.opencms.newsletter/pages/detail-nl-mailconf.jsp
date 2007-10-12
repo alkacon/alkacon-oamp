@@ -1,7 +1,11 @@
 <%@ page session="false" %><%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %>
 <cms:contentload collector="singleFile" param="%(opencms.uri)" editable="true">
-<cms:contentshow element="MailHead" />
 
+<cms:contentshow element="MailHead" />
+<cms:contentcheck ifexists="MailText">
+	<cms:contentshow element="MailText" />
+</cms:contentcheck>
+<cms:contentcheck ifexistsnone="MailText">
 <h1>Duis autem vel eum iriure</h1>
 <p>
 Hic patrio de more Iovi cum sacra <a href="#" title="">parassent</a>,
@@ -36,6 +40,7 @@ fit lapis, et superat serpentis imagine saxum.
 	<td>Vae victis!</td>
 </tr>
 </table>
+</cms:contentcheck>
 
 <cms:contentshow element="MailFoot" />
 </cms:contentload>

@@ -39,7 +39,7 @@
 				<default element="Config/MailFoot" value="%(key.default.alknewslettermail.conf.foot)" />
 			</defaults>
 			<layouts>
-				<layout element="Text" widget="HtmlWidget" configuration="source,formatselect,link,anchor,height: 250px" />
+				<layout element="Text" widget="HtmlWidget" configuration="source,formatselect,link,anchor,height: 350px" />
 			</layouts>
 			<mappings>
 				<mapping element="Subject" mapto="property:Title" />

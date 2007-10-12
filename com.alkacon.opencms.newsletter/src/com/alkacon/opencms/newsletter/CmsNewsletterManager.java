@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterManager.java,v $
- * Date   : $Date: 2007/10/09 15:39:58 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2007/10/12 15:19:09 $
+ * Version: $Revision: 1.5 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -32,6 +32,7 @@
 package com.alkacon.opencms.newsletter;
 
 import org.opencms.configuration.CmsConfigurationManager;
+import org.opencms.file.CmsGroup;
 import org.opencms.file.CmsObject;
 import org.opencms.file.CmsProject;
 import org.opencms.file.CmsUser;
@@ -42,10 +43,9 @@ import org.opencms.module.CmsModule;
 import org.opencms.security.CmsOrganizationalUnit;
 import org.opencms.security.CmsRole;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -58,29 +58,32 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
     /** The name of the newsletter module. */
     public static final String MODULE_NAME = CmsNewsletterManager.class.getPackage().getName();
 
+    /** Module parameter name for the user password of the newsletter users. */
+    public static final String MODULE_PARAM_PASSWORD_USER = "user_password";
+
     /** Module parameter name for the project name to use for user deletion operations. */
     public static final String MODULE_PARAM_PROJECT_NAME = "project_name";
 
     /** Name of the sub-organizational unit for newsletter containing mailing lists and subscribers. */
     public static final String NEWSLETTER_OU_SIMPLENAME = "newsletter/";
 
-    /** Name of the sub-organizational unit for newsletter containing mailing lists and subscribers. */
+    /** Principal flag to set on users to make them invisible in common accounts management. */
     public static final int NEWSLETTER_PRINCIPAL_FLAG = (int)Math.pow(2, 18);
 
     /** Pattern to validate email addresses. */
     public static final Pattern PATTERN_VALIDATION_EMAIL = Pattern.compile("(\\w[-._\\w]*\\w@\\w[-._\\w]*\\w\\.\\w{2,4})");
 
-    /** Module parameter name for the user password of the newsletter users. */
-    private static final String MODULE_PARAM_PASSWORD_USER = "user_password";
-
-    /** The default password for all newsletter users, should be overwritten in the module parameter. */
-    private static final String PASSWORD_USER = "Uw82-QnM";
+    /** Resource type name of a newsletter resource. */
+    public static final String RESOURCETYPE_NEWSLETTER_NAME = "alkacon-newsletter";
 
     /** Name of the additional user info: flag to determine if the newsletter user is active. */
-    public static final String USER_ADDITIONALINFO_ACTIVE = "AlkNewsletter_ActiveUser";
+    public static final String USER_ADDITIONALINFO_ACTIVE = "AlkNewsletter_ActiveUser:";
 
     /** Name of the additional user info: flag to determine if the newsletter user is marked for deletion. */
-    private static final String USER_ADDITIONALINFO_TODELETE = "AlkNewsletter_UserToDelete";
+    public static final String USER_ADDITIONALINFO_TODELETE = "AlkNewsletter_UserToDelete:";
+
+    /** The default password for all newsletter users, can/should be overwritten in the module parameter. */
+    private static final String PASSWORD_USER = "Uw82-Qn!";
 
     /** The admin CmsObject that is used for user/group operations. */
     private CmsObject m_adminCms;
@@ -100,11 +103,21 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
         Iterator it = ous.iterator();
         while (it.hasNext()) {
             CmsOrganizationalUnit ou = (CmsOrganizationalUnit)it.next();
-            if (!ou.getSimpleName().equals(CmsNewsletterManager.NEWSLETTER_OU_SIMPLENAME)) {
+            if (!ou.getSimpleName().equals(NEWSLETTER_OU_SIMPLENAME)) {
                 it.remove();
             }
         }
         return ous;
+    }
+
+    /**
+     * Returns the password to use for all newsletter users.<p>
+     * 
+     * @return the password to use for all newsletter users
+     */
+    public static String getPassword() {
+
+        return OpenCms.getModuleManager().getModule(MODULE_NAME).getParameter(MODULE_PARAM_PASSWORD_USER, PASSWORD_USER);
     }
 
     /**
@@ -119,15 +132,16 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
     }
 
     /**
-     * Returns if the given user is active to receive newsletter emails.<p>
+     * Returns if the given user is active to receive newsletter emails for the given group.<p>
      * 
      * @param user the user to check
+     * @param groupName the name of the group the user is a member of
      * @return true if the given user is active to receive newsletter emails, otherwise false
      */
-    protected static boolean isActiveUser(CmsUser user) {
+    protected static boolean isActiveUser(CmsUser user, String groupName) {
 
-        Boolean active = (Boolean)user.getAdditionalInfo(USER_ADDITIONALINFO_ACTIVE);
-        return active.booleanValue();
+        Boolean active = (Boolean)user.getAdditionalInfo(USER_ADDITIONALINFO_ACTIVE + groupName);
+        return active.booleanValue() && user.isEnabled();
     }
 
     /**
@@ -135,21 +149,22 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
      */
     public void initialize(CmsObject adminCms, CmsConfigurationManager configurationManager, CmsModule module) {
 
-        // store the admin CmsObject
+        // store the admin CmsObject as member
         m_adminCms = adminCms;
     }
 
     /**
-     * Activates the newsletter user with the given email address .<p>
+     * Activates the newsletter user with the given email address in the given group.<p>
      * 
      * @param email the email address of the user
+     * @param groupName the name of the group to activate the newsletter user for
      * @return true if the user was activated, otherwise false
      */
-    protected boolean activateNewsletterUser(String email) {
+    protected boolean activateNewsletterUser(String email, String groupName) {
 
         try {
-            CmsUser user = getAdminCms().readUser(email);
-            user.setAdditionalInfo(USER_ADDITIONALINFO_ACTIVE, Boolean.valueOf(true));
+            CmsUser user = getAdminCms().readUser(getAdminCms().readGroup(groupName).getOuFqn() + email);
+            user.setAdditionalInfo(USER_ADDITIONALINFO_ACTIVE + groupName, Boolean.valueOf(true));
             getAdminCms().writeUser(user);
             return true;
         } catch (CmsException e) {
@@ -173,21 +188,41 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
     protected CmsUser createNewsletterUser(String email, String groupName, boolean activate) {
 
         CmsUser user = null;
-        // create additional infos containing the active flag set to false
-        Map additionalInfos = new HashMap(1);
-        additionalInfos.put(USER_ADDITIONALINFO_ACTIVE, Boolean.valueOf(activate));
+        // create additional infos containing the active flag set to passed parameter
+
         try {
-            // create the user with additional infos
-            user = getAdminCms().createUser(email, getPassword(), "Alkacon OpenCms newsletter user", additionalInfos);
-            // set the users email address
-            user.setEmail(email);
-            // set the flag so that the new user does not appear in the accounts management view
-            user.setFlags(user.getFlags() ^ CmsNewsletterManager.NEWSLETTER_PRINCIPAL_FLAG);
+            String ouFqn = getAdminCms().readGroup(groupName).getOuFqn();
+            try {
+                // first try to read the user
+                user = getAdminCms().readUser(ouFqn + email);
+            } catch (CmsException e) {
+                // user does not exist
+            }
+            if (user == null) {
+                // create the user with additional infos
+                user = getAdminCms().createUser(
+                    ouFqn + email,
+                    getPassword(),
+                    "Alkacon OpenCms newsletter",
+                    Collections.EMPTY_MAP);
+                // set the users email address
+                user.setEmail(email);
+                // set the flag so that the new user does not appear in the accounts management view
+                user.setFlags(user.getFlags() ^ CmsNewsletterManager.NEWSLETTER_PRINCIPAL_FLAG);
+            } else {
+                Object o = user.getAdditionalInfo(USER_ADDITIONALINFO_ACTIVE + groupName);
+                if (o != null) {
+                    // user tried to subscribe to this mailing list group, return null to show error message
+                    return null;
+                }
+            }
+            user.setAdditionalInfo(USER_ADDITIONALINFO_ACTIVE + groupName, Boolean.valueOf(activate));
+            // write the user
             getAdminCms().writeUser(user);
-            // add the user to the given newsletter group
+            // add the user to the given mailing list group
             getAdminCms().addUserToGroup(user.getName(), groupName);
         } catch (CmsException e) {
-            // error creating user
+            // error creating user or modifying user
         }
         return user;
     }
@@ -198,15 +233,17 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
      * If the delete flag should be checked, the user has to be marked for deletion for a successful delete operation.<p>
      * 
      * @param email the email address of the user to delete
+     * @param groupName the name of the group the user should be deleted from
      * @param checkDeleteFlag determines if the delete flag chould be checked before deleting the user
      * @return true if deletion was successful, otherwise false
      */
-    protected boolean deleteNewsletterUser(String email, boolean checkDeleteFlag) {
+    protected boolean deleteNewsletterUser(String email, String groupName, boolean checkDeleteFlag) {
 
         try {
-            CmsUser user = getAdminCms().readUser(email);
+            String ouFqn = getAdminCms().readGroup(groupName).getOuFqn();
+            CmsUser user = getAdminCms().readUser(ouFqn + email);
             boolean isToDelete = !checkDeleteFlag
-                || ((Boolean)user.getAdditionalInfo(USER_ADDITIONALINFO_TODELETE)).booleanValue();
+                || ((Boolean)user.getAdditionalInfo(USER_ADDITIONALINFO_TODELETE + groupName)).booleanValue();
             if (isToDelete) {
                 // in order to delete a user, we have to switch to an offline project
                 CmsObject cms = OpenCms.initCmsObject(getAdminCms());
@@ -215,7 +252,18 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
                     "Offline");
                 CmsProject project = cms.readProject(projectName);
                 cms.getRequestContext().setCurrentProject(project);
-                cms.deleteUser(email);
+                // remove the user from the specified group
+                cms.removeUserFromGroup(user.getName(), groupName);
+
+                if (cms.getGroupsOfUser(user.getName(), true).size() < 1) {
+                    // delete the user if this was the last group the user belonged to
+                    cms.deleteUser(user.getName());
+                } else {
+                    // remove the additional info attributes for the mailing list group
+                    user.getAdditionalInfo().remove(USER_ADDITIONALINFO_TODELETE + groupName);
+                    user.getAdditionalInfo().remove(USER_ADDITIONALINFO_ACTIVE + groupName);
+                    cms.writeUser(user);
+                }
                 return true;
             }
         } catch (CmsException e) {
@@ -225,16 +273,19 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
     }
 
     /**
-     * Returns if a newsletter user with the given email address exists.<p>
+     * Returns if a newsletter user with the given email address exists in the given group.<p>
      * 
      * @param email the email address of the user
+     * @param groupName the name of the group the user could be a member of
      * @return true if a newsletter user with the given email address exists, otherwise false
      */
-    protected boolean existsNewsletterUser(String email) {
+    protected boolean existsNewsletterUser(String email, String groupName) {
 
         try {
-            getAdminCms().readUser(email);
-            return true;
+            String ouFqn = getAdminCms().readGroup(groupName).getOuFqn();
+            CmsUser user = getAdminCms().readUser(ouFqn + email);
+            CmsGroup group = getAdminCms().readGroup(groupName);
+            return getAdminCms().getGroupsOfUser(user.getName(), true).contains(group);
         } catch (CmsException e) {
             // error reading user, does not exist
             return false;
@@ -245,13 +296,15 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
      * Marks a newsletter user to be deleted, this is necessary for the deletion confirmation.<p>
      * 
      * @param email the email address of the user
+     * @param groupName the name of the group the user should be marked for deletion
      * @return true if the user was successfully marked to be deleted, otherwise false
      */
-    protected boolean markToDeleteNewsletterUser(String email) {
+    protected boolean markToDeleteNewsletterUser(String email, String groupName) {
 
         try {
-            CmsUser user = getAdminCms().readUser(email);
-            user.setAdditionalInfo(USER_ADDITIONALINFO_TODELETE, Boolean.valueOf(true));
+            String ouFqn = getAdminCms().readGroup(groupName).getOuFqn();
+            CmsUser user = getAdminCms().readUser(ouFqn + email);
+            user.setAdditionalInfo(USER_ADDITIONALINFO_TODELETE + groupName, Boolean.valueOf(true));
             getAdminCms().writeUser(user);
             return true;
         } catch (CmsException e) {
@@ -268,15 +321,5 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
     private CmsObject getAdminCms() {
 
         return m_adminCms;
-    }
-
-    /**
-     * Returns the password to use for all newsletter users.<p>
-     * 
-     * @return the password to use for all newsletter users
-     */
-    public static String getPassword() {
-
-        return OpenCms.getModuleManager().getModule(MODULE_NAME).getParameter(MODULE_PARAM_PASSWORD_USER, PASSWORD_USER);
     }
 }

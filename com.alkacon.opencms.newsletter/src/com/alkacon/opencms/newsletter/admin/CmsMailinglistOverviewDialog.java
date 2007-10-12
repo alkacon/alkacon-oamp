@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsMailinglistOverviewDialog.java,v $
- * Date   : $Date: 2007/10/09 15:39:58 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2007/10/12 15:19:08 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -45,7 +45,7 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Michael Moossen 
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.3 $ 
  * 
  * @since 6.0.0 
  */
@@ -60,6 +60,18 @@ public class CmsMailinglistOverviewDialog extends org.opencms.workplace.tools.ac
 
         super(jsp);
 
+    }
+
+    /**
+     * Public constructor with JSP variables.<p>
+     * 
+     * @param context the JSP page context
+     * @param req the JSP request
+     * @param res the JSP response
+     */
+    public CmsMailinglistOverviewDialog(PageContext context, HttpServletRequest req, HttpServletResponse res) {
+
+        this(new CmsJspActionElement(context, req, res));
     }
 
     /**
@@ -103,18 +115,6 @@ public class CmsMailinglistOverviewDialog extends org.opencms.workplace.tools.ac
         // widgets to display
         addWidget(new CmsWidgetDialogParameter(this, "name", PAGES[0], new CmsDisplayWidget()));
         addWidget(new CmsWidgetDialogParameter(this, "description", PAGES[0], new CmsDisplayWidget()));
-    }
-
-    /**
-     * Public constructor with JSP variables.<p>
-     * 
-     * @param context the JSP page context
-     * @param req the JSP request
-     * @param res the JSP response
-     */
-    public CmsMailinglistOverviewDialog(PageContext context, HttpServletRequest req, HttpServletResponse res) {
-
-        this(new CmsJspActionElement(context, req, res));
     }
 
     /**

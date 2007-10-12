@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsSubscribersList.java,v $
- * Date   : $Date: 2007/10/09 15:39:58 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2007/10/12 15:19:08 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -35,7 +35,6 @@ import org.opencms.file.CmsUser;
 import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.main.CmsException;
 import org.opencms.main.OpenCms;
-import org.opencms.security.CmsPrincipal;
 import org.opencms.util.CmsStringUtil;
 import org.opencms.workplace.list.CmsListColumnDefinition;
 import org.opencms.workplace.list.CmsListDefaultAction;
@@ -59,7 +58,7 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Michael Moossen  
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.3 $ 
  * 
  * @since 6.0.0 
  */
@@ -103,7 +102,7 @@ public class CmsSubscribersList extends A_CmsUsersList {
      */
     protected List getUsers() throws CmsException {
 
-        return CmsPrincipal.filterCore(OpenCms.getOrgUnitManager().getUsers(getCms(), getParamOufqn(), false));
+        return OpenCms.getOrgUnitManager().getUsers(getCms(), getParamOufqn(), false);
     }
 
     /**
@@ -172,6 +171,7 @@ public class CmsSubscribersList extends A_CmsUsersList {
         CmsListDirectAction deleteAction = new CmsListDirectAction(LIST_ACTION_DELETE);
         deleteAction.setName(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_ACTION_DELETE_NAME_0));
         deleteAction.setHelpText(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_ACTION_DELETE_HELP_0));
+        deleteAction.setConfirmationMessage(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_ACTION_DELETE_CONF_0));
         deleteAction.setIconPath(ICON_DELETE);
         deleteCol.addDirectAction(deleteAction);
     }

@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsEditSubscriberDialog.java,v $
- * Date   : $Date: 2007/10/09 15:39:58 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2007/10/12 15:19:08 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -37,6 +37,7 @@ import org.opencms.file.CmsUser;
 import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.main.CmsException;
 import org.opencms.util.CmsStringUtil;
+import org.opencms.widgets.CmsCheckboxWidget;
 import org.opencms.widgets.CmsInputWidget;
 import org.opencms.workplace.CmsWidgetDialogParameter;
 import org.opencms.workplace.tools.accounts.A_CmsEditUserDialog;
@@ -52,7 +53,7 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Michael Moossen 
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.3 $ 
  * 
  * @since 6.0.0 
  */
@@ -89,8 +90,12 @@ public class CmsEditSubscriberDialog extends A_CmsEditUserDialog {
     public void actionCommit() {
 
         m_user.setName(getParamOufqn() + m_user.getEmail());
-        m_user.setFirstname("_");
-        m_user.setLastname("_");
+        if (CmsStringUtil.isEmptyOrWhitespaceOnly(m_user.getFirstname())) {
+            m_user.setFirstname("_");
+        }
+        if (CmsStringUtil.isEmptyOrWhitespaceOnly(m_user.getLastname())) {
+            m_user.setLastname("_");
+        }
         m_user.setAdditionalInfo(CmsNewsletterManager.USER_ADDITIONALINFO_ACTIVE, Boolean.TRUE);
         getPwdInfo().setNewPwd(CmsNewsletterManager.getPassword());
         getPwdInfo().setConfirmation(CmsNewsletterManager.getPassword());
@@ -121,7 +126,7 @@ public class CmsEditSubscriberDialog extends A_CmsEditUserDialog {
             // create the widgets for the first dialog page
             result.append(dialogBlockStart(key(org.opencms.workplace.tools.accounts.Messages.GUI_USER_EDITOR_LABEL_IDENTIFICATION_BLOCK_0)));
             result.append(createWidgetTableStart());
-            result.append(createDialogRowsHtml(0, 0));
+            result.append(createDialogRowsHtml(0, 3));
             result.append(createWidgetTableEnd());
             result.append(dialogBlockEnd());
         }
@@ -150,6 +155,9 @@ public class CmsEditSubscriberDialog extends A_CmsEditUserDialog {
 
         // widgets to display
         addWidget(new CmsWidgetDialogParameter(m_user, "email", PAGES[0], new CmsInputWidget()));
+        addWidget(new CmsWidgetDialogParameter(m_user, "lastname", "", PAGES[0], new CmsInputWidget(), 0, 1));
+        addWidget(new CmsWidgetDialogParameter(m_user, "firstname", "", PAGES[0], new CmsInputWidget(), 0, 1));
+        addWidget(new CmsWidgetDialogParameter(m_user, "enabled", PAGES[0], new CmsCheckboxWidget()));
     }
 
     /**

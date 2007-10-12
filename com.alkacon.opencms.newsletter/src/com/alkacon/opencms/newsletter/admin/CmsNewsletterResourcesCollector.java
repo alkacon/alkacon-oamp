@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsNewsletterResourcesCollector.java,v $
- * Date   : $Date: 2007/10/09 15:39:58 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/10/12 15:19:08 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -31,18 +31,18 @@
 
 package com.alkacon.opencms.newsletter.admin;
 
+import com.alkacon.opencms.newsletter.CmsNewsletterManager;
+
 import org.opencms.file.CmsObject;
 import org.opencms.file.CmsResourceFilter;
 import org.opencms.main.CmsException;
-import org.opencms.util.CmsStringUtil;
+import org.opencms.main.OpenCms;
 import org.opencms.workplace.explorer.CmsResourceUtil;
 import org.opencms.workplace.list.A_CmsListExplorerDialog;
 import org.opencms.workplace.list.A_CmsListResourceCollector;
 import org.opencms.workplace.list.CmsListItem;
-import org.opencms.workplace.list.I_CmsListResourceCollector;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -51,7 +51,7 @@ import java.util.Map;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 6.1.0 
  */
@@ -60,24 +60,14 @@ public class CmsNewsletterResourcesCollector extends A_CmsListResourceCollector 
     /** Parameter of the default collector name. */
     public static final String COLLECTOR_NAME = "newsletterresources";
 
-    /** Oufqn Parameter name constant. */
-    public static final String PARAM_OUFQN = "oufqn";
-
-    private static final String NEWSLETTER_ROOT = "/system/shared/newsletter/";
-
     /**
      * Constructor, creates a new instance.<p>
      * 
      * @param wp the workplace object
-     * @param oufqn the organizational unit name 
      */
-    public CmsNewsletterResourcesCollector(A_CmsListExplorerDialog wp, String oufqn) {
+    public CmsNewsletterResourcesCollector(A_CmsListExplorerDialog wp) {
 
         super(wp);
-        m_collectorParameter += I_CmsListResourceCollector.SEP_PARAM
-            + PARAM_OUFQN
-            + I_CmsListResourceCollector.SEP_KEYVAL
-            + oufqn;
     }
 
     /**
@@ -95,11 +85,9 @@ public class CmsNewsletterResourcesCollector extends A_CmsListResourceCollector 
      */
     public List getResources(CmsObject cms, Map params) throws CmsException {
 
-        String oufqn = (String)params.get(PARAM_OUFQN);
-        if (CmsStringUtil.isEmptyOrWhitespaceOnly(oufqn)) {
-            return Collections.EMPTY_LIST;
-        }
-        return cms.readResources(NEWSLETTER_ROOT + oufqn, CmsResourceFilter.DEFAULT_FILES, true);
+        int typeId = OpenCms.getResourceManager().getResourceType(CmsNewsletterManager.RESOURCETYPE_NEWSLETTER_NAME).getTypeId();
+        CmsResourceFilter filter = CmsResourceFilter.ONLY_VISIBLE_NO_DELETED.addRequireType(typeId);
+        return cms.readResources("/", filter, true);
     }
 
     /**

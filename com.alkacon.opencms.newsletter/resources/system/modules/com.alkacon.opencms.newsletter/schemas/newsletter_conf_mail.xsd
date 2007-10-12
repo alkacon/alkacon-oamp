@@ -12,7 +12,8 @@
 
 	<xsd:complexType name="OpenCmsAlkaconNewsletterMailIndConfig">
 		<xsd:sequence>					
-			<xsd:element name="MailHead" type="OpenCmsString" />	
+			<xsd:element name="MailHead" type="OpenCmsString" />
+			<xsd:element name="MailText" type="OpenCmsString" minOccurs="0" />	
 			<xsd:element name="MailFoot" type="OpenCmsString" />
 		</xsd:sequence>
 		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
@@ -24,12 +25,14 @@
 			<preview uri="${previewtempfile}" />
 			<defaults>
 				<default element="MailHead" value="%(key.default.alknewslettermail.conf.head)" />
+				<default element="MailText" value="%(key.default.alknewslettermail.conf.text)" />
 				<default element="MailFoot" value="%(key.default.alknewslettermail.conf.foot)" />
 			</defaults>
 
 			<layouts>
-				<layout element="MailHead" widget="TextareaWidget" configuration="10" />
-				<layout element="MailFoot" widget="TextareaWidget" configuration="3" />
+				<layout element="MailHead" widget="TextareaWidget" configuration="15" />
+				<layout element="MailText" widget="HtmlWidget" configuration="source,formatselect,link,anchor,height: 250px" />
+				<layout element="MailFoot" widget="TextareaWidget" configuration="5" />
 			</layouts>
 		</xsd:appinfo>
 	</xsd:annotation>  

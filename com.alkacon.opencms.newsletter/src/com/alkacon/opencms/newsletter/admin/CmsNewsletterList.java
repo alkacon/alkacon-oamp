@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsNewsletterList.java,v $
- * Date   : $Date: 2007/10/09 15:39:58 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/10/12 15:19:08 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -31,6 +31,7 @@
 
 package com.alkacon.opencms.newsletter.admin;
 
+import org.opencms.db.CmsUserSettings;
 import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.util.CmsStringUtil;
 import org.opencms.workplace.CmsDialog;
@@ -58,7 +59,7 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Michael Moossen  
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 6.0.0 
  */
@@ -127,10 +128,11 @@ public class CmsNewsletterList extends A_CmsListExplorerDialog {
             // forward to the editor
             Map params = new HashMap();
             params.put(CmsDialog.PARAM_ACTION, CmsDialog.DIALOG_INITIAL);
-            params.put(CmsDialog.PARAM_CLOSELINK, CmsWorkplace.VFS_PATH_VIEWS + "workplace.jsp");
-            params.put(CmsEditor.PARAM_BACKLINK, CmsWorkplace.VFS_PATH_VIEWS + "workplace.jsp");
+            String link = CmsWorkplace.VFS_PATH_VIEWS + "workplace.jsp?oufqn=" + getParamOufqn();
+            params.put(CmsEditor.PARAM_BACKLINK, link);
+            params.put("oufqn", getParamOufqn());
             params.put(CmsDialog.PARAM_RESOURCE, getSelectedItem().get(LIST_COLUMN_NAME));
-            getToolManager().jspForwardPage(this, "/system/workplace/explorer/search/edit.jsp", params);
+            getToolManager().jspForwardPage(this, "/system/workplace/admin/newsletter/edit.jsp", params);
         } else {
             throwListUnsupportedActionException();
         }
@@ -142,7 +144,7 @@ public class CmsNewsletterList extends A_CmsListExplorerDialog {
     public I_CmsListResourceCollector getCollector() {
 
         if (m_collector == null) {
-            m_collector = new CmsNewsletterResourcesCollector(this, getParamOufqn());
+            m_collector = new CmsNewsletterResourcesCollector(this);
 
             // set the right resource util parameters
             CmsResourceUtil resUtil = getResourceUtil();
@@ -231,6 +233,15 @@ public class CmsNewsletterList extends A_CmsListExplorerDialog {
 
         super.setColumnVisibilities();
         setColumnVisibility(LIST_COLUMN_EDIT.hashCode(), LIST_COLUMN_EDIT.hashCode());
+
+        // set visibility of some columns to false, they are not required for the newsletter list
+        setColumnVisibility(CmsUserSettings.FILELIST_TYPE, 0);
+        setColumnVisibility(CmsUserSettings.FILELIST_SIZE, 0);
+        setColumnVisibility(CmsUserSettings.FILELIST_PERMISSIONS, 0);
+        setColumnVisibility(CmsUserSettings.FILELIST_DATE_CREATED, 0);
+        setColumnVisibility(CmsUserSettings.FILELIST_USER_CREATED, 0);
+        setColumnVisibility(CmsUserSettings.FILELIST_STATE, 0);
+        setColumnVisibility(CmsUserSettings.FILELIST_LOCKEDBY, 0);
     }
 
     /**

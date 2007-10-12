@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsMailinglistDeleteDialog.java,v $
- * Date   : $Date: 2007/10/09 15:39:58 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2007/10/12 15:19:08 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -55,7 +55,7 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Michael Moossen  
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.3 $ 
  * 
  * @since 6.0.0 
  */
@@ -81,39 +81,6 @@ public class CmsMailinglistDeleteDialog extends org.opencms.workplace.tools.acco
     public CmsMailinglistDeleteDialog(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         this(new CmsJspActionElement(context, req, res));
-    }
-
-    /**
-     * @see org.opencms.workplace.CmsWorkplace#initMessages()
-     */
-    protected void initMessages() {
-
-        // add specific dialog resource bundle
-        addMessages(Messages.get().getBundleName());
-        // add default resource bundles
-        super.initMessages();
-    }
-
-    /**
-     * @see org.opencms.workplace.tools.accounts.CmsGroupDependenciesList#getListItems()
-     */
-    protected List getListItems() {
-
-        // the list should never appear
-        return new ArrayList();
-    }
-
-    /**
-     * @see org.opencms.workplace.tools.accounts.CmsGroupDependenciesList#customHtmlStart()
-     */
-    protected String customHtmlStart() {
-
-        StringBuffer result = new StringBuffer(512);
-        result.append(dialogBlockStart(org.opencms.workplace.tools.accounts.Messages.get().container(
-            org.opencms.workplace.tools.accounts.Messages.GUI_GROUP_DEPENDENCIES_NOTICE_0).key(getLocale())));
-        result.append(key(Messages.GUI_MAILINGLIST_DELETE_0));
-        result.append(dialogBlockEnd());
-        return result.toString();
     }
 
     /**
@@ -147,5 +114,38 @@ public class CmsMailinglistDeleteDialog extends org.opencms.workplace.tools.acco
             default:
                 super.actionDialog();
         }
+    }
+
+    /**
+     * @see org.opencms.workplace.tools.accounts.CmsGroupDependenciesList#customHtmlStart()
+     */
+    protected String customHtmlStart() {
+
+        StringBuffer result = new StringBuffer(512);
+        result.append(dialogBlockStart(org.opencms.workplace.tools.accounts.Messages.get().container(
+            org.opencms.workplace.tools.accounts.Messages.GUI_GROUP_DEPENDENCIES_NOTICE_0).key(getLocale())));
+        result.append(key(Messages.GUI_MAILINGLIST_DELETE_0));
+        result.append(dialogBlockEnd());
+        return result.toString();
+    }
+
+    /**
+     * @see org.opencms.workplace.tools.accounts.CmsGroupDependenciesList#getListItems()
+     */
+    protected List getListItems() {
+
+        // the list should never appear
+        return new ArrayList();
+    }
+
+    /**
+     * @see org.opencms.workplace.CmsWorkplace#initMessages()
+     */
+    protected void initMessages() {
+
+        // add specific dialog resource bundle
+        addMessages(Messages.get().getBundleName());
+        // add default resource bundles
+        super.initMessages();
     }
 }

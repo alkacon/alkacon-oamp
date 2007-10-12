@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterMail.java,v $
- * Date   : $Date: 2007/10/05 07:52:11 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2007/10/12 15:19:09 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -236,7 +236,7 @@ public class CmsNewsletterMail {
         Iterator i = getCms().getUsersOfGroup(getGroup().getName()).iterator();
         while (i.hasNext()) {
             CmsUser user = (CmsUser)i.next();
-            if (CmsNewsletterManager.isActiveUser(user)) {
+            if (CmsNewsletterManager.isActiveUser(user, getGroup().getName())) {
                 // add active users to the recipients
                 try {
                     recipients.add(new InternetAddress(user.getEmail()));

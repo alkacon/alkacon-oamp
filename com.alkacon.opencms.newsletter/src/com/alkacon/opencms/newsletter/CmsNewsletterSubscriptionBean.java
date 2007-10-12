@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterSubscriptionBean.java,v $
- * Date   : $Date: 2007/10/05 07:52:11 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2007/10/12 15:19:09 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -110,6 +110,9 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
     /** The node name for the MailFrom node. */
     private static final String NODE_MAILFROM = "MailFrom";
 
+    /** The node name for the MailingList node. */
+    private static final String NODE_MAILINGLIST = "MailingList";
+
     /** The node name for the MailSubject node. */
     private static final String NODE_MAILSUBJECT = "MailSubject";
 
@@ -197,7 +200,7 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
         String result = getConfigText(XPATH_2_SUBSCRIBE + NODE_ERROR);
         if (CmsStringUtil.isNotEmpty(getEmail())) {
             // try to activate the newsletter user
-            if (getNewsletterManager().activateNewsletterUser(getEmail())) {
+            if (getNewsletterManager().activateNewsletterUser(getEmail(), getConfigText(NODE_MAILINGLIST))) {
                 result = getConfigText(XPATH_2_SUBSCRIBE + NODE_OK);
             }
         }
@@ -214,7 +217,7 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
         String result = getConfigText(XPATH_2_UNSUBSCRIBE + NODE_ERROR);
         if (CmsStringUtil.isNotEmpty(getEmail())) {
             // try to delete the newsletter user
-            if (getNewsletterManager().deleteNewsletterUser(getEmail(), isConfirmationEnabled())) {
+            if (getNewsletterManager().deleteNewsletterUser(getEmail(), getConfigText(NODE_MAILINGLIST), isConfirmationEnabled())) {
                 result = getConfigText(XPATH_2_UNSUBSCRIBE + NODE_OK);
             }
         }
@@ -231,8 +234,8 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
         String result = getConfigText(XPATH_1_SUBSCRIBE + NODE_SUBSCRIBE_ERROR);
 
         if (CmsStringUtil.isNotEmpty(getEmail())) {
-            // create the newsletter user in the newsletter group
-            String groupName = "Newsletter";
+            // create the newsletter user in the configured newsletter group
+            String groupName = getConfigText(NODE_MAILINGLIST);
             CmsUser user = getNewsletterManager().createNewsletterUser(getEmail(), groupName, !isConfirmationEnabled());
             if (user != null) {
                 if (isConfirmationEnabled()) {
@@ -261,7 +264,7 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
         if (CmsStringUtil.isNotEmpty(getEmail())) {
             if (isConfirmationEnabled()) {
                 // email confirmation is enabled, mark the user to be deleted
-                if (getNewsletterManager().markToDeleteNewsletterUser(getEmail())) {
+                if (getNewsletterManager().markToDeleteNewsletterUser(getEmail(), getConfigText(NODE_MAILINGLIST))) {
                     setLinkMacro(ACTION_CONFIRMUNSUBSCRIPTION, getEmail());
                     if (sendConfirmationMail(
                         getConfigText(XPATH_2_UNSUBSCRIBE + NODE_MAILSUBJECT),
@@ -269,7 +272,7 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
                         result = getConfigText(XPATH_1_SUBSCRIBE + NODE_UNSUBSCRIBE_OK);
                     }
                 }
-            } else if (getNewsletterManager().deleteNewsletterUser(getEmail(), false)) {
+            } else if (getNewsletterManager().deleteNewsletterUser(getEmail(), getConfigText(NODE_MAILINGLIST), false)) {
                 result = getConfigText(XPATH_1_SUBSCRIBE + NODE_UNSUBSCRIBE_OK);
             }
 
@@ -624,10 +627,10 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
 
         // check user existance depending on action if email address is valid
         if (!resetAction) {
-            if (getAction() == ACTION_SUBSCRIBE && getNewsletterManager().existsNewsletterUser(getEmail())) {
+            if (getAction() == ACTION_SUBSCRIBE && getNewsletterManager().existsNewsletterUser(getEmail(), getConfigText(NODE_MAILINGLIST))) {
                 m_errors.add(key("validation.alknewsletter.error.userexists"));
                 resetAction = true;
-            } else if (getAction() == ACTION_UNSUBSCRIBE && !getNewsletterManager().existsNewsletterUser(getEmail())) {
+            } else if (getAction() == ACTION_UNSUBSCRIBE && !getNewsletterManager().existsNewsletterUser(getEmail(), getConfigText(NODE_MAILINGLIST))) {
                 m_errors.add(key("validation.alknewsletter.error.usernotexists"));
                 resetAction = true;
             }

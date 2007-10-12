@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsShowSubscriberMailinglistsList.java,v $
- * Date   : $Date: 2007/10/09 15:39:58 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/10/12 15:19:08 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -33,6 +33,9 @@ package com.alkacon.opencms.newsletter.admin;
 
 import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.util.CmsStringUtil;
+import org.opencms.workplace.list.CmsListColumnDefinition;
+import org.opencms.workplace.list.CmsListMetadata;
+import org.opencms.workplace.list.I_CmsListDirectAction;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,7 +46,7 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Michael Moossen  
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 6.0.0 
  */
@@ -57,6 +60,7 @@ public class CmsShowSubscriberMailinglistsList extends org.opencms.workplace.too
     public CmsShowSubscriberMailinglistsList(CmsJspActionElement jsp) {
 
         super(jsp, LIST_ID + "l");
+        getList().setName(Messages.get().container(Messages.GUI_SUBSCRIBERMAILINGLISTS_LIST_NAME_0));
     }
 
     /**
@@ -80,6 +84,27 @@ public class CmsShowSubscriberMailinglistsList extends org.opencms.workplace.too
         addMessages(Messages.get().getBundleName());
         // add default resource bundles
         super.initMessages();
+    }
+
+    /**
+     * @see org.opencms.workplace.tools.accounts.A_CmsUserGroupsList#setColumns(org.opencms.workplace.list.CmsListMetadata)
+     */
+    protected void setColumns(CmsListMetadata metadata) {
+
+        super.setColumns(metadata);
+
+        CmsListColumnDefinition iconCol = metadata.getColumnDefinition(LIST_COLUMN_ICON);
+        iconCol.setName(Messages.get().container(Messages.GUI_MAILINGLISTS_LIST_COLS_ICON_0));
+        iconCol.setHelpText(Messages.get().container(Messages.GUI_MAILINGLISTS_LIST_COLS_ICON_HELP_0));
+        I_CmsListDirectAction dirAction = iconCol.getDirectAction(LIST_ACTION_ICON_DIRECT);
+        dirAction.setName(Messages.get().container(Messages.GUI_MAILINGLISTS_LIST_DIRECT_NAME_0));
+        dirAction.setHelpText(Messages.get().container(Messages.GUI_MAILINGLISTS_LIST_DIRECT_HELP_0));
+
+        CmsListColumnDefinition displayCol = new CmsListColumnDefinition(LIST_COLUMN_DISPLAY);
+        displayCol.setName(Messages.get().container(Messages.GUI_MAILINGLISTS_LIST_COLS_NAME_0));
+
+        CmsListColumnDefinition descCol = new CmsListColumnDefinition(LIST_COLUMN_DESCRIPTION);
+        descCol.setName(Messages.get().container(Messages.GUI_MAILINGLISTS_LIST_COLS_DESCRIPTION_0));
     }
 
     /**

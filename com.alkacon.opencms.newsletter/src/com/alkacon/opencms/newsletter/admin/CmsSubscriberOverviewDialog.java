@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsSubscriberOverviewDialog.java,v $
- * Date   : $Date: 2007/10/09 15:39:58 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/10/12 15:19:08 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -44,11 +44,14 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Michael Moossen 
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 6.0.0 
  */
 public class CmsSubscriberOverviewDialog extends org.opencms.workplace.tools.accounts.CmsUserOverviewDialog {
+
+    /** localized messages Keys prefix. */
+    public static final String SB_KEY_PREFIX = "subscriber";
 
     /**
      * Public constructor with JSP action element.<p>
@@ -88,7 +91,7 @@ public class CmsSubscriberOverviewDialog extends org.opencms.workplace.tools.acc
             // create the widgets for the first dialog page
             result.append(dialogBlockStart(key(org.opencms.workplace.tools.accounts.Messages.GUI_USER_EDITOR_LABEL_IDENTIFICATION_BLOCK_0)));
             result.append(createWidgetTableStart());
-            result.append(createDialogRowsHtml(0, 0));
+            result.append(createDialogRowsHtml(0, 3));
             result.append(createWidgetTableEnd());
             result.append(dialogBlockEnd());
         }
@@ -105,10 +108,13 @@ public class CmsSubscriberOverviewDialog extends org.opencms.workplace.tools.acc
         // initialize the user object to use for the dialog
         initUserObject();
 
-        setKeyPrefix(KEY_PREFIX);
+        setKeyPrefix(SB_KEY_PREFIX);
 
         // widgets to display
         addWidget(new CmsWidgetDialogParameter(m_user, "email", PAGES[0], new CmsDisplayWidget()));
+        addWidget(new CmsWidgetDialogParameter(m_user, "lastname", PAGES[0], new CmsDisplayWidget()));
+        addWidget(new CmsWidgetDialogParameter(m_user, "firstname", PAGES[0], new CmsDisplayWidget()));
+        addWidget(new CmsWidgetDialogParameter(m_user, "enabled", PAGES[0], new CmsDisplayWidget()));
     }
 
     /**
