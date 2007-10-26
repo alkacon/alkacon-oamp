@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsNewsletterResourcesCollector.java,v $
- * Date   : $Date: 2007/10/12 15:19:08 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2007/10/26 13:01:14 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -33,16 +33,22 @@ package com.alkacon.opencms.newsletter.admin;
 
 import com.alkacon.opencms.newsletter.CmsNewsletterManager;
 
+import org.opencms.file.CmsGroup;
 import org.opencms.file.CmsObject;
+import org.opencms.file.CmsProperty;
 import org.opencms.file.CmsResourceFilter;
 import org.opencms.main.CmsException;
+import org.opencms.main.CmsIllegalArgumentException;
 import org.opencms.main.OpenCms;
+import org.opencms.util.CmsStringUtil;
+import org.opencms.util.CmsUUID;
 import org.opencms.workplace.explorer.CmsResourceUtil;
 import org.opencms.workplace.list.A_CmsListExplorerDialog;
 import org.opencms.workplace.list.A_CmsListResourceCollector;
 import org.opencms.workplace.list.CmsListItem;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -51,7 +57,7 @@ import java.util.Map;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.3 $ 
  * 
  * @since 6.1.0 
  */
@@ -95,6 +101,39 @@ public class CmsNewsletterResourcesCollector extends A_CmsListResourceCollector 
      */
     protected void setAdditionalColumns(CmsListItem item, CmsResourceUtil resUtil) {
 
-        // 
+        // set the column data for the newsletter send info if present
+        String value = "";
+        try {
+            CmsProperty property = resUtil.getCms().readPropertyObject(
+                (String)item.get(A_CmsListExplorerDialog.LIST_COLUMN_NAME),
+                CmsNewsletterManager.PROPERTY_NEWSLETTER_DATA,
+                false);
+            value = property.getValue();
+            if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(value)) {
+                // format the information
+                List vals = CmsStringUtil.splitAsList(value, CmsProperty.VALUE_LIST_DELIMITER);
+                Date date = new Date(Long.parseLong((String)vals.get(0)));
+                String groupId = (String)vals.get(1);
+                String groupName = "";
+                try {
+                    CmsGroup group = resUtil.getCms().readGroup(new CmsUUID(groupId));
+                    groupName = group.getSimpleName();
+                } catch (CmsException e) {
+                    // group does not exist
+                    groupName = Messages.get().getBundle().key(Messages.GUI_NEWSLETTER_LIST_DATA_SEND_GROUPDUMMY_0);
+                }
+                value = Messages.get().getBundle().key(Messages.GUI_NEWSLETTER_LIST_DATA_SEND_AT_2, date, groupName);
+            } else {
+                // show the "never sent" message
+                value = Messages.get().getBundle().key(Messages.GUI_NEWSLETTER_LIST_DATA_SEND_NEVER_0);
+            }
+        } catch (CmsException e) {
+            // should never happen
+        }
+        try {
+            item.set(CmsNewsletterListSend.LIST_COLUMN_DATA, value);
+        } catch (CmsIllegalArgumentException e) {
+            // column not present, ignore
+        }
     }
 }

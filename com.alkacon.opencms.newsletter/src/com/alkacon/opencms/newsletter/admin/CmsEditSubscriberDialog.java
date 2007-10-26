@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsEditSubscriberDialog.java,v $
- * Date   : $Date: 2007/10/12 15:19:08 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2007/10/26 13:01:14 $
+ * Version: $Revision: 1.4 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -38,6 +38,7 @@ import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.main.CmsException;
 import org.opencms.util.CmsStringUtil;
 import org.opencms.widgets.CmsCheckboxWidget;
+import org.opencms.widgets.CmsDisplayWidget;
 import org.opencms.widgets.CmsInputWidget;
 import org.opencms.workplace.CmsWidgetDialogParameter;
 import org.opencms.workplace.tools.accounts.A_CmsEditUserDialog;
@@ -53,7 +54,7 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Michael Moossen 
  * 
- * @version $Revision: 1.3 $ 
+ * @version $Revision: 1.4 $ 
  * 
  * @since 6.0.0 
  */
@@ -96,7 +97,6 @@ public class CmsEditSubscriberDialog extends A_CmsEditUserDialog {
         if (CmsStringUtil.isEmptyOrWhitespaceOnly(m_user.getLastname())) {
             m_user.setLastname("_");
         }
-        m_user.setAdditionalInfo(CmsNewsletterManager.USER_ADDITIONALINFO_ACTIVE, Boolean.TRUE);
         getPwdInfo().setNewPwd(CmsNewsletterManager.getPassword());
         getPwdInfo().setConfirmation(CmsNewsletterManager.getPassword());
 
@@ -154,7 +154,11 @@ public class CmsEditSubscriberDialog extends A_CmsEditUserDialog {
         setKeyPrefix(SB_KEY_PREFIX);
 
         // widgets to display
-        addWidget(new CmsWidgetDialogParameter(m_user, "email", PAGES[0], new CmsInputWidget()));
+        if (isNewUser()) {
+            addWidget(new CmsWidgetDialogParameter(m_user, "email", PAGES[0], new CmsInputWidget()));
+        } else {
+            addWidget(new CmsWidgetDialogParameter(m_user, "email", PAGES[0], new CmsDisplayWidget()));
+        }
         addWidget(new CmsWidgetDialogParameter(m_user, "lastname", "", PAGES[0], new CmsInputWidget(), 0, 1));
         addWidget(new CmsWidgetDialogParameter(m_user, "firstname", "", PAGES[0], new CmsInputWidget(), 0, 1));
         addWidget(new CmsWidgetDialogParameter(m_user, "enabled", PAGES[0], new CmsCheckboxWidget()));
@@ -192,7 +196,7 @@ public class CmsEditSubscriberDialog extends A_CmsEditUserDialog {
      */
     protected boolean isEditable(CmsUser user) {
 
-        return false;
+        return true;
     }
 
     /**

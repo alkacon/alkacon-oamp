@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterMail.java,v $
- * Date   : $Date: 2007/10/12 15:19:09 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2007/10/26 13:01:14 $
+ * Version: $Revision: 1.4 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -34,8 +34,10 @@ package com.alkacon.opencms.newsletter;
 import org.opencms.file.CmsFile;
 import org.opencms.file.CmsGroup;
 import org.opencms.file.CmsObject;
+import org.opencms.file.CmsProperty;
 import org.opencms.file.CmsResource;
 import org.opencms.file.CmsUser;
+import org.opencms.lock.CmsLock;
 import org.opencms.mail.CmsHtmlMail;
 import org.opencms.mail.CmsSimpleMail;
 import org.opencms.main.CmsException;
@@ -62,7 +64,7 @@ import org.apache.commons.logging.Log;
  *  
  * @author Andreas Zahner
  */
-public class CmsNewsletterMail {
+public class CmsNewsletterMail extends Thread {
 
     /** The node name for the BCC node. */
     protected static final String NODE_BCC = "BCC";
@@ -222,11 +224,43 @@ public class CmsNewsletterMail {
     }
 
     /**
+     * @see java.lang.Thread#run()
+     */
+    public void run() {
+
+        try {
+            sendMail(false);
+        } catch (CmsException e) {
+            if (LOG.isErrorEnabled()) {
+                LOG.error(Messages.get().getBundle().key(
+                    Messages.LOG_ERROR_NEWSLETTER_SEND_FAILED_1,
+                    getContent().getFile().getRootPath()), e);
+            }
+        }
+    }
+
+    /**
      * Sends the newsletter mails to the recipients (members of the group specified in the constructor).<p>
      * 
      * @throws CmsException if reading the group users or getting the email content fails
      */
     public void sendMail() throws CmsException {
+
+        sendMail(false);
+    }
+
+    /**
+     * Sends the newsletter mails to the recipients (members of the group specified in the constructor).<p>
+     * 
+     * @param writeSendData if true, a property containing the send time and mailing list is written
+     * @throws CmsException if reading the group users or getting the email content fails
+     */
+    public void sendMail(boolean writeSendData) throws CmsException {
+
+        // try to write the send data to the file if needed
+        if (writeSendData) {
+            writeSendData();
+        }
 
         // get the email data from the content fields
         String from = getContent().getStringValue(getCms(), NODE_FROM, getLocale());
@@ -361,6 +395,38 @@ public class CmsNewsletterMail {
                 }
             }
         }
+    }
+
+    /**
+     * Writes the send data (date and mailing list group id to a property of the newsletter VFS resource.<p>
+     * 
+     * @return true if writing the send data was successful, otherwise false
+     * @throws CmsException if writing goes wrong
+     */
+    public boolean writeSendData() throws CmsException {
+
+        CmsFile file = getContent().getFile();
+        String resourceName = getCms().getSitePath(file);
+        CmsLock lock = getCms().getLock(file);
+        boolean unLocked = false;
+        if (lock.isNullLock()) {
+            unLocked = true;
+            getCms().lockResource(resourceName);
+            lock = getCms().getLock(file);
+        }
+        if (lock.isOwnedBy(getCms().getRequestContext().currentUser())) {
+            String value = "" + System.currentTimeMillis() + CmsProperty.VALUE_LIST_DELIMITER;
+            value += getGroup().getId();
+            CmsProperty property = new CmsProperty(CmsNewsletterManager.PROPERTY_NEWSLETTER_DATA, value, null, true);
+            getCms().writePropertyObject(resourceName, property);
+        } else {
+            // resource is not locked by current user
+            return false;
+        }
+        if (unLocked) {
+            getCms().unlockResource(resourceName);
+        }
+        return true;
     }
 
     /**

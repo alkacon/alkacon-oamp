@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsMailinglistsList.java,v $
- * Date   : $Date: 2007/10/09 15:39:58 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2007/10/26 13:01:14 $
+ * Version: $Revision: 1.4 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -34,9 +34,10 @@ package com.alkacon.opencms.newsletter.admin;
 import org.opencms.file.CmsUser;
 import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.main.CmsException;
+import org.opencms.main.CmsRuntimeException;
 import org.opencms.main.OpenCms;
-import org.opencms.security.CmsPrincipal;
 import org.opencms.util.CmsStringUtil;
+import org.opencms.workplace.CmsDialog;
 import org.opencms.workplace.list.CmsListColumnDefinition;
 import org.opencms.workplace.list.CmsListDefaultAction;
 import org.opencms.workplace.list.CmsListDirectAction;
@@ -45,11 +46,17 @@ import org.opencms.workplace.list.CmsListItemDetails;
 import org.opencms.workplace.list.CmsListItemDetailsFormatter;
 import org.opencms.workplace.list.CmsListMetadata;
 import org.opencms.workplace.list.CmsListMultiAction;
+import org.opencms.workplace.tools.accounts.A_CmsEditGroupDialog;
 import org.opencms.workplace.tools.accounts.A_CmsGroupsList;
+import org.opencms.workplace.tools.accounts.A_CmsOrgUnitDialog;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
@@ -59,11 +66,17 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Michael Moossen  
  * 
- * @version $Revision: 1.3 $ 
+ * @version $Revision: 1.4 $ 
  * 
  * @since 6.0.0 
  */
 public class CmsMailinglistsList extends A_CmsGroupsList {
+
+    /** list action id constant. */
+    public static final String LIST_ACTION_SEND = "ase";
+
+    /** list column id constant. */
+    public static final String LIST_COLUMN_SEND = "cse";
 
     /** list id constant. */
     public static final String LIST_ID = "lgl";
@@ -91,6 +104,28 @@ public class CmsMailinglistsList extends A_CmsGroupsList {
     public CmsMailinglistsList(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         this(new CmsJspActionElement(context, req, res));
+    }
+
+    /**
+     * @see org.opencms.workplace.list.A_CmsListDialog#executeListSingleActions()
+     */
+    public void executeListSingleActions() throws IOException, ServletException, CmsRuntimeException {
+
+        if (getParamListAction().equals(LIST_ACTION_SEND)) {
+            // forward to the send newsletter screen
+            String groupId = getSelectedItem().getId();
+            String groupName = getSelectedItem().get(LIST_COLUMN_NAME).toString();
+
+            Map params = new HashMap();
+            params.put(A_CmsEditGroupDialog.PARAM_GROUPID, groupId);
+            params.put(A_CmsOrgUnitDialog.PARAM_OUFQN, getParamOufqn());
+            params.put(A_CmsEditGroupDialog.PARAM_GROUPNAME, groupName);
+            // set action parameter to initial dialog call
+            params.put(CmsDialog.PARAM_ACTION, CmsDialog.DIALOG_INITIAL);
+            getToolManager().jspForwardTool(this, getCurrentToolPath() + "/edit/send", params);
+        }
+        // execute the super actions
+        super.executeListSingleActions();
     }
 
     /**
@@ -133,13 +168,23 @@ public class CmsMailinglistsList extends A_CmsGroupsList {
      */
     protected List getGroups() throws CmsException {
 
-        return CmsPrincipal.filterCore(OpenCms.getOrgUnitManager().getGroups(getCms(), getParamOufqn(), false));
+        return OpenCms.getOrgUnitManager().getGroups(getCms(), getParamOufqn(), false);
     }
 
     /**
      * @see org.opencms.workplace.tools.accounts.A_CmsGroupsList#setColumns(org.opencms.workplace.list.CmsListMetadata)
      */
     protected void setColumns(CmsListMetadata metadata) {
+
+        CmsListColumnDefinition sendCol = new CmsListColumnDefinition(LIST_COLUMN_SEND);
+        sendCol.setName(Messages.get().container(Messages.GUI_NEWSLETTER_LIST_COLS_SEND_0));
+        sendCol.setHelpText(Messages.get().container(Messages.GUI_NEWSLETTER_LIST_COLS_SEND_HELP_0));
+        CmsListDirectAction sendAction = new CmsListDirectAction(LIST_ACTION_SEND);
+        sendAction.setName(Messages.get().container(Messages.GUI_NEWSLETTER_LIST_ACTION_SEND_0));
+        sendAction.setHelpText(Messages.get().container(Messages.GUI_NEWSLETTER_LIST_ACTION_SEND_HELP_0));
+        sendAction.setIconPath(PATH_BUTTONS + "newsletter_send.png");
+        sendCol.addDirectAction(sendAction);
+        metadata.addColumn(sendCol);
 
         super.setColumns(metadata);
 

@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterManager.java,v $
- * Date   : $Date: 2007/10/12 15:19:09 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2007/10/26 13:01:14 $
+ * Version: $Revision: 1.6 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -73,6 +73,9 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
     /** Pattern to validate email addresses. */
     public static final Pattern PATTERN_VALIDATION_EMAIL = Pattern.compile("(\\w[-._\\w]*\\w@\\w[-._\\w]*\\w\\.\\w{2,4})");
 
+    /** The name of the property where the send data (date and mailing list) is written to. */
+    public static final String PROPERTY_NEWSLETTER_DATA = "newsletter";
+
     /** Resource type name of a newsletter resource. */
     public static final String RESOURCETYPE_NEWSLETTER_NAME = "alkacon-newsletter";
 
@@ -141,7 +144,7 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
     protected static boolean isActiveUser(CmsUser user, String groupName) {
 
         Boolean active = (Boolean)user.getAdditionalInfo(USER_ADDITIONALINFO_ACTIVE + groupName);
-        return active.booleanValue() && user.isEnabled();
+        return ((active != null && active.booleanValue()) || active == null) && user.isEnabled();
     }
 
     /**
@@ -164,6 +167,10 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
 
         try {
             CmsUser user = getAdminCms().readUser(getAdminCms().readGroup(groupName).getOuFqn() + email);
+            if (user.getAdditionalInfo().get(USER_ADDITIONALINFO_ACTIVE) != null) {
+                // remove flag that this user is not active at all
+                user.deleteAdditionalInfo(USER_ADDITIONALINFO_ACTIVE);
+            }
             user.setAdditionalInfo(USER_ADDITIONALINFO_ACTIVE + groupName, Boolean.valueOf(true));
             getAdminCms().writeUser(user);
             return true;
@@ -209,6 +216,10 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
                 user.setEmail(email);
                 // set the flag so that the new user does not appear in the accounts management view
                 user.setFlags(user.getFlags() ^ CmsNewsletterManager.NEWSLETTER_PRINCIPAL_FLAG);
+                if (!activate) {
+                    // set the additional info as marker that the user is currently not active at all
+                    user.setAdditionalInfo(USER_ADDITIONALINFO_ACTIVE, Boolean.FALSE);
+                }
             } else {
                 Object o = user.getAdditionalInfo(USER_ADDITIONALINFO_ACTIVE + groupName);
                 if (o != null) {
@@ -228,7 +239,7 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
     }
 
     /**
-     * Deletes a newsletter user with given email address.<p>
+     * Deletes a newsletter user with given email address from the specified group.<p>
      * 
      * If the delete flag should be checked, the user has to be marked for deletion for a successful delete operation.<p>
      * 

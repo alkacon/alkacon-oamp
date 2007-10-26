@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsOrgUnitEditDialog.java,v $
- * Date   : $Date: 2007/10/09 15:39:58 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2007/10/26 13:01:14 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -31,21 +31,33 @@
 
 package com.alkacon.opencms.newsletter.admin;
 
+import com.alkacon.opencms.newsletter.CmsNewsletterManager;
+
+import org.opencms.file.CmsGroup;
 import org.opencms.jsp.CmsJspActionElement;
+import org.opencms.main.CmsException;
+import org.opencms.main.OpenCms;
+import org.opencms.security.CmsOrganizationalUnit;
 import org.opencms.util.CmsStringUtil;
+import org.opencms.widgets.CmsTextareaWidget;
+import org.opencms.workplace.CmsWidgetDialogParameter;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 
 /**
- * Organization units edit dialog.<p>
+ * Newsletter organizational unit create dialog.<p>
  * 
- * @author Michael Moossen  
+ * @author Andreas Zahner  
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.3 $ 
  * 
- * @since 6.0.0 
+ * @since 7.0.3 
  */
 public class CmsOrgUnitEditDialog extends org.opencms.workplace.tools.accounts.CmsOrgUnitEditDialog {
 
@@ -72,16 +84,110 @@ public class CmsOrgUnitEditDialog extends org.opencms.workplace.tools.accounts.C
     }
 
     /**
-     * @see org.opencms.workplace.tools.accounts.CmsOrgUnitEditDialog#validateParamaters()
+     * @see org.opencms.workplace.CmsWidgetDialog#actionCommit()
      */
-    protected void validateParamaters() throws Exception {
+    public void actionCommit() {
 
-        super.validateParamaters();
-        // this is to prevent the switch to the root ou 
-        // if the oufqn param get lost (by reloading for example)
-        if (CmsStringUtil.isEmptyOrWhitespaceOnly(getParamOufqn())) {
-            throw new Exception();
+        List errors = new ArrayList();
+
+        try {
+            // create new organizational unit
+            if (m_orgunit == null) {
+                if (CmsStringUtil.isEmptyOrWhitespaceOnly(m_orgUnitBean.getDescription())) {
+                    // description must not be empty
+                    throw new CmsException(Messages.get().container(Messages.EXC_NEWSLETTER_OU_NO_DESCRIPTION_0));
+                }
+                m_orgUnitBean.setFqn(m_orgUnitBean.getParentOu() + CmsNewsletterManager.NEWSLETTER_OU_SIMPLENAME);
+                List resources = m_orgUnitBean.getResources();
+                // create the newsletter OU
+                CmsOrganizationalUnit newOrgUnit = OpenCms.getOrgUnitManager().createOrganizationalUnit(
+                    getCms(),
+                    m_orgUnitBean.getFqn(),
+                    m_orgUnitBean.getDescription(),
+                    0,
+                    (String)resources.get(0));
+
+                // remove all groups from the OU that were created by default
+                List groups = OpenCms.getOrgUnitManager().getGroups(getCms(), newOrgUnit.getName(), false);
+                Iterator i = groups.iterator();
+                while (i.hasNext()) {
+                    CmsGroup group = (CmsGroup)i.next();
+                    getCms().deleteGroup(group.getName());
+                }
+            }
+        } catch (Throwable t) {
+            errors.add(t);
         }
+
+        // set the list of errors to display when saving failed
+        setCommitErrors(errors);
+    }
+
+    /**
+     * @see org.opencms.workplace.CmsWidgetDialog#createDialogHtml(java.lang.String)
+     */
+    protected String createDialogHtml(String dialog) {
+
+        StringBuffer result = new StringBuffer(1024);
+
+        result.append(createWidgetTableStart());
+        // show error header once if there were validation errors
+        result.append(createWidgetErrorHeader());
+
+        if (dialog.equals(PAGES[0])) {
+            // create the widgets for the first dialog page
+            result.append(dialogBlockStart(key(Messages.GUI_NEWSLETTER_ORGUNIT_EDITOR_LABEL_IDENTIFICATION_BLOCK_0)));
+            result.append(createWidgetTableStart());
+            result.append(createDialogRowsHtml(0, 0));
+            result.append(createWidgetTableEnd());
+            result.append(dialogBlockEnd());
+        }
+
+        result.append(createWidgetTableEnd());
+        return result.toString();
+    }
+
+    /**
+     * @see org.opencms.workplace.CmsWidgetDialog#defineWidgets()
+     */
+    protected void defineWidgets() {
+
+        initOrgUnitObject();
+        setKeyPrefix("newsletterorgunit");
+
+        // widgets to display
+        addWidget(new CmsWidgetDialogParameter(m_orgUnitBean, "description", PAGES[0], new CmsTextareaWidget()));
+    }
+
+    /**
+     * @see org.opencms.workplace.CmsWorkplace#initMessages()
+     */
+    protected void initMessages() {
+
+        // add specific dialog resource bundle
+        addMessages(Messages.get().getBundleName());
+        // add default resource bundles
+        super.initMessages();
+    }
+
+    /**
+     * @see org.opencms.workplace.tools.accounts.CmsOrgUnitEditDialog#initOrgUnitObject()
+     */
+    protected void initOrgUnitObject() {
+
+        // TODO: Auto-generated method stub
+        super.initOrgUnitObject();
+        m_orgUnitBean.setFqn(m_orgUnitBean.getParentOu() + CmsNewsletterManager.NEWSLETTER_OU_SIMPLENAME);
+    }
+
+    /**
+     * Checks if the new organizational unit dialog has to be displayed.<p>
+     * 
+     * @return <code>true</code> if the new organizational unit dialog has to be displayed
+     */
+    protected boolean isNewOrgUnit() {
+
+        return getCurrentToolPath().equals("/accounts/orgunit/mgmt/newnewsletter");
     }
 
 }
