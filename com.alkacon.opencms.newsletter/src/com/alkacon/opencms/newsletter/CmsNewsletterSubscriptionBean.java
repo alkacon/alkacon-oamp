@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterSubscriptionBean.java,v $
- * Date   : $Date: 2007/10/26 14:29:06 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2007/10/26 14:53:40 $
+ * Version: $Revision: 1.5 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -60,8 +60,13 @@ import javax.servlet.jsp.PageContext;
 import org.apache.commons.logging.Log;
 
 /**
+ * Provides methods for the newsletter subscription JSP frontend.<p>
  * 
- * @author Andreas Zahner
+ * @author Andreas Zahner  
+ * 
+ * @version $Revision $ 
+ * 
+ * @since 7.0.3 
  */
 public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
 

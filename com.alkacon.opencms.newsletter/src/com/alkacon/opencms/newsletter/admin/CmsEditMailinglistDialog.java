@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsEditMailinglistDialog.java,v $
- * Date   : $Date: 2007/10/09 15:39:58 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2007/10/26 14:53:40 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -49,11 +49,12 @@ import javax.servlet.jsp.PageContext;
 /**
  * Dialog to create a new mailing list or edit an existing mailing list in the administration view.<p>
  * 
- * @author Michael Moossen 
+ * @author Michael Moossen
+ * @author Andreas Zahner
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.3 $ 
  * 
- * @since 6.0.0 
+ * @since 7.0.3 
  */
 public class CmsEditMailinglistDialog extends A_CmsEditGroupDialog {
 

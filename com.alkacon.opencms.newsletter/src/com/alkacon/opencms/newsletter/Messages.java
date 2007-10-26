@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/Messages.java,v $
- * Date   : $Date: 2007/10/26 13:01:14 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2007/10/26 14:53:40 $
+ * Version: $Revision: 1.6 $
  *
  * Copyright (c) 2005 Alkacon Software GmbH (http://www.alkacon.com)
  * All rights reserved.
@@ -34,11 +34,11 @@ import org.opencms.i18n.I_CmsMessageBundle;
 /**
  * Convenience class to access the localized messages of this OpenCms package.<p> 
  * 
- * @author Andreas Zahner
+ * @author Andreas Zahner  
  * 
- * @version $Revision: 1.5 $ 
+ * @version $Revision $ 
  * 
- * @since 7.0.1 
+ * @since 7.0.3 
  */
 public final class Messages extends A_CmsMessageBundle {
 

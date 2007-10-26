@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsNewsletterEditorWrapper.java,v $
- * Date   : $Date: 2007/10/12 15:19:08 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/10/26 14:53:40 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -44,11 +44,11 @@ import javax.servlet.jsp.PageContext;
  * 
  * Sets the <code>backlink</code> parameter when opening the editor containing the organizational unit information.<p>
  * 
- * @author Michael Moossen 
+ * @author Andreas Zahner  
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision $ 
  * 
- * @since 6.0.0 
+ * @since 7.0.3  
  */
 public class CmsNewsletterEditorWrapper extends CmsDialog {
 

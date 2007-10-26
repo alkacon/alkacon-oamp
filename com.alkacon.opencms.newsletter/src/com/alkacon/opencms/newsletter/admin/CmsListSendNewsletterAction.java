@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsListSendNewsletterAction.java,v $
- * Date   : $Date: 2007/10/26 13:01:14 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/10/26 14:53:40 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -44,9 +44,9 @@ import org.opencms.workplace.list.CmsListItem;
 /**
  * Action to send a newsletter depending on the resource lock state.<p>
  * 
- * @author Andreas Zahner  
+ * @author Andreas Zahner
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 7.0.3 
  */

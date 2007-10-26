@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsMailinglistsList.java,v $
- * Date   : $Date: 2007/10/26 13:01:14 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2007/10/26 14:53:40 $
+ * Version: $Revision: 1.5 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -64,11 +64,12 @@ import javax.servlet.jsp.PageContext;
 /**
  * Mailing list management view.<p>
  * 
- * @author Michael Moossen  
+ * @author Michael Moossen
+ * @author Andreas Zahner
  * 
- * @version $Revision: 1.4 $ 
+ * @version $Revision: 1.5 $ 
  * 
- * @since 6.0.0 
+ * @since 7.0.3 
  */
 public class CmsMailinglistsList extends A_CmsGroupsList {
 

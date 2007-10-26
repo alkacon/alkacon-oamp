@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsSubscriberImportObject.java,v $
- * Date   : $Date: 2007/10/26 13:01:14 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/10/26 14:53:40 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -45,9 +45,13 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Import object for importing email addresses.<p>
+ * Import object for importing email addresses to a mailing list as subscribers.<p>
  * 
- * @author Andreas Zahner
+ * @author Andreas Zahner  
+ * 
+ * @version $Revision $ 
+ * 
+ * @since 7.0.3
  */
 public class CmsSubscriberImportObject {
 

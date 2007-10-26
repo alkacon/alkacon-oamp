@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsNewsletterToolHandler.java,v $
- * Date   : $Date: 2007/10/08 15:38:46 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/10/26 14:53:40 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -39,13 +39,13 @@ import org.opencms.workplace.tools.CmsDefaultToolHandler;
 
 /**
  * Newsletter management tool handler that hides the tool if the current user
- * has not the needed privileges.<p>
+ * has not the needed privileges or no newsletter ou is available.<p>
  * 
- * @author Michael Moossen 
+ * @author Andreas Zahner  
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision $ 
  * 
- * @since 6.0.0 
+ * @since 7.0.3 
  */
 public class CmsNewsletterToolHandler extends CmsDefaultToolHandler {
 

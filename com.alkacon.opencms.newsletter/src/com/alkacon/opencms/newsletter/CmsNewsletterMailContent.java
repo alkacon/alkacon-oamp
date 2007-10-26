@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/Attic/CmsNewsletterMailContent.java,v $
- * Date   : $Date: 2007/10/26 14:29:06 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/10/26 14:53:40 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -63,7 +63,11 @@ import org.apache.commons.mail.Email;
  * 
  * Provides some utility methods to generate email previews and get the email contents.<p>
  *  
- * @author Andreas Zahner
+ * @author Andreas Zahner  
+ * 
+ * @version $Revision $ 
+ * 
+ * @since 7.0.3 
  */
 public class CmsNewsletterMailContent {
 

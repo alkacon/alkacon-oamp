@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterXmlContentHandler.java,v $
- * Date   : $Date: 2007/09/21 14:33:19 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/10/26 14:53:40 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -44,9 +44,14 @@ import org.opencms.xml.types.I_CmsXmlContentValue;
 import java.util.Locale;
 
 /**
- * Special XML content handler required because of the macro replacement behaviour changes in the default values.<p>
+ * Special XML content handler required for the newsletter contents because of the macro replacement
+ * behaviour changes in the default values.<p>
  * 
- * @author Andreas Zahner
+ * @author Andreas Zahner  
+ * 
+ * @version $Revision $ 
+ * 
+ * @since 7.0.3 
  */
 public class CmsNewsletterXmlContentHandler extends CmsDefaultXmlContentHandler {
     

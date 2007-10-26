@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterManager.java,v $
- * Date   : $Date: 2007/10/26 13:01:14 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2007/10/26 14:53:40 $
+ * Version: $Revision: 1.7 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -49,9 +49,13 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Provides methods to manage the users for the newsletter.<p>
+ * Provides methods to manage the users (subscribers) for the newsletter.<p>
  * 
- * @author Andreas Zahner
+ * @author Andreas Zahner  
+ * 
+ * @version $Revision $ 
+ * 
+ * @since 7.0.3 
  */
 public class CmsNewsletterManager extends A_CmsModuleAction {
 
