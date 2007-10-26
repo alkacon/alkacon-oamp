@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsNewsletterListSend.java,v $
- * Date   : $Date: 2007/10/26 13:01:14 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/10/26 14:29:06 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -32,6 +32,7 @@
 package com.alkacon.opencms.newsletter.admin;
 
 import com.alkacon.opencms.newsletter.CmsNewsletterMail;
+import com.alkacon.opencms.newsletter.CmsNewsletterMailContent;
 
 import org.opencms.db.CmsUserSettings;
 import org.opencms.file.CmsGroup;
@@ -62,7 +63,7 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  */
 public class CmsNewsletterListSend extends A_CmsListExplorerDialog {
 
@@ -142,8 +143,16 @@ public class CmsNewsletterListSend extends A_CmsListExplorerDialog {
             try {
                 CmsGroup group = getCms().readGroup(groupId);
                 // send the emails to the mailing list group
-                CmsNewsletterMail nlMail = new CmsNewsletterMail(resourceName, group, getCms(), locale);
-                if (nlMail.writeSendData()) {
+                CmsNewsletterMailContent nlMailContent = new CmsNewsletterMailContent(
+                    resourceName,
+                    group,
+                    getCms(),
+                    locale);
+                if (nlMailContent.writeSendData()) {
+                    CmsNewsletterMail nlMail = new CmsNewsletterMail(
+                        nlMailContent.getEmail(),
+                        nlMailContent.getRecipients(),
+                        nlMailContent.getContent().getFile().getRootPath());
                     nlMail.start();
                     getList().clear();
                 }

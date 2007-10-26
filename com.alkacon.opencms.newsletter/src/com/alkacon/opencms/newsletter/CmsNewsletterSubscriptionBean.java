@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterSubscriptionBean.java,v $
- * Date   : $Date: 2007/10/12 15:19:09 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2007/10/26 14:29:06 $
+ * Version: $Revision: 1.4 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -513,9 +513,9 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
             String mailFoot = "";
             boolean foundExternalConfig = false;
             if (getConfigContent().hasValue(
-                XPATH_2_MAIL + CmsNewsletterMail.NODE_CONFFILE,
+                XPATH_2_MAIL + CmsNewsletterMailContent.NODE_CONFFILE,
                 getRequestContext().getLocale())) {
-                String path = getConfigText(XPATH_2_MAIL + CmsNewsletterMail.NODE_CONFFILE);
+                String path = getConfigText(XPATH_2_MAIL + CmsNewsletterMailContent.NODE_CONFFILE);
                 if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(path)
                     && getCmsObject().existsResource(path)
                     && !CmsResource.isFolder(path)) {
@@ -524,19 +524,19 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
                     CmsXmlContent mailContent = CmsXmlContentFactory.unmarshal(getCmsObject(), mailConfig);
                     mailHead = mailContent.getStringValue(
                         getCmsObject(),
-                        CmsNewsletterMail.NODE_MAILHEAD,
+                        CmsNewsletterMailContent.NODE_MAILHEAD,
                         getRequestContext().getLocale());
                     mailFoot = mailContent.getStringValue(
                         getCmsObject(),
-                        CmsNewsletterMail.NODE_MAILFOOT,
+                        CmsNewsletterMailContent.NODE_MAILFOOT,
                         getRequestContext().getLocale());
                     foundExternalConfig = true;
                 }
             }
             if (!foundExternalConfig) {
                 // use internal mail configuration fields
-                mailHead = getConfigText(XPATH_2_MAIL + CmsNewsletterMail.NODE_MAILHEAD);
-                mailFoot = getConfigText(XPATH_2_MAIL + CmsNewsletterMail.NODE_MAILFOOT);
+                mailHead = getConfigText(XPATH_2_MAIL + CmsNewsletterMailContent.NODE_MAILHEAD);
+                mailFoot = getConfigText(XPATH_2_MAIL + CmsNewsletterMailContent.NODE_MAILFOOT);
             }
 
             msg.append(getMacroResolver().resolveMacros(mailHead));

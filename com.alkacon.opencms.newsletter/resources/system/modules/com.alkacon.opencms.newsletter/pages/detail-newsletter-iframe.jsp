@@ -5,7 +5,7 @@ CmsJspActionElement cms = new CmsJspActionElement(pageContext, request, response
 String uri = request.getParameter("uri");
 
 if (uri != null  && !CmsResource.isFolder(uri)) {
-	out.print(CmsNewsletterMail.getEmailContentPreview(uri, cms.getCmsObject(), cms.getRequestContext().getLocale()));
+	out.print(CmsNewsletterMailContent.getEmailContentPreview(uri, cms.getCmsObject(), cms.getRequestContext().getLocale()));
 }
 
 %>
