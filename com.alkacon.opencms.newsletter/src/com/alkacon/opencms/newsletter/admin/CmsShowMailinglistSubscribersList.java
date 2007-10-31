@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsShowMailinglistSubscribersList.java,v $
- * Date   : $Date: 2007/10/26 14:53:40 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2007/10/31 15:22:47 $
+ * Version: $Revision: 1.4 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -33,13 +33,21 @@ package com.alkacon.opencms.newsletter.admin;
 
 import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.util.CmsStringUtil;
+import org.opencms.workplace.CmsDialog;
 import org.opencms.workplace.list.CmsListColumnDefinition;
 import org.opencms.workplace.list.CmsListDefaultAction;
 import org.opencms.workplace.list.CmsListItem;
 import org.opencms.workplace.list.CmsListMetadata;
 import org.opencms.workplace.list.I_CmsListDirectAction;
+import org.opencms.workplace.tools.accounts.A_CmsEditUserDialog;
+import org.opencms.workplace.tools.accounts.A_CmsOrgUnitDialog;
 import org.opencms.workplace.tools.accounts.CmsShowGroupUsersList;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
@@ -50,7 +58,7 @@ import javax.servlet.jsp.PageContext;
  * @author Michael Moossen
  * @author Andreas Zahner
  * 
- * @version $Revision: 1.3 $ 
+ * @version $Revision: 1.4 $ 
  * 
  * @since 7.0.3 
  */
@@ -77,6 +85,25 @@ public class CmsShowMailinglistSubscribersList extends CmsShowGroupUsersList {
     public CmsShowMailinglistSubscribersList(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         this(new CmsJspActionElement(context, req, res));
+    }
+
+    /**
+     * @see org.opencms.workplace.list.A_CmsListDialog#executeListSingleActions()
+     */
+    public void executeListSingleActions() throws IOException, ServletException {
+
+        String userId = getSelectedItem().getId();
+
+        Map params = new HashMap();
+        params.put(CmsDialog.PARAM_ACTION, CmsDialog.DIALOG_INITIAL);
+        params.put(A_CmsEditUserDialog.PARAM_USERID, userId);
+        params.put(A_CmsOrgUnitDialog.PARAM_OUFQN, getParamOufqn());
+
+        if (getParamListAction().equals(LIST_ACTION_EDIT)) {
+            getToolManager().jspForwardTool(this, "/newsletter/orgunit/subscribers/edit/user", params);
+        } else {
+            throwListUnsupportedActionException();
+        }
     }
 
     /**
