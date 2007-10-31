@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsOrgUnitEditDialog.java,v $
- * Date   : $Date: 2007/10/26 13:01:14 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2007/10/31 15:10:46 $
+ * Version: $Revision: 1.4 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -55,7 +55,7 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.3 $ 
+ * @version $Revision: 1.4 $ 
  * 
  * @since 7.0.3 
  */
@@ -104,7 +104,7 @@ public class CmsOrgUnitEditDialog extends org.opencms.workplace.tools.accounts.C
                     getCms(),
                     m_orgUnitBean.getFqn(),
                     m_orgUnitBean.getDescription(),
-                    0,
+                    CmsOrganizationalUnit.FLAG_HIDE_LOGIN,
                     (String)resources.get(0));
 
                 // remove all groups from the OU that were created by default
