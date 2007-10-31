@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/Attic/CmsNewsletterMailContent.java,v $
- * Date   : $Date: 2007/10/26 14:53:40 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2007/10/31 15:23:02 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -59,9 +59,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.mail.Email;
 
 /**
- * Generates newsletter emails and the list of recipients from a newsletter structured content file.<p>
+ * Generates newsletter emails and the list of recipients from a newsletter structured content VFS file.<p>
  * 
- * Provides some utility methods to generate email previews and get the email contents.<p>
+ * Provides some utility methods to generate email previews and get the email contents as string.<p>
  *  
  * @author Andreas Zahner  
  * 
