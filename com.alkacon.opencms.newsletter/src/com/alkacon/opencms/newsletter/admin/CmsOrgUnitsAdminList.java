@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsOrgUnitsAdminList.java,v $
- * Date   : $Date: 2007/10/26 14:53:40 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2007/11/02 16:00:31 $
+ * Version: $Revision: 1.4 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -60,11 +60,14 @@ import javax.servlet.jsp.PageContext;
  * @author Michael Moossen
  * @author Andreas Zahner
  * 
- * @version $Revision: 1.3 $ 
+ * @version $Revision: 1.4 $ 
  * 
  * @since 7.0.3 
  */
 public class CmsOrgUnitsAdminList extends org.opencms.workplace.tools.accounts.CmsOrgUnitsAdminList {
+
+    /** Parth to the newsletter buttons. */
+    public static final String PATH_NL_BUTTONS = "tools/newsletter/buttons/";
 
     /**
      * Public constructor.<p>
@@ -87,6 +90,30 @@ public class CmsOrgUnitsAdminList extends org.opencms.workplace.tools.accounts.C
     public CmsOrgUnitsAdminList(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         this(new CmsJspActionElement(context, req, res));
+    }
+
+    /**
+     * @see org.opencms.workplace.tools.accounts.A_CmsOrgUnitsList#getGroupIcon()
+     */
+    public String getGroupIcon() {
+
+        return PATH_NL_BUTTONS + "mailinglist.png";
+    }
+
+    /**
+     * @see org.opencms.workplace.tools.accounts.CmsOrgUnitsAdminList#getOverviewIcon()
+     */
+    public String getOverviewIcon() {
+
+        return PATH_NL_BUTTONS + "newsletter_overview.png";
+    }
+
+    /**
+     * @see org.opencms.workplace.tools.accounts.A_CmsOrgUnitsList#getUserIcon()
+     */
+    public String getUserIcon() {
+
+        return PATH_NL_BUTTONS + "subscriber.png";
     }
 
     /**
@@ -217,5 +244,5 @@ public class CmsOrgUnitsAdminList extends org.opencms.workplace.tools.accounts.C
         searchAction.addColumn(metadata.getColumnDefinition(LIST_COLUMN_DESCRIPTION));
         metadata.setSearchAction(searchAction);
     }
-    
+
 }

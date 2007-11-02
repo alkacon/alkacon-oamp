@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsNotMailinglistSubscribersList.java,v $
- * Date   : $Date: 2007/10/26 14:53:40 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2007/11/02 16:00:31 $
+ * Version: $Revision: 1.4 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -35,6 +35,7 @@ import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.util.CmsStringUtil;
 import org.opencms.workplace.list.CmsListColumnDefinition;
 import org.opencms.workplace.list.CmsListDefaultAction;
+import org.opencms.workplace.list.CmsListDirectAction;
 import org.opencms.workplace.list.CmsListMetadata;
 import org.opencms.workplace.list.CmsListMultiAction;
 import org.opencms.workplace.list.I_CmsListDirectAction;
@@ -49,7 +50,7 @@ import javax.servlet.jsp.PageContext;
  * @author Michael Moossen
  * @author Andreas Zahner 
  * 
- * @version $Revision: 1.3 $ 
+ * @version $Revision: 1.4 $ 
  * 
  * @since 7.0.3 
  */
@@ -79,6 +80,18 @@ public class CmsNotMailinglistSubscribersList extends org.opencms.workplace.tool
     }
 
     /**
+     * @see org.opencms.workplace.list.A_CmsListDialog#initializeDetail(java.lang.String)
+     */
+    protected void initializeDetail(String detailId) {
+
+        super.initializeDetail(detailId);
+        if (detailId.equals(LIST_DETAIL_OTHEROU)) {
+            getList().getMetadata().getColumnDefinition(LIST_COLUMN_ORGUNIT).setVisible(false);
+            getList().getMetadata().getColumnDefinition(LIST_COLUMN_ORGUNIT).setPrintable(false);
+        }
+    }
+
+    /**
      * @see org.opencms.workplace.CmsWorkplace#initMessages()
      */
     protected void initMessages() {
@@ -100,6 +113,11 @@ public class CmsNotMailinglistSubscribersList extends org.opencms.workplace.tool
         iconCol.setName(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_COLS_ICON_0));
         iconCol.setHelpText(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_COLS_ICON_HELP_0));
 
+        I_CmsListDirectAction iconAction = iconCol.getDirectAction(LIST_ACTION_ICON);
+        iconAction.setName(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_AVAILABLE_NAME_0));
+        iconAction.setHelpText(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_AVAILABLE_HELP_0));
+        iconAction.setIconPath(CmsSubscriberMailinglistsList.PATH_BUTTONS + "subscriber.png");
+
         CmsListColumnDefinition nameCol = metadata.getColumnDefinition(LIST_COLUMN_NAME);
         nameCol.setName(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_COLS_EMAIL_0));
         nameCol.setWidth("100%");
@@ -108,16 +126,22 @@ public class CmsNotMailinglistSubscribersList extends org.opencms.workplace.tool
         addAction.setName(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_DEFACTION_ADD_NAME_0));
         addAction.setHelpText(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_DEFACTION_ADD_HELP_0));
 
-        I_CmsListDirectAction iconAction = iconCol.getDirectAction(LIST_ACTION_ICON);
-        iconAction.setName(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_AVAILABLE_NAME_0));
-        iconAction.setHelpText(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_AVAILABLE_HELP_0));
-
         I_CmsListDirectAction stateAction = metadata.getColumnDefinition(LIST_COLUMN_STATE).getDirectAction(
             LIST_ACTION_ADD);
         stateAction.setName(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_DEFACTION_ADD_NAME_0));
         stateAction.setHelpText(Messages.get().container(Messages.GUI_SUBSCRIBERS_LIST_DEFACTION_ADD_HELP_0));
 
         metadata.getColumnDefinition(LIST_COLUMN_FULLNAME).setVisible(false);
+    }
+
+    /**
+     * @see org.opencms.workplace.tools.accounts.CmsNotGroupUsersList#setIconAction(org.opencms.workplace.list.CmsListColumnDefinition)
+     */
+    protected void setIconAction(CmsListColumnDefinition iconCol) {
+
+        CmsListDirectAction iconAction = new CmsListDefaultAction(LIST_ACTION_ICON);
+        iconAction.setEnabled(false);
+        iconCol.addDirectAction(iconAction);
     }
 
     /**
