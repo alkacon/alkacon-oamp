@@ -4,7 +4,7 @@
 	<info>
 		<creator>Admin</creator>
 		<opencms_version>7.0.3</opencms_version>
-		<createdate>Fri, 26 Oct 2007 14:32:04 GMT</createdate>
+		<createdate>Fri, 02 Nov 2007 15:36:17 GMT</createdate>
 		<project>Offline</project>
 		<export_version>6</export_version>
 	</info>
@@ -98,7 +98,7 @@
 			<destination>system</destination>
 			<type>folder</type>
 			<uuidstructure>cba54503-613c-11dc-8693-f5a391e6c891</uuidstructure>
-			<datelastmodified>Mon, 27 Jun 2005 08:00:00 GMT</datelastmodified>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Wed, 12 Sep 2007 14:31:06 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -213,7 +213,7 @@
 			<type>plain</type>
 			<uuidstructure>7c360f58-83bc-11dc-9551-f5a391e6c891</uuidstructure>
 			<uuidresource>7c360f59-83bc-11dc-9551-f5a391e6c891</uuidresource>
-			<datelastmodified>Fri, 26 Oct 2007 14:17:43 GMT</datelastmodified>
+			<datelastmodified>Fri, 02 Nov 2007 14:59:22 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Fri, 26 Oct 2007 12:10:47 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -285,7 +285,7 @@
 			<type>plain</type>
 			<uuidstructure>96e5a2d6-780a-11dc-9e39-f5a391e6c891</uuidstructure>
 			<uuidresource>96e5a2d7-780a-11dc-9e39-f5a391e6c891</uuidresource>
-			<datelastmodified>Thu, 11 Oct 2007 14:59:39 GMT</datelastmodified>
+			<datelastmodified>Fri, 02 Nov 2007 15:24:53 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Thu, 11 Oct 2007 14:59:39 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -840,7 +840,7 @@
 			<type>jsp</type>
 			<uuidstructure>8efe1ecc-8144-11dc-a91c-f5a391e6c891</uuidstructure>
 			<uuidresource>8efe1ecd-8144-11dc-a91c-f5a391e6c891</uuidresource>
-			<datelastmodified>Wed, 24 Oct 2007 10:31:31 GMT</datelastmodified>
+			<datelastmodified>Fri, 02 Nov 2007 12:41:16 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Tue, 23 Oct 2007 08:47:17 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -852,7 +852,7 @@
 				</property>
 				<property>
 					<name>NavImage</name>
-					<value><![CDATA[tools/accounts/icons/big/import_csv.png]]></value>
+					<value><![CDATA[tools/newsletter/icons/big/subscriber_import.png]]></value>
 				</property>
 				<property>
 					<name>NavInfo</name>
@@ -1855,7 +1855,7 @@
 			<type>image</type>
 			<uuidstructure>9d9a0484-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
 			<uuidresource>9d9a0485-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
+			<datelastmodified>Fri, 02 Nov 2007 12:01:34 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 08 Oct 2007 10:52:51 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -1870,14 +1870,54 @@
 			<accesscontrol/>
 		</file>
 		<file>
-			<source>system/workplace/resources/tools/newsletter/buttons/newsletter.png</source>
-			<destination>system/workplace/resources/tools/newsletter/buttons/newsletter.png</destination>
+			<source>system/workplace/resources/tools/newsletter/buttons/newsletter_overview.png</source>
+			<destination>system/workplace/resources/tools/newsletter/buttons/newsletter_overview.png</destination>
 			<type>image</type>
-			<uuidstructure>9db4434d-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
-			<uuidresource>9db4434e-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Wed, 07 Feb 2007 14:24:31 GMT</datelastmodified>
+			<uuidstructure>08f7a2b5-8939-11dc-bdef-f5a391e6c891</uuidstructure>
+			<uuidresource>08f7a2b6-8939-11dc-bdef-f5a391e6c891</uuidresource>
+			<datelastmodified>Fri, 02 Nov 2007 11:45:09 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Mon, 08 Oct 2007 10:52:51 GMT</datecreated>
+			<datecreated>Fri, 02 Nov 2007 11:44:57 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:20,h:20]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/tools/newsletter/buttons/newsletter_send.png</source>
+			<destination>system/workplace/resources/tools/newsletter/buttons/newsletter_send.png</destination>
+			<type>image</type>
+			<uuidstructure>192f8de8-8953-11dc-820d-f5a391e6c891</uuidstructure>
+			<uuidresource>192f8de9-8953-11dc-820d-f5a391e6c891</uuidresource>
+			<datelastmodified>Fri, 02 Nov 2007 14:51:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 02 Nov 2007 14:51:31 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:20,h:20]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/tools/newsletter/buttons/newsletter_send_disabled.png</source>
+			<destination>system/workplace/resources/tools/newsletter/buttons/newsletter_send_disabled.png</destination>
+			<type>image</type>
+			<uuidstructure>0bb21d56-8955-11dc-afc4-f5a391e6c891</uuidstructure>
+			<uuidresource>0bb21d57-8955-11dc-afc4-f5a391e6c891</uuidresource>
+			<datelastmodified>Fri, 02 Nov 2007 15:05:35 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 02 Nov 2007 15:05:27 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties>
@@ -1895,69 +1935,9 @@
 			<type>image</type>
 			<uuidstructure>9df718c8-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
 			<uuidresource>9df718c9-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
+			<datelastmodified>Fri, 02 Nov 2007 12:37:31 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 08 Oct 2007 10:52:52 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property type="shared">
-					<name>image.size</name>
-					<value><![CDATA[w:20,h:20]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol/>
-		</file>
-		<file>
-			<source>system/workplace/resources/tools/newsletter/buttons/unit_add.png</source>
-			<destination>system/workplace/resources/tools/newsletter/buttons/unit_add.png</destination>
-			<type>image</type>
-			<uuidstructure>9ddcd9ff-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
-			<uuidresource>9ddcda00-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Mon, 08 Oct 2007 10:52:51 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property type="shared">
-					<name>image.size</name>
-					<value><![CDATA[w:24,h:24]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol/>
-		</file>
-		<file>
-			<source>system/workplace/resources/tools/newsletter/buttons/unit_delete.png</source>
-			<destination>system/workplace/resources/tools/newsletter/buttons/unit_delete.png</destination>
-			<type>image</type>
-			<uuidstructure>9de194f2-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
-			<uuidresource>9de194f3-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Mon, 08 Oct 2007 10:52:51 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property type="shared">
-					<name>image.size</name>
-					<value><![CDATA[w:24,h:24]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol/>
-		</file>
-		<file>
-			<source>system/workplace/resources/tools/newsletter/buttons/unit_edit.png</source>
-			<destination>system/workplace/resources/tools/newsletter/buttons/unit_edit.png</destination>
-			<type>image</type>
-			<uuidstructure>9deb0ad5-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
-			<uuidresource>9deb0ad6-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Mon, 08 Oct 2007 10:52:51 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties>
@@ -1996,52 +1976,12 @@
 			<accesscontrol/>
 		</file>
 		<file>
-			<source>system/workplace/resources/tools/newsletter/icons/big/imexport.png</source>
-			<destination>system/workplace/resources/tools/newsletter/icons/big/imexport.png</destination>
-			<type>image</type>
-			<uuidstructure>9e6e44b7-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
-			<uuidresource>9e6e44b8-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Mon, 12 Mar 2007 15:46:05 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Mon, 08 Oct 2007 10:52:52 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property type="shared">
-					<name>image.size</name>
-					<value><![CDATA[w:32,h:32]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol/>
-		</file>
-		<file>
-			<source>system/workplace/resources/tools/newsletter/icons/big/import_csv.png</source>
-			<destination>system/workplace/resources/tools/newsletter/icons/big/import_csv.png</destination>
-			<type>image</type>
-			<uuidstructure>9e77ba9a-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
-			<uuidresource>9e77ba9b-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Mon, 12 Mar 2007 15:46:15 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Mon, 08 Oct 2007 10:52:52 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property type="shared">
-					<name>image.size</name>
-					<value><![CDATA[w:32,h:32]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol/>
-		</file>
-		<file>
 			<source>system/workplace/resources/tools/newsletter/icons/big/mailinglist.png</source>
 			<destination>system/workplace/resources/tools/newsletter/icons/big/mailinglist.png</destination>
 			<type>image</type>
 			<uuidstructure>9e5194ee-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
 			<uuidresource>9e5194ef-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
+			<datelastmodified>Fri, 02 Nov 2007 12:00:18 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 08 Oct 2007 10:52:52 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -2061,7 +2001,7 @@
 			<type>image</type>
 			<uuidstructure>9e5b31e1-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
 			<uuidresource>9e5b31e2-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
+			<datelastmodified>Fri, 02 Nov 2007 12:04:58 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 08 Oct 2007 10:52:52 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -2081,9 +2021,29 @@
 			<type>image</type>
 			<uuidstructure>9e6718c4-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
 			<uuidresource>9e6718c5-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
+			<datelastmodified>Fri, 02 Nov 2007 12:05:04 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 08 Oct 2007 10:52:52 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:32,h:32]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/tools/newsletter/icons/big/mailinglist_sendnewsletter.png</source>
+			<destination>system/workplace/resources/tools/newsletter/icons/big/mailinglist_sendnewsletter.png</destination>
+			<type>image</type>
+			<uuidstructure>eb3ae014-8952-11dc-820d-f5a391e6c891</uuidstructure>
+			<uuidresource>eb3ae015-8952-11dc-820d-f5a391e6c891</uuidresource>
+			<datelastmodified>Fri, 02 Nov 2007 14:50:29 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 02 Nov 2007 14:50:14 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties>
@@ -2101,29 +2061,9 @@
 			<type>image</type>
 			<uuidstructure>9e436418-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
 			<uuidresource>9e436419-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
+			<datelastmodified>Fri, 02 Nov 2007 11:21:46 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 08 Oct 2007 10:52:52 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property type="shared">
-					<name>image.size</name>
-					<value><![CDATA[w:32,h:32]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol/>
-		</file>
-		<file>
-			<source>system/workplace/resources/tools/newsletter/icons/big/newsletter_new.png</source>
-			<destination>system/workplace/resources/tools/newsletter/icons/big/newsletter_new.png</destination>
-			<type>image</type>
-			<uuidstructure>41e9293e-7676-11dc-bdb7-0f1a3424ec8d</uuidstructure>
-			<uuidresource>41e9293f-7676-11dc-bdb7-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Tue, 09 Oct 2007 14:45:19 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties>
@@ -2141,7 +2081,7 @@
 			<type>image</type>
 			<uuidstructure>2f565eab-7676-11dc-bdb7-0f1a3424ec8d</uuidstructure>
 			<uuidresource>2f565eac-7676-11dc-bdb7-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
+			<datelastmodified>Fri, 02 Nov 2007 11:50:03 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Tue, 09 Oct 2007 14:44:48 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -2161,7 +2101,7 @@
 			<type>image</type>
 			<uuidstructure>9f82c215-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
 			<uuidresource>9f82c216-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
+			<datelastmodified>Fri, 02 Nov 2007 12:36:32 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 08 Oct 2007 10:52:54 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -2181,7 +2121,7 @@
 			<type>image</type>
 			<uuidstructure>9f8ea8f8-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
 			<uuidresource>9f8ea8f9-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
+			<datelastmodified>Fri, 02 Nov 2007 12:38:44 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 08 Oct 2007 10:52:54 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -2201,7 +2141,7 @@
 			<type>image</type>
 			<uuidstructure>9f9d00de-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
 			<uuidresource>9f9d00df-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
+			<datelastmodified>Fri, 02 Nov 2007 12:38:52 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 08 Oct 2007 10:52:54 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -2216,14 +2156,14 @@
 			<accesscontrol/>
 		</file>
 		<file>
-			<source>system/workplace/resources/tools/newsletter/icons/big/unit.png</source>
-			<destination>system/workplace/resources/tools/newsletter/icons/big/unit.png</destination>
+			<source>system/workplace/resources/tools/newsletter/icons/big/subscriber_import.png</source>
+			<destination>system/workplace/resources/tools/newsletter/icons/big/subscriber_import.png</destination>
 			<type>image</type>
-			<uuidstructure>9ef3c873-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
-			<uuidresource>9ef3c874-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
+			<uuidstructure>fa26ef14-8940-11dc-bdef-f5a391e6c891</uuidstructure>
+			<uuidresource>fa26ef15-8940-11dc-bdef-f5a391e6c891</uuidresource>
+			<datelastmodified>Fri, 02 Nov 2007 12:41:53 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Mon, 08 Oct 2007 10:52:53 GMT</datecreated>
+			<datecreated>Fri, 02 Nov 2007 12:41:48 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties>
@@ -2241,7 +2181,7 @@
 			<type>image</type>
 			<uuidstructure>9f4e6b96-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
 			<uuidresource>9f4e6b97-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
+			<datelastmodified>Fri, 02 Nov 2007 14:54:47 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 08 Oct 2007 10:52:54 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -2261,7 +2201,7 @@
 			<type>image</type>
 			<uuidstructure>9f57e179-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
 			<uuidresource>9f57e17a-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
+			<datelastmodified>Fri, 02 Nov 2007 14:54:56 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 08 Oct 2007 10:52:54 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -2281,27 +2221,7 @@
 			<type>image</type>
 			<uuidstructure>9f63c85c-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
 			<uuidresource>9f63c85d-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Mon, 08 Oct 2007 10:52:54 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property type="shared">
-					<name>image.size</name>
-					<value><![CDATA[w:32,h:32]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol/>
-		</file>
-		<file>
-			<source>system/workplace/resources/tools/newsletter/icons/big/unit_edit.png</source>
-			<destination>system/workplace/resources/tools/newsletter/icons/big/unit_edit.png</destination>
-			<type>image</type>
-			<uuidstructure>9f6faf3f-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
-			<uuidresource>9f6faf40-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
+			<datelastmodified>Fri, 02 Nov 2007 14:55:05 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 08 Oct 2007 10:52:54 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -2334,7 +2254,7 @@
 			<type>image</type>
 			<uuidstructure>9fccc382-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
 			<uuidresource>9fccc383-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
+			<datelastmodified>Fri, 02 Nov 2007 12:00:38 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 08 Oct 2007 10:52:55 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -2354,7 +2274,7 @@
 			<type>image</type>
 			<uuidstructure>9fc7e17f-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
 			<uuidresource>9fc7e180-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
+			<datelastmodified>Fri, 02 Nov 2007 11:24:30 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 08 Oct 2007 10:52:55 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -2374,7 +2294,7 @@
 			<type>image</type>
 			<uuidstructure>9fdaf458-758c-11dc-8e34-0f1a3424ec8d</uuidstructure>
 			<uuidresource>9fdaf459-758c-11dc-8e34-0f1a3424ec8d</uuidresource>
-			<datelastmodified>Wed, 07 Feb 2007 11:31:00 GMT</datelastmodified>
+			<datelastmodified>Fri, 02 Nov 2007 12:37:14 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 08 Oct 2007 10:52:55 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -2438,11 +2358,11 @@
 			<source>system/workplace/resources/filetypes/alkacon-newsletter.png</source>
 			<destination>system/workplace/resources/filetypes/alkacon-newsletter.png</destination>
 			<type>image</type>
-			<uuidstructure>8ca584b5-6759-11dc-b574-f5a391e6c891</uuidstructure>
-			<uuidresource>8ca584b6-6759-11dc-b574-f5a391e6c891</uuidresource>
-			<datelastmodified>Thu, 20 Sep 2007 10:54:12 GMT</datelastmodified>
+			<uuidstructure>468ebc29-66c2-11dc-95db-f5a391e6c891</uuidstructure>
+			<uuidresource>468ebc2a-66c2-11dc-95db-f5a391e6c891</uuidresource>
+			<datelastmodified>Fri, 02 Nov 2007 09:49:00 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Thu, 20 Sep 2007 09:12:02 GMT</datecreated>
+			<datecreated>Wed, 19 Sep 2007 15:09:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties>
@@ -2478,11 +2398,11 @@
 			<source>system/workplace/resources/filetypes/alkacon-nl-subscribe.png</source>
 			<destination>system/workplace/resources/filetypes/alkacon-nl-subscribe.png</destination>
 			<type>image</type>
-			<uuidstructure>468ebc29-66c2-11dc-95db-f5a391e6c891</uuidstructure>
-			<uuidresource>468ebc2a-66c2-11dc-95db-f5a391e6c891</uuidresource>
-			<datelastmodified>Thu, 20 Sep 2007 10:54:26 GMT</datelastmodified>
+			<uuidstructure>8ca584b5-6759-11dc-b574-f5a391e6c891</uuidstructure>
+			<uuidresource>8ca584b6-6759-11dc-b574-f5a391e6c891</uuidresource>
+			<datelastmodified>Fri, 02 Nov 2007 09:49:00 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Wed, 19 Sep 2007 15:09:10 GMT</datecreated>
+			<datecreated>Thu, 20 Sep 2007 09:12:02 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties>
