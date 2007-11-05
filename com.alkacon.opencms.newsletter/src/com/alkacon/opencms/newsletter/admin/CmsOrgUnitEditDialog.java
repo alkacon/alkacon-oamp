@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsOrgUnitEditDialog.java,v $
- * Date   : $Date: 2007/10/31 15:10:46 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2007/11/05 14:03:01 $
+ * Version: $Revision: 1.5 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -33,7 +33,6 @@ package com.alkacon.opencms.newsletter.admin;
 
 import com.alkacon.opencms.newsletter.CmsNewsletterManager;
 
-import org.opencms.file.CmsGroup;
 import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.main.CmsException;
 import org.opencms.main.OpenCms;
@@ -43,7 +42,6 @@ import org.opencms.widgets.CmsTextareaWidget;
 import org.opencms.workplace.CmsWidgetDialogParameter;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,7 +53,7 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.4 $ 
+ * @version $Revision: 1.5 $ 
  * 
  * @since 7.0.3 
  */
@@ -100,20 +98,12 @@ public class CmsOrgUnitEditDialog extends org.opencms.workplace.tools.accounts.C
                 m_orgUnitBean.setFqn(m_orgUnitBean.getParentOu() + CmsNewsletterManager.NEWSLETTER_OU_SIMPLENAME);
                 List resources = m_orgUnitBean.getResources();
                 // create the newsletter OU
-                CmsOrganizationalUnit newOrgUnit = OpenCms.getOrgUnitManager().createOrganizationalUnit(
+                OpenCms.getOrgUnitManager().createOrganizationalUnit(
                     getCms(),
                     m_orgUnitBean.getFqn(),
                     m_orgUnitBean.getDescription(),
-                    CmsOrganizationalUnit.FLAG_HIDE_LOGIN,
+                    CmsOrganizationalUnit.FLAG_HIDE + CmsOrganizationalUnit.FLAG_NO_DEFAULTS,
                     (String)resources.get(0));
-
-                // remove all groups from the OU that were created by default
-                List groups = OpenCms.getOrgUnitManager().getGroups(getCms(), newOrgUnit.getName(), false);
-                Iterator i = groups.iterator();
-                while (i.hasNext()) {
-                    CmsGroup group = (CmsGroup)i.next();
-                    getCms().deleteGroup(group.getName());
-                }
             }
         } catch (Throwable t) {
             errors.add(t);
