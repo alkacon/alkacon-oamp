@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsNewsletterResourcesCollector.java,v $
- * Date   : $Date: 2007/10/26 14:53:40 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2007/11/09 13:43:43 $
+ * Version: $Revision: 1.5 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -31,6 +31,7 @@
 
 package com.alkacon.opencms.newsletter.admin;
 
+import com.alkacon.opencms.newsletter.CmsNewsletterMailData;
 import com.alkacon.opencms.newsletter.CmsNewsletterManager;
 
 import org.opencms.file.CmsGroup;
@@ -91,7 +92,13 @@ public class CmsNewsletterResourcesCollector extends A_CmsListResourceCollector 
      */
     public List getResources(CmsObject cms, Map params) throws CmsException {
 
-        int typeId = OpenCms.getResourceManager().getResourceType(CmsNewsletterManager.RESOURCETYPE_NEWSLETTER_NAME).getTypeId();
+        String typeName = CmsNewsletterMailData.RESOURCETYPE_NEWSLETTER_NAME;
+        try {
+            typeName = CmsNewsletterManager.getMailDataResourceTypeName();
+        } catch (Exception e) {
+            // should never happen
+        }
+        int typeId = OpenCms.getResourceManager().getResourceType(typeName).getTypeId();
         CmsResourceFilter filter = CmsResourceFilter.ONLY_VISIBLE_NO_DELETED.addRequireType(typeId);
         return cms.readResources("/", filter, true);
     }

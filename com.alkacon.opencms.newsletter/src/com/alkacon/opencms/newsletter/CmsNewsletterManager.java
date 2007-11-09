@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterManager.java,v $
- * Date   : $Date: 2007/11/09 10:53:49 $
- * Version: $Revision: 1.8 $
+ * Date   : $Date: 2007/11/09 13:43:43 $
+ * Version: $Revision: 1.9 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -83,9 +83,6 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
     /** The name of the property where the send data (date and mailing list) is written to. */
     public static final String PROPERTY_NEWSLETTER_DATA = "newsletter";
 
-    /** Resource type name of a newsletter resource. */
-    public static final String RESOURCETYPE_NEWSLETTER_NAME = "alkacon-newsletter";
-
     /** Name of the additional user info: flag to determine if the newsletter user is active. */
     public static final String USER_ADDITIONALINFO_ACTIVE = "AlkNewsletter_ActiveUser:";
 
@@ -104,13 +101,13 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
      * The instance must be correctly initialized afterwards using {@link I_CmsNewsletterMailData#initialize(CmsObject, CmsGroup, String)}.<p>
      * 
      * @return the mail data class generating the newsletter mail and recipients
-     * @throws Exception if instanciating the class fails
+     * @throws Exception if instanciating the mail data class fails
      */
     public static I_CmsNewsletterMailData getMailData() throws Exception {
 
         String className = OpenCms.getModuleManager().getModule(MODULE_NAME).getParameter(
             MODULE_PARAM_CLASS_MAILDATA,
-            CmsNewsletterMailContent.class.getName());
+            CmsNewsletterMailData.class.getName());
         return (I_CmsNewsletterMailData)Class.forName(className).newInstance();
     }
 
@@ -121,13 +118,24 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
      * @param group the group to send the newsletter to
      * @param fileName the fileName of the newsletter
      * @return the initialized mail data class generating the newsletter mail and recipients
-     * @throws Exception if instanciating the class fails
+     * @throws Exception if instanciating the mail data class fails
      */
     public static I_CmsNewsletterMailData getMailData(CmsObject cms, CmsGroup group, String fileName) throws Exception {
 
         I_CmsNewsletterMailData result = getMailData();
         result.initialize(cms, group, fileName);
         return result;
+    }
+
+    /**
+     * Returns the resource type name of the mail data XML content.<p>
+     * 
+     * @return the resource type name of the mail data XML content
+     * @throws Exception if instanciating the mail data class fails
+     */
+    public static String getMailDataResourceTypeName() throws Exception {
+
+        return getMailData().getResourceTypeName();
     }
 
     /**

@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/I_CmsNewsletterMailData.java,v $
- * Date   : $Date: 2007/11/09 10:53:49 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/11/09 13:43:43 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -45,7 +45,7 @@ import org.apache.commons.mail.Email;
  * 
  * @author Andreas Zahner
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 7.0.3 
  */
@@ -81,6 +81,13 @@ public interface I_CmsNewsletterMailData {
      * @throws CmsException if getting the recipients from a mailing list group fails
      */
     List getRecipients() throws CmsException;
+
+    /**
+     * Returns the resource type name of the newsletter XML content to use.<p>
+     * 
+     * @return the resource type name of the newsletter XML content to use
+     */
+    String getResourceTypeName();
 
     /**
      * Initializes the necessary members to generate the email and the list of recipients.<p>

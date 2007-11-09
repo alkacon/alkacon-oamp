@@ -1,7 +1,7 @@
 /*
- * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/Attic/CmsNewsletterMailContent.java,v $
- * Date   : $Date: 2007/11/09 10:53:49 $
- * Version: $Revision: 1.4 $
+ * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterMailData.java,v $
+ * Date   : $Date: 2007/11/09 13:43:43 $
+ * Version: $Revision: 1.1 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -70,7 +70,7 @@ import org.apache.commons.mail.Email;
  * 
  * @since 7.0.3 
  */
-public class CmsNewsletterMailContent implements I_CmsNewsletterMailData {
+public class CmsNewsletterMailData implements I_CmsNewsletterMailData {
 
     /** The node name for the BCC node. */
     protected static final String NODE_BCC = "BCC";
@@ -99,11 +99,14 @@ public class CmsNewsletterMailContent implements I_CmsNewsletterMailData {
     /** The node name for the To node. */
     protected static final String NODE_TO = "To";
 
+    /** Resource type name of a newsletter resource. */
+    public static final String RESOURCETYPE_NEWSLETTER_NAME = "alkacon-newsletter";
+
     /** The xpath for the Config node including trailing "/". */
     protected static final String XPATH_CONFIG = "Config/";
 
     /** The log object for this class. */
-    private static final Log LOG = CmsLog.getLog(CmsNewsletterMailContent.class);
+    private static final Log LOG = CmsLog.getLog(CmsNewsletterMailData.class);
 
     /** The OpenCms user context. */
     private CmsObject m_cms;
@@ -122,7 +125,7 @@ public class CmsNewsletterMailContent implements I_CmsNewsletterMailData {
      * 
      * Be sure to call {@link #initialize(CmsObject, CmsGroup, String)} to get correct results.<p>
      */
-    public CmsNewsletterMailContent() {
+    public CmsNewsletterMailData() {
 
         // noop
     }
@@ -135,7 +138,7 @@ public class CmsNewsletterMailContent implements I_CmsNewsletterMailData {
      * @param cms the current OpenCms user context
      * @throws CmsException if reading or unmarshalling the file fails
      */
-    public CmsNewsletterMailContent(String fileName, CmsGroup group, CmsObject cms)
+    public CmsNewsletterMailData(String fileName, CmsGroup group, CmsObject cms)
     throws CmsException {
 
         initialize(cms, group, fileName);
@@ -235,6 +238,14 @@ public class CmsNewsletterMailContent implements I_CmsNewsletterMailData {
             result = previewHtml.toString();
         }
         return result;
+    }
+
+    /**
+     * @see com.alkacon.opencms.newsletter.I_CmsNewsletterMailData#getResourceTypeName()
+     */
+    public String getResourceTypeName() {
+    
+        return RESOURCETYPE_NEWSLETTER_NAME;
     }
 
     /**
