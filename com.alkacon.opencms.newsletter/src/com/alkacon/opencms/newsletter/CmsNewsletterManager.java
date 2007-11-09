@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterManager.java,v $
- * Date   : $Date: 2007/10/26 14:53:40 $
- * Version: $Revision: 1.7 $
+ * Date   : $Date: 2007/11/09 10:53:49 $
+ * Version: $Revision: 1.8 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -62,6 +62,9 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
     /** The name of the newsletter module. */
     public static final String MODULE_NAME = CmsNewsletterManager.class.getPackage().getName();
 
+    /** Module parameter name for the class name to use for generating the newsletter mail data. */
+    public static final String MODULE_PARAM_CLASS_MAILDATA = "class_maildata";
+
     /** Module parameter name for the user password of the newsletter users. */
     public static final String MODULE_PARAM_PASSWORD_USER = "user_password";
 
@@ -94,6 +97,38 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
 
     /** The admin CmsObject that is used for user/group operations. */
     private CmsObject m_adminCms;
+
+    /**
+     * Returns the mail data class generating the newsletter mail and recipients.<p>
+     * 
+     * The instance must be correctly initialized afterwards using {@link I_CmsNewsletterMailData#initialize(CmsObject, CmsGroup, String)}.<p>
+     * 
+     * @return the mail data class generating the newsletter mail and recipients
+     * @throws Exception if instanciating the class fails
+     */
+    public static I_CmsNewsletterMailData getMailData() throws Exception {
+
+        String className = OpenCms.getModuleManager().getModule(MODULE_NAME).getParameter(
+            MODULE_PARAM_CLASS_MAILDATA,
+            CmsNewsletterMailContent.class.getName());
+        return (I_CmsNewsletterMailData)Class.forName(className).newInstance();
+    }
+
+    /**
+     * Returns the initialized mail data class generating the newsletter mail and recipients.<p>
+     * 
+     * @param cms the current OpenCms user context
+     * @param group the group to send the newsletter to
+     * @param fileName the fileName of the newsletter
+     * @return the initialized mail data class generating the newsletter mail and recipients
+     * @throws Exception if instanciating the class fails
+     */
+    public static I_CmsNewsletterMailData getMailData(CmsObject cms, CmsGroup group, String fileName) throws Exception {
+
+        I_CmsNewsletterMailData result = getMailData();
+        result.initialize(cms, group, fileName);
+        return result;
+    }
 
     /**
      * Returns the organizational units that can contain mailing lists to display.<p>

@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsNewsletterListSend.java,v $
- * Date   : $Date: 2007/10/26 14:53:40 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2007/11/09 10:53:49 $
+ * Version: $Revision: 1.4 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -32,13 +32,13 @@
 package com.alkacon.opencms.newsletter.admin;
 
 import com.alkacon.opencms.newsletter.CmsNewsletterMail;
-import com.alkacon.opencms.newsletter.CmsNewsletterMailContent;
+import com.alkacon.opencms.newsletter.CmsNewsletterManager;
+import com.alkacon.opencms.newsletter.I_CmsNewsletterMailData;
 
 import org.opencms.db.CmsUserSettings;
 import org.opencms.file.CmsGroup;
 import org.opencms.jsp.CmsJspActionElement;
-import org.opencms.main.CmsException;
-import org.opencms.main.OpenCms;
+import org.opencms.main.CmsLog;
 import org.opencms.util.CmsStringUtil;
 import org.opencms.util.CmsUUID;
 import org.opencms.workplace.explorer.CmsExplorer;
@@ -52,11 +52,11 @@ import org.opencms.workplace.list.CmsListMetadata;
 import org.opencms.workplace.list.CmsListOrderEnum;
 import org.opencms.workplace.list.I_CmsListResourceCollector;
 
-import java.util.Locale;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
+
+import org.apache.commons.logging.Log;
 
 /**
  * Newsletter list to select which newsletter is sent.<p>
@@ -131,6 +131,9 @@ public class CmsNewsletterListSend extends A_CmsListExplorerDialog {
 
         throwListUnsupportedActionException();
     }
+    
+    /** The log object for this class. */
+    private static final Log LOG = CmsLog.getLog(CmsNewsletterListSend.class);
 
     /**
      * @see org.opencms.workplace.list.A_CmsListDialog#executeListSingleActions()
@@ -140,26 +143,30 @@ public class CmsNewsletterListSend extends A_CmsListExplorerDialog {
         if (getParamListAction().equals(LIST_ACTION_SEND)) {
             // send the newsletter to the selected list
             String resourceName = (String)getSelectedItem().get(LIST_COLUMN_NAME);
-            Locale locale = OpenCms.getLocaleManager().getDefaultLocale(getCms(), resourceName);
             CmsUUID groupId = new CmsUUID(getParamGroupId());
             try {
                 CmsGroup group = getCms().readGroup(groupId);
-                // send the emails to the mailing list group
-                CmsNewsletterMailContent nlMailContent = new CmsNewsletterMailContent(
-                    resourceName,
-                    group,
-                    getCms(),
-                    locale);
-                if (nlMailContent.writeSendData()) {
+                // generate the newsletter mail and list of recipients
+                I_CmsNewsletterMailData mailData = CmsNewsletterManager.getMailData(getCms(), group, resourceName);
+                String rootPath = resourceName;
+                if (mailData.getContent() != null) {
+                    rootPath = mailData.getContent().getFile().getRootPath();
+                }
+                if (mailData.isSendable()) {
+                    //send the emails to the mailing list group
                     CmsNewsletterMail nlMail = new CmsNewsletterMail(
-                        nlMailContent.getEmail(),
-                        nlMailContent.getRecipients(),
-                        nlMailContent.getContent().getFile().getRootPath());
+                        mailData.getEmail(),
+                        mailData.getRecipients(),
+                        rootPath);
                     nlMail.start();
                     getList().clear();
                 }
-            } catch (CmsException e) {
+            } catch (Exception e) {
                 // should never happen
+                if (LOG.isErrorEnabled()) {
+                    LOG.error(Messages.get().container(Messages.LOG_NEWSLETTER_SEND_FAILED_0), e);
+                }
+                throwListUnsupportedActionException();
             }
         } else {
             throwListUnsupportedActionException();

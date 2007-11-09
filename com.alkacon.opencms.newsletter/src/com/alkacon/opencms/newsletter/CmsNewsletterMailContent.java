@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/Attic/CmsNewsletterMailContent.java,v $
- * Date   : $Date: 2007/10/31 15:23:02 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2007/11/09 10:53:49 $
+ * Version: $Revision: 1.4 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -42,6 +42,7 @@ import org.opencms.mail.CmsHtmlMail;
 import org.opencms.mail.CmsSimpleMail;
 import org.opencms.main.CmsException;
 import org.opencms.main.CmsLog;
+import org.opencms.main.OpenCms;
 import org.opencms.util.CmsHtmlExtractor;
 import org.opencms.util.CmsStringUtil;
 import org.opencms.xml.content.CmsXmlContent;
@@ -69,7 +70,7 @@ import org.apache.commons.mail.Email;
  * 
  * @since 7.0.3 
  */
-public class CmsNewsletterMailContent {
+public class CmsNewsletterMailContent implements I_CmsNewsletterMailData {
 
     /** The node name for the BCC node. */
     protected static final String NODE_BCC = "BCC";
@@ -117,121 +118,33 @@ public class CmsNewsletterMailContent {
     private Locale m_locale;
 
     /**
+     * Empty constructor.<p>
+     * 
+     * Be sure to call {@link #initialize(CmsObject, CmsGroup, String)} to get correct results.<p>
+     */
+    public CmsNewsletterMailContent() {
+
+        // noop
+    }
+
+    /**
      * Constructor, with parameters.<p>
      * 
      * @param fileName the fileName of the newsletter
      * @param group the group to send the newsletter to
      * @param cms the current OpenCms user context
-     * @param locale the locale to use for the content
      * @throws CmsException if reading or unmarshalling the file fails
      */
-    public CmsNewsletterMailContent(String fileName, CmsGroup group, CmsObject cms, Locale locale)
+    public CmsNewsletterMailContent(String fileName, CmsGroup group, CmsObject cms)
     throws CmsException {
 
-        CmsFile file = cms.readFile(fileName);
-        m_content = CmsXmlContentFactory.unmarshal(cms, file);
-        m_group = group;
-        m_cms = cms;
-        m_locale = locale;
+        initialize(cms, group, fileName);
     }
 
     /**
-     * Returns the email content from the specified newsletter file.<p>
+     * Returns the newsletter xml content.<p>
      * 
-     * @param content the unmarshalled content of the newsletter
-     * @param cms the current OpenCms user context
-     * @param locale the locale to use for the content
-     * @return the email content
-     * @throws CmsException if unmarshalling the file fails
-     */
-    public static String getEmailContent(CmsXmlContent content, CmsObject cms, Locale locale) throws CmsException {
-
-        String text = content.getStringValue(cms, NODE_TEXT, locale);
-        boolean isHtmlMail = Boolean.valueOf(content.getStringValue(cms, XPATH_CONFIG + NODE_HTML, locale)).booleanValue();
-        if (isHtmlMail) {
-            // create the content of the HTML mail
-            StringBuffer mailHtml = new StringBuffer(4096);
-            String mailHead = "";
-            String mailFoot = "";
-            boolean foundExternalConfig = false;
-            if (content.hasValue(XPATH_CONFIG + NODE_CONFFILE, locale)) {
-                // optional external configuration file specified, use this as mail configuration
-                String path = content.getStringValue(cms, XPATH_CONFIG + NODE_CONFFILE, locale);
-                if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(path)
-                    && cms.existsResource(path)
-                    && !CmsResource.isFolder(path)) {
-                    CmsFile mailConfig = cms.readFile(path);
-                    CmsXmlContent mailContent = CmsXmlContentFactory.unmarshal(cms, mailConfig);
-                    // get the mail head and foot from the external configuration file content
-                    if (mailContent.hasValue(NODE_MAILHEAD, locale)) {
-                        mailHead = mailContent.getStringValue(cms, NODE_MAILHEAD, locale);
-                        mailFoot = mailContent.getStringValue(cms, NODE_MAILFOOT, locale);
-                        foundExternalConfig = true;
-                    }
-                }
-            }
-            if (!foundExternalConfig) {
-                // no external configuration specified, use internal configuration values
-                mailHead = content.getStringValue(cms, XPATH_CONFIG + NODE_MAILHEAD, locale);
-                mailFoot = content.getStringValue(cms, XPATH_CONFIG + NODE_MAILFOOT, locale);
-            }
-            mailHtml.append(mailHead);
-            mailHtml.append(text);
-            mailHtml.append(mailFoot);
-            return mailHtml.toString();
-        } else {
-            // create the content of the text mail
-            try {
-                return CmsHtmlExtractor.extractText(text, cms.getRequestContext().getEncoding());
-            } catch (Exception e) {
-                // error extracting text, return unmodified text                
-                return text;
-            }
-        }
-    }
-
-    /**
-     * Returns the email content from the specified newsletter file.<p>
-     * 
-     * @param fileName the fileName of the newsletter
-     * @param cms the current OpenCms user context
-     * @param locale the locale to use for the content
-     * @return the email content
-     * @throws CmsException if reading or unmarshalling the file fails
-     */
-    public static String getEmailContent(String fileName, CmsObject cms, Locale locale) throws CmsException {
-
-        CmsFile file = cms.readFile(fileName);
-        CmsXmlContent content = CmsXmlContentFactory.unmarshal(cms, file);
-        return getEmailContent(content, cms, locale);
-    }
-
-    /**
-     * Returns the email content to be shown in a preview, generates a valid html page that can be used.<p>
-     *  
-     * @param fileName the fileName of the newsletter to preview
-     * @param cms the current OpenCms user context
-     * @param locale the locale to use for the content
-     * @return the email content to be shown in a preview as html page
-     * @throws CmsException if reading or unmarshalling the file fails
-     */
-    public static String getEmailContentPreview(String fileName, CmsObject cms, Locale locale) throws CmsException {
-
-        String result = getEmailContent(fileName, cms, locale);
-        if (result.indexOf("</body>") == -1) {
-            StringBuffer previewHtml = new StringBuffer(result.length() + 256);
-            previewHtml.append("<html><head></head><body style=\"background-color: #FFF;\">\n<pre style=\"font-family: Courier New, monospace; font-size: 13px; color: #000;\">");
-            previewHtml.append(result);
-            previewHtml.append("</pre>\n</body></html>");
-            result = previewHtml.toString();
-        }
-        return result;
-    }
-
-    /**
-     * Returns the newsletter content.<p>
-     * 
-     * @return the newsletter content
+     * @return the newsletter xml content
      */
     public CmsXmlContent getContent() {
 
@@ -269,7 +182,7 @@ public class CmsNewsletterMailContent {
 
             mail.setSubject(subject);
             // create the email content and use it as HTML message
-            mail.setHtmlMsg(getEmailContent(getContent(), getCms(), getLocale()));
+            mail.setHtmlMsg(getEmailContent());
             // extract the text from the HTML field
             try {
                 text = CmsHtmlExtractor.extractText(text, getCms().getRequestContext().getEncoding());
@@ -306,6 +219,22 @@ public class CmsNewsletterMailContent {
             mail.setCharset(getCms().getRequestContext().getEncoding());
             return mail;
         }
+    }
+
+    /**
+     * @see com.alkacon.opencms.newsletter.I_CmsNewsletterMailData#getEmailContentPreview()
+     */
+    public String getEmailContentPreview() throws CmsException {
+
+        String result = getEmailContent();
+        if (result.indexOf("</body>") == -1) {
+            StringBuffer previewHtml = new StringBuffer(result.length() + 256);
+            previewHtml.append("<html><head></head><body style=\"background-color: #FFF;\">\n<pre style=\"font-family: Courier New, monospace; font-size: 13px; color: #000;\">");
+            previewHtml.append(result);
+            previewHtml.append("</pre>\n</body></html>");
+            result = previewHtml.toString();
+        }
+        return result;
     }
 
     /**
@@ -355,12 +284,21 @@ public class CmsNewsletterMailContent {
     }
 
     /**
-     * Writes the send data (date and mailing list group id to a property of the newsletter VFS resource.<p>
-     * 
-     * @return true if writing the send data was successful, otherwise false
-     * @throws CmsException if writing goes wrong
+     * @see com.alkacon.opencms.newsletter.I_CmsNewsletterMailData#initialize(org.opencms.file.CmsObject, org.opencms.file.CmsGroup, java.lang.String)
      */
-    public boolean writeSendData() throws CmsException {
+    public void initialize(CmsObject cms, CmsGroup group, String fileName) throws CmsException {
+
+        CmsFile file = cms.readFile(fileName);
+        m_content = CmsXmlContentFactory.unmarshal(cms, file);
+        m_group = group;
+        m_cms = cms;
+        m_locale = OpenCms.getLocaleManager().getDefaultLocale(getCms(), fileName);
+    }
+
+    /**
+     * @see com.alkacon.opencms.newsletter.I_CmsNewsletterMailData#isSendable()
+     */
+    public boolean isSendable() throws CmsException {
 
         CmsFile file = getContent().getFile();
         String resourceName = getCms().getSitePath(file);
@@ -384,6 +322,59 @@ public class CmsNewsletterMailContent {
             getCms().unlockResource(resourceName);
         }
         return true;
+    }
+
+    /**
+     * Returns the email content from the newsletter VFS file.<p>
+     * 
+     * @return the email content
+     * @throws CmsException if reading or unmarshalling the file fails
+     */
+    protected String getEmailContent() throws CmsException {
+
+        String text = getContent().getStringValue(getCms(), NODE_TEXT, getLocale());
+        boolean isHtmlMail = Boolean.valueOf(
+            getContent().getStringValue(getCms(), XPATH_CONFIG + NODE_HTML, getLocale())).booleanValue();
+        if (isHtmlMail) {
+            // create the content of the HTML mail
+            StringBuffer mailHtml = new StringBuffer(4096);
+            String mailHead = "";
+            String mailFoot = "";
+            boolean foundExternalConfig = false;
+            if (getContent().hasValue(XPATH_CONFIG + NODE_CONFFILE, getLocale())) {
+                // optional external configuration file specified, use this as mail configuration
+                String path = getContent().getStringValue(getCms(), XPATH_CONFIG + NODE_CONFFILE, getLocale());
+                if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(path)
+                    && getCms().existsResource(path)
+                    && !CmsResource.isFolder(path)) {
+                    CmsFile mailConfig = getCms().readFile(path);
+                    CmsXmlContent mailContent = CmsXmlContentFactory.unmarshal(getCms(), mailConfig);
+                    // get the mail head and foot from the external configuration file content
+                    if (mailContent.hasValue(NODE_MAILHEAD, getLocale())) {
+                        mailHead = mailContent.getStringValue(getCms(), NODE_MAILHEAD, getLocale());
+                        mailFoot = mailContent.getStringValue(getCms(), NODE_MAILFOOT, getLocale());
+                        foundExternalConfig = true;
+                    }
+                }
+            }
+            if (!foundExternalConfig) {
+                // no external configuration specified, use internal configuration values
+                mailHead = getContent().getStringValue(getCms(), XPATH_CONFIG + NODE_MAILHEAD, getLocale());
+                mailFoot = getContent().getStringValue(getCms(), XPATH_CONFIG + NODE_MAILFOOT, getLocale());
+            }
+            mailHtml.append(mailHead);
+            mailHtml.append(text);
+            mailHtml.append(mailFoot);
+            return mailHtml.toString();
+        } else {
+            // create the content of the text mail
+            try {
+                return CmsHtmlExtractor.extractText(text, getCms().getRequestContext().getEncoding());
+            } catch (Exception e) {
+                // error extracting text, return unmodified text                
+                return text;
+            }
+        }
     }
 
     /**

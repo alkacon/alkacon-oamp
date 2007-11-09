@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/Messages.java,v $
- * Date   : $Date: 2007/10/26 14:53:40 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2007/11/09 10:53:49 $
+ * Version: $Revision: 1.7 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -461,6 +461,9 @@ public final class Messages extends A_CmsMessageBundle {
 
     /** Message constant for key in the resource bundle. */
     public static final String GUI_SUBSCRIBERS_LIST_NAME_0 = "GUI_SUBSCRIBERS_LIST_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String LOG_NEWSLETTER_SEND_FAILED_0 = "LOG_NEWSLETTER_SEND_FAILED_0";
 
     /** Name of the used resource bundle. */
     private static final String BUNDLE_NAME = "com.alkacon.opencms.newsletter.admin.messages";

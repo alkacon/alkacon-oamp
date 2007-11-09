@@ -54,7 +54,7 @@
 	<div class="fieldlabel"><fmt:message key="label.AlkaconNewsletterMail.Subject" /></div>
 	<div class="fieldtext"><strong><cms:contentshow element="Subject" /></strong></div>
 </div>
-<iframe name="email" src="<cms:link>detail-newsletter-iframe.jsp?uri=<cms:contentshow element="%(opencms.filename)" />&__locale=<cms:contentshow element="%(request.locale)" /></cms:link>" frameborder="0" ></iframe>
+<iframe name="email" src="<cms:link>detail-newsletter-iframe.jsp?uri=<cms:contentshow element="%(opencms.filename)" /></cms:link>" frameborder="0" ></iframe>
 
 </body>
 </html>
