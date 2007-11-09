@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/Messages.java,v $
- * Date   : $Date: 2007/10/26 14:53:40 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2007/11/09 15:26:41 $
+ * Version: $Revision: 1.7 $
  *
  * Copyright (c) 2005 Alkacon Software GmbH (http://www.alkacon.com)
  * All rights reserved.
@@ -36,7 +36,7 @@ import org.opencms.i18n.I_CmsMessageBundle;
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision $ 
+ * @version $Revision: 1.7 $ 
  * 
  * @since 7.0.3 
  */

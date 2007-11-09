@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterMailData.java,v $
- * Date   : $Date: 2007/11/09 13:43:43 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/11/09 15:26:41 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -34,27 +34,17 @@ package com.alkacon.opencms.newsletter;
 import org.opencms.file.CmsFile;
 import org.opencms.file.CmsGroup;
 import org.opencms.file.CmsObject;
-import org.opencms.file.CmsProperty;
 import org.opencms.file.CmsResource;
-import org.opencms.file.CmsUser;
-import org.opencms.lock.CmsLock;
 import org.opencms.mail.CmsHtmlMail;
 import org.opencms.mail.CmsSimpleMail;
 import org.opencms.main.CmsException;
 import org.opencms.main.CmsLog;
-import org.opencms.main.OpenCms;
 import org.opencms.util.CmsHtmlExtractor;
 import org.opencms.util.CmsStringUtil;
 import org.opencms.xml.content.CmsXmlContent;
 import org.opencms.xml.content.CmsXmlContentFactory;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-
 import javax.mail.MessagingException;
-import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.mail.Email;
@@ -66,20 +56,14 @@ import org.apache.commons.mail.Email;
  *  
  * @author Andreas Zahner  
  * 
- * @version $Revision $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 7.0.3 
  */
-public class CmsNewsletterMailData implements I_CmsNewsletterMailData {
-
-    /** The node name for the BCC node. */
-    protected static final String NODE_BCC = "BCC";
+public class CmsNewsletterMailData extends A_CmsNewsletterMailData {
 
     /** The node name for the ConfFile node. */
     protected static final String NODE_CONFFILE = "ConfFile";
-
-    /** The node name for the From node. */
-    protected static final String NODE_FROM = "From";
 
     /** The node name for the HTML node. */
     protected static final String NODE_HTML = "Html";
@@ -90,14 +74,8 @@ public class CmsNewsletterMailData implements I_CmsNewsletterMailData {
     /** The node name for the MailHead node. */
     protected static final String NODE_MAILHEAD = "MailHead";
 
-    /** The node name for the Subject node. */
-    protected static final String NODE_SUBJECT = "Subject";
-
     /** The node name for the Text node. */
     protected static final String NODE_TEXT = "Text";
-
-    /** The node name for the To node. */
-    protected static final String NODE_TO = "To";
 
     /** Resource type name of a newsletter resource. */
     public static final String RESOURCETYPE_NEWSLETTER_NAME = "alkacon-newsletter";
@@ -107,18 +85,6 @@ public class CmsNewsletterMailData implements I_CmsNewsletterMailData {
 
     /** The log object for this class. */
     private static final Log LOG = CmsLog.getLog(CmsNewsletterMailData.class);
-
-    /** The OpenCms user context. */
-    private CmsObject m_cms;
-
-    /** The newsletter content. */
-    private CmsXmlContent m_content;
-
-    /** The group to send the newsletter to. */
-    private CmsGroup m_group;
-
-    /** The Locale to use to read the newsletter content. */
-    private Locale m_locale;
 
     /**
      * Empty constructor.<p>
@@ -142,16 +108,6 @@ public class CmsNewsletterMailData implements I_CmsNewsletterMailData {
     throws CmsException {
 
         initialize(cms, group, fileName);
-    }
-
-    /**
-     * Returns the newsletter xml content.<p>
-     * 
-     * @return the newsletter xml content
-     */
-    public CmsXmlContent getContent() {
-
-        return m_content;
     }
 
     /**
@@ -249,93 +205,6 @@ public class CmsNewsletterMailData implements I_CmsNewsletterMailData {
     }
 
     /**
-     * Returns the recipients of the newsletter mail, items are of type {@link InternetAddress}.<p>
-     * 
-     * @return the recipients of the newsletter mail
-     * @throws CmsException if getting the recipients from a mailing list group fails
-     */
-    public List getRecipients() throws CmsException {
-
-        List recipients = new ArrayList();
-        Iterator i = getCms().getUsersOfGroup(getGroup().getName()).iterator();
-        while (i.hasNext()) {
-            CmsUser user = (CmsUser)i.next();
-            if (CmsNewsletterManager.isActiveUser(user, getGroup().getName())) {
-                // add active users to the recipients
-                try {
-                    recipients.add(new InternetAddress(user.getEmail()));
-                } catch (MessagingException e) {
-                    // log invalid email address
-                    if (LOG.isErrorEnabled()) {
-                        LOG.error(Messages.get().getBundle().key(
-                            Messages.LOG_ERROR_NEWSLETTER_EMAIL_3,
-                            user.getEmail(),
-                            user.getName(),
-                            getContent().getFile().getRootPath()));
-                    }
-                }
-            }
-        }
-
-        if (getContent().hasValue(NODE_BCC, getLocale())) {
-            // add the configured email address to the list of BCC recipients
-            try {
-                recipients.add(new InternetAddress(getContent().getStringValue(getCms(), NODE_BCC, getLocale())));
-            } catch (MessagingException e) {
-                // log invalid email address
-                if (LOG.isErrorEnabled()) {
-                    LOG.error(Messages.get().getBundle().key(
-                        Messages.LOG_ERROR_NEWSLETTER_EMAIL_BCC_2,
-                        getContent().getStringValue(getCms(), NODE_BCC, getLocale()),
-                        getContent().getFile().getRootPath()));
-                }
-            }
-        }
-        return recipients;
-    }
-
-    /**
-     * @see com.alkacon.opencms.newsletter.I_CmsNewsletterMailData#initialize(org.opencms.file.CmsObject, org.opencms.file.CmsGroup, java.lang.String)
-     */
-    public void initialize(CmsObject cms, CmsGroup group, String fileName) throws CmsException {
-
-        CmsFile file = cms.readFile(fileName);
-        m_content = CmsXmlContentFactory.unmarshal(cms, file);
-        m_group = group;
-        m_cms = cms;
-        m_locale = OpenCms.getLocaleManager().getDefaultLocale(getCms(), fileName);
-    }
-
-    /**
-     * @see com.alkacon.opencms.newsletter.I_CmsNewsletterMailData#isSendable()
-     */
-    public boolean isSendable() throws CmsException {
-
-        CmsFile file = getContent().getFile();
-        String resourceName = getCms().getSitePath(file);
-        CmsLock lock = getCms().getLock(file);
-        boolean unLocked = false;
-        if (lock.isNullLock()) {
-            unLocked = true;
-            getCms().lockResource(resourceName);
-            lock = getCms().getLock(file);
-        }
-        if (lock.isOwnedBy(getCms().getRequestContext().currentUser())) {
-            String value = "" + System.currentTimeMillis() + CmsProperty.VALUE_LIST_DELIMITER;
-            value += getGroup().getId();
-            CmsProperty property = new CmsProperty(CmsNewsletterManager.PROPERTY_NEWSLETTER_DATA, value, null, true);
-            getCms().writePropertyObject(resourceName, property);
-        } else {
-            // resource is not locked by current user
-            return false;
-        }
-        if (unLocked) {
-            getCms().unlockResource(resourceName);
-        }
-        return true;
-    }
-
-    /**
      * Returns the email content from the newsletter VFS file.<p>
      * 
      * @return the email content
@@ -386,36 +255,6 @@ public class CmsNewsletterMailData implements I_CmsNewsletterMailData {
                 return text;
             }
         }
-    }
-
-    /**
-     * Returns the OpenCms user context.<p>
-     * 
-     * @return the OpenCms user context
-     */
-    private CmsObject getCms() {
-
-        return m_cms;
-    }
-
-    /**
-     * Returns the group to send the newsletter to.<p>
-     * 
-     * @return the group to send the newsletter to
-     */
-    private CmsGroup getGroup() {
-
-        return m_group;
-    }
-
-    /**
-     * Returns the Locale to use to read the newsletter content.<p>
-     * 
-     * @return the Locale to use to read the newsletter content
-     */
-    private Locale getLocale() {
-
-        return m_locale;
     }
 
 }

@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterManager.java,v $
- * Date   : $Date: 2007/11/09 13:43:43 $
- * Version: $Revision: 1.9 $
+ * Date   : $Date: 2007/11/09 15:26:41 $
+ * Version: $Revision: 1.10 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -53,7 +53,7 @@ import java.util.regex.Pattern;
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision $ 
+ * @version $Revision: 1.10 $ 
  * 
  * @since 7.0.3 
  */
@@ -171,6 +171,19 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
     }
 
     /**
+     * Returns if the given user is active to receive newsletter emails for the given group.<p>
+     * 
+     * @param user the user to check
+     * @param groupName the name of the group the user is a member of
+     * @return true if the given user is active to receive newsletter emails, otherwise false
+     */
+    public static boolean isActiveUser(CmsUser user, String groupName) {
+
+        Boolean active = (Boolean)user.getAdditionalInfo(USER_ADDITIONALINFO_ACTIVE + groupName);
+        return ((active != null && active.booleanValue()) || active == null) && user.isEnabled();
+    }
+
+    /**
      * Returns if the email is a valid one using a regular expression pattern.<p>
      * 
      * @param email the email to check
@@ -179,19 +192,6 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
     public static boolean isValidEmail(String email) {
 
         return PATTERN_VALIDATION_EMAIL.matcher(email).matches();
-    }
-
-    /**
-     * Returns if the given user is active to receive newsletter emails for the given group.<p>
-     * 
-     * @param user the user to check
-     * @param groupName the name of the group the user is a member of
-     * @return true if the given user is active to receive newsletter emails, otherwise false
-     */
-    protected static boolean isActiveUser(CmsUser user, String groupName) {
-
-        Boolean active = (Boolean)user.getAdditionalInfo(USER_ADDITIONALINFO_ACTIVE + groupName);
-        return ((active != null && active.booleanValue()) || active == null) && user.isEnabled();
     }
 
     /**
