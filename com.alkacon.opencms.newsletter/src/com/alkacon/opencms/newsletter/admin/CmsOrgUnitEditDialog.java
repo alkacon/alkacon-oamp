@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsOrgUnitEditDialog.java,v $
- * Date   : $Date: 2007/11/13 14:48:36 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2007/11/13 16:22:10 $
+ * Version: $Revision: 1.7 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -38,6 +38,8 @@ import org.opencms.main.CmsException;
 import org.opencms.main.OpenCms;
 import org.opencms.security.CmsOrganizationalUnit;
 import org.opencms.util.CmsStringUtil;
+import org.opencms.widgets.CmsDisplayWidget;
+import org.opencms.widgets.CmsInputWidget;
 import org.opencms.widgets.CmsTextareaWidget;
 import org.opencms.workplace.CmsWidgetDialogParameter;
 
@@ -53,7 +55,7 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.6 $ 
+ * @version $Revision: 1.7 $ 
  * 
  * @since 7.0.3 
  */
@@ -91,11 +93,15 @@ public class CmsOrgUnitEditDialog extends org.opencms.workplace.tools.accounts.C
         try {
             // create new organizational unit
             if (m_orgunit == null) {
+                if (CmsStringUtil.isEmptyOrWhitespaceOnly(m_orgUnitBean.getName())) {
+                    // name must not be empty
+                    throw new CmsException(Messages.get().container(Messages.EXC_NEWSLETTER_OU_NO_NAME_0));
+                }
                 if (CmsStringUtil.isEmptyOrWhitespaceOnly(m_orgUnitBean.getDescription())) {
                     // description must not be empty
                     throw new CmsException(Messages.get().container(Messages.EXC_NEWSLETTER_OU_NO_DESCRIPTION_0));
                 }
-                m_orgUnitBean.setFqn(m_orgUnitBean.getParentOu() + CmsNewsletterManager.NEWSLETTER_OU_SIMPLENAME);
+                m_orgUnitBean.setFqn(m_orgUnitBean.getParentOu() + CmsNewsletterManager.NEWSLETTER_OU_NAMEPREFIX + m_orgUnitBean.getName());
                 List resources = m_orgUnitBean.getResources();
                 // create the newsletter OU
                 OpenCms.getOrgUnitManager().createOrganizationalUnit(
@@ -103,9 +109,12 @@ public class CmsOrgUnitEditDialog extends org.opencms.workplace.tools.accounts.C
                     m_orgUnitBean.getFqn(),
                     m_orgUnitBean.getDescription(),
                     CmsOrganizationalUnit.FLAG_HIDE_LOGIN
-                        + CmsOrganizationalUnit.FLAG_HIDE_GUI
                         + CmsOrganizationalUnit.FLAG_NO_DEFAULTS,
                     (String)resources.get(0));
+            } else {
+                m_orgunit.setDescription(m_orgUnitBean.getDescription());
+                // write the edited organizational unit
+                OpenCms.getOrgUnitManager().writeOrganizationalUnit(getCms(), m_orgunit);
             }
         } catch (Throwable t) {
             errors.add(t);
@@ -130,7 +139,7 @@ public class CmsOrgUnitEditDialog extends org.opencms.workplace.tools.accounts.C
             // create the widgets for the first dialog page
             result.append(dialogBlockStart(key(Messages.GUI_NEWSLETTER_ORGUNIT_EDITOR_LABEL_IDENTIFICATION_BLOCK_0)));
             result.append(createWidgetTableStart());
-            result.append(createDialogRowsHtml(0, 0));
+            result.append(createDialogRowsHtml(0, 1));
             result.append(createWidgetTableEnd());
             result.append(dialogBlockEnd());
         }
@@ -148,6 +157,11 @@ public class CmsOrgUnitEditDialog extends org.opencms.workplace.tools.accounts.C
         setKeyPrefix("newsletterorgunit");
 
         // widgets to display
+        if (m_orgUnitBean.getName() == null) {
+            addWidget(new CmsWidgetDialogParameter(m_orgUnitBean, "name", PAGES[0], new CmsInputWidget()));
+        } else {
+            addWidget(new CmsWidgetDialogParameter(m_orgUnitBean, "name", PAGES[0], new CmsDisplayWidget()));
+        }
         addWidget(new CmsWidgetDialogParameter(m_orgUnitBean, "description", PAGES[0], new CmsTextareaWidget()));
     }
 
@@ -169,7 +183,7 @@ public class CmsOrgUnitEditDialog extends org.opencms.workplace.tools.accounts.C
 
         // TODO: Auto-generated method stub
         super.initOrgUnitObject();
-        m_orgUnitBean.setFqn(m_orgUnitBean.getParentOu() + CmsNewsletterManager.NEWSLETTER_OU_SIMPLENAME);
+        //m_orgUnitBean.setFqn(m_orgUnitBean.getParentOu() + CmsNewsletterManager.NEWSLETTER_OU_NAMEPREFIX);
     }
 
     /**

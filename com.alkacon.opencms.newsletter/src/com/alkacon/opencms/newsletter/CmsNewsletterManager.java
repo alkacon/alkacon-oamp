@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterManager.java,v $
- * Date   : $Date: 2007/11/13 08:40:29 $
- * Version: $Revision: 1.11 $
+ * Date   : $Date: 2007/11/13 16:22:10 $
+ * Version: $Revision: 1.12 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -54,7 +54,7 @@ import java.util.regex.Pattern;
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.11 $ 
+ * @version $Revision: 1.12 $ 
  * 
  * @since 7.0.3 
  */
@@ -72,8 +72,8 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
     /** Module parameter name for the project name to use for user deletion operations. */
     public static final String MODULE_PARAM_PROJECT_NAME = "project_name";
 
-    /** Name of the sub-organizational unit for newsletter containing mailing lists and subscribers. */
-    public static final String NEWSLETTER_OU_SIMPLENAME = "newsletter/";
+    /** Name of the prefix for newsletter sub-organizational units containing mailing lists and subscribers. */
+    public static final String NEWSLETTER_OU_NAMEPREFIX = "nl_";
 
     /** Principal flag to set on users to make them invisible in common accounts management. */
     public static final int NEWSLETTER_PRINCIPAL_FLAG = (int)Math.pow(2, 18);
@@ -155,7 +155,7 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
         Iterator it = ous.iterator();
         while (it.hasNext()) {
             CmsOrganizationalUnit ou = (CmsOrganizationalUnit)it.next();
-            if (!ou.getSimpleName().equals(NEWSLETTER_OU_SIMPLENAME)) {
+            if (!ou.getSimpleName().startsWith(NEWSLETTER_OU_NAMEPREFIX)) {
                 it.remove();
             }
         }
@@ -266,17 +266,21 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
                 // set the flag so that the new user does not appear in the accounts management view
                 user.setFlags(user.getFlags() ^ CmsNewsletterManager.NEWSLETTER_PRINCIPAL_FLAG);
                 if (!activate) {
-                    // set the additional info as marker that the user is currently not active at all
+                    // set the additional info as marker that the new user is currently not active at all
                     user.setAdditionalInfo(USER_ADDITIONALINFO_ACTIVE, Boolean.FALSE);
                 }
             } else {
                 Object o = user.getAdditionalInfo(USER_ADDITIONALINFO_ACTIVE + groupName);
                 if (o != null) {
-                    // user tried to subscribe to this mailing list group, return null to show error message
+                    // user tried to subscribe to this mailing list group before, return null to show error message
                     return null;
                 }
             }
             user.setAdditionalInfo(USER_ADDITIONALINFO_ACTIVE + groupName, Boolean.valueOf(activate));
+            if (activate && user.getAdditionalInfo().get(USER_ADDITIONALINFO_ACTIVE) != null) {
+                // remove flag that this user is not active at all
+                user.deleteAdditionalInfo(USER_ADDITIONALINFO_ACTIVE);
+            }
             // write the user
             getAdminCms().writeUser(user);
             // add the user to the given mailing list group

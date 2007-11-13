@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsNewsletterOrgUnitToolHandler.java,v $
- * Date   : $Date: 2007/10/26 14:53:40 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2007/11/13 16:22:10 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -91,7 +91,7 @@ public class CmsNewsletterOrgUnitToolHandler extends CmsDefaultToolHandler {
                 Iterator i = childOus.iterator();
                 while (i.hasNext()) {
                     CmsOrganizationalUnit unit = (CmsOrganizationalUnit)i.next();
-                    if (unit.getName().endsWith(CmsNewsletterManager.NEWSLETTER_OU_SIMPLENAME)) {
+                    if (unit.getName().endsWith(CmsNewsletterManager.NEWSLETTER_OU_NAMEPREFIX)) {
                         // found a newsletter OU, we can delete it
                         ouFqn = unit.getName();
                     }
@@ -134,43 +134,28 @@ public class CmsNewsletterOrgUnitToolHandler extends CmsDefaultToolHandler {
 
         if (getLink().equals(DELETE_FILE)) {
             // for delete newsletter ou, check if it is visible
-            if (ouFqn != null && !ouFqn.endsWith(CmsNewsletterManager.NEWSLETTER_OU_SIMPLENAME)) {
-                try {
-                    // get the direct child OUs and check if there is already a newsletter OU
-                    List childOus = OpenCms.getOrgUnitManager().getOrganizationalUnits(cms, ouFqn, false);
-                    Iterator i = childOus.iterator();
-                    while (i.hasNext()) {
-                        CmsOrganizationalUnit unit = (CmsOrganizationalUnit)i.next();
-                        if (unit.getName().endsWith(CmsNewsletterManager.NEWSLETTER_OU_SIMPLENAME)) {
-                            // found a newsletter OU, we can delete it
-                            return OpenCms.getRoleManager().hasRole(cms, CmsRole.ADMINISTRATOR);
-                        }
-                    }
-                } catch (CmsException e) {
-                    // error getting child OUs
-                    return false;
-                }
-                return false;
-            }
+//            if (ouFqn != null && !ouFqn.endsWith(CmsNewsletterManager.NEWSLETTER_OU_NAMEPREFIX)) {
+//                try {
+//                    // get the direct child OUs and check if there is already a newsletter OU
+//                    List childOus = OpenCms.getOrgUnitManager().getOrganizationalUnits(cms, ouFqn, false);
+//                    Iterator i = childOus.iterator();
+//                    while (i.hasNext()) {
+//                        CmsOrganizationalUnit unit = (CmsOrganizationalUnit)i.next();
+//                        if (unit.getName().endsWith(CmsNewsletterManager.NEWSLETTER_OU_NAMEPREFIX)) {
+//                            // found a newsletter OU, we can delete it
+//                            return OpenCms.getRoleManager().hasRole(cms, CmsRole.ACCOUNT_MANAGER);
+//                        }
+//                    }
+//                } catch (CmsException e) {
+//                    // error getting child OUs
+//                    return false;
+//                }
+//                return false;
+//            }
         } else {
             // for new newsletter ou, check if there is no other newsletter ou present
-            if (ouFqn != null && !ouFqn.endsWith(CmsNewsletterManager.NEWSLETTER_OU_SIMPLENAME)) {
-                try {
-                    // get the direct child OUs and check if there is already a newsletter OU
-                    List childOus = OpenCms.getOrgUnitManager().getOrganizationalUnits(cms, ouFqn, false);
-                    Iterator i = childOus.iterator();
-                    while (i.hasNext()) {
-                        CmsOrganizationalUnit unit = (CmsOrganizationalUnit)i.next();
-                        if (unit.getName().endsWith(CmsNewsletterManager.NEWSLETTER_OU_SIMPLENAME)) {
-                            // found a newsletter OU, we cannot create another one
-                            return false;
-                        }
-                    }
-                } catch (CmsException e) {
-                    // error getting child OUs
-                    return false;
-                }
-                return OpenCms.getRoleManager().hasRole(cms, CmsRole.ADMINISTRATOR);
+            if (ouFqn != null && ouFqn.indexOf(CmsNewsletterManager.NEWSLETTER_OU_NAMEPREFIX) == -1) {
+                return OpenCms.getRoleManager().hasRole(cms, CmsRole.ACCOUNT_MANAGER);
             }
         }
         return false;

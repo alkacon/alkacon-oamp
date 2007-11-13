@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsOrgUnitsSubList.java,v $
- * Date   : $Date: 2007/10/26 13:01:14 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/11/13 16:22:10 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -49,7 +49,7 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 7.0.3 
  */
@@ -89,7 +89,7 @@ public class CmsOrgUnitsSubList extends org.opencms.workplace.tools.accounts.Cms
         Iterator i = childOus.iterator();
         while (i.hasNext()) {
             CmsOrganizationalUnit unit = (CmsOrganizationalUnit)i.next();
-            if (unit.getName().endsWith(CmsNewsletterManager.NEWSLETTER_OU_SIMPLENAME)) {
+            if (unit.getSimpleName().startsWith(CmsNewsletterManager.NEWSLETTER_OU_NAMEPREFIX)) {
                 // found a newsletter OU, we can delete it
                 OpenCms.getOrgUnitManager().deleteOrganizationalUnit(getCms(), unit.getName());
             }

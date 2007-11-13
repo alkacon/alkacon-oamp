@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/Messages.java,v $
- * Date   : $Date: 2007/11/09 10:53:49 $
- * Version: $Revision: 1.7 $
+ * Date   : $Date: 2007/11/13 16:22:10 $
+ * Version: $Revision: 1.8 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -56,6 +56,9 @@ public final class Messages extends A_CmsMessageBundle {
 
     /** Message constant for key in the resource bundle. */
     public static final String EXC_NEWSLETTER_OU_NO_DESCRIPTION_0 = "EXC_NEWSLETTER_OU_NO_DESCRIPTION_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String EXC_NEWSLETTER_OU_NO_NAME_0 = "EXC_NEWSLETTER_OU_NO_NAME_0";
 
     /** Message constant for key in the resource bundle. */
     public static final String GUI_ALK_NEWSLETTER_ORGUNITS_LIST_ACTION_GROUP_NAME_0 = "GUI_ALK_NEWSLETTER_ORGUNITS_LIST_ACTION_GROUP_NAME_0";
