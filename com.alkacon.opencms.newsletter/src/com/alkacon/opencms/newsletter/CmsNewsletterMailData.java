@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterMailData.java,v $
- * Date   : $Date: 2007/11/09 15:26:41 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2007/11/13 08:40:29 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -33,8 +33,8 @@ package com.alkacon.opencms.newsletter;
 
 import org.opencms.file.CmsFile;
 import org.opencms.file.CmsGroup;
-import org.opencms.file.CmsObject;
 import org.opencms.file.CmsResource;
+import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.mail.CmsHtmlMail;
 import org.opencms.mail.CmsSimpleMail;
 import org.opencms.main.CmsException;
@@ -56,7 +56,7 @@ import org.apache.commons.mail.Email;
  *  
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.3 $ 
  * 
  * @since 7.0.3 
  */
@@ -89,7 +89,7 @@ public class CmsNewsletterMailData extends A_CmsNewsletterMailData {
     /**
      * Empty constructor.<p>
      * 
-     * Be sure to call {@link #initialize(CmsObject, CmsGroup, String)} to get correct results.<p>
+     * Be sure to call {@link #initialize(CmsJspActionElement, CmsGroup, String)} to get correct results.<p>
      */
     public CmsNewsletterMailData() {
 
@@ -101,13 +101,13 @@ public class CmsNewsletterMailData extends A_CmsNewsletterMailData {
      * 
      * @param fileName the fileName of the newsletter
      * @param group the group to send the newsletter to
-     * @param cms the current OpenCms user context
+     * @param jsp the JSP action element
      * @throws CmsException if reading or unmarshalling the file fails
      */
-    public CmsNewsletterMailData(String fileName, CmsGroup group, CmsObject cms)
+    public CmsNewsletterMailData(String fileName, CmsGroup group, CmsJspActionElement jsp)
     throws CmsException {
 
-        initialize(cms, group, fileName);
+        initialize(jsp, group, fileName);
     }
 
     /**
@@ -200,7 +200,7 @@ public class CmsNewsletterMailData extends A_CmsNewsletterMailData {
      * @see com.alkacon.opencms.newsletter.I_CmsNewsletterMailData#getResourceTypeName()
      */
     public String getResourceTypeName() {
-    
+
         return RESOURCETYPE_NEWSLETTER_NAME;
     }
 

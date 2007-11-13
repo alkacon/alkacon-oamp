@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsListSendNewsletterAction.java,v $
- * Date   : $Date: 2007/10/26 14:53:40 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2007/11/13 08:40:29 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -46,7 +46,7 @@ import org.opencms.workplace.list.CmsListItem;
  * 
  * @author Andreas Zahner
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.3 $ 
  * 
  * @since 7.0.3 
  */
@@ -127,7 +127,9 @@ public class CmsListSendNewsletterAction extends CmsListDirectAction {
             try {
                 // check lock state
                 CmsLock lock = getResourceUtil().getLock();
-                if (lock.isNullLock() || lock.isOwnedBy((getWp().getCms().getRequestContext().currentUser()))) {
+                boolean isUnChanged = getResourceUtil().getResource().getState().isUnchanged();
+                if (isUnChanged
+                    && (lock.isNullLock() || lock.isOwnedBy(getWp().getCms().getRequestContext().currentUser()))) {
                     return isEnabled();
                 }
             } catch (Throwable e) {

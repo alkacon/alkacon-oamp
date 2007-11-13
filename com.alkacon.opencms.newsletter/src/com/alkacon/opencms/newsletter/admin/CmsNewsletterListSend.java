@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsNewsletterListSend.java,v $
- * Date   : $Date: 2007/11/09 10:53:49 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2007/11/13 08:40:29 $
+ * Version: $Revision: 1.5 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -131,7 +131,7 @@ public class CmsNewsletterListSend extends A_CmsListExplorerDialog {
 
         throwListUnsupportedActionException();
     }
-    
+
     /** The log object for this class. */
     private static final Log LOG = CmsLog.getLog(CmsNewsletterListSend.class);
 
@@ -147,7 +147,7 @@ public class CmsNewsletterListSend extends A_CmsListExplorerDialog {
             try {
                 CmsGroup group = getCms().readGroup(groupId);
                 // generate the newsletter mail and list of recipients
-                I_CmsNewsletterMailData mailData = CmsNewsletterManager.getMailData(getCms(), group, resourceName);
+                I_CmsNewsletterMailData mailData = CmsNewsletterManager.getMailData(getJsp(), group, resourceName);
                 String rootPath = resourceName;
                 if (mailData.getContent() != null) {
                     rootPath = mailData.getContent().getFile().getRootPath();

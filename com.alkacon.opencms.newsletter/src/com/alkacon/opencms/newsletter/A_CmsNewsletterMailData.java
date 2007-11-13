@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/A_CmsNewsletterMailData.java,v $
- * Date   : $Date: 2007/11/09 15:26:41 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/11/13 08:40:29 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -36,6 +36,7 @@ import org.opencms.file.CmsGroup;
 import org.opencms.file.CmsObject;
 import org.opencms.file.CmsProperty;
 import org.opencms.file.CmsUser;
+import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.lock.CmsLock;
 import org.opencms.main.CmsException;
 import org.opencms.main.CmsLog;
@@ -59,7 +60,7 @@ import org.apache.commons.mail.Email;
  *  
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 7.0.3 
  */
@@ -85,6 +86,9 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
 
     /** The group to send the newsletter to. */
     private CmsGroup m_group;
+
+    /** The JSP action element. */
+    private CmsJspActionElement m_jsp;
 
     /** The Locale to use to read the newsletter content. */
     private Locale m_locale;
@@ -158,14 +162,15 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
     public abstract String getResourceTypeName();
 
     /**
-     * @see com.alkacon.opencms.newsletter.I_CmsNewsletterMailData#initialize(org.opencms.file.CmsObject, org.opencms.file.CmsGroup, java.lang.String)
+     * @see com.alkacon.opencms.newsletter.I_CmsNewsletterMailData#initialize(org.opencms.jsp.CmsJspActionElement, org.opencms.file.CmsGroup, java.lang.String)
      */
-    public void initialize(CmsObject cms, CmsGroup group, String fileName) throws CmsException {
+    public void initialize(CmsJspActionElement jsp, CmsGroup group, String fileName) throws CmsException {
 
-        CmsFile file = cms.readFile(fileName);
-        m_content = CmsXmlContentFactory.unmarshal(cms, file);
+        m_cms = jsp.getCmsObject();
+        CmsFile file = getCms().readFile(fileName);
+        m_content = CmsXmlContentFactory.unmarshal(getCms(), file);
         m_group = group;
-        m_cms = cms;
+        m_jsp = jsp;
         m_locale = OpenCms.getLocaleManager().getDefaultLocale(getCms(), fileName);
     }
 
@@ -189,6 +194,13 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
             value += getGroup().getId();
             CmsProperty property = new CmsProperty(CmsNewsletterManager.PROPERTY_NEWSLETTER_DATA, value, null, true);
             getCms().writePropertyObject(resourceName, property);
+            try {
+                getCms().unlockResource(resourceName);
+                unLocked = false;
+                OpenCms.getPublishManager().publishResource(getCms(), resourceName);
+            } catch (Exception e) {
+                // unlocking and publishing failed maybe a parent folder is locked
+            }
         } else {
             // resource is not locked by current user
             return false;
@@ -217,6 +229,16 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
     protected CmsGroup getGroup() {
 
         return m_group;
+    }
+
+    /**
+     * Returns the JSP action element.<p>
+     * 
+     * @return the JSP action element
+     */
+    protected CmsJspActionElement getJsp() {
+
+        return m_jsp;
     }
 
     /**

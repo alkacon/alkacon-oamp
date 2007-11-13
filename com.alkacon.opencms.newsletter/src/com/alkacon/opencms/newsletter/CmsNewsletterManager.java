@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterManager.java,v $
- * Date   : $Date: 2007/11/09 15:26:41 $
- * Version: $Revision: 1.10 $
+ * Date   : $Date: 2007/11/13 08:40:29 $
+ * Version: $Revision: 1.11 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -36,6 +36,7 @@ import org.opencms.file.CmsGroup;
 import org.opencms.file.CmsObject;
 import org.opencms.file.CmsProject;
 import org.opencms.file.CmsUser;
+import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.main.CmsException;
 import org.opencms.main.OpenCms;
 import org.opencms.module.A_CmsModuleAction;
@@ -53,7 +54,7 @@ import java.util.regex.Pattern;
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.10 $ 
+ * @version $Revision: 1.11 $ 
  * 
  * @since 7.0.3 
  */
@@ -98,7 +99,7 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
     /**
      * Returns the mail data class generating the newsletter mail and recipients.<p>
      * 
-     * The instance must be correctly initialized afterwards using {@link I_CmsNewsletterMailData#initialize(CmsObject, CmsGroup, String)}.<p>
+     * The instance must be correctly initialized afterwards using {@link I_CmsNewsletterMailData#initialize(CmsJspActionElement, CmsGroup, String)}.<p>
      * 
      * @return the mail data class generating the newsletter mail and recipients
      * @throws Exception if instanciating the mail data class fails
@@ -114,16 +115,17 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
     /**
      * Returns the initialized mail data class generating the newsletter mail and recipients.<p>
      * 
-     * @param cms the current OpenCms user context
+     * @param jsp the current action element
      * @param group the group to send the newsletter to
      * @param fileName the fileName of the newsletter
      * @return the initialized mail data class generating the newsletter mail and recipients
      * @throws Exception if instanciating the mail data class fails
      */
-    public static I_CmsNewsletterMailData getMailData(CmsObject cms, CmsGroup group, String fileName) throws Exception {
+    public static I_CmsNewsletterMailData getMailData(CmsJspActionElement jsp, CmsGroup group, String fileName)
+    throws Exception {
 
         I_CmsNewsletterMailData result = getMailData();
-        result.initialize(cms, group, fileName);
+        result.initialize(jsp, group, fileName);
         return result;
     }
 
