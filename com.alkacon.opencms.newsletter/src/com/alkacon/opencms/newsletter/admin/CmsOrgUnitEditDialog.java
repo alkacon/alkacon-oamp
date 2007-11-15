@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsOrgUnitEditDialog.java,v $
- * Date   : $Date: 2007/11/13 16:22:10 $
- * Version: $Revision: 1.7 $
+ * Date   : $Date: 2007/11/15 15:36:00 $
+ * Version: $Revision: 1.8 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -55,7 +55,7 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.7 $ 
+ * @version $Revision: 1.8 $ 
  * 
  * @since 7.0.3 
  */
@@ -101,15 +101,16 @@ public class CmsOrgUnitEditDialog extends org.opencms.workplace.tools.accounts.C
                     // description must not be empty
                     throw new CmsException(Messages.get().container(Messages.EXC_NEWSLETTER_OU_NO_DESCRIPTION_0));
                 }
-                m_orgUnitBean.setFqn(m_orgUnitBean.getParentOu() + CmsNewsletterManager.NEWSLETTER_OU_NAMEPREFIX + m_orgUnitBean.getName());
+                m_orgUnitBean.setFqn(m_orgUnitBean.getParentOu()
+                    + CmsNewsletterManager.NEWSLETTER_OU_NAMEPREFIX
+                    + m_orgUnitBean.getName());
                 List resources = m_orgUnitBean.getResources();
                 // create the newsletter OU
                 OpenCms.getOrgUnitManager().createOrganizationalUnit(
                     getCms(),
                     m_orgUnitBean.getFqn(),
                     m_orgUnitBean.getDescription(),
-                    CmsOrganizationalUnit.FLAG_HIDE_LOGIN
-                        + CmsOrganizationalUnit.FLAG_NO_DEFAULTS,
+                    CmsOrganizationalUnit.FLAG_HIDE_LOGIN + CmsOrganizationalUnit.FLAG_NO_DEFAULTS,
                     (String)resources.get(0));
             } else {
                 m_orgunit.setDescription(m_orgUnitBean.getDescription());

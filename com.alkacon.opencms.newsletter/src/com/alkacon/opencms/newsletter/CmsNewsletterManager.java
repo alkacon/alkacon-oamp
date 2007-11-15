@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterManager.java,v $
- * Date   : $Date: 2007/11/13 16:22:10 $
- * Version: $Revision: 1.12 $
+ * Date   : $Date: 2007/11/15 15:36:00 $
+ * Version: $Revision: 1.13 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -54,7 +54,7 @@ import java.util.regex.Pattern;
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.12 $ 
+ * @version $Revision: 1.13 $ 
  * 
  * @since 7.0.3 
  */
@@ -259,7 +259,7 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
                 user = getAdminCms().createUser(
                     ouFqn + email,
                     getPassword(),
-                    "Alkacon OpenCms newsletter",
+                    "Alkacon OpenCms Newsletter",
                     Collections.EMPTY_MAP);
                 // set the users email address
                 user.setEmail(email);

@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsNewsletterResourcesCollector.java,v $
- * Date   : $Date: 2007/11/09 13:43:43 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2007/11/15 15:36:00 $
+ * Version: $Revision: 1.6 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -127,12 +127,12 @@ public class CmsNewsletterResourcesCollector extends A_CmsListResourceCollector 
                     groupName = group.getSimpleName();
                 } catch (CmsException e) {
                     // group does not exist
-                    groupName = Messages.get().getBundle().key(Messages.GUI_NEWSLETTER_LIST_DATA_SEND_GROUPDUMMY_0);
+                    groupName = Messages.get().getBundle(getWp().getLocale()).key(Messages.GUI_NEWSLETTER_LIST_DATA_SEND_GROUPDUMMY_0);
                 }
-                value = Messages.get().getBundle().key(Messages.GUI_NEWSLETTER_LIST_DATA_SEND_AT_2, date, groupName);
+                value = Messages.get().getBundle(getWp().getLocale()).key(Messages.GUI_NEWSLETTER_LIST_DATA_SEND_AT_2, date, groupName);
             } else {
                 // show the "never sent" message
-                value = Messages.get().getBundle().key(Messages.GUI_NEWSLETTER_LIST_DATA_SEND_NEVER_0);
+                value = Messages.get().getBundle(getWp().getLocale()).key(Messages.GUI_NEWSLETTER_LIST_DATA_SEND_NEVER_0);
             }
         } catch (CmsException e) {
             // should never happen
