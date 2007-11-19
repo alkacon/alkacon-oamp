@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsOrgUnitEditDialog.java,v $
- * Date   : $Date: 2007/11/19 15:49:15 $
- * Version: $Revision: 1.10 $
+ * Date   : $Date: 2007/11/19 16:33:18 $
+ * Version: $Revision: 1.11 $
  *
  * This file is part of the Alkacon OpenCms Add-On Package
  *
@@ -56,7 +56,7 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.10 $ 
+ * @version $Revision: 1.11 $ 
  * 
  * @since 7.0.3 
  */
@@ -93,7 +93,7 @@ public class CmsOrgUnitEditDialog extends org.opencms.workplace.tools.accounts.C
 
         try {
             // create new organizational unit
-            if (m_orgunit == null) {
+            if (isNewOrgUnit()) {
                 if (CmsStringUtil.isEmptyOrWhitespaceOnly(m_orgUnitBean.getName())) {
                     // name must not be empty
                     throw new CmsException(Messages.get().container(Messages.EXC_NEWSLETTER_OU_NO_NAME_0));
@@ -105,18 +105,20 @@ public class CmsOrgUnitEditDialog extends org.opencms.workplace.tools.accounts.C
                 m_orgUnitBean.setFqn(m_orgUnitBean.getParentOu()
                     + CmsNewsletterManager.NEWSLETTER_OU_NAMEPREFIX
                     + m_orgUnitBean.getName());
-                List resources = m_orgUnitBean.getResources();
                 // create the newsletter OU
                 OpenCms.getOrgUnitManager().createOrganizationalUnit(
                     getCms(),
                     m_orgUnitBean.getFqn(),
                     m_orgUnitBean.getDescription(),
-                    CmsOrganizationalUnit.FLAG_NO_DEFAULTS,
-                    (String)resources.get(0));
+                    CmsOrganizationalUnit.FLAG_WEBUSERS,
+                    null);
             } else {
-                m_orgunit.setDescription(m_orgUnitBean.getDescription());
+                CmsOrganizationalUnit orgunit = OpenCms.getOrgUnitManager().readOrganizationalUnit(
+                    getCms(),
+                    m_orgUnitBean.getFqn());
+                orgunit.setDescription(m_orgUnitBean.getDescription());
                 // write the edited organizational unit
-                OpenCms.getOrgUnitManager().writeOrganizationalUnit(getCms(), m_orgunit);
+                OpenCms.getOrgUnitManager().writeOrganizationalUnit(getCms(), orgunit);
             }
         } catch (Throwable t) {
             errors.add(t);
