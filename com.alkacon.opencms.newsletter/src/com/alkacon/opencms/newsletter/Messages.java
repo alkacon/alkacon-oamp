@@ -1,29 +1,33 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/Messages.java,v $
- * Date   : $Date: 2007/11/09 15:26:41 $
- * Version: $Revision: 1.7 $
+ * Date   : $Date: 2007/11/19 15:49:15 $
+ * Version: $Revision: 1.8 $
  *
- * Copyright (c) 2005 Alkacon Software GmbH (http://www.alkacon.com)
- * All rights reserved.
+ * This file is part of the Alkacon OpenCms Add-On Package
+ *
+ * Copyright (c) 2007 Alkacon Software GmbH (http://www.alkacon.com)
+ *
+ * The Alkacon OpenCms Add-On Package is free software: 
+ * you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * 
- * This source code is the intellectual property of Alkacon Software GmbH.
- * It is PROPRIETARY and CONFIDENTIAL.
- * Use of this source code is subject to license terms.
- *
- * In order to use this source code, you need written permission from 
- * Alkacon Software GmbH. Redistribution of this source code, in modified 
- * or unmodified form, is not allowed unless written permission by 
- * Alkacon Software GmbH has been given.
- *
- * ALKACON SOFTWARE GMBH MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY
- * OF THIS SOURCE CODE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
- * TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
- * PURPOSE, OR NON-INFRINGEMENT. ALKACON SOFTWARE GMBH SHALL NOT BE LIABLE FOR ANY
- * DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
- * THIS SOURCE CODE OR ITS DERIVATIVES.
+ * The Alkacon OpenCms Add-On Package is distributed 
+ * in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with the Alkacon OpenCms Add-On Package.  
+ * If not, see http://www.gnu.org/licenses/.
  *
  * For further information about Alkacon Software GmbH, please see the
- * company website: http://www.alkacon.com
+ * company website: http://www.alkacon.com.
+ *
+ * For further information about OpenCms, please see the
+ * project website: http://www.opencms.org.
  */
 
 package com.alkacon.opencms.newsletter;
@@ -36,7 +40,7 @@ import org.opencms.i18n.I_CmsMessageBundle;
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.7 $ 
+ * @version $Revision: 1.8 $ 
  * 
  * @since 7.0.3 
  */
