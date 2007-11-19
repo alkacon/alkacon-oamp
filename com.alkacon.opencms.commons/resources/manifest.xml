@@ -10,8 +10,8 @@
 	</info>
 	<module>
 		<name>com.alkacon.opencms.commons</name>
-		<nicename><![CDATA[Alkacon OpenCms Utilities]]></nicename>
-		<group>Alkacon OpenCms Extensions</group>
+		<nicename><![CDATA[Alkacon OpenCms Common Utilities]]></nicename>
+		<group>Alkacon OpenCms Add-On Package</group>
 		<class/>
 		<description><![CDATA[Commonly used utilities for the Alkacon OpenCms Extension modules.]]></description>
 		<version>1.0.0</version>

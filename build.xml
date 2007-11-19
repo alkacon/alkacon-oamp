@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="Alkacon OpenCms Additions" default="war" basedir=".">
+<project name="Alkacon OpenCms Add-On Package" default="war" basedir=".">
 
 	<property name="opencms.input" location="${basedir}/../OpenCms" />
 	<property name="opencms.output" location="${basedir}/../BuildCms" />

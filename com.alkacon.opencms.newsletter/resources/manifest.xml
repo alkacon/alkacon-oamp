@@ -10,8 +10,8 @@
 	</info>
 	<module>
 		<name>com.alkacon.opencms.newsletter</name>
-		<nicename><![CDATA[Alkacon OpenCms Newsletter module]]></nicename>
-		<group>Alkacon OpenCms Extensions</group>
+		<nicename><![CDATA[Alkacon OpenCms Newsletter Module]]></nicename>
+		<group>Alkacon OpenCms Add-On Package</group>
 		<class>com.alkacon.opencms.newsletter.CmsNewsletterManager</class>
 		<description><![CDATA[This module allows the creation of newsletters sent by email to specific mailing lists.]]></description>
 		<version>1.0.0</version>
