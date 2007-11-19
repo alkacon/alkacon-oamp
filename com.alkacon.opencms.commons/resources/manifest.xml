@@ -11,7 +11,7 @@
 	<module>
 		<name>com.alkacon.opencms.commons</name>
 		<nicename><![CDATA[Alkacon OpenCms Common Utilities]]></nicename>
-		<group>Alkacon OpenCms Add-On Package</group>
+		<group>Alkacon OpenCms Add-On</group>
 		<class/>
 		<description><![CDATA[Commonly used utilities for the Alkacon OpenCms Extension modules.]]></description>
 		<version>1.0.0</version>
