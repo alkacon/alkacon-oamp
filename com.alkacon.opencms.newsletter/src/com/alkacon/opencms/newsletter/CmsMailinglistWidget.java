@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsMailinglistWidget.java,v $
- * Date   : $Date: 2007/11/09 15:26:41 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2007/11/19 10:20:24 $
+ * Version: $Revision: 1.4 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -40,11 +40,11 @@ import org.opencms.widgets.I_CmsWidgetParameter;
 import org.opencms.workplace.CmsWorkplace;
 
 /**
- * Provides a OpenCms Group selection widget, for use on a widget dialog.<p>
+ * Provides a OpenCms mailing list selection widget, for use on a widget dialog.<p>
  *
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.3 $ 
+ * @version $Revision: 1.4 $ 
  * 
  * @since 7.0.3 
  */

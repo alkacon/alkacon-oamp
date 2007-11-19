@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsEditSubscriberDialog.java,v $
- * Date   : $Date: 2007/10/26 14:53:40 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2007/11/19 10:20:24 $
+ * Version: $Revision: 1.6 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -55,7 +55,7 @@ import javax.servlet.jsp.PageContext;
  * @author Michael Moossen
  * @author Andreas Zahner
  * 
- * @version $Revision: 1.5 $ 
+ * @version $Revision: 1.6 $ 
  * 
  * @since 7.0.3 
  */
@@ -102,14 +102,6 @@ public class CmsEditSubscriberDialog extends A_CmsEditUserDialog {
         getPwdInfo().setConfirmation(CmsNewsletterManager.getPassword());
 
         super.actionCommit();
-        // set the flag so that the new user does not appear in the accounts management view
-        try {
-            CmsUser newUser = getCms().readUser(getParamOufqn() + m_user.getSimpleName());
-            newUser.setFlags(newUser.getFlags() ^ CmsNewsletterManager.NEWSLETTER_PRINCIPAL_FLAG);
-            getCms().writeUser(newUser);
-        } catch (Exception e) {
-            // should never happen
-        }
     }
 
     /**

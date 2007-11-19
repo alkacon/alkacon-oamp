@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsEditMailinglistDialog.java,v $
- * Date   : $Date: 2007/10/26 14:53:40 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2007/11/19 10:20:24 $
+ * Version: $Revision: 1.4 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -31,8 +31,6 @@
 
 package com.alkacon.opencms.newsletter.admin;
 
-import com.alkacon.opencms.newsletter.CmsNewsletterManager;
-
 import org.opencms.file.CmsGroup;
 import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.util.CmsStringUtil;
@@ -52,7 +50,7 @@ import javax.servlet.jsp.PageContext;
  * @author Michael Moossen
  * @author Andreas Zahner
  * 
- * @version $Revision: 1.3 $ 
+ * @version $Revision: 1.4 $ 
  * 
  * @since 7.0.3 
  */
@@ -93,14 +91,6 @@ public class CmsEditMailinglistDialog extends A_CmsEditGroupDialog {
         m_group.setEnabled(true);
         setParentGroup("");
         super.actionCommit();
-        // set the flag so that the new user does not appear in the accounts management view
-        try {
-            CmsGroup newGroup = getCms().readGroup(getParamOufqn() + m_group.getSimpleName());
-            newGroup.setFlags(newGroup.getFlags() ^ CmsNewsletterManager.NEWSLETTER_PRINCIPAL_FLAG);
-            getCms().writeGroup(newGroup);
-        } catch (Exception e) {
-            // should never happen
-        }
     }
 
     /**

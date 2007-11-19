@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterManager.java,v $
- * Date   : $Date: 2007/11/15 15:36:00 $
- * Version: $Revision: 1.13 $
+ * Date   : $Date: 2007/11/19 10:20:24 $
+ * Version: $Revision: 1.14 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -50,11 +50,12 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Provides methods to manage the users (subscribers) for the newsletter.<p>
+ * Provides methods to manage the subscribers (users) for the newsletter, to get all newsletter units and to get the
+ * initialized mail data class to use for sending the newsletter emails.<p>
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.13 $ 
+ * @version $Revision: 1.14 $ 
  * 
  * @since 7.0.3 
  */
@@ -74,9 +75,6 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
 
     /** Name of the prefix for newsletter sub-organizational units containing mailing lists and subscribers. */
     public static final String NEWSLETTER_OU_NAMEPREFIX = "nl_";
-
-    /** Principal flag to set on users to make them invisible in common accounts management. */
-    public static final int NEWSLETTER_PRINCIPAL_FLAG = (int)Math.pow(2, 18);
 
     /** Pattern to validate email addresses. */
     public static final Pattern PATTERN_VALIDATION_EMAIL = Pattern.compile("(\\w[-._\\w]*\\w@\\w[-._\\w]*\\w\\.\\w{2,4})");
@@ -263,8 +261,6 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
                     Collections.EMPTY_MAP);
                 // set the users email address
                 user.setEmail(email);
-                // set the flag so that the new user does not appear in the accounts management view
-                user.setFlags(user.getFlags() ^ CmsNewsletterManager.NEWSLETTER_PRINCIPAL_FLAG);
                 if (!activate) {
                     // set the additional info as marker that the new user is currently not active at all
                     user.setAdditionalInfo(USER_ADDITIONALINFO_ACTIVE, Boolean.FALSE);

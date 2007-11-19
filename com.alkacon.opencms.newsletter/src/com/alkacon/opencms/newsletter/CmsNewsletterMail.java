@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterMail.java,v $
- * Date   : $Date: 2007/11/09 15:26:41 $
- * Version: $Revision: 1.8 $
+ * Date   : $Date: 2007/11/19 10:20:24 $
+ * Version: $Revision: 1.9 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -44,11 +44,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.mail.Email;
 
 /**
- * Sends newsletter emails to users that are subscribed to the newsletter.<p>
+ * Sends newsletter emails to users that are subscribed to the mailing list.<p>
  *  
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.8 $ 
+ * @version $Revision: 1.9 $ 
  * 
  * @since 7.0.3 
  */

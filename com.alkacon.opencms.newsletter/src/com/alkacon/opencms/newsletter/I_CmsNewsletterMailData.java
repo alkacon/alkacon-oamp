@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/I_CmsNewsletterMailData.java,v $
- * Date   : $Date: 2007/11/13 08:40:29 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2007/11/19 10:20:24 $
+ * Version: $Revision: 1.4 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -41,11 +41,12 @@ import java.util.List;
 import org.apache.commons.mail.Email;
 
 /**
- * Provides methods to generate newsletter emails and the list of recipients in different ways, e.g. using a structured content.<p>
+ * Provides methods to generate newsletter emails and the list of recipients in different ways,
+ * e.g. using a different structured content.<p>
  * 
  * @author Andreas Zahner
  * 
- * @version $Revision: 1.3 $ 
+ * @version $Revision: 1.4 $ 
  * 
  * @since 7.0.3 
  */
