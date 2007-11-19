@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="Alkacon OpenCms Extensions" default="war" basedir=".">
+<project name="Alkacon OpenCms Additions" default="war" basedir=".">
 
 	<property name="opencms.input" location="${basedir}/../OpenCms" />
 	<property name="opencms.output" location="${basedir}/../BuildCms" />
 	<property name="excludes" value="**/CVS/*,**/.cvsignore,**/.nbattrs,**/.project,**/.classpath" />
 	<property name="opencms.output.distfiles" location="${opencms.output}/zip" />
 
-	<property file="opencms.properties" />
+	<property file="alkacon.properties" />
 
 	<!--
 		Set/Override this property to one of the following values:
