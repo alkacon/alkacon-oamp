@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsOrgUnitsAdminList.java,v $
- * Date   : $Date: 2007/11/19 15:49:15 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2007/11/20 13:11:30 $
+ * Version: $Revision: 1.6 $
  *
  * This file is part of the Alkacon OpenCms Add-On Package
  *
@@ -42,6 +42,7 @@ import org.opencms.main.OpenCms;
 import org.opencms.security.CmsOrganizationalUnit;
 import org.opencms.workplace.list.CmsListColumnDefinition;
 import org.opencms.workplace.list.CmsListDefaultAction;
+import org.opencms.workplace.list.CmsListDirectAction;
 import org.opencms.workplace.list.CmsListItemDetails;
 import org.opencms.workplace.list.CmsListItemDetailsFormatter;
 import org.opencms.workplace.list.CmsListMetadata;
@@ -61,7 +62,7 @@ import javax.servlet.jsp.PageContext;
  * @author Michael Moossen
  * @author Andreas Zahner
  * 
- * @version $Revision: 1.5 $ 
+ * @version $Revision: 1.6 $ 
  * 
  * @since 7.0.3 
  */
@@ -188,11 +189,14 @@ public class CmsOrgUnitsAdminList extends org.opencms.workplace.tools.accounts.C
         CmsListColumnDefinition overviewCol = metadata.getColumnDefinition(LIST_COLUMN_OVERVIEW);
         overviewCol.setName(Messages.get().container(Messages.GUI_ALK_NEWSLETTER_ORGUNITS_LIST_COLS_OVERVIEW_0));
         overviewCol.setHelpText(Messages.get().container(Messages.GUI_ALK_NEWSLETTER_ORGUNITS_LIST_COLS_OVERVIEW_HELP_0));
-        I_CmsListDirectAction overviewAction = overviewCol.getDirectAction(LIST_ACTION_OVERVIEW);
+        overviewCol.removeDirectAction(LIST_ACTION_OVERVIEW);
+        I_CmsListDirectAction overviewAction = new CmsListDirectAction(LIST_ACTION_OVERVIEW);
         overviewAction.setName(Messages.get().container(
             Messages.GUI_ALK_NEWSLETTER_ORGUNITS_LIST_ACTION_OVERVIEW_NAME_0));
         overviewAction.setHelpText(Messages.get().container(
             Messages.GUI_ALK_NEWSLETTER_ORGUNITS_LIST_COLS_OVERVIEW_HELP_0));
+        overviewAction.setIconPath(getOverviewIcon());
+        overviewCol.addDirectAction(overviewAction);
 
         CmsListColumnDefinition subscribersCol = metadata.getColumnDefinition(LIST_COLUMN_USER);
         subscribersCol.setName(Messages.get().container(Messages.GUI_ALK_NEWSLETTER_ORGUNITS_LIST_COLS_USER_0));
