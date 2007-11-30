@@ -1,26 +1,26 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterXmlContentHandler.java,v $
- * Date   : $Date: 2007/11/19 15:49:15 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2007/11/30 11:57:27 $
+ * Version: $Revision: 1.5 $
  *
- * This file is part of the Alkacon OpenCms Add-On Package
+ * This file is part of the Alkacon OpenCms Add-On Module Package
  *
  * Copyright (c) 2007 Alkacon Software GmbH (http://www.alkacon.com)
  *
- * The Alkacon OpenCms Add-On Package is free software: 
+ * The Alkacon OpenCms Add-On Module Package is free software: 
  * you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  * 
- * The Alkacon OpenCms Add-On Package is distributed 
+ * The Alkacon OpenCms Add-On Module Package is distributed 
  * in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License
- * along with the Alkacon OpenCms Add-On Package.  
+ * along with the Alkacon OpenCms Add-On Module Package.  
  * If not, see http://www.gnu.org/licenses/.
  *
  * For further information about Alkacon Software GmbH, please see the
@@ -50,7 +50,7 @@ import java.util.Locale;
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.4 $ 
+ * @version $Revision: 1.5 $ 
  * 
  * @since 7.0.3 
  */
@@ -115,6 +115,8 @@ public class CmsNewsletterXmlContentHandler extends CmsDefaultXmlContentHandler 
             }
             if (CmsStringUtil.isEmptyOrWhitespaceOnly(serverName) || "*".equals(serverName)) {
                 serverName = "yourdomain.com";
+            } else if (serverName.startsWith("www.")) {
+                serverName = serverName.substring(4);
             }
             resolver.addMacro(MACRO_DOMAIN, serverName);
             resolver.setKeepEmptyMacros(true);

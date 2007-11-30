@@ -1,6 +1,6 @@
 
-                Alkacon OpenCms Add-On Package: Newsletter module
-                       Version 1.0.0; November 19, 2007
+                Alkacon OpenCms Add-On Module Package: Newsletter module
+                       Version 1.0.0; November 28, 2007
 
 
                                     WARNING:
@@ -55,5 +55,5 @@ Legend:
 * Bug fixed
 - General comment
 
-1.0.0 - November 19, 2007
+1.0.0 - November 28, 2007
 - First public release
