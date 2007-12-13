@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+	<xsd:include schemaLocation="http://www.opencms.org/dtd/6.0/org/opencms/xml/content/DefaultAppinfoTypes.xsd"/>	
+	<xsd:element name="appinfo" type="OpenCmsFeedAppinfo" />
+
+	<xsd:complexType name="OpenCmsFeedAppinfo">
+		<xsd:all>
+			<xsd:element name="handler" type="OpenCmsDefaultAppinfoHandler" minOccurs="0" />
+			<xsd:element name="resourcebundle" type="OpenCmsDefaultAppinfoResourcebundle" minOccurs="0" />
+			<xsd:element name="preview" type="OpenCmsDefaultAppinfoPreview" minOccurs="0" />
+			<xsd:element name="defaults" type="OpenCmsDefaultAppinfoDefaults" minOccurs="0" />
+			<xsd:element name="mappings" type="OpenCmsDefaultAppinfoMappings" minOccurs="0" />
+			<xsd:element name="layouts" type="OpenCmsDefaultAppinfoLayouts" minOccurs="0" />
+			<xsd:element name="validationrules" type="OpenCmsDefaultAppinfoValidationrules" minOccurs="0" />
+			<xsd:element name="searchsettings" type="OpenCmsDefaultAppinfoSearchsettings" minOccurs="0" />			
+			<xsd:element name="relations" type="OpenCmsDefaultAppinfoRelations" minOccurs="0" />
+			<xsd:element name="modelfolder" type="OpenCmsDefaultAppinfoModelfolder" minOccurs="0" />
+			<xsd:element name="feedrules" type="OpenCmsFeedAppinfoRules" minOccurs="0" />			
+		</xsd:all>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsFeedAppinfoRules">
+		<xsd:sequence>
+			<xsd:element name="feedrule" type="OpenCmsFeedAppinfoRule" minOccurs="0" maxOccurs="unbounded" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsFeedAppinfoRule">
+		<xsd:attribute name="element" type="xsd:string" use="required" />
+		<xsd:attribute name="mapto" type="xsd:string" use="required" />
+		<xsd:attribute name="maxLength" type="xsd:positiveInteger" use="optional" />
+		<xsd:attribute name="default" type="xsd:string" use="optional" />
+	</xsd:complexType>
+
+</xsd:schema>

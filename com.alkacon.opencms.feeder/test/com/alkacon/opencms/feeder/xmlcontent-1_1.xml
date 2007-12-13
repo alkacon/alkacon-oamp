@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Feedertests 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:noNamespaceSchemaLocation="http://www.opencms.org/xmlcontent-definition-1.xsd">
+  
+	<Feedertest language="en">
+		<Title><![CDATA[This is the title]]></Title>
+		<Author><![CDATA[Alexander Kandzior]]></Author>
+	</Feedertest>
+</Feedertests>

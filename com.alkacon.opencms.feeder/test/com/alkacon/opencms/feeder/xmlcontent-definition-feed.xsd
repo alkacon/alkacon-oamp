@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+	<xsd:include schemaLocation="http://www.alkacon.com/xmlcontent-definition-feed-mappings.xsd"/>
+	<xsd:include schemaLocation="http://www.alkacon.com/xmlcontent-definition-feed-image.xsd"/>
+		
+	<xsd:element name="AlkaconFeeds" type="OpenCmsAlkaconFeeds"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconFeeds">
+		<xsd:sequence>
+			<xsd:element name="AlkaconFeed" type="OpenCmsAlkaconFeed" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconFeed">
+		<xsd:sequence>
+			<xsd:element name="Title" type="OpenCmsString" />
+			<xsd:element name="Type" type="OpenCmsString" default="rss_2.0" />
+			<xsd:element name="Description" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="Copyright" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="Image" type="OpenCmsAlkaconFeedImage" minOccurs="0" />
+			<xsd:element name="Collector" type="OpenCmsString" default="allInFolder" />
+			<xsd:element name="Parameter" type="OpenCmsString" />
+			<xsd:element name="Mapping" type="OpenCmsAlkaconFeedMapping" minOccurs="0" maxOccurs="6" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="required"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<layouts>
+				<layout element="Type" widget="com.alkacon.opencms.feeder.CmsFeedSelectWidget" configuration="feedTypes" />
+				<layout element="Collector" widget="com.alkacon.opencms.feeder.CmsFeedSelectWidget" configuration="collectors" />
+				<layout element="Parameter" widget="VfsFileWidget" />
+			</layouts>
+		</xsd:appinfo>
+	</xsd:annotation>  
+</xsd:schema>

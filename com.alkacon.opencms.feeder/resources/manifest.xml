@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<export>
+	<info>
+		<creator>Admin</creator>
+		<opencms_version>7.0.3</opencms_version>
+		<createdate>Mon, 10 Dec 2007 14:48:25 GMT</createdate>
+		<project>Offline</project>
+		<export_version>6</export_version>
+	</info>
+	<module>
+		<name>com.alkacon.opencms.feeder</name>
+		<nicename><![CDATA[Alkacon OpenCms Add-On Module Package Syndication Feed (RSS / Atom)]]></nicename>
+		<group>Alkacon OAMP</group>
+		<class/>
+		<description><![CDATA[This module allows easy creation of several versions of syndication feeds (RSS, Atom) from XML contents.]]></description>
+		<version>1.0.0</version>
+		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
+		<authoremail/>
+		<datecreated/>
+		<userinstalled/>
+		<dateinstalled/>
+		<dependencies/>
+		<exportpoints>
+			<exportpoint uri="/system/modules/com.alkacon.opencms.feeder/classes/" destination="WEB-INF/classes/"/>
+			<exportpoint uri="/system/modules/com.alkacon.opencms.feeder/lib/" destination="WEB-INF/lib/"/>
+		</exportpoints>
+		<resources>
+			<resource uri="/system/modules/com.alkacon.opencms.feeder/"/>
+			<resource uri="/system/workplace/resources/filetypes/alkacon-feed.png"/>
+		</resources>
+		<parameters/>
+		<resourcetypes>
+			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="alkacon-feed" id="61">
+				<properties>
+					<property>
+						<name>template-elements</name>
+						<value type="shared"><![CDATA[/system/modules/com.alkacon.opencms.feeder/templates/alkacon-feed.jsp]]></value>
+					</property>
+				</properties>
+				<param name="schema">/system/modules/com.alkacon.opencms.feeder/schemas/alkacon-feed.xsd</param>
+			</type>
+		</resourcetypes>
+		<explorertypes>
+			<explorertype name="alkacon-feed" key="fileicon.alkacon-feed" icon="alkacon-feed.png" reference="xmlcontent">
+				<newresource page="structurecontent" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-feed" order="62" autosetnavigation="false" autosettitle="false" info="desc.alkacon-feed"/>
+			</explorertype>
+		</explorertypes>
+	</module>
+	<files>
+		<file>
+			<destination>system</destination>
+			<type>folder</type>
+			<uuidstructure>338e1d36-4b0a-11dc-972e-2f44fc71ede6</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 15 Aug 2007 08:33:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
+					<flags>514</flags>
+					<permissionset>
+						<allowed>5</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<destination>system/modules</destination>
+			<type>folder</type>
+			<uuidstructure>82515fe7-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.feeder</destination>
+			<type>folder</type>
+			<uuidstructure>ebc9390b-4be1-11dc-91a6-2f44fc71ede6</uuidstructure>
+			<datelastmodified>Thu, 16 Aug 2007 10:17:40 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 16 Aug 2007 10:17:40 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.feeder/classes</destination>
+			<type>folder</type>
+			<uuidstructure>ff06f3a4-a96c-11dc-9a50-2fb720f22954</uuidstructure>
+			<datelastmodified>Thu, 13 Dec 2007 11:17:31 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 13 Dec 2007 11:17:31 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.feeder/classes/com</destination>
+			<type>folder</type>
+			<uuidstructure>08f0a416-a96d-11dc-9a50-2fb720f22954</uuidstructure>
+			<datelastmodified>Thu, 13 Dec 2007 11:17:48 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 13 Dec 2007 11:17:48 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.feeder/classes/com/alkacon</destination>
+			<type>folder</type>
+			<uuidstructure>10bbe158-a96d-11dc-9a50-2fb720f22954</uuidstructure>
+			<datelastmodified>Thu, 13 Dec 2007 11:18:01 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 13 Dec 2007 11:18:01 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.feeder/classes/com/alkacon/opencms</destination>
+			<type>folder</type>
+			<uuidstructure>172f08aa-a96d-11dc-9a50-2fb720f22954</uuidstructure>
+			<datelastmodified>Thu, 13 Dec 2007 11:18:12 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 13 Dec 2007 11:18:12 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.feeder/classes/com/alkacon/opencms/feeder</destination>
+			<type>folder</type>
+			<uuidstructure>1cf6117c-a96d-11dc-9a50-2fb720f22954</uuidstructure>
+			<datelastmodified>Thu, 13 Dec 2007 11:18:21 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 13 Dec 2007 11:18:21 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.feeder/classes/com/alkacon/opencms/feeder/workplace.properties</source>
+			<destination>system/modules/com.alkacon.opencms.feeder/classes/com/alkacon/opencms/feeder/workplace.properties</destination>
+			<type>plain</type>
+			<uuidstructure>25e0052e-a96d-11dc-9a50-2fb720f22954</uuidstructure>
+			<uuidresource>25e0052f-a96d-11dc-9a50-2fb720f22954</uuidresource>
+			<datelastmodified>Thu, 13 Dec 2007 11:18:59 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 13 Dec 2007 11:18:36 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.feeder/classes/com/alkacon/opencms/feeder/workplace_de.properties</source>
+			<destination>system/modules/com.alkacon.opencms.feeder/classes/com/alkacon/opencms/feeder/workplace_de.properties</destination>
+			<type>plain</type>
+			<uuidstructure>4338af61-a96d-11dc-9a50-2fb720f22954</uuidstructure>
+			<uuidresource>4338af62-a96d-11dc-9a50-2fb720f22954</uuidresource>
+			<datelastmodified>Thu, 13 Dec 2007 11:19:35 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 13 Dec 2007 11:19:25 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.feeder/classes/com/alkacon/opencms/feeder/workplace_en.properties</destination>
+			<type>plain</type>
+			<uuidstructure>3b9d34b0-a96d-11dc-9a50-2fb720f22954</uuidstructure>
+			<uuidresource>25e0052f-a96d-11dc-9a50-2fb720f22954</uuidresource>
+			<datelastmodified>Thu, 13 Dec 2007 11:18:59 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 13 Dec 2007 11:18:36 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.feeder/lib</destination>
+			<type>folder</type>
+			<uuidstructure>ec158451-4be1-11dc-91a6-2f44fc71ede6</uuidstructure>
+			<datelastmodified>Thu, 16 Aug 2007 10:17:41 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 16 Aug 2007 10:17:41 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.feeder/lib/com.alkacon.opencms.feeder.jar</source>
+			<destination>system/modules/com.alkacon.opencms.feeder/lib/com.alkacon.opencms.feeder.jar</destination>
+			<type>binary</type>
+			<uuidstructure>8cd89ea9-4be6-11dc-91a6-2f44fc71ede6</uuidstructure>
+			<uuidresource>8cd89eaa-4be6-11dc-91a6-2f44fc71ede6</uuidresource>
+			<datelastmodified>Thu, 16 Aug 2007 10:54:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 16 Aug 2007 10:50:49 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Alkacon OpenCms Feeder libary]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.feeder/lib/jdom-1.0.jar</source>
+			<destination>system/modules/com.alkacon.opencms.feeder/lib/jdom-1.0.jar</destination>
+			<type>binary</type>
+			<uuidstructure>aa9ab90c-4be6-11dc-91a6-2f44fc71ede6</uuidstructure>
+			<uuidresource>aa9ab90d-4be6-11dc-91a6-2f44fc71ede6</uuidresource>
+			<datelastmodified>Thu, 16 Aug 2007 10:54:31 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 16 Aug 2007 10:51:39 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[JDom libary, required by ROME]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.feeder/lib/rome-0.9.jar</source>
+			<destination>system/modules/com.alkacon.opencms.feeder/lib/rome-0.9.jar</destination>
+			<type>binary</type>
+			<uuidstructure>aab286cf-4be6-11dc-91a6-2f44fc71ede6</uuidstructure>
+			<uuidresource>aab286d0-4be6-11dc-91a6-2f44fc71ede6</uuidresource>
+			<datelastmodified>Thu, 16 Aug 2007 10:54:24 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 16 Aug 2007 10:51:39 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[ROME base libary]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.feeder/schemas</destination>
+			<type>folder</type>
+			<uuidstructure>0b1f39e3-4be2-11dc-91a6-2f44fc71ede6</uuidstructure>
+			<datelastmodified>Thu, 16 Aug 2007 10:18:33 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 16 Aug 2007 10:18:33 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.feeder/schemas/alkacon-feed-image.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.feeder/schemas/alkacon-feed-image.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>7fc268cb-a8bb-11dc-b518-2fb720f22954</uuidstructure>
+			<uuidresource>7fc268cc-a8bb-11dc-b518-2fb720f22954</uuidresource>
+			<datelastmodified>Wed, 12 Dec 2007 14:07:56 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 Dec 2007 14:06:57 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Nested feed schema for a feed image]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.feeder/schemas/alkacon-feed-mappings.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.feeder/schemas/alkacon-feed-mappings.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>054dec8a-5192-11dc-98e8-2f44fc71ede6</uuidstructure>
+			<uuidresource>054dec8b-5192-11dc-98e8-2f44fc71ede6</uuidresource>
+			<datelastmodified>Thu, 23 Aug 2007 16:01:26 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 23 Aug 2007 16:00:51 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Nested feed schema for default mappings]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.feeder/schemas/alkacon-feed.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.feeder/schemas/alkacon-feed.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>538f7062-4be7-11dc-91a6-2f44fc71ede6</uuidstructure>
+			<uuidresource>538f7063-4be7-11dc-91a6-2f44fc71ede6</uuidresource>
+			<datelastmodified>Thu, 23 Aug 2007 16:00:32 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 16 Aug 2007 10:56:22 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Base content definition for syndication feeds]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.feeder/templates</destination>
+			<type>folder</type>
+			<uuidstructure>ec02717d-4be1-11dc-91a6-2f44fc71ede6</uuidstructure>
+			<datelastmodified>Thu, 16 Aug 2007 10:17:41 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 16 Aug 2007 10:17:41 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.feeder/templates/alkacon-feed.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.feeder/templates/alkacon-feed.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>69a5dd44-4c04-11dc-9dee-2f44fc71ede6</uuidstructure>
+			<uuidresource>b4bcaf5c-4bf4-11dc-8d10-2f44fc71ede6</uuidresource>
+			<datelastmodified>Thu, 16 Aug 2007 14:23:53 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 16 Aug 2007 12:32:09 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[XML content article detail view]]></value>
+				</property>
+				<property>
+					<name>collector</name>
+					<value><![CDATA[singleFile]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace</destination>
+			<type>folder</type>
+			<uuidstructure>825afce2-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>content-encoding</name>
+					<value><![CDATA[UTF-8]]></value>
+				</property>
+				<property>
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+				<property>
+					<name>login-form</name>
+					<value><![CDATA[/system/login/index.html]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>all_others</uuidprincipal>
+					<flags>134</flags>
+					<permissionset>
+						<allowed>0</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+				<accessentry>
+					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
+					<flags>518</flags>
+					<permissionset>
+						<allowed>5</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<destination>system/workplace/resources</destination>
+			<type>folder</type>
+			<uuidstructure>82c16052-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace/resources/filetypes</destination>
+			<type>folder</type>
+			<uuidstructure>83ca1dcc-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/filetypes/alkacon-feed.png</source>
+			<destination>system/workplace/resources/filetypes/alkacon-feed.png</destination>
+			<type>image</type>
+			<uuidstructure>418fbb36-4c08-11dc-9dee-2f44fc71ede6</uuidstructure>
+			<uuidresource>418fbb37-4c08-11dc-9dee-2f44fc71ede6</uuidresource>
+			<datelastmodified>Thu, 16 Aug 2007 14:35:45 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 16 Aug 2007 14:52:05 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Alkacon Feed File Icon]]></value>
+				</property>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+	</files>
+</export>
