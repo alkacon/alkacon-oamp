@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/Attic/I_CmsFormDataAccess.java,v $
- * Date   : $Date: 2007/12/21 14:34:01 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/12/21 15:24:23 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -31,7 +31,6 @@
  */
 package com.alkacon.opencms.formgenerator.database;
 
-import com.alkacon.opencms.formgenerator.CmsForm;
 import com.alkacon.opencms.formgenerator.CmsFormHandler;
 
 import java.sql.SQLException;
@@ -43,7 +42,7 @@ import java.util.List;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4
  *
@@ -57,7 +56,7 @@ public interface I_CmsFormDataAccess {
      * @throws SQLException if sth goes wrong
      * 
      */
-    public void ensureDBTablesExistance() throws SQLException;
+    void ensureDBTablesExistance() throws SQLException;
 
     /**
      * Returns true if the db tables for the webform data exist.<p> 
@@ -66,7 +65,7 @@ public interface I_CmsFormDataAccess {
      * 
      * @throws SQLException if problems with the db connectivity occur
      */
-    public boolean existsDBTables() throws SQLException;
+    boolean existsDBTables() throws SQLException;
 
     /**
      * Read a <code>List&lt;{@link String}&gt;</code> with all 
@@ -74,7 +73,7 @@ public interface I_CmsFormDataAccess {
      * given time range.<p>
      * 
      * @param form use <code>{@link CmsFormHandler#getFormConfiguration()}</code> 
-     *      and <code>{@link CmsForm#getFormId()}</code> to find the form data in the database 
+     *      and <code>{@link com.alkacon.opencms.formgenerator.CmsForm#getFormId()}</code> to find the form data in the database 
      * 
      * @param start the start time to find data 
      * 
@@ -86,17 +85,17 @@ public interface I_CmsFormDataAccess {
      *      
      * @throws SQLException if sth goes wrong 
      */
-    public List readAllFormFieldNames(CmsFormHandler form, Date start, Date end) throws SQLException;
+    List readAllFormFieldNames(CmsFormHandler form, Date start, Date end) throws SQLException;
 
     /**
      * Read a <code>List&lt;{@link CmsFormDataBean}&gt;</code> with  all 
      * data submitted with the given form in the given time range.<p>
      * 
-     * Each <code></code>{@link CmsFormDataBean}</code> is a set of field values 
+     * Each <code>{@link CmsFormDataBean}</code> is a set of field values 
      * that was entered to the webform in a single submit.<p>
      * 
      * @param form use <code>{@link CmsFormHandler#getFormConfiguration()}</code> 
-     *      and <code>{@link CmsForm#getFormId()}</code> to find the form data in the database 
+     *      and <code>{@link com.alkacon.opencms.formgenerator.CmsForm#getFormId()}</code> to find the form data in the database 
      * 
      * @param start the start time to find data 
      * 
@@ -108,7 +107,7 @@ public interface I_CmsFormDataAccess {
      * @throws SQLException if sth goes wrong 
      *      
      */
-    public List readFormData(CmsFormHandler form, Date start, Date end) throws SQLException;
+    List readFormData(CmsFormHandler form, Date start, Date end) throws SQLException;
 
     /**
      * Persists the values of the given form.<p>
@@ -117,11 +116,11 @@ public interface I_CmsFormDataAccess {
      * 
      * @param form the form handler containing the form to persist. 
      * 
-     * @see CmsForm#getFields()
+     * @see com.alkacon.opencms.formgenerator.CmsForm#getFields()
      * 
      * @return true if successful 
      * 
      * @throws SQLException if sth goes wrong 
      */
-    public boolean writeFormData(CmsFormHandler form) throws SQLException;
+    boolean writeFormData(CmsFormHandler form) throws SQLException;
 }

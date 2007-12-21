@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsSelectWidgetXmlcontentType.java,v $
- * Date   : $Date: 2007/12/21 14:34:00 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2007/12/21 15:24:23 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -174,7 +174,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4 
  * 
@@ -188,7 +188,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
      * 
      * @author Achim Westermann
      * 
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      * 
      * @since 6.1.6
      * 
@@ -301,7 +301,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
      * 
      * @author Achim Westermann
      * 
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      * 
      * @since 6.1.6
      * 
@@ -330,7 +330,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
          * 
          * @see CmsMacroResolver
          */
-        private CmsResourceSelectWidgetOptionComparator(CmsObject cms, String comparatorMacro)
+        CmsResourceSelectWidgetOptionComparator(CmsObject cms, String comparatorMacro)
         throws CmsException {
 
             if (CmsStringUtil.isEmpty(comparatorMacro)) {
