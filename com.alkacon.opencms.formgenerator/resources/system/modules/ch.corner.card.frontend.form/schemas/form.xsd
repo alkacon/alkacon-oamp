@@ -1,0 +1,65 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/ch.corner.card.frontend.form/schemas/formdatatarget.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/ch.corner.card.frontend.form/schemas/inputfieldgroup.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/ch.corner.card.frontend.form/schemas/optionalconfig.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/ch.corner.card.frontend.form/schemas/optionalconfirmation.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/ch.corner.card.frontend.form/schemas/optionalformcaptcha.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/ch.corner.card.frontend/schemas/corner-promotion-link.xsd" />
+	<xsd:include schemaLocation="opencms://system/modules/ch.corner.card.frontend/schemas/corner-choice-image-flash.xsd"/>
+		
+	<xsd:element name="OnlineForms" type="OpenCmsOnlineForms"/>
+	
+	<xsd:complexType name="OpenCmsOnlineForms">
+		<xsd:sequence>
+			<xsd:element name="OnlineForm" type="OpenCmsOnlineForm" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsOnlineForm">
+		<xsd:sequence>
+			<xsd:element name="Title" type="OpenCmsString" />
+			<xsd:element name="HeaderImage" type="OpenCmsImageFlashChoice"/>
+			<xsd:element name="PartnerLogo" type="OpenCmsString"/>
+			<xsd:element name="MailFrom" type="OpenCmsString" />
+			<xsd:element name="MailTo" type="OpenCmsString" />
+			<xsd:element name="MailSubject" type="OpenCmsString" />
+			<xsd:element name="DataTarget" type="OpenCmsDataTarget" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="MailText" type="OpenCmsHtml" />						
+			<xsd:element name="FormText" type="OpenCmsHtml" />		
+			<xsd:element name="InputFieldGroup" type="OpenCmsInputFieldGroup" maxOccurs="unbounded" />
+			<xsd:element name="TargetUri" type="OpenCmsVfsFile" minOccurs="0" /> 				
+			<xsd:element name="FormConfirmation" type="OpenCmsHtml" />
+			<xsd:element name="FormCaptcha" type="OpenCmsFormCaptcha" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="OptionalFormConfiguration" type="OpenCmsOptionalFormConfiguration" minOccurs="0" />
+			<xsd:element name="OptionalConfirmationMail" type="OpenCmsOptionalConfirmationMail" minOccurs="0" />
+			<xsd:element name="PromotionLeft" type="OpenCmsCornerCardPromotionLink" minOccurs="0" maxOccurs="2"/>
+			<xsd:element name="PromotionRight" type="OpenCmsCornerCardPromotionLink" minOccurs="0" maxOccurs="5"/>
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="required"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="ch.corner.card.frontend.form.workplace"/>
+			<defaults>
+			</defaults>
+			<validationrules>
+				<rule element="DataTarget/FormId" regex=".+" type="error" message="%(err.xmlcontent.field.empty)"/>
+			</validationrules>
+			<mappings>
+				<mapping element="HeaderImage/FlashMovie" mapto="property:corner.header.flash" />
+				<mapping element="HeaderImage/Image" mapto="property:corner.header.image" />		
+				<mapping element="PartnerLogo" mapto="property:corner.partnerlogo" />	
+			</mappings>
+			<layouts>
+				<layout element="PartnerLogo" widget="ch.corner.card.frontend.form.CornercardSelectWidget" configuration="visamaster:VISA / Mastercard|visa:VISA|master:Mastercard"/>				
+				<layout element="FormText" widget="HtmlWidget" configuration="height:300px,link,anchor,formatselect,source,imagegallery,downloadgallery,linkgallery,htmlgallery,tablegallery,image,table,css:/system/modules/ch.corner.card.frontend/resources/css/cornercard-editors.css"/>		
+				<layout element="MailText" widget="HtmlWidget" configuration="height:300px,link,anchor,formatselect,source,imagegallery,downloadgallery,linkgallery,htmlgallery,tablegallery,image,table,css:/system/modules/ch.corner.card.frontend/resources/css/cornercard-editors.css"/>		
+				<layout element="FormConfirmation" widget="HtmlWidget" configuration="height:300px,link,anchor,formatselect,source,imagegallery,downloadgallery,linkgallery,htmlgallery,tablegallery,image,table,css:/system/modules/ch.corner.card.frontend/resources/css/cornercard-editors.css"/>		
+			</layouts>
+		</xsd:appinfo>
+	</xsd:annotation>  
+	
+</xsd:schema>

@@ -1,0 +1,45 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/inputfield.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/optionalconfig.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/optionalconfirmation.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/optionalformcaptcha.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/formdatatarget.xsd"/>
+		
+	<xsd:element name="AlkaconWebForms" type="OpenCmsAlkaconWebForms"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconWebForms">
+		<xsd:sequence>
+			<xsd:element name="AlkaconWebForm" type="OpenCmsAlkaconWebForm" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconWebForm">
+		<xsd:sequence>
+			<xsd:element name="MailFrom" type="OpenCmsString" />
+			<xsd:element name="MailTo" type="OpenCmsString" />
+			<xsd:element name="MailSubject" type="OpenCmsString" />
+			<xsd:element name="DataTarget" type="OpenCmsDataTarget" minOccurs="0" maxOccurs="1"/>
+			<xsd:element name="MailText" type="OpenCmsHtml" />						
+			<xsd:element name="FormText" type="OpenCmsHtml" />		
+			<xsd:element name="InputField" type="OpenCmsAlkaconWebFormInputField" maxOccurs="unbounded" />
+			<xsd:element name="TargetUri" type="OpenCmsVfsFile" minOccurs="0" /> 				
+			<xsd:element name="FormConfirmation" type="OpenCmsHtml" />
+			<xsd:element name="FormCaptcha" type="OpenCmsAlkaconWebFormCaptcha" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="OptionalFormConfiguration" type="OpenCmsOptionalAlkaconWebFormConfiguration" minOccurs="0" />
+			<xsd:element name="OptionalConfirmationMail" type="OpenCmsOptionalAlkaconWebFormConfirmationMail" minOccurs="0" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="required"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.formgenerator.workplace"/>
+			<validationrules>
+				<rule element="DataTarget/FormId" regex=".+" type="error" message="%(err.xmlcontent.field.empty)"/>
+			</validationrules>
+		</xsd:appinfo>
+	</xsd:annotation>  
+	
+</xsd:schema>

@@ -1,0 +1,34 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+		
+	<xsd:element name="OptionalConfirmationMails" type="OpenCmsOptionalConfirmationMails"/>
+	
+	<xsd:complexType name="OpenCmsOptionalConfirmationMails">
+		<xsd:sequence>
+			<xsd:element name="OptionalConfirmationMail" type="OpenCmsOptionalConfirmationMail" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsOptionalConfirmationMail">
+		<xsd:sequence>
+			<xsd:element name="ConfirmationMailEnabled" type="OpenCmsBoolean" />
+			<xsd:element name="ConfirmationMailOptional" type="OpenCmsBoolean" />
+			<xsd:element name="ConfirmationCheckboxLabel" type="OpenCmsString" />
+			<xsd:element name="ConfirmationField" type="OpenCmsString" />
+			<xsd:element name="ConfirmationMailSubject" type="OpenCmsString" />
+			<xsd:element name="ConfirmationMailText" type="OpenCmsHtml" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+	</xsd:complexType>
+	
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="ch.cornercard.frontend.form.workplace"/>
+			<layouts>
+				<layout element="ConfirmationMailText" widget="HtmlWidget" configuration="height:300px,link,anchor,formatselect,source,imagegallery,downloadgallery,linkgallery,htmlgallery,tablegallery,image,table,css:/system/modules/ch.corner.card.frontend/resources/css/cornercard-editors.css"/>		
+			</layouts>
+		</xsd:appinfo>
+	</xsd:annotation>  
+
+</xsd:schema>
