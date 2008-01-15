@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
- * Date   : $Date: 2007/12/21 14:34:00 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/01/15 09:28:15 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -29,6 +29,7 @@
  * For further information about OpenCms, please see the
  * project website: http://www.opencms.org.
  */
+
 package com.alkacon.opencms.formgenerator;
 
 import org.opencms.configuration.CmsConfigurationException;
@@ -61,12 +62,13 @@ import org.apache.commons.fileupload.FileItem;
  * @author Thomas Weckert 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4 
  */
 public class CmsForm {
-      /** Constant used as value in the XML content defining that the data target is email. */
+
+    /** Constant used as value in the XML content defining that the data target is email. */
     public static final String DATATARGET_EMAIL = "email";
 
     /** Constant used as value in the XML content defining that the data target is database. */
@@ -74,49 +76,49 @@ public class CmsForm {
 
     /** Constant used as value in the XML content defining that the data target is database and email. */
     public static final String DATATARGET_EMAIL_DATABASE = "email-database";
-    
+
     /** Mail type: html mail. */
     public static final String MAILTYPE_HTML = "html";
 
     /** Mail type: text mail. */
     public static final String MAILTYPE_TEXT = "text";
-    
+
     /** Configuration node name for the optional captcha. */
     public static final String NODE_CAPTCHA = "FormCaptcha";
 
     /** Configuration node name for the confirmation mail checkbox label text. */
     public static final String NODE_CONFIRMATIONMAILCHECKBOXLABEL = "ConfirmationCheckboxLabel";
-    
+
     /** Configuration node name for the confirmation mail enabled node. */
     public static final String NODE_CONFIRMATIONMAILENABLED = "ConfirmationMailEnabled";
 
     /** Configuration node name for the confirmation mail input field node. */
     public static final String NODE_CONFIRMATIONMAILFIELD = "ConfirmationField";
-    
+
     /** Configuration node name for the confirmation mail optional flag node. */
     public static final String NODE_CONFIRMATIONMAILOPTIONAL = "ConfirmationMailOptional";
-    
+
     /** Configuration node name for the confirmation mail subject node. */
     public static final String NODE_CONFIRMATIONMAILSUBJECT = "ConfirmationMailSubject";
-    
+
     /** Configuration node name for the confirmation mail text node. */
     public static final String NODE_CONFIRMATIONMAILTEXT = "ConfirmationMailText";
-    
+
     /** Configuration node name for the Email node. */
     public static final String NODE_EMAIL = "Email";
 
     /** Configuration node name for the field value node. */
     public static final String NODE_FIELDDEFAULTVALUE = "FieldDefault";
-    
+
     /** Configuration node name for the field error message node. */
     public static final String NODE_FIELDERRORMESSAGE = "FieldErrorMessage";
-    
+
     /** Configuration node name for the field item node. */
     public static final String NODE_FIELDITEM = "FieldItem";
-    
+
     /** Configuration node name for the field description node. */
     public static final String NODE_FIELDLABEL = "FieldLabel";
-    
+
     /** Configuration node name for the field mandatory node. */
     public static final String NODE_FIELDMANDATORY = "FieldMandatory";
 
@@ -125,59 +127,59 @@ public class CmsForm {
 
     /** Configuration node name for the field validation node. */
     public static final String NODE_FIELDVALIDATION = "FieldValidation";
-    
+
     /** Configuration node name for the form attributes node. */
     public static final String NODE_FORMATTRIBUTES = "FormAttributes";
-    
+
     /** Configuration node name for the form check page text node. */
     public static final String NODE_FORMCHECKTEXT = "CheckText";
 
     /** Configuration node name for the form confirmation text node. */
     public static final String NODE_FORMCONFIRMATION = "FormConfirmation";
-    
+
     /** Configuration node name for the form field attributes node. */
     public static final String NODE_FORMFIELDATTRIBUTES = "FormFieldAttributes";
-    
+
     /** Configuration node name for the form text node. */
     public static final String NODE_FORMTEXT = "FormText";
-    
+
     /** Configuration node name for the input field node. */
     public static final String NODE_INPUTFIELD = "InputField";
-    
+
     /** Configuration node name for the item description node. */
     public static final String NODE_ITEMDESCRIPTION = "ItemDescription";
-    
+
     /** Configuration node name for the item selected node. */
     public static final String NODE_ITEMSELECTED = "ItemSelected";
-    
+
     /** Configuration node name for the item value node. */
     public static final String NODE_ITEMVALUE = "ItemValue";
-    
+
     /** Configuration node name for the Email bcc recipient(s) node. */
     public static final String NODE_MAILBCC = "MailBCC";
-    
+
     /** Configuration node name for the Email cc recipient(s) node. */
     public static final String NODE_MAILCC = "MailCC";
-    
+
     /** Configuration node name for the Email sender address node. */
     public static final String NODE_MAILFROM = "MailFrom";
 
     /** Configuration node name for the Email subject node. */
     public static final String NODE_MAILSUBJECT = "MailSubject";
-    
+
     /** Configuration node name for the Email text node. */
     public static final String NODE_MAILTEXT = "MailText";
-    
+
     /** Configuration node name for the Email recipient(s) node. */
     public static final String NODE_MAILTO = "MailTo";
-    
+
     /** Configuration node name for the Email type node. */
     public static final String NODE_MAILTYPE = "MailType";
-    
+
     /** Configuration node name for the optional form configuration. */
     public static final String NODE_OPTIONALCONFIGURATION = "OptionalFormConfiguration";
-    
-     /** Configuration node name for the optional nested data target. */
+
+    /** Configuration node name for the optional nested data target. */
     public static final String NODE_DATATARGET = "DataTarget";
 
     /** Configuration node name for the transport field in the optional nested data target. */
@@ -185,32 +187,32 @@ public class CmsForm {
 
     /** Configuration node name for the transport field in the optional nested data target. */
     public static final String NODE_DATATARGET_FORMID = "FormId";
-    
+
     /** Configuration node name for the optional confirmation mail configuration. */
     public static final String NODE_OPTIONALCONFIRMATION = "OptionalConfirmationMail";
-    
+
     /** Configuration node name for the Show check page node. */
     public static final String NODE_SHOWCHECK = "ShowCheck";
-    
+
     /** Configuration node name for the optional target URI. */
     public static final String NODE_TARGET_URI = "TargetUri";
-    
+
     /** Request parameter name for the optional send confirmation email checkbox. */
     public static final String PARAM_SENDCONFIRMATION = "sendconfirmation";
-    
+
     /** Resource type ID of XML content forms. */
     private static final String TYPE_NAME = "emailform";
- 
-   /** Flag to signal that data should be sent by email - defaults to true. */
+
+    /** Flag to signal that data should be sent by email - defaults to true. */
     private boolean m_transportEmail = true;
 
     /** Flag to signal that data should be stored in the database - defaults to false. */
     private boolean m_transportDatabase = false;
 
     private CmsCaptchaField m_captchaField;
-   /** 
-     * The form id needed in case it is stored in the database.
-     */
+    /** 
+      * The form id needed in case it is stored in the database.
+      */
     private String m_formId;
 
     private List m_configurationErrors;
@@ -222,7 +224,7 @@ public class CmsForm {
     private String m_confirmationMailText;
 
     private String m_confirmationMailTextPlain;
-    
+
     /** Stores the form input fields. */
     private List m_fields;
 
@@ -247,9 +249,9 @@ public class CmsForm {
     private String m_mailTo;
 
     private String m_mailType;
-    
+
     private boolean m_showCheck;
-    private  String m_targetUri;
+    private String m_targetUri;
 
     /** Configuration node name for the optional captcha. */
     public static final String NODE_CAPTCHA_PRESET = "Preset";
@@ -259,7 +261,7 @@ public class CmsForm {
 
     /** The map of request parameters. */
     private Map m_parameterMap;
-    
+
     /**
      * Default constructor which parses the configuration file.<p>
      * 
@@ -290,13 +292,14 @@ public class CmsForm {
 
         init(jsp, messages, initial, formConfigUri, formAction);
     }
-    
+
     /**
      * Returns the resource type name of XML content forms.<p>
      * 
      * @return the resource type name of XML content forms
      */
     public static String getStaticType() {
+
         return TYPE_NAME;
     }
 
@@ -306,6 +309,7 @@ public class CmsForm {
      * @return true, if the captcha field should be displayed on the check page
      */
     public boolean captchaFieldIsOnCheckPage() {
+
         return getShowCheck();
     }
 
@@ -315,6 +319,7 @@ public class CmsForm {
      * @return true, if the captcha field should be displayed on the input page
      */
     public boolean captchaFieldIsOnInputPage() {
+
         return !getShowCheck();
     }
 
@@ -324,7 +329,7 @@ public class CmsForm {
      * @return the (opt.) captcha field of this form
      */
     public CmsCaptchaField getCaptchaField() {
-        
+
         return m_captchaField;
     }
 
@@ -405,14 +410,14 @@ public class CmsForm {
      * @return the field value, or null
      */
     public String getFieldStringValueByName(String fieldName) {
-        
+
         I_CmsField field = (I_CmsField)m_fieldsByName.get(fieldName);
         if (field != null) {
-            
+
             String fieldValue = field.getValue();
             return (fieldValue != null) ? fieldValue.trim() : "";
         }
-        
+
         return "";
     }
 
@@ -575,6 +580,7 @@ public class CmsForm {
      * @return the target URI
      */
     public String getTargetUri() {
+
         return m_targetUri;
     }
 
@@ -584,6 +590,7 @@ public class CmsForm {
      * @return true, if a captcha field is configured for this form
      */
     public boolean hasCaptchaField() {
+
         return m_captchaField != null;
     }
 
@@ -616,6 +623,7 @@ public class CmsForm {
      * @return the target URI
      */
     public boolean hasTargetUri() {
+
         return CmsStringUtil.isNotEmpty(m_targetUri);
     }
 
@@ -632,7 +640,7 @@ public class CmsForm {
      */
     public void init(CmsFormHandler jsp, CmsMessages messages, boolean initial, String formConfigUri, String formAction)
     throws Exception {
- 
+
         m_parameterMap = jsp.getParameterMap();
         // read the form configuration file from VFS
         if (CmsStringUtil.isEmpty(formConfigUri)) {
@@ -646,7 +654,7 @@ public class CmsForm {
 
         // init member variables
         initMembers();
-        
+
         m_formAction = formAction;
         m_fields = new ArrayList();
         m_fieldsByName = new HashMap();
@@ -656,22 +664,23 @@ public class CmsForm {
 
         // initialize the form input fields
         initInputFields(content, jsp, locale, messages, initial);
-        
+
         // init. the optional captcha field
         initCaptchaField(jsp, content, locale, initial);
-        
+
         // add the captcha field to the list of all fields, if the form has no check page
         if (captchaFieldIsOnInputPage() && m_captchaField != null) {
             addField(m_captchaField);
         }
     }
-    
+
     /**
      * Tests if the check page was submitted.<p>
      * 
      * @return true, if the check page was submitted
      */
     public boolean isCheckPageSubmitted() {
+
         return CmsFormHandler.ACTION_CONFIRMED.equals(m_formAction);
     }
 
@@ -701,6 +710,7 @@ public class CmsForm {
      * @return true, if the input page was submitted
      */
     public boolean isInputFormSubmitted() {
+
         return CmsFormHandler.ACTION_SUBMIT.equals(m_formAction);
     }
 
@@ -710,12 +720,12 @@ public class CmsForm {
      * @return the removed captcha field, or null
      */
     public I_CmsField removeCaptchaField() {
-        
+
         for (int i = 0, n = m_fields.size(); i < n; i++) {
-            
+
             I_CmsField field = (I_CmsField)m_fields.get(i);
             if (field != null && CmsCaptchaField.class.isAssignableFrom(getClass())) {
-                
+
                 removeField(field);
                 return field;
             }
@@ -730,9 +740,9 @@ public class CmsForm {
      * @param field the field to be added to the form
      */
     protected void addField(I_CmsField field) {
-        
+
         m_fields.add(field);
-        
+
         // the fields are also internally backed in a map keyed by their field name
         m_fieldsByName.put(field.getName(), field);
     }
@@ -756,7 +766,7 @@ public class CmsForm {
                     if (CmsStringUtil.isNotEmpty(values[i]) && values[i].equals(value)) {
                         // mark this as selected
                         result = Boolean.toString(true);
-                    } 
+                    }
                 }
             } catch (Exception e) {
                 // keep value null;
@@ -775,9 +785,9 @@ public class CmsForm {
      * @param field the field to be removed
      */
     protected void removeField(I_CmsField field) {
-        
+
         m_fields.remove(field);
-        
+
         // the fields are also internally backed in a map keyed by their field name
         m_fieldsByName.remove(field);
     }
@@ -951,7 +961,7 @@ public class CmsForm {
 
         m_mailFrom = mailFrom;
     }
-    
+
     /**
      * Sets the mail subject.<p>
      * 
@@ -981,7 +991,7 @@ public class CmsForm {
 
         m_mailText = mailText;
     }
-    
+
     /**
      * Sets the mail text as plain text.<p>
      * 
@@ -991,7 +1001,7 @@ public class CmsForm {
 
         m_mailTextPlain = mailTextPlain;
     }
-    
+
     /**
      * Sets the mail recipient(s).<p>
      * 
@@ -1001,7 +1011,7 @@ public class CmsForm {
 
         m_mailTo = mailTo;
     }
-    
+
     /**
      * Sets the mail type ("text" or "html").<p>
      * 
@@ -1011,7 +1021,7 @@ public class CmsForm {
 
         m_mailType = mailType;
     }
-    
+
     /**
      * Sets if the check page should be shown.<p>
      *
@@ -1021,7 +1031,7 @@ public class CmsForm {
 
         m_showCheck = showCheck;
     }
-    
+
     /**
      * Sets the target URI of this form.<p>
      * 
@@ -1031,9 +1041,10 @@ public class CmsForm {
      * @param targetUri the target URI
      */
     protected void setTargetUri(String targetUri) {
+
         m_targetUri = targetUri;
     }
-    
+
     /**
      * Creates the checkbox field to activate the confirmation mail in the input form.<p>
      * 
@@ -1059,7 +1070,7 @@ public class CmsForm {
         field.setItems(items);
         return field;
     }
-    
+
     /**
      * Checks if the given value is empty and returns in that case the default value.<p>
      * 
@@ -1074,7 +1085,7 @@ public class CmsForm {
         }
         return defaultValue;
     }
-    
+
     /**
      * Initializes the optional captcha field.<p>
      * 
@@ -1084,7 +1095,7 @@ public class CmsForm {
      * @param initial if true, field values are filled with values specified in the XML configuration, otherwise values are read from the request
      */
     private void initCaptchaField(CmsJspActionElement jsp, CmsXmlContent xmlContent, Locale locale, boolean initial) {
-        
+
         boolean captchaFieldIsOnInputPage = captchaFieldIsOnInputPage();
         boolean displayCheckPage = captchaFieldIsOnCheckPage() && isInputFormSubmitted();
         boolean submittedCheckPage = captchaFieldIsOnCheckPage() && isCheckPageSubmitted();
@@ -1093,7 +1104,7 @@ public class CmsForm {
         if (captchaFieldIsOnInputPage || displayCheckPage || submittedCheckPage) {
 
             CmsObject cms = jsp.getCmsObject();
-            
+
             I_CmsXmlContentValue xmlValueCaptcha = xmlContent.getValue(NODE_CAPTCHA, locale);
             if (xmlValueCaptcha != null) {
 
@@ -1118,7 +1129,7 @@ public class CmsForm {
             }
         }
     }
-    
+
     /**
      * Initializes the general online form settings.<p>
      * 
@@ -1158,7 +1169,7 @@ public class CmsForm {
             // no prefix present
             setMailSubjectPrefix("");
         }
-        
+
         CmsXmlHtmlValue mailTextValue = (CmsXmlHtmlValue)content.getValue(NODE_MAILTEXT, locale);
         if (mailTextValue != null) {
             // get the mail text as plain text
@@ -1171,8 +1182,8 @@ public class CmsForm {
             setMailTextPlain("");
             setMailText("");
         }
-        
-           // optional data target configuration 
+
+        // optional data target configuration 
         String pathPrefix = NODE_DATATARGET + "/";
         stringValue = content.getStringValue(cms, pathPrefix + NODE_DATATARGET_TRANSPORT, locale);
         stringValue = getConfigurationValue(stringValue, "email");
@@ -1191,10 +1202,9 @@ public class CmsForm {
             this.setTransportEmail(true);
             this.setTransportDatabase(false);
         }
-        
+
         stringValue = content.getStringValue(cms, pathPrefix + NODE_DATATARGET_FORMID, locale);
         setFormId(getConfigurationValue(stringValue, content.getFile().getRootPath()));
-        
 
         // optional configuration options
         pathPrefix = NODE_OPTIONALCONFIGURATION + "/";
@@ -1242,7 +1252,7 @@ public class CmsForm {
             // get the confirmation mail subject
             stringValue = content.getStringValue(cms, pathPrefix + NODE_CONFIRMATIONMAILSUBJECT, locale);
             setConfirmationMailSubject(getConfigurationValue(stringValue, ""));
-           
+
             mailTextValue = (CmsXmlHtmlValue)content.getValue(pathPrefix + NODE_CONFIRMATIONMAILTEXT, locale);
             if (mailTextValue != null) {
                 // get the confirmation mail text
@@ -1254,7 +1264,7 @@ public class CmsForm {
                 setConfirmationMailTextPlain("");
                 setConfirmationMailText("");
             }
-            
+
             // get the confirmation mail field index number
             stringValue = content.getStringValue(cms, pathPrefix + NODE_CONFIRMATIONMAILFIELD, locale);
             int fieldIndex = 1;
@@ -1274,7 +1284,7 @@ public class CmsForm {
                 messages.key("form.confirmation.checkbox")));
         }
     }
-    
+
     /**
      * Initializes the field objects of the form.<p>
      * 
@@ -1297,7 +1307,7 @@ public class CmsForm {
         int fieldValueSize = fieldValues.size();
         CmsFieldFactory fieldFactory = CmsFieldFactory.getSharedInstance();
         Map fileUploads = (Map)jsp.getRequest().getSession().getAttribute(CmsFormHandler.ATTRIBUTE_FILEITEMS);
-        
+
         for (int i = 0; i < fieldValueSize; i++) {
             I_CmsXmlContentValue inputField = (I_CmsXmlContentValue)fieldValues.get(i);
             String inputFieldPath = inputField.getPath() + "/";
@@ -1306,9 +1316,15 @@ public class CmsForm {
             // get the field from the factory for the specified type
             String stringValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDTYPE, locale);
             field = fieldFactory.getField(stringValue);
-            
+
             // create the field name
-            field.setName(inputFieldPath.substring(0, inputFieldPath.length() - 1));
+            String fieldName = inputFieldPath.substring(0, inputFieldPath.length() - 1);
+            // cut off the xml content index ("[number]") and replace by "-number":
+            int indexStart = fieldName.indexOf('[') + 1;
+            String index = fieldName.substring(indexStart, fieldName.length() - 1);
+            fieldName = new StringBuffer(fieldName.substring(0, indexStart - 1)).append('-').append(index).toString();
+
+            field.setName(fieldName);
             // get the field label
             stringValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDLABEL, locale);
             field.setLabel(getConfigurationValue(stringValue, ""));
@@ -1326,7 +1342,7 @@ public class CmsForm {
                 }
             } else {
                 // get field value from request for standard fields
-                String[] parameterValues = (String[])m_parameterMap.get(field.getName()); 
+                String[] parameterValues = (String[])m_parameterMap.get(field.getName());
                 StringBuffer value = new StringBuffer();
                 if (parameterValues != null) {
                     for (int j = 0; j < parameterValues.length; j++) {
@@ -1427,13 +1443,13 @@ public class CmsForm {
         validateFormConfiguration(messages);
 
         if (isConfirmationMailEnabled() && isConfirmationMailOptional()) {
-            
+
             // add the checkbox to activate confirmation mail for customer
             I_CmsField confirmationMailCheckbox = createConfirmationMailCheckbox(messages, initial);
             addField(confirmationMailCheckbox);
         }
     }
-    
+
     /**
      * Returns the request parameter with the specified name.<p>
      * 
@@ -1442,14 +1458,14 @@ public class CmsForm {
      * @return the parameter value
      */
     private String getParameter(String parameter) {
-        
+
         try {
             return ((String[])m_parameterMap.get(parameter))[0];
         } catch (NullPointerException e) {
             return "";
         }
     }
-    
+
     /**
      * Initializes the member variables.<p>
      */
@@ -1473,7 +1489,7 @@ public class CmsForm {
         setConfirmationMailText("");
         setConfirmationMailTextPlain("");
     }
-    
+
     /**
      * Validates the loaded online form configuration and creates a list of error messages, if necessary.<p>
      * 
@@ -1499,11 +1515,12 @@ public class CmsForm {
             }
         }
     }
- /**
-     * Returns true to signal that data should be sent by email (default) or false.<p>
-     * 
-     * @return true to signal that data should be sent by email (default) or false
-     */
+
+    /**
+        * Returns true to signal that data should be sent by email (default) or false.<p>
+        * 
+        * @return true to signal that data should be sent by email (default) or false
+        */
     public boolean isTransportEmail() {
 
         return m_transportEmail;
