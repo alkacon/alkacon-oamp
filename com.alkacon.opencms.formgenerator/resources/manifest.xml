@@ -3,8 +3,8 @@
 <export>
 	<info>
 		<creator>Admin</creator>
-		<opencms_version>7.0.3</opencms_version>
-		<createdate>Fri, 21 Dec 2007 14:23:30 GMT</createdate>
+		<opencms_version>7.0.2</opencms_version>
+		<createdate>Tue, 15 Jan 2008 08:44:29 GMT</createdate>
 		<project>Offline</project>
 		<export_version>6</export_version>
 	</info>
@@ -16,7 +16,7 @@
 		<description><![CDATA[<p>This module contains online form functionality for OpenCms.</p>
 <p>This module can easily be used to create online input forms.</p>
 <p><i>(c) 2007 by Alkacon Software GmbH (http://www.alkacon.com).</i></p>]]></description>
-		<version>1.0.0</version>
+		<version>1.0.5</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail/>
 		<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
@@ -61,20 +61,20 @@
 		<file>
 			<destination>system</destination>
 			<type>folder</type>
-			<uuidstructure>ea805238-99c4-11dc-9731-93c509c2a6ac</uuidstructure>
+			<uuidstructure>189367f5-18d0-11dc-b638-b7a33137a728</uuidstructure>
 			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Fri, 23 Nov 2007 13:06:34 GMT</datecreated>
+			<datecreated>Tue, 12 Jun 2007 10:31:36 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
 			<relations/>
 			<accesscontrol>
 				<accessentry>
-					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
-					<flags>514</flags>
+					<uuidprincipal>GROUP.Users</uuidprincipal>
+					<flags>34</flags>
 					<permissionset>
-						<allowed>5</allowed>
+						<allowed>1</allowed>
 						<denied>0</denied>
 					</permissionset>
 				</accessentry>
@@ -387,7 +387,7 @@
 			<type>plain</type>
 			<uuidstructure>a3fc26b9-11b7-11db-91cd-fdbae480baca</uuidstructure>
 			<uuidresource>9175ff70-6316-11d9-8f91-f55bb5376c24</uuidresource>
-			<datelastmodified>Fri, 21 Dec 2007 14:15:53 GMT</datelastmodified>
+			<datelastmodified>Mon, 14 Jan 2008 16:21:45 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -426,7 +426,7 @@
 			<type>plain</type>
 			<uuidstructure>a405c3af-11b7-11db-91cd-fdbae480baca</uuidstructure>
 			<uuidresource>9175ff70-6316-11d9-8f91-f55bb5376c24</uuidresource>
-			<datelastmodified>Fri, 21 Dec 2007 14:15:53 GMT</datelastmodified>
+			<datelastmodified>Mon, 14 Jan 2008 16:21:45 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -543,7 +543,7 @@
 			<type>jsp</type>
 			<uuidstructure>768a9b43-99ce-11dc-bb5d-93c509c2a6ad</uuidstructure>
 			<uuidresource>768a9b44-99ce-11dc-bb5d-93c509c2a6ad</uuidresource>
-			<datelastmodified>Thu, 13 Dec 2007 13:21:01 GMT</datelastmodified>
+			<datelastmodified>Mon, 14 Jan 2008 16:16:37 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Fri, 23 Nov 2007 14:14:54 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -580,7 +580,7 @@
 			<type>binary</type>
 			<uuidstructure>1a5f3241-6790-11dc-a439-7168be419889</uuidstructure>
 			<uuidresource>1a5f3242-6790-11dc-a439-7168be419889</uuidresource>
-			<datelastmodified>Mon, 17 Dec 2007 11:35:08 GMT</datelastmodified>
+			<datelastmodified>Tue, 15 Jan 2008 08:39:18 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Thu, 20 Sep 2007 15:42:32 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -705,7 +705,7 @@
 			<type>jsp</type>
 			<uuidstructure>a424bd7e-11b7-11db-91cd-fdbae480baca</uuidstructure>
 			<uuidresource>ffb9f73b-63b8-11d9-ab74-f55bb5376c25</uuidresource>
-			<datelastmodified>Thu, 13 Dec 2007 09:07:33 GMT</datelastmodified>
+			<datelastmodified>Tue, 15 Jan 2008 08:34:38 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -866,7 +866,7 @@
 			<type>plain</type>
 			<uuidstructure>a437d064-11b7-11db-91cd-fdbae480baca</uuidstructure>
 			<uuidresource>8175f1c2-f851-11d9-9e77-c7beef112ba6</uuidresource>
-			<datelastmodified>Fri, 21 Dec 2007 13:26:57 GMT</datelastmodified>
+			<datelastmodified>Mon, 14 Jan 2008 14:37:31 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -906,19 +906,11 @@
 			<relations/>
 			<accesscontrol>
 				<accessentry>
-					<uuidprincipal>ALL_OTHERS</uuidprincipal>
-					<flags>134</flags>
+					<uuidprincipal>GROUP.Guests</uuidprincipal>
+					<flags>38</flags>
 					<permissionset>
 						<allowed>0</allowed>
-						<denied>0</denied>
-					</permissionset>
-				</accessentry>
-				<accessentry>
-					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
-					<flags>518</flags>
-					<permissionset>
-						<allowed>5</allowed>
-						<denied>0</denied>
+						<denied>30</denied>
 					</permissionset>
 				</accessentry>
 			</accesscontrol>
@@ -962,6 +954,47 @@
 				<property>
 					<name>locale-available</name>
 					<value><![CDATA[en]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>all_others</uuidprincipal>
+					<flags>134</flags>
+					<permissionset>
+						<allowed>5</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+				<accessentry>
+					<uuidprincipal>GROUP.Guests</uuidprincipal>
+					<flags>38</flags>
+					<permissionset>
+						<allowed>5</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<source>system/workplace/admin/captcha/alkacon.captchapreset</source>
+			<destination>system/workplace/admin/captcha/alkacon.captchapreset</destination>
+			<type>xmlcontent</type>
+			<uuidstructure>65c71d8f-c345-11dc-a2cf-b7a33137a728</uuidstructure>
+			<uuidresource>65c71d90-c345-11dc-a2cf-b7a33137a728</uuidresource>
+			<datelastmodified>Tue, 15 Jan 2008 08:41:29 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 15 Jan 2008 08:39:34 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Alkacon]]></value>
+				</property>
+				<property>
+					<name>collector.priority</name>
+					<value><![CDATA[2]]></value>
 				</property>
 			</properties>
 			<relations/>
