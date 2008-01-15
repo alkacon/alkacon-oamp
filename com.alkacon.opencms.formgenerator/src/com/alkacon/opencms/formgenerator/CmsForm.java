@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
- * Date   : $Date: 2008/01/15 09:28:15 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2008/01/15 17:31:54 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -62,7 +62,7 @@ import org.apache.commons.fileupload.FileItem;
  * @author Thomas Weckert 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4 
  */
@@ -142,6 +142,9 @@ public class CmsForm {
 
     /** Configuration node name for the form text node. */
     public static final String NODE_FORMTEXT = "FormText";
+
+    /** Configuration node name for the form footer text node. */
+    public static final String NODE_FORMFOOTERTEXT = "FormFooterText";
 
     /** Configuration node name for the input field node. */
     public static final String NODE_INPUTFIELD = "InputField";
@@ -237,6 +240,8 @@ public class CmsForm {
     private String m_formFieldAttributes;
 
     private String m_formText;
+
+    private String m_formFooterText;
 
     private boolean m_hasMandatoryFields;
     private String m_mailBCC;
@@ -471,6 +476,16 @@ public class CmsForm {
         return m_formText;
     }
 
+    /**
+     * Returns the form footer text.<p>
+     * 
+     * @return the form footer text
+     */
+    public String getFormFooterText() {
+
+        return m_formFooterText;
+    }
+    
     /**
      * Returns the mail bcc recipient(s).<p>
      * 
@@ -923,6 +938,16 @@ public class CmsForm {
     }
 
     /**
+     * Sets the form footer text.<p>
+     * 
+     * @param formFooterText the form text
+     */
+    protected void setFormFooterText(String formFooterText) {
+
+        m_formFooterText = formFooterText;
+    }
+
+    /**
      * Sets if at least one of the configured fields is mandatory.<p>
      *
      * @param hasMandatoryFields true if at least one of the configured fields is mandatory, otherwise false
@@ -1145,6 +1170,9 @@ public class CmsForm {
         // get the form text
         String stringValue = content.getStringValue(cms, NODE_FORMTEXT, locale);
         setFormText(getConfigurationValue(stringValue, ""));
+        // get the form footer text
+        stringValue = content.getStringValue(cms, NODE_FORMFOOTERTEXT, locale);
+        setFormFooterText(getConfigurationValue(stringValue, ""));
         // get the form confirmation text
         stringValue = content.getStringValue(cms, NODE_FORMCONFIRMATION, locale);
         setFormConfirmationText(getConfigurationValue(stringValue, ""));
@@ -1477,6 +1505,7 @@ public class CmsForm {
         setFormConfirmationText("");
         setFormFieldAttributes("");
         setFormText("");
+        setFormFooterText("");
         setMailBCC("");
         setMailCC("");
         setMailFrom("");

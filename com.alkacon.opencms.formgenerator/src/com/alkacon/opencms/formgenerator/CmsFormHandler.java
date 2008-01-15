@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormHandler.java,v $
- * Date   : $Date: 2007/12/21 14:34:00 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/01/15 17:31:54 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -29,6 +29,7 @@
  * For further information about OpenCms, please see the
  * project website: http://www.opencms.org.
  */
+
 package com.alkacon.opencms.formgenerator;
 
 import com.alkacon.opencms.formgenerator.database.CmsFormDataAccess;
@@ -43,6 +44,7 @@ import org.opencms.main.CmsLog;
 import org.opencms.main.OpenCms;
 import org.opencms.module.CmsModule;
 import org.opencms.util.CmsByteArrayDataSource;
+import org.opencms.util.CmsMacroResolver;
 import org.opencms.util.CmsRequestUtil;
 import org.opencms.util.CmsStringUtil;
 
@@ -74,7 +76,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4 
  */
@@ -114,6 +116,9 @@ public class CmsFormHandler extends CmsJspActionElement {
 
     /** Contains eventual validation errors. */
     private Map m_errors;
+
+    /** Needed to implant form fields into the mail text. */
+    private transient CmsMacroResolver m_macroResolver;
 
     /** The form configuration object. */
     private CmsForm m_formConfiguration;
@@ -344,26 +349,27 @@ public class CmsFormHandler extends CmsJspActionElement {
             result.append("</head><body>\n");
             if (isConfirmationMail) {
                 // append the confirmation mail text
-                result.append(getFormConfiguration().getConfirmationMailText());
+                result.append(m_macroResolver.resolveMacros(getFormConfiguration().getConfirmationMailText()));
             } else {
                 // append the email text
-                result.append(getFormConfiguration().getMailText());
+                result.append(m_macroResolver.resolveMacros(getFormConfiguration().getMailText()));
             }
             result.append("<table border=\"0\" class=\"fields\">\n");
         } else {
             // generate simple text mail
             if (isConfirmationMail) {
                 // append the confirmation mail text
-                result.append(getFormConfiguration().getConfirmationMailTextPlain());
+                result.append(m_macroResolver.resolveMacros(getFormConfiguration().getConfirmationMailTextPlain()));
             } else {
                 // append the email text
-                result.append(getFormConfiguration().getMailTextPlain());
+                result.append(m_macroResolver.resolveMacros(getFormConfiguration().getMailTextPlain()));
             }
             result.append("\n\n");
         }
         // generate output for submitted form fields
         Iterator i = fieldValues.iterator();
         while (i.hasNext()) {
+
             I_CmsField current = (I_CmsField)i.next();
             // dont show the letter of agreement (CmsPrivacyField)
             if (isHtmlMail && !(current instanceof CmsPrivacyField)) {
@@ -503,6 +509,8 @@ public class CmsFormHandler extends CmsJspActionElement {
     public void init(HttpServletRequest req, String formConfigUri) throws Exception {
 
         m_mulipartFileItems = CmsRequestUtil.readMultipartFileItems(req);
+        m_macroResolver = CmsMacroResolver.newInstance();
+        m_macroResolver.setKeepEmptyMacros(true);
 
         if (m_mulipartFileItems != null) {
             m_parameterMap = CmsRequestUtil.readParameterMapFromMultiPart(
@@ -585,8 +593,8 @@ public class CmsFormHandler extends CmsJspActionElement {
                 theMail.setFrom(getFormConfiguration().getMailFrom());
             }
             theMail.setTo(createInternetAddresses(mailTo));
-            theMail.setSubject(getFormConfiguration().getMailSubjectPrefix()
-                + getFormConfiguration().getConfirmationMailSubject());
+            theMail.setSubject(m_macroResolver.resolveMacros(getFormConfiguration().getMailSubjectPrefix()
+                + getFormConfiguration().getConfirmationMailSubject()));
             theMail.setHtmlMsg(createMailTextFromFields(true, true));
             theMail.setTextMsg(createMailTextFromFields(false, true));
             // send the mail
@@ -599,8 +607,8 @@ public class CmsFormHandler extends CmsJspActionElement {
                 theMail.setFrom(getFormConfiguration().getMailFrom());
             }
             theMail.setTo(createInternetAddresses(mailTo));
-            theMail.setSubject(getFormConfiguration().getMailSubjectPrefix()
-                + getFormConfiguration().getConfirmationMailSubject());
+            theMail.setSubject(m_macroResolver.resolveMacros(getFormConfiguration().getMailSubjectPrefix()
+                + getFormConfiguration().getConfirmationMailSubject()));
             theMail.setMsg(createMailTextFromFields(false, true));
             // send the mail
             theMail.send();
@@ -618,6 +626,14 @@ public class CmsFormHandler extends CmsJspActionElement {
         boolean result = true;
         try {
             CmsForm data = this.getFormConfiguration();
+            // fill the macro resolver for resolving in subject and content: 
+            List fields = this.getFormConfiguration().getFields();
+            I_CmsField field;
+            Iterator itFields = fields.iterator();
+            while (itFields.hasNext()) {
+                field = (I_CmsField)itFields.next();
+                m_macroResolver.addMacro(field.getLabel(), field.getValue());
+            }
             // send optional confirmation mail
             if (data.isConfirmationMailEnabled()) {
                 if (!data.isConfirmationMailOptional()
@@ -716,8 +732,8 @@ public class CmsFormHandler extends CmsJspActionElement {
                 theMail.setTo(createInternetAddresses(getFormConfiguration().getMailTo()));
                 theMail.setCc(createInternetAddresses(getFormConfiguration().getMailCC()));
                 theMail.setBcc(createInternetAddresses(getFormConfiguration().getMailBCC()));
-                theMail.setSubject(getFormConfiguration().getMailSubjectPrefix()
-                    + getFormConfiguration().getMailSubject());
+                theMail.setSubject(m_macroResolver.resolveMacros(getFormConfiguration().getMailSubjectPrefix()
+                    + getFormConfiguration().getMailSubject()));
                 theMail.setHtmlMsg(createMailTextFromFields(true, false));
                 theMail.setTextMsg(createMailTextFromFields(false, false));
 
