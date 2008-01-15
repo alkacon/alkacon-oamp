@@ -131,7 +131,7 @@ a.button {
 <%=messages.key("form.html.row.end")%>
 <%=messages.key("form.html.row.start")%>
  <%=messages.key("form.html.button.start")%>
-  <input type="submit" value="<%= messages.key("form.button.submit") %>" class="ip_submit" /> <input type="reset" value="<%= messages.key("form.button.reset") %>" class="ip_submit"/>
+  <input type="submit" value="<%= messages.key("form.button.submit") %>" class="formbutton" /> <input type="reset" value="<%= messages.key("form.button.reset") %>" class="formbutton"/>
  <%=messages.key("form.html.button.end")%>
 <%=messages.key("form.html.row.end")%>
 <%= messages.key("form.html.end") %>
@@ -141,7 +141,7 @@ a.button {
   <!--	
 	Calendar.setup({
 		inputField     :    "<%= CmsCvsExportBean.PARAM_EXPORT_DATA_TIME_START %>",
-		ifFormat       :    "<%=calendarMessages.key(org.opencms.workplace.Messages.GUI_CALENDAR_DATE_FORMAT_0)%> <%=calendarMessages.key(org.opencms.workplace.Messages.GUI_CALENDAR_TIME_FORMAT_0)%>",
+		ifFormat       :    "<%=calendarMessages.key(org.opencms.workplace.Messages.GUI_CALENDAR_DATE_FORMAT_0)%> <%=" " + calendarMessages.key(org.opencms.workplace.Messages.GUI_CALENDAR_TIME_FORMAT_0)%>",
 		button         :    "<%= CmsCvsExportBean.PARAM_EXPORT_DATA_TIME_START %>.calendar",
 		align          :    "cR",
 		singleClick    :    false,
@@ -156,7 +156,7 @@ a.button {
   <!--
 	Calendar.setup({
 		inputField     :    "<%= CmsCvsExportBean.PARAM_EXPORT_DATA_TIME_END %>",
-		ifFormat       :    "<%=calendarMessages.key(org.opencms.workplace.Messages.GUI_CALENDAR_DATE_FORMAT_0)%> <%=calendarMessages.key(org.opencms.workplace.Messages.GUI_CALENDAR_TIME_FORMAT_0)%>",
+		ifFormat       :    "<%=calendarMessages.key(org.opencms.workplace.Messages.GUI_CALENDAR_DATE_FORMAT_0)%> <%=" " + calendarMessages.key(org.opencms.workplace.Messages.GUI_CALENDAR_TIME_FORMAT_0)%>",
 		button         :    "<%= CmsCvsExportBean.PARAM_EXPORT_DATA_TIME_END %>.calendar",
 		align          :    "cR",
 		singleClick    :    false,
