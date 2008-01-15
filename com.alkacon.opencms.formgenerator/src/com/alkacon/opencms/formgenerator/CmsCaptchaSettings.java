@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaSettings.java,v $
- * Date   : $Date: 2007/12/21 14:34:00 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/01/15 09:27:36 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -55,7 +55,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Achim Westermann
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4 
  */
@@ -797,9 +797,9 @@ public final class CmsCaptchaSettings implements Cloneable {
     }
 
     /**
-     * Sets the min. phrase length.<p>
+     * Sets the minimum phrase length.<p>
      * 
-     * @param minPhraseLength the min. phrase length to set
+     * @param minPhraseLength the minimum phrase length to set
      */
     public void setMinPhraseLength(int minPhraseLength) {
 
@@ -807,9 +807,9 @@ public final class CmsCaptchaSettings implements Cloneable {
     }
 
     /**
-     * Returns the flag that decides wethter a background image or a background color is used.<p>
+     * Returns the flag that decides whether a background image or a background color is used.<p>
      * 
-     * @param useBackgroundImage the flag that decides wethter a background image or a background
+     * @param useBackgroundImage the flag that decides whether a background image or a background
      *            color is used.
      */
     public void setUseBackgroundImage(boolean useBackgroundImage) {
@@ -828,21 +828,21 @@ public final class CmsCaptchaSettings implements Cloneable {
         StringBuffer buf = new StringBuffer();
 
         buf.append(C_PARAM_IMAGE_WIDTH).append("=").append(m_imageWidth);
-        buf.append("&").append(C_PARAM_IMAGE_HEIGHT).append("=").append(m_imageHeight);
-        buf.append("&").append(C_PARAM_MIN_FONT_SIZE).append("=").append(m_minFontSize);
-        buf.append("&").append(C_PARAM_MAX_FONT_SIZE).append("=").append(m_maxFontSize);
-        buf.append("&").append(C_PARAM_MIN_PHRASE_LENGTH).append("=").append(m_minPhraseLength);
-        buf.append("&").append(C_PARAM_MAX_PHRASE_LENGTH).append("=").append(m_maxPhraseLength);
-        buf.append("&").append(C_PARAM_FONT_COLOR).append("=").append(
+        buf.append("&amp;").append(C_PARAM_IMAGE_HEIGHT).append("=").append(m_imageHeight);
+        buf.append("&amp;").append(C_PARAM_MIN_FONT_SIZE).append("=").append(m_minFontSize);
+        buf.append("&amp;").append(C_PARAM_MAX_FONT_SIZE).append("=").append(m_maxFontSize);
+        buf.append("&amp;").append(C_PARAM_MIN_PHRASE_LENGTH).append("=").append(m_minPhraseLength);
+        buf.append("&amp;").append(C_PARAM_MAX_PHRASE_LENGTH).append("=").append(m_maxPhraseLength);
+        buf.append("&amp;").append(C_PARAM_FONT_COLOR).append("=").append(
             CmsEncoder.escape(getFontColorString(), cms.getRequestContext().getEncoding()));
-        buf.append("&").append(C_PARAM_BACKGROUND_COLOR).append("=").append(
+        buf.append("&amp;").append(C_PARAM_BACKGROUND_COLOR).append("=").append(
             CmsEncoder.escape(getBackgroundColorString(), cms.getRequestContext().getEncoding()));
-        buf.append("&").append(C_PARAM_HOLES_PER_GLYPH).append("=").append(m_holesPerGlyp);
-        buf.append("&").append(C_PARAM_FILTER_AMPLITUDE).append("=").append(m_filterAmplitude);
-        buf.append("&").append(C_PARAM_FILTER_WAVE_LENGTH).append("=").append(m_filterWaveLength);
-        buf.append("&").append(C_PARAM_CHARACTERS).append("=").append(m_characterPool);
-        buf.append("&").append(C_PARAM_PRESET).append("=").append(m_presetPath);
-        buf.append("&").append(C_PARAM_USE_BACKGROUND_IMAGE).append("=").append(Boolean.toString(m_useBackgroundImage));
+        buf.append("&amp;").append(C_PARAM_HOLES_PER_GLYPH).append("=").append(m_holesPerGlyp);
+        buf.append("&amp;").append(C_PARAM_FILTER_AMPLITUDE).append("=").append(m_filterAmplitude);
+        buf.append("&amp;").append(C_PARAM_FILTER_WAVE_LENGTH).append("=").append(m_filterWaveLength);
+        buf.append("&amp;").append(C_PARAM_CHARACTERS).append("=").append(m_characterPool);
+        buf.append("&amp;").append(C_PARAM_PRESET).append("=").append(m_presetPath);
+        buf.append("&amp;").append(C_PARAM_USE_BACKGROUND_IMAGE).append("=").append(Boolean.toString(m_useBackgroundImage));
         return buf.toString();
     }
 
