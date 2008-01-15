@@ -16,7 +16,6 @@ if(showTemplate) {
  template = cms.property("template", "search");
  // include the template head
  cms.include(template, "head");
- out.println("<div class=\"element\">");
 }
 boolean showForm = cms.showForm();
 
@@ -66,7 +65,9 @@ if (! showForm) {
 	}
 
 	// create the form head 
-	%>	<form name="emailform" action="<%= cms.link(cms.getRequestContext().getUri()) %>" method="post" enctype="multipart/form-data" style="margin-top: 14px; margin-bottom: 0; padding: 0;">
+	%>	<form name="emailform" action="<%= cms.link(cms.getRequestContext().getUri()) %>" method="post" enctype="multipart/form-data">
+	<!-- Hidden form fields:  -->
+        <input type="hidden" name="<%= CmsFormHandler.PARAM_FORMACTION %>"  id="<%= CmsFormHandler.PARAM_FORMACTION %>" value="<%= CmsFormHandler.ACTION_SUBMIT %>"/>
 	<%= messages.key("form.html.start") %><%= formConfiguration.getFormAttributes() %>
 		<%
 	// create the html output to display the form fields
@@ -104,13 +105,10 @@ if(isOffline) { %>
 }
 %>
 	<%= messages.key("form.html.end") %>
-        <!-- Hidden form fields:  --!>
-        <input type="hidden" name="<%= CmsFormHandler.PARAM_FORMACTION %>"  id="<%= CmsFormHandler.PARAM_FORMACTION %>" value="<%= CmsFormHandler.ACTION_SUBMIT %>"/>
-	</form><%
+       	</form><%
 	
 }
 if(showTemplate) {
- out.println("</div>");
  // include the template foot
  cms.include(template, "foot");
 }	
