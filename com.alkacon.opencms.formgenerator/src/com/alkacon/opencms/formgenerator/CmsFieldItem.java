@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFieldItem.java,v $
- * Date   : $Date: 2007/12/21 14:34:00 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/01/17 15:24:55 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -29,6 +29,7 @@
  * For further information about OpenCms, please see the
  * project website: http://www.opencms.org.
  */
+
 package com.alkacon.opencms.formgenerator;
 
 /**
@@ -39,7 +40,7 @@ package com.alkacon.opencms.formgenerator;
  * 
  * @author Andreas Zahner 
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4 
  */
@@ -47,10 +48,13 @@ public class CmsFieldItem {
 
     /** A flag indicating if the item is selected. */
     private boolean m_isSelected;
-    
+
     /** The label of the item. */
     private String m_label;
-    
+
+    /** The flag indicating if the items should be shown in one row. */
+    private boolean m_showInRow;
+
     /** The value of the item. */
     private String m_value;
 
@@ -60,7 +64,6 @@ public class CmsFieldItem {
     public CmsFieldItem() {
 
         m_label = "";
-        m_isSelected = false;
         m_value = "";
     }
 
@@ -70,12 +73,14 @@ public class CmsFieldItem {
      * @param value the value of the field item
      * @param label the label of the field item
      * @param isSelected true if the current item is selected, otherwise false
+     * @param showInRow true if the items should be shown in a row, otherwise false
      */
-    public CmsFieldItem(String value, String label, boolean isSelected) {
+    public CmsFieldItem(String value, String label, boolean isSelected, boolean showInRow) {
 
         m_label = label;
         m_isSelected = isSelected;
         m_value = value;
+        m_showInRow = showInRow;
     }
 
     /**
@@ -106,6 +111,26 @@ public class CmsFieldItem {
     public boolean isSelected() {
 
         return m_isSelected;
+    }
+
+    /**
+     * Returns if the items should be shown in a row.<p>
+     * 
+     * @return true if the items should be shown in a row, otherwise false
+     */
+    public boolean isShowInRow() {
+
+        return m_showInRow;
+    }
+
+    /**
+     * Sets if the items should be shown in a row.<p>
+     * 
+     * @param showInRow the flag indicating if the items should be shown in a row
+     */
+    public void setShowInRow(boolean showInRow) {
+
+        m_showInRow = showInRow;
     }
 
     /**

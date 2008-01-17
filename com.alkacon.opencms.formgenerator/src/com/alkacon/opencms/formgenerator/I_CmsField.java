@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/I_CmsField.java,v $
- * Date   : $Date: 2007/12/21 14:34:00 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/01/17 15:24:55 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -40,7 +40,7 @@ import java.util.List;
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4 
  */
@@ -130,10 +130,11 @@ public interface I_CmsField {
      * @param formHandler the handler of the current form
      * @param messages a resource bundle containing HTML snippets to build the HTML element
      * @param errorKey the key of the current error message
+     * @param showMandatory flag to determine if the mandatory mark should be shown or not
      * 
      * @return the HTML input element for this element to be used in a frontend JSP
      */
-    String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey);
+    String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory);
     
     
     /**

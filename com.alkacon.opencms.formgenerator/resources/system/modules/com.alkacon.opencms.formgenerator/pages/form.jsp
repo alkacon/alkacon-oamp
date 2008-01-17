@@ -65,7 +65,8 @@ if (! showForm) {
 	}
 
 	// create the form head 
-	%>	<form name="emailform" action="<%= cms.link(cms.getRequestContext().getUri()) %>" method="post" enctype="multipart/form-data">
+	%>
+	<form name="emailform" action="<%= cms.link(cms.getRequestContext().getUri()) %>" method="post" enctype="multipart/form-data">
 	<!-- Hidden form fields:  -->
         <input type="hidden" name="<%= CmsFormHandler.PARAM_FORMACTION %>"  id="<%= CmsFormHandler.PARAM_FORMACTION %>" value="<%= CmsFormHandler.ACTION_SUBMIT %>"/>
 	<%= messages.key("form.html.start") %><%= formConfiguration.getFormAttributes() %>
@@ -83,22 +84,22 @@ if (! showForm) {
 		field.setPosition(pos);
 		String errorMessage = (String)cms.getErrors().get(field.getName());
 		
-		out.println(field.buildHtml(cms, messages, errorMessage));
+		out.println(field.buildHtml(cms, messages, errorMessage, formConfiguration.isShowMandatory()));
 		pos=field.getPosition();
 		place=field.getPlaceholder();
 	}
 	
 	// create the form foot 
-	if (formConfiguration.hasMandatoryFields()) {
+	if (formConfiguration.hasMandatoryFields() && formConfiguration.isShowMandatory()) {
 		%><%= messages.key("form.html.row.start") %>
 			<%= messages.key("form.html.button.start") %><%= messages.key("form.message.mandatory") %><%= messages.key("form.html.button.end") %>
 		<%= messages.key("form.html.row.end") %>
 		<%
 	}
 		%><%= messages.key("form.html.row.start") %>
-			<%= messages.key("form.html.button.start") %><input type="submit" value="<%= messages.key("form.button.submit") %>"  class="formbutton submitbutton"/>&nbsp;<input type="reset" value="<%= messages.key("form.button.reset") %>" class="formbutton resetbutton"/><%= messages.key("form.html.button.end") %>
+			<%= messages.key("form.html.button.start") %><input type="submit" value="<%= messages.key("form.button.submit") %>"  class="formbutton submitbutton"/><% if (formConfiguration.isShowReset()) { %>&nbsp;<input type="reset" value="<%= messages.key("form.button.reset") %>" class="formbutton resetbutton"/><% } %><%= messages.key("form.html.button.end") %>
 		<%= messages.key("form.html.row.end") %><%
-if(isOffline) { %>
+if(isOffline && formConfiguration.isTransportDatabase()) { %>
 		<%= messages.key("form.html.row.start") %>
 			<%= messages.key("form.html.button.start") %><input type="submit" onClick="javascript:document.getElementById('<%=CmsFormHandler.PARAM_FORMACTION %>').value='<%=CmsFormHandler.ACTION_DOWNLOAD_DATA_1 %>';"  value="<%= messages.key("form.button.downloaddata") %>" class="formbutton downloadbutton" /><%= messages.key("form.html.button.end") %>
 		<%= messages.key("form.html.row.end") %><%
@@ -106,7 +107,9 @@ if(isOffline) { %>
 %>
 	<%= messages.key("form.html.end") %>
        	</form><%
-	
+	// show form footer text
+	out.print(formConfiguration.getFormFooterText());
+
 }
 if(showTemplate) {
  // include the template foot

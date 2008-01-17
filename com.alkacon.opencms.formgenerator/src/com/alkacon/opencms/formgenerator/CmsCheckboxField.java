@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCheckboxField.java,v $
- * Date   : $Date: 2007/12/21 14:34:00 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/01/17 15:24:55 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -29,6 +29,7 @@
  * For further information about OpenCms, please see the
  * project website: http://www.opencms.org.
  */
+
 package com.alkacon.opencms.formgenerator;
 
 import org.opencms.i18n.CmsMessages;
@@ -41,7 +42,7 @@ import java.util.Iterator;
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4 
  */
@@ -69,9 +70,9 @@ public class CmsCheckboxField extends A_CmsField {
     }
 
     /**
-     * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, org.opencms.i18n.CmsMessages, String)
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, org.opencms.i18n.CmsMessages, String, boolean)
      */
-    public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey) {
+    public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory) {
 
         StringBuffer buf = new StringBuffer();
         String fieldLabel = getLabel();
@@ -94,7 +95,7 @@ public class CmsCheckboxField extends A_CmsField {
                 + messages.key("form.html.label.error.end");
         }
 
-        if (isMandatory()) {
+        if (isMandatory() && showMandatory) {
             mandatory = messages.key("form.html.mandatory");
         }
 
@@ -110,18 +111,42 @@ public class CmsCheckboxField extends A_CmsField {
         // line #3
         buf.append(messages.key("form.html.field.start")).append("\n");
 
+        boolean showInRow = false;
         // add the items
         Iterator i = getItems().iterator();
         while (i.hasNext()) {
 
             CmsFieldItem curOption = (CmsFieldItem)i.next();
+            showInRow = curOption.isShowInRow();
             String checked = "";
             if (curOption.isSelected()) {
                 checked = " checked=\"checked\"";
             }
 
-            buf.append("<input type=\"checkbox\" name=\"").append(getName()).append("\" value=\"").append(
-                curOption.getValue()).append("\"").append(checked).append("/>").append(curOption.getLabel());
+            if (showInRow) {
+                // create different HTML for row output
+                buf.append(messages.key("form.html.checkbox.row.input.start"));
+                buf.append("<input type=\"checkbox\" name=\"").append(getName()).append("\" value=\"").append(
+                    curOption.getValue()).append("\"").append(checked).append(" class=\"check\"/>");
+                buf.append(messages.key("form.html.checkbox.row.input.end"));
+                buf.append(messages.key("form.html.checkbox.row.label.start"));
+                buf.append(curOption.getLabel());
+                buf.append(messages.key("form.html.checkbox.row.label.end"));
+                if (i.hasNext()) {
+                    buf.append(messages.key("form.html.checkbox.row.seperator"));
+                }
+            } else {
+                buf.append(messages.key("form.html.checkbox.input.start"));
+                buf.append("<input type=\"checkbox\" name=\"").append(getName()).append("\" value=\"").append(
+                    curOption.getValue()).append("\"").append(checked).append(" class=\"check\"/>");
+                buf.append(messages.key("form.html.checkbox.input.end"));
+                buf.append(messages.key("form.html.checkbox.label.start"));
+                buf.append(curOption.getLabel());
+                buf.append(messages.key("form.html.checkbox.label.end"));
+                if (i.hasNext()) {
+                    buf.append(messages.key("form.html.checkbox.seperator"));
+                }
+            }
 
             if (i.hasNext()) {
                 buf.append(messages.key("form.html.checkbox.seperator"));

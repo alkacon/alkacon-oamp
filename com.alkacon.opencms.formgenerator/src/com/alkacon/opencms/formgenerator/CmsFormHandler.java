@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormHandler.java,v $
- * Date   : $Date: 2008/01/15 17:31:54 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2008/01/17 15:24:55 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -44,13 +44,16 @@ import org.opencms.main.CmsLog;
 import org.opencms.main.OpenCms;
 import org.opencms.module.CmsModule;
 import org.opencms.util.CmsByteArrayDataSource;
+import org.opencms.util.CmsDateUtil;
 import org.opencms.util.CmsMacroResolver;
 import org.opencms.util.CmsRequestUtil;
 import org.opencms.util.CmsStringUtil;
 
 import java.io.File;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -76,7 +79,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4 
  */
@@ -106,19 +109,22 @@ public class CmsFormHandler extends CmsJspActionElement {
     /** Form error: validation error of input. */
     public static final String ERROR_VALIDATION = "validation";
 
+    /** Macro name for the date macro that can be used in mail text fields. */
+    public static final String MACRO_DATE = "date";
+
+    /** Macro name for the form data macro that can be used in mail text fields. */
+    public static final String MACRO_FORMDATA = "formdata";
+
+    /** Request parameter name for the hidden form action parameter to determine the action. */
+    public static final String PARAM_FORMACTION = "formaction";
+
     /** The log object for this class. */
     private static final Log LOG = CmsLog.getLog(CmsFormHandler.class);
 
     private static final String MODULE = "com.alkacon.opencms.formgenerator";
 
-    /** Request parameter name for the hidden form action parameter to determine the action. */
-    public static final String PARAM_FORMACTION = "formaction";
-
     /** Contains eventual validation errors. */
     private Map m_errors;
-
-    /** Needed to implant form fields into the mail text. */
-    private transient CmsMacroResolver m_macroResolver;
 
     /** The form configuration object. */
     private CmsForm m_formConfiguration;
@@ -131,6 +137,9 @@ public class CmsFormHandler extends CmsJspActionElement {
 
     /** Boolean indicating if the form is validated correctly. */
     private Boolean m_isValidatedCorrect;
+
+    /** Needed to implant form fields into the mail text. */
+    private transient CmsMacroResolver m_macroResolver;
 
     /** The localized messages for the form handler. */
     private CmsMessages m_messages;
@@ -267,30 +276,6 @@ public class CmsFormHandler extends CmsJspActionElement {
     }
 
     /**
-     * Creates a list of internet addresses (email) from a semicolon separated String.<p>
-     * 
-     * @param mailAddresses a semicolon separated String with email addresses
-     * @return list of internet addresses (email)
-     * @throws AddressException if an email address is not correct
-     */
-    protected List createInternetAddresses(String mailAddresses) throws AddressException {
-
-        if (CmsStringUtil.isNotEmpty(mailAddresses)) {
-            // at least one email address is present, generate list
-            StringTokenizer T = new StringTokenizer(mailAddresses, ";");
-            List addresses = new ArrayList(T.countTokens());
-            while (T.hasMoreTokens()) {
-                InternetAddress address = new InternetAddress(T.nextToken());
-                addresses.add(address);
-            }
-            return addresses;
-        } else {
-            // no address given, return empty list
-            return Collections.EMPTY_LIST;
-        }
-    }
-
-    /**
      * Creates the output String of the submitted fields for email creation.<p>
      * 
      * @param isHtmlMail if true, the output is formatted as HTML, otherwise as plain text
@@ -300,96 +285,153 @@ public class CmsFormHandler extends CmsJspActionElement {
     public String createMailTextFromFields(boolean isHtmlMail, boolean isConfirmationMail) {
 
         List fieldValues = getFormConfiguration().getFields();
-        StringBuffer result = new StringBuffer(fieldValues.size() * 8);
+        StringBuffer result = new StringBuffer(2048 + fieldValues.size() * 16);
+        StringBuffer fieldsResult = new StringBuffer(fieldValues.size() * 16);
+        boolean useOwnStyle = false;
         if (isHtmlMail) {
             // create html head with style definitions and body
             result.append("<html><head>\n");
             result.append("<style type=\"text/css\"><!--\n");
-            String style = getMessages().key("form.email.style.body");
+            String style = getMessages().key("form.email.css");
             if (CmsStringUtil.isNotEmpty(style)) {
-                result.append("body,h1,p,td { ");
+                // use own user defined CSS
+                useOwnStyle = true;
                 result.append(style);
-                result.append(" }\n");
+            } else {
+                // use common css
+                style = getMessages().key("form.email.style.body");
+                if (CmsStringUtil.isNotEmpty(style)) {
+                    result.append("body,h1,p,td { ");
+                    result.append(style);
+                    result.append(" }\n");
+                }
+                style = getMessages().key("form.email.style.h1");
+                if (CmsStringUtil.isNotEmpty(style)) {
+                    result.append("h1 { ");
+                    result.append(style);
+                    result.append(" }\n");
+                }
+                style = getMessages().key("form.email.style.p");
+                if (CmsStringUtil.isNotEmpty(style)) {
+                    result.append("p { ");
+                    result.append(style);
+                    result.append(" }\n");
+                }
+                style = getMessages().key("form.email.style.fields");
+                if (CmsStringUtil.isNotEmpty(style)) {
+                    result.append("table.fields { ");
+                    result.append(style);
+                    result.append(" }\n");
+                }
+                style = getMessages().key("form.email.style.fieldlabel");
+                if (CmsStringUtil.isNotEmpty(style)) {
+                    result.append("td.fieldlabel { ");
+                    result.append(style);
+                    result.append(" }\n");
+                }
+                style = getMessages().key("form.email.style.fieldvalue");
+                if (CmsStringUtil.isNotEmpty(style)) {
+                    result.append("td.fieldvalue { ");
+                    result.append(style);
+                    result.append(" }\n");
+                }
+                style = getMessages().key("form.email.style.misc");
+                if (CmsStringUtil.isNotEmpty(style)) {
+                    result.append(getMessages().key("form.email.style.misc"));
+                }
             }
-            style = getMessages().key("form.email.style.h1");
-            if (CmsStringUtil.isNotEmpty(style)) {
-                result.append("h1 { ");
-                result.append(style);
-                result.append(" }\n");
-            }
-            style = getMessages().key("form.email.style.p");
-            if (CmsStringUtil.isNotEmpty(style)) {
-                result.append("p { ");
-                result.append(style);
-                result.append(" }\n");
-            }
-            style = getMessages().key("form.email.style.fields");
-            if (CmsStringUtil.isNotEmpty(style)) {
-                result.append("table.fields { ");
-                result.append(style);
-                result.append(" }\n");
-            }
-            style = getMessages().key("form.email.style.fieldlabel");
-            if (CmsStringUtil.isNotEmpty(style)) {
-                result.append("td.fieldlabel { ");
-                result.append(style);
-                result.append(" }\n");
-            }
-            style = getMessages().key("form.email.style.fieldvalue");
-            if (CmsStringUtil.isNotEmpty(style)) {
-                result.append("td.fieldvalue { ");
-                result.append(style);
-                result.append(" }\n");
-            }
-            style = getMessages().key("form.email.style.misc");
-            if (CmsStringUtil.isNotEmpty(style)) {
-                result.append(getMessages().key("form.email.style.misc"));
-            }
-            result.append("//--></style>\n");
+            result.append("\n//--></style>\n");
             result.append("</head><body>\n");
-            if (isConfirmationMail) {
-                // append the confirmation mail text
-                result.append(m_macroResolver.resolveMacros(getFormConfiguration().getConfirmationMailText()));
-            } else {
-                // append the email text
-                result.append(m_macroResolver.resolveMacros(getFormConfiguration().getMailText()));
-            }
-            result.append("<table border=\"0\" class=\"fields\">\n");
-        } else {
-            // generate simple text mail
-            if (isConfirmationMail) {
-                // append the confirmation mail text
-                result.append(m_macroResolver.resolveMacros(getFormConfiguration().getConfirmationMailTextPlain()));
-            } else {
-                // append the email text
-                result.append(m_macroResolver.resolveMacros(getFormConfiguration().getMailTextPlain()));
-            }
-            result.append("\n\n");
         }
+
         // generate output for submitted form fields
+        if (isHtmlMail) {
+            fieldsResult.append("<table border=\"0\"");
+            if (!useOwnStyle) {
+                fieldsResult.append(" class=\"fields\"");
+            }
+            fieldsResult.append(">\n");
+        }
+        // loop the fields
         Iterator i = fieldValues.iterator();
         while (i.hasNext()) {
 
             I_CmsField current = (I_CmsField)i.next();
-            // dont show the letter of agreement (CmsPrivacyField)
-            if (isHtmlMail && !(current instanceof CmsPrivacyField)) {
+            if (current instanceof CmsPrivacyField || current instanceof CmsCaptchaField) {
+                // don't show the letter of agreement (CmsPrivacyField) and captcha field value
+                continue;
+            }
+            if (isHtmlMail) {
                 // format output as HTML
-                result.append("<tr><td class=\"fieldlabel\">");
-                result.append(current.getLabel());
-                result.append("</td><td class=\"fieldvalue\">");
-                result.append(convertToHtmlValue(current.toString()));
-                result.append("</td></tr>\n");
-            } else if (!(current instanceof CmsPrivacyField)) {
+                if (useOwnStyle) {
+                    fieldsResult.append("<tr><td>");
+                } else {
+                    fieldsResult.append("<tr><td class=\"fieldlabel\">");
+                }
+                fieldsResult.append(current.getLabel());
+                if (useOwnStyle) {
+                    fieldsResult.append("</td><td class=\"data\">");
+                } else {
+                    fieldsResult.append("</td><td class=\"fieldvalue\">");
+                }
+                fieldsResult.append(convertToHtmlValue(current.toString()));
+                fieldsResult.append("</td></tr>\n");
+            } else {
                 // format output as plain text
-                result.append(current.getLabel());
-                result.append("\t");
-                result.append(current.toString());
-                result.append("\n");
+                fieldsResult.append(current.getLabel());
+                fieldsResult.append("\t");
+                fieldsResult.append(current.toString());
+                fieldsResult.append("\n");
             }
         }
         if (isHtmlMail) {
             // create html table closing tag
-            result.append("</table>\n");
+            fieldsResult.append("</table>\n");
+        }
+
+        // generate the main mail text
+        String mailText;
+        if (isHtmlMail) {
+            if (isConfirmationMail) {
+                // append the confirmation mail text
+                mailText = getFormConfiguration().getConfirmationMailText();
+            } else {
+                // append the email text
+                mailText = getFormConfiguration().getMailText();
+            }
+
+        } else {
+            // generate simple text mail
+            if (isConfirmationMail) {
+                // append the confirmation mail text
+                mailText = getFormConfiguration().getConfirmationMailTextPlain();
+            } else {
+                // append the email text
+                mailText = getFormConfiguration().getMailTextPlain();
+            }
+
+        }
+        // resolve the common macros
+        mailText = m_macroResolver.resolveMacros(mailText);
+        // check presence of formdata macro in mail text using new macro resolver (important, do not use the same here!)
+        CmsMacroResolver macroResolver = CmsMacroResolver.newInstance();
+        macroResolver.setKeepEmptyMacros(true);
+        macroResolver.addMacro(MACRO_FORMDATA, "");
+        if (mailText.length() > macroResolver.resolveMacros(mailText).length()) {
+            // form data macro found, resolve it
+            macroResolver.addMacro(MACRO_FORMDATA, fieldsResult.toString());
+            mailText = macroResolver.resolveMacros(mailText);
+            result.append(mailText);
+        } else {
+            // no form data macro found, append the fields below the mail text
+            result.append(mailText);
+            if (!isHtmlMail) {
+                result.append("\n\n");
+            }
+            result.append(fieldsResult);
+        }
+
+        if (isHtmlMail) {
             if (!isConfirmationMail && getFormConfiguration().hasConfigurationErrors()) {
                 // write form configuration errors to html mail
                 result.append("<h1>");
@@ -463,22 +505,6 @@ public class CmsFormHandler extends CmsJspActionElement {
         return m_messages;
     }
 
-    /**
-     * Returns the request parameter with the specified name.<p>
-     * 
-     * @param parameter the parameter to return
-     * 
-     * @return the parameter value
-     */
-    private String getParameter(String parameter) {
-
-        try {
-            return ((String[])m_parameterMap.get(parameter))[0];
-        } catch (NullPointerException e) {
-            return "";
-        }
-    }
-
     /** 
      * Returns the map of request parameters.<p>
      * 
@@ -487,6 +513,36 @@ public class CmsFormHandler extends CmsJspActionElement {
     public Map getParameterMap() {
 
         return m_parameterMap;
+    }
+
+    /**
+     * Return <code>null</code> or the file item for the given field in 
+     * case it is of type <code>{@link CmsFileUploadField}</code>.<p>
+     * 
+     * @param isFileUploadField the field to the the file item of 
+     * 
+     * @return <code>null</code> or the file item for the given field in 
+     *      case it is of type <code>{@link CmsFileUploadField}</code>
+     */
+    public FileItem getUploadFile(I_CmsField isFileUploadField) {
+
+        FileItem result = null;
+        FileItem current;
+        String fieldName = isFileUploadField.getName();
+        String uploadFileFieldName;
+        Map fileUploads = (Map)getRequest().getSession().getAttribute(ATTRIBUTE_FILEITEMS);
+
+        if (fileUploads != null) {
+            Iterator i = fileUploads.values().iterator();
+            while (i.hasNext()) {
+                current = (FileItem)i.next();
+                uploadFileFieldName = current.getFieldName();
+                if (fieldName.equals(uploadFileFieldName)) {
+                    result = current;
+                }
+            }
+        }
+        return result;
     }
 
     /**
@@ -590,7 +646,7 @@ public class CmsFormHandler extends CmsJspActionElement {
             CmsHtmlMail theMail = new CmsHtmlMail();
             theMail.setCharset(getCmsObject().getRequestContext().getEncoding());
             if (CmsStringUtil.isNotEmpty(getFormConfiguration().getMailFrom())) {
-                theMail.setFrom(getFormConfiguration().getMailFrom());
+                theMail.setFrom(m_macroResolver.resolveMacros(getFormConfiguration().getMailFrom()));
             }
             theMail.setTo(createInternetAddresses(mailTo));
             theMail.setSubject(m_macroResolver.resolveMacros(getFormConfiguration().getMailSubjectPrefix()
@@ -616,11 +672,11 @@ public class CmsFormHandler extends CmsJspActionElement {
     }
 
     /**
-       * Sends the collected data due to the configuration of the form 
-       * (email, database or both).<p>
-       * 
-       * @return true if successful 
-       */
+     * Sends the collected data due to the configuration of the form 
+     * (email, database or both).<p>
+     * 
+     * @return true if successful 
+     */
     public boolean sendData() {
 
         boolean result = true;
@@ -630,10 +686,16 @@ public class CmsFormHandler extends CmsJspActionElement {
             List fields = this.getFormConfiguration().getFields();
             I_CmsField field;
             Iterator itFields = fields.iterator();
+            // add field values as macros
             while (itFields.hasNext()) {
                 field = (I_CmsField)itFields.next();
                 m_macroResolver.addMacro(field.getLabel(), field.getValue());
             }
+            // add current date as macro
+            m_macroResolver.addMacro(MACRO_DATE, CmsDateUtil.getDateTime(
+                new Date(),
+                DateFormat.LONG,
+                getRequestContext().getLocale()));
             // send optional confirmation mail
             if (data.isConfirmationMailEnabled()) {
                 if (!data.isConfirmationMailOptional()
@@ -660,171 +722,6 @@ public class CmsFormHandler extends CmsJspActionElement {
     }
 
     /**
-    * Stores the given form data in the database.<p>
-    * 
-    * @return true if successful  
-    * 
-    * @throws Exception if sth goes wrong
-    */
-    private boolean sendDatabase() throws Exception {
-
-        boolean result = false;
-        I_CmsFormDataAccess access = new CmsFormDataAccess();
-        result = access.writeFormData(this);
-        return result;
-    }
-
-    /**
-     * Return <code>null</code> or the file item for the given field in 
-     * case it is of type <code>{@link CmsFileUploadField}</code>.<p>
-     * 
-     * @param isFileUploadField the field to the the file item of 
-     * 
-     * @return <code>null</code> or the file item for the given field in 
-     *      case it is of type <code>{@link CmsFileUploadField}</code>
-     */
-    public FileItem getUploadFile(I_CmsField isFileUploadField) {
-
-        FileItem result = null;
-        FileItem current;
-        String fieldName = isFileUploadField.getName();
-        String uploadFileFieldName;
-        Map fileUploads = (Map)getRequest().getSession().getAttribute(ATTRIBUTE_FILEITEMS);
-
-        if (fileUploads != null) {
-            Iterator i = fileUploads.values().iterator();
-            while (i.hasNext()) {
-                current = (FileItem)i.next();
-                uploadFileFieldName = current.getFieldName();
-                if (fieldName.equals(uploadFileFieldName)) {
-                    result = current;
-                }
-            }
-        }
-        return result;
-    }
-
-    /**
-     * Sends the mail with the form data to the specified recipients.<p>
-     * 
-     * If configured, sends also a confirmation mail to the form submitter.<p>
-     * 
-     * @return true if the mail has been successfully sent, otherwise false
-     */
-    private boolean sendMail() {
-
-        try {
-            // send optional confirmation mail
-            if (getFormConfiguration().isConfirmationMailEnabled()) {
-                if (!getFormConfiguration().isConfirmationMailOptional()
-                    || Boolean.valueOf(getParameter(CmsForm.PARAM_SENDCONFIRMATION)).booleanValue()) {
-                    sendConfirmationMail();
-                }
-            }
-            // create the new mail message depending on the configured email type
-            if (getFormConfiguration().getMailType().equals(CmsForm.MAILTYPE_HTML)) {
-                // create a HTML email
-                CmsHtmlMail theMail = new CmsHtmlMail();
-                theMail.setCharset(getCmsObject().getRequestContext().getEncoding());
-                if (CmsStringUtil.isNotEmpty(getFormConfiguration().getMailFrom())) {
-                    theMail.setFrom(getFormConfiguration().getMailFrom());
-                }
-                theMail.setTo(createInternetAddresses(getFormConfiguration().getMailTo()));
-                theMail.setCc(createInternetAddresses(getFormConfiguration().getMailCC()));
-                theMail.setBcc(createInternetAddresses(getFormConfiguration().getMailBCC()));
-                theMail.setSubject(m_macroResolver.resolveMacros(getFormConfiguration().getMailSubjectPrefix()
-                    + getFormConfiguration().getMailSubject()));
-                theMail.setHtmlMsg(createMailTextFromFields(true, false));
-                theMail.setTextMsg(createMailTextFromFields(false, false));
-
-                // attach file uploads
-                Map fileUploads = (Map)getRequest().getSession().getAttribute(ATTRIBUTE_FILEITEMS);
-                if (fileUploads != null) {
-                    Iterator i = fileUploads.values().iterator();
-                    while (i.hasNext()) {
-                        FileItem attachment = (FileItem)i.next();
-                        if (attachment != null) {
-                            String filename = attachment.getName().substring(
-                                attachment.getName().lastIndexOf(File.separator) + 1);
-                            theMail.attach(
-                                new CmsByteArrayDataSource(
-                                    filename,
-                                    attachment.get(),
-                                    OpenCms.getResourceManager().getMimeType(filename, null, "application/octet-stream")),
-                                filename,
-                                filename);
-                        }
-                    }
-                }
-                // send the mail
-                theMail.send();
-            } else {
-                // create a plain text email
-                CmsSimpleMail theMail = new CmsSimpleMail();
-                theMail.setCharset(getCmsObject().getRequestContext().getEncoding());
-                if (CmsStringUtil.isNotEmpty(getFormConfiguration().getMailFrom())) {
-                    theMail.setFrom(getFormConfiguration().getMailFrom());
-                }
-                theMail.setTo(createInternetAddresses(getFormConfiguration().getMailTo()));
-                theMail.setCc(createInternetAddresses(getFormConfiguration().getMailCC()));
-                theMail.setBcc(createInternetAddresses(getFormConfiguration().getMailBCC()));
-                theMail.setSubject(getFormConfiguration().getMailSubjectPrefix()
-                    + getFormConfiguration().getMailSubject());
-                theMail.setMsg(createMailTextFromFields(false, false));
-                // send the mail
-                theMail.send();
-            }
-        } catch (Exception e) {
-            // an error occured during mail creation
-            if (LOG.isErrorEnabled()) {
-                LOG.error(e.getLocalizedMessage(), e);
-            }
-            m_errors.put("sendmail", e.getMessage());
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Sets the errors found when validating the form.<p>
-     * 
-     * @param errors the errors found when validating the form
-     */
-    protected void setErrors(Map errors) {
-
-        m_errors = errors;
-    }
-
-    /**
-     * Sets the form configuration.<p>
-     * 
-     * @param configuration the form configuration
-     */
-    protected void setFormConfiguration(CmsForm configuration) {
-
-        m_formConfiguration = configuration;
-    }
-
-    /**
-     * Sets if the form is displayed for the first time.<p>
-     * @param initial true if the form is displayed for the first time, otherwise false
-     */
-    protected void setInitial(boolean initial) {
-
-        m_initial = initial;
-    }
-
-    /**
-     * Sets the localized messages.<p>
-     *
-     * @param messages the localized messages
-     */
-    protected void setMessages(CmsMessages messages) {
-
-        m_messages = messages;
-    }
-
-    /**
      * Returns if the optional check page should be displayed.<p>
      * 
      * @return true if the optional check page should be displayed, otherwise false
@@ -845,10 +742,10 @@ public class CmsFormHandler extends CmsJspActionElement {
     }
 
     /**
-        * Returns if the data download page should be displayed.<p>
-        * 
-        * @return true if the data download page should be displayed, otherwise false
-        */
+     * Returns if the data download page should be displayed.<p>
+     * 
+     * @return true if the data download page should be displayed, otherwise false
+     */
     public boolean showDownloadData() {
 
         boolean result = false;
@@ -904,10 +801,10 @@ public class CmsFormHandler extends CmsJspActionElement {
     }
 
     /**
-        * Returns if template head or other HTML should be inclulded (the page does not serve as a download page).<p>
-        * 
-        * @return true if template head or other HTML should be inclulded (the page does not serve as a download page)
-        */
+     * Returns if template head or other HTML should be inclulded (the page does not serve as a download page).<p>
+     * 
+     * @return true if template head or other HTML should be inclulded (the page does not serve as a download page)
+     */
     public boolean showTemplate() {
 
         boolean result = true;
@@ -976,6 +873,174 @@ public class CmsFormHandler extends CmsJspActionElement {
 
         m_isValidatedCorrect = Boolean.valueOf(allOk);
         return allOk;
+    }
+
+    /**
+     * Creates a list of internet addresses (email) from a semicolon separated String.<p>
+     * 
+     * @param mailAddresses a semicolon separated String with email addresses
+     * @return list of internet addresses (email)
+     * @throws AddressException if an email address is not correct
+     */
+    protected List createInternetAddresses(String mailAddresses) throws AddressException {
+
+        if (CmsStringUtil.isNotEmpty(mailAddresses)) {
+            // at least one email address is present, generate list
+            StringTokenizer T = new StringTokenizer(mailAddresses, ";");
+            List addresses = new ArrayList(T.countTokens());
+            while (T.hasMoreTokens()) {
+                InternetAddress address = new InternetAddress(T.nextToken());
+                addresses.add(address);
+            }
+            return addresses;
+        } else {
+            // no address given, return empty list
+            return Collections.EMPTY_LIST;
+        }
+    }
+
+    /**
+     * Sets the errors found when validating the form.<p>
+     * 
+     * @param errors the errors found when validating the form
+     */
+    protected void setErrors(Map errors) {
+
+        m_errors = errors;
+    }
+
+    /**
+     * Sets the form configuration.<p>
+     * 
+     * @param configuration the form configuration
+     */
+    protected void setFormConfiguration(CmsForm configuration) {
+
+        m_formConfiguration = configuration;
+    }
+
+    /**
+     * Sets if the form is displayed for the first time.<p>
+     * @param initial true if the form is displayed for the first time, otherwise false
+     */
+    protected void setInitial(boolean initial) {
+
+        m_initial = initial;
+    }
+
+    /**
+     * Sets the localized messages.<p>
+     *
+     * @param messages the localized messages
+     */
+    protected void setMessages(CmsMessages messages) {
+
+        m_messages = messages;
+    }
+
+    /**
+     * Returns the request parameter with the specified name.<p>
+     * 
+     * @param parameter the parameter to return
+     * 
+     * @return the parameter value
+     */
+    private String getParameter(String parameter) {
+
+        try {
+            return ((String[])m_parameterMap.get(parameter))[0];
+        } catch (NullPointerException e) {
+            return "";
+        }
+    }
+
+    /**
+     * Stores the given form data in the database.<p>
+     * 
+     * @return true if successful  
+     * 
+     * @throws Exception if sth goes wrong
+     */
+    private boolean sendDatabase() throws Exception {
+
+        boolean result = false;
+        I_CmsFormDataAccess access = new CmsFormDataAccess();
+        result = access.writeFormData(this);
+        return result;
+    }
+
+    /**
+     * Sends the mail with the form data to the specified recipients.<p>
+     * 
+     * If configured, sends also a confirmation mail to the form submitter.<p>
+     * 
+     * @return true if the mail has been successfully sent, otherwise false
+     */
+    private boolean sendMail() {
+
+        try {
+            // create the new mail message depending on the configured email type
+            if (getFormConfiguration().getMailType().equals(CmsForm.MAILTYPE_HTML)) {
+                // create a HTML email
+                CmsHtmlMail theMail = new CmsHtmlMail();
+                theMail.setCharset(getCmsObject().getRequestContext().getEncoding());
+                if (CmsStringUtil.isNotEmpty(getFormConfiguration().getMailFrom())) {
+                    theMail.setFrom(m_macroResolver.resolveMacros(getFormConfiguration().getMailFrom()));
+                }
+                theMail.setTo(createInternetAddresses(getFormConfiguration().getMailTo()));
+                theMail.setCc(createInternetAddresses(m_macroResolver.resolveMacros(getFormConfiguration().getMailCC())));
+                theMail.setBcc(createInternetAddresses(m_macroResolver.resolveMacros(getFormConfiguration().getMailBCC())));
+                theMail.setSubject(m_macroResolver.resolveMacros(getFormConfiguration().getMailSubjectPrefix()
+                    + getFormConfiguration().getMailSubject()));
+                theMail.setHtmlMsg(createMailTextFromFields(true, false));
+                theMail.setTextMsg(createMailTextFromFields(false, false));
+
+                // attach file uploads
+                Map fileUploads = (Map)getRequest().getSession().getAttribute(ATTRIBUTE_FILEITEMS);
+                if (fileUploads != null) {
+                    Iterator i = fileUploads.values().iterator();
+                    while (i.hasNext()) {
+                        FileItem attachment = (FileItem)i.next();
+                        if (attachment != null) {
+                            String filename = attachment.getName().substring(
+                                attachment.getName().lastIndexOf(File.separator) + 1);
+                            theMail.attach(
+                                new CmsByteArrayDataSource(
+                                    filename,
+                                    attachment.get(),
+                                    OpenCms.getResourceManager().getMimeType(filename, null, "application/octet-stream")),
+                                filename,
+                                filename);
+                        }
+                    }
+                }
+                // send the mail
+                theMail.send();
+            } else {
+                // create a plain text email
+                CmsSimpleMail theMail = new CmsSimpleMail();
+                theMail.setCharset(getCmsObject().getRequestContext().getEncoding());
+                if (CmsStringUtil.isNotEmpty(getFormConfiguration().getMailFrom())) {
+                    theMail.setFrom(m_macroResolver.resolveMacros(getFormConfiguration().getMailFrom()));
+                }
+                theMail.setTo(createInternetAddresses(getFormConfiguration().getMailTo()));
+                theMail.setCc(createInternetAddresses(m_macroResolver.resolveMacros(getFormConfiguration().getMailCC())));
+                theMail.setBcc(createInternetAddresses(m_macroResolver.resolveMacros(getFormConfiguration().getMailBCC())));
+                theMail.setSubject(m_macroResolver.resolveMacros(getFormConfiguration().getMailSubjectPrefix()
+                    + getFormConfiguration().getMailSubject()));
+                theMail.setMsg(createMailTextFromFields(false, false));
+                // send the mail
+                theMail.send();
+            }
+        } catch (Exception e) {
+            // an error occured during mail creation
+            if (LOG.isErrorEnabled()) {
+                LOG.error(e.getLocalizedMessage(), e);
+            }
+            m_errors.put("sendmail", e.getMessage());
+            return false;
+        }
+        return true;
     }
 
 }

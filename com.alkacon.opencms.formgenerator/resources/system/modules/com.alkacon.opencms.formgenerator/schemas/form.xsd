@@ -22,7 +22,8 @@
 			<xsd:element name="MailSubject" type="OpenCmsString" />
 			<xsd:element name="DataTarget" type="OpenCmsDataTarget" minOccurs="0" maxOccurs="1"/>
 			<xsd:element name="MailText" type="OpenCmsHtml" />						
-			<xsd:element name="FormText" type="OpenCmsHtml" />		
+			<xsd:element name="FormText" type="OpenCmsHtml" />
+			<xsd:element name="FormFooterText" type="OpenCmsHtml" minOccurs="0"/>	
 			<xsd:element name="InputField" type="OpenCmsAlkaconWebFormInputField" maxOccurs="unbounded" />
 			<xsd:element name="TargetUri" type="OpenCmsVfsFile" minOccurs="0" /> 				
 			<xsd:element name="FormConfirmation" type="OpenCmsHtml" />
@@ -36,6 +37,10 @@
 	<xsd:annotation>
 		<xsd:appinfo>
 			<resourcebundle name="com.alkacon.opencms.formgenerator.workplace"/>
+			<defaults>
+				<default element="OptionalFormConfiguration/ShowMandatory" value="true" />
+				<default element="OptionalFormConfiguration/ShowReset" value="true" />
+			</defaults>
 			<validationrules>
 				<rule element="DataTarget/FormId" regex=".+" type="error" message="%(err.xmlcontent.field.empty)"/>
 			</validationrules>
