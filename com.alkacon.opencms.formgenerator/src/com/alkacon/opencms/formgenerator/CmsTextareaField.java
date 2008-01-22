@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsTextareaField.java,v $
- * Date   : $Date: 2008/01/17 15:24:55 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2008/01/22 13:40:52 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -29,18 +29,20 @@
  * For further information about OpenCms, please see the
  * project website: http://www.opencms.org.
  */
+
 package com.alkacon.opencms.formgenerator;
 
 import org.opencms.i18n.CmsEncoder;
 import org.opencms.i18n.CmsMessages;
 import org.opencms.util.CmsStringUtil;
+import org.opencms.util.I_CmsMacroResolver;
 
 /**
  * Represents a text area.<p>
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4 
  */
@@ -76,12 +78,14 @@ public class CmsTextareaField extends A_CmsField {
         String fieldLabel = getLabel();
         String errorMessage = "";
         String mandatory = "";
+        String attributes = "";
 
         if (CmsStringUtil.isNotEmpty(errorKey)) {
 
             if (CmsFormHandler.ERROR_MANDATORY.equals(errorKey)) {
                 errorMessage = messages.key("form.error.mandatory");
-            } else if (CmsStringUtil.isNotEmpty(getErrorMessage())) {
+            } else if (CmsStringUtil.isNotEmpty(getErrorMessage())
+                && getErrorMessage().indexOf(I_CmsMacroResolver.MACRO_DELIMITER) != 0) {
                 errorMessage = getErrorMessage();
             } else {
                 errorMessage = messages.key("form.error.validation");
@@ -91,6 +95,11 @@ public class CmsTextareaField extends A_CmsField {
             fieldLabel = messages.key("form.html.label.error.start")
                 + fieldLabel
                 + messages.key("form.html.label.error.end");
+        }
+
+        if (CmsStringUtil.isNotEmpty(getErrorMessage())
+            && getErrorMessage().indexOf(I_CmsMacroResolver.MACRO_DELIMITER) == 0) {
+            attributes = " " + getErrorMessage().substring(2, getErrorMessage().length() - 1);
         }
 
         if (isMandatory() && showMandatory) {
@@ -108,7 +117,7 @@ public class CmsTextareaField extends A_CmsField {
 
         // line #3
         buf.append(messages.key("form.html.multiline.field.start")).append("<textarea name=\"").append(getName()).append(
-            "\"").append(formHandler.getFormConfiguration().getFormFieldAttributes()).append(">").append(
+            "\"").append(formHandler.getFormConfiguration().getFormFieldAttributes()).append(attributes).append(">").append(
             CmsEncoder.escapeXml(getValue())).append("</textarea>").append(errorMessage).append(
             messages.key("form.html.multiline.field.end")).append("\n");
 
