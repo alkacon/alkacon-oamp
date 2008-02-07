@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsRadioButtonField.java,v $
- * Date   : $Date: 2008/01/17 15:24:55 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2008/02/07 11:52:02 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -42,7 +42,7 @@ import java.util.Iterator;
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4 
  */
@@ -50,14 +50,6 @@ public class CmsRadioButtonField extends A_CmsField {
 
     /** HTML field type: radio button. */
     private static final String TYPE = "radio";
-
-    /**
-     * @see com.alkacon.opencms.formgenerator.I_CmsField#getType()
-     */
-    public String getType() {
-
-        return TYPE;
-    }
 
     /**
      * Returns the type of the input field, e.g. "text" or "select".<p>
@@ -160,6 +152,22 @@ public class CmsRadioButtonField extends A_CmsField {
         }
 
         return buf.toString();
+    }
+
+    /**
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#getType()
+     */
+    public String getType() {
+
+        return TYPE;
+    }
+
+    /**
+     * @see com.alkacon.opencms.formgenerator.A_CmsField#needsItems()
+     */
+    public boolean needsItems() {
+
+        return true;
     }
 
 }

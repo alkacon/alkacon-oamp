@@ -9,7 +9,7 @@ CmsMessages messages = formHandler.getMessages();
 
 CmsCaptchaField captchaField = formHandler.getFormConfiguration().getCaptchaField();
 
-%><%= formHandler.getFormConfiguration().getFormCheckText() %><%
+%><%= formHandler.getFormCheckText() %><%
 
 if (captchaField != null) {
 %>

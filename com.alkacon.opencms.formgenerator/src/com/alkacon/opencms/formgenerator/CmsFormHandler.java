@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormHandler.java,v $
- * Date   : $Date: 2008/01/17 15:24:55 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2008/02/07 11:52:02 $
+ * Version: $Revision: 1.4 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -33,7 +33,6 @@
 package com.alkacon.opencms.formgenerator;
 
 import com.alkacon.opencms.formgenerator.database.CmsFormDataAccess;
-import com.alkacon.opencms.formgenerator.database.I_CmsFormDataAccess;
 
 import org.opencms.i18n.CmsEncoder;
 import org.opencms.i18n.CmsMessages;
@@ -79,7 +78,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * 
  * @since 7.0.4 
  */
@@ -280,11 +279,12 @@ public class CmsFormHandler extends CmsJspActionElement {
      * 
      * @param isHtmlMail if true, the output is formatted as HTML, otherwise as plain text
      * @param isConfirmationMail if true, the text for the confirmation mail is created, otherwise the text for mail receiver
+     * 
      * @return the output String of the submitted fields for email creation
      */
     public String createMailTextFromFields(boolean isHtmlMail, boolean isConfirmationMail) {
 
-        List fieldValues = getFormConfiguration().getFields();
+        List fieldValues = getFormConfiguration().getAllFields();
         StringBuffer result = new StringBuffer(2048 + fieldValues.size() * 16);
         StringBuffer fieldsResult = new StringBuffer(fieldValues.size() * 16);
         boolean useOwnStyle = false;
@@ -355,11 +355,19 @@ public class CmsFormHandler extends CmsJspActionElement {
         // loop the fields
         Iterator i = fieldValues.iterator();
         while (i.hasNext()) {
-
             I_CmsField current = (I_CmsField)i.next();
-            if (current instanceof CmsPrivacyField || current instanceof CmsCaptchaField) {
+            if ((current instanceof CmsPrivacyField) || (current instanceof CmsCaptchaField)) {
                 // don't show the letter of agreement (CmsPrivacyField) and captcha field value
                 continue;
+            }
+            String value = current.toString();
+            if ((current instanceof CmsDynamicField)) {
+                if (!current.isMandatory()) {
+                    // show dynamic fields only if they are marked as mandatory
+                    continue;
+                }
+                // compute the value for the dynamic field
+                value = getFormConfiguration().getFieldStringValueByName(current.getName());
             }
             if (isHtmlMail) {
                 // format output as HTML
@@ -368,19 +376,27 @@ public class CmsFormHandler extends CmsJspActionElement {
                 } else {
                     fieldsResult.append("<tr><td class=\"fieldlabel\">");
                 }
-                fieldsResult.append(current.getLabel());
+                if (isConfirmationMail) {
+                    fieldsResult.append(current.getLabel());
+                } else {
+                    fieldsResult.append(current.getDbLabel() + ":");
+                }
                 if (useOwnStyle) {
                     fieldsResult.append("</td><td class=\"data\">");
                 } else {
                     fieldsResult.append("</td><td class=\"fieldvalue\">");
                 }
-                fieldsResult.append(convertToHtmlValue(current.toString()));
+                fieldsResult.append(convertToHtmlValue(value));
                 fieldsResult.append("</td></tr>\n");
             } else {
                 // format output as plain text
-                fieldsResult.append(current.getLabel());
+                if (isConfirmationMail) {
+                    fieldsResult.append(current.getLabel());
+                } else {
+                    fieldsResult.append(current.getDbLabel() + ":");
+                }
                 fieldsResult.append("\t");
-                fieldsResult.append(current.toString());
+                fieldsResult.append(value);
                 fieldsResult.append("\n");
             }
         }
@@ -493,6 +509,39 @@ public class CmsFormHandler extends CmsJspActionElement {
     public CmsForm getFormConfiguration() {
 
         return m_formConfiguration;
+    }
+
+    /**
+     * Returns the confirmation text, after resolving macros.<p>
+     * 
+     * @return the confirmation text
+     */
+    public String getFormConfirmationText() {
+
+        return m_macroResolver.resolveMacros(getFormConfiguration().getFormConfirmationText());
+    }
+
+    /**
+     * Returns the check page text, after resolving macros.<p>
+     * 
+     * @return the check page text
+     */
+    public String getFormCheckText() {
+
+        CmsMacroResolver macroResolver = CmsMacroResolver.newInstance();
+        macroResolver.setKeepEmptyMacros(true);
+        List fields = getFormConfiguration().getFields();
+        I_CmsField field;
+        Iterator itFields = fields.iterator();
+        // add field values as macros
+        while (itFields.hasNext()) {
+            field = (I_CmsField)itFields.next();
+            macroResolver.addMacro(field.getLabel(), field.getValue());
+            if (!field.getLabel().equals(field.getDbLabel())) {
+                macroResolver.addMacro(field.getDbLabel(), field.getValue());
+            }
+        }
+        return macroResolver.resolveMacros(getFormConfiguration().getFormCheckText());
     }
 
     /**
@@ -681,15 +730,22 @@ public class CmsFormHandler extends CmsJspActionElement {
 
         boolean result = true;
         try {
-            CmsForm data = this.getFormConfiguration();
+            CmsForm data = getFormConfiguration();
+            data.removeCaptchaField();
             // fill the macro resolver for resolving in subject and content: 
-            List fields = this.getFormConfiguration().getFields();
-            I_CmsField field;
+            List fields = data.getAllFields();
             Iterator itFields = fields.iterator();
             // add field values as macros
             while (itFields.hasNext()) {
-                field = (I_CmsField)itFields.next();
-                m_macroResolver.addMacro(field.getLabel(), field.getValue());
+                I_CmsField field = (I_CmsField)itFields.next();
+                String fValue = field.getValue();
+                if (field instanceof CmsDynamicField) {
+                    fValue = data.getFieldStringValueByName(field.getName());
+                }
+                m_macroResolver.addMacro(field.getLabel(), fValue);
+                if (!field.getLabel().equals(field.getDbLabel())) {
+                    m_macroResolver.addMacro(field.getDbLabel(), fValue);
+                }
             }
             // add current date as macro
             m_macroResolver.addMacro(MACRO_DATE, CmsDateUtil.getDateTime(
@@ -822,7 +878,7 @@ public class CmsFormHandler extends CmsJspActionElement {
      * All errors are stored in the member m_errors Map, with the input field name as key
      * and the error message String as value.<p>
      * 
-     * @return true if all neccessary fields can be validated, otherwise false
+     * @return true if all necessary fields can be validated, otherwise false
      */
     public boolean validate() {
 
@@ -963,10 +1019,7 @@ public class CmsFormHandler extends CmsJspActionElement {
      */
     private boolean sendDatabase() throws Exception {
 
-        boolean result = false;
-        I_CmsFormDataAccess access = new CmsFormDataAccess();
-        result = access.writeFormData(this);
-        return result;
+        return CmsFormDataAccess.getInstance().writeFormData(this);
     }
 
     /**
@@ -1042,5 +1095,4 @@ public class CmsFormHandler extends CmsJspActionElement {
         }
         return true;
     }
-
 }

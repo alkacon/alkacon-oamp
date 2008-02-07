@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/export/CmsCvsExportBean.java,v $
- * Date   : $Date: 2007/12/21 14:34:01 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/02/07 11:52:02 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -29,12 +29,12 @@
  * For further information about OpenCms, please see the
  * project website: http://www.opencms.org.
  */
+
 package com.alkacon.opencms.formgenerator.database.export;
 
 import com.alkacon.opencms.formgenerator.CmsFormHandler;
 import com.alkacon.opencms.formgenerator.database.CmsFormDataAccess;
 import com.alkacon.opencms.formgenerator.database.CmsFormDataBean;
-import com.alkacon.opencms.formgenerator.database.I_CmsFormDataAccess;
 
 import java.sql.SQLException;
 import java.text.Collator;
@@ -51,13 +51,13 @@ import java.util.List;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4
  *
  */
 public class CmsCvsExportBean {
-    
+
     /** Request parameter for the start time of the data to export. */
     public static final String PARAM_EXPORT_DATA_TIME_END = "endtime";
 
@@ -67,9 +67,7 @@ public class CmsCvsExportBean {
     /** The end time for data sets to export. */
     private Date m_endTime;
 
-    /**
-     * The form that was used to input the data to export. 
-     */
+    /** The form that was used to input the data to export. */
     private CmsFormHandler m_formHandler;
 
     /** The start time for data sets to export. */
@@ -83,8 +81,8 @@ public class CmsCvsExportBean {
     public CmsCvsExportBean(final CmsFormHandler formHandler) {
 
         m_formHandler = formHandler;
-        this.m_startTime = new Date(0);
-        this.m_endTime = new Date(Long.MAX_VALUE);
+        m_startTime = new Date(0);
+        m_endTime = new Date(Long.MAX_VALUE);
     }
 
     /** 
@@ -131,21 +129,25 @@ public class CmsCvsExportBean {
          */
 
         StringBuffer result = new StringBuffer();
-        I_CmsFormDataAccess db = this.getFormDataAccess();
-        List columnNames = db.readAllFormFieldNames(this.getForm(), this.getStartTime(), this.getEndTime());
+        List columnNames = CmsFormDataAccess.getInstance().readAllFormFieldNames(
+            getForm().getFormConfiguration().getFormId(),
+            getStartTime(),
+            getEndTime());
         Collections.sort(columnNames, Collator.getInstance(m_formHandler.getRequestContext().getLocale()));
 
-        List dataEntries = db.readFormData(this.getForm(), this.getStartTime(), this.getEndTime());
-        CmsFormDataBean row;
-        String columnName;
-        Iterator itRows;
-        Iterator itColumns;
-        itRows = dataEntries.iterator();
-        String value;
+        List dataEntries = CmsFormDataAccess.getInstance().readFormData(
+            getForm().getFormConfiguration().getFormId(),
+            getStartTime(),
+            getEndTime());
+
         // loop 1 - write the headers:
-        itColumns = columnNames.iterator();
+        result.append("Creation date");
+        result.append(EXCEL_DEFAULT_CSV_DELMITER);
+        result.append("Resource path");
+        result.append(EXCEL_DEFAULT_CSV_DELMITER);
+        Iterator itColumns = columnNames.iterator();
         while (itColumns.hasNext()) {
-            columnName = (String)itColumns.next();
+            String columnName = (String)itColumns.next();
             columnName = escapeExcelCsv(columnName);
             result.append(columnName);
             if (itColumns.hasNext()) {
@@ -154,19 +156,26 @@ public class CmsCvsExportBean {
         }
         result.append("\r\n");
         // loop 2 - write the data:
+        Iterator itRows = dataEntries.iterator();
         while (itRows.hasNext()) {
-            row = (CmsFormDataBean)itRows.next();
+            CmsFormDataBean row = (CmsFormDataBean)itRows.next();
             // create an entry for each column, even if some rows (data sets) 
             // do not contain the field value because it was 
             // a) not entered 
             // b) the form was changed in structure over time 
             // c) developer errors,  hw /sw problems... 
+            result.append(new Date(row.getDateCreated()));
+            result.append(EXCEL_DEFAULT_CSV_DELMITER);
+            result.append(row.getResourcePath());
+            result.append(EXCEL_DEFAULT_CSV_DELMITER);
             itColumns = columnNames.iterator();
             while (itColumns.hasNext()) {
-                columnName = (String)itColumns.next();
-                value = (String)row.getFieldEntry(columnName).getValue();
-                value = this.escapeExcelCsv(value);
-                result.append(value);
+                String columnName = (String)itColumns.next();
+                String value = row.getFieldValue(columnName);
+                if (value != null) {
+                    value = escapeExcelCsv(value);
+                    result.append(value);
+                }
                 if (itColumns.hasNext()) {
                     result.append(EXCEL_DEFAULT_CSV_DELMITER);
                 }
@@ -194,16 +203,6 @@ public class CmsCvsExportBean {
     public CmsFormHandler getForm() {
 
         return m_formHandler;
-    }
-
-    /**
-     * Returns the access layer to the form data in the database.<p> 
-     * 
-     * @return the access layer to the form data in the database
-     */
-    private I_CmsFormDataAccess getFormDataAccess() {
-
-        return new CmsFormDataAccess();
     }
 
     /**

@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/CmsFormDataBean.java,v $
- * Date   : $Date: 2007/12/21 14:34:01 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/02/07 11:52:02 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -29,9 +29,12 @@
  * For further information about OpenCms, please see the
  * project website: http://www.opencms.org.
  */
+
 package com.alkacon.opencms.formgenerator.database;
 
+import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -39,59 +42,175 @@ import java.util.TreeMap;
  * Represents a single set / record of data that has been entered by a single 
  * user that filled out a form. <p>
  * 
- * 
  * @author Achim Westermann
+ * @author Michael Moossen
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4
- *
  */
 public class CmsFormDataBean {
 
-    /**
-     * The <code>SortedMap&lt;{@link String}, {@link Map.Entry}&gt;</code> with all field entries. 
-     */
+    /** The creation date. */
+    private long m_dateCreated;
+
+    /** The <code>SortedMap&lt;{@link String}, {@link Map.Entry}&gt;</code> with all field entries. */
     private SortedMap m_fieldEntries;
 
+    /** The resource path. */
+    private String m_resourcePath;
+
     /**
-     * Defcon.<p>
+     * Default constructor.<p>
      */
-    CmsFormDataBean() {
+    protected CmsFormDataBean() {
 
         m_fieldEntries = new TreeMap();
     }
 
     /**
-     * Adds a new field entry to this data record of the form.<p>
+     * Returns a set of all field labels in this form.<p>
      * 
-     * Internal method for <code>{@link I_CmsFormDataAccess}</code>.<p> 
+     * @return a set of all field labels
      * 
-     * @param field the field to add 
-     * 
-     * @return the previous contained field with the same field name (<code>{@link Map.Entry#getKey()}</code>) or null
+     * @see java.util.Map#keySet()
      */
-    Map.Entry addEntry(Map.Entry field) {
+    public Set getAllFieldLabels() {
 
-        return (Map.Entry)this.m_fieldEntries.put(field.getKey(), field);
+        return m_fieldEntries.keySet();
     }
 
     /**
-     * Returns the entry for the given field name of this form data set or 
-     * <code>{@link CmsFormDataEntry#EMPTY}</code> if not present.<p> 
-     *  
-     * @param fieldName the name of the field to read  
+     * Returns a set of {@link Map.Entry} objects, where the key is
+     * the field name and the value the field value, with all fields
+     * in the form.<p>
      * 
-     * @return the entry for the given field name of this form data set or 
-     *      <code>{@link CmsFormDataEntry#EMPTY}</code> if not present
+     * @return all fields in the form
+     * 
+     * @see java.util.Map#entrySet()
      */
-    public Map.Entry getFieldEntry(final String fieldName) {
+    public Set getAllFields() {
 
-        Map.Entry result = (Map.Entry)m_fieldEntries.get(fieldName);
-        if (result == null) {
-            result = CmsFormDataEntry.EMPTY;
-        }
-        return result;
+        return m_fieldEntries.entrySet();
     }
 
+    /**
+     * Returns a collection of all field values in this form.<p>
+     * 
+     * @return a collection of all field values
+     * 
+     * @see java.util.Map#values()
+     */
+    public Collection getAllFieldValues() {
+
+        return m_fieldEntries.values();
+    }
+
+    /**
+     * Returns the creation date.<p>
+     *
+     * @return the creation date
+     */
+    public long getDateCreated() {
+
+        return m_dateCreated;
+    }
+
+    /**
+     * Returns the value of the given field, or <code>null</code> 
+     * if no field with the given name exists.<p>
+     * 
+     * @param fieldLabel the field label to get the value for
+     * 
+     * @return the value of the given field
+     * 
+     * @see java.util.Map#get(java.lang.Object)
+     */
+    public String getFieldValue(String fieldLabel) {
+
+        return (String)m_fieldEntries.get(fieldLabel);
+    }
+
+    /**
+     * Returns the resource Path.<p>
+     *
+     * @return the resource Path
+     */
+    public String getResourcePath() {
+
+        return m_resourcePath;
+    }
+
+    /**
+     * Checks if the form has the given field.<p>
+     * 
+     * @param fieldLabel the field label to look for
+     * 
+     * @return <code>true</code> if the form has the given field
+     *  
+     * @see java.util.Map#containsKey(java.lang.Object)
+     */
+    public boolean hasField(String fieldLabel) {
+
+        return m_fieldEntries.containsKey(fieldLabel);
+    }
+
+    /**
+     * Checks if the form has the given field value.<p>
+     * 
+     * @param fieldValue the field value to look for
+     * 
+     * @return <code>true</code> if the form has the given field value
+     *  
+     * @see java.util.Map#containsValue(java.lang.Object)
+     */
+    public boolean hasValue(String fieldValue) {
+
+        return m_fieldEntries.containsValue(fieldValue);
+    }
+
+    /**
+     * Returns the total number of fields in this form.<p>
+     * 
+     * @return the total number of fields
+     * 
+     * @see java.util.Map#size()
+     */
+    public int size() {
+
+        return m_fieldEntries.size();
+    }
+
+    /**
+     * Adds a new field to this form.<p>
+     * 
+     * @param fieldLabel the label of the field
+     * @param fieldValue the value of the field
+     * 
+     * @see java.util.Map#put(java.lang.Object, java.lang.Object)
+     */
+    protected void addField(String fieldLabel, String fieldValue) {
+
+        m_fieldEntries.put(fieldLabel, fieldValue);
+    }
+
+    /**
+     * Sets the creation date.<p>
+     *
+     * @param dateCreated the creation date to set
+     */
+    protected void setDateCreated(long dateCreated) {
+
+        m_dateCreated = dateCreated;
+    }
+
+    /**
+     * Sets the resource Path.<p>
+     *
+     * @param resourcePath the resource Path to set
+     */
+    protected void setResourcePath(String resourcePath) {
+
+        m_resourcePath = resourcePath;
+    }
 }

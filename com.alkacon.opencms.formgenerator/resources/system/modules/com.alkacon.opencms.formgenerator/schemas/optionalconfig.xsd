@@ -21,6 +21,7 @@
 			<xsd:element name="ShowReset" type="OpenCmsBoolean" />
 			<xsd:element name="FormAttributes" type="OpenCmsString" />
 			<xsd:element name="FormFieldAttributes" type="OpenCmsString" />
+			<xsd:element name="DynamicFieldClass" type="OpenCmsString" minOccurs="1" />
 		</xsd:sequence>
 		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
 	</xsd:complexType>

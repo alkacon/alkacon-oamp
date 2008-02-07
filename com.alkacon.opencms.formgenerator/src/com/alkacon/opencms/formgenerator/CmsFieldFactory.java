@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFieldFactory.java,v $
- * Date   : $Date: 2007/12/21 14:34:00 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/02/07 11:52:02 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -28,6 +28,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
+
 package com.alkacon.opencms.formgenerator;
 
 import org.opencms.main.CmsLog;
@@ -62,7 +63,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4 
  */
@@ -101,13 +102,14 @@ public final class CmsFieldFactory {
         registerFieldType(CmsTextareaField.getStaticType(), CmsTextareaField.class.getName());
         registerFieldType(CmsEmptyField.getStaticType(), CmsEmptyField.class.getName());
         registerFieldType(CmsPrivacyField.getStaticType(), CmsPrivacyField.class.getName());
+        registerFieldType(CmsDynamicField.getStaticType(), CmsDynamicField.class.getName());
 
         File propertyFile = null;
         try {
 
             // register all custom field types declared in a property file.
             // since custom fields are optional, the property file doesn't have to exist necessarily in the file system.
-            // this file should contain a mapping of field type names to a Java classes separated by a colo ":", e.g.:
+            // this file should contain a mapping of field type names to a Java classes separated by a colon ":", e.g.:
             // FIELDS=<fieldtype>:<java class>,...,<fieldtype>:<java class>
 
             propertyFile = new File(CUSTOM_FORM_FIELD_PROPERTIES);
@@ -184,25 +186,21 @@ public final class CmsFieldFactory {
     /**
      * Returns an instance of a form field of the specified type.<p>
      * 
-     * @param type the desired type of the form field.
+     * @param type the desired type of the form field
+     * 
      * @return the instance of a form field, or null if creating an instance of the class failed
      */
-    protected A_CmsField getField(String type) {
-
-        A_CmsField field = null;
+    protected I_CmsField getField(String type) {
 
         try {
-
             String className = (String)m_registeredFieldTypes.get(type);
-            field = (A_CmsField)Class.forName(className).newInstance();
+            return (I_CmsField)Class.forName(className).newInstance();
         } catch (Throwable t) {
-
             if (LOG.isErrorEnabled()) {
                 LOG.error(Messages.get().getBundle().key(Messages.LOG_ERR_FIELD_INSTANTIATION_1, type), t);
             }
         }
-
-        return field;
+        return null;
     }
 
     /**
@@ -210,6 +208,7 @@ public final class CmsFieldFactory {
      * 
      * @param type the type of the field
      * @param className the name of the field class
+     * 
      * @return the previous class associated with this type, or null if there was no mapping before
      */
     private Object registerFieldType(String type, String className) {

@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/CmsFormDatabaseModuleAction.java,v $
- * Date   : $Date: 2007/12/21 14:34:01 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/02/07 11:52:02 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -29,6 +29,7 @@
  * For further information about OpenCms, please see the
  * project website: http://www.opencms.org.
  */
+
 package com.alkacon.opencms.formgenerator.database;
 
 import org.opencms.configuration.CmsConfigurationManager;
@@ -47,7 +48,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4
  *
@@ -72,8 +73,7 @@ public class CmsFormDatabaseModuleAction extends A_CmsModuleAction {
 
         super.initialize(adminCms, configurationManager, module);
         try {
-            CmsFormDataAccess access = new CmsFormDataAccess();
-            access.ensureDBTablesExistance();
+            CmsFormDataAccess.getInstance().ensureDBTablesExistance();
         } catch (SQLException sqlex) {
             LOG.error(CmsException.getStackTraceAsString(sqlex));
             throw new RuntimeException("This module cannot be initialized!", sqlex);

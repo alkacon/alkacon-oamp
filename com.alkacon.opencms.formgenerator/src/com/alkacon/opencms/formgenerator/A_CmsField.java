@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/A_CmsField.java,v $
- * Date   : $Date: 2007/12/21 14:34:00 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/02/07 11:52:02 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -29,6 +29,7 @@
  * For further information about OpenCms, please see the
  * project website: http://www.opencms.org.
  */
+
 package com.alkacon.opencms.formgenerator;
 
 import org.opencms.main.CmsLog;
@@ -49,7 +50,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 7.0.4 
  */
@@ -58,6 +59,7 @@ public abstract class A_CmsField implements I_CmsField {
     /** The log object for this class. */
     private static final Log LOG = CmsLog.getLog(CmsFormHandler.class);
 
+    private String m_dbLabel;
     private String m_errorMessage;
     private List m_items;
     private String m_label;
@@ -81,6 +83,15 @@ public abstract class A_CmsField implements I_CmsField {
         m_validationExpression = "";
         m_placeholder = 0;
         m_position = 0;
+        m_dbLabel = "";
+    }
+
+    /**
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#getDbLabel()
+     */
+    public String getDbLabel() {
+
+        return m_dbLabel;
     }
 
     /**
@@ -116,9 +127,7 @@ public abstract class A_CmsField implements I_CmsField {
     }
 
     /**
-     * Returns the placeholder.<p>
-     *
-     * @return the placeholder
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#getPlaceholder()
      */
     public int getPlaceholder() {
 
@@ -126,9 +135,7 @@ public abstract class A_CmsField implements I_CmsField {
     }
 
     /**
-     * Returns the position.<p>
-     *
-     * @return the position
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#getPosition()
      */
     public int getPosition() {
 
@@ -164,14 +171,61 @@ public abstract class A_CmsField implements I_CmsField {
      */
     public boolean needsItems() {
 
-        return (CmsCheckboxField.class.isAssignableFrom(getClass())
-            || CmsSelectionField.class.isAssignableFrom(getClass()) || CmsRadioButtonField.class.isAssignableFrom(getClass()));
+        return false;
     }
 
     /**
-     * Sets the placeholder.<p>
+     * Sets the database label.<p>
      *
-     * @param placeholder the placeholder to set
+     * @param dbLabel the database label to set
+     */
+    public void setDbLabel(String dbLabel) {
+
+        m_dbLabel = dbLabel;
+    }
+
+    /**
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#setErrorMessage(java.lang.String)
+     */
+    public void setErrorMessage(String errorMessage) {
+
+        m_errorMessage = errorMessage;
+    }
+
+    /**
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#setItems(java.util.List)
+     */
+    public void setItems(List items) {
+
+        m_items = items;
+    }
+
+    /**
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#setLabel(java.lang.String)
+     */
+    public void setLabel(String description) {
+
+        m_label = description;
+    }
+
+    /**
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#setMandatory(boolean)
+     */
+    public void setMandatory(boolean mandatory) {
+
+        m_mandatory = mandatory;
+    }
+
+    /**
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#setName(java.lang.String)
+     */
+    public void setName(String name) {
+
+        m_name = name;
+    }
+
+    /**
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#setPlaceholder(int)
      */
     public void setPlaceholder(int placeholder) {
 
@@ -179,9 +233,7 @@ public abstract class A_CmsField implements I_CmsField {
     }
 
     /**
-     * Sets the position.<p>
-     *
-     * @param position the position to set
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#setPosition(int)
      */
     public void setPosition(int position) {
 
@@ -189,7 +241,24 @@ public abstract class A_CmsField implements I_CmsField {
     }
 
     /**
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#setValidationExpression(java.lang.String)
+     */
+    public void setValidationExpression(String expression) {
+
+        m_validationExpression = expression;
+    }
+
+    /**
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#setValue(java.lang.String)
+     */
+    public void setValue(String value) {
+
+        m_value = value;
+    }
+
+    /**
      * Returns the field value as a String.<p>
+     * 
      * @see java.lang.Object#toString()
      */
     public String toString() {
@@ -251,10 +320,10 @@ public abstract class A_CmsField implements I_CmsField {
     }
 
     /**
-     * This function sets the cells of placeholder. Its only work with 
-     * a col size of 2.<p> 
+     * This function sets the cells of place holder. Its only work with 
+     * a column size of 2.<p> 
      * 
-     * @param message integer value of adding to the placeholder value
+     * @param message integer value of adding to the place holder value
      */
     protected void incrementPlaceholder(String message) {
 
@@ -266,87 +335,11 @@ public abstract class A_CmsField implements I_CmsField {
     }
 
     /**
-     * Sets the error message if validation failed.<p>
-     * 
-     * @param errorMessage the error message if validation failed
-     */
-    protected void setErrorMessage(String errorMessage) {
-
-        m_errorMessage = errorMessage;
-    }
-
-    /**
-     * Sets the list of items for select boxes, radio buttons and checkboxes.<p>
-     * 
-     * The list contains CmsFieldItem objects with the following information:
-     * <ol>
-     * <li>the value of the item</li>
-     * <li>the description of the item</li>
-     * <li>the selection flag of the item (true or false)</li>
-     * </ol>
-     * 
-     * @param items the list of items for select boxes, radio buttons and checkboxes
-     */
-    protected void setItems(List items) {
-
-        m_items = items;
-    }
-
-    /**
-     * Sets the description text of the input field.<p>
-     * 
-     * @param description the description text of the input field
-     */
-    protected void setLabel(String description) {
-
-        m_label = description;
-    }
-
-    /**
-     * Sets if this input field is mandatory.<p>
-     * 
-     * @param mandatory true if this input field is mandatory, otherwise false
-     */
-    protected void setMandatory(boolean mandatory) {
-
-        m_mandatory = mandatory;
-    }
-
-    /**
-     * Sets the name of the input field.<p>
-     * 
-     * @param name the name of the input field
-     */
-    protected void setName(String name) {
-
-        m_name = name;
-    }
-
-    /**
-     * Sets the regular expression that is used for validation of the field.<p>
-     * 
-     * @param expression the regular expression that is used for validation of the field
-     */
-    protected void setValidationExpression(String expression) {
-
-        m_validationExpression = expression;
-    }
-
-    /**
-     * Sets the initial value of the field.<p>
-     * 
-     * @param value the initial value of the field
-     */
-    protected void setValue(String value) {
-
-        m_value = value;
-    }
-
-    /**
      * This functions looks if the row should be end. By one colsize, its 
-     * everytime ending. By two colsize every second cell its ending.
+     * every time ending. By two colsize every second cell its ending.
      * 
-     * @param colSizeTwo if two cols should be shown
+     * @param colSizeTwo if two columns should be shown
+     * 
      * @return true the row end must shown
      */
     protected boolean showRowEnd(String colSizeTwo) {
@@ -364,7 +357,7 @@ public abstract class A_CmsField implements I_CmsField {
         } else {
             m_position = 0;
         }
-        //if its need a placeholder
+        //if its need a place holder
         if ((m_position == 1) && (m_placeholder >= 1)) {
             result = true;
             m_position = 0;
@@ -375,9 +368,9 @@ public abstract class A_CmsField implements I_CmsField {
 
     /**
      * This functions looks if the row should be start. By one colsize, its 
-     * everytime starting. By two colsize every second cell its starting.
+     * every time starting. By two colsize every second cell its starting.
      * 
-     * @param colSizeTwo if two cols should be shown
+     * @param colSizeTwo if two columns should be shown
      * @return true if the row should shown
      */
     protected boolean showRowStart(String colSizeTwo) {
@@ -399,15 +392,12 @@ public abstract class A_CmsField implements I_CmsField {
     protected String validateConstraints() {
 
         if (isMandatory()) {
-
             // check if the field has a value
             if (needsItems()) {
-
                 // check if at least one item has been selected
                 Iterator k = m_items.iterator();
                 boolean isSelected = false;
                 while (k.hasNext()) {
-
                     CmsFieldItem currentItem = (CmsFieldItem)k.next();
                     if (currentItem.isSelected()) {
                         isSelected = true;
@@ -420,7 +410,6 @@ public abstract class A_CmsField implements I_CmsField {
                     return CmsFormHandler.ERROR_MANDATORY;
                 }
             } else {
-
                 // check if the field has been filled out
                 if (CmsStringUtil.isEmpty(m_value)) {
                     return CmsFormHandler.ERROR_MANDATORY;
@@ -440,16 +429,12 @@ public abstract class A_CmsField implements I_CmsField {
 
         // validate non-empty values with given regular expression
         if (CmsStringUtil.isNotEmpty(m_value) && (!"".equals(m_validationExpression))) {
-
-            Pattern pattern = null;
             try {
-
-                pattern = Pattern.compile(m_validationExpression);
+                Pattern pattern = Pattern.compile(m_validationExpression);
                 if (!pattern.matcher(m_value).matches()) {
                     return CmsFormHandler.ERROR_VALIDATION;
                 }
             } catch (PatternSyntaxException e) {
-
                 // syntax error in regular expression, log to opencms.log
                 if (LOG.isErrorEnabled()) {
                     LOG.error(Messages.get().getBundle().key(Messages.LOG_ERR_PATTERN_SYNTAX_0), e);

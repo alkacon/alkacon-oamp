@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
- * Date   : $Date: 2008/01/17 15:24:55 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2008/02/07 11:52:02 $
+ * Version: $Revision: 1.5 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -46,6 +46,7 @@ import org.opencms.xml.types.I_CmsXmlContentValue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -62,7 +63,7 @@ import org.apache.commons.fileupload.FileItem;
  * @author Thomas Weckert 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * 
  * @since 7.0.4 
  */
@@ -121,6 +122,9 @@ public class CmsForm {
 
     /** Configuration node name for the transport field in the optional nested data target. */
     public static final String NODE_DATATARGET_TRANSPORT = "Transport";
+
+    /** Configuration node name for the optional dynamic field class node. */
+    public static final String NODE_DYNAMICFIELDCLASS = "DynamicFieldClass";
 
     /** Configuration node name for the Email node. */
     public static final String NODE_EMAIL = "Email";
@@ -220,6 +224,7 @@ public class CmsForm {
 
     /** Resource type ID of XML content forms. */
     private static final String TYPE_NAME = "emailform";
+
     private CmsCaptchaField m_captchaField;
 
     private List m_configurationErrors;
@@ -229,9 +234,12 @@ public class CmsForm {
     private boolean m_confirmationMailOptional;
     private String m_confirmationMailSubject;
     private String m_confirmationMailText;
-
     private String m_confirmationMailTextPlain;
 
+    /** Stores the form dynamic input fields. */
+    private List m_dynaFields;
+    /** The class name for the dynamic field value resolver. */
+    private String m_dynamicFieldClass;
     /** Stores the form input fields. */
     private List m_fields;
 
@@ -242,14 +250,10 @@ public class CmsForm {
     private String m_formCheckText;
     private String m_formConfirmationText;
     private String m_formFieldAttributes;
-
     private String m_formFooterText;
 
-    /** 
-     * The form id needed in case it is stored in the database.
-     */
+    /** The form id needed in case it is stored in the database. */
     private String m_formId;
-
     private String m_formText;
     private boolean m_hasMandatoryFields;
     private String m_mailBCC;
@@ -259,18 +263,15 @@ public class CmsForm {
     private String m_mailSubjectPrefix;
     private String m_mailText;
     private String m_mailTextPlain;
-
     private String m_mailTo;
-
     private String m_mailType;
+
     /** The map of request parameters. */
     private Map m_parameterMap;
+
     private boolean m_showCheck;
-
     private boolean m_showMandatory;
-
     private boolean m_showReset;
-
     private String m_targetUri;
 
     /** Flag to signal that data should be stored in the database - defaults to false. */
@@ -300,7 +301,7 @@ public class CmsForm {
      * @param messages the localized messages
      * @param initial if true, field values are filled with values specified in the configuration file, otherwise from the request
      * @param formConfigUri URI of the form configuration file, if not provided, current URI is used for configuration
-     * @param formAction the desired action submiktted by the form
+     * @param formAction the desired action submitted by the form
      * 
      * @throws Exception if parsing the configuration fails
      */
@@ -338,6 +339,18 @@ public class CmsForm {
     public boolean captchaFieldIsOnInputPage() {
 
         return !getShowCheck();
+    }
+
+    /**
+     * Returns a list of field objects, inclusive dynamic fields, for the online form.<p>
+     * 
+     * @return a list of field objects, inclusive dynamic fields
+     */
+    public List getAllFields() {
+
+        List allFields = new ArrayList(m_fields);
+        allFields.addAll(m_dynaFields);
+        return allFields;
     }
 
     /**
@@ -411,6 +424,16 @@ public class CmsForm {
     }
 
     /**
+     * Returns the class name for the dynamic field value resolver.<p>
+     *
+     * @return the class name for the dynamic field value resolver
+     */
+    public String getDynamicFieldClass() {
+
+        return m_dynamicFieldClass;
+    }
+
+    /**
      * Returns a list of field objects for the online form.<p>
      * 
      * @return a list of field objects for the online form
@@ -424,14 +447,17 @@ public class CmsForm {
      * Returns the value for a field specified by it's name (Xpath).<p>
      * 
      * @param fieldName the field's name (Xpath)
+     * 
      * @return the field value, or null
      */
     public String getFieldStringValueByName(String fieldName) {
 
         I_CmsField field = (I_CmsField)m_fieldsByName.get(fieldName);
         if (field != null) {
-
             String fieldValue = field.getValue();
+            if (field instanceof CmsDynamicField) {
+                fieldValue = getDynamicFieldValue((CmsDynamicField)field);
+            }
             return (fieldValue != null) ? fieldValue.trim() : "";
         }
 
@@ -694,6 +720,7 @@ public class CmsForm {
 
         m_formAction = formAction;
         m_fields = new ArrayList();
+        m_dynaFields = new ArrayList();
         m_fieldsByName = new HashMap();
 
         // initialize general form configuration
@@ -706,7 +733,7 @@ public class CmsForm {
         initCaptchaField(jsp, content, locale, initial);
 
         // add the captcha field to the list of all fields, if the form has no check page
-        if (captchaFieldIsOnInputPage() && m_captchaField != null) {
+        if (captchaFieldIsOnInputPage() && (m_captchaField != null)) {
             addField(m_captchaField);
         }
     }
@@ -793,22 +820,17 @@ public class CmsForm {
 
     /**
      * Removes the captcha field from the list of all fields, if present.<p>
-     * 
-     * @return the removed captcha field, or null
      */
-    public I_CmsField removeCaptchaField() {
+    public void removeCaptchaField() {
 
-        for (int i = 0, n = m_fields.size(); i < n; i++) {
-
-            I_CmsField field = (I_CmsField)m_fields.get(i);
-            if (field != null && CmsCaptchaField.class.isAssignableFrom(getClass())) {
-
-                removeField(field);
-                return field;
+        Iterator it = m_fields.iterator();
+        while (it.hasNext()) {
+            I_CmsField field = (I_CmsField)it.next();
+            if (field instanceof CmsCaptchaField) {
+                it.remove();
+                m_fieldsByName.remove(field.getName());
             }
         }
-
-        return null;
     }
 
     /**
@@ -838,8 +860,11 @@ public class CmsForm {
      */
     protected void addField(I_CmsField field) {
 
-        m_fields.add(field);
-
+        if (field instanceof CmsDynamicField) {
+            m_dynaFields.add(field);
+        } else {
+            m_fields.add(field);
+        }
         // the fields are also internally backed in a map keyed by their field name
         m_fieldsByName.put(field.getName(), field);
     }
@@ -874,19 +899,6 @@ public class CmsForm {
             result = Boolean.toString(true);
         }
         return result;
-    }
-
-    /**
-     * Removes a field from the form fields.<p>
-     * 
-     * @param field the field to be removed
-     */
-    protected void removeField(I_CmsField field) {
-
-        m_fields.remove(field);
-
-        // the fields are also internally backed in a map keyed by their field name
-        m_fieldsByName.remove(field);
     }
 
     /**
@@ -1187,12 +1199,14 @@ public class CmsForm {
      * 
      * @param messages the localized messages
      * @param initial if true, field values are filled with values specified in the XML configuration, otherwise values are read from the request
+     * 
      * @return the checkbox field to activate the confirmation mail in the input form
      */
     private I_CmsField createConfirmationMailCheckbox(CmsMessages messages, boolean initial) {
 
         A_CmsField field = new CmsCheckboxField();
         field.setName(PARAM_SENDCONFIRMATION);
+        field.setDbLabel(PARAM_SENDCONFIRMATION);
         field.setLabel(messages.key("form.confirmation.label"));
         // check the field status
         boolean isChecked = false;
@@ -1225,6 +1239,26 @@ public class CmsForm {
             return value;
         }
         return defaultValue;
+    }
+
+    /**
+     * Resolves the value of a dynamic field.<p>
+     * 
+     * @param field the field to resolve the value for
+     * 
+     * @return the value of the given dynamic field
+     */
+    private String getDynamicFieldValue(CmsDynamicField field) {
+
+        if (field.getResolvedValue() == null) {
+            try {
+                I_CmsDynamicFieldResolver resolver = (I_CmsDynamicFieldResolver)Class.forName(getDynamicFieldClass()).newInstance();
+                field.setResolvedValue(resolver.resolveValue(field, this));
+            } catch (Throwable e) {
+                field.setResolvedValue(e.getLocalizedMessage());
+            }
+        }
+        return field.getResolvedValue();
     }
 
     /**
@@ -1384,6 +1418,9 @@ public class CmsForm {
         // get the check page text
         stringValue = content.getStringValue(cms, pathPrefix + NODE_FORMCHECKTEXT, locale);
         setFormCheckText(getConfigurationValue(stringValue, ""));
+        // get the dynamic fields class
+        stringValue = content.getStringValue(cms, pathPrefix + NODE_DYNAMICFIELDCLASS, locale);
+        setDynamicFieldClass(getConfigurationValue(stringValue, ""));
         // get the show mandatory setting
         stringValue = content.getStringValue(cms, pathPrefix + NODE_SHOWMANDATORY, locale);
         setShowMandatory(Boolean.valueOf(getConfigurationValue(stringValue, Boolean.TRUE.toString())).booleanValue());
@@ -1477,11 +1514,10 @@ public class CmsForm {
         for (int i = 0; i < fieldValueSize; i++) {
             I_CmsXmlContentValue inputField = (I_CmsXmlContentValue)fieldValues.get(i);
             String inputFieldPath = inputField.getPath() + "/";
-            A_CmsField field = null;
 
             // get the field from the factory for the specified type
             String stringValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDTYPE, locale);
-            field = fieldFactory.getField(stringValue);
+            I_CmsField field = fieldFactory.getField(stringValue);
 
             // create the field name
             String fieldName = inputFieldPath.substring(0, inputFieldPath.length() - 1);
@@ -1491,9 +1527,19 @@ public class CmsForm {
             fieldName = new StringBuffer(fieldName.substring(0, indexStart - 1)).append('-').append(index).toString();
 
             field.setName(fieldName);
-            // get the field label
+            // get the field labels
             stringValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDLABEL, locale);
-            field.setLabel(getConfigurationValue(stringValue, ""));
+            String locLabel = getConfigurationValue(stringValue, "");
+            String dbLabel = locLabel;
+            int pos = locLabel.indexOf("|");
+            if (pos > -1) {
+                locLabel = locLabel.substring(0, pos);
+                if (pos + 1 < dbLabel.length()) {
+                    dbLabel = dbLabel.substring(pos + 1);
+                }
+            }
+            field.setLabel(locLabel);
+            field.setDbLabel(dbLabel);
             // validation error message
             stringValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDERRORMESSAGE, locale);
             field.setErrorMessage(stringValue);
@@ -1620,7 +1666,6 @@ public class CmsForm {
         validateFormConfiguration(messages);
 
         if (isConfirmationMailEnabled() && isConfirmationMailOptional()) {
-
             // add the checkbox to activate confirmation mail for customer
             I_CmsField confirmationMailCheckbox = createConfirmationMailCheckbox(messages, initial);
             addField(confirmationMailCheckbox);
@@ -1652,6 +1697,16 @@ public class CmsForm {
         setConfirmationMailTextPlain("");
         setShowMandatory(true);
         setShowReset(true);
+    }
+
+    /**
+     * Sets the class name for the dynamic field value resolver.<p>
+     * 
+     * @param className the class name to set
+     */
+    private void setDynamicFieldClass(String className) {
+
+        m_dynamicFieldClass = className;
     }
 
     /**
