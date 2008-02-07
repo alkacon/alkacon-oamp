@@ -60,15 +60,15 @@
 				<if>
 					<isset property="modules.selection" />
 					<then>
-						<selectiontreeprompt property="modules.interactive" defaultvalue="${modules.selection}" allvalues="${modules.all}" prompt="Please select the modules to process:" title="Module Selection" expansionLevels="2" />
+						<selectionprompt property="modules.interactive" defaultvalue="${modules.selection}" allvalues="${modules.all}" prompt="Please select the modules to process:" title="Module Selection" columns="1" />
 						<!--
-						<selectionprompt property="modules.interactive" defaultvalue="${modules.selection}" allvalues="${modules.all}" prompt="Please select the modules to process:" title="Module Selection" columns="3" />
+						<selectiontreeprompt property="modules.interactive" defaultvalue="${modules.selection}" allvalues="${modules.all}" prompt="Please select the modules to process:" title="Module Selection" expansionLevels="2" />
 						-->
 					</then>
 					<else>
-						<selectiontreeprompt property="modules.interactive" defaultvalue="" allvalues="${modules.all}" prompt="Please select the modules to process:" title="Module Selection" expansionLevels="2" />
+						<selectionprompt property="modules.interactive" defaultvalue="" allvalues="${modules.all}" prompt="Please select the modules to process:" title="Module Selection" columns="1" />
 						<!--
-						<selectionprompt property="modules.interactive" defaultvalue="" allvalues="${modules.all}" prompt="Please select the modules to process:" title="Module Selection" columns="3" />
+						<selectiontreeprompt property="modules.interactive" defaultvalue="" allvalues="${modules.all}" prompt="Please select the modules to process:" title="Module Selection" expansionLevels="2" />
 						-->
 					</else>
 				</if>
