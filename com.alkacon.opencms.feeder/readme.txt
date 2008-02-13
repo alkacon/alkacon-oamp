@@ -39,7 +39,7 @@ http://www.alkacon.com
 3. Installation
 
 A detailed description of the installation is described in the provided
-PDF file "Alkacon_OAMP_SyndicationFeed_1.0.0.pdf".
+PDF file "Alkacon_OAMP_SyndicationFeed.pdf".
 
 
 4. History of changes
