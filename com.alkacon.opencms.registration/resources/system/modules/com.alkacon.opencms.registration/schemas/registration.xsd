@@ -1,0 +1,45 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.registration/schemas/inputfield.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.registration/schemas/optionalconfig.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.registration/schemas/confirmation.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.registration/schemas/mailconfig.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.registration/schemas/action.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.registration/schemas/optionalformcaptcha.xsd"/>
+		
+	<xsd:element name="AlkaconWebuserRegForms" type="OpenCmsAlkaconWebuserRegForms"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconWebuserRegForms">
+		<xsd:sequence>
+			<xsd:element name="AlkaconWebuserRegForm" type="OpenCmsAlkaconWebuserRegForm" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconWebuserRegForm">
+		<xsd:sequence>
+			<xsd:element name="FormText" type="OpenCmsHtml" />
+			<xsd:element name="FormFooterText" type="OpenCmsHtml" minOccurs="0"/>	
+			<xsd:element name="InputField" type="OpenCmsAlkaconWebuserRegFormInputField" maxOccurs="unbounded" />
+			<xsd:element name="Action" type="OpenCmsAlkaconWebuserRegFormAction" /> 				
+			<xsd:element name="FormCaptcha" type="OpenCmsAlkaconWebuserRegFormCaptcha" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="FormConfirmation" type="OpenCmsHtml" />
+			<xsd:element name="ConfirmationMail" type="OpenCmsAlkaconWebuserRegFormConfirmationMail" minOccurs="0" />
+			<xsd:element name="MailAlert" type="OpenCmsAlkaconWebuserRegFormMailConfiguration" minOccurs="0" />
+			<xsd:element name="OptionalFormConfiguration" type="OpenCmsOptionalAlkaconWebuserRegFormConfiguration" minOccurs="0" />
+			<xsd:element name="ActivationText" type="OpenCmsHtml" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="required"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+                        <handler class="com.alkacon.opencms.registration.CmsRegistrationXmlContentHandler"/>
+			<resourcebundle name="com.alkacon.opencms.registration.workplace"/>
+			<defaults>
+				<default element="OptionalFormConfiguration/ShowMandatory" value="true" />
+			</defaults>
+		</xsd:appinfo>
+	</xsd:annotation>  
+	
+</xsd:schema>
