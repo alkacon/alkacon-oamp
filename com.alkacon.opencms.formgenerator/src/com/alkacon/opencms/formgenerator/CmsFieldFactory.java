@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFieldFactory.java,v $
- * Date   : $Date: 2008/02/07 11:52:02 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2008/02/19 11:55:26 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -63,7 +63,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4 
  */
@@ -169,6 +169,26 @@ public final class CmsFieldFactory {
     }
 
     /**
+     * Returns an instance of a form field of the specified type.<p>
+     * 
+     * @param type the desired type of the form field
+     * 
+     * @return the instance of a form field, or null if creating an instance of the class failed
+     */
+    public I_CmsField getField(String type) {
+
+        try {
+            String className = (String)m_registeredFieldTypes.get(type);
+            return (I_CmsField)Class.forName(className).newInstance();
+        } catch (Throwable t) {
+            if (LOG.isWarnEnabled()) {
+                LOG.warn(Messages.get().getBundle().key(Messages.LOG_ERR_FIELD_INSTANTIATION_1, type), t);
+            }
+        }
+        return null;
+    }
+
+    /**
      * @see java.lang.Object#finalize()
      */
     protected void finalize() throws Throwable {
@@ -181,26 +201,6 @@ public final class CmsFieldFactory {
             // ignore
         }
         super.finalize();
-    }
-
-    /**
-     * Returns an instance of a form field of the specified type.<p>
-     * 
-     * @param type the desired type of the form field
-     * 
-     * @return the instance of a form field, or null if creating an instance of the class failed
-     */
-    protected I_CmsField getField(String type) {
-
-        try {
-            String className = (String)m_registeredFieldTypes.get(type);
-            return (I_CmsField)Class.forName(className).newInstance();
-        } catch (Throwable t) {
-            if (LOG.isErrorEnabled()) {
-                LOG.error(Messages.get().getBundle().key(Messages.LOG_ERR_FIELD_INSTANTIATION_1, type), t);
-            }
-        }
-        return null;
     }
 
     /**

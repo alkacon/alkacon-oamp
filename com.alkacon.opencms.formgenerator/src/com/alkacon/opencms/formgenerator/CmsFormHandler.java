@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormHandler.java,v $
- * Date   : $Date: 2008/02/07 11:52:02 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2008/02/19 11:55:26 $
+ * Version: $Revision: 1.5 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -78,7 +78,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * 
  * @since 7.0.4 
  */
@@ -120,34 +120,35 @@ public class CmsFormHandler extends CmsJspActionElement {
     /** The log object for this class. */
     private static final Log LOG = CmsLog.getLog(CmsFormHandler.class);
 
+    /** The module name. */
     private static final String MODULE = "com.alkacon.opencms.formgenerator";
 
     /** Contains eventual validation errors. */
-    private Map m_errors;
+    protected Map m_errors;
 
     /** The form configuration object. */
-    private CmsForm m_formConfiguration;
+    protected CmsForm m_formConfiguration;
 
     /** Temporarily stores the fields as hidden fields in the String. */
-    private String m_hiddenFields;
+    protected String m_hiddenFields;
 
     /** Flag indicating if the form is displayed for the first time. */
-    private boolean m_initial;
+    protected boolean m_initial;
 
     /** Boolean indicating if the form is validated correctly. */
-    private Boolean m_isValidatedCorrect;
+    protected Boolean m_isValidatedCorrect;
 
     /** Needed to implant form fields into the mail text. */
-    private transient CmsMacroResolver m_macroResolver;
+    protected transient CmsMacroResolver m_macroResolver;
 
     /** The localized messages for the form handler. */
-    private CmsMessages m_messages;
+    protected CmsMessages m_messages;
 
     /** The multipart file items. */
-    private List m_mulipartFileItems;
+    protected List m_mulipartFileItems;
 
     /** The map of request parameters. */
-    private Map m_parameterMap;
+    protected Map m_parameterMap;
 
     /**
      * Constructor, creates the necessary form configuration objects.<p>
@@ -161,6 +162,7 @@ public class CmsFormHandler extends CmsJspActionElement {
     throws Exception {
 
         super(context, req, res);
+        m_errors = new HashMap();
         init(req, null);
     }
 
@@ -177,6 +179,7 @@ public class CmsFormHandler extends CmsJspActionElement {
     throws Exception {
 
         super(context, req, res);
+        m_errors = new HashMap();
         init(req, formConfigUri);
     }
 
@@ -356,8 +359,7 @@ public class CmsFormHandler extends CmsJspActionElement {
         Iterator i = fieldValues.iterator();
         while (i.hasNext()) {
             I_CmsField current = (I_CmsField)i.next();
-            if ((current instanceof CmsPrivacyField) || (current instanceof CmsCaptchaField)) {
-                // don't show the letter of agreement (CmsPrivacyField) and captcha field value
+            if (!useInFormDataMacro(current)) {
                 continue;
             }
             String value = current.toString();
@@ -502,26 +504,6 @@ public class CmsFormHandler extends CmsJspActionElement {
     }
 
     /**
-     * Returns the form configuration.<p>
-     * 
-     * @return the form configuration
-     */
-    public CmsForm getFormConfiguration() {
-
-        return m_formConfiguration;
-    }
-
-    /**
-     * Returns the confirmation text, after resolving macros.<p>
-     * 
-     * @return the confirmation text
-     */
-    public String getFormConfirmationText() {
-
-        return m_macroResolver.resolveMacros(getFormConfiguration().getFormConfirmationText());
-    }
-
-    /**
      * Returns the check page text, after resolving macros.<p>
      * 
      * @return the check page text
@@ -542,6 +524,26 @@ public class CmsFormHandler extends CmsJspActionElement {
             }
         }
         return macroResolver.resolveMacros(getFormConfiguration().getFormCheckText());
+    }
+
+    /**
+     * Returns the form configuration.<p>
+     * 
+     * @return the form configuration
+     */
+    public CmsForm getFormConfiguration() {
+
+        return m_formConfiguration;
+    }
+
+    /**
+     * Returns the confirmation text, after resolving macros.<p>
+     * 
+     * @return the confirmation text
+     */
+    public String getFormConfirmationText() {
+
+        return m_macroResolver.resolveMacros(getFormConfiguration().getFormConfirmationText());
     }
 
     /**
@@ -655,7 +657,6 @@ public class CmsFormHandler extends CmsJspActionElement {
                 formAction = ACTION_SUBMIT;
             }
         }
-        setErrors(new HashMap());
         m_isValidatedCorrect = null;
         setInitial(CmsStringUtil.isEmpty(formAction));
         // get the localized messages
@@ -771,7 +772,7 @@ public class CmsFormHandler extends CmsJspActionElement {
             if (LOG.isErrorEnabled()) {
                 LOG.error("An unexpected error occured.", e);
             }
-            m_errors.put("sendmail", e.getMessage());
+            getErrors().put("sendmail", e.getMessage());
             result = false;
         }
         return result;
@@ -911,7 +912,7 @@ public class CmsFormHandler extends CmsJspActionElement {
             }
         }
 
-        CmsCaptchaField captchaField = m_formConfiguration.getCaptchaField();
+        CmsCaptchaField captchaField = getFormConfiguration().getCaptchaField();
         if (captchaField != null) {
 
             boolean captchaFieldIsOnInputPage = getFormConfiguration().captchaFieldIsOnInputPage()
@@ -956,52 +957,13 @@ public class CmsFormHandler extends CmsJspActionElement {
     }
 
     /**
-     * Sets the errors found when validating the form.<p>
-     * 
-     * @param errors the errors found when validating the form
-     */
-    protected void setErrors(Map errors) {
-
-        m_errors = errors;
-    }
-
-    /**
-     * Sets the form configuration.<p>
-     * 
-     * @param configuration the form configuration
-     */
-    protected void setFormConfiguration(CmsForm configuration) {
-
-        m_formConfiguration = configuration;
-    }
-
-    /**
-     * Sets if the form is displayed for the first time.<p>
-     * @param initial true if the form is displayed for the first time, otherwise false
-     */
-    protected void setInitial(boolean initial) {
-
-        m_initial = initial;
-    }
-
-    /**
-     * Sets the localized messages.<p>
-     *
-     * @param messages the localized messages
-     */
-    protected void setMessages(CmsMessages messages) {
-
-        m_messages = messages;
-    }
-
-    /**
      * Returns the request parameter with the specified name.<p>
      * 
      * @param parameter the parameter to return
      * 
      * @return the parameter value
      */
-    private String getParameter(String parameter) {
+    protected String getParameter(String parameter) {
 
         try {
             return ((String[])m_parameterMap.get(parameter))[0];
@@ -1015,9 +977,9 @@ public class CmsFormHandler extends CmsJspActionElement {
      * 
      * @return true if successful  
      * 
-     * @throws Exception if sth goes wrong
+     * @throws Exception if something goes wrong
      */
-    private boolean sendDatabase() throws Exception {
+    protected boolean sendDatabase() throws Exception {
 
         return CmsFormDataAccess.getInstance().writeFormData(this);
     }
@@ -1029,7 +991,7 @@ public class CmsFormHandler extends CmsJspActionElement {
      * 
      * @return true if the mail has been successfully sent, otherwise false
      */
-    private boolean sendMail() {
+    protected boolean sendMail() {
 
         try {
             // create the new mail message depending on the configured email type
@@ -1090,9 +1052,52 @@ public class CmsFormHandler extends CmsJspActionElement {
             if (LOG.isErrorEnabled()) {
                 LOG.error(e.getLocalizedMessage(), e);
             }
-            m_errors.put("sendmail", e.getMessage());
+            getErrors().put("sendmail", e.getMessage());
             return false;
         }
         return true;
+    }
+
+    /**
+     * Sets the form configuration.<p>
+     * 
+     * @param configuration the form configuration
+     */
+    protected void setFormConfiguration(CmsForm configuration) {
+
+        m_formConfiguration = configuration;
+    }
+
+    /**
+     * Sets if the form is displayed for the first time.<p>
+     * 
+     * @param initial true if the form is displayed for the first time, otherwise false
+     */
+    protected void setInitial(boolean initial) {
+
+        m_initial = initial;
+    }
+
+    /**
+     * Sets the localized messages.<p>
+     *
+     * @param messages the localized messages
+     */
+    protected void setMessages(CmsMessages messages) {
+
+        m_messages = messages;
+    }
+
+    /**
+     * Checks if the given field should be used in form data macros.<p>
+     * 
+     * @param field the field to check
+     * 
+     * @return if the given field should be used in form data macros
+     */
+    protected boolean useInFormDataMacro(I_CmsField field) {
+
+        // don't show the letter of agreement (CmsPrivacyField) and captcha field value
+        return !((field instanceof CmsPrivacyField) || (field instanceof CmsCaptchaField));
     }
 }

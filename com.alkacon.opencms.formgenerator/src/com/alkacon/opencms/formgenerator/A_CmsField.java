@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/A_CmsField.java,v $
- * Date   : $Date: 2008/02/07 11:52:02 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2008/02/19 11:55:26 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -50,7 +50,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.3 $ 
  * 
  * @since 7.0.4 
  */
@@ -246,6 +246,29 @@ public abstract class A_CmsField implements I_CmsField {
     public void setValidationExpression(String expression) {
 
         m_validationExpression = expression;
+    }
+
+    /**
+     * Returns the selected items.<p>
+     * 
+     * @return the selected items
+     */
+    protected List getSelectedItems() {
+
+        List selected = new ArrayList();
+        List values = (getValue() == null ? null : CmsStringUtil.splitAsList(getValue(), ",", true));
+        Iterator i = getItems().iterator();
+        while (i.hasNext()) {
+            CmsFieldItem curOption = (CmsFieldItem)i.next();
+            if (values != null) {
+                if (values.contains(curOption.getValue())) {
+                    selected.add(curOption);
+                }
+            } else if (curOption.isSelected()) {
+                selected.add(curOption);
+            }
+        }
+        return selected;
     }
 
     /**

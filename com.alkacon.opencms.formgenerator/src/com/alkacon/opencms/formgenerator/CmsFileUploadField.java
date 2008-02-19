@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFileUploadField.java,v $
- * Date   : $Date: 2008/01/17 15:24:55 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2008/02/19 11:55:26 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -29,6 +29,7 @@
  * For further information about OpenCms, please see the
  * project website: http://www.opencms.org.
  */
+
 package com.alkacon.opencms.formgenerator;
 
 import org.opencms.i18n.CmsMessages;
@@ -43,7 +44,7 @@ import java.util.Map;
  * 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4 
  */
@@ -54,14 +55,6 @@ public class CmsFileUploadField extends A_CmsField {
 
     /** The size of the uploaded file. */
     private int m_fileSize;
-
-    /**
-     * @see com.alkacon.opencms.formgenerator.I_CmsField#getType()
-     */
-    public String getType() {
-
-        return TYPE;
-    }
 
     /**
      * Returns the type of the input field, e.g. "text" or "select".<p>
@@ -127,6 +120,24 @@ public class CmsFileUploadField extends A_CmsField {
     }
 
     /**
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#getType()
+     */
+    public String getType() {
+
+        return TYPE;
+    }
+
+    /**
+     * Sets the size of the uploaded file.<p>
+     * 
+     * @param fileSize the file size
+     */
+    public void setFileSize(int fileSize) {
+
+        m_fileSize = fileSize;
+    }
+
+    /**
      * Validates the input value of this field.<p>
      * 
      * @return {@link CmsFormHandler#ERROR_VALIDATION} if validation of the input value failed
@@ -135,7 +146,6 @@ public class CmsFileUploadField extends A_CmsField {
 
         // validate non-empty values with given regular expression
         if (CmsStringUtil.isNotEmpty(getValue()) && CmsStringUtil.isNotEmpty(getValidationExpression())) {
-
             Map substitutions = new HashMap();
             substitutions.put("<", "");
             substitutions.put("kb", "");
@@ -143,29 +153,15 @@ public class CmsFileUploadField extends A_CmsField {
             int maxSize = Integer.parseInt(CmsStringUtil.substitute(getValidationExpression(), substitutions)) * 1024;
             try {
                 if (m_fileSize > maxSize) {
-
                     return CmsFormHandler.ERROR_VALIDATION;
                 }
             } catch (Exception e) {
-
                 // syntax error in regular expression, log to opencms.log
                 CmsLog.getLog(CmsFileUploadField.class).error(
                     Messages.get().getBundle().key(Messages.LOG_ERR_PATTERN_SYNTAX_0),
                     e);
             }
         }
-
         return "";
-    }
-
-    /**
-     * Sets the size of the uploaded file.<p>
-     * 
-     * @param fileSize the file size
-     */
-    protected void setFileSize(int fileSize) {
-        this.getValue();
-
-        m_fileSize = fileSize;
     }
 }

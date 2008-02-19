@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/I_CmsField.java,v $
- * Date   : $Date: 2008/02/07 11:52:02 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2008/02/19 11:55:26 $
+ * Version: $Revision: 1.4 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -41,7 +41,7 @@ import java.util.List;
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * 
  * @since 7.0.4 
  */
@@ -231,6 +231,7 @@ public interface I_CmsField {
      * Validates this field by validating it's constraints and input value.<p>
      * 
      * @param formHandler the handler of the current form
+     * 
      * @return null in case of no error, {@link CmsFormHandler#ERROR_VALIDATION} if validation of the input value failed, {@link CmsFormHandler#ERROR_VALIDATION} if validation of the input value failed
      */
     String validate(CmsFormHandler formHandler);

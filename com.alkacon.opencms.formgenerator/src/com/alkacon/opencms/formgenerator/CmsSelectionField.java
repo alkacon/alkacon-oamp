@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsSelectionField.java,v $
- * Date   : $Date: 2008/02/07 11:52:02 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2008/02/19 11:55:26 $
+ * Version: $Revision: 1.4 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -36,13 +36,14 @@ import org.opencms.i18n.CmsMessages;
 import org.opencms.util.CmsStringUtil;
 
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Represents a selection of options.<p>
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * 
  * @since 7.0.4 
  */
@@ -104,17 +105,18 @@ public class CmsSelectionField extends A_CmsField {
         buf.append(messages.key("form.html.field.start")).append("<select name=\"").append(getName()).append("\"").append(
             formHandler.getFormConfiguration().getFormFieldAttributes()).append(">").append("\n");
 
+        List selected = getSelectedItems();
         // add the options
         Iterator i = getItems().iterator();
         while (i.hasNext()) {
 
             CmsFieldItem curOption = (CmsFieldItem)i.next();
-            String selected = "";
-            if (curOption.isSelected()) {
-                selected = " selected=\"selected\"";
+            String selStr = "";
+            if (selected.contains(curOption)) {
+                selStr = " selected=\"selected\"";
             }
 
-            buf.append("<option value=\"").append(curOption.getValue()).append("\"").append(selected).append(">").append(
+            buf.append("<option value=\"").append(curOption.getValue()).append("\"").append(selStr).append(">").append(
                 curOption.getLabel()).append("</option>\n");
         }
 

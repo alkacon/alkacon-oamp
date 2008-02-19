@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsRadioButtonField.java,v $
- * Date   : $Date: 2008/02/07 11:52:02 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2008/02/19 11:55:26 $
+ * Version: $Revision: 1.4 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -36,13 +36,14 @@ import org.opencms.i18n.CmsMessages;
 import org.opencms.util.CmsStringUtil;
 
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Represents a radio button.<p>
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * 
  * @since 7.0.4 
  */
@@ -103,6 +104,8 @@ public class CmsRadioButtonField extends A_CmsField {
         // line #3
         buf.append(messages.key("form.html.field.start")).append("\n");
 
+        List selected = getSelectedItems();
+
         boolean showInRow = false;
         // add the items
         Iterator k = getItems().iterator();
@@ -111,7 +114,7 @@ public class CmsRadioButtonField extends A_CmsField {
             CmsFieldItem curOption = (CmsFieldItem)k.next();
             showInRow = curOption.isShowInRow();
             String checked = "";
-            if (curOption.isSelected()) {
+            if (selected.contains(curOption)) {
                 checked = " checked=\"checked\"";
             }
 
