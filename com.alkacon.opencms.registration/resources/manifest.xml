@@ -4,7 +4,7 @@
 	<info>
 		<creator>Admin</creator>
 		<opencms_version>7.0.3</opencms_version>
-		<createdate>Tue, 19 Feb 2008 11:46:01 GMT</createdate>
+		<createdate>Tue, 19 Feb 2008 14:33:24 GMT</createdate>
 		<infoproject>Offline</infoproject>
 		<export_version>7</export_version>
 	</info>
@@ -16,7 +16,7 @@
 		<description><![CDATA[<p>This module contains a webuser registration framework for OpenCms.</p>
 <p>This module can easily be used to create a portal like site.</p>
 <p><i>(c) 2008 by Alkacon Software GmbH (http://www.alkacon.com).</i></p>]]></description>
-		<version>0.9</version>
+		<version>0.10</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
 		<datecreated/>
@@ -440,12 +440,80 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<destination>system/modules/com.alkacon.opencms.registration/examples</destination>
+			<type>folder</type>
+			<uuidstructure>7750bb1b-def7-11dc-8fce-9b273b3a1499</uuidstructure>
+			<datelastmodified>Tue, 19 Feb 2008 14:32:15 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 19 Feb 2008 14:32:15 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.registration/examples/profile.html</source>
+			<destination>system/modules/com.alkacon.opencms.registration/examples/profile.html</destination>
+			<type>alkacon-profile</type>
+			<uuidstructure>8af03abd-def7-11dc-8fce-9b273b3a1499</uuidstructure>
+			<uuidresource>8af03abe-def7-11dc-8fce-9b273b3a1499</uuidresource>
+			<datelastmodified>Tue, 19 Feb 2008 14:29:49 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 19 Feb 2008 14:32:48 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.registration/pages/profile.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.registration/examples/registration.html</source>
+			<destination>system/modules/com.alkacon.opencms.registration/examples/registration.html</destination>
+			<type>alkacon-registration</type>
+			<uuidstructure>8afe92a0-def7-11dc-8fce-9b273b3a1499</uuidstructure>
+			<uuidresource>8afe92a1-def7-11dc-8fce-9b273b3a1499</uuidresource>
+			<datelastmodified>Mon, 18 Feb 2008 10:53:55 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 19 Feb 2008 14:32:48 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.registration/pages/registration.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
 			<destination>system/modules/com.alkacon.opencms.registration/lib</destination>
 			<type>folder</type>
 			<uuidstructure>360213b0-da40-11dc-af2b-9b273b3a1499</uuidstructure>
 			<datelastmodified>Wed, 13 Feb 2008 14:30:23 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Wed, 13 Feb 2008 14:30:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.registration/lib/com.alkacon.opencms.registration.jar</source>
+			<destination>system/modules/com.alkacon.opencms.registration/lib/com.alkacon.opencms.registration.jar</destination>
+			<type>binary</type>
+			<uuidstructure>677b89e8-def7-11dc-8fce-9b273b3a1499</uuidstructure>
+			<uuidresource>677b89e9-def7-11dc-8fce-9b273b3a1499</uuidresource>
+			<datelastmodified>Tue, 19 Feb 2008 14:31:56 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 19 Feb 2008 14:31:48 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>

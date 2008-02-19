@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<AlkaconWebuserRegForms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/com.alkacon.opencms.registration/schemas/registration.xsd">
+  <AlkaconWebuserRegForm language="en">
+    <FormText name="FormText0">
+      <links/>
+      <content><![CDATA[<p>Welcome to the OpenCms portal, please register yourself:</p>]]></content>
+    </FormText>
+    <FormFooterText name="FormFooterText0">
+      <links/>
+      <content><![CDATA[<p>(*) mandatory field<br />
+(+) To prevent the misuse of the contact form, please enter&amp;nbsp;the five character verification code which is shown above.</p>
+<p>Alkacon Software is committed to respect your online privacy and recognizes your need for appropriate protection and management of any personally identifiable information you share with us. No information you provide to Alkacon in this form will be disclosed to third parties.</p>]]></content>
+    </FormFooterText>
+    <InputField>
+      <FieldType><![CDATA[radio]]></FieldType>
+      <FieldLabel><![CDATA[Title:|title]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+      <FieldDefault><![CDATA[%(row)Ms|Mrs|*Mr]]></FieldDefault>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[text]]></FieldType>
+      <FieldLabel><![CDATA[Last name:|lastname]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+      <FieldValidation><![CDATA[.+]]></FieldValidation>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[text]]></FieldType>
+      <FieldLabel><![CDATA[First name:|firstname]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+      <FieldValidation><![CDATA[.+]]></FieldValidation>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[email]]></FieldType>
+      <FieldLabel><![CDATA[Your Email:|email]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[password]]></FieldType>
+      <FieldLabel><![CDATA[Password:|password]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+      <FieldValidation><![CDATA[....*]]></FieldValidation>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[checkbox]]></FieldType>
+      <FieldLabel><![CDATA[Newsletters]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+      <FieldDefault><![CDATA[n1:OpenCms Newsletter|n2:Alkacon Newsletter]]></FieldDefault>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[privacy]]></FieldType>
+      <FieldLabel><![CDATA[Privacy]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+      <FieldDefault><![CDATA[I accept the privacy statements:/privacy.html]]></FieldDefault>
+    </InputField>
+    <Action>
+      <EmailAsLogin>true</EmailAsLogin>
+      <OrganizationalUnit><![CDATA[/test/]]></OrganizationalUnit>
+      <Group><![CDATA[test/Users]]></Group>
+    </Action>
+    <FormCaptcha>
+      <FieldLabel><![CDATA[Verification:]]></FieldLabel>
+      <Preset><![CDATA[/system/workplace/admin/captcha/alkacon.captchapreset]]></Preset>
+    </FormCaptcha>
+    <FormConfirmation name="FormConfirmation0">
+      <links/>
+      <content><![CDATA[<p>Dear %(title) %(lastname):</p>
+<p>Your account is now waiting for your confirmation, please check your email and click on the link to activate your account.</p>
+<p>Thank you for using OpenCms</p>]]></content>
+    </FormConfirmation>
+    <ConfirmationMail>
+      <ConfirmationField><![CDATA[4]]></ConfirmationField>
+      <ConfirmationMailSubject><![CDATA[OpenCms User Registration]]></ConfirmationMailSubject>
+      <ConfirmationMailText name="ConfirmationMailText0">
+        <links/>
+        <content><![CDATA[<p>Dear %(title) %(lastname):</p>
+<p>Thank you very much for opening a new OpenCms account.</p>
+<p>To finish the registration please check the following link:<br />
+%(acturi)</p>
+<p>And your account information is:<br />
+Username: <strong>%(login)</strong><br />
+Password: <strong>%(password)</strong></p>
+<p>Have a nice time using OpenCms<br />
+The OpenCms team</p>
+<p><sub>Form submitted %(date).</sub></p>]]></content>
+      </ConfirmationMailText>
+    </ConfirmationMail>
+    <OptionalFormConfiguration>
+      <ShowCheck>false</ShowCheck>
+      <CheckText name="CheckText0">
+        <links/>
+        <content/>
+      </CheckText>
+      <ShowMandatory>true</ShowMandatory>
+      <ShowReset>false</ShowReset>
+      <FormAttributes/>
+      <FormFieldAttributes><![CDATA[class="cform" maxlength="100"]]></FormFieldAttributes>
+      <DynamicFieldClass/>
+    </OptionalFormConfiguration>
+    <ActivationText name="ActivationText0">
+      <links/>
+      <content><![CDATA[<p>Dear %(title) %(lastname):</p>
+<p>Thank you for activating your OpenCms account.</p>
+<p>The OpenCms Team</p>]]></content>
+    </ActivationText>
+    <EditFormText name="EditFormText0">
+      <links/>
+      <content><![CDATA[<p>Dear %(title) %(lastname):</p>
+<p>Here you can edit your personal data:</p>]]></content>
+    </EditFormText>
+    <EditFormFooterText name="EditFormFooterText0">
+      <links/>
+      <content><![CDATA[<p>(*) mandatory field</p>
+<p>Alkacon Software is committed to respect your online privacy and recognizes your need for appropriate protection and management of any personally identifiable information you share with us. No information you provide to Alkacon in this form will be disclosed to third parties.</p>]]></content>
+    </EditFormFooterText>
+  </AlkaconWebuserRegForm>
+</AlkaconWebuserRegForms>
