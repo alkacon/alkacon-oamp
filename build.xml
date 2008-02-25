@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="Alkacon OpenCms Add-On Module Package" default="war" basedir=".">
+<project name="Alkacon OpenCms Add-On Module Package" default="dist" basedir=".">
 
 	<property name="opencms.input" location="${basedir}/../OpenCms" />
-	<property name="opencms.output" location="${basedir}/../BuildCms" />
+	<property name="opencms.output" location="${basedir}/../BuildOamp" />
 	<property name="excludes" value="**/CVS/*,**/.cvsignore,**/.nbattrs,**/.project,**/.classpath" />
 	<property name="opencms.output.distfiles" location="${opencms.output}/zip" />
 
@@ -183,16 +183,6 @@
 				</ant>
 			</sequential>
 		</for>
-	</target>
-
-	<target name="war" depends="init, dist" description="Updates the war file">
-
-		<!-- be sure that the war file is uptodate -->
-		<ant antfile="${opencms.input}/modules/build.xml" target="war" inheritAll="false">
-			<property name="modules.selection.mode" value="all" />
-		</ant>
-
-		<antcall target="update-war" />
 	</target>
 
 </project>

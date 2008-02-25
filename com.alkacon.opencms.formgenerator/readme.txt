@@ -1,6 +1,6 @@
 
                 Alkacon OpenCms Add-On Module Package: Webform
-                       Version 1.0.0; December 21, 2007
+                       Version 1.1.0; December 21, 2007
 
 
                                     WARNING:

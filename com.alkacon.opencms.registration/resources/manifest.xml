@@ -16,14 +16,14 @@
 		<description><![CDATA[<p>This module contains a webuser registration framework for OpenCms.</p>
 <p>This module can easily be used to create a portal like site.</p>
 <p><i>(c) 2008 by Alkacon Software GmbH (http://www.alkacon.com).</i></p>]]></description>
-		<version>0.10</version>
+		<version>0.9</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
 		<datecreated/>
 		<userinstalled/>
 		<dateinstalled/>
 		<dependencies>
-			<dependency name="com.alkacon.opencms.formgenerator" version="1.0.0"/>
+			<dependency name="com.alkacon.opencms.formgenerator" version="1.1.0"/>
 		</dependencies>
 		<exportpoints>
 			<exportpoint uri="/system/modules/com.alkacon.opencms.registration/classes/" destination="WEB-INF/classes/"/>
