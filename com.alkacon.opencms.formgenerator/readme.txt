@@ -56,7 +56,7 @@ Legend:
 * Bug fixed
 - General comment
 
-1.0.x - xxx, 2008
+1.1.0 - February, 2008
 * Fixed issue saving site relative form path into database instead of root path.
 ! New 'dynamic' field type added for customized field value generation.
 ! 'Database labels' introduced to better maintain the data in the database, use 'label|dblabel' notation in field name.
