@@ -24,7 +24,7 @@ of your OpenCms installation and database.
 
 1. Module functions
 
-With the webform module it is possible to create input forms for collection of  
+The webform module makes it possible to create input forms for collection of  
 data website visitors enter without knowledge of HTML. These so called webforms
 are created by mouse clicks and some text input. One can select from different 
 input field types. It is possible to define the label, default value and options for 
