@@ -1,6 +1,6 @@
 
                 Alkacon OpenCms Add-On Module Package: Counter
-                       Version 1.0.0; February 25, 2008
+                       Version 1.0.0; February , 2008
 
 
                                     WARNING:
@@ -38,7 +38,7 @@ http://www.alkacon.com
 3. Installation
 
 A detailed description of the installation is described in the provided
-PDF file "Alkacon_OpenCms_Counter_1.0.0.pdf".
+PDF file "Alkacon_OAMP_Counter.pdf".
 
 
 4. History of changes
@@ -51,5 +51,5 @@ Legend:
 * Bug fixed
 - General comment
 
-1.0.0 - February 25, 2008
+1.0.0 - February , 2008
 - First public release
