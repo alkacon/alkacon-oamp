@@ -66,10 +66,10 @@ if (! showForm) {
 
 	// create the form head 
 	%>
-	<form name="emailform" action="<%= cms.link(cms.getRequestContext().getUri()) %>" method="post" enctype="multipart/form-data">
+	<form name="emailform" action="<%= cms.link(cms.getRequestContext().getUri()) %>" method="post" enctype="multipart/form-data" <%= formConfiguration.getFormAttributes() %>>
 	<!-- Hidden form fields:  -->
         <input type="hidden" name="<%= CmsFormHandler.PARAM_FORMACTION %>"  id="<%= CmsFormHandler.PARAM_FORMACTION %>" value="<%= CmsFormHandler.ACTION_SUBMIT %>"/>
-	<%= messages.key("form.html.start") %><%= formConfiguration.getFormAttributes() %>
+	<%= messages.key("form.html.start") %>
 		<%
 	// create the html output to display the form fields
 	int pos=0;
