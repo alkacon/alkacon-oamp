@@ -24,8 +24,17 @@ of your OpenCms installation and database.
 
 1. Module functions
 
-With the Counter module, it is possible to manage multiple counters which 
-can be used to count page hits or download numbers for example.
+With the Counter module, it is possible to manage multiple counters which
+can be used in many different ways on the website.
+
+    * Usage examples are download numbers, page hits, a user poll or anything
+	  else that requires a counter.
+    * A new icon is added to the "Administration View"  in the "Database
+      Management" screen which allows to easily manage the counters.
+    * The individual counters are stored in a special database table which is
+      created by the module.
+    * There are also API options that allow to use the counters on templates
+      or with other modules.
 
 2. Module manufacturer
 
