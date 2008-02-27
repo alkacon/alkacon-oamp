@@ -24,15 +24,22 @@ of your OpenCms installation and database.
 
 1. Module functions
 
-With the Webuser Registration module it is possible to easily create both,
-a webuser registration form and a webuser profile edition form. This is a
-common requirement in modern websites that can now be easily configured in 
-OpenCms. The forms have all functionalities provided by the webforms module,
-like configurable input fields, confirmation page, captcha field and 
-confirmation email. Additionally you can use an 'activation link' to have
-users confirming the registration, before activating the account.
-This module also includes two additional page elements, one small frontend 
-login form and an information box about the registered and online users. 
+The Alkacon OAMP Webuser Registration module an be used to easily create a
+community site where a user login is required.
+
+The module makes it possible to create both a custom webuser registration
+form and a webuser profile edition form, without the need of programming any
+Java, JSP or HTML. The webuser registration forms can be easily created and
+have all optional functionalities provided by the webforms module, like
+configurable input fields, confirmation page, captcha field and confirmation
+email. Additionally you can use an 'activation link' to have users
+confirming the registration before activating the account. This module also
+includes two additional page elements to include in a template, one small
+frontend login form and an information box about the registered and online
+users.
+
+This module depends on the Alkacon OAMP Webform module, and requires at
+least version 1.1 of this module.
 
 2. Module manufacturer
 
