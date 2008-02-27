@@ -58,6 +58,7 @@ Legend:
 
 1.1.0 - February, 2008
 * Fixed issue saving site relative form path into database instead of root path.
+* Fixed issue with form attributes written in the wrong position in the html code.
 ! New 'dynamic' field type added for customized field value generation.
 ! 'Database labels' introduced to better maintain the data in the database, use 'label|dblabel' notation in field name.
 ! New macros with 'database labels' available in the check page, email, confirmation email and confirmation text.
