@@ -1,6 +1,6 @@
 
           Alkacon OpenCms Add-On Module Package: Webuser Registration
-                       Version 1.0.0; February, 2008
+                       Version 0.9.0; February, 2008
 
 
                                     WARNING:
@@ -58,5 +58,5 @@ Legend:
 * Bug fixed
 - General comment
 
-1.0.0 - February xxx, 2008
+0.9.0 - February, 2008
 - First public release
