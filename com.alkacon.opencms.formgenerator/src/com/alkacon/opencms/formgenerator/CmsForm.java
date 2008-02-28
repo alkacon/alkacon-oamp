@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
- * Date   : $Date: 2008/02/19 11:55:26 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2008/02/28 08:16:45 $
+ * Version: $Revision: 1.7 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -63,7 +63,7 @@ import org.apache.commons.fileupload.FileItem;
  * @author Thomas Weckert 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  * 
  * @since 7.0.4 
  */
@@ -1015,7 +1015,7 @@ public class CmsForm {
     }
 
     /**
-     * Instantiates a new type instance of the given field type
+     * Instantiates a new type instance of the given field type.<p>
      * 
      * @param fieldType the field type to instantiate
      * 

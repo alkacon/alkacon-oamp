@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/CmsFormDataBean.java,v $
- * Date   : $Date: 2008/02/07 11:52:02 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2008/02/28 08:16:45 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -33,7 +33,6 @@
 package com.alkacon.opencms.formgenerator.database;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -45,7 +44,7 @@ import java.util.TreeMap;
  * @author Achim Westermann
  * @author Michael Moossen
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4
  */
@@ -54,7 +53,7 @@ public class CmsFormDataBean {
     /** The creation date. */
     private long m_dateCreated;
 
-    /** The <code>SortedMap&lt;{@link String}, {@link Map.Entry}&gt;</code> with all field entries. */
+    /** The <code>SortedMap&lt;{@link String}, {@link java.util.Map.Entry}&gt;</code> with all field entries. */
     private SortedMap m_fieldEntries;
 
     /** The resource path. */
@@ -81,7 +80,7 @@ public class CmsFormDataBean {
     }
 
     /**
-     * Returns a set of {@link Map.Entry} objects, where the key is
+     * Returns a set of {@link java.util.Map.Entry} objects, where the key is
      * the field name and the value the field value, with all fields
      * in the form.<p>
      * 

@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/I_CmsDynamicFieldResolver.java,v $
- * Date   : $Date: 2008/02/07 11:52:02 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/02/28 08:16:45 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -37,14 +37,14 @@ package com.alkacon.opencms.formgenerator;
  * 
  * @author Michael Moossen 
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4 
  */
 public interface I_CmsDynamicFieldResolver {
 
     /**
-     * Resolves the value of a given dynamic field
+     * Resolves the value of a given dynamic field.<p>
      * 
      * @param field the field to generate the value for 
      * @param form the whole form

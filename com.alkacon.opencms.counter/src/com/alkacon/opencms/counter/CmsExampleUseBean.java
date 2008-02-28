@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.counter/src/com/alkacon/opencms/counter/CmsExampleUseBean.java,v $
- * Date   : $Date: 2008/02/25 16:29:38 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/02/28 08:16:45 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -46,7 +46,7 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Anja Röttgers
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.3
  */
@@ -91,7 +91,7 @@ public class CmsExampleUseBean extends CmsJspActionElement {
      * 
      * @return the filename with the structure "filename_{xxxxx}.html" 
      * 
-     * @throws CmsException
+     * @throws CmsException if something goes wrong
      */
     public String generateHtmlFilename(String counterKey) throws CmsException {
 
