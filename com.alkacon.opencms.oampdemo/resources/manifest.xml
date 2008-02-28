@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<export>
+	<info>
+		<creator>Admin</creator>
+		<opencms_version>7.0.4</opencms_version>
+		<createdate>Thu, 28 Feb 2008 09:12:51 GMT</createdate>
+		<infoproject>Offline</infoproject>
+		<export_version>7</export_version>
+	</info>
+	<module>
+		<name>com.alkacon.opencms.oampdemo</name>
+		<nicename><![CDATA[Alkacon OAMP demo content]]></nicename>
+		<class/>
+		<description><![CDATA[This module contains some demo contents for OAMP demonstration.]]></description>
+		<version>1.0.0</version>
+		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
+		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
+		<datecreated/>
+		<userinstalled/>
+		<dateinstalled/>
+		<dependencies>
+			<dependency name="com.alkacon.opencms.formgenerator" version="0"/>
+		</dependencies>
+		<exportpoints/>
+		<resources>
+			<resource uri="/demo_de/kontakt.html"/>
+			<resource uri="/demo_en/contact.html"/>
+		</resources>
+		<parameters/>
+	</module>
+	<files>
+		<file>
+			<destination>demo_de</destination>
+			<type>folder</type>
+			<uuidstructure>668311f8-da40-11dc-91a2-9f7a6a6ce285</uuidstructure>
+			<datelastmodified>Wed, 27 Feb 2008 11:52:57 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 13 Feb 2008 14:31:44 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>NavPos</name>
+					<value><![CDATA[3.25]]></value>
+				</property>
+				<property>
+					<name>NavText</name>
+					<value><![CDATA[OpenCms Demo]]></value>
+				</property>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Welt der Wurst]]></value>
+				</property>
+				<property>
+					<name>default-file</name>
+					<value><![CDATA[intro.html]]></value>
+				</property>
+				<property>
+					<name>locale</name>
+					<value><![CDATA[de, en]]></value>
+				</property>
+				<property>
+					<name>style.config</name>
+					<value><![CDATA[/demo_de/_config_/layout/default]]></value>
+				</property>
+				<property>
+					<name>style.layout</name>
+					<value><![CDATA[/demo_de/_config_/layout/style]]></value>
+				</property>
+				<property>
+					<name>style.options</name>
+					<value><![CDATA[/demo_de/_config_/layout/options]]></value>
+				</property>
+				<property>
+					<name>stylesheet</name>
+					<value><![CDATA[/system/modules/org.opencms.frontend.templatetwo.demo/resources/css/style.css]]></value>
+				</property>
+				<property>
+					<name>template</name>
+					<value><![CDATA[/system/modules/org.opencms.frontend.templatetwo/templates/main.jsp]]></value>
+				</property>
+				<property>
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/org.opencms.frontend.templatetwo/pages/default.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>demo_de/kontakt.html</source>
+			<destination>demo_de/kontakt.html</destination>
+			<type>alkacon-webform</type>
+			<uuidstructure>d37b93b8-dfb8-11dc-95e7-9f7a6a6ce285</uuidstructure>
+			<uuidresource>d37b93b9-dfb8-11dc-95e7-9f7a6a6ce285</uuidresource>
+			<datelastmodified>Tue, 26 Feb 2008 11:30:14 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 20 Feb 2008 13:36:22 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Kontaktformular]]></value>
+				</property>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.formgenerator/pages/form.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>demo_en</destination>
+			<type>folder</type>
+			<uuidstructure>84cd3042-e448-11dc-add5-9f7a6a6ce285</uuidstructure>
+			<datelastmodified>Wed, 27 Feb 2008 11:53:06 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 26 Feb 2008 08:55:03 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[World of Wurst]]></value>
+				</property>
+				<property>
+					<name>default-file</name>
+					<value><![CDATA[intro.html]]></value>
+				</property>
+				<property>
+					<name>locale</name>
+					<value><![CDATA[en, de]]></value>
+				</property>
+				<property>
+					<name>style.config</name>
+					<value><![CDATA[/demo_en/_config_/layout/default]]></value>
+				</property>
+				<property>
+					<name>style.layout</name>
+					<value><![CDATA[/demo_en/_config_/layout/style]]></value>
+				</property>
+				<property>
+					<name>style.options</name>
+					<value><![CDATA[/demo_en/_config_/layout/options]]></value>
+				</property>
+				<property>
+					<name>stylesheet</name>
+					<value><![CDATA[/system/modules/org.opencms.frontend.templatetwo.demo/resources/css/style.css]]></value>
+				</property>
+				<property>
+					<name>template</name>
+					<value><![CDATA[/system/modules/org.opencms.frontend.templatetwo/templates/main.jsp]]></value>
+				</property>
+				<property>
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/org.opencms.frontend.templatetwo/pages/default.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>demo_en/contact.html</source>
+			<destination>demo_en/contact.html</destination>
+			<type>alkacon-webform</type>
+			<uuidstructure>9ae6d7a5-e448-11dc-add5-9f7a6a6ce285</uuidstructure>
+			<uuidresource>9ae6d7a6-e448-11dc-add5-9f7a6a6ce285</uuidresource>
+			<datelastmodified>Wed, 27 Feb 2008 08:59:50 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 26 Feb 2008 08:55:40 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Contact form]]></value>
+				</property>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.formgenerator/pages/form.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+	</files>
+</export>
