@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.commons/src/com/alkacon/opencms/commons/CmsConfigurableCollector.java,v $
- * Date   : $Date: 2007/11/30 11:57:27 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2008/03/03 08:27:23 $
+ * Version: $Revision: 1.4 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -60,7 +60,7 @@ import java.util.Set;
  * 
  * @author Andreas Zahner
  * 
- * @version $Revision: 1.3 $ 
+ * @version $Revision: 1.4 $ 
  * 
  * @since 6.0.1
  */
@@ -198,7 +198,7 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
             CmsCollectorConfiguration config = (CmsCollectorConfiguration)collectorConfigurations.get(i);
             CmsResourceFilter filter = CmsResourceFilter.DEFAULT.addExcludeFlags(CmsResource.FLAG_TEMPFILE);
             if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(config.getResourceType())) {
-                filter.addRequireType(config.getResourceTypeId());
+                filter = filter.addRequireType(config.getResourceTypeId());
             }
             List resources = cms.readResources(config.getUri(), filter, config.isRecursive());
 
