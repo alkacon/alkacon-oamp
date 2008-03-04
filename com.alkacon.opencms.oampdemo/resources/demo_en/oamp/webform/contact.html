@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<AlkaconWebForms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/form.xsd">
+  <AlkaconWebForm language="en">
+    <MailFrom><![CDATA[oampdemo@alkacon.com]]></MailFrom>
+    <MailTo><![CDATA[info@alkacon.com]]></MailTo>
+    <MailSubject><![CDATA[OAMP Demo Module Contact Mail]]></MailSubject>
+    <MailText name="MailText0">
+      <links/>
+      <content><![CDATA[<p>Contact Form from %(date):</p>
+<p>&nbsp;</p>
+<p>%(formdata)</p>]]></content>
+    </MailText>
+    <FormText name="FormText0">
+      <links/>
+      <content><![CDATA[<h1>Contact Form</h1>
+<p>Please enter you contact data:</p>]]></content>
+    </FormText>
+    <FormFooterText name="FormFooterText0">
+      <links>
+        <link name="link0" internal="true" type="A">
+          <target><![CDATA[/sites/default/demo_en/oamp/webform/Alkacon_OAMP_Webform.pdf]]></target>
+          <uuid>7427376e-e796-11dc-8533-3bdd2ea0b1ac</uuid>
+        </link>
+      </links>
+      <content><![CDATA[<p>More information about the Alkacon OAMP Webform Module can be found in this <a href="%(link0)">Pdf-Document</a>.</p>]]></content>
+    </FormFooterText>
+    <InputField>
+      <FieldType><![CDATA[text]]></FieldType>
+      <FieldLabel><![CDATA[Your name:]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[text]]></FieldType>
+      <FieldLabel><![CDATA[Company:]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[text]]></FieldType>
+      <FieldLabel><![CDATA[Address:]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[text]]></FieldType>
+      <FieldLabel><![CDATA[ZIP Code:]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[text]]></FieldType>
+      <FieldLabel><![CDATA[City:]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[text]]></FieldType>
+      <FieldLabel><![CDATA[Country:]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[text]]></FieldType>
+      <FieldLabel><![CDATA[E-Mail:]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[textarea]]></FieldType>
+      <FieldLabel><![CDATA[Your message:]]></FieldLabel>
+      <FieldMandatory>false</FieldMandatory>
+    </InputField>
+    <FormConfirmation name="FormConfirmation0">
+      <links/>
+      <content><![CDATA[<p>Thank you for your request.</p>]]></content>
+    </FormConfirmation>
+    <FormCaptcha>
+      <FieldLabel><![CDATA[Verification:]]></FieldLabel>
+      <Preset><![CDATA[/system/workplace/admin/captcha/ultralight.captchapreset]]></Preset>
+    </FormCaptcha>
+    <OptionalFormConfiguration>
+      <MailType><![CDATA[html]]></MailType>
+      <MailCC/>
+      <MailBCC/>
+      <ShowCheck>false</ShowCheck>
+      <CheckText name="CheckText0">
+        <links/>
+        <content><![CDATA[<p>Please check your entries.</p>]]></content>
+      </CheckText>
+      <ShowMandatory>true</ShowMandatory>
+      <ShowReset>false</ShowReset>
+      <FormAttributes><![CDATA[class="contactform"]]></FormAttributes>
+      <FormFieldAttributes/>
+      <DynamicFieldClass/>
+    </OptionalFormConfiguration>
+  </AlkaconWebForm>
+</AlkaconWebForms>

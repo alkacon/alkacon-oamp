@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<AlkaconFeeds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/com.alkacon.opencms.feeder/schemas/alkacon-feed.xsd">
+  <AlkaconFeed language="de">
+    <Title><![CDATA[OAMP RSS Feed Demo (News)]]></Title>
+    <Type><![CDATA[rss_2.0]]></Type>
+    <Description><![CDATA[Das ist der Alkacon OAMP Demo Feed mit den News vom Template Two Demo]]></Description>
+    <Image>
+      <Title><![CDATA[Zur OpenCms Webseite]]></Title>
+      <Url>
+        <link internal="true" type="WEAK">
+          <target><![CDATA[/system/modules/org.opencms.frontend.templatetwo.demo/resources/images/logo_opencms_png24.png]]></target>
+          <uuid>d9719636-e797-11dc-8533-3bdd2ea0b1ac</uuid>
+        </link>
+      </Url>
+      <Link>
+        <link internal="false" type="WEAK">
+          <target><![CDATA[http://www.opencms.org]]></target>
+        </link>
+      </Link>
+    </Image>
+    <Collector><![CDATA[allInSubTreePriorityDateDesc]]></Collector>
+    <Parameter><![CDATA[/demo_de/aktuell/news/news_%(number).html|ttnews]]></Parameter>
+    <Mapping>
+      <Field><![CDATA[Title]]></Field>
+      <XmlNode><![CDATA[Title]]></XmlNode>
+    </Mapping>
+    <Mapping>
+      <Field><![CDATA[Description]]></Field>
+      <XmlNode><![CDATA[Paragraph/Text]]></XmlNode>
+    </Mapping>
+    <Mapping>
+      <Field><![CDATA[Author]]></Field>
+      <XmlNode><![CDATA[Author]]></XmlNode>
+    </Mapping>
+    <Mapping>
+      <Field><![CDATA[DatePublished]]></Field>
+      <XmlNode/>
+      <Default><![CDATA[dateLastModified]]></Default>
+    </Mapping>
+  </AlkaconFeed>
+</AlkaconFeeds>

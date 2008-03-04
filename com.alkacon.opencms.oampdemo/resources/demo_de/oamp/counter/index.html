@@ -1,0 +1,53 @@
+<%@page session="false" import="com.alkacon.opencms.counter.*"%>
+<%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %><%
+	CmsExampleUseBean cms = new CmsExampleUseBean(pageContext, request, response);
+	pageContext.setAttribute("cms", cms);
+%>
+<!-- get the counter 1 value from the database -->
+<c:choose>
+	<c:when test="${!empty param.action && param.action=='counter1'}">
+		<c:set var="cvalue1"><%= cms.getCounterManager().incrementCounter("counter1") %></c:set>
+	</c:when>
+	<c:otherwise>
+		<c:set var="cvalue1" ><%Integer value1=cms.getCounterManager().getCounter("counter1");if(value1!=null){out.print(value1.intValue());}else{out.print(0);}%></c:set>
+	</c:otherwise>
+</c:choose>
+
+<!-- get the counter 2 value from the database -->
+<c:choose>
+	<c:when test="${!empty param.action && param.action=='counter2'}">
+		<c:set var="cvalue2"><%= cms.getCounterManager().incrementCounter("counter2") %></c:set>
+	</c:when>
+	<c:otherwise>
+		<c:set var="cvalue2" ><% Integer value2=cms.getCounterManager().getCounter("counter2");if(value2!=null){out.print(value2.intValue());}else{out.print(0);}%></c:set>
+	</c:otherwise>
+</c:choose>
+
+<cms:include property="template" element="head" />
+
+<!-- (body content) -->
+<c:set var="body"><cms:property name="template-elements"/></c:set>
+<c:if test="${!empty body}">
+	<div class="content">	
+		<cms:include element="body" editable="true" ><cms:property name="template-elements" /></cms:include>
+	</div>
+</c:if>
+<!-- (/body content) -->
+
+<form id="counter1" name="counter1" action="<cms:link>${cms.cmsObject.requestContext.uri}</cms:link>" method="post">
+	<div class="counter1">
+		<input type="hidden" name="action" value="counter1" />
+		<h3>Demo-Counter (1): <span style="color: red;"><c:out value="${cvalue1}"/></span> <input style="margin-left: 20px;font-size:80.01%;" type="submit" name="submit" value="+" /></h3>
+	</div>
+</form>
+<form id="counter2" name="counter2" action="<cms:link>${cms.cmsObject.requestContext.uri}</cms:link>" method="post">
+	<div class="counter2">
+		<input type="hidden" name="action" value="counter2" />
+		<h3>Demo-Counter (2): <span style="color: red;"><c:out value="${cvalue2}"/></span> <input style="margin-left: 20px;font-size:80.01%;" type="submit" name="submit" value="+" /></h3>
+	</div>
+</form>
+
+<cms:include property="template" element="foot" />
