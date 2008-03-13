@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/CmsFormDataAccess.java,v $
- * Date   : $Date: 2008/02/28 08:16:45 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2008/03/13 10:50:48 $
+ * Version: $Revision: 1.4 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -72,7 +72,7 @@ import org.apache.commons.logging.Log;
  * @author Achim Westermann
  * @author Michael Moossen
  * 
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * 
  * @since 7.0.4
  */
@@ -306,7 +306,7 @@ public final class CmsFormDataAccess {
             }
             return result;
         } finally {
-            closeAll(null, stmt, con);
+            closeAll(rs, stmt, con);
         }
     }
 
@@ -351,7 +351,7 @@ public final class CmsFormDataAccess {
                 result.add(fieldName);
             }
         } finally {
-            closeAll(null, stmt, con);
+            closeAll(rs, stmt, con);
         }
         return result;
     }
@@ -423,7 +423,7 @@ public final class CmsFormDataAccess {
                 result.add(formData);
             }
         } finally {
-            closeAll(null, stmt, con);
+            closeAll(rs, stmt, con);
         }
         return result;
     }
@@ -535,7 +535,7 @@ public final class CmsFormDataAccess {
                 }
             }
         } finally {
-            closeAll(rs, stmt, null);
+            closeAll(rs, stmt, con);
         }
         return true;
     }
