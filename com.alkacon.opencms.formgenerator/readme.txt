@@ -56,6 +56,9 @@ Legend:
 * Bug fixed
 - General comment
 
+1.2.0 - March, 2008
+! Adding a new dialog in the administration view to show the configured webforms with activated database transport.
+
 1.1.0 - February, 2008
 * Fixed issue saving site relative form path into database instead of root path.
 * Fixed issue with form attributes written in the wrong position in the html code.

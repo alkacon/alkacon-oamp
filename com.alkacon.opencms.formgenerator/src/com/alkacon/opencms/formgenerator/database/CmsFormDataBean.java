@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/CmsFormDataBean.java,v $
- * Date   : $Date: 2008/02/28 08:16:45 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2008/03/18 11:34:09 $
+ * Version: $Revision: 1.4 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -44,7 +44,7 @@ import java.util.TreeMap;
  * @author Achim Westermann
  * @author Michael Moossen
  * 
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * 
  * @since 7.0.4
  */
@@ -55,6 +55,9 @@ public class CmsFormDataBean {
 
     /** The <code>SortedMap&lt;{@link String}, {@link java.util.Map.Entry}&gt;</code> with all field entries. */
     private SortedMap m_fieldEntries;
+
+    /** the name of the form. **/
+    private String m_formId;
 
     /** The resource path. */
     private String m_resourcePath;
@@ -131,6 +134,16 @@ public class CmsFormDataBean {
     }
 
     /**
+     * Returns the formId.<p>
+     *
+     * @return the formId
+     */
+    public String getFormId() {
+
+        return m_formId;
+    }
+
+    /**
      * Returns the resource Path.<p>
      *
      * @return the resource Path
@@ -166,6 +179,16 @@ public class CmsFormDataBean {
     public boolean hasValue(String fieldValue) {
 
         return m_fieldEntries.containsValue(fieldValue);
+    }
+
+    /**
+     * Sets the formId.<p>
+     *
+     * @param formId the formId to set
+     */
+    public void setFormId(String formId) {
+
+        m_formId = formId;
     }
 
     /**

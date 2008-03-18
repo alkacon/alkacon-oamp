@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/CmsFormDataAccess.java,v $
- * Date   : $Date: 2008/03/13 10:50:48 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2008/03/18 11:34:09 $
+ * Version: $Revision: 1.5 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -72,11 +72,17 @@ import org.apache.commons.logging.Log;
  * @author Achim Westermann
  * @author Michael Moossen
  * 
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * 
  * @since 7.0.4
  */
 public final class CmsFormDataAccess {
+
+    /** Column name of table "CMS_WEBFORM_ENTRIES".*/
+    public static final String C_COLUM_CMS_WEBFORM_ENTRIES_COUNT = "COUNT";
+
+    /** Column name of table "CMS_WEBFORM_ENTRIES".*/
+    public static final String C_COLUM_CMS_WEBFORM_ENTRIES_FORMID = "FORMID";
 
     /** Name of the db-pool module parameter.  */
     public static final String MODULE_PARAM_DB_POOL = "db-pool";
@@ -116,10 +122,23 @@ public final class CmsFormDataAccess {
         + "INDEX WFE_DATE_IDX (DATE_CREATED)) "
         + "ENGINE=MYISAM DEFAULT CHARSET=UTF8;";
 
+    /** Query to delete all distinct form names. */
+    private static final String C_DELETE_FORM_DATA = "DELETE FROM CMS_WEBFORM_DATA WHERE REF_ID=?;";
+
+    /** Query to delete all distinct form names. */
+    private static final String C_DELETE_FORM_ENTRIES = "DELETE FROM CMS_WEBFORM_ENTRIES WHERE ENTRY_ID=?;";
+
     /** Query to read all distinct form field names of a given form in time range. */
     private static final String C_READ_FORM_FIELD_NAMES = "SELECT DISTINCT(D."
         + C_COLUM_CMS_WEBFORM_DATA_FIELDNAME
         + ") FROM CMS_WEBFORM_ENTRIES E, CMS_WEBFORM_DATA D WHERE E.ENTRY_ID=D.REF_ID AND E.FORM_ID=? AND E.DATE_CREATED>? AND E.DATE_CREATED<?;";
+
+    /** Query to read all distinct form names. */
+    private static final String C_READ_FORM_NAMES = "SELECT COUNT(*) AS "
+        + C_COLUM_CMS_WEBFORM_ENTRIES_COUNT
+        + ", FORM_ID AS "
+        + C_COLUM_CMS_WEBFORM_ENTRIES_FORMID
+        + " FROM CMS_WEBFORM_ENTRIES GROUP BY FORM_ID;";
 
     /** Query to read all fields and their values that have been submitted in a single webform submission. */
     private static final String C_READ_FORM_SUBMISSION_DATA = "SELECT "
@@ -166,6 +185,19 @@ public final class CmsFormDataAccess {
     /** The corresponding module name to read parameters of.  */
     private static final String MODULE = "com.alkacon.opencms.formgenerator";
 
+    /**
+     * Singleton access.<p>
+     * 
+     * @return the singleton object
+     */
+    public static synchronized CmsFormDataAccess getInstance() {
+
+        if (m_instance == null) {
+            m_instance = new CmsFormDataAccess();
+        }
+        return m_instance;
+    }
+
     /** The connection pool id. */
     private String m_connectionPool;
 
@@ -189,16 +221,33 @@ public final class CmsFormDataAccess {
     }
 
     /**
-     * Singleton access.<p>
+     * Delete's the form with all fields and data's.<p>
      * 
-     * @return the singleton object
+     * @param formId to find the form data in the database 
+     * 
+     * @throws SQLException if something goes wrong
      */
-    public static synchronized CmsFormDataAccess getInstance() {
+    public void deleteFormEntries(final String formId) throws SQLException {
 
-        if (m_instance == null) {
-            m_instance = new CmsFormDataAccess();
+        Connection con = null;
+        PreparedStatement stmt = null;
+        try {
+            // delete the entries
+            con = getConnection();
+            stmt = con.prepareStatement(C_DELETE_FORM_ENTRIES);
+            stmt.setString(1, formId);
+            stmt.executeUpdate();
+
+            // delete the data
+            closeAll(null, stmt, null);
+            stmt = con.prepareStatement(C_DELETE_FORM_DATA);
+            stmt.setString(1, formId);
+            stmt.executeUpdate();
+
+        } finally {
+            closeAll(null, stmt, con);
         }
-        return m_instance;
+
     }
 
     /**
@@ -279,6 +328,7 @@ public final class CmsFormDataAccess {
             while (rs.next()) {
                 String entryId = rs.getString("ENTRY_ID");
                 CmsFormDataBean formData = new CmsFormDataBean();
+                formData.setFormId(entryId);
                 formData.setDateCreated(Long.parseLong(rs.getString("DATE_CREATED")));
                 formData.setResourcePath(rs.getString("RESOURCE_PATH"));
                 forms.put(entryId, formData);
@@ -357,6 +407,40 @@ public final class CmsFormDataAccess {
     }
 
     /**
+     * Read a <code>List&lt;{@link CmsFormDataBean}&gt;</code> with all distinct form names.<p>
+     * 
+     * 
+     * @return a <code>List&lt;{@link CmsFormDataBean}&gt;</code> with all distinct form field names 
+     *      
+     * @throws SQLException if something goes wrong 
+     */
+    public List readAllFormNames() throws SQLException {
+
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        List result = new ArrayList();
+        try {
+            con = getConnection();
+            stmt = con.prepareStatement(C_READ_FORM_NAMES);
+            rs = stmt.executeQuery();
+
+            // collect the submissions: 
+            CmsFormDataBean data;
+            while (rs.next()) {
+                data = new CmsFormDataBean();
+                data.addField(C_COLUM_CMS_WEBFORM_ENTRIES_COUNT, rs.getString(C_COLUM_CMS_WEBFORM_ENTRIES_COUNT));
+                data.addField(C_COLUM_CMS_WEBFORM_ENTRIES_FORMID, rs.getString(C_COLUM_CMS_WEBFORM_ENTRIES_FORMID));
+                result.add(data);
+            }
+        } finally {
+            closeAll(rs, stmt, con);
+        }
+        return result;
+    }
+
+    /**
      * Read a <code>List&lt;{@link CmsFormDataBean}&gt;</code> with  all 
      * data submitted with the given form in the given time range.<p>
      * 
@@ -397,6 +481,7 @@ public final class CmsFormDataAccess {
             while (rs.next()) {
                 String entryId = rs.getString("ENTRY_ID");
                 CmsFormDataBean formData = new CmsFormDataBean();
+                formData.setFormId(entryId);
                 formData.setDateCreated(Long.parseLong(rs.getString("DATE_CREATED")));
                 formData.setResourcePath(rs.getString("RESOURCE_PATH"));
                 forms.put(entryId, formData);

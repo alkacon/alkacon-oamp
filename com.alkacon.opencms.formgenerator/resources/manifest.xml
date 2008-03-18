@@ -16,7 +16,7 @@
 		<description><![CDATA[<p>This module contains online form functionality for OpenCms.</p>
 <p>This module can easily be used to create online input forms.</p>
 <p><i>(c) 2007 by Alkacon Software GmbH (http://www.alkacon.com).</i></p>]]></description>
-		<version>1.1.0</version>
+		<version>1.2.0</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail/>
 		<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
@@ -32,6 +32,9 @@
 			<resource uri="/system/modules/com.alkacon.opencms.formgenerator/"/>
 			<resource uri="/system/workplace/resources/filetypes/alkacon-webform.gif"/>
 			<resource uri="/system/workplace/admin/captcha/"/>
+			<resource uri="/system/workplace/resources/tools/database/icons/big/webform.png"/>
+			<resource uri="/system/workplace/resources/tools/database/buttons/webform_view.png"/>
+			<resource uri="/system/workplace/admin/database/formgenerator/"/>
 		</resources>
 		<parameters>
 			<param name="db-pool">default</param>
@@ -1121,6 +1124,162 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<destination>system/workplace/admin/database</destination>
+			<type>folder</type>
+			<uuidstructure>e11e0557-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Description</name>
+					<value><![CDATA[${key.GUI_DATABASE_ADMIN_TOOL_HELP_0}]]></value>
+				</property>
+				<property>
+					<name>NavImage</name>
+					<value><![CDATA[tools/database/icons/big/database_manage.png:tools/database/icons/small/database_manage.png]]></value>
+				</property>
+				<property>
+					<name>NavInfo</name>
+					<value><![CDATA[${key.GUI_DATABASE_ADMIN_TOOL_GROUP_0}]]></value>
+				</property>
+				<property>
+					<name>NavPos</name>
+					<value><![CDATA[30.0]]></value>
+				</property>
+				<property>
+					<name>NavText</name>
+					<value><![CDATA[${key.GUI_DATABASE_ADMIN_TOOL_NAME_0}]]></value>
+				</property>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Database Management]]></value>
+				</property>
+				<property>
+					<name>admintoolhandler-class</name>
+					<value><![CDATA[org.opencms.workplace.tools.database.CmsDatabaseToolHandler]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace/admin/database/formgenerator</destination>
+			<type>folder</type>
+			<uuidstructure>71bace4a-f114-11dc-a71e-371bb8ed1b84</uuidstructure>
+			<datelastmodified>Mon, 17 Mar 2008 14:43:21 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 13 Mar 2008 15:45:02 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Description</name>
+					<value><![CDATA[${key.GUI_WEBFORM_ADMIN_TOOL_HELP_0}]]></value>
+				</property>
+				<property>
+					<name>NavImage</name>
+					<value><![CDATA[tools/database/icons/big/webform.png]]></value>
+				</property>
+				<property>
+					<name>NavInfo</name>
+					<value><![CDATA[${key.GUI_EXTENDEDTOOLS_ADMIN_TOOL_GROUP_0}]]></value>
+				</property>
+				<property>
+					<name>NavPos</name>
+					<value><![CDATA[121]]></value>
+				</property>
+				<property>
+					<name>NavText</name>
+					<value><![CDATA[${key.GUI_WEBFORM_ADMIN_TOOL_NAME_0}]]></value>
+				</property>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[OAMP Webform]]></value>
+				</property>
+				<property>
+					<name>admintoolhandler-args</name>
+					<value><![CDATA[params:action=initial|path:/database/formgenerator]]></value>
+				</property>
+				<property>
+					<name>admintoolhandler-class</name>
+					<value><![CDATA[org.opencms.workplace.tools.database.CmsDatabaseToolHandler]]></value>
+				</property>
+				<property>
+					<name>default-file</name>
+					<value><![CDATA[form.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/admin/database/formgenerator/form.jsp</source>
+			<destination>system/workplace/admin/database/formgenerator/form.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>4afc124a-f100-11dc-9e13-371bb8ed1b84</uuidstructure>
+			<uuidresource>4afc124b-f100-11dc-9e13-371bb8ed1b84</uuidresource>
+			<datelastmodified>Mon, 17 Mar 2008 10:13:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 13 Mar 2008 13:20:47 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Show the forms]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/admin/database/formgenerator/formfields.jsp</source>
+			<destination>system/workplace/admin/database/formgenerator/formfields.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>7cc2074f-f115-11dc-a71e-371bb8ed1b84</uuidstructure>
+			<uuidresource>7cc20750-f115-11dc-a71e-371bb8ed1b84</uuidresource>
+			<datelastmodified>Mon, 17 Mar 2008 15:14:16 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 13 Mar 2008 15:52:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Description</name>
+					<value><![CDATA[${key.GUI_WEBFORM_ENTRY_ADMIN_TOOL_HELP_0}]]></value>
+				</property>
+				<property>
+					<name>NavText</name>
+					<value><![CDATA[${key.GUI_WEBFORM_ENTRY_ADMIN_TOOL_NAME_0}]]></value>
+				</property>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Show the form fields of a form]]></value>
+				</property>
+				<property>
+					<name>admintoolhandler-args</name>
+					<value><![CDATA[params:formid=${param.formid}&action=initial|path:/database/formgenerator/form]]></value>
+				</property>
+				<property>
+					<name>admintoolhandler-class</name>
+					<value><![CDATA[org.opencms.workplace.tools.CmsInvisibleToolHandler]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
 			<destination>system/workplace/resources</destination>
 			<type>folder</type>
 			<uuidstructure>82c16052-11b7-11db-91cd-fdbae480bac9</uuidstructure>
@@ -1161,6 +1320,111 @@
 				<property type="shared">
 					<name>image.size</name>
 					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace/resources/tools</destination>
+			<type>folder</type>
+			<uuidstructure>c3a8d33c-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace/resources/tools/database</destination>
+			<type>folder</type>
+			<uuidstructure>e1e17cae-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace/resources/tools/database/buttons</destination>
+			<type>folder</type>
+			<uuidstructure>fa05cca8-f42a-11dc-bafa-371bb8ed1b84</uuidstructure>
+			<datelastmodified>Mon, 17 Mar 2008 14:03:53 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 17 Mar 2008 14:03:53 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/tools/database/buttons/webform_view.png</source>
+			<destination>system/workplace/resources/tools/database/buttons/webform_view.png</destination>
+			<type>image</type>
+			<uuidstructure>142cbeea-f42b-11dc-bafa-371bb8ed1b84</uuidstructure>
+			<uuidresource>142cbeeb-f42b-11dc-bafa-371bb8ed1b84</uuidresource>
+			<datelastmodified>Mon, 13 Nov 2006 09:13:01 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 17 Mar 2008 14:04:37 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:20,h:20]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace/resources/tools/database/icons</destination>
+			<type>folder</type>
+			<uuidstructure>e1e3edb0-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace/resources/tools/database/icons/big</destination>
+			<type>folder</type>
+			<uuidstructure>e1e637a2-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/tools/database/icons/big/webform.png</source>
+			<destination>system/workplace/resources/tools/database/icons/big/webform.png</destination>
+			<type>image</type>
+			<uuidstructure>e86b4f5d-f42b-11dc-bafa-371bb8ed1b84</uuidstructure>
+			<uuidresource>e86b4f5e-f42b-11dc-bafa-371bb8ed1b84</uuidresource>
+			<datelastmodified>Thu, 06 Sep 2007 14:40:43 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 17 Mar 2008 14:10:33 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:32,h:32]]></value>
 				</property>
 			</properties>
 			<relations/>
