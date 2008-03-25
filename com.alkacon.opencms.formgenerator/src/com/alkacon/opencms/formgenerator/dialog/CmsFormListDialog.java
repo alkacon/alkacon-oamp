@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/dialog/CmsFormListDialog.java,v $
- * Date   : $Date: 2008/03/18 11:34:09 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/03/25 17:01:42 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -63,11 +63,14 @@ import org.apache.commons.logging.Log;
  * 
  * @author Anja Röttgers
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4
  */
 public class CmsFormListDialog extends A_CmsListDialog {
+
+    /** The path to the icon to edit. */
+    public static final String LIST_EDIT_BUTTON = "tools/database/buttons/webform_edit.png";
 
     /** the param with the form id.*/
     public static final String PARAM_FORM_ID = "formid";
@@ -89,9 +92,6 @@ public class CmsFormListDialog extends A_CmsListDialog {
 
     /** List id constant. */
     private static final String LIST_ID = "lsform1";
-
-    /** The path to the publish report view icon. */
-    private static final String LIST_VIEW_BUTTON = "tools/database/buttons/webform_view.png";
 
     /** The log object for this class. */
     private static final Log LOG = CmsLog.getLog(CmsFormListDialog.class);
@@ -236,7 +236,7 @@ public class CmsFormListDialog extends A_CmsListDialog {
         CmsListDirectAction showAction = new CmsListDirectAction(LIST_ACTION_SHOW);
         showAction.setName(Messages.get().container(Messages.GUI_COLUMN_FORM_SHOW_0));
         showAction.setHelpText(Messages.get().container(Messages.GUI_ACTION_FORM_SHOW_HELP_0));
-        showAction.setIconPath(LIST_VIEW_BUTTON);
+        showAction.setIconPath(LIST_EDIT_BUTTON);
         showCol.addDirectAction(showAction);
         metadata.addColumn(showCol);
         showCol.setPrintable(false);

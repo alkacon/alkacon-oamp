@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/dialog/Messages.java,v $
- * Date   : $Date: 2008/03/18 11:34:09 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/03/25 17:01:42 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -40,7 +40,7 @@ import org.opencms.i18n.I_CmsMessageBundle;
  * 
  * @author Anja Röttgers
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4 
  */
@@ -62,7 +62,16 @@ public final class Messages extends A_CmsMessageBundle {
     public static final String ERR_READ_FORM_VALUES_1 = "ERR_READ_FORM_VALUES_1";
 
     /** Message constant for key in the resource bundle. */
+    public static final String ERR_SHOW_EDIT_FORM_FIELDS_1 = "ERR_SHOW_EDIT_FORM_FIELDS_1";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String ERR_SHOW_SELECTED_FIELDS_1 = "ERR_SHOW_SELECTED_FIELDS_1";
+
+    /** Message constant for key in the resource bundle. */
     public static final String ERR_SHOW_SELECTED_FORM_1 = "ERR_SHOW_SELECTED_FORM_1";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String ERR_WRITE_FORM_FIELDS_3 = "ERR_WRITE_FORM_FIELDS_3";
 
     /** Message constant for key in the resource bundle. */
     public static final String GUI_ACTION_FIELDS_DELETE_0 = "GUI_ACTION_FIELDS_DELETE_0";
@@ -72,6 +81,12 @@ public final class Messages extends A_CmsMessageBundle {
 
     /** Message constant for key in the resource bundle. */
     public static final String GUI_ACTION_FIELDS_DELETE_HELP_0 = "GUI_ACTION_FIELDS_DELETE_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ACTION_FIELDS_EDIT_0 = "GUI_ACTION_FIELDS_EDIT_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ACTION_FIELDS_EDIT_HELP_0 = "GUI_ACTION_FIELDS_EDIT_HELP_0";
 
     /** Message constant for key in the resource bundle. */
     public static final String GUI_ACTION_FORM_SHOW_0 = "GUI_ACTION_FORM_SHOW_0";
@@ -87,6 +102,9 @@ public final class Messages extends A_CmsMessageBundle {
 
     /** Message constant for key in the resource bundle. */
     public static final String GUI_COLUMN_FIELDS_DELETE_0 = "GUI_COLUMN_FIELDS_DELETE_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_COLUMN_FIELDS_EDIT_0 = "GUI_COLUMN_FIELDS_EDIT_0";
 
     /** Message constant for key in the resource bundle. */
     public static final String GUI_COLUMN_FIELDS_ID_0 = "GUI_COLUMN_FIELDS_ID_0";
@@ -108,6 +126,12 @@ public final class Messages extends A_CmsMessageBundle {
 
     /** Message constant for key in the resource bundle. */
     public static final String GUI_FORM_LIST_NAME_0 = "GUI_FORM_LIST_NAME_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String LOG_COMPARE_FORM_FIELDS_4 = "LOG_COMPARE_FORM_FIELDS_4";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String LOG_WRITE_FORM_FIELDS_3 = "LOG_WRITE_FORM_FIELDS_3";
 
     /** Name of the used resource bundle. */
     private static final String BUNDLE_NAME = "com.alkacon.opencms.formgenerator.dialog.messages";

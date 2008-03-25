@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/export/CmsCvsExportBean.java,v $
- * Date   : $Date: 2008/02/07 11:52:02 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2008/03/25 17:01:42 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -42,6 +42,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Bean that supports the data export.<p>
@@ -51,12 +52,15 @@ import java.util.List;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4
  *
  */
 public class CmsCvsExportBean {
+
+    /** The default value delimiter for CSV files in Excel. */
+    public static final char EXCEL_DEFAULT_CSV_DELMITER = ';';
 
     /** Request parameter for the start time of the data to export. */
     public static final String PARAM_EXPORT_DATA_TIME_END = "endtime";
@@ -85,34 +89,6 @@ public class CmsCvsExportBean {
         m_endTime = new Date(Long.MAX_VALUE);
     }
 
-    /** 
-     * Escapes CSV values for excel.<p> 
-     * 
-     * @param value the value to escape 
-     * 
-     * @return the escaped excel value. 
-     */
-    private String escapeExcelCsv(final String value) {
-
-        String result = value;
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("\"");
-        char[] chars = value.toCharArray();
-        for (int i = 0; i < chars.length; i++) {
-            // escape double quote escape delimiter within value: 
-            if ('"' == chars[i]) {
-                buffer.append("\"");
-            }
-            buffer.append(chars[i]);
-        }
-        buffer.append("\"");
-        result = buffer.toString();
-        return result;
-    }
-
-    /** The default value delimiter for CSV files in Excel. */
-    public static final char EXCEL_DEFAULT_CSV_DELMITER = ';';
-
     /**
      * Returns the csv export file content.<p> 
      * 
@@ -122,6 +98,21 @@ public class CmsCvsExportBean {
      */
     public String exportData() throws SQLException {
 
+        return exportData(getForm().getFormConfiguration().getFormId(), getForm().getRequestContext().getLocale());
+    }
+
+    /**
+     * Returns the csv export file content.<p> 
+     * 
+     * @param formId the current selected webform
+     * @param locale the current local
+     * 
+     * @return the csv export file content
+     * 
+     * @throws SQLException if sth goes wrong 
+     */
+    public String exportData(String formId, Locale locale) throws SQLException {
+
         /*
          * TODO: Access the CmsForm (or CmsFormHandler) and put out all 
          * fields in the exact order - put fields that do not exist any longer 
@@ -129,16 +120,10 @@ public class CmsCvsExportBean {
          */
 
         StringBuffer result = new StringBuffer();
-        List columnNames = CmsFormDataAccess.getInstance().readAllFormFieldNames(
-            getForm().getFormConfiguration().getFormId(),
-            getStartTime(),
-            getEndTime());
-        Collections.sort(columnNames, Collator.getInstance(m_formHandler.getRequestContext().getLocale()));
+        List columnNames = CmsFormDataAccess.getInstance().readAllFormFieldNames(formId, getStartTime(), getEndTime());
+        Collections.sort(columnNames, Collator.getInstance(locale));
 
-        List dataEntries = CmsFormDataAccess.getInstance().readFormData(
-            getForm().getFormConfiguration().getFormId(),
-            getStartTime(),
-            getEndTime());
+        List dataEntries = CmsFormDataAccess.getInstance().readFormData(formId, getStartTime(), getEndTime());
 
         // loop 1 - write the headers:
         result.append("Creation date");
@@ -233,6 +218,31 @@ public class CmsCvsExportBean {
     public void setStartTime(Date startTime) {
 
         m_startTime = startTime;
+    }
+
+    /** 
+     * Escapes CSV values for excel.<p> 
+     * 
+     * @param value the value to escape 
+     * 
+     * @return the escaped excel value. 
+     */
+    private String escapeExcelCsv(final String value) {
+
+        String result = value;
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("\"");
+        char[] chars = value.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            // escape double quote escape delimiter within value: 
+            if ('"' == chars[i]) {
+                buffer.append("\"");
+            }
+            buffer.append(chars[i]);
+        }
+        buffer.append("\"");
+        result = buffer.toString();
+        return result;
     }
 
 }

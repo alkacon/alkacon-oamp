@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/dialog/CmsFormDataListDialog.java,v $
- * Date   : $Date: 2008/03/18 11:34:09 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/03/25 17:01:42 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -36,23 +36,33 @@ import com.alkacon.opencms.formgenerator.database.CmsFormDataBean;
 
 import org.opencms.i18n.CmsMessageContainer;
 import org.opencms.jsp.CmsJspActionElement;
+import org.opencms.main.CmsIllegalArgumentException;
 import org.opencms.main.CmsLog;
 import org.opencms.main.CmsRuntimeException;
+import org.opencms.main.OpenCms;
+import org.opencms.util.CmsStringUtil;
+import org.opencms.workplace.CmsDialog;
+import org.opencms.workplace.CmsWorkplace;
 import org.opencms.workplace.list.A_CmsListDialog;
 import org.opencms.workplace.list.CmsListColumnAlignEnum;
 import org.opencms.workplace.list.CmsListColumnDefinition;
+import org.opencms.workplace.list.CmsListCsvExportIAction;
 import org.opencms.workplace.list.CmsListDateMacroFormatter;
+import org.opencms.workplace.list.CmsListDefaultAction;
 import org.opencms.workplace.list.CmsListDirectAction;
 import org.opencms.workplace.list.CmsListItem;
 import org.opencms.workplace.list.CmsListMetadata;
 import org.opencms.workplace.list.CmsListMultiAction;
 import org.opencms.workplace.list.CmsListOrderEnum;
+import org.opencms.workplace.tools.CmsToolDialog;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
@@ -68,20 +78,38 @@ import org.apache.commons.logging.Log;
  * 
  * @author Anja Röttgers
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4
  */
 public class CmsFormDataListDialog extends A_CmsListDialog {
 
+    /** the param with the entry id.*/
+    public static final String PARAM_ENTRY_ID = "entryid";
+
+    /** the length to cut the string text.*/
+    public static final int STRING_TRIM_SIZE = 50;
+
     /** List column id constant. */
     private static final String LIST_ACTION_DELETE = "acd";
+
+    /** List column id constant. */
+    private static final String LIST_ACTION_EDIT = "aced";
+
+    /** List column id constant. */
+    private static final String LIST_ACTION_EDIT_DATE = "aced_date";
+
+    /** List column id constant. */
+    private static final String LIST_ACTION_EDIT_ID = "aced_id";
 
     /** List column id constant. */
     private static final String LIST_COLUMN_DATE = "coa";
 
     /** List column id constant. */
     private static final String LIST_COLUMN_DELETE = "cod";
+
+    /** List column id constant. */
+    private static final String LIST_COLUMN_EDIT = "coed";
 
     /** List column id constant. */
     private static final String LIST_COLUMN_ID = "coi";
@@ -95,11 +123,17 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
     /** List column id constant. */
     private static final String LIST_MACTION_DELETE = "mad";
 
+    /** the path to export a form with all submitted data. **/
+    private static final String LIST_PATH_EXPORT = "/system/modules/com.alkacon.opencms.formgenerator/elements/formexport.jsp";
+
     /** The log object for this class. */
     private static final Log LOG = CmsLog.getLog(CmsFormDataListDialog.class);
 
+    /** Contains the path of the show dialog. */
+    private static final String WORKPLACE_PATH_FORM = "/edit";
+
     /** Contains the id of the current form.**/
-    private String m_paramFormid;
+    protected String m_paramFormid;
 
     /**
      * Public constructor.<p>
@@ -161,17 +195,42 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
     public void executeListSingleActions() throws CmsRuntimeException {
 
         CmsListItem item = getSelectedItem();
-        if (LIST_ACTION_DELETE.equals(getParamListAction()) && item != null) {
-            try {
-                CmsFormDataAccess.getInstance().deleteFormEntries(item.getId());
-            } catch (Exception e) {
-                throw new CmsRuntimeException(Messages.get().container(
-                    Messages.ERR_DELETE_SELECTED_FORM_1,
-                    item.getId()), e);
+        if (item != null) {
+
+            if (LIST_ACTION_DELETE.equals(getParamListAction())) {
+                try {
+                    CmsFormDataAccess.getInstance().deleteFormEntries(item.getId());
+                } catch (Exception e) {
+                    throw new CmsRuntimeException(Messages.get().container(
+                        Messages.ERR_DELETE_SELECTED_FORM_1,
+                        item.getId()), e);
+                }
+            } else if (LIST_ACTION_EDIT.equals(getParamListAction())
+                || LIST_ACTION_EDIT_DATE.equals(getParamListAction())
+                || LIST_ACTION_EDIT_ID.equals(getParamListAction())) {
+                try {
+                    Map params = new HashMap();
+
+                    // set style to display report in correct layout
+                    params.put(PARAM_STYLE, CmsToolDialog.STYLE_NEW);
+                    params.put(CmsFormListDialog.PARAM_FORM_ID, m_paramFormid);
+                    params.put(PARAM_ENTRY_ID, item.getId());
+                    params.put(CmsDialog.PARAM_ACTION, CmsDialog.DIALOG_INITIAL);
+
+                    // redirect to the report output JSP
+                    getToolManager().jspForwardTool(this, getCurrentToolPath() + WORKPLACE_PATH_FORM, params);
+
+                } catch (Exception e) {
+                    throw new CmsRuntimeException(Messages.get().container(
+                        Messages.ERR_SHOW_SELECTED_FIELDS_1,
+                        getSelectedItem().getId()), e);
+                }
+
+            } else {
+                throwListUnsupportedActionException();
             }
-        } else {
-            throwListUnsupportedActionException();
         }
+
         listSave();
     }
 
@@ -229,6 +288,7 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
                     CmsListItem item;
                     Iterator iterator;
                     CmsFormDataBean data;
+                    Object value;
                     for (int i = 0; i < entries.size(); i++) {
 
                         // get the entry and fill the columns
@@ -244,14 +304,27 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
                         iterator = data.getAllFields().iterator();
                         while (iterator.hasNext()) {
                             entry = (Entry)iterator.next();
-                            item.set((String)entry.getKey(), entry.getValue());
+                            value = entry.getValue();
+                            if (value != null && value instanceof String) {
+                                value = CmsStringUtil.escapeHtml((String)value);
+                                value = CmsStringUtil.trimToSize((String)value, STRING_TRIM_SIZE, " ...");
+                            }
+                            item.set((String)entry.getKey(), value);
                         }
                         result.add(item);
 
                     }
                 }
             }
-
+        } catch (CmsIllegalArgumentException e) {
+            /* 
+             * This exception is only thrown, when the dynamically generated
+             * columns are to old. After this exception the form is refreshed 
+             * with the new dynamically generated columns.<p>
+            */
+            if (LOG.isDebugEnabled()) {
+                LOG.debug(Messages.get().getBundle().key(Messages.ERR_READ_FORM_VALUES_1, m_paramFormid));
+            }
         } catch (Exception e) {
             if (LOG.isErrorEnabled()) {
                 LOG.error(Messages.get().getBundle().key(Messages.ERR_READ_FORM_VALUES_1, m_paramFormid));
@@ -272,6 +345,11 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
         if (form != null && form.length > 0) {
             m_paramFormid = form[0];
 
+            // add the edit action
+            CmsListColumnDefinition editCol = getColumnEdit();
+            metadata.addColumn(editCol);
+            editCol.setPrintable(false);
+
             // add the delete action
             CmsListColumnDefinition delCol = getColumnDelete();
             metadata.addColumn(delCol);
@@ -281,6 +359,10 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
             CmsListColumnDefinition idCol = new CmsListColumnDefinition(LIST_COLUMN_ID);
             idCol.setName(Messages.get().container(Messages.GUI_COLUMN_FIELDS_ID_0));
             idCol.setWidth("30");
+            CmsListDefaultAction idAction = new CmsListDefaultAction(LIST_ACTION_EDIT_ID);
+            idAction.setName(Messages.get().container(Messages.GUI_ACTION_FIELDS_EDIT_0));
+            idAction.setHelpText(Messages.get().container(Messages.GUI_ACTION_FIELDS_EDIT_HELP_0));
+            idCol.addDefaultAction(idAction);
             metadata.addColumn(idCol);
 
             // add the date column
@@ -290,8 +372,12 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
                 Messages.GUI_COLUMN_FIELDS_DATE_FORMAT_1), Messages.get().container(
                 org.opencms.workplace.list.Messages.GUI_LIST_DATE_FORMAT_NEVER_0)));
             dateCol.setWidth("50");
+            CmsListDefaultAction dateAction = new CmsListDefaultAction(LIST_ACTION_EDIT_DATE);
+            dateAction.setName(Messages.get().container(Messages.GUI_ACTION_FIELDS_EDIT_0));
+            dateAction.setHelpText(Messages.get().container(Messages.GUI_ACTION_FIELDS_EDIT_HELP_0));
+            dateCol.addDefaultAction(dateAction);
             metadata.addColumn(dateCol);
-            int width = 100;
+
             try {
                 // get the list of all fields 
                 List columnNames = CmsFormDataAccess.getInstance().readAllFormFieldNames(
@@ -300,19 +386,14 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
                     new Date(Long.MAX_VALUE));
 
                 String name;
-
-                if (columnNames.size() > 0) {
-                    width = 100 / (columnNames.size() + 1);
-                }
-
                 CmsListColumnDefinition nameCol;
                 for (int i = 0; i < columnNames.size(); i++) {
 
                     // add column for the form name
                     name = (String)columnNames.get(i);
                     nameCol = new CmsListColumnDefinition(name);
-                    nameCol.setName(new CmsMessageContainer(null, name));
-                    nameCol.setWidth(width + "%");
+                    nameCol.setName(new CmsMessageContainer(null, CmsStringUtil.escapeHtml(name)));
+                    nameCol.setWidth("*");
                     metadata.addColumn(nameCol);
                 }
 
@@ -325,7 +406,7 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
             // add the path column
             CmsListColumnDefinition resCol = new CmsListColumnDefinition(LIST_COLUMN_RESOURCE);
             resCol.setName(Messages.get().container(Messages.GUI_COLUMN_FIELDS_RESOURCE_0));
-            resCol.setWidth(width + "%");
+            resCol.setWidth("*");
             metadata.addColumn(resCol);
 
         }
@@ -338,7 +419,31 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
      */
     protected void setIndependentActions(CmsListMetadata metadata) {
 
-        // NOOP
+        metadata.addIndependentAction(new CmsListCsvExportIAction() {
+
+            /**
+             * @see org.opencms.workplace.list.A_CmsListIndependentJsAction#jsCode(CmsWorkplace)
+             */
+            public String jsCode(CmsWorkplace wp) {
+
+                StringBuffer url = new StringBuffer();
+                url.append(LIST_PATH_EXPORT).append("?");
+                url.append(CmsFormListDialog.PARAM_FORM_ID).append("=").append(m_paramFormid);
+                String jsurl = OpenCms.getLinkManager().substituteLink(wp.getCms(), url.toString());
+                String title = "CSV - " + ((A_CmsListDialog)wp).getList().getName().key(wp.getLocale());
+                String opts = "toolbar=no,location=no,directories=no,status=yes,menubar=0,scrollbars=yes,resizable=yes,top=150,left=660,width=450,height=450";
+                StringBuffer js = new StringBuffer(512);
+                js.append("window.open('");
+                js.append(jsurl);
+                js.append("', '");
+                js.append(title);
+                js.append("', '");
+                js.append(opts);
+                js.append("');");
+                return js.toString();
+            }
+
+        });
     }
 
     /**
@@ -380,6 +485,30 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
         deleteAction.setIconPath(ICON_DELETE);
         deleteCol.addDirectAction(deleteAction);
         return deleteCol;
+    }
+
+    /**
+     * Returns the edit column with action to edit a form entry.<p>
+     * 
+     * @return the column definition with the delete action
+     */
+    private CmsListColumnDefinition getColumnEdit() {
+
+        // create column for editing
+        CmsListColumnDefinition editCol = new CmsListColumnDefinition(LIST_COLUMN_EDIT);
+        editCol.setName(Messages.get().container(Messages.GUI_COLUMN_FIELDS_EDIT_0));
+        editCol.setHelpText(Messages.get().container(Messages.GUI_ACTION_FIELDS_EDIT_HELP_0));
+        editCol.setWidth("20");
+        editCol.setAlign(CmsListColumnAlignEnum.ALIGN_CENTER);
+        editCol.setSorteable(false);
+
+        // add edit action 
+        CmsListDirectAction deleteAction = new CmsListDirectAction(LIST_ACTION_EDIT);
+        deleteAction.setName(Messages.get().container(Messages.GUI_ACTION_FIELDS_EDIT_0));
+        deleteAction.setHelpText(Messages.get().container(Messages.GUI_ACTION_FIELDS_EDIT_HELP_0));
+        deleteAction.setIconPath(CmsFormListDialog.LIST_EDIT_BUTTON);
+        editCol.addDirectAction(deleteAction);
+        return editCol;
     }
 
 }

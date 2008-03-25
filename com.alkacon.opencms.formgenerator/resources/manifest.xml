@@ -33,7 +33,7 @@
 			<resource uri="/system/workplace/resources/filetypes/alkacon-webform.gif"/>
 			<resource uri="/system/workplace/admin/captcha/"/>
 			<resource uri="/system/workplace/resources/tools/database/icons/big/webform.png"/>
-			<resource uri="/system/workplace/resources/tools/database/buttons/webform_view.png"/>
+			<resource uri="/system/workplace/resources/tools/database/buttons/webform_edit.png"/>
 			<resource uri="/system/workplace/admin/database/formgenerator/"/>
 		</resources>
 		<parameters>
@@ -555,6 +555,34 @@
 				<property>
 					<name>Title</name>
 					<value><![CDATA[Form confirmation end page]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/elements/formexport.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/elements/formexport.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>ed832d9f-f691-11dc-9eb8-371bb8ed1b84</uuidstructure>
+			<uuidresource>ed832da0-f691-11dc-9eb8-371bb8ed1b84</uuidresource>
+			<datelastmodified>Tue, 25 Mar 2008 14:05:41 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 20 Mar 2008 15:25:53 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Open Excel with the data of a form]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[false]]></value>
 				</property>
 				<property type="shared">
 					<name>export</name>
@@ -1240,6 +1268,46 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<source>system/workplace/admin/database/formgenerator/formedit.jsp</source>
+			<destination>system/workplace/admin/database/formgenerator/formedit.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>e034e414-f500-11dc-b0bf-371bb8ed1b84</uuidstructure>
+			<uuidresource>e034e415-f500-11dc-b0bf-371bb8ed1b84</uuidresource>
+			<datelastmodified>Wed, 19 Mar 2008 16:28:06 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 18 Mar 2008 15:35:02 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Description</name>
+					<value><![CDATA[${key.GUI_WEBFORM_EDIT_ADMIN_TOOL_HELP_0}]]></value>
+				</property>
+				<property>
+					<name>NavText</name>
+					<value><![CDATA[${key.GUI_WEBFORM_EDIT_ADMIN_TOOL_NAME_0}]]></value>
+				</property>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Show the form in edit mode]]></value>
+				</property>
+				<property>
+					<name>admintoolhandler-args</name>
+					<value><![CDATA[params:formid=${param.formid}&entryid=${param.entryid}&action=initial|path:/database/formgenerator/form/edit]]></value>
+				</property>
+				<property>
+					<name>admintoolhandler-class</name>
+					<value><![CDATA[org.opencms.workplace.tools.CmsInvisibleToolHandler]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
 			<source>system/workplace/admin/database/formgenerator/formfields.jsp</source>
 			<destination>system/workplace/admin/database/formgenerator/formfields.jsp</destination>
 			<type>jsp</type>
@@ -1365,14 +1433,14 @@
 			<accesscontrol/>
 		</file>
 		<file>
-			<source>system/workplace/resources/tools/database/buttons/webform_view.png</source>
-			<destination>system/workplace/resources/tools/database/buttons/webform_view.png</destination>
+			<source>system/workplace/resources/tools/database/buttons/webform_edit.png</source>
+			<destination>system/workplace/resources/tools/database/buttons/webform_edit.png</destination>
 			<type>image</type>
-			<uuidstructure>142cbeea-f42b-11dc-bafa-371bb8ed1b84</uuidstructure>
-			<uuidresource>142cbeeb-f42b-11dc-bafa-371bb8ed1b84</uuidresource>
-			<datelastmodified>Mon, 13 Nov 2006 09:13:01 GMT</datelastmodified>
+			<uuidstructure>62154fb8-f4f9-11dc-99c0-371bb8ed1b84</uuidstructure>
+			<uuidresource>62154fb9-f4f9-11dc-99c0-371bb8ed1b84</uuidresource>
+			<datelastmodified>Tue, 25 Mar 2008 14:33:01 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Mon, 17 Mar 2008 14:04:37 GMT</datecreated>
+			<datecreated>Tue, 18 Mar 2008 14:41:24 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties>

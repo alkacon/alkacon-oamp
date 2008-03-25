@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/CmsFormDataAccess.java,v $
- * Date   : $Date: 2008/03/18 11:34:09 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2008/03/25 17:01:42 $
+ * Version: $Revision: 1.6 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -72,7 +72,7 @@ import org.apache.commons.logging.Log;
  * @author Achim Westermann
  * @author Michael Moossen
  * 
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * 
  * @since 7.0.4
  */
@@ -128,6 +128,11 @@ public final class CmsFormDataAccess {
     /** Query to delete all distinct form names. */
     private static final String C_DELETE_FORM_ENTRIES = "DELETE FROM CMS_WEBFORM_ENTRIES WHERE ENTRY_ID=?;";
 
+    /** Query to delete the field and the value of a given form and field. */
+    private static final String C_DELETE_FORM_FIELD = "DELETE FROM CMS_WEBFORM_DATA WHERE REF_ID=? AND "
+        + C_COLUM_CMS_WEBFORM_DATA_FIELDNAME
+        + "=?;";
+
     /** Query to read all distinct form field names of a given form in time range. */
     private static final String C_READ_FORM_FIELD_NAMES = "SELECT DISTINCT(D."
         + C_COLUM_CMS_WEBFORM_DATA_FIELDNAME
@@ -146,6 +151,11 @@ public final class CmsFormDataAccess {
         + ","
         + C_COLUM_CMS_WEBFORM_DATA_FIELDVALUE
         + " FROM CMS_WEBFORM_DATA WHERE REF_ID=?";
+
+    /** Query to read one entry in a single webform submission. */
+    private static final String C_READ_FORM_SUBMISSION_ID = "SELECT ENTRY_ID, DATE_CREATED, RESOURCE_PATH "
+        + "FROM CMS_WEBFORM_ENTRIES "
+        + "WHERE ENTRY_ID=?;";
 
     /** Query to read all submission IDS of a given form in time range. */
     private static final String C_READ_FORM_SUBMISSION_IDS = "SELECT ENTRY_ID, DATE_CREATED, RESOURCE_PATH "
@@ -511,6 +521,94 @@ public final class CmsFormDataAccess {
             closeAll(rs, stmt, con);
         }
         return result;
+    }
+
+    /**
+     * Read a <code>{@link CmsFormDataBean}</code> with  all fields and values with the given data id.<p>
+     * 
+     * @param formEntryId to find the form entry in the database 
+     * 
+     * @return a <code>{@link CmsFormDataBean}</code> with the given data id or <code>null</code>
+     *      
+     * @throws SQLException if something goes wrong 
+     */
+    public CmsFormDataBean readOneFormData(final String formEntryId) throws SQLException {
+
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        CmsFormDataBean result = null;
+
+        try {
+            // read the webform with the special id
+            con = getConnection();
+            stmt = con.prepareStatement(C_READ_FORM_SUBMISSION_ID);
+            stmt.setString(1, formEntryId);
+            rs = stmt.executeQuery();
+
+            // collect the submissions with the given values: 
+            if (rs.next()) {
+                result = new CmsFormDataBean();
+                result.setFormId(rs.getString("ENTRY_ID"));
+                result.setDateCreated(Long.parseLong(rs.getString("DATE_CREATED")));
+                result.setResourcePath(rs.getString("RESOURCE_PATH"));
+
+                // close result set and statement, connection is needed for next statement:
+                closeAll(rs, stmt, null);
+
+                // reuse the same statement with different variables: 
+                stmt = con.prepareStatement(C_READ_FORM_SUBMISSION_DATA);
+                stmt.setString(1, result.getFormId());
+                rs = stmt.executeQuery();
+                while (rs.next()) {
+                    String fName = rs.getString(C_COLUM_CMS_WEBFORM_DATA_FIELDNAME);
+                    String fValue = rs.getString(C_COLUM_CMS_WEBFORM_DATA_FIELDVALUE);
+                    result.addField(fName, fValue);
+                }
+            }
+
+        } finally {
+            closeAll(rs, stmt, con);
+        }
+        return result;
+    }
+
+    /**
+     * Updates the field with the new value for the given form.<p>
+     * 
+     * @param formEntryId to find the form entry in the database 
+     * @param field the name of the field which should update
+     * @param value the new value of the field
+     * 
+     * @throws SQLException if something goes wrong
+     */
+    public void updateFieldValue(String formEntryId, String field, String value) throws SQLException {
+
+        Connection con = null;
+        PreparedStatement stmt = null;
+        try {
+
+            // delete the current field in the webform
+            con = getConnection();
+            stmt = con.prepareStatement(C_DELETE_FORM_FIELD);
+            stmt.setString(1, formEntryId);
+            stmt.setString(2, field);
+            stmt.executeUpdate();
+
+            // add the new entry if its not empty
+            if (!CmsStringUtil.isEmptyOrWhitespaceOnly(value)) {
+                closeAll(null, stmt, null);
+                stmt = con.prepareStatement(C_WRITE_FORM_DATA);
+                stmt.setString(1, formEntryId);
+                stmt.setString(2, field);
+                stmt.setString(3, value);
+                stmt.executeUpdate();
+            }
+
+        } finally {
+            closeAll(null, stmt, con);
+        }
+
     }
 
     /**
