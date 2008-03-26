@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/dialog/CmsFormEditDialog.java,v $
- * Date   : $Date: 2008/03/25 17:01:42 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/03/26 15:36:21 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -63,7 +63,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Anja Röttgers 
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4 
  */
@@ -77,6 +77,9 @@ public class CmsFormEditDialog extends CmsWidgetDialog {
 
     /** Defines which pages are valid for this dialog. */
     private static final String[] PAGES = {"page1"};
+
+    /** localized messages Keys prefix. */
+    private static final String WEBFORM_KEY_PREFIX = "webform_prefix";
 
     /** a map with all fields and values. */
     private HashMap m_fields;
@@ -248,6 +251,7 @@ public class CmsFormEditDialog extends CmsWidgetDialog {
             && !CmsStringUtil.isEmptyOrWhitespaceOnly(m_paramFormid)) {
 
             try {
+                setKeyPrefix(WEBFORM_KEY_PREFIX);
                 m_formData = CmsFormDataAccess.getInstance().readOneFormData(m_paramEntryid);
                 if (m_formData != null) {
                     addStaticWidgets();

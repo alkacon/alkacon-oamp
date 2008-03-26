@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/dialog/CmsFormDataListDialog.java,v $
- * Date   : $Date: 2008/03/25 17:01:42 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2008/03/26 15:36:21 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -54,9 +54,9 @@ import org.opencms.workplace.list.CmsListItem;
 import org.opencms.workplace.list.CmsListMetadata;
 import org.opencms.workplace.list.CmsListMultiAction;
 import org.opencms.workplace.list.CmsListOrderEnum;
+import org.opencms.workplace.list.CmsListSearchAction;
 import org.opencms.workplace.tools.CmsToolDialog;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -78,7 +78,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Anja Röttgers
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4
  */
@@ -385,6 +385,10 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
                     new Date(1),
                     new Date(Long.MAX_VALUE));
 
+                // create the search action
+                CmsListSearchAction searchAction = new CmsListSearchAction(idCol);
+                searchAction.setHelpText(Messages.get().container(Messages.GUI_ACTION_FIELDS_SEARCH_HELP_0));
+
                 String name;
                 CmsListColumnDefinition nameCol;
                 for (int i = 0; i < columnNames.size(); i++) {
@@ -395,9 +399,15 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
                     nameCol.setName(new CmsMessageContainer(null, CmsStringUtil.escapeHtml(name)));
                     nameCol.setWidth("*");
                     metadata.addColumn(nameCol);
+
+                    // add the new column to the search action
+                    searchAction.addColumn(nameCol);
                 }
 
-            } catch (SQLException e) {
+                // add the search action
+                metadata.setSearchAction(searchAction);
+
+            } catch (Exception e) {
                 if (LOG.isErrorEnabled()) {
                     LOG.error(Messages.get().getBundle().key(Messages.ERR_READ_FORM_FIELDS_1, m_paramFormid));
                 }

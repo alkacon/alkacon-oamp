@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/dialog/Messages.java,v $
- * Date   : $Date: 2008/03/25 17:01:42 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2008/03/26 15:36:21 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -40,7 +40,7 @@ import org.opencms.i18n.I_CmsMessageBundle;
  * 
  * @author Anja Röttgers
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4 
  */
@@ -87,6 +87,9 @@ public final class Messages extends A_CmsMessageBundle {
 
     /** Message constant for key in the resource bundle. */
     public static final String GUI_ACTION_FIELDS_EDIT_HELP_0 = "GUI_ACTION_FIELDS_EDIT_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ACTION_FIELDS_SEARCH_HELP_0 = "GUI_ACTION_FIELDS_SEARCH_HELP_0";
 
     /** Message constant for key in the resource bundle. */
     public static final String GUI_ACTION_FORM_SHOW_0 = "GUI_ACTION_FORM_SHOW_0";
