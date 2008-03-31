@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsSelectWidgetXmlcontentType.java,v $
- * Date   : $Date: 2007/12/21 15:24:23 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2008/03/31 08:19:05 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -174,7 +174,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4 
  * 
@@ -188,7 +188,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
      * 
      * @author Achim Westermann
      * 
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      * 
      * @since 6.1.6
      * 
@@ -301,7 +301,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
      * 
      * @author Achim Westermann
      * 
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      * 
      * @since 6.1.6
      * 
@@ -634,13 +634,13 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
                         resType = (String)itTypes.next();
                         this.m_resourceTypeIDs.add(new Integer(
                             OpenCms.getResourceManager().getResourceType(resType).getTypeId()));
+                        typeFound = true;
                     }
                 } catch (CmsLoaderException e) {
                     throw new CmsIllegalArgumentException(org.opencms.file.Messages.get().container(
                         org.opencms.file.Messages.ERR_UNKNOWN_RESOURCE_TYPE_1,
                         resType), e);
                 }
-                typeFound = true;
 
             } else if (CONFIGURATION_TOPFOLDER.equals(key)) {
                 if (folderFound) {
