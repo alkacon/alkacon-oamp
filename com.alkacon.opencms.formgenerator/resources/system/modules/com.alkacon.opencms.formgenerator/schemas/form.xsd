@@ -37,6 +37,7 @@
 	<xsd:annotation>
 		<xsd:appinfo>
 			<resourcebundle name="com.alkacon.opencms.formgenerator.workplace"/>
+			<preview uri="${previewtempfile}" />
 			<defaults>
 				<default element="OptionalFormConfiguration/ShowMandatory" value="true" />
 				<default element="OptionalFormConfiguration/ShowReset" value="true" />
@@ -44,6 +45,12 @@
 			<validationrules>
 				<rule element="DataTarget/FormId" regex=".+" type="error" message="%(err.xmlcontent.field.empty)"/>
 			</validationrules>
+			<layouts>
+				<layout element="MailText" widget="HtmlWidget" configuration="formatselect,source,table" />
+				<layout element="FormText" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
+				<layout element="FormFooterText" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
+				<layout element="FormConfirmation" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
+			</layouts>
 		</xsd:appinfo>
 	</xsd:annotation>  
 	

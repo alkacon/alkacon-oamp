@@ -25,6 +25,9 @@
 	<xsd:annotation>
 		<xsd:appinfo>
 			<resourcebundle name="com.alkacon.opencms.formgenerator.workplace"/>
+			<layouts>
+				<layout element="ConfirmationMailText" widget="HtmlWidget" configuration="formatselect,source,table" />
+			</layouts>
 		</xsd:appinfo>
 	</xsd:annotation>  
 

@@ -31,6 +31,7 @@
 			<resourcebundle name="com.alkacon.opencms.formgenerator.workplace"/>
 			<layouts>
 				<layout element="MailType" widget="SelectorWidget" configuration="html*:${key.form.email.type.html}|text:${key.form.email.type.text}" />
+				<layout element="CheckText" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
 			</layouts>
 		</xsd:appinfo>
 	</xsd:annotation>  

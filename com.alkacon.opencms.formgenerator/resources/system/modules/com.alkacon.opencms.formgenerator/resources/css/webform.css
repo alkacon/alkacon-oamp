@@ -1,0 +1,53 @@
+/*
+ * Example for the Alkacon OAMP Webform Module
+ */
+ 
+@charset "UTF-8";
+@media all
+{
+	/* error */
+	span.webform_label_error{
+		color: #CC0000;
+	}
+	
+	span.webform_msg_error{
+		color: #CC0000; 
+		font-weight: bold;
+	}
+	
+	/* checkbox */
+	table.webform_checkbox_row{
+		float: left; 
+		padding-right: 8px;
+	}
+	
+	td.webform_field_checkbox, td.webform_field_checkbox_row{
+		padding-top: 2px;
+	}
+	
+	td.webform_label_checkbox{
+		padding-left: 5px;
+	}
+
+	td.webform_label_checkbox_row{
+		padding-left: 3px;
+	}
+	
+	/* radio */
+	table.webform_radio_row{
+		float: left; 
+		padding-right: 8px;
+	}
+	
+	td.webform_field_radio, td.webform_field_radio_row{
+		padding-top: 4px;
+	}
+	
+	td.webform_label_radio{
+		padding-left: 5px;
+	}
+	
+	td.webform_label_radio_row{
+		padding-left: 3px;
+	}
+}

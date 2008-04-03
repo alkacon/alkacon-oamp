@@ -759,6 +759,52 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources</destination>
+			<type>folder</type>
+			<uuidstructure>fffd258d-fff6-11dc-a6ff-371bb8ed1b84</uuidstructure>
+			<datelastmodified>Tue, 01 Apr 2008 14:22:03 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 01 Apr 2008 14:22:03 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/css</destination>
+			<type>folder</type>
+			<uuidstructure>05bc3f1f-fff7-11dc-a6ff-371bb8ed1b84</uuidstructure>
+			<datelastmodified>Tue, 01 Apr 2008 14:22:13 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 01 Apr 2008 14:22:13 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/css/webform.css</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/css/webform.css</destination>
+			<type>plain</type>
+			<uuidstructure>0ff14f71-fff7-11dc-a6ff-371bb8ed1b84</uuidstructure>
+			<uuidresource>0ff14f72-fff7-11dc-a6ff-371bb8ed1b84</uuidresource>
+			<datelastmodified>Tue, 01 Apr 2008 14:23:11 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 01 Apr 2008 14:22:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Example Webform CSS]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
 			<destination>system/modules/com.alkacon.opencms.formgenerator/schemas</destination>
 			<type>folder</type>
 			<uuidstructure>a4297874-11b7-11db-91cd-fdbae480baca</uuidstructure>
