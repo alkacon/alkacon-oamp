@@ -3,8 +3,8 @@
 <export>
 	<info>
 		<creator>Admin</creator>
-		<opencms_version>7.0.3</opencms_version>
-		<createdate>Mon, 19 Nov 2007 10:35:12 GMT</createdate>
+		<opencms_version>7.0.4</opencms_version>
+		<createdate>Wed, 9 Apr 2008 10:35:12 GMT</createdate>
 		<project>Offline</project>
 		<export_version>6</export_version>
 	</info>
@@ -14,7 +14,7 @@
 		<group>Alkacon OAMP</group>
 		<class>com.alkacon.opencms.newsletter.CmsNewsletterManager</class>
 		<description><![CDATA[This module allows the creation of newsletters sent by email to specific mailing lists.]]></description>
-		<version>1.0.0</version>
+		<version>1.0.1</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail/>
 		<datecreated/>

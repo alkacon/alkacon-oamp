@@ -1,6 +1,6 @@
 
                 Alkacon OpenCms Add-On Module Package: Newsletter module
-                       Version 1.0.0; November 28, 2007
+                       Version 1.0.1; April 9th, 2008
 
 
                                     WARNING:
@@ -42,7 +42,7 @@ http://www.alkacon.com
 3. Installation
 
 A detailed description of the installation is described in the provided
-PDF file "Alkacon_OAMP_Newsletter.pdf".
+PDF file "Alkacon_OpenCms_Newsletter_1.0.1.pdf".
 
 
 4. History of changes
@@ -54,6 +54,10 @@ Legend:
 ! New Feature
 * Bug fixed
 - General comment
+
+1.0.1 - April 9th, 2008
+- Adapted code to work with OpenCms 7.0.4
+
 
 1.0.0 - November 28, 2007
 - First public release
