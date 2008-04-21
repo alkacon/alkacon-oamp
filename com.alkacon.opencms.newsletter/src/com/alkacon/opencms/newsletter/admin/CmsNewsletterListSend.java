@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsNewsletterListSend.java,v $
- * Date   : $Date: 2007/11/30 11:57:27 $
- * Version: $Revision: 1.7 $
+ * Date   : $Date: 2008/04/21 15:31:41 $
+ * Version: $Revision: 1.8 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -42,7 +42,6 @@ import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.main.CmsLog;
 import org.opencms.util.CmsStringUtil;
 import org.opencms.util.CmsUUID;
-import org.opencms.workplace.explorer.CmsExplorer;
 import org.opencms.workplace.explorer.CmsResourceUtil;
 import org.opencms.workplace.list.A_CmsListExplorerDialog;
 import org.opencms.workplace.list.CmsListColumnAlignEnum;
@@ -230,28 +229,6 @@ public class CmsNewsletterListSend extends A_CmsListExplorerDialog {
             ouFqn = "";
         }
         m_paramOufqn = ouFqn;
-    }
-
-    /**
-     * Generates the dialog starting html code.<p>
-     * 
-     * @return html code
-     */
-    protected String defaultActionHtmlStart() {
-
-        StringBuffer result = new StringBuffer(2048);
-        result.append(htmlStart(null));
-        result.append(getList().listJs());
-        result.append(CmsListExplorerColumn.getExplorerStyleDef());
-        result.append("<script language='JavaScript'>\n");
-        result.append(new CmsExplorer(getJsp()).getInitializationHeader());
-        result.append("\ntop.updateWindowStore();\n");
-        result.append("top.displayHead(top.win.head, 0, 1);\n}\n");
-        result.append("</script>");
-        result.append(bodyStart("dialog", "onload='initialize();'"));
-        result.append(dialogStart());
-        result.append(dialogContentStart(getParamTitle()));
-        return result.toString();
     }
 
     /**

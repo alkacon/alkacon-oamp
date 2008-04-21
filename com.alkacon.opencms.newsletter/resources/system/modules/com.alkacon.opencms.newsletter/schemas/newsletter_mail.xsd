@@ -13,8 +13,7 @@
 
 	<xsd:complexType name="OpenCmsAlkaconNewsletterMail">
 		<xsd:sequence>
-			<xsd:element name="From" type="OpenCmsString" />
-			<!-- <xsd:element name="To" type="OpenCmsString" /> //-->				
+			<xsd:element name="From" type="OpenCmsString" />				
 			<xsd:element name="BCC" type="OpenCmsString" minOccurs="0" />	
 			<xsd:element name="Subject" type="OpenCmsString" />
 			<xsd:element name="Text" type="OpenCmsHtml" />
@@ -35,6 +34,7 @@
 				<default element="Text" value="%(key.default.alknewslettermail.text)" />
 
 				<default element="Config/Html" value="true" />
+				<default element="Config/HtmlOnly" value="true" />
 				<default element="Config/MailHead" value="%(key.default.alknewslettermail.conf.head)" />
 				<default element="Config/MailFoot" value="%(key.default.alknewslettermail.conf.foot)" />
 			</defaults>

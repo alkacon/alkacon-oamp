@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsNotMailinglistSubscribersList.java,v $
- * Date   : $Date: 2007/11/30 11:57:27 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2008/04/21 15:31:41 $
+ * Version: $Revision: 1.7 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -33,6 +33,8 @@
 package com.alkacon.opencms.newsletter.admin;
 
 import org.opencms.jsp.CmsJspActionElement;
+import org.opencms.main.CmsException;
+import org.opencms.main.OpenCms;
 import org.opencms.util.CmsStringUtil;
 import org.opencms.workplace.list.CmsListColumnDefinition;
 import org.opencms.workplace.list.CmsListDefaultAction;
@@ -40,6 +42,8 @@ import org.opencms.workplace.list.CmsListDirectAction;
 import org.opencms.workplace.list.CmsListMetadata;
 import org.opencms.workplace.list.CmsListMultiAction;
 import org.opencms.workplace.list.I_CmsListDirectAction;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,7 +55,7 @@ import javax.servlet.jsp.PageContext;
  * @author Michael Moossen
  * @author Andreas Zahner 
  * 
- * @version $Revision: 1.6 $ 
+ * @version $Revision: 1.7 $ 
  * 
  * @since 7.0.3 
  */
@@ -78,6 +82,22 @@ public class CmsNotMailinglistSubscribersList extends org.opencms.workplace.tool
     public CmsNotMailinglistSubscribersList(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         this(new CmsJspActionElement(context, req, res));
+    }
+
+    /**
+     * @see org.opencms.workplace.tools.accounts.A_CmsGroupUsersList#getUsers(boolean)
+     */
+    protected List getUsers(boolean withOtherOus) throws CmsException {
+
+        List groupusers = getCms().getUsersOfGroup(getParamGroupname(), withOtherOus);
+        List users;
+        if (withOtherOus) {
+            users = OpenCms.getRoleManager().getManageableUsers(getCms(), "", true, true);
+        } else {
+            users = OpenCms.getRoleManager().getManageableUsers(getCms(), getParamOufqn(), false, true);
+        }
+        users.removeAll(groupusers);
+        return users;
     }
 
     /**

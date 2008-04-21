@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterMailData.java,v $
- * Date   : $Date: 2007/11/30 11:57:27 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2008/04/21 15:31:41 $
+ * Version: $Revision: 1.6 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -57,17 +57,23 @@ import org.apache.commons.mail.Email;
  *  
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.5 $ 
+ * @version $Revision: 1.6 $ 
  * 
  * @since 7.0.3 
  */
 public class CmsNewsletterMailData extends A_CmsNewsletterMailData {
+
+    /** Resource type name of a newsletter resource. */
+    public static final String RESOURCETYPE_NEWSLETTER_NAME = "alkacon-newsletter";
 
     /** The node name for the ConfFile node. */
     protected static final String NODE_CONFFILE = "ConfFile";
 
     /** The node name for the HTML node. */
     protected static final String NODE_HTML = "Html";
+
+    /** The node name for the HTML Only node. */
+    protected static final String NODE_HTML_ONLY = "HtmlOnly";
 
     /** The node name for the MailFoot node. */
     protected static final String NODE_MAILFOOT = "MailFoot";
@@ -77,9 +83,6 @@ public class CmsNewsletterMailData extends A_CmsNewsletterMailData {
 
     /** The node name for the Text node. */
     protected static final String NODE_TEXT = "Text";
-
-    /** Resource type name of a newsletter resource. */
-    public static final String RESOURCETYPE_NEWSLETTER_NAME = "alkacon-newsletter";
 
     /** The xpath for the Config node including trailing "/". */
     protected static final String XPATH_CONFIG = "Config/";
@@ -143,13 +146,18 @@ public class CmsNewsletterMailData extends A_CmsNewsletterMailData {
             mail.setSubject(subject);
             // create the email content and use it as HTML message
             mail.setHtmlMsg(getEmailContent());
-            // extract the text from the HTML field
-            try {
-                text = CmsHtmlExtractor.extractText(text, getCms().getRequestContext().getEncoding());
-            } catch (Exception e) {
-                // cleaning text failed
+            // check if HTML only mail should be sent by evaluating the optional element
+            boolean isHtmlOnly = Boolean.valueOf(
+                getContent().getStringValue(getCms(), XPATH_CONFIG + NODE_HTML_ONLY, getLocale())).booleanValue();
+            if (!isHtmlOnly) {
+                // text block should be added, extract the text from the HTML field
+                try {
+                    text = CmsHtmlExtractor.extractText(text, getCms().getRequestContext().getEncoding());
+                } catch (Exception e) {
+                    // cleaning text failed
+                }
+                mail.setTextMsg(text);
             }
-            mail.setTextMsg(text);
             // set the mail encoding
             mail.setCharset(getCms().getRequestContext().getEncoding());
             return mail;
