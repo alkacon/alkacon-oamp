@@ -1,0 +1,66 @@
+/*
+ * Example for the Alkacon OAMP Webform Reporting Module.
+ 
+ * Please add following line in your Template Head:
+ 
+ * <link type="text/css" rel="stylesheet" href="<cms:link>/system/modules/com.alkacon.opencms.survey/resources/css/webform.css</cms:link>"/>
+ */
+ 
+@charset "UTF-8";
+@media all
+{
+ 	#webformReport{
+ 		padding-bottom: 12px;
+ 	}
+ 	
+ 	#webformPaging{
+ 		padding: 12px 0px 12px 0px;
+ 		text-align: center;
+ 	}
+	
+	#webformReport h3 {
+		margin-top:15px;
+		padding-top:10px;
+	}
+	
+	#webformReport a.linkDetail{
+		float: right;
+	}
+	
+	#webformReport .reportitem{
+		padding-top: 5px;
+	}
+	
+	#webformReport p.reportanswer{
+		margin: 0px;
+		padding: 0px;
+	}
+	
+	#webformReport .reportBar{
+		margin-bottom: 10px;
+	}
+	
+	#webformReport .processbar {
+		float:left; 
+		display:block; 
+		width:90%;
+	}
+	
+	#webformReport .processbar .bar{
+		display:block; 
+		text-align:right;
+		border: 1px solid black;
+		background: url("../images/gradient.png") repeat-x scroll center top;
+		
+	}
+
+	* html #webformReport .processbar .bar{ /*  IE 6 fix */
+		background: none; 
+	}
+	
+	#webformReport .reportcount{
+		padding-left: 10px; 
+		font-weight: bold;
+	}
+	
+}
