@@ -1,0 +1,1108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<export>
+	<info>
+		<creator>Admin</creator>
+		<opencms_version>7.0.4</opencms_version>
+		<createdate>Fri, 25 Apr 2008 14:00:22 GMT</createdate>
+		<infoproject>Offline</infoproject>
+		<export_version>7</export_version>
+	</info>
+	<module>
+		<name>com.alkacon.opencms.calendar</name>
+		<nicename><![CDATA[Alkacon OpenCms Calendar Module]]></nicename>
+		<group>Alkacon OAMP</group>
+		<class/>
+		<description><![CDATA[<p>This module provides a calendar functionality for displaying date entries, serial dates or other time based information.</p>
+            <p>It can easily be included in JSP templates.</p>
+			<p><i>(c) 2008 by Alkacon Software GmbH (http://www.alkacon.com).</i></p>]]></description>
+		<version>1.0.0</version>
+		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
+		<authoremail/>
+		<datecreated/>
+		<userinstalled/>
+		<dateinstalled/>
+		<dependencies>
+			<dependency name="com.alkacon.opencms.commons" version="1.0.0"/>
+		</dependencies>
+		<exportpoints>
+			<exportpoint uri="/system/modules/com.alkacon.opencms.calendar/classes/" destination="WEB-INF/classes/"/>
+			<exportpoint uri="/system/modules/com.alkacon.opencms.calendar/lib/" destination="WEB-INF/lib/"/>
+		</exportpoints>
+		<resources>
+			<resource uri="/system/modules/com.alkacon.opencms.calendar/"/>
+			<resource uri="/system/workplace/resources/components/widgets/serialdate_form.html"/>
+			<resource uri="/system/workplace/resources/components/widgets/serialdate_script.js"/>
+			<resource uri="/system/workplace/resources/components/widgets/serialdate_styles.css"/>
+			<resource uri="/system/workplace/resources/filetypes/alkacon-cal-entry.png"/>
+			<resource uri="/system/workplace/resources/filetypes/alkacon-cal-menu.png"/>
+			<resource uri="/system/workplace/resources/filetypes/alkacon-cal-serial.png"/>
+			<resource uri="/system/workplace/resources/filetypes/alkacon-cal-view.png"/>
+		</resources>
+		<parameters/>
+		<resourcetypes>
+			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="alkacon-cal-entry" id="52">
+				<properties>
+					<property>
+						<name>template-elements</name>
+						<value type="shared"><![CDATA[/system/modules/com.alkacon.opencms.calendar/pages/detail-entry.jsp]]></value>
+					</property>
+				</properties>
+				<param name="schema">/system/modules/com.alkacon.opencms.calendar/schemas/entry.xsd</param>
+			</type>
+			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="alkacon-cal-serial" id="53">
+				<properties>
+					<property>
+						<name>template-elements</name>
+						<value type="shared"><![CDATA[/system/modules/com.alkacon.opencms.calendar/pages/detail-serialentry.jsp]]></value>
+					</property>
+				</properties>
+				<param name="schema">/system/modules/com.alkacon.opencms.calendar/schemas/serialentry.xsd</param>
+			</type>
+			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="alkacon-cal-view" id="54">
+				<properties>
+					<property>
+						<name>template-elements</name>
+						<value type="shared"><![CDATA[/system/modules/com.alkacon.opencms.calendar/pages/detail-calendar.jsp]]></value>
+					</property>
+				</properties>
+				<param name="schema">/system/modules/com.alkacon.opencms.calendar/schemas/calendarview.xsd</param>
+			</type>
+		</resourcetypes>
+		<explorertypes>
+			<explorertype name="calendar" key="fileicon.alkacon-cal-menu" icon="alkacon-cal-menu.png" reference="xmlcontent">
+				<newresource uri="newresource.jsp?page=calendar" order="13" autosetnavigation="false" autosettitle="false" info="desc.alkacon-cal-menu"/>
+			</explorertype>
+			<explorertype name="alkacon-cal-entry" key="fileicon.alkacon-cal-entry" icon="alkacon-cal-entry.png" reference="xmlcontent">
+				<newresource page="calendar" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-cal-entry" order="10" autosetnavigation="false" autosettitle="false" info="desc.alkacon-cal-entry"/>
+				<accesscontrol>
+					<accessentry principal="ROLE.WORKPLACE_USER" permissions="+r+v+w+c"/>
+				</accesscontrol>
+			</explorertype>
+			<explorertype name="alkacon-cal-serial" key="fileicon.alkacon-cal-serial" icon="alkacon-cal-serial.png" reference="xmlcontent">
+				<newresource page="calendar" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-cal-serial" order="20" autosetnavigation="false" autosettitle="false" info="desc.alkacon-cal-serial"/>
+				<accesscontrol>
+					<accessentry principal="ROLE.WORKPLACE_USER" permissions="+r+v+w+c"/>
+				</accesscontrol>
+			</explorertype>
+			<explorertype name="alkacon-cal-view" key="fileicon.alkacon-cal-view" icon="alkacon-cal-view.png" reference="xmlcontent">
+				<newresource page="calendar" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-cal-view" order="30" autosetnavigation="false" autosettitle="false" info="desc.alkacon-cal-view"/>
+				<accesscontrol>
+					<accessentry principal="ROLE.WORKPLACE_USER" permissions="+r+v+w+c"/>
+				</accesscontrol>
+			</explorertype>
+		</explorertypes>
+	</module>
+	<files>
+		<file>
+			<destination>system</destination>
+			<type>folder</type>
+			<uuidstructure>5fe2271c-1044-11dd-8461-d3ac683d9ec4</uuidstructure>
+			<datelastmodified>Mon, 27 Jun 2005 08:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 22 Apr 2008 08:16:14 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
+					<flags>514</flags>
+					<permissionset>
+						<allowed>1</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<destination>system/modules</destination>
+			<type>folder</type>
+			<uuidstructure>62d85ce5-1044-11dd-8461-d3ac683d9ec4</uuidstructure>
+			<datelastmodified>Tue, 22 Apr 2008 08:16:19 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 22 Apr 2008 08:16:19 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
+					<flags>514</flags>
+					<permissionset>
+						<allowed>5</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.calendar</destination>
+			<type>folder</type>
+			<uuidstructure>a2435d19-5ae0-11dc-b7ed-5fc9fa232cc8</uuidstructure>
+			<datelastmodified>Tue, 04 Sep 2007 12:16:15 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 Sep 2007 12:16:15 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.calendar/classes</destination>
+			<type>folder</type>
+			<uuidstructure>a2d1453d-5ae0-11dc-b7ed-5fc9fa232cc8</uuidstructure>
+			<datelastmodified>Tue, 04 Sep 2007 12:16:16 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 Sep 2007 12:16:16 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.calendar/classes/com</destination>
+			<type>folder</type>
+			<uuidstructure>a2e6a1ff-5ae0-11dc-b7ed-5fc9fa232cc8</uuidstructure>
+			<datelastmodified>Tue, 04 Sep 2007 12:16:16 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 Sep 2007 12:16:16 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.calendar/classes/com/alkacon</destination>
+			<type>folder</type>
+			<uuidstructure>a2ee4321-5ae0-11dc-b7ed-5fc9fa232cc8</uuidstructure>
+			<datelastmodified>Tue, 04 Sep 2007 12:16:16 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 Sep 2007 12:16:16 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.calendar/classes/com/alkacon/opencms</destination>
+			<type>folder</type>
+			<uuidstructure>a2f45da3-5ae0-11dc-b7ed-5fc9fa232cc8</uuidstructure>
+			<datelastmodified>Tue, 04 Sep 2007 12:16:16 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 Sep 2007 12:16:16 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.calendar/classes/com/alkacon/opencms/calendar</destination>
+			<type>folder</type>
+			<uuidstructure>a2fa7825-5ae0-11dc-b7ed-5fc9fa232cc8</uuidstructure>
+			<datelastmodified>Tue, 04 Sep 2007 12:16:16 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 Sep 2007 12:16:16 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/classes/com/alkacon/opencms/calendar/display.properties</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/classes/com/alkacon/opencms/calendar/display.properties</destination>
+			<type>plain</type>
+			<uuidstructure>c21cbec7-5ae0-11dc-b7ed-5fc9fa232cc8</uuidstructure>
+			<uuidresource>c21cbec8-5ae0-11dc-b7ed-5fc9fa232cc8</uuidresource>
+			<datelastmodified>Thu, 24 Apr 2008 12:13:39 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 Sep 2007 12:17:09 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/classes/com/alkacon/opencms/calendar/display_de.properties</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/classes/com/alkacon/opencms/calendar/display_de.properties</destination>
+			<type>plain</type>
+			<uuidstructure>c2878e89-5ae0-11dc-b7ed-5fc9fa232cc8</uuidstructure>
+			<uuidresource>c2878e8a-5ae0-11dc-b7ed-5fc9fa232cc8</uuidresource>
+			<datelastmodified>Thu, 24 Apr 2008 12:13:56 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 Sep 2007 12:17:09 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.calendar/classes/com/alkacon/opencms/calendar/display_en.properties</destination>
+			<type>plain</type>
+			<uuidstructure>9e275b97-106a-11dd-9111-d3ac683d9ec4</uuidstructure>
+			<uuidresource>c21cbec8-5ae0-11dc-b7ed-5fc9fa232cc8</uuidresource>
+			<datelastmodified>Thu, 24 Apr 2008 12:13:39 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 Sep 2007 12:17:09 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/classes/com/alkacon/opencms/calendar/holidays.properties</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/classes/com/alkacon/opencms/calendar/holidays.properties</destination>
+			<type>plain</type>
+			<uuidstructure>6e53d334-1053-11dd-8461-d3ac683d9ec4</uuidstructure>
+			<uuidresource>6e53d335-1053-11dd-8461-d3ac683d9ec4</uuidresource>
+			<datelastmodified>Wed, 23 Apr 2008 07:59:23 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 22 Apr 2008 10:04:01 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/classes/com/alkacon/opencms/calendar/holidays_de.properties</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/classes/com/alkacon/opencms/calendar/holidays_de.properties</destination>
+			<type>plain</type>
+			<uuidstructure>c2bb6fcc-5ae0-11dc-b7ed-5fc9fa232cc8</uuidstructure>
+			<uuidresource>523093ff-2397-11da-a72a-67e4bdd36d95</uuidresource>
+			<datelastmodified>Wed, 23 Apr 2008 08:03:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 12 Sep 2005 14:12:58 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.calendar/classes/com/alkacon/opencms/calendar/holidays_de_DE.properties</destination>
+			<type>plain</type>
+			<uuidstructure>c2c4978d-5ae0-11dc-b7ed-5fc9fa232cc8</uuidstructure>
+			<uuidresource>523093ff-2397-11da-a72a-67e4bdd36d95</uuidresource>
+			<datelastmodified>Wed, 23 Apr 2008 08:03:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 12 Sep 2005 14:12:58 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/classes/com/alkacon/opencms/calendar/messages_de.properties</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/classes/com/alkacon/opencms/calendar/messages_de.properties</destination>
+			<type>plain</type>
+			<uuidstructure>c2d0cc8e-5ae0-11dc-b7ed-5fc9fa232cc8</uuidstructure>
+			<uuidresource>c2d0cc8f-5ae0-11dc-b7ed-5fc9fa232cc8</uuidresource>
+			<datelastmodified>Thu, 24 Apr 2008 09:25:26 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 Sep 2007 12:17:10 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/classes/com/alkacon/opencms/calendar/workplace.properties</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/classes/com/alkacon/opencms/calendar/workplace.properties</destination>
+			<type>plain</type>
+			<uuidstructure>b4881e18-106a-11dd-9111-d3ac683d9ec4</uuidstructure>
+			<uuidresource>b4881e19-106a-11dd-9111-d3ac683d9ec4</uuidresource>
+			<datelastmodified>Fri, 25 Apr 2008 13:52:14 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 22 Apr 2008 12:50:37 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/classes/com/alkacon/opencms/calendar/workplace_de.properties</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/classes/com/alkacon/opencms/calendar/workplace_de.properties</destination>
+			<type>plain</type>
+			<uuidstructure>c4c7a9db-106a-11dd-9111-d3ac683d9ec4</uuidstructure>
+			<uuidresource>c4c7a9dc-106a-11dd-9111-d3ac683d9ec4</uuidresource>
+			<datelastmodified>Fri, 25 Apr 2008 13:52:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 22 Apr 2008 12:51:04 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.calendar/classes/com/alkacon/opencms/calendar/workplace_en.properties</destination>
+			<type>plain</type>
+			<uuidstructure>bb20a7ba-106a-11dd-9111-d3ac683d9ec4</uuidstructure>
+			<uuidresource>b4881e19-106a-11dd-9111-d3ac683d9ec4</uuidresource>
+			<datelastmodified>Fri, 25 Apr 2008 13:52:14 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 22 Apr 2008 12:50:37 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.calendar/elements</destination>
+			<type>folder</type>
+			<uuidstructure>a2ba61db-5ae0-11dc-b7ed-5fc9fa232cc8</uuidstructure>
+			<datelastmodified>Tue, 04 Sep 2007 12:16:16 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 Sep 2007 12:16:16 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/elements/calendar-side-currententries.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/elements/calendar-side-currententries.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>02b448be-11e7-11dd-b9fc-d3ac683d9ec4</uuidstructure>
+			<uuidresource>02b448bf-11e7-11dd-b9fc-d3ac683d9ec4</uuidresource>
+			<datelastmodified>Thu, 24 Apr 2008 12:25:41 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 24 Apr 2008 10:12:57 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Calendar current entries side element]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[uri;params=(count);timeout=720]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/elements/calendar-side-month.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/elements/calendar-side-month.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>d6184120-5ae0-11dc-b7ed-5fc9fa232cc8</uuidstructure>
+			<uuidresource>d6184121-5ae0-11dc-b7ed-5fc9fa232cc8</uuidresource>
+			<datelastmodified>Wed, 23 Apr 2008 09:13:27 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 Sep 2007 12:17:42 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Calendar month side element]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[uri;params=(calYear,calMonth);timeout=720]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/elements/dailyoverview.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/elements/dailyoverview.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>80f5351e-1059-11dd-8461-d3ac683d9ec4</uuidstructure>
+			<uuidresource>80f5351f-1059-11dd-8461-d3ac683d9ec4</uuidresource>
+			<datelastmodified>Thu, 24 Apr 2008 09:05:56 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 22 Apr 2008 10:47:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Calendar daily overview]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[uri;params=(calYear, calMonth, calDay);timeout=720]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/elements/monthlyoverview.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/elements/monthlyoverview.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>8119d423-1059-11dd-8461-d3ac683d9ec4</uuidstructure>
+			<uuidresource>8119d424-1059-11dd-8461-d3ac683d9ec4</uuidresource>
+			<datelastmodified>Thu, 24 Apr 2008 09:06:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 22 Apr 2008 10:47:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Calendar monthly overview]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[uri;params=(calYear, calMonth, calDay);timeout=720]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/elements/weeklyoverview.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/elements/weeklyoverview.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>81278fc8-1059-11dd-8461-d3ac683d9ec4</uuidstructure>
+			<uuidresource>81278fc9-1059-11dd-8461-d3ac683d9ec4</uuidresource>
+			<datelastmodified>Thu, 24 Apr 2008 09:06:06 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 22 Apr 2008 10:47:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Calendar weekly overview]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[uri;params=(calYear, calMonth, calDay);timeout=720]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/elements/yearlyoverview.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/elements/yearlyoverview.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>81354b6d-1059-11dd-8461-d3ac683d9ec4</uuidstructure>
+			<uuidresource>81354b6e-1059-11dd-8461-d3ac683d9ec4</uuidresource>
+			<datelastmodified>Thu, 24 Apr 2008 09:06:10 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 22 Apr 2008 10:47:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Calendar yearly overview]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[uri;params=(calYear, calMonth, calDay);timeout=720]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.calendar/lib</destination>
+			<type>folder</type>
+			<uuidstructure>78569147-5ae2-11dc-b7ed-5fc9fa232cc8</uuidstructure>
+			<datelastmodified>Tue, 04 Sep 2007 12:29:24 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 Sep 2007 12:29:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/lib/com.alkacon.opencms.calendar.jar</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/lib/com.alkacon.opencms.calendar.jar</destination>
+			<type>binary</type>
+			<uuidstructure>906899f6-12ce-11dd-ae91-d3ac683d9ec4</uuidstructure>
+			<uuidresource>906899f7-12ce-11dd-ae91-d3ac683d9ec4</uuidresource>
+			<datelastmodified>Fri, 25 Apr 2008 13:50:28 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 25 Apr 2008 13:50:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[com.alkacon.opencms.calendar]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.calendar/pages</destination>
+			<type>folder</type>
+			<uuidstructure>e06f5965-5ae0-11dc-b7ed-5fc9fa232cc8</uuidstructure>
+			<datelastmodified>Tue, 04 Sep 2007 12:17:59 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 Sep 2007 12:17:59 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/pages/detail-calendar.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/pages/detail-calendar.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>d9d504d6-1113-11dd-91c8-d3ac683d9ec4</uuidstructure>
+			<uuidresource>d9d504d7-1113-11dd-91c8-d3ac683d9ec4</uuidresource>
+			<datelastmodified>Thu, 24 Apr 2008 14:14:33 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 23 Apr 2008 09:01:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Calendar views detail page]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[uri;params=(calYear,calMonth,calDay,calView)]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/pages/detail-entry.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/pages/detail-entry.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>d42fc70a-1136-11dd-9886-d3ac683d9ec4</uuidstructure>
+			<uuidresource>d42fc70b-1136-11dd-9886-d3ac683d9ec4</uuidresource>
+			<datelastmodified>Thu, 24 Apr 2008 12:15:17 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 23 Apr 2008 13:11:47 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Calendar entry detail page]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[uri]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/pages/detail-serialentry.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/pages/detail-serialentry.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>a4956577-1146-11dd-b59a-d3ac683d9ec4</uuidstructure>
+			<uuidresource>a4956578-1146-11dd-b59a-d3ac683d9ec4</uuidresource>
+			<datelastmodified>Thu, 24 Apr 2008 12:15:32 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 23 Apr 2008 15:04:59 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Calendar serial entry detail page]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[uri;params=(calDat)]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/pages/example.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/pages/example.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>e0dd366c-5ae0-11dc-b7ed-5fc9fa232cc8</uuidstructure>
+			<uuidresource>e0dd366d-5ae0-11dc-b7ed-5fc9fa232cc8</uuidresource>
+			<datelastmodified>Tue, 20 Sep 2005 16:00:40 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 Sep 2007 12:18:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Calendar example]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.calendar/resources</destination>
+			<type>folder</type>
+			<uuidstructure>e1bdab6f-5ae0-11dc-b7ed-5fc9fa232cc8</uuidstructure>
+			<datelastmodified>Tue, 04 Sep 2007 12:18:02 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 Sep 2007 12:18:02 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>export</name>
+					<value><![CDATA[true]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/resources/calendar.css</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/resources/calendar.css</destination>
+			<type>plain</type>
+			<uuidstructure>e23acab2-5ae0-11dc-b7ed-5fc9fa232cc8</uuidstructure>
+			<uuidresource>e23acab3-5ae0-11dc-b7ed-5fc9fa232cc8</uuidresource>
+			<datelastmodified>Fri, 25 Apr 2008 13:58:12 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 Sep 2007 12:18:02 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Default calendar CSS]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.calendar/schemas</destination>
+			<type>folder</type>
+			<uuidstructure>d18cc18b-1055-11dd-8461-d3ac683d9ec4</uuidstructure>
+			<datelastmodified>Tue, 22 Apr 2008 10:21:06 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 22 Apr 2008 10:21:06 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/schemas/calendarview.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/schemas/calendarview.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>282921f9-1121-11dd-a76f-d3ac683d9ec4</uuidstructure>
+			<uuidresource>282921fa-1121-11dd-a76f-d3ac683d9ec4</uuidresource>
+			<datelastmodified>Thu, 24 Apr 2008 14:18:06 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 23 Apr 2008 10:36:39 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[XSD for calendar oveerview page]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/schemas/calendarviewresconf.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/schemas/calendarviewresconf.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>a272692c-1122-11dd-a76f-d3ac683d9ec4</uuidstructure>
+			<uuidresource>a272692d-1122-11dd-a76f-d3ac683d9ec4</uuidresource>
+			<datelastmodified>Wed, 23 Apr 2008 10:49:21 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 23 Apr 2008 10:47:14 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Nested XSD for configured resource types]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/schemas/entry.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/schemas/entry.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>399141bb-1058-11dd-8461-d3ac683d9ec4</uuidstructure>
+			<uuidresource>399141bc-1058-11dd-8461-d3ac683d9ec4</uuidresource>
+			<datelastmodified>Tue, 22 Apr 2008 12:46:46 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 22 Apr 2008 10:38:19 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[XSD for calendar entries]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/schemas/entrylink.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/schemas/entrylink.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>abe5dc98-1057-11dd-8461-d3ac683d9ec4</uuidstructure>
+			<uuidresource>abe5dc99-1057-11dd-8461-d3ac683d9ec4</uuidresource>
+			<datelastmodified>Tue, 22 Apr 2008 10:36:54 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 22 Apr 2008 10:34:22 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Nested XSD for calendar entry links]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/schemas/serialchange.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/schemas/serialchange.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>f10f8245-1056-11dd-8461-d3ac683d9ec4</uuidstructure>
+			<uuidresource>f10f8246-1056-11dd-8461-d3ac683d9ec4</uuidresource>
+			<datelastmodified>Thu, 24 Apr 2008 08:48:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 22 Apr 2008 10:29:08 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Nested XSD for serial date changes]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/schemas/serialentry.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/schemas/serialentry.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>23504e22-1056-11dd-8461-d3ac683d9ec4</uuidstructure>
+			<uuidresource>23504e23-1056-11dd-8461-d3ac683d9ec4</uuidresource>
+			<datelastmodified>Thu, 24 Apr 2008 08:48:15 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 22 Apr 2008 10:23:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[XSD for calendar serial entries]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace</destination>
+			<type>folder</type>
+			<uuidstructure>825afce2-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>content-encoding</name>
+					<value><![CDATA[UTF-8]]></value>
+				</property>
+				<property>
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+				<property>
+					<name>login-form</name>
+					<value><![CDATA[/system/login/index.html]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>ALL_OTHERS</uuidprincipal>
+					<flags>134</flags>
+					<permissionset>
+						<allowed>0</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+				<accessentry>
+					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
+					<flags>518</flags>
+					<permissionset>
+						<allowed>5</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<destination>system/workplace/resources</destination>
+			<type>folder</type>
+			<uuidstructure>82c16052-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace/resources/components</destination>
+			<type>folder</type>
+			<uuidstructure>833afc9a-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace/resources/components/widgets</destination>
+			<type>folder</type>
+			<uuidstructure>83afdee9-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/components/widgets/serialdate_form.html</source>
+			<destination>system/workplace/resources/components/widgets/serialdate_form.html</destination>
+			<type>plain</type>
+			<uuidstructure>1a059f6c-56f3-11dc-ba23-5fc9fa232cc8</uuidstructure>
+			<uuidresource>1a059f6d-56f3-11dc-ba23-5fc9fa232cc8</uuidresource>
+			<datelastmodified>Thu, 24 Apr 2008 15:28:18 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 30 Aug 2007 12:18:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[HTML for the serial date widget]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/components/widgets/serialdate_script.js</source>
+			<destination>system/workplace/resources/components/widgets/serialdate_script.js</destination>
+			<type>plain</type>
+			<uuidstructure>da5b3808-56db-11dc-ba23-5fc9fa232cc8</uuidstructure>
+			<uuidresource>da5b3809-56db-11dc-ba23-5fc9fa232cc8</uuidresource>
+			<datelastmodified>Thu, 30 Aug 2007 15:53:11 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 30 Aug 2007 09:31:57 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[JS for serial date widget]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/components/widgets/serialdate_styles.css</source>
+			<destination>system/workplace/resources/components/widgets/serialdate_styles.css</destination>
+			<type>plain</type>
+			<uuidstructure>c5b719a5-56db-11dc-ba23-5fc9fa232cc8</uuidstructure>
+			<uuidresource>c5b719a6-56db-11dc-ba23-5fc9fa232cc8</uuidresource>
+			<datelastmodified>Thu, 30 Aug 2007 15:25:52 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 30 Aug 2007 09:31:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[CSS for serial date widget]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace/resources/filetypes</destination>
+			<type>folder</type>
+			<uuidstructure>83ca1dcc-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/filetypes/alkacon-cal-entry.png</source>
+			<destination>system/workplace/resources/filetypes/alkacon-cal-entry.png</destination>
+			<type>image</type>
+			<uuidstructure>28c98572-1070-11dd-9111-d3ac683d9ec4</uuidstructure>
+			<uuidresource>28c98573-1070-11dd-9111-d3ac683d9ec4</uuidresource>
+			<datelastmodified>Thu, 24 Apr 2008 13:19:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 22 Apr 2008 13:29:39 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/filetypes/alkacon-cal-menu.png</source>
+			<destination>system/workplace/resources/filetypes/alkacon-cal-menu.png</destination>
+			<type>image</type>
+			<uuidstructure>1670416f-1070-11dd-9111-d3ac683d9ec4</uuidstructure>
+			<uuidresource>97762877-1211-11dd-a039-d3ac683d9ec4</uuidresource>
+			<datelastmodified>Fri, 22 Feb 2008 08:20:31 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 24 Apr 2008 15:17:45 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/filetypes/alkacon-cal-serial.png</source>
+			<destination>system/workplace/resources/filetypes/alkacon-cal-serial.png</destination>
+			<type>image</type>
+			<uuidstructure>2de421a5-1070-11dd-9111-d3ac683d9ec4</uuidstructure>
+			<uuidresource>2de421a6-1070-11dd-9111-d3ac683d9ec4</uuidresource>
+			<datelastmodified>Thu, 24 Apr 2008 13:19:51 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 22 Apr 2008 13:29:48 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/filetypes/alkacon-cal-view.png</source>
+			<destination>system/workplace/resources/filetypes/alkacon-cal-view.png</destination>
+			<type>image</type>
+			<uuidstructure>bffb7486-1131-11dd-add0-d3ac683d9ec4</uuidstructure>
+			<uuidresource>bffb7487-1131-11dd-add0-d3ac683d9ec4</uuidresource>
+			<datelastmodified>Thu, 24 Apr 2008 13:19:59 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 23 Apr 2008 12:35:26 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+	</files>
+</export>

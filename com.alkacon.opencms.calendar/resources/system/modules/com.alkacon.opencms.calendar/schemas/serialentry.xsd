@@ -1,0 +1,54 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.calendar/schemas/serialchange.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.calendar/schemas/entrylink.xsd"/>
+		
+	<xsd:element name="AlkaconCalendarSerialDates" type="OpenCmsAlkaconCalendarSerialDates"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconCalendarSerialDates">
+		<xsd:sequence>
+			<xsd:element name="AlkaconCalendarSerialDate" type="OpenCmsAlkaconCalendarSerialDate" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconCalendarSerialDate">
+		<xsd:sequence>
+			<xsd:element name="Title" type="OpenCmsString" />
+			<xsd:element name="Teaser" type="OpenCmsString" />
+			<xsd:element name="Text" type="OpenCmsHtml" />
+			<xsd:element name="Location" type="OpenCmsString" />
+			<xsd:element name="Links" type="OpenCmsAlkaconCalendarLink" minOccurs="0" />
+			<xsd:element name="Showtime" type="OpenCmsBoolean" />
+			<xsd:element name="Serialdate" type="OpenCmsString" />
+			<xsd:element name="Change" type="OpenCmsAlkaconCalendarSerialDateChange" minOccurs="0" maxOccurs="52" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="required"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<handler class="com.alkacon.opencms.calendar.CmsSerialDateXmlContentHandler" />
+			<resourcebundle name="com.alkacon.opencms.calendar.workplace"/>
+			<preview uri="%(previewtempfile)" />
+			<defaults>
+				<default element="Showtime" value="true" />
+				<default element="Change/Showtime" value="true" />
+				<default element="Change/Time" value="%(key.calendar.defaults.time)" />
+			</defaults>
+			<layouts>
+				<layout element="Teaser" widget="TextareaWidget" configuration="3" />
+				<layout element="Text" widget="HtmlWidget" configuration="formatselect,anchor,link,image,table,downloadgallery,imagegallery" />
+				<layout element="Serialdate" widget="SerialDateWidget" configuration="" />
+			</layouts>
+			<mappings>
+				<mapping element="Title" mapto="property:Title" />
+				<mapping element="Teaser" mapto="property:Description" />
+				<mapping element="Showtime" mapto="property:calendar.showtime" />
+				<mapping element="Serialdate" mapto="property:calendar.startdate" />
+			</mappings>
+			<validationrules/>
+		</xsd:appinfo>
+
+	</xsd:annotation>  
+</xsd:schema>
