@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.survey/src/com/alkacon/opencms/survey/CmsFormReportingBean.java,v $
- * Date   : $Date: 2008/04/23 14:21:39 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/04/25 14:29:43 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -37,11 +37,14 @@ import com.alkacon.opencms.formgenerator.CmsRadioButtonField;
 import com.alkacon.opencms.formgenerator.CmsSelectionField;
 import com.alkacon.opencms.formgenerator.I_CmsField;
 
+import org.opencms.file.CmsGroup;
+import org.opencms.file.CmsUser;
 import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.util.CmsStringUtil;
 
 import java.awt.Color;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,7 +59,7 @@ import org.apache.commons.collections.map.LazyMap;
  * 
  * @author Röttgers
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4
  */
@@ -98,6 +101,9 @@ public class CmsFormReportingBean extends CmsJspActionElement {
 
     /** Lazy map with the color of the text if white or black.*/
     private Map m_color;
+
+    /** Lazy map with the groups.*/
+    private Map m_group;
 
     /** Lazy map with label of the fields.*/
     private Map m_label;
@@ -202,6 +208,47 @@ public class CmsFormReportingBean extends CmsJspActionElement {
     public String getSeparator() {
 
         return PARAM_SEPARATOR;
+    }
+
+    /**
+     * Returns a lazy initialized map that provides if the user can see the detail page or not 
+     * for each group used as a key in the Map.<p> 
+     * 
+     * @return a lazy initialized map
+     */
+    public Map getShowDetail() {
+
+        if (m_group == null) {
+            m_group = LazyMap.decorate(new HashMap(), new Transformer() {
+
+                /**
+                 * @see org.apache.commons.collections.Transformer#transform(java.lang.Object)
+                 */
+                public Object transform(Object input) {
+
+                    String value = String.valueOf(input);
+                    if (CmsStringUtil.isEmptyOrWhitespaceOnly(value)) {
+                        return new Boolean(true);
+                    }
+                    try {
+                        CmsUser user = getCmsObject().getRequestContext().currentUser();
+                        List list = getCmsObject().getGroupsOfUser(user.getName(), false);
+                        CmsGroup group;
+                        for (int i = 0; i < list.size(); i++) {
+                            group = (CmsGroup)list.get(i);
+                            if (group.getName().equals(value)) {
+                                return new Boolean(true);
+                            }
+                        }
+                    } catch (Exception e) {
+                        // NOOP
+                    }
+
+                    return new Boolean(false);
+                }
+            });
+        }
+        return m_group;
     }
 
     /**

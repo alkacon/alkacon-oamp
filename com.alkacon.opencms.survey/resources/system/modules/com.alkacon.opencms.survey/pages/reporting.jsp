@@ -29,11 +29,12 @@
 <cms:contentload collector="singleFile" param="%(opencms.uri)">
 	<cms:contentaccess var="content" />
 	
-	<c:if test="${!empty content.value['Text'] && !param.detail}">
+	<c:set var="color" value="${content.valueList['Color']}"/>
+	<c:set var="group" value="${content.value['DetailGroup'] }"/>
+	
+	<c:if test="${!empty content.value['Text'] && (!param.detail || !cms.showDetail[group])}">
 		<c:out value="${content.value['Text']}" escapeXml="false"/>
 	</c:if>
-	
-	<c:set var="color" value="${content.valueList['Color']}"/>
 	
 	<c:if test="${!content.value['Webform'].isEmptyOrWhitespaceOnly}">
 	<cms:contentload collector="singleFile" param="${content.value['Webform']}">
@@ -55,13 +56,13 @@
 			<div id="webformReport">
 	
 				<%-- special caption for the overview page --%>
-				<c:if test="${!param.detail}">
+				<c:if test="${!param.detail || !cms.showDetail[group]}">
 					<h2><fmt:message key="report.count.headline"><fmt:param value="${fn:length(workBean.list)}"/></fmt:message></h2>
-					<a class="linkDetail" href="<cms:link>${cms.requestContext.uri}?detail=true</cms:link>" title="<fmt:message key='report.next.detail.title'/>"><fmt:message key="report.next.detail.headline"/></a>
+					<c:if test="${cms.showDetail[group]}"><a class="linkDetail" href="<cms:link>${cms.requestContext.uri}?detail=true</cms:link>" title="<fmt:message key='report.next.detail.title'/>"><fmt:message key="report.next.detail.headline"/></a></c:if>
 				</c:if>
 				
 				<%-- special caption for the detail page --%>
-				<c:if test="${param.detail}">
+				<c:if test="${param.detail && cms.showDetail[group]}">
 					<h2><fmt:message key="report.detail.headline"><fmt:param value="${curPage}"/><fmt:param value="${fn:length(workBean.list)}"/></fmt:message></h2>
 					<a class="linkDetail" href="<cms:link>${cms.requestContext.uri}</cms:link>" title="<fmt:message key='report.back.overview.title'/>"><fmt:message key="report.back.overview.headline"/></a>
 					<%@include file="%(link.strong:/system/modules/com.alkacon.opencms.survey/elements/include_paging.jsp)" %>
@@ -69,14 +70,14 @@
 				
 				<%-- for each field print the answers --%>
 				<c:forEach var="field" items="${webform.valueList['InputField']}">
-					<c:if test="${param.detail || cms.fieldTypeCorrect[field.value['FieldType']]}">
+					<c:if test="${(param.detail && cms.showDetail[group]) || cms.fieldTypeCorrect[field.value['FieldType']]}">
 	
 						<%-- get the label for the field --%>
 						<c:set var="labeling" value="${cms.labeling[field.value['FieldLabel']]}"/>
 						<h3><c:out value="${labeling[0]}"/></h3>
 
 						<%-- is the detail page --%>
-						<c:if test="${param.detail}">
+						<c:if test="${param.detail && cms.showDetail[group]}">
 							<c:set var="itemParam" value="${labeling[1]}${cms.separator}${curPage}${cms.separator}${field.value['FieldType']}"/>
 							<c:forEach var="item" items="${workBean.answerByField[itemParam]}">
 								<div class="reportitem">
@@ -86,7 +87,7 @@
 						</c:if>
 
 						<%-- is the overview page --%>
-						<c:if test="${!param.detail}">
+						<c:if test="${!param.detail ||  !cms.showDetail[group]}">
 							<c:forEach var="item" items="${workBean.answers[labeling[1]]}" varStatus="status">
 								<div class="reportitem">
 									<c:set var="width" value="${ (item.value/fn:length(workBean.list))  }"/>

@@ -14,6 +14,7 @@
 		<xsd:sequence>
 			<xsd:element name="Webform" type="OpenCmsVfsFile"/>
 			<xsd:element name="Color" type="OpenCmsColor" minOccurs="1" maxOccurs="unbounded"/>
+			<xsd:element name="DetailGroup" type="OpenCmsString" minOccurs="0"/>
 			<xsd:element name="Text" type="OpenCmsString" minOccurs="0" />
 		</xsd:sequence>
 		<xsd:attribute name="language" type="OpenCmsLocale" use="required"/>
@@ -24,13 +25,16 @@
 			<resourcebundle name="com.alkacon.opencms.survey.workplace"/>
 			<preview uri="${previewtempfile}" />
 			<defaults>
+				<default element="DetailGroup" value="Administrators"/>
 			</defaults>
 			<validationrules>
-				<rule element="Webform" regex=".+" type="error" message="%(err.xmlcontent.field.empty)"/>
-				<rule element="Color" regex=".+" type="error" message="%(err.xmlcontent.field.empty)"/>
+				<rule element="Webform" regex=".+" type="error" message="${key.err.xmlcontent.field.empty}"/>
+				<rule element="Color" regex=".+" type="error" message="${key.err.xmlcontent.field.empty}"/>
+				<rule element="DetailGroup" regex=".+" type="error" message="${key.err.xmlcontent.field.empty}"/>
 			</validationrules>
 			<layouts>
 				<layout element="Text" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
+				<layout element="DetailGroup" widget="GroupWidget" />
 			</layouts>	
 		</xsd:appinfo>
 	</xsd:annotation>  
