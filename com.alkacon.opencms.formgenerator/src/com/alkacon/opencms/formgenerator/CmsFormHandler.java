@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormHandler.java,v $
- * Date   : $Date: 2008/02/19 11:55:26 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2008/04/30 07:58:07 $
+ * Version: $Revision: 1.6 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -34,8 +34,10 @@ package com.alkacon.opencms.formgenerator;
 
 import com.alkacon.opencms.formgenerator.database.CmsFormDataAccess;
 
+import org.opencms.file.CmsResource;
 import org.opencms.i18n.CmsEncoder;
 import org.opencms.i18n.CmsMessages;
+import org.opencms.i18n.CmsMultiMessages;
 import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.mail.CmsHtmlMail;
 import org.opencms.mail.CmsSimpleMail;
@@ -78,7 +80,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * 
  * @since 7.0.4 
  */
@@ -142,7 +144,7 @@ public class CmsFormHandler extends CmsJspActionElement {
     protected transient CmsMacroResolver m_macroResolver;
 
     /** The localized messages for the form handler. */
-    protected CmsMessages m_messages;
+    protected CmsMultiMessages m_messages;
 
     /** The multipart file items. */
     protected List m_mulipartFileItems;
@@ -181,6 +183,22 @@ public class CmsFormHandler extends CmsJspActionElement {
         super(context, req, res);
         m_errors = new HashMap();
         init(req, formConfigUri);
+    }
+
+    /**
+     * Adds on the first position the given messages.<p>
+     * 
+     * @param messages the localized messages
+     */
+    public void addMessages(CmsMessages messages) {
+
+        CmsMultiMessages tmpOld = m_messages;
+        m_messages = new CmsMultiMessages(messages.getLocale());
+        m_messages.addMessages(messages);
+        if (tmpOld != null) {
+            m_messages.addMessages(tmpOld.getMessages());
+        }
+        tmpOld = null;
     }
 
     /**
@@ -663,7 +681,19 @@ public class CmsFormHandler extends CmsJspActionElement {
         CmsModule module = OpenCms.getModuleManager().getModule(MODULE);
         String para = module.getParameter("message", "/com/alkacon/opencms/formgenerator/workplace");
 
-        setMessages(new CmsMessages(para, getRequestContext().getLocale()));
+        // get the site message
+        String siteroot = getCmsObject().getRequestContext().getSiteRoot();
+        if (siteroot.startsWith(CmsResource.VFS_FOLDER_SITES)) {
+            siteroot = siteroot.substring(CmsResource.VFS_FOLDER_SITES.length() + 1);
+        }
+        if (!CmsStringUtil.isEmptyOrWhitespaceOnly(siteroot)) {
+            String fileSite = module.getParameter("message_" + siteroot);
+            if (!CmsStringUtil.isEmptyOrWhitespaceOnly(fileSite)) {
+                para = fileSite;
+            }
+        }
+
+        addMessages(new CmsMessages(para, getRequestContext().getLocale()));
         // get the form configuration
         setFormConfiguration(new CmsForm(this, getMessages(), isInitial(), formConfigUri, formAction));
     }
@@ -1079,13 +1109,13 @@ public class CmsFormHandler extends CmsJspActionElement {
     }
 
     /**
-     * Sets the localized messages.<p>
-     *
-     * @param messages the localized messages
-     */
+    * Sets the localized messages.<p>
+    *
+    * @param messages the localized messages
+    */
     protected void setMessages(CmsMessages messages) {
 
-        m_messages = messages;
+        addMessages(messages);
     }
 
     /**

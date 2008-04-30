@@ -6,6 +6,9 @@ boolean isOffline = !cms.getRequestContext().currentProject().isOnlineProject();
 
 
 // get the localized messages to create the form
+if(pageContext.getAttribute("addMessage") !=null){
+    cms.addMessages(new CmsMessages((String)pageContext.getAttribute("addMessage"),cms.getRequestContext().getLocale()));
+}
 CmsMessages messages = cms.getMessages();
 
 // In case of downloading the csv file from database no template must be included: 
@@ -24,9 +27,9 @@ if (! showForm) {
 	if (cms.showCheck()) {
 		// show optional check page
 		request.setAttribute("formhandler", cms);
-		cms.include("../elements/check.jsp");
+		cms.include("/system/modules/com.alkacon.opencms.formgenerator/elements/check.jsp");
 	}  else if(cms.showDownloadData()) {
-	    cms.include("../elements/datadownload.jsp");
+	    cms.include("/system/modules/com.alkacon.opencms.formgenerator/elements/datadownload.jsp");
 	} else if (cms.getFormConfiguration().hasTargetUri()) {
 		response.sendRedirect(cms.link(cms.getFormConfiguration().getTargetUri()));
 	} else {
@@ -34,7 +37,7 @@ if (! showForm) {
 		if (cms.sendData()) {
 			// successfully sent mail, show confirmation end page
 			request.setAttribute("formhandler", cms);
-			cms.include("../elements/confirmation.jsp");
+			cms.include("/system/modules/com.alkacon.opencms.formgenerator/elements/confirmation.jsp");
 		} else {
 			// failure sending mail, show error output %>
 			<h3><%= messages.key("form.error.mail.headline") %></h3>
