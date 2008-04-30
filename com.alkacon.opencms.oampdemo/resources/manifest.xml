@@ -4,7 +4,7 @@
 	<info>
 		<creator>Admin</creator>
 		<opencms_version>7.0.4</opencms_version>
-		<createdate>Sat, 01 Mar 2008 16:12:17 GMT</createdate>
+		<createdate>Tue, 29 Apr 2008 15:04:35 GMT</createdate>
 		<infoproject>Offline</infoproject>
 		<export_version>7</export_version>
 	</info>
@@ -15,7 +15,7 @@
 		<class/>
 		<description><![CDATA[<p>Demos which are based on the Template Two und the OAMP Modules.</p>
 <p><i>(c) 2007 by Alkacon Software GmbH (http://www.alkacon.com).</i></p>]]></description>
-		<version>1.0.0</version>
+		<version>1.1.0</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail/>
 		<datecreated/>
@@ -24,8 +24,10 @@
 		<dependencies>
 			<dependency name="org.opencms.frontend.templatetwo.demo.content" version="7.0.4"/>
 			<dependency name="com.alkacon.opencms.feeder" version="1.0.0"/>
-			<dependency name="com.alkacon.opencms.formgenerator" version="1.1.0"/>
+			<dependency name="com.alkacon.opencms.formgenerator" version="1.2.0"/>
 			<dependency name="com.alkacon.opencms.counter" version="1.0.0"/>
+			<dependency name="com.alkacon.opencms.calendar" version="1.0.0"/>
+			<dependency name="com.alkacon.opencms.survey" version="1.0.0"/>
 		</dependencies>
 		<exportpoints>
 			<exportpoint uri="/system/modules/com.alkacon.opencms.oampdemo/classes/" destination="WEB-INF/classes/"/>
@@ -47,7 +49,52 @@
 			<datecreated>Wed, 13 Feb 2008 14:31:44 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
-			<properties/>
+			<properties>
+				<property>
+					<name>NavPos</name>
+					<value><![CDATA[3.25]]></value>
+				</property>
+				<property>
+					<name>NavText</name>
+					<value><![CDATA[OpenCms Demo]]></value>
+				</property>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[OpenCms Demo [DE]]]></value>
+				</property>
+				<property>
+					<name>default-file</name>
+					<value><![CDATA[start.html]]></value>
+				</property>
+				<property>
+					<name>locale</name>
+					<value><![CDATA[de, en]]></value>
+				</property>
+				<property>
+					<name>style.config</name>
+					<value><![CDATA[/demo_de/_config_/layout/default]]></value>
+				</property>
+				<property>
+					<name>style.layout</name>
+					<value><![CDATA[/demo_de/_config_/layout/style]]></value>
+				</property>
+				<property>
+					<name>style.options</name>
+					<value><![CDATA[/demo_de/_config_/layout/options]]></value>
+				</property>
+				<property>
+					<name>stylesheet</name>
+					<value><![CDATA[/system/modules/org.opencms.frontend.templatetwo.demo/resources/css/style.css]]></value>
+				</property>
+				<property>
+					<name>template</name>
+					<value><![CDATA[/system/modules/org.opencms.frontend.templatetwo/templates/main.jsp]]></value>
+				</property>
+				<property>
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/org.opencms.frontend.templatetwo/pages/default.jsp]]></value>
+				</property>
+			</properties>
 			<relations/>
 			<accesscontrol/>
 		</file>
@@ -102,10 +149,188 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<destination>demo_de/oamp/calendar</destination>
+			<type>folder</type>
+			<uuidstructure>335fa2b9-152d-11dd-9751-d323604c3b7a</uuidstructure>
+			<datelastmodified>Mon, 28 Apr 2008 15:09:48 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 28 Apr 2008 14:12:57 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>NavPos</name>
+					<value><![CDATA[2.0]]></value>
+				</property>
+				<property>
+					<name>NavText</name>
+					<value><![CDATA[OAMP Kalender]]></value>
+				</property>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Alkacon OAMP Kalender]]></value>
+				</property>
+				<property>
+					<name>calendar.uri</name>
+					<value><![CDATA[/demo_de/oamp/calendar/calendar-view.html]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>demo_de/oamp/calendar/Alkacon_OAMP_Calendar.pdf</source>
+			<destination>demo_de/oamp/calendar/Alkacon_OAMP_Calendar.pdf</destination>
+			<type>binary</type>
+			<uuidstructure>6bd346bb-152e-11dd-9751-d323604c3b7a</uuidstructure>
+			<uuidresource>6bd346bc-152e-11dd-9751-d323604c3b7a</uuidresource>
+			<datelastmodified>Mon, 28 Apr 2008 14:21:41 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 28 Apr 2008 14:21:41 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Alkacon_OAMP_Calendar]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>demo_de/oamp/calendar/cal-entry1.html</source>
+			<destination>demo_de/oamp/calendar/cal-entry1.html</destination>
+			<type>alkacon-cal-serial</type>
+			<uuidstructure>bf20e001-1537-11dd-9751-d323604c3b7a</uuidstructure>
+			<uuidresource>bf20e002-1537-11dd-9751-d323604c3b7a</uuidresource>
+			<datelastmodified>Mon, 28 Apr 2008 15:29:04 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 28 Apr 2008 15:28:26 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Description</name>
+					<value><![CDATA[Alkacon]]></value>
+				</property>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Grillfest]]></value>
+				</property>
+				<property>
+					<name>calendar.showtime</name>
+					<value><![CDATA[true]]></value>
+				</property>
+				<property>
+					<name>calendar.startdate</name>
+					<value><![CDATA[endtype=1|startdate=1209394800000|interval=1|serialenddate=1209333600000|weekdays=2|enddate=1209398400000|type=2]]></value>
+				</property>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.calendar/pages/detail-serialentry.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>demo_de/oamp/calendar/calendar-box.html</source>
+			<destination>demo_de/oamp/calendar/calendar-box.html</destination>
+			<type>tttextbox</type>
+			<uuidstructure>09fd6380-152f-11dd-9751-d323604c3b7a</uuidstructure>
+			<uuidresource>09fd6381-152f-11dd-9751-d323604c3b7a</uuidresource>
+			<datelastmodified>Mon, 28 Apr 2008 15:06:17 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 28 Apr 2008 14:26:06 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[OAMP Kalender]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>demo_de/oamp/calendar/calendar-current-box.html</source>
+			<destination>demo_de/oamp/calendar/calendar-current-box.html</destination>
+			<type>tttextbox</type>
+			<uuidstructure>60efd7b2-152f-11dd-9751-d323604c3b7a</uuidstructure>
+			<uuidresource>60efd7b3-152f-11dd-9751-d323604c3b7a</uuidresource>
+			<datelastmodified>Mon, 28 Apr 2008 15:06:33 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 28 Apr 2008 14:28:32 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Aktuelle Ereignisse]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>demo_de/oamp/calendar/calendar-view.html</source>
+			<destination>demo_de/oamp/calendar/calendar-view.html</destination>
+			<type>alkacon-cal-view</type>
+			<uuidstructure>ff7eb74f-1534-11dd-9751-d323604c3b7a</uuidstructure>
+			<uuidresource>ff7eb750-1534-11dd-9751-d323604c3b7a</uuidresource>
+			<datelastmodified>Mon, 28 Apr 2008 15:27:55 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 28 Apr 2008 15:08:45 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Alkacon OAMP Kalender Übersicht]]></value>
+				</property>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.calendar/pages/detail-calendar.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>demo_de/oamp/calendar/index.html</source>
+			<destination>demo_de/oamp/calendar/index.html</destination>
+			<type>ttarticle</type>
+			<uuidstructure>1e3f5a0c-152e-11dd-9751-d323604c3b7a</uuidstructure>
+			<uuidresource>1e3f5a0d-152e-11dd-9751-d323604c3b7a</uuidresource>
+			<datelastmodified>Mon, 28 Apr 2008 15:01:53 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 28 Apr 2008 14:19:31 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Alkacon OAMP Kalender Modul]]></value>
+				</property>
+				<property>
+					<name>stylesheet</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.oampdemo/resources/style.css]]></value>
+				</property>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/org.opencms.frontend.templatetwo.demo/pages/article.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
 			<destination>demo_de/oamp/counter</destination>
 			<type>folder</type>
 			<uuidstructure>42f147ee-e79e-11dc-876f-d347f0a2593a</uuidstructure>
-			<datelastmodified>Sat, 01 Mar 2008 14:59:17 GMT</datelastmodified>
+			<datelastmodified>Mon, 28 Apr 2008 14:22:51 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Sat, 01 Mar 2008 14:46:22 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -121,7 +346,7 @@
 				</property>
 				<property>
 					<name>Title</name>
-					<value><![CDATA[OAMP Counter]]></value>
+					<value><![CDATA[Alkacon OAMP Counter]]></value>
 				</property>
 			</properties>
 			<relations/>
@@ -177,7 +402,7 @@
 			<type>jsp</type>
 			<uuidstructure>7429defa-e790-11dc-94c8-d347f0a2593a</uuidstructure>
 			<uuidresource>7429defb-e790-11dc-94c8-d347f0a2593a</uuidresource>
-			<datelastmodified>Sat, 01 Mar 2008 14:54:31 GMT</datelastmodified>
+			<datelastmodified>Mon, 28 Apr 2008 14:22:23 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Sat, 01 Mar 2008 13:07:32 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -207,7 +432,7 @@
 			<destination>demo_de/oamp/feeder</destination>
 			<type>folder</type>
 			<uuidstructure>71f8ca46-e78c-11dc-8533-3bdd2ea0b1ac</uuidstructure>
-			<datelastmodified>Sat, 01 Mar 2008 12:39:31 GMT</datelastmodified>
+			<datelastmodified>Mon, 28 Apr 2008 14:56:46 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Sat, 01 Mar 2008 12:38:50 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -215,7 +440,7 @@
 			<properties>
 				<property>
 					<name>NavPos</name>
-					<value><![CDATA[1.0]]></value>
+					<value><![CDATA[3.0]]></value>
 				</property>
 				<property>
 					<name>NavText</name>
@@ -223,7 +448,7 @@
 				</property>
 				<property>
 					<name>Title</name>
-					<value><![CDATA[OAMP Syndication Feed]]></value>
+					<value><![CDATA[Alkacon OAMP Syndication Feed]]></value>
 				</property>
 			</properties>
 			<relations/>
@@ -326,12 +551,84 @@
 			<accesscontrol/>
 		</file>
 		<file>
-			<destination>demo_de/oamp/webform</destination>
+			<destination>demo_de/oamp/survey</destination>
 			<type>folder</type>
-			<uuidstructure>a4aef7cb-e78c-11dc-8533-3bdd2ea0b1ac</uuidstructure>
-			<datelastmodified>Sat, 01 Mar 2008 12:59:30 GMT</datelastmodified>
+			<uuidstructure>d9cbd7dc-15bd-11dd-acfd-d323604c3b7a</uuidstructure>
+			<datelastmodified>Tue, 29 Apr 2008 07:29:01 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Sat, 01 Mar 2008 12:40:15 GMT</datecreated>
+			<datecreated>Tue, 29 Apr 2008 07:28:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>NavPos</name>
+					<value><![CDATA[3.5]]></value>
+				</property>
+				<property>
+					<name>NavText</name>
+					<value><![CDATA[OAMP Survey]]></value>
+				</property>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Alkacon OAMP Survey]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>demo_de/oamp/survey/Alkacon_OAMP_Survey.pdf</source>
+			<destination>demo_de/oamp/survey/Alkacon_OAMP_Survey.pdf</destination>
+			<type>binary</type>
+			<uuidstructure>0d8803b7-15be-11dd-acfd-d323604c3b7a</uuidstructure>
+			<uuidresource>0d8803b8-15be-11dd-acfd-d323604c3b7a</uuidresource>
+			<datelastmodified>Tue, 29 Apr 2008 07:29:50 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 29 Apr 2008 07:29:50 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Alkacon_OAMP_Survey]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>demo_de/oamp/survey/index.html</source>
+			<destination>demo_de/oamp/survey/index.html</destination>
+			<type>ttarticle</type>
+			<uuidstructure>fb5ed061-15bd-11dd-acfd-d323604c3b7a</uuidstructure>
+			<uuidresource>fb5ed062-15bd-11dd-acfd-d323604c3b7a</uuidresource>
+			<datelastmodified>Tue, 29 Apr 2008 08:52:03 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 29 Apr 2008 07:29:20 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Alkacon OAMP Umfrage Modul]]></value>
+				</property>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/org.opencms.frontend.templatetwo.demo/pages/article.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>demo_de/oamp/survey/report.html</source>
+			<destination>demo_de/oamp/survey/report.html</destination>
+			<type>alkacon-surveyReport</type>
+			<uuidstructure>66a789d1-15c1-11dd-acfd-d323604c3b7a</uuidstructure>
+			<uuidresource>66a789d2-15c1-11dd-acfd-d323604c3b7a</uuidresource>
+			<datelastmodified>Tue, 29 Apr 2008 13:18:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 29 Apr 2008 07:53:48 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties>
@@ -341,11 +638,81 @@
 				</property>
 				<property>
 					<name>NavText</name>
-					<value><![CDATA[OAMP Webform]]></value>
+					<value><![CDATA[Auswertung]]></value>
 				</property>
 				<property>
 					<name>Title</name>
-					<value><![CDATA[OAMP Webform]]></value>
+					<value><![CDATA[Auswertung Umfrage]]></value>
+				</property>
+				<property>
+					<name>stylesheet</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.survey/resources/css/webform.css]]></value>
+				</property>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.survey/pages/reporting.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>demo_de/oamp/survey/survey.html</source>
+			<destination>demo_de/oamp/survey/survey.html</destination>
+			<type>alkacon-survey</type>
+			<uuidstructure>40c657a4-15bf-11dd-acfd-d323604c3b7a</uuidstructure>
+			<uuidresource>40c657a5-15bf-11dd-acfd-d323604c3b7a</uuidresource>
+			<datelastmodified>Tue, 29 Apr 2008 13:30:19 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 29 Apr 2008 07:38:26 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>NavPos</name>
+					<value><![CDATA[1.0]]></value>
+				</property>
+				<property>
+					<name>NavText</name>
+					<value><![CDATA[Umfrage]]></value>
+				</property>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Große Wurst Umfrage]]></value>
+				</property>
+				<property>
+					<name>stylesheet</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.oampdemo/resources/survey.css]]></value>
+				</property>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.survey/pages/form.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>demo_de/oamp/webform</destination>
+			<type>folder</type>
+			<uuidstructure>a4aef7cb-e78c-11dc-8533-3bdd2ea0b1ac</uuidstructure>
+			<datelastmodified>Mon, 28 Apr 2008 14:57:08 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Sat, 01 Mar 2008 12:40:15 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>NavPos</name>
+					<value><![CDATA[4.0]]></value>
+				</property>
+				<property>
+					<name>NavText</name>
+					<value><![CDATA[OAMP Web Formular]]></value>
+				</property>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Alkacon OAMP Web Formular]]></value>
 				</property>
 				<property>
 					<name>default-file</name>
@@ -420,7 +787,44 @@
 			<datecreated>Tue, 26 Feb 2008 08:55:03 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
-			<properties/>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[OpenCms Demo [EN]]]></value>
+				</property>
+				<property>
+					<name>default-file</name>
+					<value><![CDATA[start.html]]></value>
+				</property>
+				<property>
+					<name>locale</name>
+					<value><![CDATA[en, de]]></value>
+				</property>
+				<property>
+					<name>style.config</name>
+					<value><![CDATA[/demo_en/_config_/layout/default]]></value>
+				</property>
+				<property>
+					<name>style.layout</name>
+					<value><![CDATA[/demo_en/_config_/layout/style]]></value>
+				</property>
+				<property>
+					<name>style.options</name>
+					<value><![CDATA[/demo_en/_config_/layout/options]]></value>
+				</property>
+				<property>
+					<name>stylesheet</name>
+					<value><![CDATA[/system/modules/org.opencms.frontend.templatetwo.demo/resources/css/style.css]]></value>
+				</property>
+				<property>
+					<name>template</name>
+					<value><![CDATA[/system/modules/org.opencms.frontend.templatetwo/templates/main.jsp]]></value>
+				</property>
+				<property>
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/org.opencms.frontend.templatetwo/pages/default.jsp]]></value>
+				</property>
+			</properties>
 			<relations/>
 			<accesscontrol/>
 		</file>
@@ -475,10 +879,187 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<destination>demo_en/oamp/calendar</destination>
+			<type>folder</type>
+			<uuidstructure>ec335c84-1532-11dd-9751-d323604c3b7a</uuidstructure>
+			<datelastmodified>Mon, 28 Apr 2008 15:21:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 28 Apr 2008 14:53:54 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>NavPos</name>
+					<value><![CDATA[0.5]]></value>
+				</property>
+				<property>
+					<name>NavText</name>
+					<value><![CDATA[OAMP Calendar]]></value>
+				</property>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Alkacon OAMP Calendar]]></value>
+				</property>
+				<property>
+					<name>calendar.uri</name>
+					<value><![CDATA[/demo_en/oamp/calendar/calendar-view.html]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>demo_en/oamp/calendar/Alkacon_OAMP_Calendar.pdf</destination>
+			<type>binary</type>
+			<uuidstructure>871d6982-1533-11dd-9751-d323604c3b7a</uuidstructure>
+			<uuidresource>6bd346bc-152e-11dd-9751-d323604c3b7a</uuidresource>
+			<datelastmodified>Mon, 28 Apr 2008 14:21:41 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 28 Apr 2008 14:21:41 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Alkacon_OAMP_Calendar]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>demo_en/oamp/calendar/cal-entry1.html</source>
+			<destination>demo_en/oamp/calendar/cal-entry1.html</destination>
+			<type>alkacon-cal-serial</type>
+			<uuidstructure>4028da8f-1532-11dd-9751-d323604c3b7a</uuidstructure>
+			<uuidresource>4028da90-1532-11dd-9751-d323604c3b7a</uuidresource>
+			<datelastmodified>Mon, 28 Apr 2008 15:28:48 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 28 Apr 2008 14:49:05 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Description</name>
+					<value><![CDATA[Alkacon]]></value>
+				</property>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Barbecue]]></value>
+				</property>
+				<property>
+					<name>calendar.showtime</name>
+					<value><![CDATA[true]]></value>
+				</property>
+				<property>
+					<name>calendar.startdate</name>
+					<value><![CDATA[endtype=1|startdate=1209394800000|interval=1|serialenddate=1209333600000|weekdays=2|enddate=1209398400000|type=2]]></value>
+				</property>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.calendar/pages/detail-serialentry.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>demo_en/oamp/calendar/calendar-box.html</source>
+			<destination>demo_en/oamp/calendar/calendar-box.html</destination>
+			<type>tttextbox</type>
+			<uuidstructure>19891608-1534-11dd-9751-d323604c3b7a</uuidstructure>
+			<uuidresource>19891609-1534-11dd-9751-d323604c3b7a</uuidresource>
+			<datelastmodified>Mon, 28 Apr 2008 15:14:17 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 28 Apr 2008 15:02:20 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[OAMP Calendar]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>demo_en/oamp/calendar/calendar-current-box.html</source>
+			<destination>demo_en/oamp/calendar/calendar-current-box.html</destination>
+			<type>tttextbox</type>
+			<uuidstructure>199041fb-1534-11dd-9751-d323604c3b7a</uuidstructure>
+			<uuidresource>199041fc-1534-11dd-9751-d323604c3b7a</uuidresource>
+			<datelastmodified>Mon, 28 Apr 2008 15:14:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 28 Apr 2008 15:02:20 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Current Events]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>demo_en/oamp/calendar/calendar-view.html</source>
+			<destination>demo_en/oamp/calendar/calendar-view.html</destination>
+			<type>alkacon-cal-view</type>
+			<uuidstructure>ddb6ba5d-1536-11dd-9751-d323604c3b7a</uuidstructure>
+			<uuidresource>ddb6ba5e-1536-11dd-9751-d323604c3b7a</uuidresource>
+			<datelastmodified>Mon, 28 Apr 2008 15:29:30 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 28 Apr 2008 15:22:08 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Alkacon OAMP Calendar Overview]]></value>
+				</property>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.calendar/pages/detail-calendar.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>demo_en/oamp/calendar/index.html</source>
+			<destination>demo_en/oamp/calendar/index.html</destination>
+			<type>ttarticle</type>
+			<uuidstructure>8e7daff4-1533-11dd-9751-d323604c3b7a</uuidstructure>
+			<uuidresource>8e7daff5-1533-11dd-9751-d323604c3b7a</uuidresource>
+			<datelastmodified>Mon, 28 Apr 2008 15:14:52 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 28 Apr 2008 14:58:26 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Alkacon OAMP Calendar Module]]></value>
+				</property>
+				<property>
+					<name>stylesheet</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.oampdemo/resources/style.css]]></value>
+				</property>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/org.opencms.frontend.templatetwo.demo/pages/article.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
 			<destination>demo_en/oamp/counter</destination>
 			<type>folder</type>
 			<uuidstructure>5b63fa80-e79e-11dc-876f-d347f0a2593a</uuidstructure>
-			<datelastmodified>Sat, 01 Mar 2008 14:59:00 GMT</datelastmodified>
+			<datelastmodified>Mon, 28 Apr 2008 14:53:33 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Sat, 01 Mar 2008 14:47:03 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -494,7 +1075,7 @@
 				</property>
 				<property>
 					<name>Title</name>
-					<value><![CDATA[OAMP Counter]]></value>
+					<value><![CDATA[Alkacon OAMP Counter]]></value>
 				</property>
 			</properties>
 			<relations/>
@@ -548,7 +1129,7 @@
 			<type>jsp</type>
 			<uuidstructure>e454f329-e798-11dc-94c8-d347f0a2593a</uuidstructure>
 			<uuidresource>7429defb-e790-11dc-94c8-d347f0a2593a</uuidresource>
-			<datelastmodified>Sat, 01 Mar 2008 14:54:31 GMT</datelastmodified>
+			<datelastmodified>Mon, 28 Apr 2008 14:22:23 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Sat, 01 Mar 2008 13:07:32 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -556,7 +1137,7 @@
 			<properties>
 				<property>
 					<name>Title</name>
-					<value><![CDATA[OAMP Counter Module Demo]]></value>
+					<value><![CDATA[Alkacon OAMP Counter Module Demo]]></value>
 				</property>
 				<property>
 					<name>cache</name>
@@ -578,7 +1159,7 @@
 			<destination>demo_en/oamp/feeder</destination>
 			<type>folder</type>
 			<uuidstructure>00a8fc44-e795-11dc-8533-3bdd2ea0b1ac</uuidstructure>
-			<datelastmodified>Sat, 01 Mar 2008 13:40:06 GMT</datelastmodified>
+			<datelastmodified>Mon, 28 Apr 2008 14:53:38 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Sat, 01 Mar 2008 13:40:06 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -594,7 +1175,7 @@
 				</property>
 				<property>
 					<name>Title</name>
-					<value><![CDATA[OAMP Syndication Feed]]></value>
+					<value><![CDATA[Alkacon OAMP Syndication Feed]]></value>
 				</property>
 			</properties>
 			<relations/>
@@ -696,10 +1277,151 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<destination>demo_en/oamp/survey</destination>
+			<type>folder</type>
+			<uuidstructure>65f4ad80-15e9-11dd-b830-d323604c3b7a</uuidstructure>
+			<datelastmodified>Tue, 29 Apr 2008 13:04:45 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 29 Apr 2008 12:40:07 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>NavPos</name>
+					<value><![CDATA[1.5]]></value>
+				</property>
+				<property>
+					<name>NavText</name>
+					<value><![CDATA[OAMP Survey]]></value>
+				</property>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Alkacon OAMP Survey]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>demo_en/oamp/survey/Alkacon_OAMP_Survey.pdf</destination>
+			<type>binary</type>
+			<uuidstructure>e20fbc95-15ec-11dd-b830-d323604c3b7a</uuidstructure>
+			<uuidresource>0d8803b8-15be-11dd-acfd-d323604c3b7a</uuidresource>
+			<datelastmodified>Tue, 29 Apr 2008 07:29:50 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 29 Apr 2008 07:29:50 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Alkacon_OAMP_Survey]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>demo_en/oamp/survey/index.html</source>
+			<destination>demo_en/oamp/survey/index.html</destination>
+			<type>ttarticle</type>
+			<uuidstructure>84b9e345-15ed-11dd-b830-d323604c3b7a</uuidstructure>
+			<uuidresource>84b9e346-15ed-11dd-b830-d323604c3b7a</uuidresource>
+			<datelastmodified>Tue, 29 Apr 2008 13:20:56 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 29 Apr 2008 13:09:36 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Alkacon OAMP Survey Module]]></value>
+				</property>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/org.opencms.frontend.templatetwo.demo/pages/article.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>demo_en/oamp/survey/report.html</source>
+			<destination>demo_en/oamp/survey/report.html</destination>
+			<type>alkacon-surveyReport</type>
+			<uuidstructure>84c5ca29-15ed-11dd-b830-d323604c3b7a</uuidstructure>
+			<uuidresource>84c5ca2a-15ed-11dd-b830-d323604c3b7a</uuidresource>
+			<datelastmodified>Tue, 29 Apr 2008 13:18:54 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 29 Apr 2008 13:09:36 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>NavPos</name>
+					<value><![CDATA[2.0]]></value>
+				</property>
+				<property>
+					<name>NavText</name>
+					<value><![CDATA[Analysis]]></value>
+				</property>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Analysis of the survey]]></value>
+				</property>
+				<property>
+					<name>stylesheet</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.survey/resources/css/webform.css]]></value>
+				</property>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.survey/pages/reporting.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>demo_en/oamp/survey/survey.html</source>
+			<destination>demo_en/oamp/survey/survey.html</destination>
+			<type>alkacon-survey</type>
+			<uuidstructure>84cf6720-15ed-11dd-b830-d323604c3b7a</uuidstructure>
+			<uuidresource>84cf6721-15ed-11dd-b830-d323604c3b7a</uuidresource>
+			<datelastmodified>Tue, 29 Apr 2008 13:27:39 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 29 Apr 2008 13:09:37 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>NavPos</name>
+					<value><![CDATA[1.0]]></value>
+				</property>
+				<property>
+					<name>NavText</name>
+					<value><![CDATA[Survey]]></value>
+				</property>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Big Wurst Survey]]></value>
+				</property>
+				<property>
+					<name>stylesheet</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.oampdemo/resources/survey.css]]></value>
+				</property>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.survey/pages/form.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
 			<destination>demo_en/oamp/webform</destination>
 			<type>folder</type>
 			<uuidstructure>00e233c8-e795-11dc-8533-3bdd2ea0b1ac</uuidstructure>
-			<datelastmodified>Sat, 01 Mar 2008 13:51:47 GMT</datelastmodified>
+			<datelastmodified>Mon, 28 Apr 2008 14:53:44 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Sat, 01 Mar 2008 13:40:06 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -715,7 +1437,7 @@
 				</property>
 				<property>
 					<name>Title</name>
-					<value><![CDATA[OAMP Webform]]></value>
+					<value><![CDATA[Alkacon OAMP Webform]]></value>
 				</property>
 				<property>
 					<name>default-file</name>
@@ -783,10 +1505,10 @@
 		<file>
 			<destination>system</destination>
 			<type>folder</type>
-			<uuidstructure>f8a56ce7-d2fa-11dc-a365-3bdd2ea0b1ac</uuidstructure>
-			<datelastmodified>Mon, 04 Feb 2008 08:27:07 GMT</datelastmodified>
+			<uuidstructure>ef91a1be-00a7-11dd-af65-d323604c3b7a</uuidstructure>
+			<datelastmodified>Wed, 02 Apr 2008 11:28:37 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Mon, 04 Feb 2008 08:27:07 GMT</datecreated>
+			<datecreated>Wed, 02 Apr 2008 11:28:37 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -805,10 +1527,10 @@
 		<file>
 			<destination>system/modules</destination>
 			<type>folder</type>
-			<uuidstructure>f92f5da0-d2fa-11dc-a365-3bdd2ea0b1ac</uuidstructure>
-			<datelastmodified>Mon, 04 Feb 2008 08:27:07 GMT</datelastmodified>
+			<uuidstructure>f0316467-00a7-11dd-af65-d323604c3b7a</uuidstructure>
+			<datelastmodified>Wed, 02 Apr 2008 11:28:38 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Mon, 04 Feb 2008 08:27:07 GMT</datecreated>
+			<datecreated>Wed, 02 Apr 2008 11:28:38 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -941,9 +1663,24 @@
 			<type>plain</type>
 			<uuidstructure>ddcab20d-e7a9-11dc-937b-3bdd2ea0b1ac</uuidstructure>
 			<uuidresource>ddcab20e-e7a9-11dc-937b-3bdd2ea0b1ac</uuidresource>
-			<datelastmodified>Sat, 01 Mar 2008 16:10:24 GMT</datelastmodified>
+			<datelastmodified>Tue, 29 Apr 2008 12:27:09 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Sat, 01 Mar 2008 16:09:27 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.oampdemo/resources/survey.css</source>
+			<destination>system/modules/com.alkacon.opencms.oampdemo/resources/survey.css</destination>
+			<type>plain</type>
+			<uuidstructure>8ebf197e-15e7-11dd-b830-d323604c3b7a</uuidstructure>
+			<uuidresource>8ebf197f-15e7-11dd-b830-d323604c3b7a</uuidresource>
+			<datelastmodified>Tue, 29 Apr 2008 12:32:34 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 29 Apr 2008 12:26:56 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>

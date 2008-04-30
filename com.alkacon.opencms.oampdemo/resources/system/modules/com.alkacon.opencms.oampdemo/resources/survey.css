@@ -1,0 +1,21 @@
+@charset "UTF-8";
+
+@media all
+{	
+	.webform_label {
+		font-weight: bold;
+		padding: 5px 0px 5px 0px;
+	}
+	
+	.webform_label_radio {
+		padding-left: 5px;
+	}
+	
+	.formbutton {
+		border:1px solid #A3AAB7;
+	}
+	
+	.webform_button {
+		text-align: center;
+	}
+}

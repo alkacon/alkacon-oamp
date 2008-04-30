@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<TTArticles xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/org.opencms.frontend.templatetwo.demo/schemas/article.xsd">
+  <TTArticle language="de">
+    <Title><![CDATA[Alkacon OAMP Kalender Modul]]></Title>
+    <Paragraphs>
+      <Text name="Text0">
+        <links>
+          <link name="link0" internal="true" type="A">
+            <target><![CDATA[/sites/default/demo_de/oamp/calendar/Alkacon_OAMP_Calendar.pdf]]></target>
+            <uuid>6bd346bb-152e-11dd-9751-d323604c3b7a</uuid>
+          </link>
+        </links>
+        <content><![CDATA[<p>Das Modul erweitert eine Standard OpenCms-Installation mit den Möglichkeiten verschiedene Kalenderansichten mit Ereignissen anzuzeigen. Folgende Features werden angeboten:</p>
+<ul>
+    <li>Verschiedene JSP Seitenelement, die in bereits existierende Templates eingebunden werden können. Diese zeigen entweder eine Monatsübersicht oder die aktuellsten Ereignisse an.</li>
+    <li>Es existiert eine Tages-, Wochen-, Monats- und Jahresansicht.</li>
+    <li>Einfache Konfiguration der Resourcetypen, die in den Kalenderansichten angezeigt werden sollen.</li>
+    <li>Zeigt lokale Feiertage, wie Weihnachten oder Neujahr an.</li>
+    <li>Zusätzlich ist es möglich Serientermine zu definieren, die mehr als einmal im Kalendar angezeigt werden.</li>
+</ul>
+<p>Mehr Information zu dem Alkacon OAMP Kalender Modul finden Sie in diesem <a href="%(link0)" target="_self">Pdf-Dokument</a>.</p>
+<p>&nbsp;</p>]]></content>
+      </Text>
+    </Paragraphs>
+    <Config>
+      <Preset>
+        <link type="STRONG">
+          <target><![CDATA[/sites/default/demo_de/_config_/layout/threecolumns]]></target>
+          <uuid>7b9ec38e-de34-11dc-a943-9f7a6a6ce285</uuid>
+        </link>
+      </Preset>
+      <Element>
+        <File>
+          <link type="WEAK">
+            <target><![CDATA[/sites/default/demo_de/oamp/calendar/calendar-box.html]]></target>
+            <uuid>09fd6380-152f-11dd-9751-d323604c3b7a</uuid>
+          </link>
+        </File>
+        <Orientation><![CDATA[right]]></Orientation>
+        <ColorSchema><![CDATA[box_schema1]]></ColorSchema>
+      </Element>
+      <Element>
+        <File>
+          <link type="WEAK">
+            <target><![CDATA[/sites/default/demo_de/oamp/calendar/calendar-current-box.html]]></target>
+            <uuid>60efd7b2-152f-11dd-9751-d323604c3b7a</uuid>
+          </link>
+        </File>
+        <Orientation><![CDATA[right]]></Orientation>
+        <ColorSchema><![CDATA[box_schema1]]></ColorSchema>
+      </Element>
+    </Config>
+  </TTArticle>
+</TTArticles>

@@ -19,4 +19,15 @@
 		width: 100%;
 		height: 100px;
 	}
+	
+	table.cal_month_table td.cal_mon_nav,
+	table.cal_month_table td.cal_mon_weekday,
+	table.cal_month_table td.cal_mon_day {
+		border: 1px solid #AACCFF;
+	}
+	
+	table.cal_month_table  td.cal_mon_day_empty {
+		background-color: #AACCFF;
+		border: 1px solid #AACCFF;
+	}
 }

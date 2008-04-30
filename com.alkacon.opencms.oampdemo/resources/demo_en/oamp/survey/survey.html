@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<AlkaconWebForms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/form.xsd">
+  <AlkaconWebForm language="en">
+    <MailFrom/>
+    <MailTo/>
+    <MailSubject/>
+    <DataTarget>
+      <Transport><![CDATA[database]]></Transport>
+      <FormId><![CDATA[wurst]]></FormId>
+    </DataTarget>
+    <MailText name="MailText0">
+      <links/>
+      <content/>
+    </MailText>
+    <FormText name="FormText0">
+      <links/>
+      <content><![CDATA[<h1>Big Wurst Survey</h1>]]></content>
+    </FormText>
+    <InputField>
+      <FieldType><![CDATA[radio]]></FieldType>
+      <FieldLabel><![CDATA[Which is your favorite wurst?|wurst]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+      <FieldDefault><![CDATA[Frankfurter|Wiener]]></FieldDefault>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[select]]></FieldType>
+      <FieldLabel><![CDATA[How do you like the OpenCms Wurst demo?|demo]]></FieldLabel>
+      <FieldMandatory>false</FieldMandatory>
+      <FieldDefault><![CDATA[1:Very good|2:Good|3:Average|4:Bad|5:Very bad]]></FieldDefault>
+    </InputField>
+    <FormConfirmation name="FormConfirmation0">
+      <links>
+        <link name="link0" internal="true" type="A">
+          <target><![CDATA[/sites/default/demo_en/oamp/survey/report.html]]></target>
+          <uuid>84c5ca29-15ed-11dd-b830-d323604c3b7a</uuid>
+        </link>
+      </links>
+      <content><![CDATA[<p>Thank you for becoming part of the survey.</p>
+<p>Go to the <a target="_self" href="%(link0)">analysis</a>.</p>]]></content>
+    </FormConfirmation>
+    <OptionalFormConfiguration>
+      <MailType><![CDATA[html]]></MailType>
+      <MailCC/>
+      <MailBCC/>
+      <ShowCheck>false</ShowCheck>
+      <CheckText name="CheckText0">
+        <links/>
+        <content/>
+      </CheckText>
+      <ShowMandatory>true</ShowMandatory>
+      <ShowReset>false</ShowReset>
+      <FormAttributes/>
+      <FormFieldAttributes/>
+      <DynamicFieldClass/>
+    </OptionalFormConfiguration>
+  </AlkaconWebForm>
+</AlkaconWebForms>
