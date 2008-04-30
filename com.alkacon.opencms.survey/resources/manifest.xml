@@ -286,6 +286,34 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<destination>system/modules/com.alkacon.opencms.survey/lib</destination>
+			<type>folder</type>
+			<uuidstructure>dca9ce06-15c1-11dd-acfd-d323604c3b7a</uuidstructure>
+			<datelastmodified>Tue, 29 Apr 2008 07:57:06 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 29 Apr 2008 07:57:06 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.survey/lib/com.alkacon.opencms.survey.jar</source>
+			<destination>system/modules/com.alkacon.opencms.survey/lib/com.alkacon.opencms.survey.jar</destination>
+			<type>binary</type>
+			<uuidstructure>eb537788-15c1-11dd-acfd-d323604c3b7a</uuidstructure>
+			<uuidresource>eb537789-15c1-11dd-acfd-d323604c3b7a</uuidresource>
+			<datelastmodified>Tue, 29 Apr 2008 07:57:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 29 Apr 2008 07:57:31 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
 			<destination>system/modules/com.alkacon.opencms.survey/pages</destination>
 			<type>folder</type>
 			<uuidstructure>6e3ac1ee-1052-11dd-84af-371bb8ed1b84</uuidstructure>

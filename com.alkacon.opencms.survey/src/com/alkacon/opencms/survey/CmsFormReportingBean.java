@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.survey/src/com/alkacon/opencms/survey/CmsFormReportingBean.java,v $
- * Date   : $Date: 2008/04/25 14:29:43 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2008/04/30 07:08:09 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -59,7 +59,7 @@ import org.apache.commons.collections.map.LazyMap;
  * 
  * @author Röttgers
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4
  */
@@ -276,8 +276,9 @@ public class CmsFormReportingBean extends CmsJspActionElement {
 
                         // look if its a dark color or a light
                         int dezColor = color.getBlue() + color.getGreen() + color.getRed();
-                        if (dezColor < SEP_DARK_LIGHT)
+                        if (dezColor < SEP_DARK_LIGHT) {
                             return "#FFF";
+                        }
 
                     } catch (Exception e) {
                         // NOOP
