@@ -65,7 +65,7 @@
 				<c:if test="${param.detail && cms.showDetail[group]}">
 					<h2><fmt:message key="report.detail.headline"><fmt:param value="${curPage}"/><fmt:param value="${fn:length(workBean.list)}"/></fmt:message></h2>
 					<a class="linkDetail" href="<cms:link>${cms.requestContext.uri}</cms:link>" title="<fmt:message key='report.back.overview.title'/>"><fmt:message key="report.back.overview.headline"/></a>
-					<%@include file="%(link.strong:/system/modules/com.alkacon.opencms.survey/elements/include_paging.jsp)" %>
+					<%@include file="%(link.strong:/system/modules/com.alkacon.opencms.survey/elements/include_paging.jsp:6eace4bb-1052-11dd-84af-371bb8ed1b84)" %>
 				</c:if>
 				
 				<%-- for each field print the answers --%>
@@ -81,25 +81,46 @@
 							<c:set var="itemParam" value="${labeling[1]}${cms.separator}${curPage}${cms.separator}${field.value['FieldType']}"/>
 							<c:forEach var="item" items="${workBean.answerByField[itemParam]}">
 								<div class="reportitem">
-									<p class="reportanswer"><c:out value="${item}"/></p>
+									<c:set var="defValue" value="${item}" />
+									<c:forTokens items="${field.value['FieldDefault']}" delims="|" var="def">
+										<c:if test="${fn:contains(def, ':') && fn:substringBefore(def, ':') == item}">
+											<c:set var="defValue" value="${fn:substringAfter(def, ':')}" />
+										</c:if>
+									</c:forTokens>
+									<p class="reportanswer"><c:out value="${defValue}"/></p>
 								</div>
 							</c:forEach>
 						</c:if>
 
 						<%-- is the overview page --%>
-						<c:if test="${!param.detail ||  !cms.showDetail[group]}">
-							<c:forEach var="item" items="${workBean.answers[labeling[1]]}" varStatus="status">
+						<c:if test="${!param.detail || !cms.showDetail[group]}">
+						    <c:set var="answerCounts" value="${workBean.answers[labeling[1]]}" />
+							<c:set var="answerList" value="${fn:split(field.value['FieldDefault'], '|')}" />
+							<c:forEach var="item" items="${answerList}" varStatus="status">
+							    <c:set var="itemKey" value="${item}" />
+							    <c:if test="${fn:contains(itemKey, ':')}" >
+							    	<c:set var="itemKey" value="${fn:substringBefore(itemKey, ':')}" />
+							    </c:if>
+							    <c:set var="itemValue" value="${answerCounts[itemKey]}" />
+							    <c:if test="${!empty itemValue}" >
 								<div class="reportitem">
-									<c:set var="width" value="${ (item.value/fn:length(workBean.list))  }"/>
-									<p class="reportanswer"><c:out value="${item.key}"/>:</p>
+									<c:set var="width" value="${ (itemValue/fn:length(workBean.list)) }"/>
+									<c:set var="defValue" value="${itemKey}" />
+									<c:forTokens items="${field.value['FieldDefault']}" delims="|" var="def">
+										<c:if test="${fn:contains(def, ':') && fn:substringBefore(def, ':') == itemKey}">
+											<c:set var="defValue" value="${fn:substringAfter(def, ':')}" />
+										</c:if>
+									</c:forTokens>
+									<p class="reportanswer"><c:out value="${defValue}"/>:</p>
 									<span class="processbar">
 										<c:set var="curColor" value="${color[(status.index%fn:length(color))]}"/>
 										<span class="bar" style="width:${width * 100}%; background-color:${curColor}; color:${cms.textColor[curColor]};">
 											<fmt:formatNumber value="${width}" type="percent"/>
 										</span>
 									</span>
-									<span class="reportcount">(<c:out value="${item.value}"/>)</span> 
+									<span class="reportcount">(<c:out value="${itemValue}"/>)</span> 
 								</div>
+							    </c:if>
 							</c:forEach>
 						</c:if>
 						
