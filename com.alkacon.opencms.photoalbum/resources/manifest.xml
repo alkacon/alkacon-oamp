@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<export>
+	<info>
+		<creator>Admin</creator>
+		<opencms_version>7.0.4</opencms_version>
+		<createdate>Fri, 09 May 2008 13:38:47 GMT</createdate>
+		<infoproject>Offline</infoproject>
+		<export_version>7</export_version>
+	</info>
+	<module>
+		<name>com.alkacon.opencms.photoalbum</name>
+		<nicename><![CDATA[Alkacon OpenCms Add-On Module Package Photo Album]]></nicename>
+		<group>Alkacon OAMP</group>
+		<class/>
+		<description><![CDATA[<p>This module provides a photo album for displaying pictures with the help of ThickBox.</p>
+<p><i>(c) 2008 by Alkacon Software GmbH (http://www.alkacon.com).</i></p>]]></description>
+		<version>1.0.0</version>
+		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
+		<authoremail/>
+		<datecreated/>
+		<userinstalled/>
+		<dateinstalled/>
+		<dependencies>
+			<dependency name="org.opencms.jquery" version="7.0.5"/>
+		</dependencies>
+		<exportpoints>
+			<exportpoint uri="/system/modules/com.alkacon.opencms.photoalbum/classes/" destination="WEB-INF/classes/"/>
+			<exportpoint uri="/system/modules/com.alkacon.opencms.photoalbum/lib/" destination="WEB-INF/lib/"/>
+		</exportpoints>
+		<resources>
+			<resource uri="/system/modules/com.alkacon.opencms.photoalbum/"/>
+		</resources>
+		<parameters/>
+		<resourcetypes>
+			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="alkacon-photoalbum" id="260">
+				<properties>
+					<property>
+						<name>template-elements</name>
+						<value type="shared"><![CDATA[/system/modules/com.alkacon.opencms.photoalbum/pages/photoalbum.jsp]]></value>
+					</property>
+				</properties>
+				<param name="schema">/system/modules/com.alkacon.opencms.photoalbum/schemas/photoalbum.xsd</param>
+			</type>
+		</resourcetypes>
+		<explorertypes>
+			<explorertype name="alkacon-photoalbum" key="fileicon.alkacon-photoalbum" icon="photoalbum.gif" reference="xmlcontent">
+				<newresource page="structurecontent" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-photoalbum" order="61" autosetnavigation="false" autosettitle="false" info="desc.alkacon-photoalbum"/>
+				<accesscontrol>
+					<accessentry principal="ROLE.WORKPLACE_USER" permissions="+r+v+w+c"/>
+				</accesscontrol>
+			</explorertype>
+		</explorertypes>
+	</module>
+	<files>
+		<file>
+			<destination>system</destination>
+			<type>folder</type>
+			<uuidstructure>ef91a1be-00a7-11dd-af65-d323604c3b7a</uuidstructure>
+			<datelastmodified>Wed, 02 Apr 2008 11:28:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Apr 2008 11:28:37 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
+					<flags>514</flags>
+					<permissionset>
+						<allowed>1</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<destination>system/modules</destination>
+			<type>folder</type>
+			<uuidstructure>f0316467-00a7-11dd-af65-d323604c3b7a</uuidstructure>
+			<datelastmodified>Wed, 02 Apr 2008 11:28:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Apr 2008 11:28:38 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
+					<flags>514</flags>
+					<permissionset>
+						<allowed>5</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.photoalbum</destination>
+			<type>folder</type>
+			<uuidstructure>820a3a20-1c37-11dd-9a4e-d323604c3b7a</uuidstructure>
+			<datelastmodified>Wed, 07 May 2008 13:14:22 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 07 May 2008 13:14:22 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/classes</destination>
+			<type>folder</type>
+			<uuidstructure>90178540-1c43-11dd-9a4e-d323604c3b7a</uuidstructure>
+			<datelastmodified>Fri, 09 May 2008 09:17:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 07 May 2008 14:40:40 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/classes/com</destination>
+			<type>folder</type>
+			<uuidstructure>90fc8e14-1c43-11dd-9a4e-d323604c3b7a</uuidstructure>
+			<datelastmodified>Fri, 09 May 2008 09:17:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 07 May 2008 14:40:41 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/classes/com/alkacon</destination>
+			<type>folder</type>
+			<uuidstructure>911916c6-1c43-11dd-9a4e-d323604c3b7a</uuidstructure>
+			<datelastmodified>Fri, 09 May 2008 09:17:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 07 May 2008 14:40:41 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/classes/com/alkacon/opencms</destination>
+			<type>folder</type>
+			<uuidstructure>9129b898-1c43-11dd-9a4e-d323604c3b7a</uuidstructure>
+			<datelastmodified>Fri, 09 May 2008 09:17:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 07 May 2008 14:40:41 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/classes/com/alkacon/opencms/photoalbum</destination>
+			<type>folder</type>
+			<uuidstructure>913ccb6a-1c43-11dd-9a4e-d323604c3b7a</uuidstructure>
+			<datelastmodified>Fri, 09 May 2008 09:17:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 07 May 2008 14:40:41 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.photoalbum/classes/com/alkacon/opencms/photoalbum/frontend.properties</source>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/classes/com/alkacon/opencms/photoalbum/frontend.properties</destination>
+			<type>plain</type>
+			<uuidstructure>596f2499-1da8-11dd-a5d1-d323604c3b7a</uuidstructure>
+			<uuidresource>596f249a-1da8-11dd-a5d1-d323604c3b7a</uuidresource>
+			<datelastmodified>Fri, 09 May 2008 10:24:49 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 09 May 2008 09:14:38 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.photoalbum/classes/com/alkacon/opencms/photoalbum/frontend_de.properties</source>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/classes/com/alkacon/opencms/photoalbum/frontend_de.properties</destination>
+			<type>plain</type>
+			<uuidstructure>010ebe41-1dcc-11dd-9a7d-d323604c3b7a</uuidstructure>
+			<uuidresource>010ebe42-1dcc-11dd-9a7d-d323604c3b7a</uuidresource>
+			<datelastmodified>Fri, 09 May 2008 13:29:51 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 09 May 2008 13:29:51 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/classes/com/alkacon/opencms/photoalbum/frontend_en.properties</destination>
+			<type>plain</type>
+			<uuidstructure>21f3f509-1dcd-11dd-8d9c-d323604c3b7a</uuidstructure>
+			<uuidresource>596f249a-1da8-11dd-a5d1-d323604c3b7a</uuidresource>
+			<datelastmodified>Fri, 09 May 2008 10:24:49 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 09 May 2008 09:14:38 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.photoalbum/classes/com/alkacon/opencms/photoalbum/workplace.properties</source>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/classes/com/alkacon/opencms/photoalbum/workplace.properties</destination>
+			<type>plain</type>
+			<uuidstructure>91524f3c-1c43-11dd-9a4e-d323604c3b7a</uuidstructure>
+			<uuidresource>91524f3d-1c43-11dd-9a4e-d323604c3b7a</uuidresource>
+			<datelastmodified>Fri, 09 May 2008 13:29:51 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 07 May 2008 14:40:41 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.photoalbum/classes/com/alkacon/opencms/photoalbum/workplace_de.properties</source>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/classes/com/alkacon/opencms/photoalbum/workplace_de.properties</destination>
+			<type>plain</type>
+			<uuidstructure>012b6e03-1dcc-11dd-9a7d-d323604c3b7a</uuidstructure>
+			<uuidresource>012b6e04-1dcc-11dd-9a7d-d323604c3b7a</uuidresource>
+			<datelastmodified>Fri, 09 May 2008 13:29:52 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 09 May 2008 13:29:52 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/classes/com/alkacon/opencms/photoalbum/workplace_en.properties</destination>
+			<type>plain</type>
+			<uuidstructure>2d55515a-1dcd-11dd-8d9c-d323604c3b7a</uuidstructure>
+			<uuidresource>91524f3d-1c43-11dd-9a4e-d323604c3b7a</uuidresource>
+			<datelastmodified>Fri, 09 May 2008 13:29:51 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 07 May 2008 14:40:41 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/elements</destination>
+			<type>folder</type>
+			<uuidstructure>826e5322-1c37-11dd-9a4e-d323604c3b7a</uuidstructure>
+			<datelastmodified>Wed, 07 May 2008 13:14:22 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 07 May 2008 13:14:22 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.photoalbum/elements/albumpage.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/elements/albumpage.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>04f25390-1cf8-11dd-aab5-d323604c3b7a</uuidstructure>
+			<uuidresource>04f25391-1cf8-11dd-aab5-d323604c3b7a</uuidresource>
+			<datelastmodified>Fri, 09 May 2008 09:14:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 08 May 2008 12:12:25 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/pages</destination>
+			<type>folder</type>
+			<uuidstructure>90db2362-1c43-11dd-9a4e-d323604c3b7a</uuidstructure>
+			<datelastmodified>Wed, 07 May 2008 14:40:40 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 07 May 2008 14:40:40 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.photoalbum/pages/photoalbum.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/pages/photoalbum.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>91845bbe-1c43-11dd-9a4e-d323604c3b7a</uuidstructure>
+			<uuidresource>91845bbf-1c43-11dd-9a4e-d323604c3b7a</uuidresource>
+			<datelastmodified>Fri, 09 May 2008 13:18:55 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 07 May 2008 14:40:42 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/resources</destination>
+			<type>folder</type>
+			<uuidstructure>970aa954-1c37-11dd-9a4e-d323604c3b7a</uuidstructure>
+			<datelastmodified>Wed, 07 May 2008 13:14:57 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 07 May 2008 13:14:57 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.photoalbum/resources/album.css</source>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/resources/album.css</destination>
+			<type>plain</type>
+			<uuidstructure>d2b4ffc5-1dbb-11dd-b0fe-d323604c3b7a</uuidstructure>
+			<uuidresource>d2b4ffc6-1dbb-11dd-b0fe-d323604c3b7a</uuidresource>
+			<datelastmodified>Fri, 09 May 2008 11:52:48 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 09 May 2008 11:34:02 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.photoalbum/resources/album.js</source>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/resources/album.js</destination>
+			<type>plain</type>
+			<uuidstructure>c6f47ca2-1daa-11dd-a19b-d323604c3b7a</uuidstructure>
+			<uuidresource>c6f47ca3-1daa-11dd-a19b-d323604c3b7a</uuidresource>
+			<datelastmodified>Fri, 09 May 2008 12:34:25 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 09 May 2008 09:32:01 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/resources/pagination</destination>
+			<type>folder</type>
+			<uuidstructure>c6b68940-1daa-11dd-a19b-d323604c3b7a</uuidstructure>
+			<datelastmodified>Fri, 09 May 2008 09:32:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 09 May 2008 09:32:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.photoalbum/resources/pagination/jquery.pagination.js</source>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/resources/pagination/jquery.pagination.js</destination>
+			<type>plain</type>
+			<uuidstructure>b1ee4ba4-1dab-11dd-a19b-d323604c3b7a</uuidstructure>
+			<uuidresource>b1ee4ba5-1dab-11dd-a19b-d323604c3b7a</uuidresource>
+			<datelastmodified>Fri, 09 May 2008 12:06:25 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 09 May 2008 09:38:35 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.photoalbum/resources/pagination/pagination.css</source>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/resources/pagination/pagination.css</destination>
+			<type>plain</type>
+			<uuidstructure>d3f4d106-1dac-11dd-a19b-d323604c3b7a</uuidstructure>
+			<uuidresource>d3f4d107-1dac-11dd-a19b-d323604c3b7a</uuidresource>
+			<datelastmodified>Fri, 09 May 2008 10:16:24 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 09 May 2008 09:46:41 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/resources/thickbox</destination>
+			<type>folder</type>
+			<uuidstructure>a3adfb86-1c37-11dd-9a4e-d323604c3b7a</uuidstructure>
+			<datelastmodified>Wed, 07 May 2008 13:15:18 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 07 May 2008 13:15:18 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.photoalbum/resources/thickbox/loadingAnimation.gif</source>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/resources/thickbox/loadingAnimation.gif</destination>
+			<type>image</type>
+			<uuidstructure>f0aa1401-1c37-11dd-9a4e-d323604c3b7a</uuidstructure>
+			<uuidresource>f0aa1402-1c37-11dd-9a4e-d323604c3b7a</uuidresource>
+			<datelastmodified>Wed, 07 May 2008 13:17:46 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 07 May 2008 13:17:27 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:208,h:13]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.photoalbum/resources/thickbox/thickbox.css</source>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/resources/thickbox/thickbox.css</destination>
+			<type>plain</type>
+			<uuidstructure>f0c90db8-1c37-11dd-9a4e-d323604c3b7a</uuidstructure>
+			<uuidresource>f0c90db9-1c37-11dd-9a4e-d323604c3b7a</uuidresource>
+			<datelastmodified>Wed, 07 May 2008 13:17:59 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 07 May 2008 13:17:27 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.photoalbum/resources/thickbox/thickbox.js</source>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/resources/thickbox/thickbox.js</destination>
+			<type>plain</type>
+			<uuidstructure>f0d4f49b-1c37-11dd-9a4e-d323604c3b7a</uuidstructure>
+			<uuidresource>f0d4f49c-1c37-11dd-9a4e-d323604c3b7a</uuidresource>
+			<datelastmodified>Fri, 09 May 2008 13:33:08 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 07 May 2008 13:17:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/schemas</destination>
+			<type>folder</type>
+			<uuidstructure>32ad5a2e-1c3c-11dd-9a4e-d323604c3b7a</uuidstructure>
+			<datelastmodified>Wed, 07 May 2008 13:47:56 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 07 May 2008 13:47:56 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.photoalbum/schemas/overview.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/schemas/overview.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>0fa969cb-1cd7-11dd-aab5-d323604c3b7a</uuidstructure>
+			<uuidresource>0fa969cc-1cd7-11dd-aab5-d323604c3b7a</uuidresource>
+			<datelastmodified>Thu, 08 May 2008 13:15:30 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 08 May 2008 08:16:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.photoalbum/schemas/photoalbum.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/schemas/photoalbum.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>92079581-1c43-11dd-9a4e-d323604c3b7a</uuidstructure>
+			<uuidresource>92079582-1c43-11dd-9a4e-d323604c3b7a</uuidresource>
+			<datelastmodified>Fri, 09 May 2008 13:19:13 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 07 May 2008 14:40:42 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+	</files>
+</export>
