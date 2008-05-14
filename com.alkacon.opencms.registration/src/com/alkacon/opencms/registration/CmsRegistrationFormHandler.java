@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.registration/src/com/alkacon/opencms/registration/CmsRegistrationFormHandler.java,v $
- * Date   : $Date: 2008/02/19 13:22:30 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/05/14 15:40:39 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -76,7 +76,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4 
  */
@@ -171,6 +171,49 @@ public class CmsRegistrationFormHandler extends CmsFormHandler {
         String code = getActivationCode(user);
         System.out.println(code);
         System.out.println(getUserName(code));
+
+        CmsMacroResolver macroResolver = CmsMacroResolver.newInstance();
+        macroResolver.setKeepEmptyMacros(true);
+        // create macros for getters 
+        Method[] methods = CmsUser.class.getDeclaredMethods();
+        for (int i = 0; i < methods.length; i++) {
+            Method method = methods[i];
+            if (method.getReturnType() != String.class) {
+                continue;
+            }
+            if (method.getParameterTypes().length > 0) {
+                continue;
+            }
+            if (!method.getName().startsWith("get")
+                || (method.getName().length() < 4)
+                || method.getName().equals("getPassword")) {
+                continue;
+            }
+            String label = ("" + method.getName().charAt(3)).toLowerCase();
+            if (method.getName().length() > 4) {
+                label += method.getName().substring(4);
+            }
+            try {
+                Object value = method.invoke(user, new Object[] {});
+                if (value == null) {
+                    value = "";
+                }
+                macroResolver.addMacro(label, value.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        // add addinfo values as macros
+        Iterator itFields = user.getAdditionalInfo().entrySet().iterator();
+        while (itFields.hasNext()) {
+            Map.Entry entry = (Map.Entry)itFields.next();
+            if ((entry.getValue() instanceof String) && (entry.getKey() instanceof String)) {
+                macroResolver.addMacro(entry.getKey().toString(), entry.getValue().toString());
+            }
+        }
+        // add login
+        macroResolver.addMacro(FIELD_LOGIN, user.getSimpleName());
+
     }
 
     /**
@@ -506,29 +549,49 @@ public class CmsRegistrationFormHandler extends CmsFormHandler {
      */
     private CmsMacroResolver getUserMacroResolver() {
 
-        // TODO: create macros for properties and addinfo keys instead of fields!
         CmsUser user = getUser();
         CmsMacroResolver macroResolver = CmsMacroResolver.newInstance();
         macroResolver.setKeepEmptyMacros(true);
-        List fields = getRegFormConfiguration().getFields();
-        Iterator itFields = fields.iterator();
-        // add field values as macros
-        while (itFields.hasNext()) {
-            I_CmsField field = (I_CmsField)itFields.next();
-            String label = field.getDbLabel();
-            if (CmsStringUtil.isEmptyOrWhitespaceOnly(label)) {
+        // create macros for getters 
+        Method[] methods = CmsUser.class.getDeclaredMethods();
+        for (int i = 0; i < methods.length; i++) {
+            Method method = methods[i];
+            if (method.getReturnType() != String.class) {
                 continue;
             }
-            if (label.equals(FIELD_LOGIN)) {
-                String value = user.getName();
-                macroResolver.addMacro(label, value);
+            if (method.getParameterTypes().length > 0) {
+                continue;
             }
-            String value = getUserValue(user, label);
-            macroResolver.addMacro(label, value);
-            if (!field.getLabel().equals(label)) {
-                macroResolver.addMacro(field.getLabel(), value);
+            if (!method.getName().startsWith("get")
+                || (method.getName().length() < 4)
+                || method.getName().equals("getPassword")) {
+                continue;
+            }
+            String label = ("" + method.getName().charAt(3)).toLowerCase();
+            if (method.getName().length() > 4) {
+                label += method.getName().substring(4);
+            }
+            Object value = null;
+            try {
+                value = method.invoke(user, new Object[] {});
+            } catch (Exception e) {
+                // ignore
+            }
+            if (value == null) {
+                value = "";
+            }
+            macroResolver.addMacro(label, value.toString());
+        }
+        // add addinfo values as macros
+        Iterator itFields = user.getAdditionalInfo().entrySet().iterator();
+        while (itFields.hasNext()) {
+            Map.Entry entry = (Map.Entry)itFields.next();
+            if ((entry.getValue() instanceof String) && (entry.getKey() instanceof String)) {
+                macroResolver.addMacro(entry.getKey().toString(), entry.getValue().toString());
             }
         }
+        // add login
+        macroResolver.addMacro(FIELD_LOGIN, user.getSimpleName());
         return macroResolver;
     }
 
