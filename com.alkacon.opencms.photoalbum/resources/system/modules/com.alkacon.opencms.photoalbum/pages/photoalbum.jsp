@@ -13,11 +13,18 @@
 <fmt:setLocale value="${locale}" />
 <fmt:bundle basename="com.alkacon.opencms.photoalbum.frontend">
 
-<script type="text/javascript">
+<cms:jquery dynamic='true' />
+<cms:jquery js='jquery' dynamic='true' />
+<cms:jquery js='jquery.pagination' css='pagination' dynamic='true' />
+<cms:jquery js='thickbox' css='thickbox/thickbox' dynamic='true' />
+<script type='text/javascript' >
+load_script('<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.photoalbum/resources/album.css)</cms:link>', 'css');
+</script>
 
-	/**
+<script type='text/javascript'>
+     /**
       * Insert translated strings as inline javascript code          
-     **/
+      **/
      var tb_msg = {
        'close': '<fmt:message key="photoalbum.image.close" />',
        'next': '<fmt:message key="photoalbum.image.next" />',
@@ -27,14 +34,6 @@
      
 </script>
 
-<c:set var="includeJQuery" value="<%= cms.getRequestContext().currentProject().isOnlineProject() %>" />
-<c:if test="${includeJQuery}">
-	<script type="text/javascript" src="<cms:link>%(link.weak:/system/workplace/resources/jquery/jquery.js)</cms:link>"></script>
-</c:if>
-
-<script type="text/javascript" src="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.photoalbum/resources/thickbox/thickbox.js)</cms:link>"></script>
-<script type="text/javascript" src="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.photoalbum/resources/pagination/jquery.pagination.js)</cms:link>"></script>
-
 <c:set var="currentPage"><c:out value="${param.page}" default="1"/></c:set>
 
 <cms:contentload collector="singleFile" param="%(opencms.uri)">
@@ -43,7 +42,7 @@
 	<c:set var="imageCount" value="${fn:length(cms.readImages[album.value['VfsFolder'].stringValue])}" />
 	
 	<script type="text/javascript">
-		<%@include file="%(link.strong:/system/modules/com.alkacon.opencms.photoalbum/resources/album.js)" %>
+		<%@include file="%(link.strong:/system/modules/com.alkacon.opencms.photoalbum/resources/album.js:c6f47ca2-1daa-11dd-a19b-d323604c3b7a)" %>
 	</script>
 
 	<%-- Quality --%>
