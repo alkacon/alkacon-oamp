@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaField.java,v $
- * Date   : $Date: 2008/01/17 15:24:55 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2008/05/14 15:38:44 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -29,6 +29,7 @@
  * For further information about OpenCms, please see the
  * project website: http://www.opencms.org.
  */
+
 package com.alkacon.opencms.formgenerator;
 
 import org.opencms.flex.CmsFlexController;
@@ -61,7 +62,7 @@ import com.sun.image.codec.jpeg.JPEGImageEncoder;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4 
  */
@@ -156,11 +157,12 @@ public class CmsCaptchaField extends A_CmsField {
         buf.append(messages.key("form.html.field.start")).append("\n");
 
         // line #4
-        buf.append("<img src=\"").append(
+        buf.append("<img id='form_captcha_id' src=\"").append(
             formHandler.link("/system/modules/com.alkacon.opencms.formgenerator/pages/captcha.jsp?"
-                + captchaSettings.toRequestParams(formHandler.getCmsObject()))).append("\" width=\"").append(
-            captchaSettings.getImageWidth()).append("\" height=\"").append(captchaSettings.getImageHeight()).append(
-            "\" alt=\"\"/>").append("\n");
+                + captchaSettings.toRequestParams(formHandler.getCmsObject())
+                + "#"
+                + System.currentTimeMillis())).append("\" width=\"").append(captchaSettings.getImageWidth()).append(
+            "\" height=\"").append(captchaSettings.getImageHeight()).append("\" alt=\"\"/>").append("\n");
 
         // line #5
         buf.append("<br/>\n");
@@ -262,7 +264,7 @@ public class CmsCaptchaField extends A_CmsField {
                 m_captchaSettings.setImageHeight(m_captchaSettings.getImageHeight() + 40);
                 m_captchaSettings.setImageWidth(m_captchaSettings.getImageWidth() + 80);
             }
-        } while (captchaImage == null && maxTries > 0);
+        } while ((captchaImage == null) && (maxTries > 0));
         try {
 
             JPEGImageEncoder jpegEncoder = JPEGCodec.createJPEGEncoder(captchaImageOutput);

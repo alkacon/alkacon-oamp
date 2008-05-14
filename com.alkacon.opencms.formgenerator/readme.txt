@@ -57,6 +57,7 @@ Legend:
 - General comment
 
 1.2.0 - March, 2008
+* Prevent captcha image caching
 ! Adding a new dialog in the administration view to show the configured webforms with activated database transport.
 
 1.1.0 - February, 2008
