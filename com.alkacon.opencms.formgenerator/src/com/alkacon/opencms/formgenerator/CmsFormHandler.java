@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormHandler.java,v $
- * Date   : $Date: 2008/04/30 07:58:07 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2008/05/16 10:09:30 $
+ * Version: $Revision: 1.7 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -80,7 +80,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  * 
  * @since 7.0.4 
  */
@@ -115,6 +115,12 @@ public class CmsFormHandler extends CmsJspActionElement {
 
     /** Macro name for the form data macro that can be used in mail text fields. */
     public static final String MACRO_FORMDATA = "formdata";
+
+    /** Macro name for the locale macro that can be used in mail text fields. */
+    public static final String MACRO_LOCALE = "locale";
+
+    /** Macro name for the url macro that can be used in mail text fields. */
+    public static final String MACRO_URL = "url";
 
     /** Request parameter name for the hidden form action parameter to determine the action. */
     public static final String PARAM_FORMACTION = "formaction";
@@ -158,14 +164,13 @@ public class CmsFormHandler extends CmsJspActionElement {
      * @param context the JSP page context object
      * @param req the JSP request 
      * @param res the JSP response 
+     * 
      * @throws Exception if creating the form configuration objects fails
      */
     public CmsFormHandler(PageContext context, HttpServletRequest req, HttpServletResponse res)
     throws Exception {
 
-        super(context, req, res);
-        m_errors = new HashMap();
-        init(req, null);
+        this(context, req, res, null);
     }
 
     /**
@@ -175,6 +180,7 @@ public class CmsFormHandler extends CmsJspActionElement {
      * @param req the JSP request 
      * @param res the JSP response 
      * @param formConfigUri URI of the form configuration file, if not provided, current URI is used for configuration
+     * 
      * @throws Exception if creating the form configuration objects fails
      */
     public CmsFormHandler(PageContext context, HttpServletRequest req, HttpServletResponse res, String formConfigUri)
@@ -406,9 +412,20 @@ public class CmsFormHandler extends CmsJspActionElement {
                 } else {
                     fieldsResult.append("</td><td class=\"fieldvalue\">");
                 }
-                fieldsResult.append(convertToHtmlValue(value));
+
+                // special case by table fields
+                if (current instanceof CmsTableField) {
+                    fieldsResult.append(((CmsTableField)current).buildHtml(m_messages, false));
+                } else {
+                    fieldsResult.append(convertToHtmlValue(value));
+                }
                 fieldsResult.append("</td></tr>\n");
             } else {
+                // special case by table fields
+                if (current instanceof CmsTableField) {
+                    fieldsResult.append(((CmsTableField)current).buildText());
+                    continue;
+                }
                 // format output as plain text
                 if (isConfirmationMail) {
                     fieldsResult.append(current.getLabel());
@@ -636,6 +653,11 @@ public class CmsFormHandler extends CmsJspActionElement {
         m_mulipartFileItems = CmsRequestUtil.readMultipartFileItems(req);
         m_macroResolver = CmsMacroResolver.newInstance();
         m_macroResolver.setKeepEmptyMacros(true);
+        m_macroResolver.addMacro(MACRO_URL, OpenCms.getSiteManager().getCurrentSite(getCmsObject()).getServerPrefix(
+            getCmsObject(),
+            getRequestContext().getUri())
+            + link(getRequestContext().getUri()));
+        m_macroResolver.addMacro(MACRO_LOCALE, getRequestContext().getLocale().toString());
 
         if (m_mulipartFileItems != null) {
             m_parameterMap = CmsRequestUtil.readParameterMapFromMultiPart(

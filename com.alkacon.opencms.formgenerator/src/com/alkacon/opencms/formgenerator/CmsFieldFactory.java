@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFieldFactory.java,v $
- * Date   : $Date: 2008/02/19 11:55:26 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2008/05/16 10:09:30 $
+ * Version: $Revision: 1.4 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -63,7 +63,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * 
  * @since 7.0.4 
  */
@@ -103,6 +103,7 @@ public final class CmsFieldFactory {
         registerFieldType(CmsEmptyField.getStaticType(), CmsEmptyField.class.getName());
         registerFieldType(CmsPrivacyField.getStaticType(), CmsPrivacyField.class.getName());
         registerFieldType(CmsDynamicField.getStaticType(), CmsDynamicField.class.getName());
+        registerFieldType(CmsTableField.getStaticType(), CmsTableField.class.getName());
 
         File propertyFile = null;
         try {

@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFieldItem.java,v $
- * Date   : $Date: 2008/01/17 15:24:55 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2008/05/16 10:09:30 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -40,11 +40,14 @@ package com.alkacon.opencms.formgenerator;
  * 
  * @author Andreas Zahner 
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4 
  */
 public class CmsFieldItem {
+
+    /** The label of the item in the database. */
+    private String m_dbLabel;
 
     /** A flag indicating if the item is selected. */
     private boolean m_isSelected;
@@ -78,9 +81,38 @@ public class CmsFieldItem {
     public CmsFieldItem(String value, String label, boolean isSelected, boolean showInRow) {
 
         m_label = label;
+        m_dbLabel = label;
         m_isSelected = isSelected;
         m_value = value;
         m_showInRow = showInRow;
+    }
+
+    /**
+     * Constructor that creates an initialized field item.<p>
+     * 
+     * @param value the value of the field item
+     * @param label the label of the field item
+     * @param dblabel if the label for the database (only use for {@link CmsTableField})
+     * @param isSelected true if the current item is selected, otherwise false
+     * @param showInRow true if the items should be shown in a row, otherwise false
+     */
+    public CmsFieldItem(String value, String label, String dblabel, boolean isSelected, boolean showInRow) {
+
+        m_label = label;
+        m_dbLabel = dblabel;
+        m_isSelected = isSelected;
+        m_value = value;
+        m_showInRow = showInRow;
+    }
+
+    /**
+     * Returns the dbLabel.<p>
+     *
+     * @return the dbLabel
+     */
+    public String getDbLabel() {
+
+        return m_dbLabel;
     }
 
     /**
@@ -121,6 +153,16 @@ public class CmsFieldItem {
     public boolean isShowInRow() {
 
         return m_showInRow;
+    }
+
+    /**
+     * Sets the dbLabel.<p>
+     *
+     * @param dbLabel the dbLabel to set
+     */
+    public void setDbLabel(String dbLabel) {
+
+        m_dbLabel = dbLabel;
     }
 
     /**

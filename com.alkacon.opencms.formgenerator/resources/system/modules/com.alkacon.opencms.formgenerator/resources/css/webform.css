@@ -5,6 +5,25 @@
 @charset "UTF-8";
 @media all
 {
+	/* labels */
+	td.webform_label, td.webform_label_multi {
+		font-weight: bold;
+		padding: 5px 0px 3px 0px;
+	}
+	
+	/* additional fields */
+	table.webform_table select {
+		height: 20px;
+	}
+
+	table.webform_table textarea {
+		height: 60px;
+	}
+
+	table.webform_table tr td.webform_button {
+		text-align: center;
+	}
+	
 	/* error */
 	span.webform_label_error{
 		color: #CC0000;
@@ -18,36 +37,42 @@
 	/* checkbox */
 	table.webform_checkbox_row{
 		float: left; 
-		padding-right: 8px;
+		padding: 0px 8px 0px 0px;
 	}
 	
 	td.webform_field_checkbox, td.webform_field_checkbox_row{
-		padding-top: 2px;
+		padding: 2px 0px 2px 0px;
 	}
 	
 	td.webform_label_checkbox{
-		padding-left: 5px;
+		padding: 2px 0px 2px 5px;
 	}
 
 	td.webform_label_checkbox_row{
-		padding-left: 3px;
+		padding: 2px 0px 2px 3px;
 	}
 	
 	/* radio */
 	table.webform_radio_row{
 		float: left; 
-		padding-right: 8px;
+		padding: 0px 8px 0px 0px;
 	}
 	
 	td.webform_field_radio, td.webform_field_radio_row{
-		padding-top: 4px;
+		padding: 4px 0px 0px 0px;
 	}
 	
-	td.webform_label_radio{
-		padding-left: 5px;
+	td.webform_label_radio, td.webform_label_radio_row{
+		padding: 1px 0px 0px 5px;
 	}
 	
-	td.webform_label_radio_row{
-		padding-left: 3px;
+	/* table field */
+	table.webform_label_table{
+		vertical-align: top;
+	}
+	
+	.webform_label_table tr th, .webform_label_table tr td, 
+		.webform_field_table tr th, .webform_field_table tr td {
+		white-space: nowrap;
 	}
 }

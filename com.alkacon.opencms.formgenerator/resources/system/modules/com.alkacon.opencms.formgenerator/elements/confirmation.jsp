@@ -23,10 +23,15 @@ for (int i = 0, n = resultList.size(); i < n; i++) {
         }
         // compute the value for the dynamic field
         value = formHandler.getFormConfiguration().getFieldStringValueByName(current.getName());
+        value = formHandler.convertToHtmlValue(value);
+    }else if((current instanceof CmsTableField)) {
+        value = ((CmsTableField)current).buildHtml(formHandler.getMessages(),false);
+    }else {
+        value = formHandler.convertToHtmlValue(value);
     }
 
 	out.print("<tr>\n\t<td valign=\"top\">" + current.getLabel() + "</td>");
-	out.print("\n\t<td valign=\"top\" style=\"font-weight: bold;\">" + formHandler.convertToHtmlValue(value) + "</td></tr>\n");
+	out.print("\n\t<td valign=\"top\" style=\"font-weight: bold;\">" + value + "</td></tr>\n");
 }
 
 %>

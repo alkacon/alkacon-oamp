@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/Messages.java,v $
- * Date   : $Date: 2007/12/21 14:34:00 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/05/16 10:09:30 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -39,14 +39,20 @@ import org.opencms.i18n.I_CmsMessageBundle;
  * 
  * @author Achim Westermann 
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4 
  */
 public final class Messages extends A_CmsMessageBundle {
+    
+    /** Message constant for key in the resource bundle. */
+    public static final String ERR_INIT_TABLE_FIELD_UNEQUAL_0 = "ERR_INIT_TABLE_FIELD_UNEQUAL_0";
 
+    /** Message constant for key in the resource bundle. */
+    public static final String ERR_INIT_TABLE_FIELD_UNIQUE_1 = "ERR_INIT_TABLE_FIELD_UNIQUE_1";
+    
     /** Message constant for key in the resource bundle. */
     public static final String ERR_INIT_INPUT_FIELD_MISSING_ITEM_2 = "ERR_INIT_INPUT_FIELD_MISSING_ITEM_2";
 
@@ -88,7 +94,7 @@ public final class Messages extends A_CmsMessageBundle {
 
     /** Message constant for key in the resource bundle. */
     public static final String LOG_ERR_PATTERN_SYNTAX_0 = "LOG_ERR_PATTERN_SYNTAX_0";
-
+    
     /** Message constant for key in the resource bundle. */
     public static final String LOG_ERR_READING_CUSTOM_FORM_FIELD_PROPERTIES_1 = "LOG_ERR_READING_CUSTOM_FORM_FIELD_PROPERTIES_1";
 
@@ -98,19 +104,14 @@ public final class Messages extends A_CmsMessageBundle {
     /** Message constant for key in the resource bundle. */
     public static final String LOG_ERR_SELECTWIDGET_XPATH_INVALID_4 = "LOG_ERR_SELECTWIDGET_XPATH_INVALID_4";
 
+    /** Message constant for key in the resource bundle. */
+    public static final String LOG_ERR_TABLEFIELD_REPLACE_0 = "LOG_ERR_TABLEFIELD_REPLACE_0";
+
     /** Name of the used resource bundle. */
     private static final String BUNDLE_NAME = "com.alkacon.opencms.formgenerator.messages";
 
     /** Static instance member. */
     private static final I_CmsMessageBundle INSTANCE = new Messages();
-
-    /**
-     * Hides the public constructor for this utility class.<p>
-     */
-    private Messages() {
-
-        // hide the constructor
-    }
 
     /**
      * Returns an instance of this localized message accessor.<p>
@@ -120,6 +121,14 @@ public final class Messages extends A_CmsMessageBundle {
     public static I_CmsMessageBundle get() {
 
         return INSTANCE;
+    }
+
+    /**
+     * Hides the public constructor for this utility class.<p>
+     */
+    private Messages() {
+
+        // hide the constructor
     }
 
     /**

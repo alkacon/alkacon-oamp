@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
- * Date   : $Date: 2008/02/28 08:16:45 $
- * Version: $Revision: 1.7 $
+ * Date   : $Date: 2008/05/16 10:09:30 $
+ * Version: $Revision: 1.8 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -63,7 +63,7 @@ import org.apache.commons.fileupload.FileItem;
  * @author Thomas Weckert 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  * 
  * @since 7.0.4 
  */
@@ -231,6 +231,9 @@ public class CmsForm {
     /** list of possible configuration errors. */
     protected List m_configurationErrors;
 
+    /** Configuration Uri. */
+    protected String m_configUri;
+
     /** configuration value. */
     protected String m_confirmationMailCheckboxLabel;
 
@@ -350,7 +353,7 @@ public class CmsForm {
     public CmsForm(CmsFormHandler jsp, CmsMessages messages, boolean initial)
     throws Exception {
 
-        init(jsp, messages, initial, null, null);
+        this(jsp, messages, initial, null, null);
     }
 
     /**
@@ -430,6 +433,16 @@ public class CmsForm {
     public List getConfigurationErrors() {
 
         return m_configurationErrors;
+    }
+
+    /**
+     * Returns the configuration Uri.<p>
+     *
+     * @return the configuration Uri
+     */
+    public String getConfigUri() {
+
+        return m_configUri;
     }
 
     /**
@@ -787,6 +800,7 @@ public class CmsForm {
         if (CmsStringUtil.isEmpty(formConfigUri)) {
             formConfigUri = jsp.getRequestContext().getUri();
         }
+        m_configUri = formConfigUri;
         CmsFile file = jsp.getCmsObject().readFile(formConfigUri);
         CmsXmlContent content = CmsXmlContentFactory.unmarshal(jsp.getCmsObject(), file);
 
@@ -1327,6 +1341,7 @@ public class CmsForm {
                         }
                     }
                 }
+
                 // get the field mandatory flag
                 stringValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDMANDATORY, locale);
                 boolean isMandatory = Boolean.valueOf(stringValue).booleanValue();
@@ -1334,6 +1349,13 @@ public class CmsForm {
                 if (isMandatory) {
                     // set flag that determines if mandatory fields are present
                     setHasMandatoryFields(true);
+                }
+
+                // special case by table fields 
+                if (CmsTableField.class.isAssignableFrom(field.getClass())) {
+                    CmsTableField tableField = (CmsTableField)field;
+                    String fieldValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDDEFAULTVALUE, locale);
+                    tableField.parseDefault(messages, fieldValue, m_parameterMap);
                 }
 
                 if (field.needsItems()) {
@@ -1401,7 +1423,9 @@ public class CmsForm {
                 }
             }
             // get the field value
-            if (initial && CmsStringUtil.isEmpty(getParameter(field.getName()))) {
+            if (initial
+                && CmsStringUtil.isEmpty(getParameter(field.getName()))
+                && !CmsTableField.class.isAssignableFrom(field.getClass())) {
                 // only fill in values from configuration file if called initially
                 if (!field.needsItems()) {
                     String fieldValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDDEFAULTVALUE, locale);
@@ -1415,7 +1439,7 @@ public class CmsForm {
                     // the default value is used to set the items and not really a value
                     field.setValue(null);
                 }
-            } else {
+            } else if (!CmsTableField.class.isAssignableFrom(field.getClass())) {
                 // get field value from request for standard fields
                 String[] parameterValues = (String[])m_parameterMap.get(field.getName());
                 StringBuffer value = new StringBuffer();
