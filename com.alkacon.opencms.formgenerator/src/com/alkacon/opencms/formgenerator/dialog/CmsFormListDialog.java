@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/dialog/CmsFormListDialog.java,v $
- * Date   : $Date: 2008/03/25 17:01:42 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2008/05/16 10:09:43 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -32,7 +32,6 @@
 package com.alkacon.opencms.formgenerator.dialog;
 
 import com.alkacon.opencms.formgenerator.database.CmsFormDataAccess;
-import com.alkacon.opencms.formgenerator.database.CmsFormDataBean;
 
 import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.main.CmsLog;
@@ -49,6 +48,7 @@ import org.opencms.workplace.tools.CmsToolDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -63,7 +63,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Anja Röttgers
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4
  */
@@ -107,7 +107,6 @@ public class CmsFormListDialog extends A_CmsListDialog {
     public CmsFormListDialog(CmsJspActionElement jsp) {
 
         super(jsp, LIST_ID, Messages.get().container(Messages.GUI_FORM_LIST_NAME_0), null, null, null);
-
     }
 
     /**
@@ -129,7 +128,6 @@ public class CmsFormListDialog extends A_CmsListDialog {
     public void executeListMultiActions() throws CmsRuntimeException {
 
         // NOOP
-
     }
 
     /**
@@ -159,7 +157,6 @@ public class CmsFormListDialog extends A_CmsListDialog {
         } else {
             throwListUnsupportedActionException();
         }
-
     }
 
     /**
@@ -179,24 +176,16 @@ public class CmsFormListDialog extends A_CmsListDialog {
 
         List result = new ArrayList();
         try {
-            if (CmsFormDataAccess.getInstance().existsDBTables()) {
-
-                // read all form names
-                CmsListMetadata meta = getList().getMetadata();
-                List columnNames = CmsFormDataAccess.getInstance().readAllFormNames();
-                CmsFormDataBean value;
-                String name;
-                CmsListItem item;
-                for (int i = 0; i < columnNames.size(); i++) {
-                    value = (CmsFormDataBean)columnNames.get(i);
-                    name = value.getFieldValue(CmsFormDataAccess.C_COLUM_CMS_WEBFORM_ENTRIES_FORMID);
-                    item = new CmsListItem(meta, name);
-                    item.set(LIST_COLUMN_FORM_NAME, name);
-                    item.set(
-                        LIST_COLUMN_FORM_COUNT,
-                        value.getFieldValue(CmsFormDataAccess.C_COLUM_CMS_WEBFORM_ENTRIES_COUNT));
-                    result.add(item);
-                }
+            // read all form names
+            CmsListMetadata meta = getList().getMetadata();
+            Iterator it = CmsFormDataAccess.getInstance().countForms().entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry entry = (Map.Entry)it.next();
+                String name = (String)entry.getKey();
+                CmsListItem item = new CmsListItem(meta, name);
+                item.set(LIST_COLUMN_FORM_NAME, name);
+                item.set(LIST_COLUMN_FORM_COUNT, entry.getValue());
+                result.add(item);
             }
         } catch (Throwable e) {
             if (LOG.isErrorEnabled()) {
@@ -276,5 +265,4 @@ public class CmsFormListDialog extends A_CmsListDialog {
 
         // NOOP
     }
-
 }

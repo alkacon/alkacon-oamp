@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/dialog/CmsFormEditDialog.java,v $
- * Date   : $Date: 2008/03/26 15:36:21 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2008/05/16 10:09:43 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -46,7 +46,6 @@ import org.opencms.workplace.CmsWidgetDialog;
 import org.opencms.workplace.CmsWidgetDialogParameter;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -63,7 +62,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Anja Röttgers 
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4 
  */
@@ -123,63 +122,56 @@ public class CmsFormEditDialog extends CmsWidgetDialog {
 
         List errors = new ArrayList();
         try {
-            // look if every parameter is set
-            if (m_formData != null
-                && !CmsStringUtil.isEmptyOrWhitespaceOnly(m_paramFormid)
-                && !CmsStringUtil.isEmptyOrWhitespaceOnly(m_paramEntryid)) {
+            // get the list of all fields 
+            List columnNames = CmsFormDataAccess.getInstance().readFormFieldNames(m_paramFormid, 0, Long.MAX_VALUE);
 
-                // get the list of all fields 
-                List columnNames = CmsFormDataAccess.getInstance().readAllFormFieldNames(
-                    m_paramFormid,
-                    new Date(1),
-                    new Date(Long.MAX_VALUE));
+            // for each field look if the value has changed and update the database
+            String column = null;
+            CmsFormDataEditBean data;
+            String value = null;
+            String orgValue;
+            for (int i = 0; i < columnNames.size(); i++) {
+                try {
+                    // get for the field the old and new value
+                    column = (String)columnNames.get(i);
+                    data = (CmsFormDataEditBean)m_fields.get(column);
+                    orgValue = m_formData.getFieldValue(column);
+                    value = data.getValue();
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug(Messages.get().getBundle().key(
+                            Messages.LOG_COMPARE_FORM_FIELDS_4,
+                            new String[] {column, value, orgValue, m_paramEntryid}));
+                    }
 
-                // for each field look if the value has changed and update the database
-                String column = null;
-                CmsFormDataEditBean data;
-                String value = null;
-                String orgValue;
-                for (int i = 0; i < columnNames.size(); i++) {
-                    try {
-
-                        // get for the field the old and new value
-                        column = (String)columnNames.get(i);
-                        data = (CmsFormDataEditBean)m_fields.get(column);
-                        orgValue = m_formData.getFieldValue(column);
-                        value = data.getValue();
+                    // compares the old and new value and update the database if not identical
+                    if (!compareValues(orgValue, value) || ((value != null) && (value.trim().length() == 0))) {
+                        CmsFormDataAccess.getInstance().updateFieldValue(
+                            Integer.parseInt(m_paramEntryid),
+                            column,
+                            value);
                         if (LOG.isDebugEnabled()) {
                             LOG.debug(Messages.get().getBundle().key(
-                                Messages.LOG_COMPARE_FORM_FIELDS_4,
-                                new String[] {column, value, orgValue, m_paramEntryid}));
-                        }
-
-                        // compares the old and new value and update the database if not identical
-                        if (!compareValues(orgValue, value) || (value != null && value.trim().length() == 0)) {
-                            CmsFormDataAccess.getInstance().updateFieldValue(m_paramEntryid, column, value);
-                            if (LOG.isDebugEnabled()) {
-                                LOG.debug(Messages.get().getBundle().key(
-                                    Messages.LOG_WRITE_FORM_FIELDS_3,
-                                    column,
-                                    value,
-                                    m_paramEntryid));
-                            }
-                        }
-                    } catch (Exception e) {
-                        if (LOG.isErrorEnabled()) {
-                            LOG.error(Messages.get().getBundle().key(
-                                Messages.ERR_WRITE_FORM_FIELDS_3,
+                                Messages.LOG_WRITE_FORM_FIELDS_3,
                                 column,
                                 value,
                                 m_paramEntryid));
                         }
-                        errors.add(new CmsException(Messages.get().container(
+                    }
+                } catch (Exception e) {
+                    if (LOG.isErrorEnabled()) {
+                        LOG.error(Messages.get().getBundle().key(
                             Messages.ERR_WRITE_FORM_FIELDS_3,
                             column,
                             value,
-                            m_paramEntryid)));
+                            m_paramEntryid));
                     }
-
+                    errors.add(new CmsException(Messages.get().container(
+                        Messages.ERR_WRITE_FORM_FIELDS_3,
+                        column,
+                        value,
+                        m_paramEntryid)));
                 }
+
             }
         } catch (Exception ex) {
             errors.add(ex);
@@ -247,22 +239,14 @@ public class CmsFormEditDialog extends CmsWidgetDialog {
      */
     protected void defineWidgets() {
 
-        if (!CmsStringUtil.isEmptyOrWhitespaceOnly(m_paramEntryid)
-            && !CmsStringUtil.isEmptyOrWhitespaceOnly(m_paramFormid)) {
-
-            try {
-                setKeyPrefix(WEBFORM_KEY_PREFIX);
-                m_formData = CmsFormDataAccess.getInstance().readOneFormData(m_paramEntryid);
-                if (m_formData != null) {
-                    addStaticWidgets();
-                    addDynamicWidgets();
-                }
-            } catch (Exception e) {
-                if (LOG.isErrorEnabled()) {
-                    LOG.error(Messages.get().container(Messages.ERR_SHOW_EDIT_FORM_FIELDS_1, m_paramEntryid));
-                }
+        try {
+            setKeyPrefix(WEBFORM_KEY_PREFIX);
+            addStaticWidgets();
+            addDynamicWidgets();
+        } catch (Exception e) {
+            if (LOG.isErrorEnabled()) {
+                LOG.error(Messages.get().container(Messages.ERR_SHOW_EDIT_FORM_FIELDS_1, m_paramEntryid));
             }
-
         }
     }
 
@@ -285,6 +269,18 @@ public class CmsFormEditDialog extends CmsWidgetDialog {
     }
 
     /**
+     * @see org.opencms.workplace.CmsWidgetDialog#validateParamaters()
+     */
+    protected void validateParamaters() throws Exception {
+
+        if (CmsStringUtil.isEmptyOrWhitespaceOnly(m_paramEntryid)
+            || CmsStringUtil.isEmptyOrWhitespaceOnly(m_paramFormid)) {
+            throw new Exception();
+        }
+        m_formData = CmsFormDataAccess.getInstance().readForm(Integer.parseInt(m_paramEntryid));
+    }
+
+    /**
      * Creates the dynamic widgets for the current submitted data for each field.<p>
      * 
      * @throws Exception if something goes wrong
@@ -296,10 +292,7 @@ public class CmsFormEditDialog extends CmsWidgetDialog {
         }
 
         // get the list of all fields 
-        List columnNames = CmsFormDataAccess.getInstance().readAllFormFieldNames(
-            m_paramFormid,
-            new Date(1),
-            new Date(Long.MAX_VALUE));
+        List columnNames = CmsFormDataAccess.getInstance().readFormFieldNames(m_paramFormid, 0, Long.MAX_VALUE);
 
         // for each column create a widget
         String column;
@@ -348,7 +341,13 @@ public class CmsFormEditDialog extends CmsWidgetDialog {
             1));
 
         // add the resource widget
-        edit = new CmsFormDataEditBean(m_formData.getResourcePath(), null);
+        String path;
+        try {
+            path = getCms().readResource(m_formData.getResourceId()).getRootPath();
+        } catch (Exception e) {
+            path = m_formData.getResourceId().toString();
+        }
+        edit = new CmsFormDataEditBean(path, null);
         addWidget(new CmsWidgetDialogParameter(
             edit,
             "value",
@@ -371,10 +370,10 @@ public class CmsFormEditDialog extends CmsWidgetDialog {
     private boolean compareValues(Object value1, Object value2) {
 
         boolean result = false;
-        if (value1 == null && value2 == null) {
+        if ((value1 == null) && (value2 == null)) {
             return !result;
         }
-        if (value1 != null && value1.equals(value2)) {
+        if ((value1 != null) && value1.equals(value2)) {
             return !result;
         }
         return result;

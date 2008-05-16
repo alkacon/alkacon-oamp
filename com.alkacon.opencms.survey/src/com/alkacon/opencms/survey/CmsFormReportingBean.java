@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.survey/src/com/alkacon/opencms/survey/CmsFormReportingBean.java,v $
- * Date   : $Date: 2008/04/30 07:08:09 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2008/05/16 10:09:43 $
+ * Version: $Revision: 1.4 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -57,9 +57,9 @@ import org.apache.commons.collections.map.LazyMap;
 /**
  * Contains functions to show the reporting of the webform.<p>
  * 
- * @author Röttgers
+ * @author Anja Röttgers
  * 
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * 
  * @since 7.0.4
  */
@@ -88,9 +88,9 @@ public class CmsFormReportingBean extends CmsJspActionElement {
 
         boolean result = false;
         I_CmsField field = CmsFieldFactory.getSharedInstance().getField(fieldType);
-        if (field instanceof CmsCheckboxField
-            || field instanceof CmsRadioButtonField
-            || field instanceof CmsSelectionField) {
+        if ((field instanceof CmsCheckboxField)
+            || (field instanceof CmsRadioButtonField)
+            || (field instanceof CmsSelectionField)) {
             result = true;
         }
         return result;

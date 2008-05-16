@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.survey/src/com/alkacon/opencms/survey/CmsFormWorkBean.java,v $
- * Date   : $Date: 2008/04/23 14:21:39 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/05/16 10:09:43 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -33,14 +33,15 @@ package com.alkacon.opencms.survey;
 
 import com.alkacon.opencms.formgenerator.database.CmsFormDataAccess;
 import com.alkacon.opencms.formgenerator.database.CmsFormDataBean;
+import com.alkacon.opencms.formgenerator.database.CmsFormDatabaseFilter;
 
 import org.opencms.main.CmsLog;
 import org.opencms.util.CmsStringUtil;
+import org.opencms.util.CmsUUID;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,9 +53,9 @@ import org.apache.commons.logging.Log;
 /**
  * Contains the list with all results from the database.<p>
  *
- * @author Röttgers
+ * @author Anja Röttgers
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4
  */
@@ -153,7 +154,7 @@ public class CmsFormWorkBean {
         // split the parameter with the separator
         List result = new ArrayList();
         String[] param = CmsStringUtil.splitAsArray(parameters, CmsFormReportingBean.PARAM_SEPARATOR);
-        if (param.length <= 2 || m_list == null) {
+        if ((param.length <= 2) || (m_list == null)) {
             return result;
         }
 
@@ -266,28 +267,26 @@ public class CmsFormWorkBean {
      * Initialize this work bean and filter the data with the form id and if exists the resource path.<p>
      * 
      * @param formId the form id
-     * @param resourcePath the resource path if null then nothing is filtered
+     * @param resourceId the resource id if null then nothing is filtered
      */
-    public void init(String formId, String resourcePath) {
+    public void init(String formId, String resourceId) {
 
         m_list = new ArrayList();
         m_page = 1;
         try {
             if (formId != null) {
 
-                List list = CmsFormDataAccess.getInstance().readFormData(formId, new Date(0), new Date(Long.MAX_VALUE));
-                CmsFormDataBean data;
-                for (int i = 0; i < list.size(); i++) {
-                    data = (CmsFormDataBean)list.get(i);
-                    if (resourcePath == null || (resourcePath != null && resourcePath.equals(data.getResourcePath()))) {
-                        m_list.add(data);
-                    }
+                CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.DEFAULT;
+                filter = filter.filterFormId(formId);
+                if (resourceId != null) {
+                    filter = filter.filterResourceId(new CmsUUID(resourceId));
                 }
+                m_list = CmsFormDataAccess.getInstance().readForms(filter);
                 Collections.sort(m_list, COMPARE_DATE_CREATED);
             }
         } catch (Exception e) {
             if (LOG.isErrorEnabled()) {
-                LOG.error(Messages.get().getBundle().key(Messages.ERR_INIT_WORK_BEAN_2, formId, resourcePath), e);
+                LOG.error(Messages.get().getBundle().key(Messages.ERR_INIT_WORK_BEAN_2, formId, resourceId), e);
             }
         }
     }

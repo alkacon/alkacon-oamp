@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/dialog/CmsFormDataListDialog.java,v $
- * Date   : $Date: 2008/03/26 15:36:21 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2008/05/16 10:09:43 $
+ * Version: $Revision: 1.4 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -63,7 +63,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -78,7 +77,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Anja Röttgers
  * 
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * 
  * @since 7.0.4
  */
@@ -177,7 +176,7 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
                 CmsListItem listItem;
                 while (itItems.hasNext()) {
                     listItem = (CmsListItem)itItems.next();
-                    CmsFormDataAccess.getInstance().deleteFormEntries(listItem.getId());
+                    CmsFormDataAccess.getInstance().deleteForm(Integer.parseInt(listItem.getId()));
                 }
             } catch (Exception e) {
                 throw new CmsRuntimeException(Messages.get().container(Messages.ERR_DELETE_SELECTED_FORM_0), e);
@@ -199,7 +198,7 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
 
             if (LIST_ACTION_DELETE.equals(getParamListAction())) {
                 try {
-                    CmsFormDataAccess.getInstance().deleteFormEntries(item.getId());
+                    CmsFormDataAccess.getInstance().deleteForm(Integer.parseInt(item.getId()));
                 } catch (Exception e) {
                     throw new CmsRuntimeException(Messages.get().container(
                         Messages.ERR_DELETE_SELECTED_FORM_1,
@@ -274,48 +273,43 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
 
         List result = new ArrayList();
         try {
-            if (m_paramFormid != null) {
+            // get the data of the form fields
+            CmsListMetadata meta = getList().getMetadata();
+            if (meta.getColumnDefinitions().size() > 0) {
+                List entries = CmsFormDataAccess.getInstance().readForms(m_paramFormid, 0, Long.MAX_VALUE);
 
-                // get the data of the form fields
-                CmsListMetadata meta = getList().getMetadata();
-                if (meta.getColumnDefinitions().size() > 0) {
-                    List entries = CmsFormDataAccess.getInstance().readFormData(
-                        m_paramFormid,
-                        new Date(1),
-                        new Date(Long.MAX_VALUE));
+                for (int i = 0; i < entries.size(); i++) {
+                    // get the entry and fill the columns
+                    CmsFormDataBean data = (CmsFormDataBean)entries.get(i);
+                    CmsListItem item = new CmsListItem(meta, "" + data.getEntryId());
 
-                    Entry entry;
-                    CmsListItem item;
-                    Iterator iterator;
-                    CmsFormDataBean data;
-                    Object value;
-                    for (int i = 0; i < entries.size(); i++) {
-
-                        // get the entry and fill the columns
-                        data = (CmsFormDataBean)entries.get(i);
-                        item = new CmsListItem(meta, data.getFormId());
-
-                        // set the static columns
-                        item.set(LIST_COLUMN_ID, data.getFormId());
-                        item.set(LIST_COLUMN_RESOURCE, data.getResourcePath());
-                        item.set(LIST_COLUMN_DATE, new Date(data.getDateCreated()));
-
-                        // fill the dynamic columns
-                        iterator = data.getAllFields().iterator();
-                        while (iterator.hasNext()) {
-                            entry = (Entry)iterator.next();
-                            value = entry.getValue();
-                            if (value != null && value instanceof String) {
-                                value = CmsStringUtil.escapeHtml((String)value);
-                                value = CmsStringUtil.trimToSize((String)value, STRING_TRIM_SIZE, " ...");
-                            }
-                            item.set((String)entry.getKey(), value);
-                        }
-                        result.add(item);
-
+                    // set the static columns
+                    item.set(LIST_COLUMN_ID, data.getFormId());
+                    String path;
+                    try {
+                        path = getCms().readResource(data.getResourceId()).getRootPath();
+                    } catch (Exception e) {
+                        path = data.getResourceId().toString();
                     }
+                    item.set(LIST_COLUMN_RESOURCE, path);
+                    item.set(LIST_COLUMN_DATE, new Date(data.getDateCreated()));
+
+                    // fill the dynamic columns
+                    Iterator iterator = data.getAllFields().entrySet().iterator();
+                    while (iterator.hasNext()) {
+                        Map.Entry entry = (Map.Entry)iterator.next();
+                        Object value = entry.getValue();
+                        if ((value != null) && (value instanceof String)) {
+                            value = CmsStringUtil.escapeHtml((String)value);
+                            value = CmsStringUtil.trimToSize((String)value, STRING_TRIM_SIZE, " ...");
+                        }
+                        item.set((String)entry.getKey(), value);
+                    }
+                    result.add(item);
+
                 }
             }
+
         } catch (CmsIllegalArgumentException e) {
             /* 
              * This exception is only thrown, when the dynamically generated
@@ -342,7 +336,7 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
 
         String[] form = (String[])getParameterMap().get(CmsFormListDialog.PARAM_FORM_ID);
 
-        if (form != null && form.length > 0) {
+        if ((form != null) && (form.length > 0)) {
             m_paramFormid = form[0];
 
             // add the edit action
@@ -380,22 +374,16 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
 
             try {
                 // get the list of all fields 
-                List columnNames = CmsFormDataAccess.getInstance().readAllFormFieldNames(
-                    m_paramFormid,
-                    new Date(1),
-                    new Date(Long.MAX_VALUE));
+                List columnNames = CmsFormDataAccess.getInstance().readFormFieldNames(m_paramFormid, 0, Long.MAX_VALUE);
 
                 // create the search action
                 CmsListSearchAction searchAction = new CmsListSearchAction(idCol);
                 searchAction.setHelpText(Messages.get().container(Messages.GUI_ACTION_FIELDS_SEARCH_HELP_0));
 
-                String name;
-                CmsListColumnDefinition nameCol;
                 for (int i = 0; i < columnNames.size(); i++) {
-
                     // add column for the form name
-                    name = (String)columnNames.get(i);
-                    nameCol = new CmsListColumnDefinition(name);
+                    String name = (String)columnNames.get(i);
+                    CmsListColumnDefinition nameCol = new CmsListColumnDefinition(name);
                     nameCol.setName(new CmsMessageContainer(null, CmsStringUtil.escapeHtml(name)));
                     nameCol.setWidth("*");
                     metadata.addColumn(nameCol);
@@ -473,6 +461,16 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
     }
 
     /**
+     * @see org.opencms.workplace.list.A_CmsListDialog#validateParamaters()
+     */
+    protected void validateParamaters() throws Exception {
+
+        if (CmsStringUtil.isEmptyOrWhitespaceOnly(m_paramFormid)) {
+            throw new Exception();
+        }
+    }
+
+    /**
      * Returns the delete column with action to delete a form entry.<p>
      * 
      * @return the column definition with the delete action
@@ -520,5 +518,4 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
         editCol.addDirectAction(deleteAction);
         return editCol;
     }
-
 }

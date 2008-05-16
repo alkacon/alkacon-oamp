@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/CmsFormDataAccess.java,v $
- * Date   : $Date: 2008/03/25 17:01:42 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2008/05/16 10:09:43 $
+ * Version: $Revision: 1.7 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -33,10 +33,13 @@
 package com.alkacon.opencms.formgenerator.database;
 
 import com.alkacon.opencms.formgenerator.CmsDynamicField;
+import com.alkacon.opencms.formgenerator.CmsFieldItem;
 import com.alkacon.opencms.formgenerator.CmsForm;
 import com.alkacon.opencms.formgenerator.CmsFormHandler;
+import com.alkacon.opencms.formgenerator.CmsTableField;
 import com.alkacon.opencms.formgenerator.I_CmsField;
 
+import org.opencms.file.CmsObject;
 import org.opencms.main.CmsException;
 import org.opencms.main.CmsLog;
 import org.opencms.main.CmsRuntimeException;
@@ -44,6 +47,7 @@ import org.opencms.main.OpenCms;
 import org.opencms.module.CmsModule;
 import org.opencms.util.CmsRfsException;
 import org.opencms.util.CmsStringUtil;
+import org.opencms.util.CmsUUID;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -55,12 +59,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.Set;
 
 import org.apache.commons.fileupload.DefaultFileItem;
 import org.apache.commons.fileupload.FileItem;
@@ -72,119 +76,35 @@ import org.apache.commons.logging.Log;
  * @author Achim Westermann
  * @author Michael Moossen
  * 
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  * 
  * @since 7.0.4
  */
 public final class CmsFormDataAccess {
 
-    /** Column name of table "CMS_WEBFORM_ENTRIES".*/
-    public static final String C_COLUM_CMS_WEBFORM_ENTRIES_COUNT = "COUNT";
+    /** Database column name constant. */
+    private static final String DB_COUNT = "COUNT";
 
-    /** Column name of table "CMS_WEBFORM_ENTRIES".*/
-    public static final String C_COLUM_CMS_WEBFORM_ENTRIES_FORMID = "FORMID";
+    /** Database column name constant. */
+    private static final String DB_DATE_CREATED = "DATE_CREATED";
 
-    /** Name of the db-pool module parameter.  */
-    public static final String MODULE_PARAM_DB_POOL = "db-pool";
+    /** Database column name constant. */
+    private static final String DB_ENTRY_ID = "ENTRY_ID";
 
-    /** Name of the upload folder module parameter.  */
-    public static final String MODULE_PARAM_UPLOADFOLDER = "uploadfolder";
+    /** Database column name constant. */
+    private static final String DB_FIELDNAME = "FIELDNAME";
 
-    /** Query to check if webform persistence tables exist. */
-    private static final String C_CHECK_TABLES = "SELECT * FROM CMS_WEBFORM_ENTRIES LIMIT 1";
+    /** Database column name constant. */
+    private static final String DB_FIELDVALUE = "FIELDVALUE";
 
-    /** Column name of table "CMS_WEBFORM_DATA".*/
-    private static final String C_COLUM_CMS_WEBFORM_DATA_FIELDNAME = "FIELDNAME";
+    /** Database column name constant. */
+    private static final String DB_FORM_ID = "FORM_ID";
 
-    /** Column name of table "CMS_WEBFORM_DATA".*/
-    private static final String C_COLUM_CMS_WEBFORM_DATA_FIELDVALUE = "FIELDVALUE";
+    /** Database column name constant. */
+    private static final String DB_RESOURCE_ID = "RESOURCE_ID";
 
-    /** Query to create the database table CMS_WEBFORM_DATA. */
-    private static final String C_CREATE_TABLE_CMS_WEBFORM_DATA = "CREATE TABLE CMS_WEBFORM_DATA ("
-        + "REF_ID INT(11) NOT NULL, "
-        + C_COLUM_CMS_WEBFORM_DATA_FIELDNAME
-        + " VARCHAR(256) NOT NULL,"
-        + C_COLUM_CMS_WEBFORM_DATA_FIELDVALUE
-        + " TEXT NOT NULL, PRIMARY KEY (REF_ID, "
-        + C_COLUM_CMS_WEBFORM_DATA_FIELDNAME
-        + "(256)),INDEX WFD_VALUE_IDX ("
-        + C_COLUM_CMS_WEBFORM_DATA_FIELDVALUE
-        + "(256))) ENGINE=MYISAM DEFAULT CHARSET=UTF8;";
-
-    /** Query to create the database table CMS_WEBFORM_ENTRIES. */
-    private static final String C_CREATE_TABLE_CMS_WEBFORM_ENTRIES = "CREATE TABLE CMS_WEBFORM_ENTRIES ("
-        + "ENTRY_ID INT(11) NOT NULL AUTO_INCREMENT,"
-        + "FORM_ID VARCHAR(256) NOT NULL,"
-        + "DATE_CREATED BIGINT(20) NOT NULL,"
-        + "RESOURCE_PATH VARCHAR(256) NOT NULL,"
-        + "PRIMARY KEY  (ENTRY_ID), "
-        + "INDEX WFE_FORMID_IDX (FORM_ID(256)), "
-        + "INDEX WFE_DATE_IDX (DATE_CREATED)) "
-        + "ENGINE=MYISAM DEFAULT CHARSET=UTF8;";
-
-    /** Query to delete all distinct form names. */
-    private static final String C_DELETE_FORM_DATA = "DELETE FROM CMS_WEBFORM_DATA WHERE REF_ID=?;";
-
-    /** Query to delete all distinct form names. */
-    private static final String C_DELETE_FORM_ENTRIES = "DELETE FROM CMS_WEBFORM_ENTRIES WHERE ENTRY_ID=?;";
-
-    /** Query to delete the field and the value of a given form and field. */
-    private static final String C_DELETE_FORM_FIELD = "DELETE FROM CMS_WEBFORM_DATA WHERE REF_ID=? AND "
-        + C_COLUM_CMS_WEBFORM_DATA_FIELDNAME
-        + "=?;";
-
-    /** Query to read all distinct form field names of a given form in time range. */
-    private static final String C_READ_FORM_FIELD_NAMES = "SELECT DISTINCT(D."
-        + C_COLUM_CMS_WEBFORM_DATA_FIELDNAME
-        + ") FROM CMS_WEBFORM_ENTRIES E, CMS_WEBFORM_DATA D WHERE E.ENTRY_ID=D.REF_ID AND E.FORM_ID=? AND E.DATE_CREATED>? AND E.DATE_CREATED<?;";
-
-    /** Query to read all distinct form names. */
-    private static final String C_READ_FORM_NAMES = "SELECT COUNT(*) AS "
-        + C_COLUM_CMS_WEBFORM_ENTRIES_COUNT
-        + ", FORM_ID AS "
-        + C_COLUM_CMS_WEBFORM_ENTRIES_FORMID
-        + " FROM CMS_WEBFORM_ENTRIES GROUP BY FORM_ID;";
-
-    /** Query to read all fields and their values that have been submitted in a single webform submission. */
-    private static final String C_READ_FORM_SUBMISSION_DATA = "SELECT "
-        + C_COLUM_CMS_WEBFORM_DATA_FIELDNAME
-        + ","
-        + C_COLUM_CMS_WEBFORM_DATA_FIELDVALUE
-        + " FROM CMS_WEBFORM_DATA WHERE REF_ID=?";
-
-    /** Query to read one entry in a single webform submission. */
-    private static final String C_READ_FORM_SUBMISSION_ID = "SELECT ENTRY_ID, DATE_CREATED, RESOURCE_PATH "
-        + "FROM CMS_WEBFORM_ENTRIES "
-        + "WHERE ENTRY_ID=?;";
-
-    /** Query to read all submission IDS of a given form in time range. */
-    private static final String C_READ_FORM_SUBMISSION_IDS = "SELECT ENTRY_ID, DATE_CREATED, RESOURCE_PATH "
-        + "FROM CMS_WEBFORM_ENTRIES "
-        + "WHERE FORM_ID=? AND DATE_CREATED>? AND DATE_CREATED<?;";
-
-    /** Query to read all submission IDS of a given form matching the field name/value pair. */
-    private static final String C_READ_FORMS_FOR_FIELD_VALUE = "SELECT WFE.ENTRY_ID, WFE.DATE_CREATED, WFE.RESOURCE_PATH "
-        + "FROM CMS_WEBFORM_ENTRIES WFE, CMS_WEBFORM_DATA WFD "
-        + "WHERE WFE.FORM_ID=? AND WFE.ENTRY_ID = WFD.REF_ID AND WFD."
-        + C_COLUM_CMS_WEBFORM_DATA_FIELDNAME
-        + "=? AND WFD."
-        + C_COLUM_CMS_WEBFORM_DATA_FIELDVALUE
-        + "=?;";
-
-    /** Query to read the last auto - generated ID in this session. */
-    private static final String C_READ_LAST_SUBMISSION_ID = "SELECT ENTRY_ID "
-        + "FROM CMS_WEBFORM_ENTRIES "
-        + "WHERE FORM_ID=? AND DATE_CREATED=?";
-
-    /** Query to write a new field and value to CMS_WEBFORM_DATA that is related to a form submission in CMS_WEBFORM_ENTRIES (ref_id has to match entry_id). */
-    private static final String C_WRITE_FORM_DATA = "INSERT INTO CMS_WEBFORM_DATA (REF_ID,"
-        + C_COLUM_CMS_WEBFORM_DATA_FIELDNAME
-        + ","
-        + C_COLUM_CMS_WEBFORM_DATA_FIELDVALUE
-        + ") VALUES (?,?,?)";
-
-    /** Query to write a new form submission into CMS_WEBFORM_ENTRIES. */
-    private static final String C_WRITE_FORM_SUBMISSION = "INSERT INTO CMS_WEBFORM_ENTRIES(FORM_ID,DATE_CREATED,RESOURCE_PATH) VALUES (?,?,?)";
+    /** Database column name constant. */
+    private static final String DB_STATE = "STATE";
 
     /** The log object for this class. */
     private static final Log LOG = CmsLog.getLog(CmsFormDataAccess.class);
@@ -195,21 +115,23 @@ public final class CmsFormDataAccess {
     /** The corresponding module name to read parameters of.  */
     private static final String MODULE = "com.alkacon.opencms.formgenerator";
 
-    /**
-     * Singleton access.<p>
-     * 
-     * @return the singleton object
-     */
-    public static synchronized CmsFormDataAccess getInstance() {
+    /** Name of the db-pool module parameter.  */
+    private static final String MODULE_PARAM_DB_POOL = "db-pool";
 
-        if (m_instance == null) {
-            m_instance = new CmsFormDataAccess();
-        }
-        return m_instance;
-    }
+    /** Name of the upload folder module parameter.  */
+    private static final String MODULE_PARAM_UPLOADFOLDER = "uploadfolder";
+
+    /** The filename/path of the SQL query properties. */
+    private static final String QUERY_PROPERTIES = "com/alkacon/opencms/formgenerator/database/mysql.properties";
+
+    /** The admin cms context. */
+    private CmsObject m_cms;
 
     /** The connection pool id. */
     private String m_connectionPool;
+
+    /** A map holding all SQL queries. */
+    private Map m_queries;
 
     /**
      * Default constructor.<p>
@@ -228,34 +150,114 @@ public final class CmsFormDataAccess {
                 Messages.LOG_ERR_DATAACCESS_MODULE_PARAM_MISSING_2,
                 new Object[] {MODULE_PARAM_DB_POOL, MODULE}));
         }
+        m_queries = new HashMap();
+        loadQueryProperties(QUERY_PROPERTIES);
     }
 
     /**
-     * Delete's the form with all fields and data's.<p>
+     * Singleton access.<p>
      * 
-     * @param formId to find the form data in the database 
+     * @return the singleton object
+     */
+    public static synchronized CmsFormDataAccess getInstance() {
+
+        if (m_instance == null) {
+            m_instance = new CmsFormDataAccess();
+        }
+        return m_instance;
+    }
+
+    /**
+     * Counts the number of forms for each form.<p>
+     * 
+     * @return <code>{@link Map}&lt;{@link String}, {@link Integer}&gt;</code> with all form id as keys and the count as value
+     *      
+     * @throws SQLException if something goes wrong 
+     */
+    public Map countForms() throws SQLException {
+
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        Map result = new HashMap();
+        try {
+            con = getConnection();
+            stmt = con.prepareStatement(getQuery("READ_FORM_NAMES"));
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                result.put(rs.getString(DB_FORM_ID), new Integer(rs.getInt(DB_COUNT)));
+            }
+        } finally {
+            closeAll(con, stmt, rs);
+        }
+        return result;
+    }
+
+    /**
+     * Counts all submitted forms matching the given filter.<p>
+     * 
+     * @param filter the filter to match 
+     * 
+     * @return the number of all submitted forms matching the given filter
+     *      
+     * @throws SQLException if sth goes wrong 
+     */
+    public int countForms(CmsFormDatabaseFilter filter) throws SQLException {
+
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet res = null;
+        int result = 0;
+
+        try {
+            List params = new ArrayList();
+            con = getConnection();
+            stmt = con.prepareStatement(getReadQuery(filter, params, true));
+            for (int i = 0; i < params.size(); i++) {
+                if (params.get(i) instanceof Integer) {
+                    stmt.setInt(i + 1, ((Integer)params.get(i)).intValue());
+                } else if (params.get(i) instanceof Long) {
+                    stmt.setLong(i + 1, ((Long)params.get(i)).longValue());
+                } else {
+                    stmt.setString(i + 1, (String)params.get(i));
+                }
+            }
+            res = stmt.executeQuery();
+            if (res.next()) {
+                result = res.getInt(DB_COUNT);
+            }
+        } finally {
+            closeAll(con, stmt, res);
+        }
+        return result;
+    }
+
+    /**
+     * Deletes the form with all fields and data.<p>
+     * 
+     * @param entryId to find the form data in the database 
      * 
      * @throws SQLException if something goes wrong
      */
-    public void deleteFormEntries(final String formId) throws SQLException {
+    public void deleteForm(int entryId) throws SQLException {
 
         Connection con = null;
         PreparedStatement stmt = null;
         try {
             // delete the entries
             con = getConnection();
-            stmt = con.prepareStatement(C_DELETE_FORM_ENTRIES);
-            stmt.setString(1, formId);
+            stmt = con.prepareStatement(getQuery("DELETE_FORM_ENTRY"));
+            stmt.setInt(1, entryId);
             stmt.executeUpdate();
 
             // delete the data
             closeAll(null, stmt, null);
-            stmt = con.prepareStatement(C_DELETE_FORM_DATA);
-            stmt.setString(1, formId);
+            stmt = con.prepareStatement(getQuery("DELETE_FORM_DATA"));
+            stmt.setInt(1, entryId);
             stmt.executeUpdate();
-
         } finally {
-            closeAll(null, stmt, con);
+            closeAll(con, stmt, null);
         }
 
     }
@@ -268,106 +270,36 @@ public final class CmsFormDataAccess {
      */
     public void ensureDBTablesExistance() throws SQLException {
 
-        if (!existsDBTables()) {
-            createDBTables();
+        switch (existsDBTables()) {
+            case -1:
+                createDBTables();
+                break;
+            case 1:
+                updateDBTables();
+                break;
+            default:
+                return;
         }
     }
 
     /**
-     * Returns true if the db tables for the webform data exist.<p> 
+     * Read a <code>{@link CmsFormDataBean}</code> with  all fields and values with the given data id.<p>
      * 
-     * @return true if the db tables for the webform data exist
+     * @param entryId to find the form entry in the database 
      * 
-     * @throws SQLException if problems with the db connectivity occur
-     */
-    public boolean existsDBTables() throws SQLException {
-
-        Connection con = null;
-        PreparedStatement stmt = null;
-
-        try {
-            con = getConnection();
-            stmt = con.prepareStatement(C_CHECK_TABLES);
-            try {
-                stmt.executeQuery();
-                return true;
-            } catch (Exception ex) {
-                LOG.info(Messages.get().getBundle().key(Messages.LOG_INFO_DATAACESS_SQL_TABLE_NOTEXISTS_0), ex);
-            }
-        } finally {
-            closeAll(null, stmt, con);
-        }
-        return false;
-    }
-
-    /**
-     * Read a <code>List&lt;{@link CmsFormDataBean}&gt;</code> with  all 
-     * data submitted with the given form with the given field name/value pair.<p>
-     * 
-     * Each <code>{@link CmsFormDataBean}</code> is a set of field values 
-     * that was entered to the webform in a single submit.<p>
-     * 
-     * @param formId to find the form data in the database 
-     * @param fieldName the name of the field to match
-     * @param fieldValue the value of the field to match
-     * 
-     * @return a <code>List&lt;{@link CmsFormDataBean}&gt;</code> for all 
-     *      data submitted with the given form.
+     * @return a <code>{@link CmsFormDataBean}</code> with the given data id or <code>null</code>
      *      
-     * @throws SQLException if sth goes wrong 
+     * @throws SQLException if something goes wrong 
      */
-    public List getFormsForFieldValue(String formId, String fieldName, String fieldValue) throws SQLException {
+    public CmsFormDataBean readForm(int entryId) throws SQLException {
 
-        Connection con = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        List result = new ArrayList();
-
-        try {
-            con = getConnection();
-            stmt = con.prepareStatement(C_READ_FORMS_FOR_FIELD_VALUE);
-
-            stmt.setString(1, formId);
-            stmt.setString(2, fieldName);
-            stmt.setString(3, fieldValue);
-
-            rs = stmt.executeQuery();
-
-            // collect the submissions with the given values: 
-            Map forms = new HashMap();
-            while (rs.next()) {
-                String entryId = rs.getString("ENTRY_ID");
-                CmsFormDataBean formData = new CmsFormDataBean();
-                formData.setFormId(entryId);
-                formData.setDateCreated(Long.parseLong(rs.getString("DATE_CREATED")));
-                formData.setResourcePath(rs.getString("RESOURCE_PATH"));
-                forms.put(entryId, formData);
-            }
-            // close result set and statement, connection is needed for next statement:
-            closeAll(rs, stmt, null);
-
-            // 2) Read all Data sets that have been submitted:
-            Iterator itForms = forms.entrySet().iterator();
-            // reuse the same statement with different variables: 
-            stmt = con.prepareStatement(C_READ_FORM_SUBMISSION_DATA);
-            while (itForms.hasNext()) {
-                Map.Entry entry = (Entry)itForms.next();
-                String submissionId = (String)entry.getKey();
-                stmt.setString(1, submissionId);
-
-                CmsFormDataBean formData = (CmsFormDataBean)entry.getValue();
-                rs = stmt.executeQuery();
-                while (rs.next()) {
-                    String fName = rs.getString(C_COLUM_CMS_WEBFORM_DATA_FIELDNAME);
-                    String fValue = rs.getString(C_COLUM_CMS_WEBFORM_DATA_FIELDVALUE);
-                    formData.addField(fName, fValue);
-                }
-                result.add(formData);
-            }
-            return result;
-        } finally {
-            closeAll(rs, stmt, con);
+        CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.DEFAULT;
+        filter = filter.filterEntryId(entryId);
+        List forms = readForms(filter);
+        if (forms.isEmpty()) {
+            return null;
         }
+        return (CmsFormDataBean)forms.get(0);
     }
 
     /**
@@ -385,7 +317,7 @@ public final class CmsFormDataAccess {
      *      
      * @throws SQLException if sth goes wrong 
      */
-    public List readAllFormFieldNames(final String formId, Date start, Date end) throws SQLException {
+    public List readFormFieldNames(final String formId, long start, long end) throws SQLException {
 
         Connection con = null;
         PreparedStatement stmt = null;
@@ -394,58 +326,83 @@ public final class CmsFormDataAccess {
         List result = new ArrayList();
         try {
             con = getConnection();
-            stmt = con.prepareStatement(C_READ_FORM_FIELD_NAMES);
-            // FORM_ID <-> CmsForm.formId:
+            stmt = con.prepareStatement(getQuery("READ_FORM_FIELD_NAMES"));
             stmt.setString(1, formId);
-            // DATE_CREATED cp. with start time:
-            stmt.setLong(2, start.getTime());
-            // DATE_CREATED cp. with end time:
-            stmt.setLong(3, end.getTime());
+            stmt.setLong(2, start);
+            stmt.setLong(3, end);
 
             rs = stmt.executeQuery();
-
-            // collect the submissions in timerange: 
-            String fieldName;
             while (rs.next()) {
-                fieldName = rs.getString(C_COLUM_CMS_WEBFORM_DATA_FIELDNAME);
-                result.add(fieldName);
+                result.add(rs.getString(DB_FIELDNAME));
             }
         } finally {
-            closeAll(rs, stmt, con);
+            closeAll(con, stmt, rs);
         }
         return result;
     }
 
     /**
-     * Read a <code>List&lt;{@link CmsFormDataBean}&gt;</code> with all distinct form names.<p>
+     * Read all submitted forms matching the given filter.<p>
      * 
+     * @param filter the filter to match 
      * 
-     * @return a <code>List&lt;{@link CmsFormDataBean}&gt;</code> with all distinct form field names 
+     * @return a <code>List&lt;{@link CmsFormDataBean}&gt;</code> for all 
+     *      data submitted matching the given filter
      *      
-     * @throws SQLException if something goes wrong 
+     * @throws SQLException if sth goes wrong 
      */
-    public List readAllFormNames() throws SQLException {
+    public List readForms(CmsFormDatabaseFilter filter) throws SQLException {
 
         Connection con = null;
         PreparedStatement stmt = null;
-        ResultSet rs = null;
-
+        ResultSet res = null;
         List result = new ArrayList();
-        try {
-            con = getConnection();
-            stmt = con.prepareStatement(C_READ_FORM_NAMES);
-            rs = stmt.executeQuery();
 
-            // collect the submissions: 
-            CmsFormDataBean data;
-            while (rs.next()) {
-                data = new CmsFormDataBean();
-                data.addField(C_COLUM_CMS_WEBFORM_ENTRIES_COUNT, rs.getString(C_COLUM_CMS_WEBFORM_ENTRIES_COUNT));
-                data.addField(C_COLUM_CMS_WEBFORM_ENTRIES_FORMID, rs.getString(C_COLUM_CMS_WEBFORM_ENTRIES_FORMID));
-                result.add(data);
+        try {
+            List params = new ArrayList();
+            con = getConnection();
+            stmt = con.prepareStatement(getReadQuery(filter, params, false));
+            for (int i = 0; i < params.size(); i++) {
+                if (params.get(i) instanceof Integer) {
+                    stmt.setInt(i + 1, ((Integer)params.get(i)).intValue());
+                } else if (params.get(i) instanceof Long) {
+                    stmt.setLong(i + 1, ((Long)params.get(i)).longValue());
+                } else {
+                    stmt.setString(i + 1, (String)params.get(i));
+                }
+            }
+            res = stmt.executeQuery();
+            CmsFormDataBean bean = null;
+            while (res.next()) {
+                int entryId = res.getInt(DB_ENTRY_ID);
+                if ((bean == null) || (bean.getEntryId() != entryId)) {
+                    bean = new CmsFormDataBean();
+                    bean.setEntryId(entryId);
+                    bean.setDateCreated(res.getLong(DB_DATE_CREATED));
+                    bean.setFormId(res.getString(DB_FORM_ID));
+                    bean.setState(res.getInt(DB_STATE));
+                    // set the id
+                    CmsUUID resId;
+                    try {
+                        // assume it is an id
+                        resId = new CmsUUID(res.getString(DB_RESOURCE_ID));
+                    } catch (NumberFormatException e) {
+                        try {
+                            // it could also be a path
+                            resId = m_cms.readResource(res.getString(DB_RESOURCE_ID)).getStructureId();
+                        } catch (Throwable e1) {
+                            resId = CmsUUID.getNullUUID();
+                        }
+                    }
+                    bean.setResourceId(resId);
+                    result.add(bean);
+                }
+                if (!filter.isHeadersOnly()) {
+                    bean.addField(res.getString(DB_FIELDNAME), res.getString(DB_FIELDVALUE));
+                }
             }
         } finally {
-            closeAll(rs, stmt, con);
+            closeAll(con, stmt, res);
         }
         return result;
     }
@@ -466,111 +423,36 @@ public final class CmsFormDataAccess {
      *      
      * @throws SQLException if sth goes wrong 
      */
-    public List readFormData(final String formId, Date start, Date end) throws SQLException {
+    public List readForms(String formId, long start, long end) throws SQLException {
 
-        Connection con = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        List result = new ArrayList();
-
-        try {
-            // 1) Read all submission ids in time range: 
-            con = getConnection();
-            stmt = con.prepareStatement(C_READ_FORM_SUBMISSION_IDS);
-            // FORM_ID <-> CmsForm.formId:
-            stmt.setString(1, formId);
-            // DATE_CREATED cp. with start time:
-            stmt.setLong(2, start.getTime());
-            // DATE_CREATED cp. with end time:
-            stmt.setLong(3, end.getTime());
-
-            rs = stmt.executeQuery();
-
-            // collect the submissions with the given values: 
-            Map forms = new HashMap();
-            while (rs.next()) {
-                String entryId = rs.getString("ENTRY_ID");
-                CmsFormDataBean formData = new CmsFormDataBean();
-                formData.setFormId(entryId);
-                formData.setDateCreated(Long.parseLong(rs.getString("DATE_CREATED")));
-                formData.setResourcePath(rs.getString("RESOURCE_PATH"));
-                forms.put(entryId, formData);
-            }
-            // close result set and statement, connection is needed for next statement:
-            closeAll(rs, stmt, null);
-
-            // 2) Read all Data sets that have been submitted:
-            Iterator itForms = forms.entrySet().iterator();
-            // reuse the same statement with different variables: 
-            stmt = con.prepareStatement(C_READ_FORM_SUBMISSION_DATA);
-            while (itForms.hasNext()) {
-                Map.Entry entry = (Entry)itForms.next();
-                String submissionId = (String)entry.getKey();
-                stmt.setString(1, submissionId);
-
-                CmsFormDataBean formData = (CmsFormDataBean)entry.getValue();
-                rs = stmt.executeQuery();
-                while (rs.next()) {
-                    String fName = rs.getString(C_COLUM_CMS_WEBFORM_DATA_FIELDNAME);
-                    String fValue = rs.getString(C_COLUM_CMS_WEBFORM_DATA_FIELDVALUE);
-                    formData.addField(fName, fValue);
-                }
-                result.add(formData);
-            }
-        } finally {
-            closeAll(rs, stmt, con);
-        }
-        return result;
+        CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.DEFAULT;
+        filter = filter.filterFormId(formId);
+        filter = filter.filterDate(start, end);
+        return readForms(filter);
     }
 
     /**
-     * Read a <code>{@link CmsFormDataBean}</code> with  all fields and values with the given data id.<p>
+     * Read a <code>List&lt;{@link CmsFormDataBean}&gt;</code> with  all 
+     * data submitted with the given form with the given field name/value pair.<p>
      * 
-     * @param formEntryId to find the form entry in the database 
+     * Each <code>{@link CmsFormDataBean}</code> is a set of field values 
+     * that was entered to the webform in a single submit.<p>
      * 
-     * @return a <code>{@link CmsFormDataBean}</code> with the given data id or <code>null</code>
+     * @param formId to find the form data in the database 
+     * @param fieldName the name of the field to match
+     * @param fieldValue the value of the field to match
+     * 
+     * @return a <code>List&lt;{@link CmsFormDataBean}&gt;</code> for all 
+     *      data submitted with the given form.
      *      
-     * @throws SQLException if something goes wrong 
+     * @throws SQLException if sth goes wrong 
      */
-    public CmsFormDataBean readOneFormData(final String formEntryId) throws SQLException {
+    public List readFormsForFieldValue(String formId, String fieldName, String fieldValue) throws SQLException {
 
-        Connection con = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        CmsFormDataBean result = null;
-
-        try {
-            // read the webform with the special id
-            con = getConnection();
-            stmt = con.prepareStatement(C_READ_FORM_SUBMISSION_ID);
-            stmt.setString(1, formEntryId);
-            rs = stmt.executeQuery();
-
-            // collect the submissions with the given values: 
-            if (rs.next()) {
-                result = new CmsFormDataBean();
-                result.setFormId(rs.getString("ENTRY_ID"));
-                result.setDateCreated(Long.parseLong(rs.getString("DATE_CREATED")));
-                result.setResourcePath(rs.getString("RESOURCE_PATH"));
-
-                // close result set and statement, connection is needed for next statement:
-                closeAll(rs, stmt, null);
-
-                // reuse the same statement with different variables: 
-                stmt = con.prepareStatement(C_READ_FORM_SUBMISSION_DATA);
-                stmt.setString(1, result.getFormId());
-                rs = stmt.executeQuery();
-                while (rs.next()) {
-                    String fName = rs.getString(C_COLUM_CMS_WEBFORM_DATA_FIELDNAME);
-                    String fValue = rs.getString(C_COLUM_CMS_WEBFORM_DATA_FIELDVALUE);
-                    result.addField(fName, fValue);
-                }
-            }
-
-        } finally {
-            closeAll(rs, stmt, con);
-        }
-        return result;
+        CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.DEFAULT;
+        filter = filter.filterFormId(formId);
+        filter = filter.filterField(fieldName, fieldValue);
+        return readForms(filter);
     }
 
     /**
@@ -582,7 +464,7 @@ public final class CmsFormDataAccess {
      * 
      * @throws SQLException if something goes wrong
      */
-    public void updateFieldValue(String formEntryId, String field, String value) throws SQLException {
+    public void updateFieldValue(int formEntryId, String field, String value) throws SQLException {
 
         Connection con = null;
         PreparedStatement stmt = null;
@@ -590,25 +472,48 @@ public final class CmsFormDataAccess {
 
             // delete the current field in the webform
             con = getConnection();
-            stmt = con.prepareStatement(C_DELETE_FORM_FIELD);
-            stmt.setString(1, formEntryId);
+            stmt = con.prepareStatement(getQuery("DELETE_FORM_FIELD"));
+            stmt.setInt(1, formEntryId);
             stmt.setString(2, field);
             stmt.executeUpdate();
 
             // add the new entry if its not empty
             if (!CmsStringUtil.isEmptyOrWhitespaceOnly(value)) {
                 closeAll(null, stmt, null);
-                stmt = con.prepareStatement(C_WRITE_FORM_DATA);
-                stmt.setString(1, formEntryId);
+                stmt = con.prepareStatement(getQuery("WRITE_FORM_DATA"));
+                stmt.setInt(1, formEntryId);
                 stmt.setString(2, field);
                 stmt.setString(3, value);
                 stmt.executeUpdate();
             }
-
         } finally {
-            closeAll(null, stmt, con);
+            closeAll(con, stmt, null);
         }
+    }
 
+    /**
+     * Updates the state for the given form.<p>
+     * 
+     * @param entryId to find the form entry in the database 
+     * @param state new state value
+     * 
+     * @throws SQLException if something goes wrong
+     */
+    public void updateState(int entryId, int state) throws SQLException {
+
+        Connection con = null;
+        PreparedStatement stmt = null;
+        try {
+
+            // delete the current field in the webform
+            con = getConnection();
+            stmt = con.prepareStatement(getQuery("UPDATE_FORM_STATE"));
+            stmt.setInt(1, state);
+            stmt.setInt(2, entryId);
+            stmt.executeUpdate();
+        } finally {
+            closeAll(con, stmt, null);
+        }
     }
 
     /**
@@ -634,16 +539,21 @@ public final class CmsFormDataAccess {
             con = getConnection();
             // 1) Write a new entry for the submission with form id, path and time stamp 
             // get the form id -> PK in database
-            stmt = con.prepareStatement(C_WRITE_FORM_SUBMISSION);
+            stmt = con.prepareStatement(getQuery("WRITE_FORM_ENTRY"));
 
             CmsForm form = formHandler.getFormConfiguration();
             String formId = form.getFormId();
             long dateCreated = System.currentTimeMillis();
-            String resourcePath = formHandler.getRequestContext().addSiteRoot(formHandler.getRequestContext().getUri());
-
+            CmsUUID resourceId;
+            try {
+                resourceId = formHandler.getCmsObject().readResource(formHandler.getRequestContext().getUri()).getStructureId();
+            } catch (CmsException e) {
+                resourceId = CmsUUID.getNullUUID();
+            }
             stmt.setString(1, formId);
             stmt.setLong(2, dateCreated);
-            stmt.setString(3, resourcePath);
+            stmt.setString(3, resourceId.toString());
+            stmt.setInt(4, 0); // initial state
             int rc = stmt.executeUpdate();
             if (rc != 1) {
                 LOG.error(Messages.get().getBundle().key(
@@ -654,25 +564,13 @@ public final class CmsFormDataAccess {
 
             // connection is still needed, so only close statement
             closeAll(null, stmt, null);
-            // 2) Read the ID of the new submission entry to relate all data in the data table to: 
 
-            int lastSubmissionId = -1;
-            stmt = con.prepareStatement(C_READ_LAST_SUBMISSION_ID);
-            stmt.setString(1, formId);
-            stmt.setLong(2, dateCreated);
-            rs = stmt.executeQuery();
-            if (!rs.next()) {
-                LOG.error(Messages.get().getBundle().key(
-                    Messages.LOG_ERR_DATACCESS_SQL_READ_SUBMISSION_ID_1,
-                    new Object[] {formHandler.createMailTextFromFields(false, false)}));
-                return false;
-            }
-            lastSubmissionId = rs.getInt(1);
-            // connection is still needed, so only close statement and result set 
-            closeAll(rs, stmt, null);
+            // 2) Read the ID of the new submission entry to relate all data in the data table to: 
+            int lastSubmissionId = ((CmsFormDataBean)readForms(
+                CmsFormDatabaseFilter.HEADERS.filterDate(dateCreated, dateCreated).filterFormId(formId)).get(0)).getEntryId();
 
             // 3) Now insert the data values for this submission with that ref_id: 
-            stmt = con.prepareStatement(C_WRITE_FORM_DATA);
+            stmt = con.prepareStatement(getQuery("WRITE_FORM_DATA"));
             // loop over all form fields: 
             List formFields = form.getAllFields();
             Iterator itFormFields = formFields.iterator();
@@ -681,56 +579,86 @@ public final class CmsFormDataAccess {
                 String fieldName = field.getDbLabel();
                 // returns null if we do not deal with a CmsUploadFileItem: 
                 DefaultFileItem fileItem = (DefaultFileItem)formHandler.getUploadFile(field);
-                String fieldValue;
+                List fieldValues = new ArrayList();
                 if (fileItem != null) {
                     // save the location of the file and 
                     // store it from the temp file to a save place: 
                     File uploadFile = storeFile(fileItem, formHandler);
-                    fieldValue = uploadFile.getAbsolutePath();
+                    fieldValues.add(uploadFile.getAbsolutePath());
                 } else if (field instanceof CmsDynamicField) {
-                    fieldValue = formHandler.getFormConfiguration().getFieldStringValueByName(field.getName());
+                    fieldValues.add(formHandler.getFormConfiguration().getFieldStringValueByName(field.getName()));
+                } else if (field instanceof CmsTableField) {
+                    fieldValues = field.getItems();
                 } else {
-                    fieldValue = field.getValue();
+                    fieldValues.add(field.getValue());
                 }
 
-                stmt.setInt(1, lastSubmissionId);
-                stmt.setString(2, fieldName);
-                stmt.setString(3, fieldValue);
+                // a field can contain more than one value, so for all values one entry is created
+                for (int i = 0; i < fieldValues.size(); i++) {
+                    Object fieldObject = fieldValues.get(i);
+                    String fieldValue;
+                    if (fieldObject instanceof CmsFieldItem) {
+                        CmsFieldItem fieldItem = (CmsFieldItem)fieldObject;
+                        fieldName = fieldItem.getDbLabel();
+                        fieldValue = fieldItem.getValue();
+                    } else {
+                        fieldValue = String.valueOf(fieldObject);
+                    }
+                    stmt.setInt(1, lastSubmissionId);
+                    stmt.setString(2, fieldName);
+                    stmt.setString(3, fieldValue);
 
-                /*
-                 * At this level we can allow to loose a field value and try 
-                 * to save the others instead of failing everything. 
-                 */
-                try {
-                    rc = stmt.executeUpdate();
-                } catch (SQLException sqlex) {
-                    LOG.error(
-                        Messages.get().getBundle().key(
+                    /*
+                     * At this level we can allow to loose a field value and try 
+                     * to save the others instead of failing everything. 
+                     */
+                    try {
+                        rc = stmt.executeUpdate();
+                    } catch (SQLException sqlex) {
+                        LOG.error(
+                            Messages.get().getBundle().key(
+                                Messages.LOG_ERR_DATAACCESS_SQL_WRITE_FIELD_3,
+                                new Object[] {fieldName, fieldValue, formHandler.createMailTextFromFields(false, false)}),
+                            sqlex);
+                    }
+                    if (rc != 1) {
+                        LOG.error(Messages.get().getBundle().key(
                             Messages.LOG_ERR_DATAACCESS_SQL_WRITE_FIELD_3,
-                            new Object[] {fieldName, fieldValue, formHandler.createMailTextFromFields(false, false)}),
-                        sqlex);
-
-                }
-                if (rc != 1) {
-                    LOG.error(Messages.get().getBundle().key(
-                        Messages.LOG_ERR_DATAACCESS_SQL_WRITE_FIELD_3,
-                        new Object[] {fieldName, fieldValue, formHandler.createMailTextFromFields(false, false)}));
+                            new Object[] {fieldName, fieldValue, formHandler.createMailTextFromFields(false, false)}));
+                    }
                 }
             }
         } finally {
-            closeAll(rs, stmt, con);
+            closeAll(con, stmt, rs);
         }
         return true;
     }
 
     /**
+     * Sets the cms context.<p>
+     * 
+     * @param adminCms the admin cms context to set
+     */
+    protected void setCms(CmsObject adminCms) {
+
+        try {
+            m_cms = OpenCms.initCmsObject(adminCms);
+            m_cms.getRequestContext().setSiteRoot("");
+        } catch (CmsException e) {
+            if (LOG.isErrorEnabled()) {
+                LOG.error(e.getLocalizedMessage(), e);
+            }
+        }
+    }
+
+    /**
      * This method closes the result sets and statement and connections.<p>
      * 
-     * @param res The result set.
-     * @param statement The statement.
      * @param con The connection.
+     * @param statement The statement.
+     * @param res The result set.
      */
-    private void closeAll(ResultSet res, Statement statement, Connection con) {
+    private void closeAll(Connection con, Statement statement, ResultSet res) {
 
         // result set
         if (res != null) {
@@ -738,7 +666,7 @@ public final class CmsFormDataAccess {
                 res.close();
             } catch (Exception e) {
                 if (LOG.isErrorEnabled()) {
-                    LOG.error(CmsException.getStackTraceAsString(e));
+                    LOG.error(e.getLocalizedMessage());
                 }
             }
         }
@@ -748,7 +676,7 @@ public final class CmsFormDataAccess {
                 statement.close();
             } catch (Exception e) {
                 if (LOG.isErrorEnabled()) {
-                    LOG.error(CmsException.getStackTraceAsString(e));
+                    LOG.error(e.getLocalizedMessage());
                 }
             }
         }
@@ -760,7 +688,7 @@ public final class CmsFormDataAccess {
                 }
             } catch (Exception e) {
                 if (LOG.isErrorEnabled()) {
-                    LOG.error(CmsException.getStackTraceAsString(e));
+                    LOG.error(e.getLocalizedMessage());
                 }
             }
         }
@@ -777,7 +705,7 @@ public final class CmsFormDataAccess {
         PreparedStatement stmt = null;
         try {
             con = getConnection();
-            stmt = con.prepareStatement(C_CREATE_TABLE_CMS_WEBFORM_ENTRIES);
+            stmt = con.prepareStatement(getQuery("CREATE_TABLE_CMS_WEBFORM_ENTRIES"));
             int rc = stmt.executeUpdate();
             if (rc != 0) {
                 LOG.warn(Messages.get().getBundle().key(
@@ -785,7 +713,7 @@ public final class CmsFormDataAccess {
                     new Object[] {new Integer(rc), "CMS_WEBFORM_ENTRIES"}));
             }
             closeAll(null, stmt, null);
-            stmt = con.prepareStatement(C_CREATE_TABLE_CMS_WEBFORM_DATA);
+            stmt = con.prepareStatement(getQuery("CREATE_TABLE_CMS_WEBFORM_DATA"));
             rc = stmt.executeUpdate();
             if (rc != 0) {
                 LOG.warn(Messages.get().getBundle().key(
@@ -793,8 +721,43 @@ public final class CmsFormDataAccess {
                     new Object[] {new Integer(rc), "CMS_WEBFORM_DATA"}));
             }
         } finally {
-            closeAll(null, stmt, con);
+            closeAll(con, stmt, null);
         }
+    }
+
+    /**
+     * Checks if the db tables for the webform data exist and is up-to-date.<p> 
+     * 
+     * @return -1 if the db tables do not exist,
+     *          0 if the db tables do exist, in the current version, or
+     *          1 if the db tables do exist, in an old version
+     * 
+     * @throws SQLException if problems with the db connectivity occur
+     */
+    private int existsDBTables() throws SQLException {
+
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet res = null;
+        try {
+            con = getConnection();
+            stmt = con.prepareStatement(getQuery("CHECK_TABLES"));
+            try {
+                res = stmt.executeQuery();
+                try {
+                    res.findColumn(DB_RESOURCE_ID);
+                    return 0;
+                } catch (Exception ex) {
+                    LOG.info(Messages.get().getBundle().key(Messages.LOG_INFO_DATAACESS_SQL_TABLE_OLD_0), ex);
+                }
+                return 1;
+            } catch (Exception ex) {
+                LOG.info(Messages.get().getBundle().key(Messages.LOG_INFO_DATAACESS_SQL_TABLE_NOTEXISTS_0), ex);
+            }
+        } finally {
+            closeAll(con, stmt, res);
+        }
+        return -1;
     }
 
     /**
@@ -809,6 +772,183 @@ public final class CmsFormDataAccess {
     private Connection getConnection() throws SQLException {
 
         return OpenCms.getSqlManager().getConnection(m_connectionPool);
+    }
+
+    /**
+     * Searches for the SQL query with the specified key.<p>
+     * 
+     * @param queryKey the SQL query key
+     * 
+     * @return the the SQL query in this property list with the specified key
+     */
+    private String getQuery(String queryKey) {
+
+        return (String)m_queries.get(queryKey);
+    }
+
+    /**
+     * Searches for the SQL query with the specified key.<p>
+     * 
+     * @param queryKey the SQL query key
+     * @param placeHolder will replace the ${ph} macro
+     * 
+     * @return the the SQL query in this property list with the specified key
+     */
+    private String getQuery(String queryKey, String placeHolder) {
+
+        String query = getQuery(queryKey);
+        if (placeHolder != null) {
+            query = CmsStringUtil.substitute(query, "${ph}", placeHolder);
+        }
+        return query;
+    }
+
+    /**
+     * Build the whole sql statement for the given form filter.<p>
+     * 
+     * @param filter the filter
+     * @param params the parameter values (return parameter)
+     * @param count if true it selects no row, just the number of rows
+     * 
+     * @return the sql statement string
+     */
+    private String getReadQuery(CmsFormDatabaseFilter filter, List params, boolean count) {
+
+        StringBuffer sql = new StringBuffer(128);
+        params.clear(); // be sure the parameters list is clear
+
+        if (count) {
+            sql.append(getQuery("COUNT_FORM_ENTRIES"));
+        } else {
+            if (filter.isHeadersOnly()) {
+                sql.append(getQuery("READ_FORM_ENTRY"));
+            } else {
+                sql.append(getQuery("READ_FORM_DATA"));
+            }
+        }
+        StringBuffer where = new StringBuffer(128);
+        if (!filter.getFields().isEmpty()) {
+            int fields = filter.getFields().size();
+            for (int i = 0; i < fields; i++) {
+                sql.append(",").append(getQuery("COND_FIELD_FROM", "" + i));
+            }
+        }
+        if (!filter.isHeadersOnly()) {
+            where.append(getQuery("COND_JOIN"));
+        }
+        if (filter.getEntryId() > 0) {
+            if (where.length() > 0) {
+                where.append(" ").append(getQuery("COND_AND")).append(" ");
+            }
+            where.append(getQuery("FILTER_ENTRY_ID"));
+            params.add(new Integer(filter.getEntryId()));
+        }
+        if (filter.getFormId() != null) {
+            if (where.length() > 0) {
+                where.append(" ").append(getQuery("COND_AND")).append(" ");
+            }
+            where.append(getQuery("FILTER_FORM_ID"));
+            params.add(filter.getFormId());
+        }
+        if (filter.getDateEnd() != CmsFormDatabaseFilter.DATE_IGNORE_TO) {
+            if (where.length() > 0) {
+                where.append(" ").append(getQuery("COND_AND")).append(" ");
+            }
+            where.append(getQuery("FILTER_DATE_END"));
+            params.add(new Long(filter.getDateEnd()));
+        }
+        if (filter.getStartDate() != CmsFormDatabaseFilter.DATE_IGNORE_FROM) {
+            if (where.length() > 0) {
+                where.append(" ").append(getQuery("COND_AND")).append(" ");
+            }
+            where.append(getQuery("FILTER_DATE_START"));
+            params.add(new Long(filter.getStartDate()));
+        }
+        if (filter.getResourceId() != null) {
+            if (where.length() > 0) {
+                where.append(" ").append(getQuery("COND_AND")).append(" ");
+            }
+            where.append(getQuery("FILTER_RESOURCE_ID"));
+            params.add(filter.getResourceId().toString());
+        }
+
+        // states filter
+        Set states = filter.getStates();
+        if (!states.isEmpty()) {
+            if (where.length() > 0) {
+                where.append(" ").append(getQuery("COND_AND")).append(" ");
+            }
+            String ph = "";
+            for (int i = 0; i < states.size(); i++) {
+                ph += "?";
+                if (i < states.size() - 1) {
+                    ph += ", ";
+                }
+            }
+            where.append(getQuery("FILTER_STATES", ph));
+            Iterator it = states.iterator();
+            while (it.hasNext()) {
+                Integer state = (Integer)it.next();
+                params.add(state);
+            }
+        }
+        // fields filter
+        Map fields = filter.getFields();
+        if (!fields.isEmpty()) {
+            if (where.length() > 0) {
+                where.append(" ").append(getQuery("COND_AND")).append(" ");
+            }
+            int i = 0;
+            Iterator it = fields.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry field = (Map.Entry)it.next();
+                where.append(getQuery("FILTER_FIELD", "" + i));
+                params.add(field.getKey());
+                params.add(field.getValue());
+                if (it.hasNext()) {
+                    where.append(", ");
+                }
+                i++;
+            }
+        }
+        if (where.length() > 0) {
+            sql.append(" ").append(getQuery("COND_WHERE")).append(" ").append(where);
+        }
+        if (!count) {
+            if (filter.isOrderAsc()) {
+                sql.append(" ").append(getQuery("COND_ORDER_ASC"));
+            } else {
+                sql.append(" ").append(getQuery("COND_ORDER_DESC"));
+            }
+        }
+        if ((filter.getIndexFrom() != CmsFormDatabaseFilter.INDEX_IGNORE_FROM)
+            || (filter.getIndexTo() != CmsFormDatabaseFilter.INDEX_IGNORE_TO)) {
+            int rows = filter.getIndexTo() - filter.getIndexFrom();
+            sql.append(" ").append(getQuery("FILTER_LIMIT", "" + rows));
+            if (filter.getIndexFrom() != 0) {
+                sql.append(" ").append(getQuery("FILTER_OFFSET", "" + filter.getIndexFrom()));
+            }
+        }
+        return sql.toString();
+    }
+
+    /**
+     * Loads a Java properties hash containing SQL queries.<p>
+     * 
+     * @param propertyFilename the package/filename of the properties hash
+     */
+    private void loadQueryProperties(String propertyFilename) {
+
+        Properties properties = new Properties();
+        try {
+            properties.load(getClass().getClassLoader().getResourceAsStream(propertyFilename));
+            m_queries.putAll(properties);
+        } catch (Throwable t) {
+            if (LOG.isErrorEnabled()) {
+                LOG.error(t.getLocalizedMessage(), t);
+            }
+            properties = null;
+        }
     }
 
     /**
@@ -861,5 +1001,26 @@ public final class CmsFormDataAccess {
                 new Object[] {formHandler.createMailTextFromFields(false, false)}), ex);
         }
         return storeFile;
+    }
+
+    /**
+     * Unconditionally tries to update the db tables needed for form data.<p>
+     * 
+     * @throws SQLException if sth goes wrong 
+     */
+    private void updateDBTables() throws SQLException {
+
+        Connection con = null;
+        PreparedStatement stmt = null;
+        try {
+            con = getConnection();
+            stmt = con.prepareStatement(getQuery("UPDATE_FORM_ENTRY_STATE"));
+            stmt.executeUpdate();
+            closeAll(null, stmt, null);
+            stmt = con.prepareStatement(getQuery("UPDATE_FORM_ENTRY_RESID"));
+            stmt.executeUpdate();
+        } finally {
+            closeAll(con, stmt, null);
+        }
     }
 }

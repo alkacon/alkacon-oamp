@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/export/CmsCvsExportBean.java,v $
- * Date   : $Date: 2008/03/25 17:01:42 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2008/05/16 10:09:43 $
+ * Version: $Revision: 1.4 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -52,7 +52,7 @@ import java.util.Locale;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * 
  * @since 7.0.4
  *
@@ -120,10 +120,16 @@ public class CmsCvsExportBean {
          */
 
         StringBuffer result = new StringBuffer();
-        List columnNames = CmsFormDataAccess.getInstance().readAllFormFieldNames(formId, getStartTime(), getEndTime());
+        List columnNames = CmsFormDataAccess.getInstance().readFormFieldNames(
+            formId,
+            getStartTime().getTime(),
+            getEndTime().getTime());
         Collections.sort(columnNames, Collator.getInstance(locale));
 
-        List dataEntries = CmsFormDataAccess.getInstance().readFormData(formId, getStartTime(), getEndTime());
+        List dataEntries = CmsFormDataAccess.getInstance().readForms(
+            formId,
+            getStartTime().getTime(),
+            getEndTime().getTime());
 
         // loop 1 - write the headers:
         result.append("Creation date");
@@ -151,7 +157,13 @@ public class CmsCvsExportBean {
             // c) developer errors,  hw /sw problems... 
             result.append(new Date(row.getDateCreated()));
             result.append(EXCEL_DEFAULT_CSV_DELMITER);
-            result.append(row.getResourcePath());
+            String path;
+            try {
+                path = m_formHandler.getCmsObject().readResource(row.getResourceId()).getRootPath();
+            } catch (Exception e) {
+                path = row.getResourceId().toString();
+            }
+            result.append(path);
             result.append(EXCEL_DEFAULT_CSV_DELMITER);
             itColumns = columnNames.iterator();
             while (itColumns.hasNext()) {

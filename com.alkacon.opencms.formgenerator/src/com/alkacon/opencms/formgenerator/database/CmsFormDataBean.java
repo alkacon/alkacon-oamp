@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/CmsFormDataBean.java,v $
- * Date   : $Date: 2008/03/18 11:34:09 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2008/05/16 10:09:43 $
+ * Version: $Revision: 1.5 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -32,7 +32,11 @@
 
 package com.alkacon.opencms.formgenerator.database;
 
+import org.opencms.util.CmsUUID;
+
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -44,7 +48,7 @@ import java.util.TreeMap;
  * @author Achim Westermann
  * @author Michael Moossen
  * 
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * 
  * @since 7.0.4
  */
@@ -53,14 +57,20 @@ public class CmsFormDataBean {
     /** The creation date. */
     private long m_dateCreated;
 
+    /** The entry id. */
+    private int m_entryId;
+
     /** The <code>SortedMap&lt;{@link String}, {@link java.util.Map.Entry}&gt;</code> with all field entries. */
     private SortedMap m_fieldEntries;
 
     /** the name of the form. **/
     private String m_formId;
 
-    /** The resource path. */
-    private String m_resourcePath;
+    /** The resource id. */
+    private CmsUUID m_resourceId;
+
+    /** The state. */
+    private int m_state;
 
     /**
      * Default constructor.<p>
@@ -91,9 +101,9 @@ public class CmsFormDataBean {
      * 
      * @see java.util.Map#entrySet()
      */
-    public Set getAllFields() {
+    public Map getAllFields() {
 
-        return m_fieldEntries.entrySet();
+        return Collections.unmodifiableMap(m_fieldEntries);
     }
 
     /**
@@ -119,6 +129,16 @@ public class CmsFormDataBean {
     }
 
     /**
+     * Returns the entry id.<p>
+     * 
+     * @return the entry id
+     */
+    public int getEntryId() {
+
+        return m_entryId;
+    }
+
+    /**
      * Returns the value of the given field, or <code>null</code> 
      * if no field with the given name exists.<p>
      * 
@@ -134,9 +154,9 @@ public class CmsFormDataBean {
     }
 
     /**
-     * Returns the formId.<p>
+     * Returns the form Id.<p>
      *
-     * @return the formId
+     * @return the form Id
      */
     public String getFormId() {
 
@@ -144,13 +164,23 @@ public class CmsFormDataBean {
     }
 
     /**
-     * Returns the resource Path.<p>
+     * Returns the resource id.<p>
      *
-     * @return the resource Path
+     * @return the resource id
      */
-    public String getResourcePath() {
+    public CmsUUID getResourceId() {
 
-        return m_resourcePath;
+        return m_resourceId;
+    }
+
+    /**
+     * Returns the state.<p>
+     *
+     * @return the state
+     */
+    public int getState() {
+
+        return m_state;
     }
 
     /**
@@ -179,16 +209,6 @@ public class CmsFormDataBean {
     public boolean hasValue(String fieldValue) {
 
         return m_fieldEntries.containsValue(fieldValue);
-    }
-
-    /**
-     * Sets the formId.<p>
-     *
-     * @param formId the formId to set
-     */
-    public void setFormId(String formId) {
-
-        m_formId = formId;
     }
 
     /**
@@ -227,12 +247,42 @@ public class CmsFormDataBean {
     }
 
     /**
-     * Sets the resource Path.<p>
+     * Sets the entry Id.<p>
      *
-     * @param resourcePath the resource Path to set
+     * @param entryId the entry Id to set
      */
-    protected void setResourcePath(String resourcePath) {
+    protected void setEntryId(int entryId) {
 
-        m_resourcePath = resourcePath;
+        m_entryId = entryId;
+    }
+
+    /**
+     * Sets the form Id.<p>
+     *
+     * @param formId the form Id to set
+     */
+    protected void setFormId(String formId) {
+
+        m_formId = formId;
+    }
+
+    /**
+     * Sets the resource id.<p>
+     *
+     * @param resourceId the resource id to set
+     */
+    protected void setResourceId(CmsUUID resourceId) {
+
+        m_resourceId = resourceId;
+    }
+
+    /**
+     * Sets the state.<p>
+     *
+     * @param state the state to set
+     */
+    protected void setState(int state) {
+
+        m_state = state;
     }
 }

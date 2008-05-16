@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/Messages.java,v $
- * Date   : $Date: 2007/12/21 14:34:01 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/05/16 10:09:43 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -29,6 +29,7 @@
  * For further information about OpenCms, please see the
  * project website: http://www.opencms.org.
  */
+
 package com.alkacon.opencms.formgenerator.database;
 
 import org.opencms.i18n.A_CmsMessageBundle;
@@ -39,13 +40,14 @@ import org.opencms.i18n.I_CmsMessageBundle;
  * 
  * @author Achim Westermann 
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4 
  */
 public final class Messages extends A_CmsMessageBundle {
+
     /** Message constant for key in the resource bundle. */
-    public static final String LOG_ERR_DATAACCESS_UPLOADFILE_LOST_1 = "LOG_ERR_DATAACCESS_UPLOADFILE_LOST_1";
+    public static final String ERR_FILE_ARG_ACCESS_1 = "ERR_FILE_ARG_ACCESS_1";
 
     /** Message constant for key in the resource bundle. */
     public static final String ERR_FILE_ARG_CREATE_1 = "ERR_FILE_ARG_CREATE_1";
@@ -57,28 +59,19 @@ public final class Messages extends A_CmsMessageBundle {
     public static final String ERR_FILE_ARG_IS_FILE_1 = "ERR_FILE_ARG_IS_FILE_1";
 
     /** Message constant for key in the resource bundle. */
-    public static final String ERR_FILE_ARG_NOT_READ_1 = "ERR_FILE_ARG_NOT_READ_1";
+    public static final String ERR_FILE_ARG_IS_FOLDER_1 = "ERR_FILE_ARG_IS_FOLDER_1";
 
     /** Message constant for key in the resource bundle. */
     public static final String ERR_FILE_ARG_NOT_FOUND_1 = "ERR_FILE_ARG_NOT_FOUND_1";
 
     /** Message constant for key in the resource bundle. */
-    public static final String ERR_FILE_ARG_IS_FOLDER_1 = "ERR_FILE_ARG_IS_FOLDER_1";
-
-    /** Message constant for key in the resource bundle. */
-    public static final String ERR_FILE_ARG_NULL_0 = "ERR_FILE_ARG_NULL_0";
-
-    /** Message constant for key in the resource bundle. */
-    public static final String ERR_FILE_ARG_ACCESS_1 = "ERR_FILE_ARG_ACCESS_1";
+    public static final String ERR_FILE_ARG_NOT_READ_1 = "ERR_FILE_ARG_NOT_READ_1";
 
     /** Message constant for key in the resource bundle. */
     public static final String ERR_FILE_ARG_NOT_WRITE_1 = "ERR_FILE_ARG_NOT_WRITE_1";
 
-    /** Name of the used resource bundle. */
-    private static final String BUNDLE_NAME = "com.alkacon.opencms.formgenerator.database.messages";
-
-    /** Static instance member. */
-    private static final I_CmsMessageBundle INSTANCE = new Messages();
+    /** Message constant for key in the resource bundle. */
+    public static final String ERR_FILE_ARG_NULL_0 = "ERR_FILE_ARG_NULL_0";
 
     /** Message constant for key in the resource bundle. */
     public static final String LOG_ERR_DATAACCESS_MODULE_MISSING_1 = "LOG_ERR_DATAACCESS_MODULE_MISSING_1";
@@ -93,6 +86,9 @@ public final class Messages extends A_CmsMessageBundle {
     public static final String LOG_ERR_DATAACCESS_SQL_WRITE_SUBMISSION_1 = "LOG_ERR_DATAACCESS_SQL_WRITE_SUBMISSION_1";
 
     /** Message constant for key in the resource bundle. */
+    public static final String LOG_ERR_DATAACCESS_UPLOADFILE_LOST_1 = "LOG_ERR_DATAACCESS_UPLOADFILE_LOST_1";
+
+    /** Message constant for key in the resource bundle. */
     public static final String LOG_ERR_DATACCESS_SQL_CREATE_TABLE_RETURNCODE_2 = "LOG_ERR_DATACCESS_SQL_CREATE_TABLE_RETURNCODE_2";
 
     /** Message constant for key in the resource bundle. */
@@ -100,6 +96,15 @@ public final class Messages extends A_CmsMessageBundle {
 
     /** Message constant for key in the resource bundle. */
     public static final String LOG_INFO_DATAACESS_SQL_TABLE_NOTEXISTS_0 = "LOG_INFO_DATAACESS_SQL_TABLE_NOTEXISTS_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String LOG_INFO_DATAACESS_SQL_TABLE_OLD_0 = "LOG_INFO_DATAACESS_SQL_TABLE_OLD_0";
+
+    /** Name of the used resource bundle. */
+    private static final String BUNDLE_NAME = "com.alkacon.opencms.formgenerator.database.messages";
+
+    /** Static instance member. */
+    private static final I_CmsMessageBundle INSTANCE = new Messages();
 
     /**
      * Hides the public constructor for this utility class.<p>
