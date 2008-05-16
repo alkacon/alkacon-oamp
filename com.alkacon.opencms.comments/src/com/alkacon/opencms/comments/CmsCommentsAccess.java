@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.comments/src/com/alkacon/opencms/comments/CmsCommentsAccess.java,v $
- * Date   : $Date: 2008/05/16 10:16:07 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/05/16 11:40:26 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -65,9 +65,9 @@ import org.apache.commons.logging.Log;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
- * @since 7.0.4
+ * @since 7.0.5
  */
 public class CmsCommentsAccess extends CmsJspActionElement {
 

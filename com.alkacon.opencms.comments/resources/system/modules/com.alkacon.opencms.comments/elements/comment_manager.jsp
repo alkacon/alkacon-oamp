@@ -52,6 +52,6 @@
 		</fmt:message>
 	</div>
 	<div class="comment_body" >
-		<c:out value="${comment.allFields['comment']}" />
+		<c:out value="${comment.allFields['comment']}"  escapeXml="false" />
 	</div>
 </div>

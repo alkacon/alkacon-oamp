@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.comments/src/com/alkacon/opencms/comments/CmsCommentFormHandler.java,v $
- * Date   : $Date: 2008/05/16 10:16:07 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/05/16 11:40:26 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -33,10 +33,12 @@
 package com.alkacon.opencms.comments;
 
 import com.alkacon.opencms.formgenerator.CmsFormHandler;
+import com.alkacon.opencms.formgenerator.I_CmsField;
 
 import org.opencms.i18n.CmsMessages;
 import org.opencms.main.OpenCms;
 import org.opencms.module.CmsModule;
+import org.opencms.util.CmsHtmlStripper;
 import org.opencms.util.CmsMacroResolver;
 import org.opencms.util.CmsStringUtil;
 
@@ -54,11 +56,14 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.5
  */
 public class CmsCommentFormHandler extends CmsFormHandler {
+
+    /** The comment field name constant. */
+    public static final String FIELD_COMMENT = "comment";
 
     /** The ip address field name constant. */
     public static final String FIELD_IPADDRESS = "ipaddress";
@@ -148,5 +153,20 @@ public class CmsCommentFormHandler extends CmsFormHandler {
         setMessages(new CmsMessages(para, getRequestContext().getLocale()));
         // get the form configuration
         setFormConfiguration(new CmsCommentForm(this, getMessages(), isInitial(), formConfigUri, formAction));
+    }
+
+    /**
+     * @see com.alkacon.opencms.formgenerator.CmsFormHandler#sendDatabase()
+     */
+    protected boolean sendDatabase() throws Exception {
+
+        I_CmsField field = getFormConfiguration().getFieldByDbLabel(FIELD_COMMENT);
+        if (field != null) {
+            String value = new CmsHtmlStripper(false).stripHtml(field.getValue());
+            value = CmsStringUtil.substitute(value, "\n\n", "<p>");
+            value = CmsStringUtil.substitute(value, "\n", "<br>");
+            field.setValue(value);
+        }
+        return super.sendDatabase();
     }
 }
