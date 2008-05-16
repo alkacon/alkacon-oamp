@@ -1,0 +1,1014 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<export>
+	<info>
+		<creator>Admin</creator>
+		<opencms_version>7.0.5</opencms_version>
+		<createdate>Fri, 16 May 2008 08:43:55 GMT</createdate>
+		<infoproject>Offline</infoproject>
+		<export_version>7</export_version>
+	</info>
+	<module>
+		<name>com.alkacon.opencms.comments</name>
+		<nicename><![CDATA[Frontend user comments]]></nicename>
+		<group>Alkacon OAMP</group>
+		<class/>
+		<description><![CDATA[This module allows you to add the common 'user comments' section to any page.]]></description>
+		<version>0.9.0</version>
+		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
+		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
+		<datecreated/>
+		<userinstalled/>
+		<dateinstalled/>
+		<dependencies>
+			<dependency name="org.opencms.jquery" version="7.0.5"/>
+			<dependency name="com.alkacon.opencms.formgenerator" version="1.2.0"/>
+		</dependencies>
+		<exportpoints>
+			<exportpoint uri="/system/modules/com.alkacon.opencms.comments/lib/" destination="WEB-INF/lib/"/>
+			<exportpoint uri="/system/modules/com.alkacon.opencms.comments/classes/" destination="WEB-INF/classes/"/>
+		</exportpoints>
+		<resources>
+			<resource uri="/system/modules/com.alkacon.opencms.comments/"/>
+			<resource uri="/system/workplace/resources/filetypes/oamp_comments.png"/>
+		</resources>
+		<parameters/>
+		<resourcetypes>
+			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="oampcomments" id="78">
+				<properties>
+					<property>
+						<name>template-elements</name>
+						<value type="shared"><![CDATA[/system/modules/com.alkacon.opencms.comments/elements/comment_form.jsp]]></value>
+					</property>
+				</properties>
+				<param name="schema">/system/modules/com.alkacon.opencms.comments/schemas/comment.xsd</param>
+			</type>
+		</resourcetypes>
+		<explorertypes>
+			<explorertype name="oampcomments" key="fileicon.oampcomments" icon="oamp_comments.png" reference="xmlcontent">
+				<newresource page="structurecontent" uri="newresource_xmlcontent.jsp?newresourcetype=oampcomments" order="300" autosetnavigation="false" autosettitle="false" info="desc.oampcomments"/>
+				<accesscontrol>
+					<accessentry principal="ROLE.WORKPLACE_USER" permissions="+r+v+w+c"/>
+				</accesscontrol>
+			</explorertype>
+		</explorertypes>
+	</module>
+	<files>
+		<file>
+			<destination>system</destination>
+			<type>folder</type>
+			<uuidstructure>6f0db124-0098-11dd-a08b-111d34530985</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Apr 2008 09:37:38 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
+					<flags>514</flags>
+					<permissionset>
+						<allowed>1</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<destination>system/modules</destination>
+			<type>folder</type>
+			<uuidstructure>6f3d4cdd-0098-11dd-a08b-111d34530985</uuidstructure>
+			<datelastmodified>Wed, 02 Apr 2008 09:37:39 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Apr 2008 09:37:39 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
+					<flags>514</flags>
+					<permissionset>
+						<allowed>5</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.comments</destination>
+			<type>folder</type>
+			<uuidstructure>8e1b4bc0-ec29-11dc-990f-dfec94299cf1</uuidstructure>
+			<datelastmodified>Fri, 07 Mar 2008 09:33:33 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 07 Mar 2008 09:33:33 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.comments/classes</destination>
+			<type>folder</type>
+			<uuidstructure>8e358a86-ec29-11dc-990f-dfec94299cf1</uuidstructure>
+			<datelastmodified>Fri, 07 Mar 2008 09:33:33 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 07 Mar 2008 09:33:33 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.comments/classes/com</destination>
+			<type>folder</type>
+			<uuidstructure>8e3a4578-ec29-11dc-990f-dfec94299cf1</uuidstructure>
+			<datelastmodified>Fri, 07 Mar 2008 09:33:33 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 07 Mar 2008 09:33:33 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.comments/classes/com/alkacon</destination>
+			<type>folder</type>
+			<uuidstructure>8e3cb67a-ec29-11dc-990f-dfec94299cf1</uuidstructure>
+			<datelastmodified>Fri, 07 Mar 2008 09:33:33 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 07 Mar 2008 09:33:33 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.comments/classes/com/alkacon/opencms</destination>
+			<type>folder</type>
+			<uuidstructure>8e41716c-ec29-11dc-990f-dfec94299cf1</uuidstructure>
+			<datelastmodified>Fri, 07 Mar 2008 09:33:33 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 07 Mar 2008 09:33:33 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.comments/classes/com/alkacon/opencms/comments</destination>
+			<type>folder</type>
+			<uuidstructure>8e43e26e-ec29-11dc-990f-dfec94299cf1</uuidstructure>
+			<datelastmodified>Thu, 15 May 2008 10:58:07 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 07 Mar 2008 09:33:33 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/classes/com/alkacon/opencms/comments/frontend.properties</source>
+			<destination>system/modules/com.alkacon.opencms.comments/classes/com/alkacon/opencms/comments/frontend.properties</destination>
+			<type>plain</type>
+			<uuidstructure>ce746d30-1216-11dd-8a3f-111d34530985</uuidstructure>
+			<uuidresource>ce746d31-1216-11dd-8a3f-111d34530985</uuidresource>
+			<datelastmodified>Thu, 15 May 2008 10:55:52 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 24 Apr 2008 15:55:05 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/classes/com/alkacon/opencms/comments/frontend_de.properties</source>
+			<destination>system/modules/com.alkacon.opencms.comments/classes/com/alkacon/opencms/comments/frontend_de.properties</destination>
+			<type>plain</type>
+			<uuidstructure>1ef08a40-2263-11dd-985e-111d34530985</uuidstructure>
+			<uuidresource>1ef08a41-2263-11dd-985e-111d34530985</uuidresource>
+			<datelastmodified>Thu, 15 May 2008 11:02:30 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 15 May 2008 09:41:40 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>content-encoding</name>
+					<value><![CDATA[ISO-8859-1]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.comments/classes/com/alkacon/opencms/comments/frontend_en.properties</destination>
+			<type>plain</type>
+			<uuidstructure>0f2e6bde-2263-11dd-985e-111d34530985</uuidstructure>
+			<uuidresource>ce746d31-1216-11dd-8a3f-111d34530985</uuidresource>
+			<datelastmodified>Thu, 15 May 2008 10:55:52 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 24 Apr 2008 15:55:05 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/classes/com/alkacon/opencms/comments/workplace.properties</source>
+			<destination>system/modules/com.alkacon.opencms.comments/classes/com/alkacon/opencms/comments/workplace.properties</destination>
+			<type>plain</type>
+			<uuidstructure>7ff6a975-ec2c-11dc-990f-dfec94299cf1</uuidstructure>
+			<uuidresource>7ff6a976-ec2c-11dc-990f-dfec94299cf1</uuidresource>
+			<datelastmodified>Thu, 15 May 2008 15:32:03 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 07 Mar 2008 09:54:38 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/classes/com/alkacon/opencms/comments/workplace_de.properties</source>
+			<destination>system/modules/com.alkacon.opencms.comments/classes/com/alkacon/opencms/comments/workplace_de.properties</destination>
+			<type>plain</type>
+			<uuidstructure>26179842-2263-11dd-985e-111d34530985</uuidstructure>
+			<uuidresource>26179843-2263-11dd-985e-111d34530985</uuidresource>
+			<datelastmodified>Thu, 15 May 2008 15:07:16 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 15 May 2008 09:41:52 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>content-encoding</name>
+					<value><![CDATA[ISO-8859-1]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.comments/classes/com/alkacon/opencms/comments/workplace_en.properties</destination>
+			<type>plain</type>
+			<uuidstructure>16dafd8f-2263-11dd-985e-111d34530985</uuidstructure>
+			<uuidresource>7ff6a976-ec2c-11dc-990f-dfec94299cf1</uuidresource>
+			<datelastmodified>Thu, 15 May 2008 15:32:03 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 07 Mar 2008 09:54:38 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.comments/docs</destination>
+			<type>folder</type>
+			<uuidstructure>8ca8f981-228d-11dd-8198-111d34530985</uuidstructure>
+			<datelastmodified>Thu, 15 May 2008 14:45:45 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 15 May 2008 14:45:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Quick start guide]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/docs/comments.xml</source>
+			<destination>system/modules/com.alkacon.opencms.comments/docs/comments.xml</destination>
+			<type>oampcomments</type>
+			<uuidstructure>b0aa59f4-228d-11dd-8198-111d34530985</uuidstructure>
+			<uuidresource>b0aa59f5-228d-11dd-8198-111d34530985</uuidresource>
+			<datelastmodified>Fri, 16 May 2008 08:27:56 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 15 May 2008 14:46:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Sample configuration]]></value>
+				</property>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.comments/elements/comment_form.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/docs/template_integration.txt</source>
+			<destination>system/modules/com.alkacon.opencms.comments/docs/template_integration.txt</destination>
+			<type>plain</type>
+			<uuidstructure>986e1672-2198-11dd-8c7e-111d34530985</uuidstructure>
+			<uuidresource>986e1673-2198-11dd-8c7e-111d34530985</uuidresource>
+			<datelastmodified>Fri, 16 May 2008 08:26:52 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 14 May 2008 09:31:56 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.comments/elements</destination>
+			<type>folder</type>
+			<uuidstructure>8e2e5e92-ec29-11dc-990f-dfec94299cf1</uuidstructure>
+			<datelastmodified>Fri, 07 Mar 2008 09:33:33 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 07 Mar 2008 09:33:33 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/elements/comment_actions.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.comments/elements/comment_actions.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>b043d3d1-1dc9-11dd-b28b-111d34530985</uuidstructure>
+			<uuidresource>b043d3d2-1dc9-11dd-b28b-111d34530985</uuidresource>
+			<datelastmodified>Fri, 16 May 2008 08:10:06 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 09 May 2008 13:13:17 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Manager actions]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[never]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/elements/comment_form.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.comments/elements/comment_form.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>dfbece22-1112-11dd-ba60-111d34530985</uuidstructure>
+			<uuidresource>dfbece23-1112-11dd-ba60-111d34530985</uuidresource>
+			<datelastmodified>Thu, 15 May 2008 10:37:21 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 23 Apr 2008 08:54:25 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Post form]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[never]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/elements/comment_header.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.comments/elements/comment_header.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>fe055c44-120a-11dd-8a3f-111d34530985</uuidstructure>
+			<uuidresource>fe055c45-120a-11dd-8a3f-111d34530985</uuidresource>
+			<datelastmodified>Fri, 16 May 2008 08:10:16 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 24 Apr 2008 14:30:31 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Header]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[never]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/elements/comment_innerlist.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.comments/elements/comment_innerlist.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>7c811b84-1dcd-11dd-b28b-111d34530985</uuidstructure>
+			<uuidresource>7c811b85-1dcd-11dd-b28b-111d34530985</uuidresource>
+			<datelastmodified>Fri, 16 May 2008 08:10:20 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 09 May 2008 13:40:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Comments List]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[never]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/elements/comment_list.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.comments/elements/comment_list.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>f11cf62d-ec2e-11dc-990f-dfec94299cf1</uuidstructure>
+			<uuidresource>f11cf62e-ec2e-11dc-990f-dfec94299cf1</uuidresource>
+			<datelastmodified>Fri, 16 May 2008 08:10:25 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 07 Mar 2008 10:12:07 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Comments List]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[never]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/elements/comment_main.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.comments/elements/comment_main.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>a1074f4d-1205-11dd-8a3f-111d34530985</uuidstructure>
+			<uuidresource>a1074f4e-1205-11dd-8a3f-111d34530985</uuidresource>
+			<datelastmodified>Fri, 16 May 2008 08:26:34 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 24 Apr 2008 13:52:07 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Main element]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[never]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/elements/comment_manager.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.comments/elements/comment_manager.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>dfeb4d86-1846-11dd-88ef-111d34530985</uuidstructure>
+			<uuidresource>dfeb4d87-1846-11dd-88ef-111d34530985</uuidresource>
+			<datelastmodified>Fri, 16 May 2008 08:10:31 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 02 May 2008 12:54:17 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Comment for managers]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[never]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/elements/comment_page.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.comments/elements/comment_page.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>34fca4a6-1da3-11dd-be62-111d34530985</uuidstructure>
+			<uuidresource>34fca4a7-1da3-11dd-be62-111d34530985</uuidresource>
+			<datelastmodified>Fri, 16 May 2008 08:10:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 09 May 2008 08:37:49 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Comments Page]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[never]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/elements/comment_pagination.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.comments/elements/comment_pagination.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>15fbc99e-1847-11dd-88ef-111d34530985</uuidstructure>
+			<uuidresource>15fbc99f-1847-11dd-88ef-111d34530985</uuidresource>
+			<datelastmodified>Fri, 16 May 2008 08:10:43 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 02 May 2008 12:55:48 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[List pagination]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[never]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/elements/comment_view.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.comments/elements/comment_view.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>0e39b41a-1847-11dd-88ef-111d34530985</uuidstructure>
+			<uuidresource>0e39b41b-1847-11dd-88ef-111d34530985</uuidresource>
+			<datelastmodified>Fri, 16 May 2008 08:10:49 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 02 May 2008 12:55:35 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Comment element]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[never]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/elements/login.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.comments/elements/login.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>87972a79-12be-11dd-a2ad-111d34530985</uuidstructure>
+			<uuidresource>87972a7a-12be-11dd-a2ad-111d34530985</uuidresource>
+			<datelastmodified>Fri, 16 May 2008 08:10:55 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 25 Apr 2008 11:55:41 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[JQuery login dialog]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[never]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.comments/lib</destination>
+			<type>folder</type>
+			<uuidstructure>8e334094-ec29-11dc-990f-dfec94299cf1</uuidstructure>
+			<datelastmodified>Fri, 07 Mar 2008 09:33:33 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 07 Mar 2008 09:33:33 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/lib/com.alkacon.opencms.comments.jar</source>
+			<destination>system/modules/com.alkacon.opencms.comments/lib/com.alkacon.opencms.comments.jar</destination>
+			<type>binary</type>
+			<uuidstructure>27e1635f-2324-11dd-b4e2-111d34530985</uuidstructure>
+			<uuidresource>27e16360-2324-11dd-b4e2-111d34530985</uuidresource>
+			<datelastmodified>Fri, 16 May 2008 08:43:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 16 May 2008 08:43:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.comments/resources</destination>
+			<type>folder</type>
+			<uuidstructure>4c93b349-1204-11dd-8a3f-111d34530985</uuidstructure>
+			<datelastmodified>Thu, 24 Apr 2008 13:42:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 24 Apr 2008 13:42:36 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/resources/approve.png</source>
+			<destination>system/modules/com.alkacon.opencms.comments/resources/approve.png</destination>
+			<type>image</type>
+			<uuidstructure>ad840730-1dc0-11dd-9741-111d34530985</uuidstructure>
+			<uuidresource>ad840731-1dc0-11dd-9741-111d34530985</uuidresource>
+			<datelastmodified>Fri, 09 May 2008 12:08:58 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 09 May 2008 12:08:47 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:20,h:20]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/resources/block.png</source>
+			<destination>system/modules/com.alkacon.opencms.comments/resources/block.png</destination>
+			<type>image</type>
+			<uuidstructure>adb158c8-1dc0-11dd-9741-111d34530985</uuidstructure>
+			<uuidresource>adb158c9-1dc0-11dd-9741-111d34530985</uuidresource>
+			<datelastmodified>Fri, 09 May 2008 12:09:09 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 09 May 2008 12:08:47 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:20,h:20]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/resources/comments.css</source>
+			<destination>system/modules/com.alkacon.opencms.comments/resources/comments.css</destination>
+			<type>plain</type>
+			<uuidstructure>96522ded-1204-11dd-8a3f-111d34530985</uuidstructure>
+			<uuidresource>96522dee-1204-11dd-8a3f-111d34530985</uuidresource>
+			<datelastmodified>Fri, 09 May 2008 15:29:03 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 24 Apr 2008 13:44:40 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/resources/delete.png</source>
+			<destination>system/modules/com.alkacon.opencms.comments/resources/delete.png</destination>
+			<type>image</type>
+			<uuidstructure>ada571e4-1dc0-11dd-9741-111d34530985</uuidstructure>
+			<uuidresource>ada571e5-1dc0-11dd-9741-111d34530985</uuidresource>
+			<datelastmodified>Fri, 09 May 2008 12:09:04 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 09 May 2008 12:08:47 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:20,h:20]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/resources/load.gif</source>
+			<destination>system/modules/com.alkacon.opencms.comments/resources/load.gif</destination>
+			<type>image</type>
+			<uuidstructure>d81aaa99-1207-11dd-8a3f-111d34530985</uuidstructure>
+			<uuidresource>d81aaa9a-1207-11dd-8a3f-111d34530985</uuidresource>
+			<datelastmodified>Thu, 15 May 2008 15:51:22 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 24 Apr 2008 14:07:59 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:15,h:15]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.comments/schemas</destination>
+			<type>folder</type>
+			<uuidstructure>b48c73c0-ec29-11dc-990f-dfec94299cf1</uuidstructure>
+			<datelastmodified>Fri, 07 Mar 2008 09:34:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 07 Mar 2008 09:34:38 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/schemas/comment.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.comments/schemas/comment.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>1e3af298-1084-11dd-b061-111d34530985</uuidstructure>
+			<uuidresource>1e3af299-1084-11dd-b061-111d34530985</uuidresource>
+			<datelastmodified>Wed, 23 Apr 2008 08:23:06 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 22 Apr 2008 15:52:31 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[comment]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/schemas/commentoptions.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.comments/schemas/commentoptions.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>1e494a7b-1084-11dd-b061-111d34530985</uuidstructure>
+			<uuidresource>1e494a7c-1084-11dd-b061-111d34530985</uuidresource>
+			<datelastmodified>Thu, 15 May 2008 14:49:01 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 22 Apr 2008 15:52:32 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[commentoptions]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/schemas/inputfield.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.comments/schemas/inputfield.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>1e52e771-1084-11dd-b061-111d34530985</uuidstructure>
+			<uuidresource>1e52e772-1084-11dd-b061-111d34530985</uuidresource>
+			<datelastmodified>Wed, 23 Apr 2008 09:53:42 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 22 Apr 2008 15:52:32 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[inputfield]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/schemas/mailconfig.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.comments/schemas/mailconfig.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>1e57a264-1084-11dd-b061-111d34530985</uuidstructure>
+			<uuidresource>1e57a265-1084-11dd-b061-111d34530985</uuidresource>
+			<datelastmodified>Wed, 23 Apr 2008 08:49:18 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 22 Apr 2008 15:52:32 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[mailconfig]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/schemas/optionalconfig.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.comments/schemas/optionalconfig.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>1e5ece57-1084-11dd-b061-111d34530985</uuidstructure>
+			<uuidresource>1e5ece58-1084-11dd-b061-111d34530985</uuidresource>
+			<datelastmodified>Thu, 08 May 2008 08:16:13 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 22 Apr 2008 15:52:32 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[optionalconfig]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/schemas/optionalformcaptcha.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.comments/schemas/optionalformcaptcha.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>1e61184a-1084-11dd-b061-111d34530985</uuidstructure>
+			<uuidresource>1e61184b-1084-11dd-b061-111d34530985</uuidresource>
+			<datelastmodified>Tue, 22 Apr 2008 15:52:32 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 22 Apr 2008 15:52:32 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[optionalformcaptcha]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace</destination>
+			<type>folder</type>
+			<uuidstructure>825afce2-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>content-encoding</name>
+					<value><![CDATA[UTF-8]]></value>
+				</property>
+				<property>
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+				<property>
+					<name>login-form</name>
+					<value><![CDATA[/system/login/index.html]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>ALL_OTHERS</uuidprincipal>
+					<flags>134</flags>
+					<permissionset>
+						<allowed>0</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+				<accessentry>
+					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
+					<flags>518</flags>
+					<permissionset>
+						<allowed>5</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<destination>system/workplace/resources</destination>
+			<type>folder</type>
+			<uuidstructure>82c16052-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace/resources/filetypes</destination>
+			<type>folder</type>
+			<uuidstructure>83ca1dcc-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/filetypes/oamp_comments.png</source>
+			<destination>system/workplace/resources/filetypes/oamp_comments.png</destination>
+			<type>image</type>
+			<uuidstructure>a9536db7-ec2e-11dc-990f-dfec94299cf1</uuidstructure>
+			<uuidresource>a9536db8-ec2e-11dc-990f-dfec94299cf1</uuidresource>
+			<datelastmodified>Fri, 07 Mar 2008 10:10:15 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 07 Mar 2008 10:10:06 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+	</files>
+</export>

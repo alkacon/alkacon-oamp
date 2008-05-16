@@ -1,0 +1,36 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+		
+	<xsd:element name="AlkaconCommentFormOptions" type="OpenCmsAlkaconCommentFormOptions"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconCommentFormOptions">
+		<xsd:sequence>
+			<xsd:element name="AlkaconCommentFormOption" type="OpenCmsAlkaconCommentFormOption" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconCommentFormOption">
+		<xsd:sequence>
+			<xsd:element name="Moderated" type="OpenCmsBoolean" />
+			<xsd:element name="List" type="OpenCmsString" />
+			<xsd:element name="Security" type="OpenCmsString" />
+			<xsd:element name="OrgUnit" type="OpenCmsString" minOccurs="0" maxOccurs="unbounded" />
+			<xsd:element name="Group" type="OpenCmsString" minOccurs="0" maxOccurs="unbounded" />
+			<xsd:element name="Accessible" type="OpenCmsBoolean" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+	</xsd:complexType>
+	
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.comments.workplace"/>
+			<layouts>
+				<layout element="List" widget="SelectorWidget" configuration="3|5*|10|20|50|all:${key.label.AlkaconCommentFormOption.List.all}" />
+				<layout element="Security" widget="RadioSelectWidget" configuration="none*:${key.label.AlkaconCommentFormOption.Security.none}|write:${key.label.AlkaconCommentFormOption.Security.write}|view:${key.label.AlkaconCommentFormOption.Security.view}" />
+				<layout element="OrgUnit" widget="OrgUnitWidget" configuration="" />
+				<layout element="Group" widget="GroupWidget" configuration="" />
+			</layouts>
+		</xsd:appinfo>
+	</xsd:annotation>
+</xsd:schema>

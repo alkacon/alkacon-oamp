@@ -1,0 +1,8 @@
+<!-- begin: #comments -->
+<c:set var="comments"><cms:property name="comments" file="search"/></c:set>
+<c:if test="${!empty comments}">
+	<cms:include file="%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_main.jsp:a1074f4d-1205-11dd-8a3f-111d34530985)" >
+		<cms:param name="cmturi" value="${cms.requestContext.uri}" />
+	</cms:include>
+</c:if>
+<!-- end: #comments-->

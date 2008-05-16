@@ -1,0 +1,25 @@
+.comment_entry { 
+	margin-top: 5px; 
+	border: 1px solid #AAAAAA; 
+}
+.comment_header { 
+	background:#AAAAAA url(http://localhost:8080/opencms/opencms/system/modules/org.opencms.frontend.templatetwo/resources/images/gradient.png) repeat-x scroll center top;
+	color:white;
+	padding: 3px;
+}
+.comment_new {
+	background:#003082 url(http://localhost:8080/opencms/opencms/system/modules/org.opencms.frontend.templatetwo/resources/images/gradient.png) repeat-x scroll center top;
+	color:white;
+	padding: 3px;
+}
+.comment_blocked {
+	background:#B31B34 url(http://localhost:8080/opencms/opencms/system/modules/org.opencms.frontend.templatetwo/resources/images/gradient.png) repeat-x scroll center top;
+	color:white;
+	padding: 3px;
+}
+.comment_body { 
+	padding: 5px 20px;
+}
+.comment_manager {
+	padding: 5px 20px;
+}
