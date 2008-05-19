@@ -1,8 +1,5 @@
 @charset "UTF-8";
 
-@import url(pagination/pagination.css);
-@import url(thickbox/thickbox.css);
-
 .album_box {
 	float: left; 
 	padding: 5px; 
