@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/CmsFormDataBean.java,v $
- * Date   : $Date: 2008/05/16 10:09:43 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2008/05/21 11:54:29 $
+ * Version: $Revision: 1.6 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -48,7 +48,7 @@ import java.util.TreeMap;
  * @author Achim Westermann
  * @author Michael Moossen
  * 
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * 
  * @since 7.0.4
  */
@@ -93,13 +93,10 @@ public class CmsFormDataBean {
     }
 
     /**
-     * Returns a set of {@link java.util.Map.Entry} objects, where the key is
-     * the field name and the value the field value, with all fields
-     * in the form.<p>
+     * Returns a map, where the key is the field name and 
+     * the value the field value, with all fields in the form.<p>
      * 
      * @return all fields in the form
-     * 
-     * @see java.util.Map#entrySet()
      */
     public Map getAllFields() {
 
@@ -136,6 +133,21 @@ public class CmsFormDataBean {
     public int getEntryId() {
 
         return m_entryId;
+    }
+
+    /**
+     * Returns a map, where the key is the field name and 
+     * the value the field value, with all fields in the form.<p>
+     * 
+     * For better EL usage.<p>
+     * 
+     * @return all fields in the form
+     * 
+     * @see #getAllFields
+     */
+    public Map getField() {
+
+        return getAllFields();
     }
 
     /**
