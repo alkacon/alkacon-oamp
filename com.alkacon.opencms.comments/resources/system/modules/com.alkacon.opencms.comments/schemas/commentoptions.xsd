@@ -17,7 +17,7 @@
 			<xsd:element name="Security" type="OpenCmsString" />
 			<xsd:element name="OrgUnit" type="OpenCmsString" minOccurs="0" maxOccurs="unbounded" />
 			<xsd:element name="Group" type="OpenCmsString" minOccurs="0" maxOccurs="unbounded" />
-			<xsd:element name="Accessible" type="OpenCmsBoolean" />
+			<xsd:element name="Minimized" type="OpenCmsBoolean" />
 		</xsd:sequence>
 		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
 	</xsd:complexType>

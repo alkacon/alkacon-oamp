@@ -1,16 +1,15 @@
 <%@ page import="com.alkacon.opencms.comments.*" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms"%><%
-	CmsCommentsAccess cmt = new CmsCommentsAccess(pageContext, request, response);
-	pageContext.setAttribute("cmt", cmt);
+	CmsCommentsAccess alkaconCmt = new CmsCommentsAccess(pageContext, request, response);
+	pageContext.setAttribute("alkaconCmt", alkaconCmt);
 %>
 <cms:jquery dynamic='true' />
 <cms:jquery js='jquery' dynamic='true' />
 <cms:jquery js='jquery.pagination' css='pagination' dynamic='true' />
-<cms:jquery js='jquery.ui' css='flora/flora.all' dynamic='true' />
+<cms:jquery js='thickbox' css='thickbox/thickbox' dynamic='true' />
 <script type='text/javascript' >
 load_script('<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/resources/comments.css:96522ded-1204-11dd-8a3f-111d34530985)</cms:link>', 'css');
-$('body').addClass('flora');
 </script>
 <div id="commentbox" class="commentbox">
 	<center>
@@ -18,7 +17,7 @@ $('body').addClass('flora');
 	</center>
 </div>
 <c:set var="url" value="%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_header.jsp:fe055c44-120a-11dd-8a3f-111d34530985)" />
-<c:if test="${(!empty param.cmtshow) || !cmt.config.minimized}" >
+<c:if test="${!alkaconCmt.minimized}" >
 	<c:set var="url" value="%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_list.jsp:f11cf62d-ec2e-11dc-990f-dfec94299cf1)" />
 </c:if>
 <script type="text/javascript" >

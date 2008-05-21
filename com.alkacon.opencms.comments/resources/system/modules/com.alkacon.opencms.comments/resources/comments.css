@@ -1,25 +1,84 @@
 .comment_entry { 
 	margin-top: 5px; 
-	border: 1px solid #AAAAAA; 
+	border: 1px solid #CCCCCC; 
 }
 .comment_header { 
-	background:#AAAAAA url(http://localhost:8080/opencms/opencms/system/modules/org.opencms.frontend.templatetwo/resources/images/gradient.png) repeat-x scroll center top;
-	color:white;
-	padding: 3px;
+	background: #CCCCCC url(gradient.png) repeat-x scroll center top;
+	color: black;
+	padding: 3px 5px;
 }
 .comment_new {
-	background:#003082 url(http://localhost:8080/opencms/opencms/system/modules/org.opencms.frontend.templatetwo/resources/images/gradient.png) repeat-x scroll center top;
-	color:white;
-	padding: 3px;
+	background: #AACCFF url(gradient.png) repeat-x scroll center top;
+	color: black;
+	padding: 3px 5px;
 }
 .comment_blocked {
-	background:#B31B34 url(http://localhost:8080/opencms/opencms/system/modules/org.opencms.frontend.templatetwo/resources/images/gradient.png) repeat-x scroll center top;
-	color:white;
-	padding: 3px;
+	background: #FFAAAA url(gradient.png) repeat-x scroll center top;
+	color: black;
+	padding: 3px 5px;
 }
 .comment_body { 
 	padding: 5px 20px;
 }
 .comment_manager {
 	padding: 5px 20px;
+}
+.comment_title {
+	padding-top: 3px; 
+	font-weight: bold;
+}
+.comment_subtitle {
+	font-size: 80%;
+}
+.comment_actions {
+	position: absolute; right: 5px;
+}
+.comment_actions_header {
+	position: relative;
+}
+.comment_dialog_content { 
+	padding: 5px 5px;
+}
+.pagination_header {
+	position: relative;
+	height: 18px;
+}
+.moderation_state {
+	margin: 8px 0px 0px 5px;
+	font-size: 80%;
+	position: absolute;
+	left: 0px;
+}
+.pagination_box {
+	position: absolute;
+	right: 0px;
+}
+form.loginform div.boxform input.button {
+	width: 100px;
+}
+form.loginform div.buttonrow {
+	float: right; 
+	padding-top: 10px;
+}
+form.loginform div.login-errormessage {
+	font-weight: bold;
+	color: #B31334;
+}
+form.loginform textarea {
+	height: 200px;
+}
+form.loginform img {
+	height: auto;
+	width: 100%;
+}
+#TB_title { 
+	background: #AACCFF url(gradient.png) repeat-x scroll center top;
+	color: black;
+	padding: 3px 5px;
+}
+#TB_closeAjaxWindow {
+	display: none;
+}
+#TB_ajaxContent {
+	background-color: #EEEEFF;
 }

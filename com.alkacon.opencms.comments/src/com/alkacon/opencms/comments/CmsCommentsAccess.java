@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.comments/src/com/alkacon/opencms/comments/CmsCommentsAccess.java,v $
- * Date   : $Date: 2008/05/16 11:40:26 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2008/05/21 11:58:05 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -34,19 +34,24 @@ package com.alkacon.opencms.comments;
 import com.alkacon.opencms.formgenerator.database.CmsFormDataAccess;
 import com.alkacon.opencms.formgenerator.database.CmsFormDatabaseFilter;
 
+import org.opencms.db.CmsDbEntryNotFoundException;
 import org.opencms.file.CmsGroup;
 import org.opencms.file.CmsObject;
 import org.opencms.file.CmsResource;
 import org.opencms.file.CmsResourceFilter;
 import org.opencms.file.CmsUser;
-import org.opencms.jsp.CmsJspActionElement;
+import org.opencms.jsp.CmsJspLoginBean;
+import org.opencms.main.CmsEvent;
 import org.opencms.main.CmsException;
 import org.opencms.main.CmsLog;
+import org.opencms.main.I_CmsEventListener;
+import org.opencms.main.OpenCms;
 import org.opencms.security.CmsOrganizationalUnit;
 import org.opencms.security.CmsPermissionSet;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -65,11 +70,11 @@ import org.apache.commons.logging.Log;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.5
  */
-public class CmsCommentsAccess extends CmsJspActionElement {
+public class CmsCommentsAccess extends CmsJspLoginBean {
 
     /** Action name constant. */
     public static final String ACTION_APPROVE = "approve";
@@ -83,12 +88,6 @@ public class CmsCommentsAccess extends CmsJspActionElement {
     /** Parameter name constant. */
     public static final String PARAM_ACTION = "cmtaction";
 
-    /** The log object for this class. */
-    protected static final Log LOG = CmsLog.getLog(CmsCommentsAccess.class);
-
-    /** Field name constant. */
-    private static final String FIELD_NAME = "name";
-
     /** Parameter name constant. */
     public static final String PARAM_PAGE = "cmtpage";
 
@@ -96,7 +95,16 @@ public class CmsCommentsAccess extends CmsJspActionElement {
     public static final String PARAM_SHOW = "cmtshow";
 
     /** Parameter name constant. */
+    public static final String PARAM_STATE = "cmtstate";
+
+    /** Parameter name constant. */
     public static final String PARAM_URI = "cmturi";
+
+    /** The log object for this class. */
+    protected static final Log LOG = CmsLog.getLog(CmsCommentsAccess.class);
+
+    /** Cached configurations. */
+    protected static Map m_configs = Collections.synchronizedMap(new HashMap());
 
     /** Property name constant. */
     private static final String PROPERTY_COMMENTS = "comments";
@@ -116,11 +124,23 @@ public class CmsCommentsAccess extends CmsJspActionElement {
     /** Map where the key is the author name and the value the number of comments. */
     private Map m_countByAuthor;
 
+    /** Right login exception. */
+    private CmsException m_exc;
+
     /** The current page. */
     private int m_page;
 
     /** The requested resource. */
     private CmsResource m_resource;
+
+    /** If the comment element should start maximized. */
+    private boolean m_show;
+
+    /** If set, the state of comments to be displayed. */
+    private Integer m_state;
+
+    /** The path to the actual page to comment. */
+    private String m_uri;
 
     /** Cached value, if the current user is valid. */
     private Boolean m_userValid;
@@ -135,6 +155,54 @@ public class CmsCommentsAccess extends CmsJspActionElement {
     public CmsCommentsAccess(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         super(context, req, res);
+    }
+
+    static {
+        OpenCms.addCmsEventListener(new I_CmsEventListener() {
+
+            /**
+             * @see org.opencms.main.I_CmsEventListener#cmsEvent(org.opencms.main.CmsEvent)
+             */
+            public void cmsEvent(CmsEvent event) {
+
+                switch (event.getType()) {
+                    case EVENT_CLEAR_CACHES:
+                    case EVENT_CLEAR_OFFLINE_CACHES:
+                    case EVENT_CLEAR_ONLINE_CACHES:
+                    case EVENT_PUBLISH_PROJECT:
+                        m_configs.clear();
+                        break;
+
+                    case EVENT_RESOURCE_AND_PROPERTIES_MODIFIED:
+                    case EVENT_RESOURCE_DELETED:
+                    case EVENT_RESOURCE_MODIFIED:
+                        if (event.getData() == null) {
+                            m_configs.clear();
+                            break;
+                        }
+                        CmsResource res = (CmsResource)event.getData().get("resource");
+                        if (res == null) {
+                            m_configs.clear();
+                            break;
+                        }
+
+                        String cacheKey = res.getRootPath() + "-";
+                        m_configs.remove(cacheKey);
+                        break;
+
+                    default:
+                        break;
+                }
+
+            }
+        }, new int[] {
+            I_CmsEventListener.EVENT_CLEAR_CACHES,
+            I_CmsEventListener.EVENT_CLEAR_OFFLINE_CACHES,
+            I_CmsEventListener.EVENT_CLEAR_ONLINE_CACHES,
+            I_CmsEventListener.EVENT_RESOURCE_AND_PROPERTIES_MODIFIED,
+            I_CmsEventListener.EVENT_RESOURCE_DELETED,
+            I_CmsEventListener.EVENT_RESOURCE_MODIFIED,
+            I_CmsEventListener.EVENT_PUBLISH_PROJECT});
     }
 
     /**
@@ -195,6 +263,24 @@ public class CmsCommentsAccess extends CmsJspActionElement {
     }
 
     /**
+     * Execute the given action.<p>
+     */
+    public void doAction() {
+
+        String action = getRequest().getParameter(CmsCommentsAccess.PARAM_ACTION);
+        if ((action == null) || (action.trim().length() == 0)) {
+            return;
+        }
+        if (action.startsWith(CmsCommentsAccess.ACTION_DELETE)) {
+            delete(Integer.parseInt(action.substring(CmsCommentsAccess.ACTION_DELETE.length())));
+        } else if (action.startsWith(CmsCommentsAccess.ACTION_BLOCK)) {
+            block(Integer.parseInt(action.substring(CmsCommentsAccess.ACTION_BLOCK.length())));
+        } else if (action.startsWith(CmsCommentsAccess.ACTION_APPROVE)) {
+            approve(Integer.parseInt(action.substring(CmsCommentsAccess.ACTION_APPROVE.length())));
+        }
+    }
+
+    /**
      * Returns the list of comments (for the given page).<p>
      * 
      * @return a list of {@link com.alkacon.opencms.formgenerator.database.CmsFormDataBean} objects
@@ -203,7 +289,7 @@ public class CmsCommentsAccess extends CmsJspActionElement {
 
         CmsCommentFormHandler jsp = null;
         try {
-            jsp = new CmsCommentFormHandler(getJspContext(), getRequest(), getResponse(), getConfig().getConfigUri());
+            jsp = new CmsCommentFormHandler(getJspContext(), getRequest(), getResponse(), this);
             jsp.getCommentFormConfiguration().removeCaptchaField();
         } catch (Exception e) {
             if (LOG.isErrorEnabled()) {
@@ -213,82 +299,22 @@ public class CmsCommentsAccess extends CmsJspActionElement {
         int itemSize = (jsp == null ? 2000000 : jsp.getCommentFormConfiguration().getAllFields().size());
         int itemsPerPage = getConfig().getList() * itemSize;
 
-        CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.DEFAULT;
-        filter = filter.filterFormId(CmsCommentForm.FORM_ID);
-        filter = filter.filterResourceId(getResource().getStructureId());
+        CmsFormDatabaseFilter filter = getCommentFilter(false);
         filter = filter.filterOrderDesc();
         if (getConfig().getList() > 0) {
             int base = m_page * itemsPerPage;
             filter = filter.filterIndex(base, base + itemsPerPage);
         }
-        if (!isUserCanManage()) {
-            // easy case
-            if (getConfig().isModerated()) {
-                filter = filter.filterState(STATE_APPROVED);
-            }
-            try {
-                return CmsFormDataAccess.getInstance().readForms(filter);
-            } catch (SQLException e) {
-                if (LOG.isErrorEnabled()) {
-                    LOG.error(e.getLocalizedMessage(), e);
-                }
-            }
-        }
-        // hard case, if moderated
-        List ret = new ArrayList();
 
-        // first new comments, oldest first
-        CmsFormDatabaseFilter newFilter = ((CmsFormDatabaseFilter)filter.clone()).filterState(STATE_NEW);
-        if (getConfig().getList() > 0) {
-            int base = m_page * itemsPerPage;
-            newFilter = newFilter.filterIndex(base, base + itemsPerPage);
-            newFilter = newFilter.filterOrderAsc();
-        }
         try {
-            ret.addAll(CmsFormDataAccess.getInstance().readForms(newFilter));
+            return CmsFormDataAccess.getInstance().readForms(filter);
         } catch (SQLException e) {
             if (LOG.isErrorEnabled()) {
                 LOG.error(e.getLocalizedMessage(), e);
             }
         }
 
-        int cmtCount = 0;
-        // then, blocked comments, oldest first
-        if ((getConfig().getList() < 0) || (ret.size() < getConfig().getList())) {
-            CmsFormDatabaseFilter blockedFilter = ((CmsFormDatabaseFilter)filter.clone()).filterState(STATE_BLOCKED);
-            if (getConfig().getList() > 0) {
-                cmtCount = getCountNewComments();
-                int base = (m_page * itemsPerPage) - (cmtCount * itemSize);
-                blockedFilter = blockedFilter.filterIndex(base <= 0 ? 0 : base, base + itemsPerPage);
-                blockedFilter = blockedFilter.filterOrderAsc();
-            }
-            try {
-                ret.addAll(CmsFormDataAccess.getInstance().readForms(blockedFilter));
-            } catch (SQLException e) {
-                if (LOG.isErrorEnabled()) {
-                    LOG.error(e.getLocalizedMessage(), e);
-                }
-            }
-        }
-
-        // at last, approved comments, newest first
-        if ((getConfig().getList() < 0) || (ret.size() < getConfig().getList())) {
-            CmsFormDatabaseFilter approvedFilter = ((CmsFormDatabaseFilter)filter.clone()).filterState(STATE_APPROVED);
-            if (getConfig().getList() > 0) {
-                cmtCount += getCountBlockedComments();
-                int base = (m_page * itemsPerPage) - (cmtCount * itemSize);
-                approvedFilter = approvedFilter.filterIndex(base <= 0 ? 0 : base, base + itemsPerPage);
-                approvedFilter = approvedFilter.filterOrderDesc();
-            }
-            try {
-                ret.addAll(CmsFormDataAccess.getInstance().readForms(approvedFilter));
-            } catch (SQLException e) {
-                if (LOG.isErrorEnabled()) {
-                    LOG.error(e.getLocalizedMessage(), e);
-                }
-            }
-        }
-        return ret;
+        return new ArrayList();
     }
 
     /**
@@ -351,7 +377,7 @@ public class CmsCommentsAccess extends CmsJspActionElement {
     /**
      * Returns the number of comments a given author has written.<p>
      * 
-     * To use this method you have to define a field called {@link #FIELD_NAME}.<p>
+     * To use this method you have to define a field called {@link CmsCommentFormHandler#FIELD_USERNAME}.<p>
      * 
      * @return a map where the key is the author name and the value the number of comments
      */
@@ -368,7 +394,7 @@ public class CmsCommentsAccess extends CmsJspActionElement {
                     String author = String.valueOf(input);
                     CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.HEADERS;
                     filter = filter.filterFormId(CmsCommentForm.FORM_ID);
-                    filter = filter.filterField(FIELD_NAME, author);
+                    filter = filter.filterField(CmsCommentFormHandler.FIELD_USERNAME, author);
                     try {
                         return new Integer(CmsFormDataAccess.getInstance().countForms(filter));
                     } catch (SQLException e) {
@@ -392,17 +418,7 @@ public class CmsCommentsAccess extends CmsJspActionElement {
      */
     public int getCountComments() {
 
-        if (!m_config.isModerated()) {
-            return 0;
-        }
-        CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.HEADERS;
-        filter = filter.filterFormId(CmsCommentForm.FORM_ID);
-        filter = filter.filterResourceId(m_resource.getStructureId());
-        if (!isUserCanManage()) {
-            if (getConfig().isModerated()) {
-                filter = filter.filterState(STATE_APPROVED);
-            }
-        }
+        CmsFormDatabaseFilter filter = getCommentFilter(true);
         try {
             return CmsFormDataAccess.getInstance().countForms(filter);
         } catch (SQLException e) {
@@ -410,6 +426,7 @@ public class CmsCommentsAccess extends CmsJspActionElement {
                 LOG.error(e.getLocalizedMessage(), e);
             }
         }
+
         return 0;
     }
 
@@ -440,6 +457,17 @@ public class CmsCommentsAccess extends CmsJspActionElement {
     }
 
     /**
+     * @see org.opencms.jsp.CmsJspLoginBean#getLoginException()
+     */
+    public CmsException getLoginException() {
+
+        if (m_exc == null) {
+            return super.getLoginException();
+        }
+        return m_exc;
+    }
+
+    /**
      * Returns the page.<p>
      *
      * @return the page
@@ -447,6 +475,20 @@ public class CmsCommentsAccess extends CmsJspActionElement {
     public int getPage() {
 
         return m_page;
+    }
+
+    /**
+     * Returns the total number of pages.<p>
+     * 
+     * @return the total number of pages
+     */
+    public int getPages() {
+
+        int countCmts = getCountComments();
+        if ((getConfig().getList() <= 0) || (countCmts == 0)) {
+            return 1;
+        }
+        return (int)Math.ceil(((double)countCmts) / getConfig().getList());
     }
 
     /**
@@ -460,25 +502,62 @@ public class CmsCommentsAccess extends CmsJspActionElement {
     }
 
     /**
+     * Returns the state of the comments that should be displayed.<p>
+     *
+     * @return the state of the comments that should be displayed, <code>null</code> for all
+     */
+    public Integer getState() {
+
+        return m_state;
+    }
+
+    /**
+     * Returns the uri.<p>
+     *
+     * @return the uri
+     */
+    public String getUri() {
+
+        return m_uri;
+    }
+
+    /**
      * @see org.opencms.jsp.CmsJspBean#init(javax.servlet.jsp.PageContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     public void init(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         super.init(context, req, res);
         try {
-            m_resource = getCmsObject().readResource(req.getParameter(PARAM_URI));
-            String configUri = getCmsObject().readPropertyObject(m_resource, PROPERTY_COMMENTS, true).getValue();
-            m_config = new CmsCommentConfiguration(this, configUri);
+            m_uri = req.getParameter(PARAM_URI);
+            m_resource = getCmsObject().readResource(m_uri);
+            getCmsObject().getRequestContext().setUri(m_uri);
+            String configUri = readConfigUri();
+            String cacheKey = getCmsObject().getRequestContext().addSiteRoot(configUri)
+                + (getCmsObject().getRequestContext().currentProject().isOnlineProject() ? "+" : "-");
+            m_config = (CmsCommentConfiguration)m_configs.get(cacheKey);
+            if (m_config == null) {
+                m_config = new CmsCommentConfiguration(this, configUri);
+                m_configs.put(cacheKey, m_config);
+            }
         } catch (Exception e) {
             if (LOG.isErrorEnabled()) {
                 LOG.error(e.getLocalizedMessage());
             }
         }
+        try {
+            m_state = Integer.valueOf(req.getParameter(PARAM_STATE));
+        } catch (NumberFormatException e) {
+            m_state = null;
+        }
+        m_show = Boolean.valueOf(req.getParameter(PARAM_SHOW)).booleanValue();
         m_page = 0;
         try {
             m_page = Integer.parseInt(req.getParameter(PARAM_PAGE));
         } catch (Exception e) {
             // ignore
+        }
+        if (m_page >= getPages()) {
+            m_page = getPages() - 1;
         }
     }
 
@@ -490,6 +569,36 @@ public class CmsCommentsAccess extends CmsJspActionElement {
     public boolean isGuestUser() {
 
         return getRequestContext().currentUser().isGuestUser();
+    }
+
+    /**
+     * Checks if the comment element should start minimized.<p>
+     * 
+     * @return <code>true</code>, if the comment element should start minimized
+     */
+    public boolean isMinimized() {
+
+        return !isShow() || !getConfig().isMinimized();
+    }
+
+    /**
+     * Checks if pagination is needed.<p>
+     * 
+     * @return <code>true</code>, if pagination is needed
+     */
+    public boolean isNeedPagination() {
+
+        return (getConfig().getList() > 0) && (getCountComments() > getConfig().getList());
+    }
+
+    /**
+     * Checks if the comment element should start maximized.<p>
+     *
+     * @return <code>true</code>, if the comment element should start maximized
+     */
+    public boolean isShow() {
+
+        return m_show;
     }
 
     /**
@@ -574,27 +683,102 @@ public class CmsCommentsAccess extends CmsJspActionElement {
                         m_userValid = Boolean.TRUE;
                     }
                 }
-                m_userValid = Boolean.FALSE;
+                if (m_userValid == null) {
+                    m_userValid = Boolean.FALSE;
+                }
             }
         }
         return m_userValid.booleanValue();
     }
 
     /**
-     * Execute the given action.<p>
+     * @see org.opencms.jsp.CmsJspLoginBean#login(java.lang.String, java.lang.String, java.lang.String)
      */
-    public void doAction() {
+    public void login(String userName, String password, String projectName) {
 
-        String action = getRequest().getParameter(CmsCommentsAccess.PARAM_ACTION);
-        if ((action == null) || (action.trim().length() == 0)) {
+        super.login(userName, password, projectName);
+        if (isLoginSuccess()) {
             return;
         }
-        if (action.startsWith(CmsCommentsAccess.ACTION_DELETE)) {
-            delete(Integer.parseInt(action.substring(CmsCommentsAccess.ACTION_DELETE.length())));
-        } else if (action.startsWith(CmsCommentsAccess.ACTION_BLOCK)) {
-            block(Integer.parseInt(action.substring(CmsCommentsAccess.ACTION_BLOCK.length())));
-        } else if (action.startsWith(CmsCommentsAccess.ACTION_APPROVE)) {
-            approve(Integer.parseInt(action.substring(CmsCommentsAccess.ACTION_APPROVE.length())));
+        CmsException exc = null;
+        if (!(getLoginException() instanceof CmsDbEntryNotFoundException)) {
+            // remember exception
+            exc = getLoginException();
         }
+        // iterate the organizational units
+        Iterator itOus = getConfig().getOrgUnits().iterator();
+        while (itOus.hasNext()) {
+            CmsOrganizationalUnit ou = (CmsOrganizationalUnit)itOus.next();
+            String ouFqn = ou.getName();
+            // iterate parent ous
+            while (!ouFqn.equals("")) {
+                super.login(ouFqn + userName, password, projectName);
+                if (isLoginSuccess()) {
+                    return;
+                }
+                if (!(getLoginException() instanceof CmsDbEntryNotFoundException)) {
+                    // remember exception
+                    exc = getLoginException();
+                }
+                ouFqn = CmsOrganizationalUnit.getParentFqn(ouFqn);
+            }
+        }
+        if (exc == null) {
+            exc = new CmsDbEntryNotFoundException(org.opencms.db.Messages.get().container(
+                org.opencms.db.Messages.ERR_UNKNOWN_USER_1,
+                userName));
+        }
+        m_exc = exc;
+    }
+
+    /**
+     * Returns the filter to read the comments.<p>
+     * 
+     * @param count <code>true</code> is counting comments
+     * 
+     * @return the filter to read the comments
+     */
+    private CmsFormDatabaseFilter getCommentFilter(boolean count) {
+
+        CmsFormDatabaseFilter filter;
+        if (count) {
+            filter = CmsFormDatabaseFilter.HEADERS;
+        } else {
+            filter = CmsFormDatabaseFilter.DEFAULT;
+        }
+        filter = filter.filterFormId(CmsCommentForm.FORM_ID);
+        filter = filter.filterResourceId(getResource().getStructureId());
+        if (!isUserCanManage()) {
+            // if not managing
+            if (getConfig().isModerated()) {
+                // if moderated, only show approved
+                filter = filter.filterState(STATE_APPROVED);
+            }
+        } else {
+            // if managing
+            if (getState() != null) {
+                // show only requested comments
+                filter = filter.filterState(getState().intValue());
+            }
+        }
+        return filter;
+    }
+
+    /**
+     * Returns the right configuration uri.<p>
+     * 
+     * @return the right configuration uri
+     * 
+     * @throws CmsException if something goes wrong
+     */
+    private String readConfigUri() throws CmsException {
+
+        String configUri = getCmsObject().readPropertyObject(m_resource, PROPERTY_COMMENTS, true).getValue();
+        if (!getCmsObject().existsResource(configUri)) {
+            configUri = OpenCms.getModuleManager().getModule(CmsCommentFormHandler.MODULE_NAME).getParameter(
+                CmsCommentFormHandler.MODULE_PARAM_CONFIG_PREFIX + configUri,
+                configUri);
+        }
+        return configUri;
     }
 }

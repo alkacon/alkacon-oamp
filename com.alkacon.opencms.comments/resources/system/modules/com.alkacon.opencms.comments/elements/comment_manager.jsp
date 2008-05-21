@@ -1,5 +1,5 @@
 <c:choose>
-	<c:when test="${!cmt.config.moderated}">
+	<c:when test="${!alkaconCmt.config.moderated}">
 		<c:set var="className" value="comment_header" />
 	</c:when>
 	<c:otherwise>
@@ -16,10 +16,11 @@
 		</c:choose>
 	</c:otherwise>
 </c:choose>
+<c:set var="date"><fmt:formatDate value='${cms:convertDate(comment.dateCreated)}' dateStyle='long' timeStyle='short' type='both' /></c:set>
 <div class="comment_entry" >
-	<div class="${className}" style="position: relative; height: 20px;">
-		<div style="position: absolute; right: 0px;">
-			<c:if test="${cmt.config.moderated}">
+	<div class="${className} comment_actions_header">
+		<div class="comment_actions">
+			<c:if test="${alkaconCmt.config.moderated}">
 				<c:if test="${comment.state != 1}">
 					<a href="#" id="approve${comment.entryId}" class="action"><img title="<fmt:message key="comment.manager.approve" />" alt="<fmt:message key="comment.manager.approve" />" src='<cms:link>%(link.strong:/system/modules/com.alkacon.opencms.comments/resources/approve.png:ad840730-1dc0-11dd-9741-111d34530985)</cms:link>' width='20' height='20'></a>
 				</c:if>
@@ -29,29 +30,31 @@
 			</c:if>
 			<a href="#" id="delete${comment.entryId}" class="action"><img title="<fmt:message key="comment.manager.delete" />" alt="<fmt:message key="comment.manager.delete" />" src='<cms:link>%(link.strong:/system/modules/com.alkacon.opencms.comments/resources/delete.png:ada571e4-1dc0-11dd-9741-111d34530985)</cms:link>' width='20' height='20'></a>
 		</div>
-		<div style="padding-top: 3px;">
-			<c:set var="date"><fmt:formatDate value='${cms:convertDate(comment.dateCreated)}' dateStyle='long' timeStyle='short' type='both' /></c:set>
+		<div class="comment_title">
+			<c:out value="${comment.field['subject']}"  />
+		</div>
+		<div class="comment_subtitle">
 			<fmt:message key="comment.header.view.2" >
-				<fmt:param value="${comment.allFields['name']}" />
+				<fmt:param value="${comment.field['name']}" />
 				<fmt:param value="${date}" />
 			</fmt:message>
 		</div>
 	</div>
 	<div class="comment_manager" >
 		<fmt:message key="comment.manager.username.1" >
-			<fmt:param value="${comment.allFields['username']}" />
+			<fmt:param value="${comment.field['username']}" />
 		</fmt:message><br>
 		<fmt:message key="comment.manager.email.1" >
-			<fmt:param value="${comment.allFields['email']}" />
+			<fmt:param value="${comment.field['email']}" />
 		</fmt:message><br>
 		<fmt:message key="comment.manager.ipaddress.1" >
-			<fmt:param value="${comment.allFields['ipaddress']}" />
+			<fmt:param value="${comment.field['ipaddress']}" />
 		</fmt:message><br>
 		<fmt:message key="comment.manager.count.1" >
-			<fmt:param value="${cmt.countByAuthor[comment.allFields['name']]}" />
+			<fmt:param value="${alkaconCmt.countByAuthor[comment.field['username']]}" />
 		</fmt:message>
 	</div>
 	<div class="comment_body" >
-		<c:out value="${comment.allFields['comment']}"  escapeXml="false" />
+		<c:out value="${comment.field['comment']}"  escapeXml="false" />
 	</div>
 </div>

@@ -5,8 +5,9 @@
     <Options>
       <Moderated>true</Moderated>
       <List><![CDATA[5]]></List>
-      <Security><![CDATA[none]]></Security>
-      <Accessible>false</Accessible>
+      <Security><![CDATA[view]]></Security>
+      <OrgUnit><![CDATA[test]]></OrgUnit>
+      <Minimized>true</Minimized>
     </Options>
     <InputField>
       <FieldType><![CDATA[text]]></FieldType>
@@ -16,6 +17,11 @@
     <InputField>
       <FieldType><![CDATA[email]]></FieldType>
       <FieldLabel><![CDATA[Your Email (will not be shown):|email]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[text]]></FieldType>
+      <FieldLabel><![CDATA[Subject:|subject]]></FieldLabel>
       <FieldMandatory>true</FieldMandatory>
     </InputField>
     <InputField>
@@ -40,12 +46,12 @@
     </InputField>
     <FormCaptcha>
       <FieldLabel><![CDATA[Verification:]]></FieldLabel>
-      <Preset><![CDATA[/system/workplace/admin/captcha/alkacon.captchapreset]]></Preset>
+      <Preset><![CDATA[/system/workplace/admin/captcha/alkacon-dict.captchapreset]]></Preset>
     </FormCaptcha>
     <MailAlert>
       <MailFrom><![CDATA[comments.noreply@alkacon.com]]></MailFrom>
-      <MailTo><![CDATA[your.email@server.com]]></MailTo>
-      <MailSubject><![CDATA[New comment for %(url)]]></MailSubject>
+      <MailResponsible>true</MailResponsible>
+      <MailSubject><![CDATA[New comment for %(url) from %(name)]]></MailSubject>
       <MailText name="MailText0">
         <links>
           <link name="link0" internal="false" type="A">
@@ -58,19 +64,28 @@
       </MailText>
       <MailType><![CDATA[html]]></MailType>
     </MailAlert>
+    <FormConfirmation name="FormConfirmation0">
+      <links/>
+      <content><![CDATA[<p>Thank you very much for your comment.</p>
+<p>&nbsp;</p>
+<p>Your comment has been successful submitted and will be reviewed and published as soon as possible.</p>
+<p>&nbsp;</p>
+<p>Sincerely,</p>
+<p>The OpenCms Team</p>]]></content>
+    </FormConfirmation>
     <OptionalFormConfiguration>
       <ShowMandatory>true</ShowMandatory>
-      <FormAttributes/>
-      <FormFieldAttributes><![CDATA[style="width: 100%"]]></FormFieldAttributes>
+      <FormAttributes><![CDATA[class="loginform"]]></FormAttributes>
+      <FormFieldAttributes><![CDATA[style="width: 99%"]]></FormFieldAttributes>
       <DynamicFieldClass><![CDATA[com.alkacon.opencms.comments.CmsCommentDynamicFields]]></DynamicFieldClass>
     </OptionalFormConfiguration>
   </AlkaconCommentForm>
   <AlkaconCommentForm language="de">
     <Options>
-      <Moderated>true</Moderated>
+      <Moderated>false</Moderated>
       <List><![CDATA[5]]></List>
       <Security><![CDATA[none]]></Security>
-      <Accessible>false</Accessible>
+      <Minimized>false</Minimized>
     </Options>
     <InputField>
       <FieldType><![CDATA[text]]></FieldType>
@@ -80,6 +95,11 @@
     <InputField>
       <FieldType><![CDATA[email]]></FieldType>
       <FieldLabel><![CDATA[Ihr E-Mail (wird nicht angezeigt):|email]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[text]]></FieldType>
+      <FieldLabel><![CDATA[Betreff:|subject]]></FieldLabel>
       <FieldMandatory>true</FieldMandatory>
     </InputField>
     <InputField>
@@ -104,11 +124,12 @@
     </InputField>
     <FormCaptcha>
       <FieldLabel><![CDATA[Verification:]]></FieldLabel>
-      <Preset><![CDATA[/system/workplace/admin/captcha/alkacon.captchapreset]]></Preset>
+      <Preset><![CDATA[/system/workplace/admin/captcha/alkacon-dict.captchapreset]]></Preset>
     </FormCaptcha>
     <MailAlert>
       <MailFrom><![CDATA[comments.noreply@alkacon.com]]></MailFrom>
       <MailTo><![CDATA[m.moossen@alkacon.com]]></MailTo>
+      <MailResponsible>false</MailResponsible>
       <MailSubject><![CDATA[Neuer Beitrag für %(url) von %(name)]]></MailSubject>
       <MailText name="MailText0">
         <links>

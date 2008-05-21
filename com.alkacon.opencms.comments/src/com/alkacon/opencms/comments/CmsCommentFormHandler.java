@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.comments/src/com/alkacon/opencms/comments/CmsCommentFormHandler.java,v $
- * Date   : $Date: 2008/05/16 11:40:26 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2008/05/21 11:58:05 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -43,6 +43,7 @@ import org.opencms.util.CmsMacroResolver;
 import org.opencms.util.CmsStringUtil;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,7 +57,7 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.5
  */
@@ -71,11 +72,20 @@ public class CmsCommentFormHandler extends CmsFormHandler {
     /** The locale field name constant. */
     public static final String FIELD_LOCALE = "locale";
 
+    /** The name field name constant. */
+    public static final String FIELD_NAME = "name";
+
     /** The user field name constant. */
     public static final String FIELD_USERNAME = "username";
 
     /** The module name. */
-    private static final String MODULE = "com.alkacon.opencms.comments";
+    public static final String MODULE_NAME = "com.alkacon.opencms.comments";
+
+    /** Module parameter name prefix constant. */
+    public static final String MODULE_PARAM_CONFIG_PREFIX = "config:";
+
+    /** Some predefined comment substitutions. */
+    private Map m_substitutions;
 
     /**
      * Constructor, creates the necessary form configuration objects.<p>
@@ -83,22 +93,7 @@ public class CmsCommentFormHandler extends CmsFormHandler {
      * @param context the JSP page context object
      * @param req the JSP request 
      * @param res the JSP response 
-     * 
-     * @throws Exception if creating the form configuration objects fails
-     */
-    public CmsCommentFormHandler(PageContext context, HttpServletRequest req, HttpServletResponse res)
-    throws Exception {
-
-        super(context, req, res);
-    }
-
-    /**
-     * Constructor, creates the necessary form configuration objects using a given configuration file URI.<p>
-     * 
-     * @param context the JSP page context object
-     * @param req the JSP request 
-     * @param res the JSP response 
-     * @param formConfigUri URI of the form configuration file, if not provided, current URI is used for configuration
+     * @param access the comment configuration bean
      * 
      * @throws Exception if creating the form configuration objects fails
      */
@@ -106,10 +101,12 @@ public class CmsCommentFormHandler extends CmsFormHandler {
         PageContext context,
         HttpServletRequest req,
         HttpServletResponse res,
-        String formConfigUri)
+        CmsCommentsAccess access)
     throws Exception {
 
-        super(context, req, res, formConfigUri);
+        super(context, req, res);
+        getCmsObject().getRequestContext().setUri(access.getUri());
+        init(req, access.getConfig().getConfigUri());
     }
 
     /**
@@ -132,6 +129,9 @@ public class CmsCommentFormHandler extends CmsFormHandler {
      */
     public void init(HttpServletRequest req, String formConfigUri) throws Exception {
 
+        if (formConfigUri == null) {
+            return;
+        }
         m_parameterMap = new HashMap();
         m_parameterMap.putAll(getRequest().getParameterMap());
 
@@ -147,12 +147,27 @@ public class CmsCommentFormHandler extends CmsFormHandler {
         m_isValidatedCorrect = null;
         setInitial(CmsStringUtil.isEmpty(formAction));
         // get the localized messages
-        CmsModule module = OpenCms.getModuleManager().getModule(MODULE);
+        CmsModule module = OpenCms.getModuleManager().getModule(MODULE_NAME);
         String para = module.getParameter("message", "/com/alkacon/opencms/comments/workplace");
 
         setMessages(new CmsMessages(para, getRequestContext().getLocale()));
         // get the form configuration
         setFormConfiguration(new CmsCommentForm(this, getMessages(), isInitial(), formConfigUri, formAction));
+    }
+
+    /**
+     * Returns some predefined comment substitutions.<p>
+     * 
+     * @return some predefined comment substitutions
+     */
+    protected Map getSubstitutions() {
+
+        if (m_substitutions == null) {
+            m_substitutions = new HashMap();
+            m_substitutions.put("\n\n", "<p>");
+            m_substitutions.put("\n", "<br>");
+        }
+        return m_substitutions;
     }
 
     /**
@@ -163,8 +178,8 @@ public class CmsCommentFormHandler extends CmsFormHandler {
         I_CmsField field = getFormConfiguration().getFieldByDbLabel(FIELD_COMMENT);
         if (field != null) {
             String value = new CmsHtmlStripper(false).stripHtml(field.getValue());
-            value = CmsStringUtil.substitute(value, "\n\n", "<p>");
-            value = CmsStringUtil.substitute(value, "\n", "<br>");
+            value = CmsStringUtil.substitute(value, getSubstitutions());
+            value = CmsLinkDetector.substituteLinks(value);
             field.setValue(value);
         }
         return super.sendDatabase();

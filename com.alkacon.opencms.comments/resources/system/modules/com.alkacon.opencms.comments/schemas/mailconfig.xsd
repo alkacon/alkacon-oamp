@@ -13,7 +13,8 @@
 	<xsd:complexType name="OpenCmsAlkaconCommentFormMailConfiguration">
 		<xsd:sequence>
 			<xsd:element name="MailFrom" type="OpenCmsString" />
-			<xsd:element name="MailTo" type="OpenCmsString" />
+			<xsd:element name="MailTo" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="MailResponsible" type="OpenCmsBoolean" />
 			<xsd:element name="MailCC" type="OpenCmsString" minOccurs="0" />
 			<xsd:element name="MailBCC" type="OpenCmsString" minOccurs="0" />
 			<xsd:element name="MailSubject" type="OpenCmsString" />
@@ -32,5 +33,4 @@
 			</layouts>
 		</xsd:appinfo>
 	</xsd:annotation>  
-
 </xsd:schema>

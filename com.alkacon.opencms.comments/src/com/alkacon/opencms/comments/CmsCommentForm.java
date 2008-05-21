@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.comments/src/com/alkacon/opencms/comments/CmsCommentForm.java,v $
- * Date   : $Date: 2008/05/16 10:16:07 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/05/21 11:58:05 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -37,7 +37,10 @@ import com.alkacon.opencms.formgenerator.CmsFormHandler;
 
 import org.opencms.file.CmsFile;
 import org.opencms.file.CmsObject;
+import org.opencms.file.CmsUser;
 import org.opencms.i18n.CmsMessages;
+import org.opencms.main.CmsException;
+import org.opencms.main.CmsLog;
 import org.opencms.util.CmsStringUtil;
 import org.opencms.xml.content.CmsXmlContent;
 import org.opencms.xml.content.CmsXmlContentFactory;
@@ -45,14 +48,17 @@ import org.opencms.xml.types.CmsXmlHtmlValue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
+
+import org.apache.commons.logging.Log;
 
 /**
  * Represents a comment form with all configured fields and options.<p>
  * 
  * @author Michael Moossen 
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.5 
  */
@@ -64,11 +70,20 @@ public class CmsCommentForm extends CmsForm {
     /** Configuration node name for the mail alert. */
     public static final String NODE_MAILALERT = "MailAlert";
 
+    /** Configuration node name for the Email receipt address node. */
+    public static final String NODE_RESPONSIBLE = "MailResponsible";
+
+    /** The log object for this class. */
+    private static final Log LOG = CmsLog.getLog(CmsCommentForm.class);
+
     /** Resource type ID of XML content. */
     private static final String TYPE_NAME = "oampcomments";
 
     /** The form handler. */
     private CmsFormHandler m_formHandler;
+
+    /** If the resource responsibles should get the email alert or not. */
+    private boolean m_responsible;
 
     /**
      * Default constructor which parses the configuration file.<p>
@@ -160,6 +175,7 @@ public class CmsCommentForm extends CmsForm {
         m_fields = new ArrayList();
         m_dynaFields = new ArrayList();
         m_fieldsByName = new HashMap();
+        m_formHandler = jsp;
 
         // initialize general form configuration
         initFormGlobalConfiguration(content, jsp.getCmsObject(), locale, messages);
@@ -183,8 +199,16 @@ public class CmsCommentForm extends CmsForm {
         if (captchaFieldIsOnInputPage() && (m_captchaField != null)) {
             addField(m_captchaField);
         }
+    }
 
-        m_formHandler = jsp;
+    /**
+     * Returns the responsible flag.<p>
+     *
+     * @return the responsible flag
+     */
+    public boolean isResponsible() {
+
+        return m_responsible;
     }
 
     /**
@@ -206,9 +230,10 @@ public class CmsCommentForm extends CmsForm {
         // get the form footer text
         stringValue = content.getStringValue(cms, NODE_FORMFOOTERTEXT, locale);
         setFormFooterText(getConfigurationValue(stringValue, ""));
+        // set the form confirmation text
+        stringValue = content.getStringValue(cms, NODE_FORMCONFIRMATION, locale);
+        setFormConfirmationText(getConfigurationValue(stringValue, ""));
 
-        // set the unused form confirmation text
-        setFormConfirmationText("");
         // get the unused target URI
         setTargetUri("");
 
@@ -268,9 +293,15 @@ public class CmsCommentForm extends CmsForm {
         // get the mail from address
         stringValue = content.getStringValue(cms, pathPrefix + NODE_MAILFROM, locale);
         setMailFrom(getConfigurationValue(stringValue, ""));
+
         // get the mail to address(es)
         stringValue = content.getStringValue(cms, pathPrefix + NODE_MAILTO, locale);
         setMailTo(getConfigurationValue(stringValue, ""));
+
+        // set if using responsibles or not
+        stringValue = content.getStringValue(cms, pathPrefix + NODE_RESPONSIBLE, locale);
+        setResponsible(getConfigurationValue(stringValue, "false"));
+
         // get the mail CC recipient(s)
         stringValue = content.getStringValue(cms, pathPrefix + NODE_MAILCC, locale);
         setMailCC(getConfigurationValue(stringValue, ""));
@@ -304,5 +335,38 @@ public class CmsCommentForm extends CmsForm {
         // get the mail type
         stringValue = content.getStringValue(cms, pathPrefix + NODE_MAILTYPE, locale);
         setMailType(getConfigurationValue(stringValue, MAILTYPE_HTML));
+    }
+
+    /**
+     * Sets the responsible flag.<p>
+     * 
+     * @param responsible if the resource responsibles should get the email alert
+     */
+    private void setResponsible(String responsible) {
+
+        m_responsible = Boolean.valueOf(responsible).booleanValue();
+        if (m_responsible) {
+            String mailTo = getMailTo();
+            CmsObject cms = m_formHandler.getCmsObject();
+            String uri = cms.getRequestContext().getUri();
+            try {
+                Iterator responsibles = cms.readResponsibleUsers(cms.readResource(uri)).iterator();
+                while (responsibles.hasNext()) {
+                    CmsUser responsibleUser = (CmsUser)responsibles.next();
+                    String email = responsibleUser.getEmail();
+                    if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(email)) {
+                        if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(mailTo)) {
+                            mailTo += ";";
+                        }
+                        mailTo += email;
+                    }
+                }
+            } catch (CmsException e) {
+                if (LOG.isErrorEnabled()) {
+                    LOG.error(e.getLocalizedMessage(), e);
+                }
+            }
+            setMailTo(mailTo);
+        }
     }
 }
