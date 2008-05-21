@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsSelectWidgetXmlcontentType.java,v $
- * Date   : $Date: 2008/03/31 08:19:05 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2008/05/21 11:53:42 $
+ * Version: $Revision: 1.4 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -29,6 +29,7 @@
  * For further information about OpenCms, please see the
  * project website: http://www.opencms.org.
  */
+
 package com.alkacon.opencms.formgenerator;
 
 import org.opencms.file.CmsFile;
@@ -61,13 +62,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 
@@ -174,7 +175,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * 
  * @since 7.0.4 
  * 
@@ -188,7 +189,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
      * 
      * @author Achim Westermann
      * 
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      * 
      * @since 6.1.6
      * 
@@ -301,7 +302,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
      * 
      * @author Achim Westermann
      * 
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      * 
      * @since 6.1.6
      * 
@@ -787,9 +788,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
                 parseConfigurationInternal(configuration, cms, param);
 
                 // build the set of sorted options
-                SortedSet sortOptions = new TreeSet(new CmsResourceSelectWidgetOptionComparator(
-                    m_macroCmsObject,
-                    m_sortMacro));
+                Set sortOptions = new HashSet();
                 CmsSelectWidgetOption option;
                 List resources;
                 List allResources = new LinkedList();
@@ -889,7 +888,9 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
                     }
                 }
                 selectOptions = new LinkedList(sortOptions);
-
+                Collections.sort(selectOptions, new CmsResourceSelectWidgetOptionComparator(
+                    m_macroCmsObject,
+                    m_sortMacro));
             } catch (Exception e) {
                 if (LOG.isErrorEnabled()) {
                     LOG.error(Messages.get().getBundle().key(
@@ -899,7 +900,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
                 }
             }
 
-            if (selectOptions == null || selectOptions == Collections.EMPTY_LIST) {
+            if ((selectOptions == null) || (selectOptions == Collections.EMPTY_LIST)) {
                 selectOptions = new ArrayList();
             }
 

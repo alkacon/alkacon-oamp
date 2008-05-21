@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
- * Date   : $Date: 2008/05/16 10:09:30 $
- * Version: $Revision: 1.8 $
+ * Date   : $Date: 2008/05/21 11:53:42 $
+ * Version: $Revision: 1.9 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -63,7 +63,7 @@ import org.apache.commons.fileupload.FileItem;
  * @author Thomas Weckert 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  * 
  * @since 7.0.4 
  */
@@ -89,9 +89,6 @@ public class CmsForm {
 
     /** Configuration node name for the optional captcha. */
     public static final String NODE_CAPTCHA = "FormCaptcha";
-
-    /** Configuration node name for the optional captcha. */
-    public static final String NODE_CAPTCHA_CHARACTERS = "Characters";
 
     /** Configuration node name for the optional captcha. */
     public static final String NODE_CAPTCHA_PRESET = "Preset";

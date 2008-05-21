@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaServiceCache.java,v $
- * Date   : $Date: 2007/12/21 14:34:00 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/05/21 11:53:42 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -29,6 +29,7 @@
  * For further information about OpenCms, please see the
  * project website: http://www.opencms.org.
  */
+
 package com.alkacon.opencms.formgenerator;
 
 import org.opencms.file.CmsObject;
@@ -49,7 +50,7 @@ import com.octo.captcha.service.image.ImageCaptchaService;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4 
  */
@@ -125,21 +126,23 @@ public final class CmsCaptchaServiceCache implements I_CmsEventListener {
      */
     public synchronized ImageCaptchaService getCaptchaService(CmsCaptchaSettings captchaSettings, CmsObject cms) {
 
-        String key = null;
-
         if (m_captchaServices == null) {
             m_captchaServices = new HashMap();
         }
 
-
-        key = captchaSettings.toRequestParams(cms);
+        String key = null;
+        if (captchaSettings.getPresetPath() != null) {
+            key = captchaSettings.getPresetPath();
+        } else {
+            key = captchaSettings.toRequestParams(cms);
+        }
         CmsCaptchaService captchaService = (CmsCaptchaService)m_captchaServices.get(key);
         if (captchaService == null) {
             captchaService = new CmsCaptchaService(captchaSettings);
             m_captchaServices.put(key, captchaService);
         } else {
             // install the parameters to the internal engine
-            // captchaService.setSettings(captchaSettings);
+            captchaService.setSettings(captchaSettings);
         }
 
         return captchaService;

@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaSettings.java,v $
- * Date   : $Date: 2008/01/15 09:27:36 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2008/05/21 11:53:42 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -29,6 +29,7 @@
  * For further information about OpenCms, please see the
  * project website: http://www.opencms.org.
  */
+
 package com.alkacon.opencms.formgenerator;
 
 import org.opencms.file.CmsFile;
@@ -55,7 +56,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Achim Westermann
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4 
  */
@@ -64,8 +65,11 @@ public final class CmsCaptchaSettings implements Cloneable {
     /** Request parameter for the background color. */
     public static final String C_PARAM_BACKGROUND_COLOR = "bgcol";
 
-    /** Request parameter for the min phrase length. */
+    /** Request parameter for the characters to use for generation. */
     public static final String C_PARAM_CHARACTERS = "crs";
+
+    /** Request parameter for the dictionary file to use for generation. */
+    public static final String C_PARAM_DICTIONARY = "dict";
 
     /** Request parameter for the filter amplitude. */
     public static final String C_PARAM_FILTER_AMPLITUDE = "famplit";
@@ -106,6 +110,12 @@ public final class CmsCaptchaSettings implements Cloneable {
     /** Configuration node name for the optional captcha background color. */
     public static final String NODE_CAPTCHAPRESET_BACKGROUNDCOLOR = "BackgroundColor";
 
+    /** Configuration node name for the optional captcha character pool. */
+    public static final String NODE_CAPTCHAPRESET_CHARACTERS = "Characters";
+
+    /** Configuration node name for the optional captcha max. font size. */
+    public static final String NODE_CAPTCHAPRESET_DICTIONARY = "Dictionary";
+
     /** Configuration node name for the field value node. */
     public static final String NODE_CAPTCHAPRESET_FILTER_AMPLITUDE = "FilterAmplitude";
 
@@ -143,7 +153,10 @@ public final class CmsCaptchaSettings implements Cloneable {
     private Color m_backgroundColor = Color.WHITE;
 
     /** The string containing the characters to use for word generation. */
-    private String m_characterPool = "abcdefghiklmnoprstuvwxyz";
+    private String m_characterPool = "";
+
+    /** The string containing the dictionary to use for word generation. */
+    private String m_dictionary;
 
     /** The filter amplitude for the water filter that bends the text. */
     private int m_filterAmplitude = 2;
@@ -254,6 +267,16 @@ public final class CmsCaptchaSettings implements Cloneable {
         buf.append(toHexString(m_backgroundColor.getBlue()));
 
         return buf.toString();
+    }
+
+    /**
+     * Returns the dictionary for word generation.<p>
+     * 
+     * @return the dictionary for word generation
+     */
+    public String getDictionary() {
+
+        return m_dictionary;
     }
 
     /**
@@ -471,10 +494,10 @@ public final class CmsCaptchaSettings implements Cloneable {
         if (CmsStringUtil.isNotEmpty(stringValue)) {
             setCharacterPool(stringValue);
         }
-        // characters to use for word generation:
-        stringValue = getParameter(C_PARAM_CHARACTERS);
+        // dictionary to use for word generation:
+        stringValue = getParameter(C_PARAM_DICTIONARY);
         if (CmsStringUtil.isNotEmpty(stringValue)) {
-            setCharacterPool(stringValue);
+            setDictionary(stringValue);
         }
 
         // just for logging comfort (find misconfigured presets):
@@ -618,13 +641,17 @@ public final class CmsCaptchaSettings implements Cloneable {
                     setFilterWaveLength(Integer.parseInt(stringValue));
                 }
 
-                stringValue = preset.getStringValue(cms, CmsForm.NODE_CAPTCHA_CHARACTERS, captchaSettingsLocale);
+                stringValue = preset.getStringValue(cms, NODE_CAPTCHAPRESET_CHARACTERS, captchaSettingsLocale);
                 if (CmsStringUtil.isNotEmpty(stringValue)) {
                     setCharacterPool(stringValue);
                 }
 
+                stringValue = preset.getStringValue(
+                    cms,
+                    CmsCaptchaSettings.NODE_CAPTCHAPRESET_DICTIONARY,
+                    captchaSettingsLocale);
                 if (CmsStringUtil.isNotEmpty(stringValue)) {
-                    setCharacterPool(stringValue);
+                    setDictionary(stringValue);
                 }
 
             } else {
@@ -686,6 +713,16 @@ public final class CmsCaptchaSettings implements Cloneable {
             // the color is not used but we have to avoid NPE in getBackgroundColorString()
             m_backgroundColor = Color.WHITE;
         }
+    }
+
+    /**
+     * Sets the dictionary for word generation.<p>
+     *
+     * @param dictionary the dictionary to set
+     */
+    public void setDictionary(String dictionary) {
+
+        m_dictionary = dictionary;
     }
 
     /**
@@ -840,9 +877,14 @@ public final class CmsCaptchaSettings implements Cloneable {
         buf.append("&amp;").append(C_PARAM_HOLES_PER_GLYPH).append("=").append(m_holesPerGlyp);
         buf.append("&amp;").append(C_PARAM_FILTER_AMPLITUDE).append("=").append(m_filterAmplitude);
         buf.append("&amp;").append(C_PARAM_FILTER_WAVE_LENGTH).append("=").append(m_filterWaveLength);
-        buf.append("&amp;").append(C_PARAM_CHARACTERS).append("=").append(m_characterPool);
+        if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(getCharacterPool())) {
+            buf.append("&amp;").append(C_PARAM_CHARACTERS).append("=").append(getCharacterPool());
+        } else {
+            buf.append("&amp;").append(C_PARAM_DICTIONARY).append("=").append(m_dictionary);
+        }
         buf.append("&amp;").append(C_PARAM_PRESET).append("=").append(m_presetPath);
-        buf.append("&amp;").append(C_PARAM_USE_BACKGROUND_IMAGE).append("=").append(Boolean.toString(m_useBackgroundImage));
+        buf.append("&amp;").append(C_PARAM_USE_BACKGROUND_IMAGE).append("=").append(
+            Boolean.toString(m_useBackgroundImage));
         return buf.toString();
     }
 
@@ -867,6 +909,7 @@ public final class CmsCaptchaSettings implements Cloneable {
         result.m_minPhraseLength = m_minPhraseLength;
         result.m_characterPool = m_characterPool;
         result.m_presetPath = m_presetPath;
+        result.m_dictionary = m_dictionary;
         return result;
     }
 
@@ -877,6 +920,14 @@ public final class CmsCaptchaSettings implements Cloneable {
      */
     String getCharacterPool() {
 
+        if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(getDictionary())) {
+            // dictionary has priority
+            return "";
+        }
+        if (CmsStringUtil.isEmptyOrWhitespaceOnly(m_characterPool)) {
+            // default value
+            return "abcdefghijklmnopqrstuvwxyz";
+        }
         return m_characterPool;
     }
 

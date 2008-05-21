@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaEngine.java,v $
- * Date   : $Date: 2007/12/21 14:34:00 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/05/21 11:53:42 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -29,9 +29,11 @@
  * For further information about OpenCms, please see the
  * project website: http://www.opencms.org.
  */
+
 package com.alkacon.opencms.formgenerator;
 
 import org.opencms.main.OpenCms;
+import org.opencms.util.CmsStringUtil;
 
 import java.awt.image.ImageFilter;
 import java.util.Locale;
@@ -53,6 +55,8 @@ import com.octo.captcha.component.image.textpaster.textdecorator.BaffleTextDecor
 import com.octo.captcha.component.image.textpaster.textdecorator.TextDecorator;
 import com.octo.captcha.component.image.wordtoimage.DeformedComposedWordToImage;
 import com.octo.captcha.component.image.wordtoimage.WordToImage;
+import com.octo.captcha.component.word.FileDictionary;
+import com.octo.captcha.component.word.wordgenerator.DictionaryWordGenerator;
 import com.octo.captcha.component.word.wordgenerator.RandomWordGenerator;
 import com.octo.captcha.component.word.wordgenerator.WordGenerator;
 import com.octo.captcha.engine.CaptchaEngineException;
@@ -68,7 +72,7 @@ import com.octo.captcha.image.gimpy.GimpyFactory;
  * @author Thomas Weckert
  * @author Achim Westermann
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4 
  */
@@ -138,11 +142,13 @@ public class CmsCaptchaEngine extends ImageCaptchaEngine {
         ImageDeformation textDeformation = new ImageDeformationByFilters(new ImageFilter[] {});
         ImageDeformation postDeformation = new ImageDeformationByFilters(new ImageFilter[] {water});
 
-        // FileDictionnary will be renamed correctly in next release! The argument denotes a
-        // java.util.ResourceBundle properies file: toddlist.properties e.g. in root of jcaptcha jar
-        // WordGenerator dictionary = new ComposeDictionaryWordGenerator(new
-        // FileDictionnary("toddlist"));
-        WordGenerator randomWords = new RandomWordGenerator(m_settings.getCharacterPool());
+        WordGenerator dictionary = null;
+        if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(m_settings.getDictionary())) {
+            // The argument denotes a java.util.ResourceBundle properties file: toddlist.properties e.g. in root of jcaptcha jar
+            dictionary = new DictionaryWordGenerator(new FileDictionary(m_settings.getDictionary()));
+        } else {
+            dictionary = new RandomWordGenerator(m_settings.getCharacterPool());
+        }
         // creates holes into image
         BaffleTextDecorator textDecorator = new BaffleTextDecorator(
             m_settings.getHolesPerGlyph(),
@@ -174,7 +180,7 @@ public class CmsCaptchaEngine extends ImageCaptchaEngine {
             textDeformation,
             postDeformation);
 
-        m_factory = new GimpyFactory(randomWords, wordToImage);
+        m_factory = new GimpyFactory(dictionary, wordToImage);
     }
 
     /**
@@ -187,7 +193,7 @@ public class CmsCaptchaEngine extends ImageCaptchaEngine {
      */
     public CaptchaFactory[] getFactories() {
 
-        return new CaptchaFactory[]{m_factory};
+        return new CaptchaFactory[] {m_factory};
     }
 
     /**

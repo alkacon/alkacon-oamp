@@ -14,6 +14,7 @@
 		<xsd:sequence>
             <xsd:element name="Name" type="OpenCmsString" />
             <xsd:element name="Characters" type="OpenCmsString" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="Dictionary" type="OpenCmsString" minOccurs="0" maxOccurs="1" />
 			<xsd:element name="ImageWidth" type="OpenCmsString" minOccurs="0" maxOccurs="1" />
 			<xsd:element name="ImageHeight" type="OpenCmsString" minOccurs="0" maxOccurs="1" />
 			<xsd:element name="MinPhraseLength" type="OpenCmsString" minOccurs="0" maxOccurs="1" />
@@ -43,6 +44,7 @@
 			</mappings>
 			<defaults>
 				<default element="Characters" value="abcdefghijklmnopqrstuvwxyz" />
+				<default element="Dictionary" value="toddlist" />
 			</defaults>
 		</xsd:appinfo>
 	</xsd:annotation>  
