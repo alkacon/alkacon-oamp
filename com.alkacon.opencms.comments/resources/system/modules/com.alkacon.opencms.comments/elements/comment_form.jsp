@@ -16,6 +16,7 @@ if (!showForm) {
 	    if (cms.getFormConfirmationText().equals("")) {
 	        // and no confirmation required
                 out.print("ok");
+	            return;
             }
             out.print(formConfiguration.getFormConfirmationText()); %>
 <div class="comment_dialog_content">
