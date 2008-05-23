@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/CmsFormDataAccess.java,v $
- * Date   : $Date: 2008/05/16 10:09:43 $
- * Version: $Revision: 1.7 $
+ * Date   : $Date: 2008/05/23 12:48:29 $
+ * Version: $Revision: 1.8 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -76,7 +76,7 @@ import org.apache.commons.logging.Log;
  * @author Achim Westermann
  * @author Michael Moossen
  * 
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  * 
  * @since 7.0.4
  */
@@ -100,6 +100,15 @@ public final class CmsFormDataAccess {
     /** Database column name constant. */
     private static final String DB_FORM_ID = "FORM_ID";
 
+    /** The generic db SQL properties file name. */
+    private static final String DB_GENERIC = "generic";
+
+    /** The oracle db SQL properties file name. */
+    private static final String DB_ORACLE = "oracle";
+
+    /** The path to the SQL query properties. */
+    private static final String DB_PATH = "com/alkacon/opencms/formgenerator/database/";
+
     /** Database column name constant. */
     private static final String DB_RESOURCE_ID = "RESOURCE_ID";
 
@@ -115,20 +124,29 @@ public final class CmsFormDataAccess {
     /** The corresponding module name to read parameters of.  */
     private static final String MODULE = "com.alkacon.opencms.formgenerator";
 
+    /** Name of the db index table space module parameter.  */
+    private static final String MODULE_PARAM_DB_INDEXTABLESPACE = "index-tablespace";
+
     /** Name of the db-pool module parameter.  */
     private static final String MODULE_PARAM_DB_POOL = "db-pool";
+
+    /** Name of the db-provider module parameter.  */
+    private static final String MODULE_PARAM_DB_PROVIDER = "db-provider";
 
     /** Name of the upload folder module parameter.  */
     private static final String MODULE_PARAM_UPLOADFOLDER = "uploadfolder";
 
-    /** The filename/path of the SQL query properties. */
-    private static final String QUERY_PROPERTIES = "com/alkacon/opencms/formgenerator/database/mysql.properties";
+    /** The properties file extension. */
+    private static final String PROPERTIES_EXTENSION = ".properties";
 
     /** The admin cms context. */
     private CmsObject m_cms;
 
     /** The connection pool id. */
     private String m_connectionPool;
+
+    /** The current used db SQL properties file name. */
+    private String m_db;
 
     /** A map holding all SQL queries. */
     private Map m_queries;
@@ -151,7 +169,13 @@ public final class CmsFormDataAccess {
                 new Object[] {MODULE_PARAM_DB_POOL, MODULE}));
         }
         m_queries = new HashMap();
-        loadQueryProperties(QUERY_PROPERTIES);
+        loadQueryProperties(DB_PATH + DB_GENERIC + PROPERTIES_EXTENSION);
+        m_db = DB_GENERIC;
+        String db = module.getParameter(MODULE_PARAM_DB_PROVIDER);
+        if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(db)) {
+            loadQueryProperties(DB_PATH + db + PROPERTIES_EXTENSION);
+            m_db = db;
+        }
     }
 
     /**
@@ -537,8 +561,16 @@ public final class CmsFormDataAccess {
 
         try {
             con = getConnection();
-            // 1) Write a new entry for the submission with form id, path and time stamp 
-            // get the form id -> PK in database
+            // 1) Compute next id
+            stmt = con.prepareStatement(getQuery("READ_NEXT_ENTRY_ID"));
+            rs = stmt.executeQuery();
+            int newId = 0;
+            if (rs.next()) {
+                newId = rs.getInt("MAXID");
+            }
+            newId++;
+
+            // 2) Write a new entry 
             stmt = con.prepareStatement(getQuery("WRITE_FORM_ENTRY"));
 
             CmsForm form = formHandler.getFormConfiguration();
@@ -550,10 +582,11 @@ public final class CmsFormDataAccess {
             } catch (CmsException e) {
                 resourceId = CmsUUID.getNullUUID();
             }
-            stmt.setString(1, formId);
-            stmt.setLong(2, dateCreated);
-            stmt.setString(3, resourceId.toString());
-            stmt.setInt(4, 0); // initial state
+            stmt.setInt(1, newId);
+            stmt.setString(2, formId);
+            stmt.setLong(3, dateCreated);
+            stmt.setString(4, resourceId.toString());
+            stmt.setInt(5, 0); // initial state
             int rc = stmt.executeUpdate();
             if (rc != 1) {
                 LOG.error(Messages.get().getBundle().key(
@@ -564,10 +597,6 @@ public final class CmsFormDataAccess {
 
             // connection is still needed, so only close statement
             closeAll(null, stmt, null);
-
-            // 2) Read the ID of the new submission entry to relate all data in the data table to: 
-            int lastSubmissionId = ((CmsFormDataBean)readForms(
-                CmsFormDatabaseFilter.HEADERS.filterDate(dateCreated, dateCreated).filterFormId(formId)).get(0)).getEntryId();
 
             // 3) Now insert the data values for this submission with that ref_id: 
             stmt = con.prepareStatement(getQuery("WRITE_FORM_DATA"));
@@ -604,7 +633,7 @@ public final class CmsFormDataAccess {
                     } else {
                         fieldValue = String.valueOf(fieldObject);
                     }
-                    stmt.setInt(1, lastSubmissionId);
+                    stmt.setInt(1, newId);
                     stmt.setString(2, fieldName);
                     stmt.setString(3, fieldValue);
 
@@ -701,24 +730,39 @@ public final class CmsFormDataAccess {
      */
     private void createDBTables() throws SQLException {
 
+        String indexTablespace = "";
+        if (m_db.equals(DB_ORACLE)) {
+            CmsModule module = OpenCms.getModuleManager().getModule(MODULE);
+            indexTablespace = module.getParameter(MODULE_PARAM_DB_INDEXTABLESPACE, "users");
+        }
         Connection con = null;
         PreparedStatement stmt = null;
         try {
             con = getConnection();
-            stmt = con.prepareStatement(getQuery("CREATE_TABLE_CMS_WEBFORM_ENTRIES"));
-            int rc = stmt.executeUpdate();
-            if (rc != 0) {
-                LOG.warn(Messages.get().getBundle().key(
-                    Messages.LOG_ERR_DATACCESS_SQL_CREATE_TABLE_RETURNCODE_2,
-                    new Object[] {new Integer(rc), "CMS_WEBFORM_ENTRIES"}));
-            }
+            stmt = con.prepareStatement(getQuery("CREATE_TABLE_CMS_WEBFORM_ENTRIES", indexTablespace));
+            stmt.executeUpdate();
             closeAll(null, stmt, null);
-            stmt = con.prepareStatement(getQuery("CREATE_TABLE_CMS_WEBFORM_DATA"));
-            rc = stmt.executeUpdate();
-            if (rc != 0) {
-                LOG.warn(Messages.get().getBundle().key(
-                    Messages.LOG_ERR_DATACCESS_SQL_CREATE_TABLE_RETURNCODE_2,
-                    new Object[] {new Integer(rc), "CMS_WEBFORM_DATA"}));
+            stmt = con.prepareStatement(getQuery("CREATE_TABLE_CMS_WEBFORM_DATA", indexTablespace));
+            stmt.executeUpdate();
+            if (m_db.equals(DB_ORACLE)) {
+                closeAll(null, stmt, null);
+                stmt = con.prepareStatement(getQuery("CREATE_INDEX_WFE_FORMID", indexTablespace));
+                stmt.executeUpdate();
+                closeAll(null, stmt, null);
+                stmt = con.prepareStatement(getQuery("CREATE_INDEX_WFE_RESID", indexTablespace));
+                stmt.executeUpdate();
+                closeAll(null, stmt, null);
+                stmt = con.prepareStatement(getQuery("CREATE_INDEX_WFE_RESID_DATE", indexTablespace));
+                stmt.executeUpdate();
+                closeAll(null, stmt, null);
+                stmt = con.prepareStatement(getQuery("CREATE_INDEX_WFE_RESID_STATE", indexTablespace));
+                stmt.executeUpdate();
+                closeAll(null, stmt, null);
+                stmt = con.prepareStatement(getQuery("CREATE_INDEX_WFE_DATE", indexTablespace));
+                stmt.executeUpdate();
+                closeAll(null, stmt, null);
+                stmt = con.prepareStatement(getQuery("CREATE_INDEX_WFD_VALUE", indexTablespace));
+                stmt.executeUpdate();
             }
         } finally {
             closeAll(con, stmt, null);
@@ -748,11 +792,15 @@ public final class CmsFormDataAccess {
                     res.findColumn(DB_RESOURCE_ID);
                     return 0;
                 } catch (Exception ex) {
-                    LOG.info(Messages.get().getBundle().key(Messages.LOG_INFO_DATAACESS_SQL_TABLE_OLD_0), ex);
+                    if (LOG.isInfoEnabled()) {
+                        LOG.info(Messages.get().getBundle().key(Messages.LOG_INFO_DATAACESS_SQL_TABLE_OLD_0), ex);
+                    }
                 }
                 return 1;
             } catch (Exception ex) {
-                LOG.info(Messages.get().getBundle().key(Messages.LOG_INFO_DATAACESS_SQL_TABLE_NOTEXISTS_0), ex);
+                if (LOG.isInfoEnabled()) {
+                    LOG.info(Messages.get().getBundle().key(Messages.LOG_INFO_DATAACESS_SQL_TABLE_NOTEXISTS_0), ex);
+                }
             }
         } finally {
             closeAll(con, stmt, res);
@@ -924,6 +972,11 @@ public final class CmsFormDataAccess {
         if ((filter.getIndexFrom() != CmsFormDatabaseFilter.INDEX_IGNORE_FROM)
             || (filter.getIndexTo() != CmsFormDatabaseFilter.INDEX_IGNORE_TO)) {
             int rows = filter.getIndexTo() - filter.getIndexFrom();
+            if (m_db.equals(DB_ORACLE)) {
+                rows = filter.getIndexTo();
+            }
+            sql.insert(0, " ").insert(0, getQuery("FILTER_LIMIT_PREFIX"));
+            sql.append(" ").append(getQuery("FILTER_LIMIT_POSTFIX")).append(" ");
             sql.append(" ").append(getQuery("FILTER_LIMIT", "" + rows));
             if (filter.getIndexFrom() != 0) {
                 sql.append(" ").append(getQuery("FILTER_OFFSET", "" + filter.getIndexFrom()));
@@ -1018,6 +1071,8 @@ public final class CmsFormDataAccess {
             stmt.executeUpdate();
             closeAll(null, stmt, null);
             stmt = con.prepareStatement(getQuery("UPDATE_FORM_ENTRY_RESID"));
+            stmt.executeUpdate();
+            stmt = con.prepareStatement(getQuery("UPDATE_FORM_ENTRY_ID"));
             stmt.executeUpdate();
         } finally {
             closeAll(con, stmt, null);
