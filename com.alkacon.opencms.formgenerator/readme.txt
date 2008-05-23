@@ -56,10 +56,14 @@ Legend:
 * Bug fixed
 - General comment
 
-1.2.0 - March, 2008
+1.2.0 - May, 2008
+! Added a new dialog in the administration view to show the data of configured webforms with activated database transport.
+! Added a new field type for tables.
+! Added Oracle support
 * Prevent captcha image caching
 * Fixed issue with hidden fields and cross-site-scripting.
-! Adding a new dialog in the administration view to show the configured webforms with activated database transport.
+- Fixed a bug in the captcha mechanism resulting in several false negatives.
+- Improved database persistence, and data manipulation facilities.
 
 1.1.0 - February, 2008
 * Fixed issue saving site relative form path into database instead of root path.
