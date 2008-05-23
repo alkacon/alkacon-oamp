@@ -29,8 +29,8 @@ create highly configurable online blog comments.
 It provides the following features:
 - Free definable comment form with and without captcha field. 
 - Comment moderation option. 
-- Comment administration.
-- Different security levels and user restriction
+- Comment administration in 'direct edit' style.
+- Different security levels and user restrictions.
 
 2. Module manufacturer
 
@@ -56,5 +56,5 @@ Legend:
 * Bug fixed
 - General comment
 
-0.9.0 - May 15, 2008
+0.9.0 - May 23, 2008
 - First beta release
