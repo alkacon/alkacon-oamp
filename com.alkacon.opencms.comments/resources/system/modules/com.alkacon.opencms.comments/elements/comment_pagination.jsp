@@ -1,5 +1,5 @@
 <div class="pagination_header">
-	<c:if test="${alkaconCmt.config.moderated && alkaconCmt.userCanManage}" >
+	<c:if test="${alkaconCmt.config.moderated && alkaconCmt.userCanManage && alkaconCmt.countComments > 0}" >
 	   <div class="moderation_state" >
 	   	<a id="statenull" class="state" href="#" ><fmt:message key="pagination.all" /></a> |
 	   	<a id="state0" class="state" href="#" ><fmt:message key="pagination.new" /></a> |

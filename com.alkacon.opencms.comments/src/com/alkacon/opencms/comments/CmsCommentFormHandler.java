@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.comments/src/com/alkacon/opencms/comments/CmsCommentFormHandler.java,v $
- * Date   : $Date: 2008/05/21 11:58:05 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2008/05/28 10:15:37 $
+ * Version: $Revision: 1.4 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -57,7 +57,7 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * 
  * @since 7.0.5
  */
@@ -178,8 +178,8 @@ public class CmsCommentFormHandler extends CmsFormHandler {
         I_CmsField field = getFormConfiguration().getFieldByDbLabel(FIELD_COMMENT);
         if (field != null) {
             String value = new CmsHtmlStripper(false).stripHtml(field.getValue());
-            value = CmsStringUtil.substitute(value, getSubstitutions());
             value = CmsLinkDetector.substituteLinks(value);
+            value = CmsStringUtil.substitute(value, getSubstitutions());
             field.setValue(value);
         }
         return super.sendDatabase();
