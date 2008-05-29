@@ -81,7 +81,6 @@ function reloadComments(state, page) {
 		function(html){ $("#comments").html(html); }
 	);
 	$('body').css("cursor", "auto");
-	return false;
 }
 </script>
 <!-- end: comments list -->

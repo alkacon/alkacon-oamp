@@ -22,7 +22,7 @@ if (!showForm) {
 <div class="comment_dialog_content">
 	<form class="loginform" id="fid" name="commentform" <%= formConfiguration.getFormAttributes() %>>
 		<div class="buttonrow">
-			<input class="button" type="button" value="<%= messages.key("form.button.close") %>" onclick="tb_remove(); reloadComments(); return false;"/>
+			<input class="button" type="button" value="<%= messages.key("form.button.close") %>" onclick="tb_remove(); reloadComments();"/>
 		</div>
 	</form>
 </div>      
@@ -86,8 +86,8 @@ if (formConfiguration.hasMandatoryFields() && formConfiguration.isShowMandatory(
 			<input type="hidden" name="<%= CmsFormHandler.PARAM_FORMACTION %>"  id="<%= CmsFormHandler.PARAM_FORMACTION %>" value="<%= CmsFormHandler.ACTION_SUBMIT %>"/>
 			<input type="hidden" name="<%= CmsCommentsAccess.PARAM_URI %>" value="${param.cmturi}" />
 			<input type="hidden" name="__locale" value="${param.__locale}" />
-			<input class="button" type="button" value="<%= messages.key("form.button.submit") %>" onclick="cmtPost(); return false;"/>
-			<input class="button" type="button" value="<%= messages.key("form.button.cancel") %>" onclick="tb_remove(); return false;"/>
+			<input class="button" type="button" value="<%= messages.key("form.button.submit") %>" onclick="cmtPost(); "/>
+			<input class="button" type="button" value="<%= messages.key("form.button.cancel") %>" onclick="tb_remove();"/>
 		</div>
 </form>
 <%

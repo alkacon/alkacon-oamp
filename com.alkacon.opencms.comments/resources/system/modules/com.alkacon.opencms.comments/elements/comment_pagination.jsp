@@ -1,10 +1,10 @@
 <div class="pagination_header">
 	<c:if test="${alkaconCmt.config.moderated && alkaconCmt.userCanManage && alkaconCmt.countComments > 0}" >
 	   <div class="moderation_state" >
-	   	<a id="statenull" class="state" href="#" ><fmt:message key="pagination.all" /></a> |
-	   	<a id="state0" class="state" href="#" ><fmt:message key="pagination.new" /></a> |
-	   	<a id="state2" class="state" href="#" ><fmt:message key="pagination.blocked" /></a> |
-	   	<a id="state1" class="state" href="#" ><fmt:message key="pagination.approved" /></a>
+	   	<a href="javascript:reloadComments();" ><fmt:message key="pagination.all" /></a> |
+	   	<a href="javascript:reloadComments(0);" ><fmt:message key="pagination.new" /></a> |
+	   	<a href="javascript:reloadComments(2);" ><fmt:message key="pagination.blocked" /></a> |
+	   	<a href="javascript:reloadComments(1);" ><fmt:message key="pagination.approved" /></a>
 	   </div>
 	</c:if>
 	<c:if test="${alkaconCmt.needPagination}" >
@@ -12,22 +12,6 @@
 	</c:if>
 </div>
 <script>
-$("a.state").each(
-	function(intIndex) {
-		var getClickHandler = function(actionId) {
-			return function(evt) { 			     
-			    reloadComments(actionId.substring(5));
-				if (evt.stopPropagation) {
-					evt.stopPropagation();
-				} else {
-					evt.cancelBubble = true;
-				}
-				return false;
-			};
-		};
-		$(this).bind("click", getClickHandler($(this).attr("id")));
-	}
-);	
     var newPage = ${param.cmtpage};
 <c:if test="${alkaconCmt.needPagination}" >
     var oldPage = ${param.cmtpage};

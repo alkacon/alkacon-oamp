@@ -31,8 +31,8 @@
 			<input type="hidden" name="action" value="login" />
 			<input type="hidden" name="cmturi" value="${param.cmturi}" />
 			<input type="hidden" name="__locale" value="${param.__locale}" />
-			<input class="button" type="button" value="<fmt:message key="login.label.login" />" onclick="cmtLogin(); return false;"/>
-			<input class="button" type="button" value="<fmt:message key="login.label.cancel" />" onclick="cmtCancel(); return false;"/>
+			<input class="button" type="button" value="<fmt:message key="login.label.login" />" onclick="cmtLogin();"/>
+			<input class="button" type="button" value="<fmt:message key="login.label.cancel" />" onclick="tb_remove();"/>
 		</div>
 	</form>
 </div>
@@ -54,8 +54,5 @@ function cmtLogin() {
 			  }
 	      }
      );
-}
-function cmtCancel() {
-     tb_remove();
 }
 </script>

@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.comments/src/com/alkacon/opencms/comments/CmsCommentsAccess.java,v $
- * Date   : $Date: 2008/05/21 11:58:05 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2008/05/29 12:09:19 $
+ * Version: $Revision: 1.4 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -51,6 +51,7 @@ import org.opencms.security.CmsPermissionSet;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -70,7 +71,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * 
  * @since 7.0.5
  */
@@ -87,6 +88,9 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
 
     /** Parameter name constant. */
     public static final String PARAM_ACTION = "cmtaction";
+
+    /** Parameter name constant. */
+    public static final String PARAM_ENTRY = "cmtentry";
 
     /** Parameter name constant. */
     public static final String PARAM_PAGE = "cmtpage";
@@ -271,12 +275,18 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
         if ((action == null) || (action.trim().length() == 0)) {
             return;
         }
-        if (action.startsWith(CmsCommentsAccess.ACTION_DELETE)) {
-            delete(Integer.parseInt(action.substring(CmsCommentsAccess.ACTION_DELETE.length())));
-        } else if (action.startsWith(CmsCommentsAccess.ACTION_BLOCK)) {
-            block(Integer.parseInt(action.substring(CmsCommentsAccess.ACTION_BLOCK.length())));
-        } else if (action.startsWith(CmsCommentsAccess.ACTION_APPROVE)) {
-            approve(Integer.parseInt(action.substring(CmsCommentsAccess.ACTION_APPROVE.length())));
+        int entry = -1;
+        try {
+            entry = Integer.parseInt(getRequest().getParameter(CmsCommentsAccess.PARAM_ENTRY));
+        } catch (NumberFormatException e) {
+            return;
+        }
+        if (action.equals(CmsCommentsAccess.ACTION_DELETE)) {
+            delete(entry);
+        } else if (action.equals(CmsCommentsAccess.ACTION_BLOCK)) {
+            block(entry);
+        } else if (action.equals(CmsCommentsAccess.ACTION_APPROVE)) {
+            approve(entry);
         }
     }
 
@@ -527,6 +537,16 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     public void init(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         super.init(context, req, res);
+        if (LOG.isDebugEnabled()) {
+            Iterator it = req.getParameterMap().entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry entry = (Map.Entry)it.next();
+                LOG.debug(Messages.get().getBundle().key(
+                    Messages.LOG_INIT_PARAM_2,
+                    entry.getKey(),
+                    Arrays.asList((String[])entry.getValue())));
+            }
+        }
         try {
             m_uri = req.getParameter(PARAM_URI);
             m_resource = getCmsObject().readResource(m_uri);
@@ -539,6 +559,15 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
                 m_config = new CmsCommentConfiguration(this, configUri);
                 m_configs.put(cacheKey, m_config);
             }
+            if (LOG.isDebugEnabled()) {
+                LOG.debug(Messages.get().getBundle().key(
+                    Messages.LOG_INIT_PROJECT_1,
+                    getCmsObject().getRequestContext().currentProject().getName()));
+                LOG.debug(Messages.get().getBundle().key(
+                    Messages.LOG_INIT_SITE_1,
+                    getCmsObject().getRequestContext().getSiteRoot()));
+                LOG.debug(Messages.get().getBundle().key(Messages.LOG_INIT_RESOURCE_1, m_resource));
+            }
         } catch (Exception e) {
             if (LOG.isErrorEnabled()) {
                 LOG.error(e.getLocalizedMessage());
@@ -549,7 +578,13 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
         } catch (NumberFormatException e) {
             m_state = null;
         }
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(Messages.get().getBundle().key(Messages.LOG_INIT_STATE_1, m_state));
+        }
         m_show = Boolean.valueOf(req.getParameter(PARAM_SHOW)).booleanValue();
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(Messages.get().getBundle().key(Messages.LOG_INIT_SHOW_1, "" + m_show));
+        }
         m_page = 0;
         try {
             m_page = Integer.parseInt(req.getParameter(PARAM_PAGE));
@@ -558,6 +593,9 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
         }
         if (m_page >= getPages()) {
             m_page = getPages() - 1;
+        }
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(Messages.get().getBundle().key(Messages.LOG_INIT_PAGE_1, "" + m_page));
         }
     }
 
@@ -572,13 +610,13 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     }
 
     /**
-     * Checks if the comment element should start minimized.<p>
+     * Checks if the comment element should start maximized.<p>
      * 
-     * @return <code>true</code>, if the comment element should start minimized
+     * @return <code>true</code>, if the comment element should start maximized
      */
-    public boolean isMinimized() {
+    public boolean isMaximized() {
 
-        return !isShow() || !getConfig().isMinimized();
+        return isShow() || !getConfig().isMinimized();
     }
 
     /**

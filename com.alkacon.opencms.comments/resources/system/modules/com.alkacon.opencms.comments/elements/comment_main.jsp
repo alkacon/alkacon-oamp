@@ -17,7 +17,7 @@ load_script('<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/
 	</center>
 </div>
 <c:set var="url" value="%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_header.jsp:fe055c44-120a-11dd-8a3f-111d34530985)" />
-<c:if test="${!alkaconCmt.minimized}" >
+<c:if test="${alkaconCmt.maximized}" >
 	<c:set var="url" value="%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_list.jsp:f11cf62d-ec2e-11dc-990f-dfec94299cf1)" />
 </c:if>
 <script type="text/javascript" >

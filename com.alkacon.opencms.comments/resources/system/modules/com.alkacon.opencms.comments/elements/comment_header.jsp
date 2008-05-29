@@ -12,7 +12,7 @@
 <c:when test="${alkaconCmt.userCanManage}">
 	<c:choose>
 	<c:when test="${alkaconCmt.config.moderated}">
-		<a href="#" onclick="loadComments()" >
+		<a href="javascript:loadComments();" >
 			<fmt:message key="header.user.manage.2" >
 				<fmt:param value="${alkaconCmt.countApprovedComments}" />
 				<fmt:param value="${alkaconCmt.countNewComments}" />
@@ -20,7 +20,7 @@
 		</a>
 	</c:when>
 	<c:otherwise>
-		<a href="#" onclick="loadComments()" >
+		<a href="javascript:loadComments();" >
 			<fmt:message key="header.user.manage.1" >
 				<fmt:param value="${alkaconCmt.countComments}" />
 			</fmt:message>
@@ -29,14 +29,14 @@
 	</c:choose>
 </c:when>
 <c:when test="${alkaconCmt.userCanPost}">
-	<a href="#" onclick="loadComments()" >
+	<a href="javascript:loadComments();" >
 		<fmt:message key="header.user.post.1" >
 			<fmt:param value="${alkaconCmt.countComments}" />
 		</fmt:message>
 	</a>
 </c:when>
 <c:when test="${alkaconCmt.userCanView}">
-	<a href="#" onclick="loadComments()" >
+	<a href="javascript:loadComments();" >
 		<fmt:message key="header.user.read.1" >
 			<fmt:param value="${alkaconCmt.countComments}" />
 		</fmt:message>

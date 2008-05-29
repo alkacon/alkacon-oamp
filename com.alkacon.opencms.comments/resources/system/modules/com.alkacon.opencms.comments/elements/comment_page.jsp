@@ -17,30 +17,17 @@
 	   <!-- end: manager comment -->
 	</c:forEach>
 	<script>
-	$("a.action").each(
-		function(intIndex) {
-			var getClickHandler = function(actionId) {
-				return function(evt) { 
-				    if ((actionId.match('^delete') != 'delete') || confirm('<fmt:message key="comment.manager.delete.conf" />')) {
-						$('body').css("cursor", "wait");
-						var page = ($("div.pagination span.current").not(".next").not(".prev").html()*1)-1;
-						$.post(
-							'<cms:link>%(link.strong:/system/modules/com.alkacon.opencms.comments/elements/comment_actions.jsp:b043d3d1-1dc9-11dd-b28b-111d34530985)</cms:link>', 
-							{ cmtaction: actionId, cmturi: '${param.cmturi}' }, 							
-							function() { reloadComments('${alkaconCmt.state}', page); }
-						);
-					}
-					if (evt.stopPropagation) {
-						evt.stopPropagation();
-					} else {
-						evt.cancelBubble = true;
-					}
-					return false;
-				};
-			};
-			$(this).bind("click", getClickHandler($(this).attr("id")));
+		function doAction(actionId, entryId) {
+		    if ((actionId != 'delete') || confirm('<fmt:message key="comment.manager.delete.conf" />')) {
+				$('body').css("cursor", "wait");
+				var page = ($("div.pagination span.current").not(".next").not(".prev").html()*1)-1;
+				$.post(
+					'<cms:link>%(link.strong:/system/modules/com.alkacon.opencms.comments/elements/comment_actions.jsp:b043d3d1-1dc9-11dd-b28b-111d34530985)</cms:link>', 
+					{ cmtaction: actionId, cmtentry: entryId, cmturi: '${param.cmturi}' }, 							
+					function() { reloadComments('${alkaconCmt.state}', page); }
+				);
+			}
 		}
-	);	
 	</script>
 </c:when>
 <c:otherwise>

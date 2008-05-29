@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.comments/src/com/alkacon/opencms/comments/Messages.java,v $
- * Date   : $Date: 2008/05/16 10:16:07 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/05/29 12:09:19 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -40,7 +40,7 @@ import org.opencms.i18n.I_CmsMessageBundle;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4 
  */
@@ -54,6 +54,27 @@ public final class Messages extends A_CmsMessageBundle {
 
     /** Message constant for key in the resource bundle. */
     public static final String ERR_ORGUNIT_DOESNOT_EXIST_1 = "ERR_ORGUNIT_DOESNOT_EXIST_1";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String LOG_INIT_PAGE_1 = "LOG_INIT_PAGE_1";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String LOG_INIT_PARAM_2 = "LOG_INIT_PARAM_2";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String LOG_INIT_PROJECT_1 = "LOG_INIT_PROJECT_1";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String LOG_INIT_RESOURCE_1 = "LOG_INIT_RESOURCE_1";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String LOG_INIT_SHOW_1 = "LOG_INIT_SHOW_1";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String LOG_INIT_SITE_1 = "LOG_INIT_SITE_1";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String LOG_INIT_STATE_1 = "LOG_INIT_STATE_1";
 
     /** Name of the used resource bundle. */
     private static final String BUNDLE_NAME = "com.alkacon.opencms.comments.messages";
