@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaField.java,v $
- * Date   : $Date: 2008/05/14 15:38:44 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2008/05/29 13:26:50 $
+ * Version: $Revision: 1.4 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -43,6 +43,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Locale;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
@@ -51,8 +52,6 @@ import org.apache.commons.logging.Log;
 import com.octo.captcha.CaptchaException;
 import com.octo.captcha.service.CaptchaServiceException;
 import com.octo.captcha.service.image.ImageCaptchaService;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 /**
  * Creates captcha images and validates the pharses submitted by a request parameter.
@@ -62,7 +61,7 @@ import com.sun.image.codec.jpeg.JPEGImageEncoder;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * 
  * @since 7.0.4 
  */
@@ -240,13 +239,10 @@ public class CmsCaptchaField extends A_CmsField {
      */
     public void writeCaptchaImage(CmsJspActionElement cms) throws IOException {
 
-        ByteArrayOutputStream captchaImageOutput = new ByteArrayOutputStream();
-        ServletOutputStream out = null;
         BufferedImage captchaImage = null;
         int maxTries = 10;
         do {
             try {
-
                 maxTries--;
                 String sessionId = cms.getRequest().getSession().getId();
                 Locale locale = cms.getRequestContext().getLocale();
@@ -261,15 +257,13 @@ public class CmsCaptchaField extends A_CmsField {
                         Messages.LOG_ERR_CAPTCHA_CONFIG_IMAGE_SIZE_2,
                         new Object[] {m_captchaSettings.getPresetPath(), new Integer(maxTries)}));
                 }
-                m_captchaSettings.setImageHeight(m_captchaSettings.getImageHeight() + 40);
-                m_captchaSettings.setImageWidth(m_captchaSettings.getImageWidth() + 80);
+                m_captchaSettings.setImageHeight((int)(m_captchaSettings.getImageHeight() * 1.1));
+                m_captchaSettings.setImageWidth((int)(m_captchaSettings.getImageWidth() * 1.1));
             }
         } while ((captchaImage == null) && (maxTries > 0));
+
+        ServletOutputStream out = null;
         try {
-
-            JPEGImageEncoder jpegEncoder = JPEGCodec.createJPEGEncoder(captchaImageOutput);
-            jpegEncoder.encode(captchaImage);
-
             CmsFlexController controller = CmsFlexController.getController(cms.getRequest());
             HttpServletResponse response = controller.getTopResponse();
             response.setHeader("Cache-Control", "no-store");
@@ -277,19 +271,17 @@ public class CmsCaptchaField extends A_CmsField {
             response.setDateHeader("Expires", 0);
             response.setContentType("image/jpeg");
 
+            ByteArrayOutputStream captchaImageOutput = new ByteArrayOutputStream();
+            ImageIO.write(captchaImage, "jpg", captchaImageOutput);
             out = cms.getResponse().getOutputStream();
             out.write(captchaImageOutput.toByteArray());
             out.flush();
-
         } catch (Exception e) {
-
             if (LOG.isErrorEnabled()) {
                 LOG.error(e.getLocalizedMessage(), e);
             }
-
             cms.getResponse().sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         } finally {
-
             try {
                 if (out != null) {
                     out.close();
