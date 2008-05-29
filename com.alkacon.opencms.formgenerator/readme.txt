@@ -59,11 +59,14 @@ Legend:
 1.2.0 - May, 2008
 ! Added a new dialog in the administration view to show the data of configured webforms with activated database transport.
 ! Added a new field type for tables.
+! Added word based captchas in english and german
 ! Added Oracle support
 * Prevent captcha image caching
 * Fixed issue with hidden fields and cross-site-scripting.
-- Fixed a bug in the captcha mechanism resulting in several false negatives.
+* Fixed a bug in the captcha mechanism resulting in several false negatives.
+* Fixed image size increment algorithm to keep image ratio
 - Improved database persistence, and data manipulation facilities.
+- Removed com.sun.* dependencies
 
 1.1.0 - February, 2008
 * Fixed issue saving site relative form path into database instead of root path.

@@ -2,9 +2,9 @@
 
 <CaptchaPresets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/captchapreset.xsd">
   <CaptchaPreset language="en">
-    <Name><![CDATA[Alkacon Dict]]></Name>
-    <Dictionary><![CDATA[toddlist]]></Dictionary>
-    <ImageWidth><![CDATA[390]]></ImageWidth>
+    <Name><![CDATA[Alkacon Dict DE]]></Name>
+    <Dictionary><![CDATA[com.alkacon.opencms.formgenerator.dict-de]]></Dictionary>
+    <ImageWidth><![CDATA[520]]></ImageWidth>
     <ImageHeight><![CDATA[60]]></ImageHeight>
     <MinPhraseLength><![CDATA[5]]></MinPhraseLength>
     <MaxPhraseLength><![CDATA[8]]></MaxPhraseLength>

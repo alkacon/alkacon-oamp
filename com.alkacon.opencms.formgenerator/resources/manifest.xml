@@ -4,7 +4,7 @@
 	<info>
 		<creator>Admin</creator>
 		<opencms_version>7.0.5</opencms_version>
-		<createdate>Wed, 21 May 2008 11:23:51 GMT</createdate>
+		<createdate>Thu, 29 May 2008 12:55:33 GMT</createdate>
 		<infoproject>Offline</infoproject>
 		<export_version>7</export_version>
 	</info>
@@ -372,6 +372,46 @@
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/classes/com/alkacon/opencms/formgenerator/dict-de.properties</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/classes/com/alkacon/opencms/formgenerator/dict-de.properties</destination>
+			<type>plain</type>
+			<uuidstructure>3e91e9ac-2d7b-11dd-bc38-111d34530985</uuidstructure>
+			<uuidresource>3e91e9ad-2d7b-11dd-bc38-111d34530985</uuidresource>
+			<datelastmodified>Thu, 29 May 2008 12:42:20 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 29 May 2008 12:32:04 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>content-encoding</name>
+					<value><![CDATA[ISO-8859-1]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/classes/com/alkacon/opencms/formgenerator/dict-en.properties</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/classes/com/alkacon/opencms/formgenerator/dict-en.properties</destination>
+			<type>plain</type>
+			<uuidstructure>3eb0e35f-2d7b-11dd-bc38-111d34530985</uuidstructure>
+			<uuidresource>3eb0e360-2d7b-11dd-bc38-111d34530985</uuidresource>
+			<datelastmodified>Thu, 29 May 2008 12:42:43 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 29 May 2008 12:32:04 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>content-encoding</name>
+					<value><![CDATA[ISO-8859-1]]></value>
+				</property>
+			</properties>
 			<relations/>
 			<accesscontrol/>
 		</file>
@@ -1036,12 +1076,36 @@
 			</accesscontrol>
 		</file>
 		<file>
-			<source>system/workplace/admin/captcha/alkacon-dict.captchapreset</source>
-			<destination>system/workplace/admin/captcha/alkacon-dict.captchapreset</destination>
+			<source>system/workplace/admin/captcha/alkacon-dict-de.captchapreset</source>
+			<destination>system/workplace/admin/captcha/alkacon-dict-de.captchapreset</destination>
+			<type>xmlcontent</type>
+			<uuidstructure>71374e57-2d7b-11dd-bc38-111d34530985</uuidstructure>
+			<uuidresource>71374e58-2d7b-11dd-bc38-111d34530985</uuidresource>
+			<datelastmodified>Thu, 29 May 2008 12:47:13 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 29 May 2008 12:33:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Alkacon Dict DE]]></value>
+				</property>
+				<property>
+					<name>collector.priority</name>
+					<value><![CDATA[2]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/admin/captcha/alkacon-dict-en.captchapreset</source>
+			<destination>system/workplace/admin/captcha/alkacon-dict-en.captchapreset</destination>
 			<type>xmlcontent</type>
 			<uuidstructure>a431a128-2722-11dd-a4dd-111d34530985</uuidstructure>
 			<uuidresource>a431a129-2722-11dd-a4dd-111d34530985</uuidresource>
-			<datelastmodified>Wed, 21 May 2008 11:01:31 GMT</datelastmodified>
+			<datelastmodified>Thu, 29 May 2008 12:47:24 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Wed, 21 May 2008 10:42:42 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -1049,7 +1113,7 @@
 			<properties>
 				<property>
 					<name>Title</name>
-					<value><![CDATA[Alkacon Dict]]></value>
+					<value><![CDATA[Alkacon Dict EN]]></value>
 				</property>
 				<property>
 					<name>collector.priority</name>
@@ -1454,7 +1518,12 @@
 			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
-			<properties/>
+			<properties>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[bypass]]></value>
+				</property>
+			</properties>
 			<relations/>
 			<accesscontrol/>
 		</file>
