@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.comments/src/com/alkacon/opencms/comments/CmsCommentsAccess.java,v $
- * Date   : $Date: 2008/05/29 12:09:19 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2008/05/29 14:42:01 $
+ * Version: $Revision: 1.5 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -71,7 +71,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * 
  * @since 7.0.5
  */
@@ -593,6 +593,9 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
         }
         if (m_page >= getPages()) {
             m_page = getPages() - 1;
+        }
+        if (m_page < 0) {
+            m_page = 0;
         }
         if (LOG.isDebugEnabled()) {
             LOG.debug(Messages.get().getBundle().key(Messages.LOG_INIT_PAGE_1, "" + m_page));
