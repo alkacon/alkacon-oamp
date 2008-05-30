@@ -46,7 +46,7 @@
     </InputField>
     <FormCaptcha>
       <FieldLabel><![CDATA[Verification:]]></FieldLabel>
-      <Preset><![CDATA[/system/workplace/admin/captcha/alkacon-dict.captchapreset]]></Preset>
+      <Preset><![CDATA[/system/workplace/admin/captcha/alkacon-dict-de.captchapreset]]></Preset>
     </FormCaptcha>
     <MailAlert>
       <MailFrom><![CDATA[comments.noreply@alkacon.com]]></MailFrom>
@@ -124,7 +124,7 @@
     </InputField>
     <FormCaptcha>
       <FieldLabel><![CDATA[Verification:]]></FieldLabel>
-      <Preset><![CDATA[/system/workplace/admin/captcha/alkacon-dict.captchapreset]]></Preset>
+      <Preset><![CDATA[/system/workplace/admin/captcha/alkacon-dict-en.captchapreset]]></Preset>
     </FormCaptcha>
     <MailAlert>
       <MailFrom><![CDATA[comments.noreply@alkacon.com]]></MailFrom>
