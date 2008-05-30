@@ -33,6 +33,9 @@
 .comment_actions {
 	position: absolute; right: 5px;
 }
+.comment_actions img {
+	border: none;
+}
 .comment_actions_header {
 	position: relative;
 }
