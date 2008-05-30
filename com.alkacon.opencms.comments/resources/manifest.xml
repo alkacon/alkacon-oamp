@@ -394,6 +394,10 @@
 					<name>cache</name>
 					<value><![CDATA[never]]></value>
 				</property>
+				<property>
+					<name>content-encoding</name>
+					<value><![CDATA[UTF-8]]></value>
+				</property>
 				<property type="shared">
 					<name>export</name>
 					<value><![CDATA[false]]></value>
