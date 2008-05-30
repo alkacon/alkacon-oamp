@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/CmsFormDatabaseModuleAction.java,v $
- * Date   : $Date: 2008/05/23 12:48:29 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2008/05/30 12:05:05 $
+ * Version: $Revision: 1.5 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -34,7 +34,6 @@ package com.alkacon.opencms.formgenerator.database;
 
 import org.opencms.configuration.CmsConfigurationManager;
 import org.opencms.file.CmsObject;
-import org.opencms.main.CmsException;
 import org.opencms.main.CmsLog;
 import org.opencms.module.A_CmsModuleAction;
 import org.opencms.module.CmsModule;
@@ -48,7 +47,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * 
  * @since 7.0.4
  *
@@ -77,7 +76,7 @@ public class CmsFormDatabaseModuleAction extends A_CmsModuleAction {
             CmsFormDataAccess.getInstance().ensureDBTablesExistance();
         } catch (SQLException sqlex) {
             if (LOG.isErrorEnabled()) {
-                LOG.error(CmsException.getStackTraceAsString(sqlex));
+                LOG.error(sqlex.getLocalizedMessage(), sqlex);
             }
         }
     }
