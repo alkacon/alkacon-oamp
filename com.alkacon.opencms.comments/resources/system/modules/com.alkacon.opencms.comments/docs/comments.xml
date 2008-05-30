@@ -46,7 +46,7 @@
     </InputField>
     <FormCaptcha>
       <FieldLabel><![CDATA[Verification:]]></FieldLabel>
-      <Preset><![CDATA[/system/workplace/admin/captcha/alkacon-dict-de.captchapreset]]></Preset>
+      <Preset><![CDATA[/system/workplace/admin/captcha/alkacon-dict-en.captchapreset]]></Preset>
     </FormCaptcha>
     <MailAlert>
       <MailFrom><![CDATA[comments.noreply@alkacon.com]]></MailFrom>
@@ -94,7 +94,7 @@
     </InputField>
     <InputField>
       <FieldType><![CDATA[email]]></FieldType>
-      <FieldLabel><![CDATA[Ihr E-Mail (wird nicht angezeigt):|email]]></FieldLabel>
+      <FieldLabel><![CDATA[Ihre E-Mail (wird nicht angezeigt):|email]]></FieldLabel>
       <FieldMandatory>true</FieldMandatory>
     </InputField>
     <InputField>
@@ -124,7 +124,7 @@
     </InputField>
     <FormCaptcha>
       <FieldLabel><![CDATA[Verification:]]></FieldLabel>
-      <Preset><![CDATA[/system/workplace/admin/captcha/alkacon-dict-en.captchapreset]]></Preset>
+      <Preset><![CDATA[/system/workplace/admin/captcha/alkacon-dict-de.captchapreset]]></Preset>
     </FormCaptcha>
     <MailAlert>
       <MailFrom><![CDATA[comments.noreply@alkacon.com]]></MailFrom>
@@ -137,7 +137,7 @@
             <target><![CDATA[%(url)]]></target>
           </link>
         </links>
-        <content><![CDATA[<p>Einen neuen Beitrag für <a href="%(link0)">%(url)</a> wurde von %(name) (%(email)) um %(date) abgeschickt:</p>
+        <content><![CDATA[<p>Ein neuer Beitrag für <a href="%(link0)">%(url)</a> wurde von %(name) (%(email)) um %(date) abgeschickt:</p>
 <p>%(comment)</p>
 <p>&nbsp;</p>]]></content>
       </MailText>
