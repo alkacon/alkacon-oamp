@@ -37,6 +37,17 @@
 	</form>
 </div>
 <script type="text/javascript">
+function submitEnter(e) {
+    var key = (window.event) ? window.event.keyCode : (e) ? e.which : 0;
+    if (key == 13) {
+       cmtLogin();
+       return false;
+    } else {
+       return true;
+    }
+}
+$("form#fid input").keypress(submitEnter);
+
 function cmtLogin() {
      $("div#errmsg_cnt").html('&nbsp;<br>&nbsp;');
      $.post("<cms:link>%(link.strong:/system/modules/com.alkacon.opencms.comments/elements/comment_login.jsp:87972a79-12be-11dd-a2ad-111d34530985)</cms:link>",

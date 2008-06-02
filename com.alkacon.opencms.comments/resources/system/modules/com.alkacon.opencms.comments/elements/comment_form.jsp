@@ -95,6 +95,17 @@ if (formConfiguration.hasMandatoryFields() && formConfiguration.isShowMandatory(
 out.print(formConfiguration.getFormFooterText());
 %>
 <script type="text/javascript">
+function submitEnter(e) {
+    var key = (window.event) ? window.event.keyCode : (e) ? e.which : 0;
+    if (key == 13) {
+       cmtPost();
+       return false;
+    } else {
+       return true;
+    }
+}
+$("form#fid input").keypress(submitEnter);
+
 function cmtPost() {
      $.post("<%=cms.link("%(link.strong:/system/modules/com.alkacon.opencms.comments/elements/comment_form.jsp:dfbece22-1112-11dd-ba60-111d34530985)")%>", 
      		$("form#fid").serializeArray(),
