@@ -15,7 +15,7 @@
     var newPage = ${param.cmtpage};
 <c:if test="${alkaconCmt.needPagination}" >
     var oldPage = ${param.cmtpage};
-	$("#cmt-pagination").pagination(${alkaconCmt.countComments}, {
+	$("#cmt-pagination").pagination(${alkaconCmt.countStateComments}, {
 		items_per_page: ${alkaconCmt.config.list},
 		current_page: ${param.cmtpage},
 		prev_text: '<fmt:message key="pagination.prev" />',

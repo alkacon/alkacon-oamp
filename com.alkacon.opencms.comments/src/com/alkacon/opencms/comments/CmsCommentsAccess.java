@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.comments/src/com/alkacon/opencms/comments/CmsCommentsAccess.java,v $
- * Date   : $Date: 2008/05/29 14:42:01 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2008/06/02 12:34:50 $
+ * Version: $Revision: 1.6 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -71,7 +71,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * 
  * @since 7.0.5
  */
@@ -309,7 +309,7 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
         int itemSize = (jsp == null ? 2000000 : jsp.getCommentFormConfiguration().getAllFields().size());
         int itemsPerPage = getConfig().getList() * itemSize;
 
-        CmsFormDatabaseFilter filter = getCommentFilter(false);
+        CmsFormDatabaseFilter filter = getCommentFilter(false, true);
         filter = filter.filterOrderDesc();
         if (getConfig().getList() > 0) {
             int base = m_page * itemsPerPage;
@@ -428,7 +428,7 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
      */
     public int getCountComments() {
 
-        CmsFormDatabaseFilter filter = getCommentFilter(true);
+        CmsFormDatabaseFilter filter = getCommentFilter(true, false);
         try {
             return CmsFormDataAccess.getInstance().countForms(filter);
         } catch (SQLException e) {
@@ -467,6 +467,27 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     }
 
     /**
+     * Returns the number of comments filtered by state.<p>
+     * 
+     * This depends of the moderation mode and your permissions.<p>
+     * 
+     * @return the number of comments
+     */
+    public int getCountStateComments() {
+
+        CmsFormDatabaseFilter filter = getCommentFilter(true, true);
+        try {
+            return CmsFormDataAccess.getInstance().countForms(filter);
+        } catch (SQLException e) {
+            if (LOG.isErrorEnabled()) {
+                LOG.error(e.getLocalizedMessage(), e);
+            }
+        }
+
+        return 0;
+    }
+
+    /**
      * @see org.opencms.jsp.CmsJspLoginBean#getLoginException()
      */
     public CmsException getLoginException() {
@@ -494,7 +515,7 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
      */
     public int getPages() {
 
-        int countCmts = getCountComments();
+        int countCmts = getCountStateComments();
         if ((getConfig().getList() <= 0) || (countCmts == 0)) {
             return 1;
         }
@@ -629,7 +650,7 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
      */
     public boolean isNeedPagination() {
 
-        return (getConfig().getList() > 0) && (getCountComments() > getConfig().getList());
+        return (getConfig().getList() > 0) && (getCountStateComments() > getConfig().getList());
     }
 
     /**
@@ -775,11 +796,12 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     /**
      * Returns the filter to read the comments.<p>
      * 
-     * @param count <code>true</code> is counting comments
+     * @param count <code>true</code> if counting comments
+     * @param restrictState <code>true</code> if restricting by state
      * 
      * @return the filter to read the comments
      */
-    private CmsFormDatabaseFilter getCommentFilter(boolean count) {
+    private CmsFormDatabaseFilter getCommentFilter(boolean count, boolean restrictState) {
 
         CmsFormDatabaseFilter filter;
         if (count) {
@@ -797,7 +819,7 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
             }
         } else {
             // if managing
-            if (getState() != null) {
+            if (restrictState && (getState() != null)) {
                 // show only requested comments
                 filter = filter.filterState(getState().intValue());
             }
