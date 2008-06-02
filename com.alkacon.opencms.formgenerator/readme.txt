@@ -61,7 +61,7 @@ Legend:
 ! Added a new field type for tables.
 ! Added word based captchas in english and german
 ! Added Oracle support
-* Prevent captcha image caching
+* Fixed issue with captcha image caching
 * Fixed issue with hidden fields and cross-site-scripting.
 * Fixed a bug in the captcha mechanism resulting in several false negatives.
 * Fixed image size increment algorithm to keep image ratio
