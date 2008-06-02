@@ -15,6 +15,10 @@ for (int i = 0, n = resultList.size(); i < n; i++) {
 	if (CmsHiddenField.class.isAssignableFrom(current.getClass()) || CmsPrivacyField.class.isAssignableFrom(current.getClass()) || CmsCaptchaField.class.isAssignableFrom(current.getClass())) {
 		continue;
 	}
+	String label = current.getLabel();
+	if (current instanceof CmsTableField) {
+	    label = ((CmsTableField)current).buildLabel(formHandler.getMessages(),false,false);
+	}
 	String value = current.toString();
     if ((current instanceof CmsDynamicField)) {
         if (!current.isMandatory()) {
@@ -24,13 +28,13 @@ for (int i = 0, n = resultList.size(); i < n; i++) {
         // compute the value for the dynamic field
         value = formHandler.getFormConfiguration().getFieldStringValueByName(current.getName());
         value = formHandler.convertToHtmlValue(value);
-    }else if((current instanceof CmsTableField)) {
+    }else if (current instanceof CmsTableField) {
         value = ((CmsTableField)current).buildHtml(formHandler.getMessages(),false);
     }else {
         value = formHandler.convertToHtmlValue(value);
     }
 
-	out.print("<tr>\n\t<td valign=\"top\">" + current.getLabel() + "</td>");
+	out.print("<tr>\n\t<td valign=\"top\">" + label + "</td>");
 	out.print("\n\t<td valign=\"top\" style=\"font-weight: bold;\">" + value + "</td></tr>\n");
 }
 

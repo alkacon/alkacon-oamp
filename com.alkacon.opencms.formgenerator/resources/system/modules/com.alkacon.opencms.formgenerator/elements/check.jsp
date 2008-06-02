@@ -34,9 +34,19 @@ List resultList = formHandler.getFormConfiguration().getFields();
 
 for (int i = 0, n = resultList.size(); i < n; i++) {
 	I_CmsField current = (I_CmsField)resultList.get(i);
-	if (!CmsHiddenField.class.isAssignableFrom(current.getClass()) && !CmsCaptchaField.class.isAssignableFrom(current.getClass())) {
-		out.print("<tr>\n\t<td valign=\"top\">" + current.getLabel() + "</td>");
-		out.print("\n\t<td valign=\"top\" style=\"font-weight: bold;\">" + formHandler.convertToHtmlValue(current.toString()) + "</td></tr>\n");
+	if (!CmsDynamicField.class.isAssignableFrom(current.getClass()) && !CmsHiddenField.class.isAssignableFrom(current.getClass()) && !CmsCaptchaField.class.isAssignableFrom(current.getClass())) {
+		String label = current.getLabel();
+		if (current instanceof CmsTableField) {
+		    label = ((CmsTableField)current).buildLabel(formHandler.getMessages(),false,false);
+		}
+		String value = current.toString();
+	    if (current instanceof CmsTableField) {
+	        value = ((CmsTableField)current).buildHtml(formHandler.getMessages(),false);
+	    }else {
+	        value = formHandler.convertToHtmlValue(value);
+	    }
+		out.print("<tr>\n\t<td valign=\"top\">" + label + "</td>");
+		out.print("\n\t<td valign=\"top\" style=\"font-weight: bold;\">" + value + "</td></tr>\n");
 	}
 }
 
@@ -81,14 +91,14 @@ if (captchaField != null) {
 <input type="hidden" name="<%= CmsFormHandler.PARAM_FORMACTION %>" value="<%= CmsFormHandler.ACTION_CONFIRMED %>">
 <input type="hidden" name="<%= CmsCaptchaField.C_PARAM_CAPTCHA_PHRASE %>" value="">
 <%= formHandler.createHiddenFields() %>
-<td><input type="submit" value="<%= messages.key("form.button.checked") %>" class="formbutton">&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<input type="submit" value="<%= messages.key("form.button.checked") %>" class="formbutton">&nbsp;&nbsp;&nbsp;&nbsp;
 </form>
 
 
 <form name="displayvalues" method="post" enctype="multipart/form-data" action="<%= cms.link(cms.getRequestContext().getUri()) %>">
 <input type="hidden" name="<%= CmsFormHandler.PARAM_FORMACTION %>" value="<%= CmsFormHandler.ACTION_CORRECT_INPUT %>">
 <%= formHandler.createHiddenFields() %>
-<td><input type="submit" value="<%= messages.key("form.button.correct") %>" class="formbutton"></td>
+<input type="submit" value="<%= messages.key("form.button.correct") %>" class="formbutton">
 </form>
 </tr>
 </table>

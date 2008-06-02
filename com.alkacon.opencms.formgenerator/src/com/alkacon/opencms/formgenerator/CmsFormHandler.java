@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormHandler.java,v $
- * Date   : $Date: 2008/05/16 10:09:30 $
- * Version: $Revision: 1.7 $
+ * Date   : $Date: 2008/06/02 13:16:38 $
+ * Version: $Revision: 1.8 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -80,7 +80,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  * 
  * @since 7.0.4 
  */
@@ -266,9 +266,7 @@ public class CmsFormHandler extends CmsJspActionElement {
             StringBuffer result = new StringBuffer(fields.size() * 8);
             // iterate the form fields
             for (int i = 0, n = fields.size(); i < n; i++) {
-
                 I_CmsField currentField = (I_CmsField)fields.get(i);
-
                 if (currentField == null) {
                     continue;
                 } else if (CmsCheckboxField.class.isAssignableFrom(currentField.getClass())) {
@@ -283,6 +281,17 @@ public class CmsFormHandler extends CmsJspActionElement {
                             result.append(CmsEncoder.escapeXml(item.getValue()));
                             result.append("\">\n");
                         }
+                    }
+                } else if (CmsTableField.class.isAssignableFrom(currentField.getClass())) {
+                    // special case: table, can have more than one value
+                    Iterator k = currentField.getItems().iterator();
+                    while (k.hasNext()) {
+                        CmsFieldItem item = (CmsFieldItem)k.next();
+                        result.append("<input type=\"hidden\" name=\"");
+                        result.append(currentField.getName() + item.getDbLabel());
+                        result.append("\" value=\"");
+                        result.append(CmsEncoder.escapeXml(item.getValue()));
+                        result.append("\">\n");
                     }
                 } else if (CmsStringUtil.isNotEmpty(currentField.getValue())) {
                     // all other fields are converted to a simple hidden field
@@ -373,7 +382,7 @@ public class CmsFormHandler extends CmsJspActionElement {
 
         // generate output for submitted form fields
         if (isHtmlMail) {
-            fieldsResult.append("<table border=\"0\"");
+            fieldsResult.append("<table border=\"0\" class=\"dataform\"");
             if (!useOwnStyle) {
                 fieldsResult.append(" class=\"fields\"");
             }
@@ -402,10 +411,14 @@ public class CmsFormHandler extends CmsJspActionElement {
                 } else {
                     fieldsResult.append("<tr><td class=\"fieldlabel\">");
                 }
-                if (isConfirmationMail) {
-                    fieldsResult.append(current.getLabel());
+                if (current instanceof CmsTableField) {
+                    fieldsResult.append(((CmsTableField)current).buildLabel(m_messages, false, false));
                 } else {
-                    fieldsResult.append(current.getDbLabel() + ":");
+                    if (isConfirmationMail) {
+                        fieldsResult.append(current.getLabel());
+                    } else {
+                        fieldsResult.append(current.getDbLabel() + ":");
+                    }
                 }
                 if (useOwnStyle) {
                     fieldsResult.append("</td><td class=\"data\">");
@@ -421,16 +434,16 @@ public class CmsFormHandler extends CmsJspActionElement {
                 }
                 fieldsResult.append("</td></tr>\n");
             } else {
-                // special case by table fields
-                if (current instanceof CmsTableField) {
-                    fieldsResult.append(((CmsTableField)current).buildText());
-                    continue;
-                }
                 // format output as plain text
                 if (isConfirmationMail) {
                     fieldsResult.append(current.getLabel());
                 } else {
                     fieldsResult.append(current.getDbLabel() + ":");
+                }
+                // special case by table fields
+                if (current instanceof CmsTableField) {
+                    fieldsResult.append(((CmsTableField)current).buildText(isConfirmationMail));
+                    continue;
                 }
                 fieldsResult.append("\t");
                 fieldsResult.append(value);
@@ -556,6 +569,16 @@ public class CmsFormHandler extends CmsJspActionElement {
             macroResolver.addMacro(field.getLabel(), field.getValue());
             if (!field.getLabel().equals(field.getDbLabel())) {
                 macroResolver.addMacro(field.getDbLabel(), field.getValue());
+            }
+            if (field instanceof CmsTableField) {
+                Iterator it = field.getItems().iterator();
+                while (it.hasNext()) {
+                    CmsFieldItem item = (CmsFieldItem)it.next();
+                    macroResolver.addMacro(item.getLabel(), item.getValue());
+                    if (!item.getLabel().equals(item.getDbLabel())) {
+                        macroResolver.addMacro(item.getDbLabel(), item.getValue());
+                    }
+                }
             }
         }
         return macroResolver.resolveMacros(getFormConfiguration().getFormCheckText());
@@ -798,6 +821,16 @@ public class CmsFormHandler extends CmsJspActionElement {
                 m_macroResolver.addMacro(field.getLabel(), fValue);
                 if (!field.getLabel().equals(field.getDbLabel())) {
                     m_macroResolver.addMacro(field.getDbLabel(), fValue);
+                }
+                if (field instanceof CmsTableField) {
+                    Iterator it = field.getItems().iterator();
+                    while (it.hasNext()) {
+                        CmsFieldItem item = (CmsFieldItem)it.next();
+                        m_macroResolver.addMacro(item.getLabel(), item.getValue());
+                        if (!item.getLabel().equals(item.getDbLabel())) {
+                            m_macroResolver.addMacro(item.getDbLabel(), item.getValue());
+                        }
+                    }
                 }
             }
             // add current date as macro

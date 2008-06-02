@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
- * Date   : $Date: 2008/05/21 11:53:42 $
- * Version: $Revision: 1.9 $
+ * Date   : $Date: 2008/06/02 13:16:38 $
+ * Version: $Revision: 1.10 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -63,7 +63,7 @@ import org.apache.commons.fileupload.FileItem;
  * @author Thomas Weckert 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  * 
  * @since 7.0.4 
  */
@@ -1352,7 +1352,7 @@ public class CmsForm {
                 if (CmsTableField.class.isAssignableFrom(field.getClass())) {
                     CmsTableField tableField = (CmsTableField)field;
                     String fieldValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDDEFAULTVALUE, locale);
-                    tableField.parseDefault(messages, fieldValue, m_parameterMap);
+                    tableField.parseDefault(fieldValue, m_parameterMap);
                 }
 
                 if (field.needsItems()) {
