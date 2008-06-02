@@ -57,7 +57,7 @@ Legend:
 - General comment
 
 1.2.0 - May, 2008
-! Added a new dialog in the administration view to show the data of configured webforms with activated database transport.
+! Added a new Administration Tool under Database Management.
 ! Added a new field type for tables.
 ! Added word based captchas in english and german
 ! Added Oracle support
