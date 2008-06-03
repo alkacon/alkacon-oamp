@@ -10,7 +10,7 @@
 	</info>
 	<module>
 		<name>com.alkacon.opencms.comments</name>
-		<nicename><![CDATA[Frontend user comments]]></nicename>
+		<nicename><![CDATA[Alkacon OpenCms Add-On Module Package User Comments]]></nicename>
 		<group>Alkacon OAMP</group>
 		<class/>
 		<description><![CDATA[This module allows you to add the common 'user comments' section to any page.]]></description>
