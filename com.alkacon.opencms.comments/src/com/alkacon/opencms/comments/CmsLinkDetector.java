@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.comments/src/com/alkacon/opencms/comments/CmsLinkDetector.java,v $
- * Date   : $Date: 2008/05/21 11:58:05 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/06/05 13:04:02 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.5
  */
@@ -61,6 +61,7 @@ public final class CmsLinkDetector {
     public static void main(String[] args) {
 
         System.out.println(substituteLinks("see our webpage at http://www.opencms.org/en/... (You can also download OCEE from ftp://ftp.opencms.org/ocee/). Have Fun."));
+        System.out.println(substituteLinks("http://www.opencms.org/en/\nhttp://www.alkacon.com"));
     }
 
     /**
@@ -73,7 +74,7 @@ public final class CmsLinkDetector {
      */
     public static String substituteLinks(String text) {
 
-        Matcher matcher = Pattern.compile("(?i)(\\b(http://|https://|www.|ftp://|file:/|mailto:)\\S+)(\\s+)").matcher(
+        Matcher matcher = Pattern.compile("(?i)(\\b(http://|https://|www.|ftp://|file:/|mailto:)\\S*)(\\s*)").matcher(
             text);
 
         String ret = "";
