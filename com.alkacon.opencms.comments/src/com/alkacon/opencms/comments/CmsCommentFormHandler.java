@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.comments/src/com/alkacon/opencms/comments/CmsCommentFormHandler.java,v $
- * Date   : $Date: 2008/05/28 10:15:37 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2008/06/05 12:10:15 $
+ * Version: $Revision: 1.5 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -49,6 +49,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 
+import org.htmlparser.util.ParserException;
+
 /**
  * The form handler controls the html or mail output of a configured comment form.<p>
  * 
@@ -57,7 +59,7 @@ import javax.servlet.jsp.PageContext;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * 
  * @since 7.0.5
  */
@@ -156,6 +158,26 @@ public class CmsCommentFormHandler extends CmsFormHandler {
     }
 
     /**
+     * @see com.alkacon.opencms.formgenerator.CmsFormHandler#sendData()
+     */
+    public boolean sendData() {
+
+        I_CmsField field = getFormConfiguration().getFieldByDbLabel(FIELD_COMMENT);
+        if (field != null) {
+            String value = field.getValue();
+            try {
+                value = new CmsHtmlStripper(false).stripHtml(value);
+            } catch (ParserException e) {
+                // ignore
+            }
+            value = CmsLinkDetector.substituteLinks(value);
+            value = CmsStringUtil.substitute(value, getSubstitutions());
+            field.setValue(value);
+        }
+        return super.sendData();
+    }
+
+    /**
      * Returns some predefined comment substitutions.<p>
      * 
      * @return some predefined comment substitutions
@@ -168,20 +190,5 @@ public class CmsCommentFormHandler extends CmsFormHandler {
             m_substitutions.put("\n", "<br>");
         }
         return m_substitutions;
-    }
-
-    /**
-     * @see com.alkacon.opencms.formgenerator.CmsFormHandler#sendDatabase()
-     */
-    protected boolean sendDatabase() throws Exception {
-
-        I_CmsField field = getFormConfiguration().getFieldByDbLabel(FIELD_COMMENT);
-        if (field != null) {
-            String value = new CmsHtmlStripper(false).stripHtml(field.getValue());
-            value = CmsLinkDetector.substituteLinks(value);
-            value = CmsStringUtil.substitute(value, getSubstitutions());
-            field.setValue(value);
-        }
-        return super.sendDatabase();
     }
 }
