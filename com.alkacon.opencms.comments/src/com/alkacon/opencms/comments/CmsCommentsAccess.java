@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.comments/src/com/alkacon/opencms/comments/CmsCommentsAccess.java,v $
- * Date   : $Date: 2008/06/02 12:34:50 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2008/06/05 12:10:27 $
+ * Version: $Revision: 1.7 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -71,7 +71,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  * 
  * @since 7.0.5
  */
@@ -122,11 +122,29 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     /** Form state for new comments. */
     private static final int STATE_NEW = 0;
 
+    /** Cached list of current page comments. */
+    private List m_comments;
+
     /** The configuration. */
     private CmsCommentConfiguration m_config;
 
+    /** Cached count of approved comments. */
+    private Integer m_countApprovedComments;
+
+    /** Cached count of blocked comments. */
+    private Integer m_countBlockedComments;
+
     /** Map where the key is the author name and the value the number of comments. */
     private Map m_countByAuthor;
+
+    /** Cached count of all comments. */
+    private Integer m_countComments;
+
+    /** Cached count of new comments. */
+    private Integer m_countNewComments;
+
+    /** Cached count of filtered comments. */
+    private Integer m_countStateComments;
 
     /** Right login exception. */
     private CmsException m_exc;
@@ -297,34 +315,36 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
      */
     public List getComments() {
 
-        CmsCommentFormHandler jsp = null;
-        try {
-            jsp = new CmsCommentFormHandler(getJspContext(), getRequest(), getResponse(), this);
-            jsp.getCommentFormConfiguration().removeCaptchaField();
-        } catch (Exception e) {
-            if (LOG.isErrorEnabled()) {
-                LOG.error(e.getLocalizedMessage(), e);
+        if (m_comments == null) {
+            CmsCommentFormHandler jsp = null;
+            try {
+                jsp = new CmsCommentFormHandler(getJspContext(), getRequest(), getResponse(), this);
+                jsp.getCommentFormConfiguration().removeCaptchaField();
+            } catch (Exception e) {
+                if (LOG.isErrorEnabled()) {
+                    LOG.error(e.getLocalizedMessage(), e);
+                }
+            }
+            int itemSize = (jsp == null ? 2000000 : jsp.getCommentFormConfiguration().getAllFields().size());
+            int itemsPerPage = getConfig().getList() * itemSize;
+
+            CmsFormDatabaseFilter filter = getCommentFilter(false, true);
+            filter = filter.filterOrderDesc();
+            if (getConfig().getList() > 0) {
+                int base = m_page * itemsPerPage;
+                filter = filter.filterIndex(base, base + itemsPerPage);
+            }
+
+            try {
+                m_comments = CmsFormDataAccess.getInstance().readForms(filter);
+            } catch (SQLException e) {
+                if (LOG.isErrorEnabled()) {
+                    LOG.error(e.getLocalizedMessage(), e);
+                }
+                m_comments = new ArrayList();
             }
         }
-        int itemSize = (jsp == null ? 2000000 : jsp.getCommentFormConfiguration().getAllFields().size());
-        int itemsPerPage = getConfig().getList() * itemSize;
-
-        CmsFormDatabaseFilter filter = getCommentFilter(false, true);
-        filter = filter.filterOrderDesc();
-        if (getConfig().getList() > 0) {
-            int base = m_page * itemsPerPage;
-            filter = filter.filterIndex(base, base + itemsPerPage);
-        }
-
-        try {
-            return CmsFormDataAccess.getInstance().readForms(filter);
-        } catch (SQLException e) {
-            if (LOG.isErrorEnabled()) {
-                LOG.error(e.getLocalizedMessage(), e);
-            }
-        }
-
-        return new ArrayList();
+        return m_comments;
     }
 
     /**
@@ -344,18 +364,21 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
      */
     public int getCountApprovedComments() {
 
-        CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.HEADERS;
-        filter = filter.filterFormId(CmsCommentForm.FORM_ID);
-        filter = filter.filterResourceId(m_resource.getStructureId());
-        filter = filter.filterState(STATE_APPROVED);
-        try {
-            return CmsFormDataAccess.getInstance().countForms(filter);
-        } catch (SQLException e) {
-            if (LOG.isErrorEnabled()) {
-                LOG.error(e.getLocalizedMessage(), e);
+        if (m_countApprovedComments == null) {
+            CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.HEADERS;
+            filter = filter.filterFormId(CmsCommentForm.FORM_ID);
+            filter = filter.filterResourceId(m_resource.getStructureId());
+            filter = filter.filterState(STATE_APPROVED);
+            try {
+                m_countApprovedComments = new Integer(CmsFormDataAccess.getInstance().countForms(filter));
+            } catch (SQLException e) {
+                if (LOG.isErrorEnabled()) {
+                    LOG.error(e.getLocalizedMessage(), e);
+                }
+                m_countApprovedComments = new Integer(0);
             }
         }
-        return 0;
+        return m_countApprovedComments.intValue();
     }
 
     /**
@@ -370,18 +393,21 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
         if (!m_config.isModerated()) {
             return 0;
         }
-        CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.HEADERS;
-        filter = filter.filterFormId(CmsCommentForm.FORM_ID);
-        filter = filter.filterResourceId(m_resource.getStructureId());
-        filter = filter.filterState(STATE_BLOCKED);
-        try {
-            return CmsFormDataAccess.getInstance().countForms(filter);
-        } catch (SQLException e) {
-            if (LOG.isErrorEnabled()) {
-                LOG.error(e.getLocalizedMessage(), e);
+        if (m_countBlockedComments == null) {
+            CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.HEADERS;
+            filter = filter.filterFormId(CmsCommentForm.FORM_ID);
+            filter = filter.filterResourceId(m_resource.getStructureId());
+            filter = filter.filterState(STATE_BLOCKED);
+            try {
+                m_countBlockedComments = new Integer(CmsFormDataAccess.getInstance().countForms(filter));
+            } catch (SQLException e) {
+                if (LOG.isErrorEnabled()) {
+                    LOG.error(e.getLocalizedMessage(), e);
+                }
+                m_countBlockedComments = new Integer(0);
             }
         }
-        return 0;
+        return m_countBlockedComments.intValue();
     }
 
     /**
@@ -428,16 +454,18 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
      */
     public int getCountComments() {
 
-        CmsFormDatabaseFilter filter = getCommentFilter(true, false);
-        try {
-            return CmsFormDataAccess.getInstance().countForms(filter);
-        } catch (SQLException e) {
-            if (LOG.isErrorEnabled()) {
-                LOG.error(e.getLocalizedMessage(), e);
+        if (m_countComments == null) {
+            CmsFormDatabaseFilter filter = getCommentFilter(true, false);
+            try {
+                m_countComments = new Integer(CmsFormDataAccess.getInstance().countForms(filter));
+            } catch (SQLException e) {
+                if (LOG.isErrorEnabled()) {
+                    LOG.error(e.getLocalizedMessage(), e);
+                }
+                m_countComments = new Integer(0);
             }
         }
-
-        return 0;
+        return m_countComments.intValue();
     }
 
     /**
@@ -452,18 +480,21 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
         if (!m_config.isModerated()) {
             return 0;
         }
-        CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.HEADERS;
-        filter = filter.filterFormId(CmsCommentForm.FORM_ID);
-        filter = filter.filterResourceId(m_resource.getStructureId());
-        filter = filter.filterState(STATE_NEW);
-        try {
-            return CmsFormDataAccess.getInstance().countForms(filter);
-        } catch (SQLException e) {
-            if (LOG.isErrorEnabled()) {
-                LOG.error(e.getLocalizedMessage(), e);
+        if (m_countNewComments == null) {
+            CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.HEADERS;
+            filter = filter.filterFormId(CmsCommentForm.FORM_ID);
+            filter = filter.filterResourceId(m_resource.getStructureId());
+            filter = filter.filterState(STATE_NEW);
+            try {
+                m_countNewComments = new Integer(CmsFormDataAccess.getInstance().countForms(filter));
+            } catch (SQLException e) {
+                if (LOG.isErrorEnabled()) {
+                    LOG.error(e.getLocalizedMessage(), e);
+                }
+                m_countNewComments = new Integer(0);
             }
         }
-        return 0;
+        return m_countNewComments.intValue();
     }
 
     /**
@@ -475,16 +506,18 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
      */
     public int getCountStateComments() {
 
-        CmsFormDatabaseFilter filter = getCommentFilter(true, true);
-        try {
-            return CmsFormDataAccess.getInstance().countForms(filter);
-        } catch (SQLException e) {
-            if (LOG.isErrorEnabled()) {
-                LOG.error(e.getLocalizedMessage(), e);
+        if (m_countStateComments == null) {
+            CmsFormDatabaseFilter filter = getCommentFilter(true, true);
+            try {
+                m_countStateComments = new Integer(CmsFormDataAccess.getInstance().countForms(filter));
+            } catch (SQLException e) {
+                if (LOG.isErrorEnabled()) {
+                    LOG.error(e.getLocalizedMessage(), e);
+                }
+                m_countStateComments = new Integer(0);
             }
         }
-
-        return 0;
+        return m_countStateComments.intValue();
     }
 
     /**
@@ -641,6 +674,16 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     public boolean isMaximized() {
 
         return isShow() || !getConfig().isMinimized();
+    }
+
+    /**
+     * Checks if the filter navigation is needed.<p>
+     * 
+     * @return <code>true</code> if the filter navigation is needed
+     */
+    public boolean isNeedFilter() {
+
+        return getConfig().isModerated() && isUserCanManage() && (getCountComments() > 0);
     }
 
     /**
