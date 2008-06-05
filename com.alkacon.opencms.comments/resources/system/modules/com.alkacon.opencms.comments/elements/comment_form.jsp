@@ -19,10 +19,10 @@ if (!showForm) {
 	            return;
             }
             out.print(formConfiguration.getFormConfirmationText()); %>
-<div class="comment_dialog_content">
-	<form class="loginform" id="fid" name="commentform" <%= formConfiguration.getFormAttributes() %>>
-		<div class="buttonrow">
-			<input class="button" type="button" value="<%= messages.key("form.button.close") %>" onclick="tb_remove(); reloadComments();"/>
+<div class="cmtDialog">
+	<form class="cmtForm" id="fid" name="commentform" <%= formConfiguration.getFormAttributes() %>>
+		<div class="cmtButtonRow">
+			<input class="cmtButton" type="button" value="<%= messages.key("form.button.close") %>" onclick="tb_remove(); reloadComments();"/>
 		</div>
 	</form>
 </div>      
@@ -51,8 +51,8 @@ if (cms.hasValidationErrors()) {
 }
 %>
 <!-- create the form head  -->
-<div class="comment_dialog_content">
-	<form class="loginform" id="fid" name="commentform" <%= formConfiguration.getFormAttributes() %>>
+<div class="cmtDialog">
+	<form class="cmtForm" id="fid" name="commentform" <%= formConfiguration.getFormAttributes() %>>
 <!-- Hidden form fields:  -->
 <%= messages.key("form.html.start") %>
 <%
@@ -82,12 +82,12 @@ if (formConfiguration.hasMandatoryFields() && formConfiguration.isShowMandatory(
 }
 %>
 <%= messages.key("form.html.end") %>
-		<div class="buttonrow">
+		<div class="cmtButtonRow">
 			<input type="hidden" name="<%= CmsFormHandler.PARAM_FORMACTION %>"  id="<%= CmsFormHandler.PARAM_FORMACTION %>" value="<%= CmsFormHandler.ACTION_SUBMIT %>"/>
 			<input type="hidden" name="<%= CmsCommentsAccess.PARAM_URI %>" value="${param.cmturi}" />
 			<input type="hidden" name="__locale" value="${param.__locale}" />
-			<input class="button" type="button" value="<%= messages.key("form.button.submit") %>" onclick="cmtPost(); "/>
-			<input class="button" type="button" value="<%= messages.key("form.button.cancel") %>" onclick="tb_remove();"/>
+			<input class="cmtButton" type="button" value="<%= messages.key("form.button.submit") %>" onclick="cmtPost(); "/>
+			<input class="cmtButton" type="button" value="<%= messages.key("form.button.cancel") %>" onclick="tb_remove();"/>
 		</div>
 </form>
 <%
@@ -121,10 +121,26 @@ function cmtPost() {
 }
 <% if (!cms.getRequestContext().currentUser().isGuestUser()) { 
        if (formConfiguration.getFieldByDbLabel("name") != null) { %>
-$("input[@name='<%=formConfiguration.getFieldByDbLabel("name").getName()%>']").attr('value', '<%=cms.getRequestContext().currentUser().getFirstname()%> <%=cms.getRequestContext().currentUser().getLastname()%>');
+var nameField = '<%=formConfiguration.getFieldByDbLabel("name").getName()%>';
+var nameFieldValue = '<%= ("" + cms.getRequestContext().currentUser().getFirstname() + " " + cms.getRequestContext().currentUser().getLastname()).trim() %>';
+if ($("input[@name='"+nameField+"']").attr('value')) {
+	if ($("input[@name='"+nameField+"']").attr('value') == '') {
+		$("input[@name='"+nameField+"']").attr('value', nameFieldValue);
+	}
+} else {
+	$("input[@name='"+nameField+"']").attr('value', nameFieldValue);
+}
 <%     } 
        if (formConfiguration.getFieldByDbLabel("email") != null) { %>
-$("input[@name='<%=formConfiguration.getFieldByDbLabel("email").getName()%>']").attr('value', '<%=cms.getRequestContext().currentUser().getEmail()%>');
+var emailField = '<%=formConfiguration.getFieldByDbLabel("email").getName()%>';
+var emailFieldValue = '<%=cms.getRequestContext().currentUser().getEmail()%>';
+if ($("input[@name='"+emailField+"']").attr('value')) {
+	if ($("input[@name='"+emailField+"']").attr('value') == '') {
+		$("input[@name='"+emailField+"']").attr('value', emailFieldValue);
+	}
+} else {
+	$("input[@name='"+emailField+"']").attr('value', emailFieldValue);
+}
 <%     } 
    } %>
 </script>
