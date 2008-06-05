@@ -7,7 +7,7 @@
 %>
 <fmt:setLocale value="${cms:vfs(pageContext).requestContext.locale}" />
 <fmt:setBundle basename="com.alkacon.opencms.comments.frontend" />
-<p align="center">
+<div class="cmtHeader">
 <c:choose>
 <c:when test="${alkaconCmt.userCanManage}">
 	<c:choose>
@@ -55,14 +55,14 @@
 	</c:if>
 </c:otherwise>
 </c:choose>
-</p>
+</div>
 <script type="text/javascript" >
   tb_init('a.thickbox'); //pass where to apply thickbox
   imgLoader = new Image(); // preload image
-  imgLoader.src = tb_pathToImage;
+  imgLoader.src = '../resources/load.gif';
 
   function loadComments() {
-    $("#commentbox").html("<center><img src='<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/resources/load.gif:d81aaa99-1207-11dd-8a3f-111d34530985)</cms:link>' /></center>");
+    $("#commentbox").html("<div class='cmtLoading'></div>");
 	$.post(
 		"<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_list.jsp:f11cf62d-ec2e-11dc-990f-dfec94299cf1)</cms:link>",
 		{ cmturi: '${param.cmturi}', __locale: '<cms:info property="opencms.request.locale" />' },

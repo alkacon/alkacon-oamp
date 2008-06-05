@@ -1,79 +1,139 @@
-.comment_entry { 
+/* Header Styles */
+div.cmtLoading {
+	background: transparent url(load.gif) no-repeat scroll center;
+	height: 15px;
+	width: 100%;
+}
+div.cmtHeader {
+	text-align: center; 
+	width: 100%;
+}
+
+/* Comment entries styles */
+div.cmtCommentEntry { 
 	margin-top: 5px; 
 	border: 1px solid #CCCCCC; 
 }
-.comment_header { 
+div.cmtCommentHeader { 
 	background: #CCCCCC url(gradient.png) repeat-x scroll center top;
 	color: black;
 	padding: 3px 5px;
 }
-.comment_new {
+div.cmtCommentBody { 
+	padding: 5px 20px;
+}
+div.cmtCommentTitle {
+	padding-top: 3px; 
+	font-weight: bold;
+}
+div.cmtCommentSubtitle, div.cmtCommentSubtitle b {
+	font-size: 9px;
+}
+
+/* Comment entries in management mode */
+div.cmtCommentApproved { 
+	background: #CCCCCC url(gradient.png) repeat-x scroll center top;
+	color: black;
+	padding: 3px 5px;
+}
+div.cmtCommentNew {
 	background: #AACCFF url(gradient.png) repeat-x scroll center top;
 	color: black;
 	padding: 3px 5px;
 }
-.comment_blocked {
+div.cmtCommentBlocked {
 	background: #FFAAAA url(gradient.png) repeat-x scroll center top;
 	color: black;
 	padding: 3px 5px;
 }
-.comment_body { 
+div.cmtCommentManager {
 	padding: 5px 20px;
 }
-.comment_manager {
-	padding: 5px 20px;
-}
-.comment_title {
-	padding-top: 3px; 
-	font-weight: bold;
-}
-.comment_subtitle {
-	font-size: 80%;
-}
-.comment_actions {
-	position: absolute; right: 5px;
-}
-.comment_actions img {
-	border: none;
-}
-.comment_actions_header {
+div.cmtActionsHeader {
 	position: relative;
 }
-.comment_dialog_content { 
-	padding: 5px 5px;
+div.cmtActions {
+	position: absolute; right: 5px;
 }
-.pagination_header {
+div.cmtActions img {
+	border: none;
+}
+
+/* Pagination styles */
+div.cmtPaginationHeader {
 	position: relative;
 	height: 18px;
 }
-.moderation_state {
+div.cmtPaginationBox {
+	position: absolute;
+	right: 0px;
+	font-size: 10px;
+	top: 3px;
+}
+div.cmtPaginationBox a, div.cmtPaginationBox span {
+	font-size: 10px;
+	margin-bottom: 0px;
+	padding: 2px 4px;
+}
+
+/* State filtering styles */
+div.cmtFilterState {
 	margin: 8px 0px 0px 5px;
-	font-size: 80%;
+	font-size: 9px;
 	position: absolute;
 	left: 0px;
 }
-.pagination_box {
-	position: absolute;
-	right: 0px;
+div.cmtFilterState a {
+	font-size: 9px;
 }
-form.loginform div.boxform input.button {
-	width: 100px;
+
+/* Dialog styles */
+div.cmtDialog { 
+	padding: 5px 5px;
 }
-form.loginform div.buttonrow {
+
+/* Form styles */
+form.cmtForm div.cmtFormRow {
+	display: block;
+	margin: 5px 0px 0px;
+	padding: 1px 3px;
+}
+form.cmtForm div.cmtFormRow label {
+	display: block;
+	float: left;
+	padding-right: 5px;
+	text-align: right;
+	width: 6em;
+}
+form.cmtForm div.cmtFormRow input {
+	width: 300px;
+}
+form.cmtForm div.cmtButtonRow {
 	float: right; 
 	padding-top: 10px;
 }
-form.loginform div.login-errormessage {
+form.cmtForm input, form.cmtForm textarea {
+	border: 1px solid #AAAACC;
+}
+form.cmtForm div.cmtButtonRow input.cmtButton {
+	width: 100px;
+	padding: 2px;
+	border: 1px solid #444455;
+	text-align: center;
+}
+form.cmtForm div.cmtErrorMessage {
 	font-weight: bold;
 	color: #B31334;
 }
-form.loginform textarea {
+form.cmtForm textarea {
 	height: 200px;
 }
-form.loginform img {
+form.cmtForm img {
 	height: auto;
-	width: 100%;
+	width: 99%;
 }
+
+/* Overwrite default thickbox styles */
 #TB_title { 
 	background: #AACCFF url(gradient.png) repeat-x scroll center top;
 	color: black;
@@ -84,4 +144,7 @@ form.loginform img {
 }
 #TB_ajaxContent {
 	background-color: #EEEEFF;
+}
+#TB_ajaxWindowTitle {
+	font-weight: bold;
 }

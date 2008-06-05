@@ -1,25 +1,25 @@
 <c:choose>
 	<c:when test="${!alkaconCmt.config.moderated}">
-		<c:set var="className" value="comment_header" />
+		<c:set var="className" value="cmtCommentApproved" />
 	</c:when>
 	<c:otherwise>
 		<c:choose>
 			<c:when test="${comment.state == 0}">
-				<c:set var="className" value="comment_new" />
+				<c:set var="className" value="cmtCommentNew" />
 			</c:when>
 			<c:when test="${comment.state == 1}">
-				<c:set var="className" value="comment_header" />
+				<c:set var="className" value="cmtCommentApproved" />
 			</c:when>
 			<c:otherwise>
-				<c:set var="className" value="comment_blocked" />
+				<c:set var="className" value="cmtCommentBlocked" />
 			</c:otherwise>
 		</c:choose>
 	</c:otherwise>
 </c:choose>
 <c:set var="date"><fmt:formatDate value='${cms:convertDate(comment.dateCreated)}' dateStyle='long' timeStyle='short' type='both' /></c:set>
-<div class="comment_entry" >
-	<div class="${className} comment_actions_header">
-		<div class="comment_actions">
+<div class="cmtCommentEntry" >
+	<div class="${className} cmtActionsHeader">
+		<div class="cmtActions">
 			<c:if test="${alkaconCmt.config.moderated}">
 				<c:if test="${comment.state != 1}">
 					<a href="javascript:doAction('approve','${comment.entryId}');" ><img title="<fmt:message key="comment.manager.approve" />" alt="<fmt:message key="comment.manager.approve" />" src='<cms:link>%(link.strong:/system/modules/com.alkacon.opencms.comments/resources/approve.png:ad840730-1dc0-11dd-9741-111d34530985)</cms:link>' width='20' height='20'></a>
@@ -30,17 +30,17 @@
 			</c:if>
 			<a href="javascript:doAction('delete','${comment.entryId}');" ><img title="<fmt:message key="comment.manager.delete" />" alt="<fmt:message key="comment.manager.delete" />" src='<cms:link>%(link.strong:/system/modules/com.alkacon.opencms.comments/resources/delete.png:ada571e4-1dc0-11dd-9741-111d34530985)</cms:link>' width='20' height='20'></a>
 		</div>
-		<div class="comment_title">
+		<div class="cmtCommentTitle">
 			<c:out value="${comment.field['subject']}"  />
 		</div>
-		<div class="comment_subtitle">
+		<div class="cmtCommentSubtitle">
 			<fmt:message key="comment.header.view.2" >
 				<fmt:param value="${comment.field['name']}" />
 				<fmt:param value="${date}" />
 			</fmt:message>
 		</div>
 	</div>
-	<div class="comment_manager" >
+	<div class="cmtCommentManager" >
 		<fmt:message key="comment.manager.username.1" >
 			<fmt:param value="${comment.field['username']}" />
 		</fmt:message><br>
@@ -54,7 +54,7 @@
 			<fmt:param value="${alkaconCmt.countByAuthor[comment.field['username']]}" />
 		</fmt:message>
 	</div>
-	<div class="comment_body" >
+	<div class="cmtCommentBody" >
 		<c:out value="${comment.field['comment']}"  escapeXml="false" />
 	</div>
 </div>

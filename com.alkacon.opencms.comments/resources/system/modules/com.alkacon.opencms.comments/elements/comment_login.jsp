@@ -16,23 +16,23 @@
 %>
 <fmt:setLocale value="${cms:vfs(pageContext).requestContext.locale}" />
 <fmt:setBundle basename="com.alkacon.opencms.comments.frontend" />
-<div class="comment_dialog_content">
-	<form class="loginform" id="fid">
+<div class="cmtDialog">
+	<form class="cmtForm" id="fid">
 		<div id="errmsg" ><fmt:message key="login.message.enterdata" /><br>&nbsp;</div>
-		<div class="boxform">
+		<div class="cmtFormRow">
 			<label for="name"><fmt:message key="login.label.username" />:</label>
 			<input type="text" name="name">
 		</div>
-		<div class="boxform">
+		<div class="cmtFormRow">
 			<label for="password"><fmt:message key="login.label.password" />:</label>
 			<input type="password" name="password">
 		</div>
-		<div class="boxform buttonrow">
+		<div class="cmtFormRow cmtButtonRow">
 			<input type="hidden" name="action" value="login" />
 			<input type="hidden" name="cmturi" value="${param.cmturi}" />
 			<input type="hidden" name="__locale" value="${param.__locale}" />
-			<input class="button" type="button" value="<fmt:message key="login.label.login" />" onclick="cmtLogin();"/>
-			<input class="button" type="button" value="<fmt:message key="login.label.cancel" />" onclick="tb_remove();"/>
+			<input class="cmtButton" type="button" value="<fmt:message key="login.label.login" />" onclick="cmtLogin();"/>
+			<input class="cmtButton" type="button" value="<fmt:message key="login.label.cancel" />" onclick="tb_remove();"/>
 		</div>
 	</form>
 </div>
@@ -61,7 +61,7 @@ function cmtLogin() {
 					function(html) { $("#commentbox").html(html); }
 				);
 			  } else {
-			     $("div#errmsg").addClass("login-errormessage").html('<fmt:message key="login.message.failed" />:<br />' + txt);
+			     $("div#errmsg").addClass("cmtErrorMessage").html('<fmt:message key="login.message.failed" />:<br />' + txt);
 			  }
 	      }
      );

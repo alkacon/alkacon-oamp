@@ -12,9 +12,7 @@
 load_script('<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/resources/comments.css:96522ded-1204-11dd-8a3f-111d34530985)</cms:link>', 'css');
 </script>
 <div id="commentbox" class="commentbox">
-	<center>
-		<img src="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/resources/load.gif:d81aaa99-1207-11dd-8a3f-111d34530985)</cms:link>" />
-	</center>
+	<div class="cmtLoading" ></div>
 </div>
 <c:set var="url" value="%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_header.jsp:fe055c44-120a-11dd-8a3f-111d34530985)" />
 <c:if test="${alkaconCmt.maximized}" >

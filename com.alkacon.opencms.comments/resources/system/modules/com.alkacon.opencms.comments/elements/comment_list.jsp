@@ -12,7 +12,7 @@
 <fmt:setLocale value="${cms:vfs(pageContext).requestContext.locale}" />
 <fmt:setBundle basename="com.alkacon.opencms.comments.frontend" />
 <!-- start: header -->
-<p align="center">
+<div class="cmtHeader">
 <c:choose>
 <c:when test="${alkaconCmt.userCanManage}">
 	<fmt:message key="titel.view.comments" />
@@ -27,7 +27,7 @@
 	<fmt:message key="titel.view.comments" />
 </c:otherwise>
 </c:choose>
-</p>
+</div>
 <!-- end: header -->
 <!-- start: post form link -->
 <p>
@@ -35,7 +35,7 @@
 <c:when test="${alkaconCmt.userCanPost}">
 	    <a 
 	       title="<fmt:message key="form.message.post" />" 
-	       href="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_form.jsp:dfbece22-1112-11dd-ba60-111d34530985)?cmturi=${param.cmturi}&__locale=${cms:vfs(pageContext).requestContext.locale}&width=800&height=600</cms:link>" 
+	       href="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_form.jsp:dfbece22-1112-11dd-ba60-111d34530985)?cmturi=${param.cmturi}&__locale=${cms:vfs(pageContext).requestContext.locale}&width=800&height=520</cms:link>" 
 	       class="thickbox" >
 			<fmt:message key="post.0" />
 		</a>
@@ -64,7 +64,7 @@
 <script>
   tb_init('a.thickbox'); //pass where to apply thickbox
   imgLoader = new Image(); // preload image
-  imgLoader.src = tb_pathToImage;
+  imgLoader.src = '../resources/load.gif';
 
 function reloadComments(state, page) {
 
