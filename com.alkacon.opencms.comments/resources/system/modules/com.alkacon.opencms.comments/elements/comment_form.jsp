@@ -142,5 +142,22 @@ if ($("input[@name='"+emailField+"']").attr('value')) {
 	$("input[@name='"+emailField+"']").attr('value', emailFieldValue);
 }
 <%     } 
+       if (formConfiguration.getFieldByDbLabel("comment") != null) { %>
+var commentField = '<%=formConfiguration.getFieldByDbLabel("comment").getName()%>';
+var maxLength = 1000;
+$("textarea[@name='"+commentField+"']").before("<div style='width: 99%; text-align: right; font-size: 9px;'><%=messages.key("form.comment.char.left")%></div>");
+function updateComment() {
+        var value = $("textarea[@name='"+commentField+"']").attr('value');
+        if (value && (value.length > maxLength)) {
+		$("textarea[@name='"+commentField+"']").attr('value', value.substring(0, maxLength));
+	} else {
+		$("#comment_charleft").text(maxLength - (value? value.length:0));
+	}
+}
+$("textarea[@name='"+commentField+"']").keydown(updateComment);
+$("textarea[@name='"+commentField+"']").keyup(updateComment);
+$("textarea[@name='"+commentField+"']").change(updateComment);
+updateComment();
+<%     } 
    } %>
 </script>
