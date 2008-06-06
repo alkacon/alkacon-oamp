@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.comments/src/com/alkacon/opencms/comments/CmsCommentsAccess.java,v $
- * Date   : $Date: 2008/06/05 12:10:27 $
- * Version: $Revision: 1.7 $
+ * Date   : $Date: 2008/06/06 07:29:24 $
+ * Version: $Revision: 1.8 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -60,6 +60,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.PageContext;
 
 import org.apache.commons.collections.Transformer;
@@ -71,7 +72,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  * 
  * @since 7.0.5
  */
@@ -85,6 +86,9 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
 
     /** Action name constant. */
     public static final String ACTION_DELETE = "delete";
+
+    /** Session attribute to control manageability. */
+    public static final String ATTR_CMT_MANAGE = "ATTR_CMT_MANAGE";
 
     /** Parameter name constant. */
     public static final String PARAM_ACTION = "cmtaction";
@@ -306,6 +310,23 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
         } else if (action.equals(CmsCommentsAccess.ACTION_APPROVE)) {
             approve(entry);
         }
+    }
+
+    /**
+     * Returns the current set session attribute to manage comments.<p>
+     * 
+     * @return the current set session attribute to manage comments
+     */
+    public Boolean getAttrManage() {
+
+        HttpSession session = getRequest().getSession();
+        if (session != null) {
+            Object canManageObj = session.getAttribute(ATTR_CMT_MANAGE);
+            if (canManageObj instanceof Boolean) {
+                return (Boolean)canManageObj;
+            }
+        }
+        return null;
     }
 
     /**
@@ -713,18 +734,13 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
      */
     public boolean isUserCanManage() {
 
-        try {
-            return getCmsObject().hasPermissions(
-                m_resource,
-                CmsPermissionSet.ACCESS_WRITE,
-                false,
-                CmsResourceFilter.DEFAULT);
-        } catch (CmsException e) {
-            if (LOG.isErrorEnabled()) {
-                LOG.error(e.getLocalizedMessage());
+        Boolean attr = getAttrManage();
+        if (attr != null) {
+            if (!attr.booleanValue()) {
+                return false;
             }
         }
-        return false;
+        return isUserHasManPerm();
     }
 
     /**
@@ -751,6 +767,27 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
             return isUserValid();
         }
         return true;
+    }
+
+    /**
+     * Checks if the current user has enough permissions to manage the comments.<p>
+     * 
+     * @return <code>true</code> if the current user has enough permissions to manage the comments
+     */
+    public boolean isUserHasManPerm() {
+
+        try {
+            return getCmsObject().hasPermissions(
+                m_resource,
+                CmsPermissionSet.ACCESS_WRITE,
+                false,
+                CmsResourceFilter.DEFAULT);
+        } catch (CmsException e) {
+            if (LOG.isErrorEnabled()) {
+                LOG.error(e.getLocalizedMessage());
+            }
+        }
+        return false;
     }
 
     /**
