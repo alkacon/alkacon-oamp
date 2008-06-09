@@ -26,6 +26,19 @@ if (!showForm) {
 		</div>
 	</form>
 </div>      
+<script type="text/javascript">
+function submitEnter(e) {
+    var key = (window.event) ? window.event.keyCode : (e) ? e.which : 0;
+    if (key == 13) {
+       tb_remove(); 
+       reloadComments();
+       return false;
+    } else {
+       return true;
+    }
+}
+$(window).keypress(submitEnter);
+</script>
 <%	} else {
 	    // problem while submitting
 	    out.println("<h3>" + messages.key("form.error.mail.headline") + "</h3>");
