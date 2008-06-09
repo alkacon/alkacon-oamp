@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.comments/src/com/alkacon/opencms/comments/CmsCommentsAccess.java,v $
- * Date   : $Date: 2008/06/06 07:29:24 $
- * Version: $Revision: 1.8 $
+ * Date   : $Date: 2008/06/09 09:44:24 $
+ * Version: $Revision: 1.9 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -72,7 +72,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  * 
  * @since 7.0.5
  */
@@ -587,6 +587,19 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     }
 
     /**
+     * Returns the frontend resource bundle name.<p>
+     * 
+     * @return the frontend resource bundle name
+     */
+    public String getResourceBundle() {
+
+        if (getConfig().getResourceBundle() != null) {
+            return getConfig().getResourceBundle();
+        }
+        return "com.alkacon.opencms.comments.frontend";
+    }
+
+    /**
      * Returns the state of the comments that should be displayed.<p>
      *
      * @return the state of the comments that should be displayed, <code>null</code> for all
@@ -750,7 +763,7 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
      */
     public boolean isUserCanPost() {
 
-        if (m_config.getSecurity().isNone()) {
+        if (m_config.getSecurity().isNone() || m_config.getSecurity().isNoView()) {
             return true;
         }
         return isUserValid();
@@ -765,6 +778,9 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
 
         if (m_config.getSecurity().isView()) {
             return isUserValid();
+        }
+        if (m_config.getSecurity().isNoView()) {
+            return isUserCanManage();
         }
         return true;
     }

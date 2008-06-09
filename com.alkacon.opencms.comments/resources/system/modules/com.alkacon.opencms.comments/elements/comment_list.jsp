@@ -5,12 +5,12 @@
 <%
 	CmsCommentsAccess alkaconCmt = new CmsCommentsAccess(pageContext, request, response);
 	pageContext.setAttribute("alkaconCmt", alkaconCmt);
-	if (!alkaconCmt.isUserCanView()) {
+	if (!alkaconCmt.isUserCanView() && !alkaconCmt.isUserCanManage() && !alkaconCmt.isUserCanPost()) {
 		return;
 	}
 %>
 <fmt:setLocale value="${cms:vfs(pageContext).requestContext.locale}" />
-<fmt:setBundle basename="com.alkacon.opencms.comments.frontend" />
+<fmt:setBundle basename="${alkaconCmt.resourceBundle}" />
 <!-- start: header -->
 <div class="cmtHeader">
 <c:choose>
@@ -18,9 +18,6 @@
 	<fmt:message key="titel.view.comments" />
 </c:when>
 <c:when test="${alkaconCmt.userCanPost}">
-	<fmt:message key="titel.view.comments" />
-</c:when>
-<c:when test="${alkaconCmt.userCanView}">
 	<fmt:message key="titel.view.comments" />
 </c:when>
 <c:otherwise>
@@ -42,7 +39,7 @@
 	</a>
 </c:when>
 <c:otherwise>
-	<c:if test="${alkaconCmt.guestUser}">
+	<c:if test="${alkaconCmt.guestUser && alkaconCmt.config.offerLogin}">
 	        <a 
 	           title="<fmt:message key="login.message.title" />" 
 	           href="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_login.jsp:87972a79-12be-11dd-a2ad-111d34530985)?cmturi=${param.cmturi}&__locale=${cms:vfs(pageContext).requestContext.locale}&width=400&height=200</cms:link>" 
@@ -52,20 +49,34 @@
 	</c:if>
 </c:otherwise>
 </c:choose>
-<p>
+<script type="text/javascript">
+  tb_init('a.thickbox'); //pass where to apply thickbox
+  imgLoader = new Image(); // preload image
+  imgLoader.src = '../resources/load.gif';
+  
+  function reloadComments(state, page) {
+  	// empty
+  }
+</script>
 <!-- end: post form link -->
+<% if (!alkaconCmt.isUserCanView()) { %>
+<script type="text/javascript">
+  function reloadComments(state, page) {
+  	// empty
+  }
+</script>
+<%	return;
+}
+%>
 <!-- start: comments list -->
+<p>
 <div id="comments" style="width: 100%;">
 	<cms:include file="%(link.strong:/system/modules/com.alkacon.opencms.comments/elements/comment_innerlist.jsp:7c811b84-1dcd-11dd-b28b-111d34530985)">
 		<cms:param name="cmturi" value="${param.cmturi}" />
 		<cms:param name="cmtpage" value="0" />
 	</cms:include>
 </div>
-<script>
-  tb_init('a.thickbox'); //pass where to apply thickbox
-  imgLoader = new Image(); // preload image
-  imgLoader.src = '../resources/load.gif';
-
+<script type="text/javascript">
 function reloadComments(state, page) {
 
 	$('body').css("cursor", "wait");

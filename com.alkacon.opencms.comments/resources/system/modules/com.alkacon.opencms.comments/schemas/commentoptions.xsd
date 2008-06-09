@@ -18,6 +18,9 @@
 			<xsd:element name="OrgUnit" type="OpenCmsString" minOccurs="0" maxOccurs="unbounded" />
 			<xsd:element name="Group" type="OpenCmsString" minOccurs="0" maxOccurs="unbounded" />
 			<xsd:element name="Minimized" type="OpenCmsBoolean" />
+			<xsd:element name="OfferLogin" type="OpenCmsBoolean" />
+			<xsd:element name="StyleSheet" type="OpenCmsVfsFile" minOccurs="0" />
+			<xsd:element name="ResourceBundle" type="OpenCmsString" minOccurs="0" />
 		</xsd:sequence>
 		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
 	</xsd:complexType>
@@ -27,10 +30,13 @@
 			<resourcebundle name="com.alkacon.opencms.comments.workplace"/>
 			<layouts>
 				<layout element="List" widget="SelectorWidget" configuration="3|5*|10|20|50|all:${key.label.AlkaconCommentFormOption.List.all}" />
-				<layout element="Security" widget="RadioSelectWidget" configuration="none*:${key.label.AlkaconCommentFormOption.Security.none}|write:${key.label.AlkaconCommentFormOption.Security.write}|view:${key.label.AlkaconCommentFormOption.Security.view}" />
+				<layout element="Security" widget="RadioSelectWidget" configuration="none*:${key.label.AlkaconCommentFormOption.Security.none}|write:${key.label.AlkaconCommentFormOption.Security.write}|view:${key.label.AlkaconCommentFormOption.Security.view}|noview:${key.label.AlkaconCommentFormOption.Security.noview}" />
 				<layout element="OrgUnit" widget="OrgUnitWidget" configuration="" />
 				<layout element="Group" widget="GroupWidget" configuration="" />
 			</layouts>
+			<defaults>
+				<default element="OfferLogin" value="true"/>
+			</defaults>
 		</xsd:appinfo>
 	</xsd:annotation>
 </xsd:schema>

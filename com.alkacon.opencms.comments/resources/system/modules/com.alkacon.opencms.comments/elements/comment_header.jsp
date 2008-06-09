@@ -6,7 +6,7 @@
 	pageContext.setAttribute("alkaconCmt", alkaconCmt);
 %>
 <fmt:setLocale value="${cms:vfs(pageContext).requestContext.locale}" />
-<fmt:setBundle basename="com.alkacon.opencms.comments.frontend" />
+<fmt:setBundle basename="${alkaconCmt.resourceBundle}" />
 <div class="cmtHeader">
 <c:choose>
 <c:when test="${alkaconCmt.userCanManage}">
@@ -43,7 +43,7 @@
 	</a>
 </c:when>
 <c:otherwise>
-	<c:if test="${alkaconCmt.guestUser}">
+	<c:if test="${alkaconCmt.guestUser && alkaconCmt.config.offerLogin}">
 	        <a 
 	           title="<fmt:message key="login.message.title" />" 
 	           href="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_login.jsp:87972a79-12be-11dd-a2ad-111d34530985)?cmturi=${param.cmturi}&__locale=${cms:vfs(pageContext).requestContext.locale}&width=400&height=200</cms:link>" 

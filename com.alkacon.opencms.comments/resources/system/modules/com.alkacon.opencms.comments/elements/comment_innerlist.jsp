@@ -7,7 +7,7 @@
 	pageContext.setAttribute("alkaconCmt", alkaconCmt);
 %>
 <fmt:setLocale value="${cms:vfs(pageContext).requestContext.locale}" />
-<fmt:setBundle basename="com.alkacon.opencms.comments.frontend" />
+<fmt:setBundle basename="${alkaconCmt.resourceBundle}" />
 <!-- start: pagination -->
 <%@include file="%(link.strong:/system/modules/com.alkacon.opencms.comments/elements/comment_pagination.jsp:15fbc99e-1847-11dd-88ef-111d34530985)" %>
 <!-- end: pagination -->

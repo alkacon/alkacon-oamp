@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.comments/src/com/alkacon/opencms/comments/CmsCommentConfiguration.java,v $
- * Date   : $Date: 2008/05/16 10:16:07 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/06/09 09:44:24 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -53,7 +53,7 @@ import java.util.Locale;
  * 
  * @author Michael Moossen 
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.5 
  */
@@ -66,6 +66,9 @@ public class CmsCommentConfiguration {
 
         /** Constant for the comments security mode, no login needed. */
         protected static final CmsCommentSecurityMode MODE_NONE = new CmsCommentSecurityMode("none");
+
+        /** Constant for the comments security mode, only write. */
+        protected static final CmsCommentSecurityMode MODE_NOVIEW = new CmsCommentSecurityMode("noview");
 
         /** Constant for the comments security mode, only view without login. */
         protected static final CmsCommentSecurityMode MODE_VIEW = new CmsCommentSecurityMode("view");
@@ -104,6 +107,9 @@ public class CmsCommentConfiguration {
             if (commentSecurityMode.equalsIgnoreCase(MODE_VIEW.getMode())) {
                 return MODE_VIEW;
             }
+            if (commentSecurityMode.equalsIgnoreCase(MODE_NOVIEW.getMode())) {
+                return MODE_NOVIEW;
+            }
             if (commentSecurityMode.equalsIgnoreCase(MODE_WRITE.getMode())) {
                 return MODE_WRITE;
             }
@@ -118,6 +124,16 @@ public class CmsCommentConfiguration {
         public boolean isNone() {
 
             return this == MODE_NONE;
+        }
+
+        /**
+         * Checks if <code>this</code> is {@link #MODE_NOVIEW}.<p>
+         * 
+         * @return <code>true</code>, if <code>this</code> is {@link #MODE_NOVIEW}
+         */
+        public boolean isNoView() {
+
+            return this == MODE_NOVIEW;
         }
 
         /**
@@ -144,6 +160,9 @@ public class CmsCommentConfiguration {
     /** Constant for the comments security mode, no login needed. */
     public static final CmsCommentSecurityMode SECURITY_MODE_NONE = CmsCommentSecurityMode.MODE_NONE;
 
+    /** Constant for the comments security mode, only write. */
+    public static final CmsCommentSecurityMode SECURITY_MODE_NOVIEW = CmsCommentSecurityMode.MODE_NOVIEW;
+
     /** Constant for the comments security mode, only view without login. */
     public static final CmsCommentSecurityMode SECURITY_MODE_VIEW = CmsCommentSecurityMode.MODE_VIEW;
 
@@ -162,14 +181,23 @@ public class CmsCommentConfiguration {
     /** Configuration node name for the moderated flag. */
     private static final String NODE_MODERATED = "Moderated";
 
+    /** Configuration node name for the 'offer login' flag. */
+    private static final String NODE_OFFERLOGIN = "OfferLogin";
+
     /** Configuration node name for the comment options. */
     private static final String NODE_OPTIONS = "Options";
 
     /** Configuration node name for the organizational unit. */
     private static final String NODE_ORGUNIT = "OrgUnit";
 
+    /** Configuration node name for the resource bundle. */
+    private static final String NODE_RESOURCEBUNDLE = "ResourceBundle";
+
     /** Configuration node name for the security level. */
     private static final String NODE_SECURITY = "Security";
+
+    /** Configuration node name for the style sheet. */
+    private static final String NODE_STYLESHEET = "StyleSheet";
 
     /** Configuration Uri. */
     private String m_configUri;
@@ -186,11 +214,20 @@ public class CmsCommentConfiguration {
     /** The moderated flag. */
     private boolean m_moderated;
 
+    /** The 'offer login' flag. */
+    private boolean m_offerLogin;
+
     /** The organizational units, the users have to be members of. */
     private List m_orgUnits;
 
+    /** The resource bundle. */
+    private String m_resourceBundle;
+
     /** The security level. */
     private CmsCommentSecurityMode m_security;
+
+    /** The style sheet. */
+    private String m_styleSheet;
 
     /**
      * Default constructor which parses the configuration file.<p>
@@ -260,6 +297,16 @@ public class CmsCommentConfiguration {
     }
 
     /**
+     * Returns the resource Bundle.<p>
+     *
+     * @return the resource Bundle
+     */
+    public String getResourceBundle() {
+
+        return m_resourceBundle;
+    }
+
+    /**
      * Returns the security level.<p>
      *
      * @return the security level
@@ -267,6 +314,16 @@ public class CmsCommentConfiguration {
     public CmsCommentSecurityMode getSecurity() {
 
         return m_security;
+    }
+
+    /**
+     * Returns the style Sheet.<p>
+     *
+     * @return the style Sheet
+     */
+    public String getStyleSheet() {
+
+        return m_styleSheet;
     }
 
     /**
@@ -287,6 +344,16 @@ public class CmsCommentConfiguration {
     public boolean isModerated() {
 
         return m_moderated;
+    }
+
+    /**
+     * Returns the 'offer Login' flag.<p>
+     *
+     * @return the 'offer Login' flag
+     */
+    public boolean isOfferLogin() {
+
+        return m_offerLogin;
     }
 
     /**
@@ -370,5 +437,14 @@ public class CmsCommentConfiguration {
 
         stringValue = content.getStringValue(cms, path + NODE_MINIMIZED, locale);
         m_minimized = Boolean.valueOf(stringValue).booleanValue();
+
+        stringValue = content.getStringValue(cms, path + NODE_OFFERLOGIN, locale);
+        m_offerLogin = Boolean.valueOf(stringValue).booleanValue();
+
+        stringValue = content.getStringValue(cms, path + NODE_STYLESHEET, locale);
+        m_styleSheet = stringValue;
+
+        stringValue = content.getStringValue(cms, path + NODE_RESOURCEBUNDLE, locale);
+        m_resourceBundle = stringValue;
     }
 }

@@ -15,7 +15,7 @@
     }
 %>
 <fmt:setLocale value="${cms:vfs(pageContext).requestContext.locale}" />
-<fmt:setBundle basename="com.alkacon.opencms.comments.frontend" />
+<fmt:setBundle basename="${alkaconCmt.resourceBundle}" />
 <div class="cmtDialog">
 	<form class="cmtForm" id="fid">
 		<div id="errmsg" ><fmt:message key="login.message.enterdata" /><br>&nbsp;</div>

@@ -7,7 +7,7 @@
 	pageContext.setAttribute("alkaconCmt", alkaconCmt);
 %>
 <fmt:setLocale value="${cms:vfs(pageContext).requestContext.locale}" />
-<fmt:setBundle basename="com.alkacon.opencms.comments.frontend" />
+<fmt:setBundle basename="${alkaconCmt.resourceBundle}" />
 <!-- start: page -->
 <c:choose>
 <c:when test="${alkaconCmt.userCanManage}" >

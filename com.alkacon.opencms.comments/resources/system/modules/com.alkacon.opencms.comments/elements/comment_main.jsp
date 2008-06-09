@@ -9,7 +9,14 @@
 <cms:jquery js='jquery.pagination' css='pagination' dynamic='true' />
 <cms:jquery js='thickbox' css='thickbox/thickbox' dynamic='true' />
 <script type='text/javascript' >
+<c:choose>
+<c:when test="${!empty alkaconCmt.config.styleSheet}" >
+load_script('<cms:link>${alkaconCmt.config.styleSheet}</cms:link>', 'css');
+</c:when>
+<c:otherwise>
 load_script('<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/resources/comments.css:96522ded-1204-11dd-8a3f-111d34530985)</cms:link>', 'css');
+</c:otherwise>
+</c:choose>
 </script>
 <div id="commentbox" class="commentbox">
 	<div class="cmtLoading" ></div>
