@@ -8,6 +8,7 @@
       <Security><![CDATA[view]]></Security>
       <OrgUnit><![CDATA[test]]></OrgUnit>
       <Minimized>true</Minimized>
+      <OfferLogin>false</OfferLogin>
     </Options>
     <InputField>
       <FieldType><![CDATA[text]]></FieldType>
@@ -86,6 +87,7 @@
       <List><![CDATA[5]]></List>
       <Security><![CDATA[none]]></Security>
       <Minimized>false</Minimized>
+      <OfferLogin>false</OfferLogin>
     </Options>
     <InputField>
       <FieldType><![CDATA[text]]></FieldType>
