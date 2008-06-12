@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.comments/src/com/alkacon/opencms/comments/CmsCommentFormHandler.java,v $
- * Date   : $Date: 2008/06/05 12:10:15 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2008/06/12 10:47:27 $
+ * Version: $Revision: 1.6 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -59,7 +59,7 @@ import org.htmlparser.util.ParserException;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * 
  * @since 7.0.5
  */
@@ -138,7 +138,7 @@ public class CmsCommentFormHandler extends CmsFormHandler {
         m_parameterMap.putAll(getRequest().getParameterMap());
 
         m_macroResolver = CmsMacroResolver.newInstance();
-        m_macroResolver.setKeepEmptyMacros(true);
+        m_macroResolver.setKeepEmptyMacros(false);
         m_macroResolver.addMacro(MACRO_URL, OpenCms.getSiteManager().getCurrentSite(getCmsObject()).getServerPrefix(
             getCmsObject(),
             getRequestContext().getUri())
