@@ -13,6 +13,7 @@
         }
     	return; 
     }
+    pageContext.setAttribute("alkaconCmt", alkaconCmt);
 %>
 <fmt:setLocale value="${cms:vfs(pageContext).requestContext.locale}" />
 <fmt:setBundle basename="${alkaconCmt.resourceBundle}" />
