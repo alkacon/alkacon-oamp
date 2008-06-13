@@ -1,5 +1,7 @@
 @charset "UTF-8";
 
+@import url(pagination.css);
+
 .album_box {
 	float: left; 
 	padding: 5px; 
@@ -8,4 +10,8 @@
 
 .gallery_thumb {
 	vertical-align: middle;
+}
+
+.album_clear {
+	clear: left;
 }

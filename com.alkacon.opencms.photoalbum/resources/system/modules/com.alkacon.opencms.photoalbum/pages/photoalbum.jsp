@@ -15,11 +15,8 @@
 
 <cms:jquery dynamic='true' />
 <cms:jquery js='jquery' dynamic='true' />
-<cms:jquery js='jquery.pagination' css='pagination' dynamic='true' />
+<cms:jquery js='jquery.pagination' dynamic='true' />
 <cms:jquery js='thickbox' css='thickbox/thickbox' dynamic='true' />
-<script type='text/javascript' >
-load_script('<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.photoalbum/resources/album.css)</cms:link>', 'css');
-</script>
 
 <script type='text/javascript'>
      /**
@@ -92,6 +89,8 @@ load_script('<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.photoalbu
 			</cms:include>
 		</div>
 	</div>
+	
+	<div class="album_clear"></div>
 	
 	<%-- Pagination above bottom text --%>
 	<c:if test="${album.value['NavigationPosition'] == 'b_a' && thumbs.value['ItemsPerPage'].stringValue > 0}">

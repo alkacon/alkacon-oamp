@@ -1,0 +1,32 @@
+.pagination_container {
+	margin: 5px 0px 5px 0px;
+}
+	
+.album-pagination {
+	font-size: 80%;
+	display: inline;
+}
+
+.album-pagination a {
+    text-decoration: none;
+	border: solid 1px #AAE;
+	color: #15B;
+}
+
+.album-pagination a, .album-pagination span {
+    padding: 0.3em 0.5em;
+    margin-right: 5px;
+	margin-bottom: 5px;
+}
+
+.album-pagination .current {
+    background: #26B;
+    color: #fff;
+	border: solid 1px #AAE;
+}
+
+.album-pagination .current.prev, .album-pagination .current.next{
+	color:#999;
+	border-color:#999;
+	background:#fff;
+}

@@ -373,6 +373,21 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<source>system/modules/com.alkacon.opencms.photoalbum/resources/pagination.css</source>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/resources/pagination.css</destination>
+			<type>plain</type>
+			<uuidstructure>c18aca0d-388f-11dd-ae6b-d323604c3b7a</uuidstructure>
+			<uuidresource>c18aca0e-388f-11dd-ae6b-d323604c3b7a</uuidresource>
+			<datelastmodified>Thu, 12 Jun 2008 14:56:48 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 12 Jun 2008 14:56:36 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
 			<destination>system/modules/com.alkacon.opencms.photoalbum/schemas</destination>
 			<type>folder</type>
 			<uuidstructure>32ad5a2e-1c3c-11dd-9a4e-d323604c3b7a</uuidstructure>
