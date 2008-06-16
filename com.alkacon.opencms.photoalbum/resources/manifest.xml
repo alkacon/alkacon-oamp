@@ -297,6 +297,34 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/lib</destination>
+			<type>folder</type>
+			<uuidstructure>72c16af5-3b9f-11dd-8c8c-d323604c3b7a</uuidstructure>
+			<datelastmodified>Mon, 16 Jun 2008 12:26:30 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Jun 2008 12:26:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.photoalbum/lib/com.alkacon.opencms.photoalbum.jar</source>
+			<destination>system/modules/com.alkacon.opencms.photoalbum/lib/com.alkacon.opencms.photoalbum.jar</destination>
+			<type>binary</type>
+			<uuidstructure>8266b28b-3b9f-11dd-8c8c-d323604c3b7a</uuidstructure>
+			<uuidresource>8266b28c-3b9f-11dd-8c8c-d323604c3b7a</uuidresource>
+			<datelastmodified>Mon, 16 Jun 2008 12:27:05 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Jun 2008 12:26:56 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
 			<destination>system/modules/com.alkacon.opencms.photoalbum/pages</destination>
 			<type>folder</type>
 			<uuidstructure>90db2362-1c43-11dd-9a4e-d323604c3b7a</uuidstructure>
