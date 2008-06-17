@@ -173,4 +173,9 @@ $("textarea[@name='"+commentField+"']").keyup(updateComment);
 $("textarea[@name='"+commentField+"']").change(updateComment);
 updateComment();
 <%     } %>
+
+$("#TB_title").addClass("cmt_TB_title");
+$("#TB_closeAjaxWindow").addClass("cmt_TB_closeAjaxWindow");
+$("#TB_ajaxContent").addClass("cmt_TB_ajaxContent");
+$("#TB_ajaxWindowTitle").addClass("cmt_TB_ajaxWindowTitle");
 </script>

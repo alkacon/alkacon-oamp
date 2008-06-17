@@ -47,7 +47,7 @@
 	        <a 
 	           title="<fmt:message key="login.message.title" />" 
 	           href="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_login.jsp:87972a79-12be-11dd-a2ad-111d34530985)?cmturi=${param.cmturi}&__locale=${cms:vfs(pageContext).requestContext.locale}&width=400&height=200</cms:link>" 
-	           class="thickbox" >
+	           class="cmt_thickbox" >
 			<fmt:message key="header.user.login.1" >
 				<fmt:param value="${alkaconCmt.countComments}" />
 			</fmt:message>
@@ -57,9 +57,9 @@
 </c:choose>
 </div>
 <script type="text/javascript" >
-  tb_init('a.thickbox'); //pass where to apply thickbox
+  tb_init('a.cmt_thickbox'); //pass where to apply thickbox
   imgLoader = new Image(); // preload image
-  imgLoader.src = '../resources/load.gif';
+  imgLoader.src = '<cms:link>%(link.weak:/system/workplace/resources/jquery/css/thickbox/loading.gif:d20e3a58-12ae-11dd-86ab-111d34530985)</cms:link>';
 
   function loadComments() {
     $("#commentbox").html("<div class='cmtLoading'></div>");

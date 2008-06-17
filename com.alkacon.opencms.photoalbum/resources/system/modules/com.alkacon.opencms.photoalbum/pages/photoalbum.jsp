@@ -28,7 +28,7 @@
        'prev': '<fmt:message key="photoalbum.image.prev" />',
        'imageCount': '<fmt:message key="photoalbum.image.count" />'
      };
-     
+     var tb_pathToImage = "<cms:link>%(link.weak:/system/workplace/resources/jquery/css/thickbox/loading.gif)</cms:link>";
 </script>
 
 <c:set var="currentPage"><c:out value="${param.page}" default="1"/></c:set>
