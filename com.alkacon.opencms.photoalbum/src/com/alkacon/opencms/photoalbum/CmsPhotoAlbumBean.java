@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.photoalbum/src/com/alkacon/opencms/photoalbum/CmsPhotoAlbumBean.java,v $
- * Date   : $Date: 2008/05/13 12:00:49 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/06/17 12:49:16 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -31,9 +31,11 @@
 
 package com.alkacon.opencms.photoalbum;
 
+import org.opencms.file.CmsResource;
 import org.opencms.file.CmsResourceFilter;
 import org.opencms.file.types.CmsResourceTypeImage;
 import org.opencms.jsp.CmsJspActionElement;
+import org.opencms.loader.CmsImageScaler;
 import org.opencms.main.CmsException;
 
 import java.util.HashMap;
@@ -52,11 +54,17 @@ import org.apache.commons.collections.map.LazyMap;
  * 
  * @author Peter Bonrad
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4
  */
 public class CmsPhotoAlbumBean extends CmsJspActionElement {
+
+    /** The image scaler to check if a downscale is required. */
+    CmsImageScaler m_imageScaler;
+
+    /** Lazy map with the list of resources (images) for a path.*/
+    private Map m_downscaleRequired;
 
     /** Lazy map with the list of resources (images) for a path.*/
     private Map m_images;
@@ -80,6 +88,38 @@ public class CmsPhotoAlbumBean extends CmsJspActionElement {
 
         super();
         init(context, req, res);
+    }
+
+    /**
+     * Returns a lazy initialized map that checks if downscaling is required
+     * for the given resource used as a key in the Map.<p> 
+     * 
+     * @return a lazy initialized map
+     */
+    public Map getIsDownscaleRequired() {
+
+        if (m_downscaleRequired == null) {
+            m_downscaleRequired = LazyMap.decorate(new HashMap(), new Transformer() {
+
+                /**
+                 * @see org.apache.commons.collections.Transformer#transform(java.lang.Object)
+                 */
+                public Object transform(Object input) {
+
+                    Boolean result = Boolean.FALSE;
+                    if (m_imageScaler == null) {
+                        return result;
+                    }
+
+                    CmsImageScaler scaler = new CmsImageScaler(getCmsObject(), (CmsResource)input);
+                    if (scaler.isDownScaleRequired(m_imageScaler)) {
+                        return Boolean.TRUE;
+                    }
+                    return result;
+                }
+            });
+        }
+        return m_downscaleRequired;
     }
 
     /**
@@ -112,5 +152,21 @@ public class CmsPhotoAlbumBean extends CmsJspActionElement {
             });
         }
         return m_images;
+    }
+
+    /**
+     * @see org.opencms.jsp.CmsJspBean#init(javax.servlet.jsp.PageContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     */
+    public void init(PageContext context, HttpServletRequest req, HttpServletResponse res) {
+
+        String imgSize = req.getParameter("maxImageSize");
+        if (imgSize != null) {
+            m_imageScaler = new CmsImageScaler();
+            String[] values = imgSize.split("x");
+            m_imageScaler.setWidth(Integer.parseInt(values[0]));
+            m_imageScaler.setHeight(Integer.parseInt(values[1]));
+        }
+
+        super.init(context, req, res);
     }
 }

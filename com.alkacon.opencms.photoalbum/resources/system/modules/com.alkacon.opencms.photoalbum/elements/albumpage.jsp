@@ -20,11 +20,15 @@
 		<c:set var="imageTitle" value="${photo.name}" />
 	</c:if>
 
+	<c:if test="${cms.isDownscaleRequired[photo]}">
+		<c:set var="imageParam" value="?__scale=t:3,w:${fn:substringBefore(param.maxImageSize, 'x')},h:${fn:substringAfter(param.maxImageSize, 'x')}" />
+	</c:if>
+
 	<c:choose>
 		<c:when test="${start le count && (end ge count || param.itemsPerPage == -1)}">
 			<div style="background-color: ${param.background}; width: ${fn:substringBefore(param.size, 'x')}px; " class="album_box">
 				<div>
-					<a href="<cms:link>${imagePath}</cms:link>" title="${imageTitle}" class="thickbox" rel="page${param.page}" >
+					<a href="<cms:link>${imagePath}${imageParam}</cms:link>" title="${imageTitle}" class="thickbox" rel="page${param.page}" >
 						<cms:img src="${imagePath}" alt="${imageTitle}" width="${fn:substringBefore(param.size, 'x')}" height="${fn:substringAfter(param.size, 'x')}" scaleColor="${param.background}" scaleQuality="${param.quality}" scaleFilter="${fn:replace(param.filter, '.', ':')}" >
 							<cms:param name="class">gallery_thumb</cms:param>
 						</cms:img>
@@ -43,7 +47,7 @@
 			</div>
 		</c:when>
 		<c:otherwise>
-			<a href="<cms:link>${imagePath}</cms:link>" title="${imageTitle}" class="thickbox" rel="page${param.page}" style="display: none;" ></a>
+			<a href="<cms:link>${imagePath}${imageParam}</cms:link>" title="${imageTitle}" class="thickbox" rel="page${param.page}" style="display: none;" ></a>
 		</c:otherwise>
 	</c:choose>
 </c:forEach>

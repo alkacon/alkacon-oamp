@@ -86,6 +86,7 @@
 				<cms:param name="showResourceNameAsTitle" value="${album.value['ShowResourceNameAsTitle']}" />
 				<cms:param name="page" value="1" />
 				<cms:param name="itemsPerPage" value="${thumbs.value['ItemsPerPage']}" />
+				<cms:param name="maxImageSize" value="${album.value['MaxImageSize']}" />
 			</cms:include>
 		</div>
 	</div>
