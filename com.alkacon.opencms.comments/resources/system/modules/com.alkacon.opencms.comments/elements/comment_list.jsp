@@ -1,11 +1,12 @@
 <%@ page import="com.alkacon.opencms.comments.*" %>
+<%@ page import="org.opencms.workplace.CmsWorkplace"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms"%>
 <%
 	CmsCommentsAccess alkaconCmt = new CmsCommentsAccess(pageContext, request, response);
 	pageContext.setAttribute("alkaconCmt", alkaconCmt);
-	if (!alkaconCmt.isUserCanView() && !alkaconCmt.isUserCanManage() && !alkaconCmt.isUserCanPost()) {
+	if (!alkaconCmt.isUserCanView() && !alkaconCmt.isUserCanManage() && !alkaconCmt.isUserCanPost() && !alkaconCmt.getConfig().isOfferLogin()) {
 		return;
 	}
 %>
@@ -43,7 +44,7 @@
 	        <a 
 	           title="<fmt:message key="login.message.title" />" 
 	           href="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_login.jsp:87972a79-12be-11dd-a2ad-111d34530985)?cmturi=${param.cmturi}&__locale=${cms:vfs(pageContext).requestContext.locale}&width=400&height=200</cms:link>" 
-	           class="thickbox" >
+	           class="cmt_thickbox" >
 			<fmt:message key="post.user.login.0" />
 		</a>
 	</c:if>
@@ -52,7 +53,7 @@
 <script type="text/javascript">
   tb_init('a.cmt_thickbox'); //pass where to apply thickbox
   imgLoader = new Image(); // preload image
-  imgLoader.src = '<cms:link>%(link.weak:/system/workplace/resources/jquery/css/thickbox/loading.gif:d20e3a58-12ae-11dd-86ab-111d34530985)</cms:link>';
+  imgLoader.src = '<%=CmsWorkplace.getSkinUri()%>jquery/css/thickbox/loading.gif';
   
   function reloadComments(state, page) {
   	// empty

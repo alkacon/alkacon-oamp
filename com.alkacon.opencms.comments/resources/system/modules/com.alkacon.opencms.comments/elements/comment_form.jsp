@@ -38,6 +38,11 @@ function submitEnter(e) {
     }
 }
 $(window).keypress(submitEnter);
+$("#TB_title").addClass("cmt_TB_title");
+$("#TB_title").attr("id","");
+$("#TB_closeAjaxWindow").addClass("cmt_TB_closeAjaxWindow");
+$("#TB_ajaxContent").addClass("cmt_TB_ajaxContent");
+$("#TB_ajaxWindowTitle").addClass("cmt_TB_ajaxWindowTitle");
 </script>
 <%	} else {
 	    // problem while submitting
@@ -175,6 +180,7 @@ updateComment();
 <%     } %>
 
 $("#TB_title").addClass("cmt_TB_title");
+$("#TB_title").attr("id","");
 $("#TB_closeAjaxWindow").addClass("cmt_TB_closeAjaxWindow");
 $("#TB_ajaxContent").addClass("cmt_TB_ajaxContent");
 $("#TB_ajaxWindowTitle").addClass("cmt_TB_ajaxWindowTitle");

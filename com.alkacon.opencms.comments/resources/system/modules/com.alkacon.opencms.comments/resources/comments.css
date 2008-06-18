@@ -136,6 +136,7 @@ form.cmtForm img {
 /* Overwrite default thickbox styles */
 .cmt_TB_title { 
 	background: #AACCFF url(gradient.png) repeat-x scroll center top;
+	height: 27px;
 	color: black;
 	padding: 3px 5px;
 }

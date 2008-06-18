@@ -1,4 +1,5 @@
 <%@ page import="com.alkacon.opencms.comments.*" %>
+<%@ page import="org.opencms.workplace.CmsWorkplace"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms"%><%
@@ -59,7 +60,7 @@
 <script type="text/javascript" >
   tb_init('a.cmt_thickbox'); //pass where to apply thickbox
   imgLoader = new Image(); // preload image
-  imgLoader.src = '<cms:link>%(link.weak:/system/workplace/resources/jquery/css/thickbox/loading.gif:d20e3a58-12ae-11dd-86ab-111d34530985)</cms:link>';
+  imgLoader.src = '<%=CmsWorkplace.getSkinUri()%>jquery/css/thickbox/loading.gif';
 
   function loadComments() {
     $("#commentbox").html("<div class='cmtLoading'></div>");
