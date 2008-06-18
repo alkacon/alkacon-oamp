@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.comments/src/com/alkacon/opencms/comments/Messages.java,v $
- * Date   : $Date: 2008/05/29 12:09:19 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2008/06/18 13:37:13 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -40,7 +40,7 @@ import org.opencms.i18n.I_CmsMessageBundle;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4 
  */
@@ -54,6 +54,9 @@ public final class Messages extends A_CmsMessageBundle {
 
     /** Message constant for key in the resource bundle. */
     public static final String ERR_ORGUNIT_DOESNOT_EXIST_1 = "ERR_ORGUNIT_DOESNOT_EXIST_1";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String LOG_INIT_CONFIG_1 = "LOG_INIT_CONFIG_1";
 
     /** Message constant for key in the resource bundle. */
     public static final String LOG_INIT_PAGE_1 = "LOG_INIT_PAGE_1";
