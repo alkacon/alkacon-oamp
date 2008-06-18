@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.photoalbum/src/com/alkacon/opencms/photoalbum/CmsPhotoAlbumBean.java,v $
- * Date   : $Date: 2008/06/17 12:49:16 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2008/06/18 10:56:23 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -37,6 +37,7 @@ import org.opencms.file.types.CmsResourceTypeImage;
 import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.loader.CmsImageScaler;
 import org.opencms.main.CmsException;
+import org.opencms.util.CmsStringUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -54,7 +55,7 @@ import org.apache.commons.collections.map.LazyMap;
  * 
  * @author Peter Bonrad
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4
  */
@@ -160,11 +161,15 @@ public class CmsPhotoAlbumBean extends CmsJspActionElement {
     public void init(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         String imgSize = req.getParameter("maxImageSize");
-        if (imgSize != null) {
+        if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(imgSize)) {
             m_imageScaler = new CmsImageScaler();
             String[] values = imgSize.split("x");
-            m_imageScaler.setWidth(Integer.parseInt(values[0]));
-            m_imageScaler.setHeight(Integer.parseInt(values[1]));
+            try {
+                m_imageScaler.setWidth(Integer.parseInt(values[0]));
+                m_imageScaler.setHeight(Integer.parseInt(values[1]));
+            } catch (NumberFormatException ex) {
+                m_imageScaler = null;
+            }
         }
 
         super.init(context, req, res);
