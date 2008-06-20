@@ -16,7 +16,7 @@
 		<description><![CDATA[This module allows easy creation of several versions of syndication feeds (RSS, Atom) from XML contents.]]></description>
 		<version>1.0.0</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
-		<authoremail/>
+		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
 		<datecreated/>
 		<userinstalled/>
 		<dateinstalled/>
