@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/dialog/CmsFormDataListDialog.java,v $
- * Date   : $Date: 2008/05/16 10:09:43 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2008/06/23 07:36:57 $
+ * Version: $Revision: 1.5 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -77,7 +77,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Anja Röttgers
  * 
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * 
  * @since 7.0.4
  */
@@ -148,8 +148,9 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
             LIST_COLUMN_DATE,
             CmsListOrderEnum.ORDER_ASCENDING,
             null);
-        getList().getMetadata().setVolatile(true);
-
+        if (getList() != null) {
+            getList().getMetadata().setVolatile(true);
+        }
     }
 
     /**
