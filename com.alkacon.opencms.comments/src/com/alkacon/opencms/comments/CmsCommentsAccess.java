@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.comments/src/com/alkacon/opencms/comments/CmsCommentsAccess.java,v $
- * Date   : $Date: 2008/06/18 13:37:13 $
- * Version: $Revision: 1.10 $
+ * Date   : $Date: 2008/06/30 08:12:08 $
+ * Version: $Revision: 1.11 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -48,6 +48,7 @@ import org.opencms.main.I_CmsEventListener;
 import org.opencms.main.OpenCms;
 import org.opencms.security.CmsOrganizationalUnit;
 import org.opencms.security.CmsPermissionSet;
+import org.opencms.util.CmsStringUtil;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -72,7 +73,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  * 
  * @since 7.0.5
  */
@@ -593,7 +594,7 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
      */
     public String getResourceBundle() {
 
-        if (getConfig().getResourceBundle() != null) {
+        if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(getConfig().getResourceBundle())) {
             return getConfig().getResourceBundle();
         }
         return "com.alkacon.opencms.comments.frontend";
