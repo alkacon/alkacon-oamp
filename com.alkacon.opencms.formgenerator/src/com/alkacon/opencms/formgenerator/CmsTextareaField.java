@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsTextareaField.java,v $
- * Date   : $Date: 2008/07/01 11:03:00 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2008/07/01 13:28:27 $
+ * Version: $Revision: 1.5 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -42,7 +42,7 @@ import org.opencms.util.I_CmsMacroResolver;
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * 
  * @since 7.0.4 
  */
@@ -116,7 +116,7 @@ public class CmsTextareaField extends A_CmsField {
             messages.key("form.html.multiline.label.end")).append("\n");
 
         // line #3
-        buf.append(messages.key("form.html.multiline.field.start")).append("<textarea cols=\"\" rows=\"\" name=\"").append(getName()).append(
+        buf.append(messages.key("form.html.multiline.field.start")).append("<textarea cols=\"5\" rows=\"5\" name=\"").append(getName()).append(
             "\"").append(formHandler.getFormConfiguration().getFormFieldAttributes()).append(attributes).append(">").append(
             CmsEncoder.escapeXml(getValue())).append("</textarea>").append(errorMessage).append(
             messages.key("form.html.multiline.field.end")).append("\n");
