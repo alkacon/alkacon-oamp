@@ -50,7 +50,7 @@
       <Preset><![CDATA[/system/workplace/admin/captcha/alkacon-dict-en.captchapreset]]></Preset>
     </FormCaptcha>
     <MailAlert>
-      <MailFrom><![CDATA[comments.noreply@alkacon.com]]></MailFrom>
+      <MailFrom><![CDATA[comments.noreply@server.com]]></MailFrom>
       <MailResponsible>true</MailResponsible>
       <MailSubject><![CDATA[New comment for %(url) from %(name)]]></MailSubject>
       <MailText name="MailText0">
@@ -76,7 +76,7 @@
     </FormConfirmation>
     <OptionalFormConfiguration>
       <ShowMandatory>true</ShowMandatory>
-      <FormAttributes><![CDATA[class="loginform"]]></FormAttributes>
+      <FormAttributes><![CDATA[class="cmtForm"]]></FormAttributes>
       <FormFieldAttributes><![CDATA[style="width: 99%"]]></FormFieldAttributes>
       <DynamicFieldClass><![CDATA[com.alkacon.opencms.comments.CmsCommentDynamicFields]]></DynamicFieldClass>
     </OptionalFormConfiguration>
@@ -129,8 +129,8 @@
       <Preset><![CDATA[/system/workplace/admin/captcha/alkacon-dict-de.captchapreset]]></Preset>
     </FormCaptcha>
     <MailAlert>
-      <MailFrom><![CDATA[comments.noreply@alkacon.com]]></MailFrom>
-      <MailTo><![CDATA[m.moossen@alkacon.com]]></MailTo>
+      <MailFrom><![CDATA[comments.noreply@server.com]]></MailFrom>
+      <MailTo><![CDATA[info@server.com]]></MailTo>
       <MailResponsible>false</MailResponsible>
       <MailSubject><![CDATA[Neuer Beitrag für %(url) von %(name)]]></MailSubject>
       <MailText name="MailText0">
@@ -147,8 +147,8 @@
     </MailAlert>
     <OptionalFormConfiguration>
       <ShowMandatory>true</ShowMandatory>
-      <FormAttributes/>
-      <FormFieldAttributes><![CDATA[style="width: 100%"]]></FormFieldAttributes>
+      <FormAttributes><![CDATA[class="cmtForm"]]></FormAttributes>
+      <FormFieldAttributes><![CDATA[style="width: 99%"]]></FormFieldAttributes>
       <DynamicFieldClass><![CDATA[com.alkacon.opencms.comments.CmsCommentDynamicFields]]></DynamicFieldClass>
     </OptionalFormConfiguration>
   </AlkaconCommentForm>
