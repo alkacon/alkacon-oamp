@@ -396,7 +396,7 @@
 		<file>
 			<source>system/modules/com.alkacon.opencms.photoalbum/resources/album.js</source>
 			<destination>system/modules/com.alkacon.opencms.photoalbum/resources/album.js</destination>
-			<type>plain</type>
+			<type>jsp</type>
 			<uuidstructure>c6f47ca2-1daa-11dd-a19b-d323604c3b7a</uuidstructure>
 			<uuidresource>c6f47ca3-1daa-11dd-a19b-d323604c3b7a</uuidresource>
 			<datelastmodified>Fri, 09 May 2008 12:34:25 GMT</datelastmodified>

@@ -1,4 +1,4 @@
-<%@ page session="false" import="com.alkacon.opencms.photoalbum.CmsPhotoAlbumBean" %>
+<%@ page session="false" import="com.alkacon.opencms.photoalbum.CmsPhotoAlbumBean, org.opencms.workplace.*" %>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -17,6 +17,10 @@
 <cms:jquery js='jquery' dynamic='true' />
 <cms:jquery js='jquery.pagination' dynamic='true' />
 <cms:jquery js='thickbox' css='thickbox/thickbox' dynamic='true' />
+
+<script type='text/javascript'>
+	load_script('<cms:link>/system/modules/com.alkacon.opencms.photoalbum/resources/album.css</cms:link>', 'css');
+</script>
 
 <script type='text/javascript'>
      /**
@@ -44,7 +48,7 @@
 	</c:if>
 
 	<script type="text/javascript">
-		<%@include file="%(link.strong:/system/modules/com.alkacon.opencms.photoalbum/resources/album.js:c6f47ca2-1daa-11dd-a19b-d323604c3b7a)" %>
+		<%@include file="%(link.strong:/system/modules/com.alkacon.opencms.photoalbum/resources/album.js)" %>
 	</script>
 
 	<%-- Title --%>
