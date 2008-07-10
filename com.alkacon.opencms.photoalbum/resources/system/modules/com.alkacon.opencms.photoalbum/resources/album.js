@@ -32,7 +32,8 @@ function loadAlbumPage(page) {
 			showTitle: '${thumbs.value['ShowTitle']}',
 			showResourceNameAsTitle: '${album.value['ShowResourceNameAsTitle']}',
 			page: page,
-			itemsPerPage: '${thumbs.value['ItemsPerPage']}'
+			itemsPerPage: '${thumbs.value['ItemsPerPage']}',
+			maxImageSize: '${album.value['MaxImageSize']}'
 		}, onPageLoad).attr('id', 'album_page_' + page).css('display', 'none').appendTo('#album_pages');
 	} else {
 		switchPage();
@@ -55,7 +56,11 @@ function switchPage() {
 }
 
 $(window).resize(fixAlbum);
-$(document).ready(fixAlbum);
+$(document).ready(fixAlbumDelayed);
+
+function fixAlbumDelayed() {
+	setTimeout("fixAlbum();", 200);
+}
 
 function fixAlbum() {
 	lastParent = 0;

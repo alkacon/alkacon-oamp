@@ -28,7 +28,13 @@
        'prev': '<fmt:message key="photoalbum.image.prev" />',
        'imageCount': '<fmt:message key="photoalbum.image.count" />'
      };
+     
+     /**
+      * Set path to loading image as inline javascript code          
+      **/
      var tb_pathToImage = "<cms:link>%(link.weak:/system/workplace/resources/jquery/css/thickbox/loading.gif)</cms:link>";
+     imgLoader = new Image(); // preload image
+     imgLoader.src = '<cms:link>%(link.weak:/system/workplace/resources/jquery/css/thickbox/loading.gif)</cms:link>';
 </script>
 
 <c:set var="currentPage"><c:out value="${param.page}" default="1"/></c:set>
@@ -37,29 +43,29 @@
 	<cms:contentaccess var="album" />
 	<c:set var="thumbs" value="${album.value['Thumbs']}" />
 	<c:set var="imageCount" value="${fn:length(cms.readImages[album.value['VfsFolder'].stringValue])}" />
-	
-	<script type="text/javascript">
-		<%@include file="%(link.strong:/system/modules/com.alkacon.opencms.photoalbum/resources/album.js:c6f47ca2-1daa-11dd-a19b-d323604c3b7a)" %>
-	</script>
 
 	<%-- Quality --%>
 	<c:set var="quality" value="50" />
 	<c:if test="${thumbs.value['HighQuality'] == 'true'}">
 		<c:set var="quality" value="90" />
 	</c:if>
-	
+
+	<script type="text/javascript">
+		<%@include file="%(link.strong:/system/modules/com.alkacon.opencms.photoalbum/resources/album.js:c6f47ca2-1daa-11dd-a19b-d323604c3b7a)" %>
+	</script>
+
 	<%-- Title --%>
 	<c:if test="${!album.value['Title'].isEmptyOrWhitespaceOnly}">
 		<h1><c:out value="${album.value['Title']}" /></h1>
 	</c:if>
-	
+
 	<%-- Pagination above top text --%>
 	<c:if test="${album.value['NavigationPosition'] == 't_a' && thumbs.value['ItemsPerPage'].stringValue > 0}">
 		<div class="pagination_container" style="text-align: ${album.value['AlignNavigation']};">
 			<div id="Pagination" class="album-pagination"></div>
 		</div>
 	</c:if>
-	
+
 	<%-- Top Text --%>
 	<c:if test="${!thumbs.value['TextTop'].isEmptyOrWhitespaceOnly}">
 		<div><c:out value="${thumbs.value['TextTop']}" escapeXml="false"/></div>
@@ -90,16 +96,16 @@
 			</cms:include>
 		</div>
 	</div>
-	
+
 	<div class="album_clear"></div>
-	
+
 	<%-- Pagination above bottom text --%>
 	<c:if test="${album.value['NavigationPosition'] == 'b_a' && thumbs.value['ItemsPerPage'].stringValue > 0}">
 		<div class="pagination_container" style="text-align: ${album.value['AlignNavigation']};">
 			<div id="Pagination" class="album-pagination"></div>
 		</div>
 	</c:if>
-	
+
 	<%-- Bottom Text --%>
 	<c:if test="${!thumbs.value['TextBottom'].isEmptyOrWhitespaceOnly}">
 		<div style="clear: left;"><c:out value="${thumbs.value['TextBottom']}" escapeXml="false"/></div>

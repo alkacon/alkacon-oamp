@@ -6,12 +6,10 @@
 	pageContext.setAttribute("cms", cms);
 %>
 
-<c:set var="count" value="0" />
 <c:set var="start" value="${((param.page-1) * param.itemsPerPage) + 1}" />
 <c:set var="end" value="${param.page * param.itemsPerPage}" />
 
-<c:forEach items="${cms.readImages[param.vfsFolder]}" var="photo">
-	<c:set var="count" value="${count+1}" />
+<c:forEach items="${cms.readImages[param.vfsFolder]}" var="photo" varStatus="status">
 
 	<c:set var="imagePath" value="${fn:substringAfter(photo.rootPath, cms:vfs(pageContext).requestContext.siteRoot)}" />
 
@@ -21,11 +19,11 @@
 	</c:if>
 
 	<c:if test="${cms.isDownscaleRequired[photo]}">
-		<c:set var="imageParam" value="?__scale=t:3,w:${fn:substringBefore(param.maxImageSize, 'x')},h:${fn:substringAfter(param.maxImageSize, 'x')}" />
+		<c:set var="imageParam" value="?__scale=t:3,q:${param.quality},w:${fn:substringBefore(param.maxImageSize, 'x')},h:${fn:substringAfter(param.maxImageSize, 'x')}" />
 	</c:if>
 
 	<c:choose>
-		<c:when test="${start le count && (end ge count || param.itemsPerPage == -1)}">
+		<c:when test="${start le status.count && (end ge status.count || param.itemsPerPage == -1)}">
 			<div style="background-color: ${param.background}; width: ${fn:substringBefore(param.size, 'x')}px; " class="album_box">
 				<div>
 					<a href="<cms:link>${imagePath}${imageParam}</cms:link>" title="${imageTitle}" class="thickbox" rel="page${param.page}" >

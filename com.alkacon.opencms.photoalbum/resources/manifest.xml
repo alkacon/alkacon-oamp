@@ -289,6 +289,10 @@
 			<flags>0</flags>
 			<properties>
 				<property type="shared">
+					<name>cache</name>
+					<value><![CDATA[site;params=(vfsFolder,background,size,quality,filter,alignTitle,showTitle,showResourceNameAsTitle,page,itemsPerPage,maxImageSize)]]></value>
+				</property>
+				<property type="shared">
 					<name>export</name>
 					<value><![CDATA[false]]></value>
 				</property>
@@ -349,6 +353,10 @@
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties>
+				<property type="shared">
+					<name>cache</name>
+					<value><![CDATA[uri]]></value>
+				</property>
 				<property type="shared">
 					<name>export</name>
 					<value><![CDATA[false]]></value>
