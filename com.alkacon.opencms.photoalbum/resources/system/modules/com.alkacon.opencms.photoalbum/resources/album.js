@@ -42,6 +42,10 @@ function loadAlbumPage(page) {
 
 function onPageLoad() {
 	tb_init('#album_page_' + currentPage + ' a.thickbox');
+	// set path to loading image       
+    var tb_pathToImage = "<cms:link>/system/workplace/resources/jquery/css/thickbox/loading.gif</cms:link>";
+    imgLoader = new Image();
+    imgLoader.src = '<cms:link>/system/workplace/resources/jquery/css/thickbox/loading.gif</cms:link>';
 	switchPage();
 }
 
