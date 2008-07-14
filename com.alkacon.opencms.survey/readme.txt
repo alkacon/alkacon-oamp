@@ -1,6 +1,6 @@
 
                 Alkacon OpenCms Add-On Module Package: Survey
-                       Version 1.0.0; April 23, 2008
+                       Version 1.0.0; July 4, 2008
 
 
                                     WARNING:
@@ -55,5 +55,5 @@ Legend:
 * Bug fixed
 - General comment
 
-1.0.0 - April 23, 2008
+1.0.0 - July 4, 2008
 - First public release
