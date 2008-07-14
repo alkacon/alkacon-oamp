@@ -51,13 +51,13 @@ $("form#fid input").keypress(submitEnter);
 
 function cmtLogin() {
      $("div#errmsg_cnt").html('&nbsp;<br>&nbsp;');
-     $.post("<cms:link>%(link.strong:/system/modules/com.alkacon.opencms.comments/elements/comment_login.jsp:87972a79-12be-11dd-a2ad-111d34530985)</cms:link>",
+     $.post("<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_login.jsp:87972a79-12be-11dd-a2ad-111d34530985)</cms:link>",
      		$("form#fid").serializeArray(), 
 	      function(txt) {
 			  if (txt == 'ok') {
 			       tb_remove();
 				$.post(
-					"<cms:link>%(link.strong:/system/modules/com.alkacon.opencms.comments/elements/comment_list.jsp:f11cf62d-ec2e-11dc-990f-dfec94299cf1)</cms:link>",
+					"<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_list.jsp:f11cf62d-ec2e-11dc-990f-dfec94299cf1)</cms:link>",
 					{ cmturi:'${param.cmturi}', __locale: '<cms:info property="opencms.request.locale" />' },
 					function(html) { $("#commentbox").html(html); }
 				);

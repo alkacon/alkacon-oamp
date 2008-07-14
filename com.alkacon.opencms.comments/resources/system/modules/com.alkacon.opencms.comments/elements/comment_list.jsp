@@ -88,7 +88,7 @@ function reloadComments(state, page) {
 		data = { cmturi: '${param.cmturi}', __locale: '<cms:info property="opencms.request.locale" />', cmtstate: state, cmtpage: 0 };
 	}
 	$.post(
-		'<cms:link>%(link.strong:/system/modules/com.alkacon.opencms.comments/elements/comment_innerlist.jsp:7c811b84-1dcd-11dd-b28b-111d34530985)</cms:link>',
+		'<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_innerlist.jsp:7c811b84-1dcd-11dd-b28b-111d34530985)</cms:link>',
 		data,
 		function(html){ $("#comments").html(html); }
 	);

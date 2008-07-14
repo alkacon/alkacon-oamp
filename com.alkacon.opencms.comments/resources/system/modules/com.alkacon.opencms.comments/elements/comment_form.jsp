@@ -125,7 +125,7 @@ function submitEnter(e) {
 $("form#fid input").keypress(submitEnter);
 
 function cmtPost() {
-     $.post("<%=cms.link("%(link.strong:/system/modules/com.alkacon.opencms.comments/elements/comment_form.jsp:dfbece22-1112-11dd-ba60-111d34530985)")%>", 
+     $.post("<%=cms.link("%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_form.jsp:dfbece22-1112-11dd-ba60-111d34530985)")%>", 
      		$("form#fid").serializeArray(),
 	      function(txt) {
 			  if (txt == 'ok') {

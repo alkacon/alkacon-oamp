@@ -30,7 +30,7 @@
 	        if ($("#comments_page_" + newPage).length == 0) {
                 $("<div></div>").attr("id", "comments_page_" + newPage).css("display", "none").appendTo("#comments");
                	$.post(
-					"<cms:link>%(link.strong:/system/modules/com.alkacon.opencms.comments/elements/comment_page.jsp:34fca4a6-1da3-11dd-be62-111d34530985)</cms:link>",
+					"<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_page.jsp:34fca4a6-1da3-11dd-be62-111d34530985)</cms:link>",
 					{ cmturi: '${param.cmturi}', cmtpage: newPage, __locale: '<cms:info property="opencms.request.locale" />', cmtstate: '${alkaconCmt.state}' },
 					function(html) {
 						$("#comments_page_" + newPage).html(html);

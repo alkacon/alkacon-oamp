@@ -22,13 +22,13 @@
 		<div class="cmtActions">
 			<c:if test="${alkaconCmt.config.moderated}">
 				<c:if test="${comment.state != 1}">
-					<a href="javascript:doAction('approve','${comment.entryId}');" ><img title="<fmt:message key="comment.manager.approve" />" alt="<fmt:message key="comment.manager.approve" />" src='<cms:link>%(link.strong:/system/modules/com.alkacon.opencms.comments/resources/approve.png:ad840730-1dc0-11dd-9741-111d34530985)</cms:link>' width='20' height='20'></a>
+					<a href="javascript:doAction('approve','${comment.entryId}');" ><img title="<fmt:message key="comment.manager.approve" />" alt="<fmt:message key="comment.manager.approve" />" src='<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/resources/approve.png:ad840730-1dc0-11dd-9741-111d34530985)</cms:link>' width='20' height='20'></a>
 				</c:if>
 				<c:if test="${comment.state != 2}">
-					<a href="javascript:doAction('block','${comment.entryId}');" ><img title="<fmt:message key="comment.manager.block" />" alt="<fmt:message key="comment.manager.block" />" src='<cms:link>%(link.strong:/system/modules/com.alkacon.opencms.comments/resources/block.png:adb158c8-1dc0-11dd-9741-111d34530985)</cms:link>' width='20' height='20'></a>
+					<a href="javascript:doAction('block','${comment.entryId}');" ><img title="<fmt:message key="comment.manager.block" />" alt="<fmt:message key="comment.manager.block" />" src='<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/resources/block.png:adb158c8-1dc0-11dd-9741-111d34530985)</cms:link>' width='20' height='20'></a>
 				</c:if>
 			</c:if>
-			<a href="javascript:doAction('delete','${comment.entryId}');" ><img title="<fmt:message key="comment.manager.delete" />" alt="<fmt:message key="comment.manager.delete" />" src='<cms:link>%(link.strong:/system/modules/com.alkacon.opencms.comments/resources/delete.png:ada571e4-1dc0-11dd-9741-111d34530985)</cms:link>' width='20' height='20'></a>
+			<a href="javascript:doAction('delete','${comment.entryId}');" ><img title="<fmt:message key="comment.manager.delete" />" alt="<fmt:message key="comment.manager.delete" />" src='<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/resources/delete.png:ada571e4-1dc0-11dd-9741-111d34530985)</cms:link>' width='20' height='20'></a>
 		</div>
 		<div class="cmtCommentTitle">
 			<c:out value="${comment.field['subject']}"  />

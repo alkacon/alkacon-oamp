@@ -22,7 +22,7 @@
 				$('body').css("cursor", "wait");
 				var page = ($("div.cmtPaginationBox span.current").not(".next").not(".prev").html()*1)-1;
 				$.post(
-					'<cms:link>%(link.strong:/system/modules/com.alkacon.opencms.comments/elements/comment_actions.jsp:b043d3d1-1dc9-11dd-b28b-111d34530985)</cms:link>', 
+					'<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_actions.jsp:b043d3d1-1dc9-11dd-b28b-111d34530985)</cms:link>', 
 					{ cmtaction: actionId, cmtentry: entryId, cmturi: '${param.cmturi}' }, 							
 					function() { reloadComments('${alkaconCmt.state}', page); }
 				);
