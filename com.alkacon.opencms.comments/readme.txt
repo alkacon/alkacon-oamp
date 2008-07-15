@@ -1,6 +1,6 @@
 
                 Alkacon OpenCms Add-On Module Package: Comments
-                       Version 0.9.0; May 15, 2008
+                       Version 1.0; July 15, 2008
 
 
                                     WARNING:
@@ -56,5 +56,5 @@ Legend:
 * Bug fixed
 - General comment
 
-0.9.0 - May 23, 2008
-- First beta release
+1.0.0 - July 15, 2008
+- First release
