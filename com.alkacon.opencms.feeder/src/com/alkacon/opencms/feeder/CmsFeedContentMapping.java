@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.feeder/src/com/alkacon/opencms/feeder/CmsFeedContentMapping.java,v $
- * Date   : $Date: 2007/12/13 15:48:47 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/08/20 09:44:52 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -36,9 +36,11 @@ import org.opencms.file.CmsFile;
 import org.opencms.file.CmsObject;
 import org.opencms.file.CmsRequestContext;
 import org.opencms.file.collectors.CmsDateResourceComparator;
+import org.opencms.main.CmsException;
 import org.opencms.main.OpenCms;
 import org.opencms.util.CmsStringUtil;
 import org.opencms.xml.content.CmsXmlContent;
+import org.opencms.xml.content.I_CmsXmlContentHandler;
 import org.opencms.xml.types.CmsXmlDateTimeValue;
 import org.opencms.xml.types.CmsXmlHtmlValue;
 import org.opencms.xml.types.I_CmsXmlContentValue;
@@ -64,7 +66,7 @@ import com.sun.syndication.feed.synd.SyndEntryImpl;
  * 
  * @author Alexander Kandzior 
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  */
 public class CmsFeedContentMapping {
 
@@ -374,9 +376,24 @@ public class CmsFeedContentMapping {
                 }
             }
             String value = null;
+
             if (xmlContentValue != null) {
                 // value was found in the content
                 value = xmlContentValue.getStringValue(cms);
+            } else if (mapping.hasDefaultValue()
+                && mapping.getDefaultValue().startsWith(I_CmsXmlContentHandler.MAPTO_PROPERTY)) {
+                // value not found in content and default value defines a property.
+                String propertyName = mapping.getDefaultValue().substring(
+                    I_CmsXmlContentHandler.MAPTO_PROPERTY.length());
+                try {
+                    value = cms.readPropertyObject(content.getFile(), propertyName, true).getValue();
+                    if (value == null) {
+                        value = "";
+                    }
+                } catch (CmsException ex) {
+                    // if property could not be read, populate the value with text from the default value field
+                    value = mapping.getDefaultValue();
+                }
             } else if (mapping.hasDefaultValue()) {
                 // value not found in content, use default value
                 value = mapping.getDefaultValue();
