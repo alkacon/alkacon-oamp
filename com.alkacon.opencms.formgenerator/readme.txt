@@ -56,6 +56,11 @@ Legend:
 * Bug fixed
 - General comment
 
+1.2.1 - month, year
+
+! Added macro %(currentsite) for folder selection of widget com.alkacon.opencms.formgenerator.CmsSelectWidgetXMLContentType. 
+
+
 1.2.0 - May, 2008
 ! Added a new Administration Tool under Database Management.
 ! Added a new field type for tables.
