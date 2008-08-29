@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsSelectWidgetXmlcontentType.java,v $
- * Date   : $Date: 2008/08/22 11:59:41 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2008/08/29 10:42:21 $
+ * Version: $Revision: 1.6 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -170,7 +170,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * 
  * @since 7.0.4
  * 
@@ -186,7 +186,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
      * 
      * @author Achim Westermann
      * 
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      * 
      * @since 6.1.6
      * 
@@ -311,7 +311,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
      * 
      * @author Achim Westermann
      * 
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      * 
      * @since 6.1.6
      * 
@@ -441,7 +441,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
      * If true it is not tried to match the editor locale with the existance of the locale in the XML content or as
      * locale property of the corresponding resource.
      */
-    private boolean m_ignoreLocaleMatching = false;
+    private boolean m_ignoreLocaleMatching;
 
     /**
      * The macro that describes the {@link CmsResource} - related value to use for sorting of the select widget options.
@@ -954,29 +954,23 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
     }
 
     /**
-     * 
      * Resolves xpath macros of the form <code>"%(xpath.XPATHEXPRESSION)"</code> by the field value of the XML content
-     * denoted by the given resource.
-     * <p>
+     * denoted by the given resource. <p>
      * 
      * File loading and unmarshalling is only done if the given String contains xpath macros.
      * <p>
      * 
-     * @param cms
-     *            to access values in the cmsobject.
+     * @param cms to access values in the cmsobject.
      * 
-     * @param resource
-     *            the resource pointing to an xmlcontent containing the macro values to resolve.
+     * @param resource the resource pointing to an xmlcontent containing the macro values to resolve.
      * 
-     * @param value
-     *            the unresolved macro string.
+     * @param value the unresolved macro string.
      * 
      * @return a String with resolved xpath macros that have been read from the xmlcontent.
      * 
-     * @throws CmsException
-     *             if sth. goes wrong
+     * @throws CmsException if something goes wrong
      */
-    private String resolveXpathMacros(CmsObject cms, CmsResource resource,final String value) throws CmsException {
+    private String resolveXpathMacros(CmsObject cms, CmsResource resource, final String value) throws CmsException {
 
         String work = value;
         StringBuffer result = new StringBuffer();

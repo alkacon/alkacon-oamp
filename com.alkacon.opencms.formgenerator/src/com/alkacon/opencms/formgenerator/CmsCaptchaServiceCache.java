@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaServiceCache.java,v $
- * Date   : $Date: 2008/05/21 11:53:42 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2008/08/29 10:42:21 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -50,17 +50,17 @@ import com.octo.captcha.service.image.ImageCaptchaService;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4 
  */
 public final class CmsCaptchaServiceCache implements I_CmsEventListener {
 
     /** The shared instance of the captcha service cache. */
-    private static CmsCaptchaServiceCache sharedInstance = null;
+    private static CmsCaptchaServiceCache sharedInstance;
 
     /** Stores the captcha services. */
-    private Map m_captchaServices = null;
+    private Map m_captchaServices;
 
     /**
      * Default constructor.

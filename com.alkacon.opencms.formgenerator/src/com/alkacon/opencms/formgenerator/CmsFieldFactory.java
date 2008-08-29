@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFieldFactory.java,v $
- * Date   : $Date: 2008/05/16 10:09:30 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2008/08/29 10:42:21 $
+ * Version: $Revision: 1.5 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -63,7 +63,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * 
  * @since 7.0.4 
  */
@@ -77,7 +77,7 @@ public final class CmsFieldFactory {
     private static final Log LOG = CmsLog.getLog(CmsFieldFactory.class);
 
     /** The shared instance of the field factory. */
-    private static CmsFieldFactory sharedInstance = null;
+    private static CmsFieldFactory sharedInstance;
 
     /** The registered field types keyed by their type name. */
     private Map m_registeredFieldTypes;

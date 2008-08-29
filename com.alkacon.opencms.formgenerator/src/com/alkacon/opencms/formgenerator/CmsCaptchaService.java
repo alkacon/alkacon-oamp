@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaService.java,v $
- * Date   : $Date: 2007/12/21 14:34:00 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/08/29 10:42:21 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -33,7 +33,6 @@ package com.alkacon.opencms.formgenerator;
 
 import com.octo.captcha.service.captchastore.MapCaptchaStore;
 import com.octo.captcha.service.image.AbstractManageableImageCaptchaService;
-import com.octo.captcha.service.image.ImageCaptchaService;
 
 /**
  * Provides the facility to create and cache the captcha images.
@@ -43,11 +42,11 @@ import com.octo.captcha.service.image.ImageCaptchaService;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4 
  */
-public class CmsCaptchaService extends AbstractManageableImageCaptchaService implements ImageCaptchaService {
+public class CmsCaptchaService extends AbstractManageableImageCaptchaService  {
 
     /**
      * Creates a new captcha service.

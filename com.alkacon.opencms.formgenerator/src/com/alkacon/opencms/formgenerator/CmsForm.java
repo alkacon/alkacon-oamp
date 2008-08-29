@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
- * Date   : $Date: 2008/06/02 13:16:38 $
- * Version: $Revision: 1.10 $
+ * Date   : $Date: 2008/08/29 10:42:21 $
+ * Version: $Revision: 1.11 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -63,7 +63,7 @@ import org.apache.commons.fileupload.FileItem;
  * @author Thomas Weckert 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  * 
  * @since 7.0.4 
  */
@@ -334,7 +334,7 @@ public class CmsForm {
     protected String m_targetUri;
 
     /** Flag to signal that data should be stored in the database - defaults to false. */
-    protected boolean m_transportDatabase = false;
+    protected boolean m_transportDatabase;
 
     /** Flag to signal that data should be sent by email - defaults to true. */
     protected boolean m_transportEmail = true;
