@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsNewsletterListSend.java,v $
- * Date   : $Date: 2008/04/21 15:31:41 $
- * Version: $Revision: 1.8 $
+ * Date   : $Date: 2008/10/20 09:03:02 $
+ * Version: $Revision: 1.9 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -142,7 +142,7 @@ public class CmsNewsletterListSend extends A_CmsListExplorerDialog {
 
         if (getParamListAction().equals(LIST_ACTION_SEND)) {
             // send the newsletter to the selected list
-            String resourceName = (String)getSelectedItem().get(LIST_COLUMN_NAME);
+            String resourceName = (String)getSelectedItem().get(LIST_COLUMN_ROOT_PATH);
             CmsUUID groupId = new CmsUUID(getParamGroupId());
             try {
                 CmsGroup group = getCms().readGroup(groupId);
@@ -265,7 +265,7 @@ public class CmsNewsletterListSend extends A_CmsListExplorerDialog {
         sendIconCol.setAlign(CmsListColumnAlignEnum.ALIGN_CENTER);
 
         // add enabled send action
-        CmsListDirectAction sendAction = new CmsListSendNewsletterAction(LIST_ACTION_SEND, LIST_COLUMN_NAME);
+        CmsListDirectAction sendAction = new CmsListSendNewsletterAction(LIST_ACTION_SEND, LIST_COLUMN_ROOT_PATH);
         //sendAction.setName(Messages.get().container(Messages.GUI_NEWSLETTER_LIST_ACTION_SEND_0));
         //sendAction.setHelpText(Messages.get().container(Messages.GUI_NEWSLETTER_LIST_ACTION_SEND_HELP_0));
         sendAction.setEnabled(true);
@@ -273,7 +273,7 @@ public class CmsNewsletterListSend extends A_CmsListExplorerDialog {
         sendAction.setConfirmationMessage(Messages.get().container(Messages.GUI_NEWSLETTER_LIST_ACTION_SEND_CONF_0));
         sendIconCol.addDirectAction(sendAction);
 
-        CmsListDirectAction nosendAction = new CmsListSendNewsletterAction(LIST_ACTION_SEND + "d", LIST_COLUMN_NAME);
+        CmsListDirectAction nosendAction = new CmsListSendNewsletterAction(LIST_ACTION_SEND + "d", LIST_COLUMN_ROOT_PATH);
         nosendAction.setEnabled(false);
         sendIconCol.addDirectAction(nosendAction);
 

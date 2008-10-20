@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsNewsletterResourcesCollector.java,v $
- * Date   : $Date: 2007/11/30 11:57:27 $
- * Version: $Revision: 1.8 $
+ * Date   : $Date: 2008/10/20 09:03:02 $
+ * Version: $Revision: 1.9 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -113,7 +113,7 @@ public class CmsNewsletterResourcesCollector extends A_CmsListResourceCollector 
         String value = "";
         try {
             CmsProperty property = resUtil.getCms().readPropertyObject(
-                (String)item.get(A_CmsListExplorerDialog.LIST_COLUMN_NAME),
+                (String)item.get(A_CmsListExplorerDialog.LIST_COLUMN_ROOT_PATH),
                 CmsNewsletterManager.PROPERTY_NEWSLETTER_DATA,
                 false);
             value = property.getValue();
