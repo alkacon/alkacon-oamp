@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.calendar/src/com/alkacon/opencms/calendar/CmsCalendarSerialDateFactory.java,v $
- * Date   : $Date: 2008/04/25 14:50:41 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/12/09 14:27:12 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -48,6 +48,9 @@ import java.util.Map;
  * @author Andreas Zahner
  */
 public final class CmsCalendarSerialDateFactory {
+    
+    /** Property name for the serial date options property. */
+    public static final String PROPERTY_SERIALDATE = "calendar.dateserial";
 
     /** Separator for the week days String. */
     public static final char SEPARATOR_WEEKDAYS = ',';
