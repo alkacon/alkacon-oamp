@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterMailData.java,v $
- * Date   : $Date: 2008/04/21 15:31:41 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2008/12/09 14:29:28 $
+ * Version: $Revision: 1.7 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -45,10 +45,9 @@ import org.opencms.util.CmsStringUtil;
 import org.opencms.xml.content.CmsXmlContent;
 import org.opencms.xml.content.CmsXmlContentFactory;
 
-import javax.mail.MessagingException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.mail.Email;
+import org.apache.commons.mail.EmailException;
 
 /**
  * Generates newsletter emails and the list of recipients from a newsletter structured content VFS file.<p>
@@ -57,7 +56,7 @@ import org.apache.commons.mail.Email;
  *  
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.6 $ 
+ * @version $Revision: 1.7 $ 
  * 
  * @since 7.0.3 
  */
@@ -89,6 +88,17 @@ public class CmsNewsletterMailData extends A_CmsNewsletterMailData {
 
     /** The log object for this class. */
     private static final Log LOG = CmsLog.getLog(CmsNewsletterMailData.class);
+
+    /** The email HTML text. */
+    private String m_html;
+
+    /** Indicates if the mail is a HTML or text mail. */
+    private Boolean m_htmlMail;
+
+    private Boolean m_htmlOnly;
+
+    /** The email plain text. */
+    private String m_text;
 
     /**
      * Empty constructor.<p>
@@ -123,17 +133,15 @@ public class CmsNewsletterMailData extends A_CmsNewsletterMailData {
     public Email getEmail() throws CmsException {
 
         // get the email data from the content fields
-        String from = getContent().getStringValue(getCms(), NODE_FROM, getLocale());
-        String subject = getContent().getStringValue(getCms(), NODE_SUBJECT, getLocale());
-        String text = getContent().getStringValue(getCms(), NODE_TEXT, getLocale());
-        boolean isHtmlMail = Boolean.valueOf(
-            getContent().getStringValue(getCms(), XPATH_CONFIG + NODE_HTML, getLocale())).booleanValue();
-        if (isHtmlMail) {
+        String from = getFrom();
+        String subject = getSubject();
+
+        if (isHtmlMail()) {
             // create and send HTML email
             CmsHtmlMail mail = new CmsHtmlMail();
             try {
                 mail.setFrom(from);
-            } catch (MessagingException e) {
+            } catch (EmailException e) {
                 // log invalid from email address
                 if (LOG.isErrorEnabled()) {
                     LOG.error(Messages.get().getBundle().key(
@@ -144,29 +152,25 @@ public class CmsNewsletterMailData extends A_CmsNewsletterMailData {
             }
 
             mail.setSubject(subject);
-            // create the email content and use it as HTML message
-            mail.setHtmlMsg(getEmailContent());
-            // check if HTML only mail should be sent by evaluating the optional element
-            boolean isHtmlOnly = Boolean.valueOf(
-                getContent().getStringValue(getCms(), XPATH_CONFIG + NODE_HTML_ONLY, getLocale())).booleanValue();
-            if (!isHtmlOnly) {
-                // text block should be added, extract the text from the HTML field
-                try {
-                    text = CmsHtmlExtractor.extractText(text, getCms().getRequestContext().getEncoding());
-                } catch (Exception e) {
-                    // cleaning text failed
+            try {
+                // create the email content and use it as HTML message
+                mail.setHtmlMsg(getHtml());
+                // check if HTML only mail should be sent by evaluating the optional element
+                if (!isHtmlOnly()) {
+                    mail.setTextMsg(getText());
                 }
-                mail.setTextMsg(text);
+            } catch (EmailException e) {
+                // ignore, error creating email texts
             }
             // set the mail encoding
-            mail.setCharset(getCms().getRequestContext().getEncoding());
+            mail.setCharset(getEncoding());
             return mail;
         } else {
             // create and send text only email
             CmsSimpleMail mail = new CmsSimpleMail();
             try {
                 mail.setFrom(from);
-            } catch (MessagingException e) {
+            } catch (EmailException e) {
                 // log invalid from email address
                 if (LOG.isErrorEnabled()) {
                     LOG.error(Messages.get().getBundle().key(
@@ -178,13 +182,13 @@ public class CmsNewsletterMailData extends A_CmsNewsletterMailData {
             mail.setSubject(subject);
             // extract the text from the HTML field
             try {
-                text = CmsHtmlExtractor.extractText(text, getCms().getRequestContext().getEncoding());
+                mail.setMsg(getText());
             } catch (Exception e) {
-                // cleaning text failed
+                // cleaning text failed or setting text failed
             }
-            mail.setMsg(text);
+
             // set the mail encoding
-            mail.setCharset(getCms().getRequestContext().getEncoding());
+            mail.setCharset(getEncoding());
             return mail;
         }
     }
@@ -194,7 +198,9 @@ public class CmsNewsletterMailData extends A_CmsNewsletterMailData {
      */
     public String getEmailContentPreview() throws CmsException {
 
-        String result = getEmailContent();
+        boolean isHtmlMail = Boolean.valueOf(
+            getContent().getStringValue(getCms(), XPATH_CONFIG + NODE_HTML, getLocale())).booleanValue();
+        String result = getEmailContent(isHtmlMail);
         if (result.indexOf("</body>") == -1) {
             StringBuffer previewHtml = new StringBuffer(result.length() + 256);
             previewHtml.append("<html><head></head><body style=\"background-color: #FFF;\">\n<pre style=\"font-family: Courier New, monospace; font-size: 13px; color: #000;\">");
@@ -216,14 +222,13 @@ public class CmsNewsletterMailData extends A_CmsNewsletterMailData {
     /**
      * Returns the email content from the newsletter VFS file.<p>
      * 
+     * @param isHtmlMail flag to determine if HTML or plain text content should be generated
      * @return the email content
      * @throws CmsException if reading or unmarshalling the file fails
      */
-    protected String getEmailContent() throws CmsException {
+    protected String getEmailContent(boolean isHtmlMail) throws CmsException {
 
         String text = getContent().getStringValue(getCms(), NODE_TEXT, getLocale());
-        boolean isHtmlMail = Boolean.valueOf(
-            getContent().getStringValue(getCms(), XPATH_CONFIG + NODE_HTML, getLocale())).booleanValue();
         if (isHtmlMail) {
             // create the content of the HTML mail
             StringBuffer mailHtml = new StringBuffer(4096);
@@ -264,6 +269,57 @@ public class CmsNewsletterMailData extends A_CmsNewsletterMailData {
                 return text;
             }
         }
+    }
+
+    /**
+     * @see com.alkacon.opencms.newsletter.A_CmsNewsletterMailData#getHtml()
+     */
+    protected String getHtml() throws CmsException {
+
+        if (m_html == null) {
+            m_html = getEmailContent(true);
+        }
+        return m_html;
+    }
+
+    /**
+     * @see com.alkacon.opencms.newsletter.A_CmsNewsletterMailData#getText()
+     */
+    protected String getText() throws CmsException {
+
+        if (m_text == null) {
+            m_text = getEmailContent(false);
+        }
+        return m_text;
+    }
+
+    /**
+     * Returns if the mail is a HTML mail.<p>
+     * 
+     * @return true if the mail is a HTML mail, otherwise false
+     */
+    protected boolean isHtmlMail() {
+
+        if (m_htmlMail == null) {
+            m_htmlMail = Boolean.valueOf(getContent().getStringValue(getCms(), XPATH_CONFIG + NODE_HTML, getLocale()));
+        }
+        return m_htmlMail.booleanValue();
+    }
+
+    /**
+     * Returns if the mail is a HTML only mail.<p>
+     * 
+     * @return true if the mail is a HTML only mail, otherwise false
+     */
+    protected boolean isHtmlOnly() {
+
+        if (m_htmlOnly == null) {
+            m_htmlOnly = Boolean.valueOf(getContent().getStringValue(
+                getCms(),
+                XPATH_CONFIG + NODE_HTML_ONLY,
+                getLocale()));
+        }
+        return m_htmlOnly.booleanValue();
     }
 
 }

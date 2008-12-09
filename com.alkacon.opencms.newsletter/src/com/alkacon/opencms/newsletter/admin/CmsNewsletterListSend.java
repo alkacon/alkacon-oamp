@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsNewsletterListSend.java,v $
- * Date   : $Date: 2008/10/20 09:03:02 $
- * Version: $Revision: 1.9 $
+ * Date   : $Date: 2008/12/09 14:29:28 $
+ * Version: $Revision: 1.10 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -155,7 +155,7 @@ public class CmsNewsletterListSend extends A_CmsListExplorerDialog {
                 if (mailData.isSendable()) {
                     //send the emails to the mailing list group
                     CmsNewsletterMail nlMail = new CmsNewsletterMail(
-                        mailData.getEmail(),
+                        mailData,
                         mailData.getRecipients(),
                         rootPath);
                     nlMail.start();

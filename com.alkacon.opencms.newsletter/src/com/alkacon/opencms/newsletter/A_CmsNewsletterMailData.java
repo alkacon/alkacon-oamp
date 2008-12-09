@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/A_CmsNewsletterMailData.java,v $
- * Date   : $Date: 2007/11/30 11:57:27 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2008/12/09 14:29:28 $
+ * Version: $Revision: 1.5 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -61,7 +61,7 @@ import org.apache.commons.mail.Email;
  *  
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.4 $ 
+ * @version $Revision: 1.5 $ 
  * 
  * @since 7.0.3 
  */
@@ -85,6 +85,12 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
     /** The newsletter content. */
     private CmsXmlContent m_content;
 
+    /** The email encoding. */
+    private String m_encoding;
+
+    /** The email from address. */
+    private String m_from;
+
     /** The group to send the newsletter to. */
     private CmsGroup m_group;
 
@@ -93,6 +99,9 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
 
     /** The Locale to use to read the newsletter content. */
     private Locale m_locale;
+
+    /** The email subject. */
+    private String m_subject;
 
     /**
      * Returns the newsletter xml content.<p>
@@ -223,6 +232,32 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
     }
 
     /**
+     * Returns the email encoding.<p>
+     * 
+     * @return the email encoding
+     */
+    protected String getEncoding() {
+
+        if (m_encoding == null) {
+            m_encoding = getCms().getRequestContext().getEncoding();
+        }
+        return m_encoding;
+    }
+
+    /**
+     * Returns the email from address.<p>
+     * 
+     * @return the email from address
+     */
+    protected String getFrom() {
+
+        if (m_from == null) {
+            m_from = getContent().getStringValue(getCms(), NODE_FROM, getLocale());
+        }
+        return m_from;
+    }
+
+    /**
      * Returns the group to send the newsletter to.<p>
      * 
      * @return the group to send the newsletter to
@@ -231,6 +266,14 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
 
         return m_group;
     }
+
+    /**
+     * Returns the email HTML text.<p>
+     * 
+     * @return the email HTML text
+     * @throws CmsException if extracting HTML text fails
+     */
+    protected abstract String getHtml() throws CmsException;
 
     /**
      * Returns the JSP action element.<p>
@@ -251,5 +294,26 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
 
         return m_locale;
     }
+
+    /**
+     * Returns the email subject.<p>
+     * 
+     * @return the email subject
+     */
+    protected String getSubject() {
+
+        if (m_subject == null) {
+            m_subject = getContent().getStringValue(getCms(), NODE_SUBJECT, getLocale());
+        }
+        return m_subject;
+    }
+
+    /**
+     * Returns the email plain text.<p>
+     * 
+     * @return the email plain text
+     * @throws CmsException if extracting text fails
+     */
+    protected abstract String getText() throws CmsException;
 
 }

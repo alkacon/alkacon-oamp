@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterMail.java,v $
- * Date   : $Date: 2007/11/30 11:57:27 $
- * Version: $Revision: 1.11 $
+ * Date   : $Date: 2008/12/09 14:29:28 $
+ * Version: $Revision: 1.12 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -38,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.logging.Log;
@@ -49,7 +48,7 @@ import org.apache.commons.mail.Email;
  *  
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.11 $ 
+ * @version $Revision: 1.12 $ 
  * 
  * @since 7.0.3 
  */
@@ -58,8 +57,8 @@ public class CmsNewsletterMail extends Thread {
     /** The log object for this class. */
     private static final Log LOG = CmsLog.getLog(CmsNewsletterMail.class);
 
-    /** The email to send. */
-    private Email m_mail;
+    /** The email data to send. */
+    private I_CmsNewsletterMailData m_mailData;
 
     /** The name of the newsletter to send. */
     private String m_newsletterName;
@@ -70,13 +69,13 @@ public class CmsNewsletterMail extends Thread {
     /**
      * Constructor, with parameters.<p>
      * 
-     * @param mail the email to send
+     * @param mailData the email to send
      * @param recipients the newsletter mail recipients
      * @param newsletterName the name of the newsletter to send
      */
-    public CmsNewsletterMail(Email mail, List recipients, String newsletterName) {
+    public CmsNewsletterMail(I_CmsNewsletterMailData mailData, List recipients, String newsletterName) {
 
-        m_mail = mail;
+        m_mailData = mailData;
         m_recipients = recipients;
         m_newsletterName = newsletterName;
     }
@@ -107,11 +106,11 @@ public class CmsNewsletterMail extends Thread {
             InternetAddress to = (InternetAddress)i.next();
             List toList = new ArrayList(1);
             toList.add(to);
-            Email mail = getMail();
-            mail.setTo(toList);
             try {
+                Email mail = getMailData().getEmail();
+                mail.setTo(toList);
                 mail.send();
-            } catch (MessagingException e) {
+            } catch (Exception e) {
                 // log failed mail send process
                 if (LOG.isErrorEnabled()) {
                     LOG.error(Messages.get().getBundle().key(
@@ -124,13 +123,13 @@ public class CmsNewsletterMail extends Thread {
     }
 
     /**
-     * Returns the email to send.<p>
+     * Returns the email data to send.<p>
      * 
-     * @return the email to send
+     * @return the email data to send
      */
-    private Email getMail() {
+    private I_CmsNewsletterMailData getMailData() {
 
-        return m_mail;
+        return m_mailData;
     }
 
     /**
