@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.feeder/src/com/alkacon/opencms/feeder/CmsFeedGenerator.java,v $
- * Date   : $Date: 2007/12/13 15:48:47 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/12/13 13:23:24 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -51,7 +51,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndFeedImpl;
 import com.sun.syndication.feed.synd.SyndImage;
@@ -62,13 +61,20 @@ import com.sun.syndication.io.SyndFeedOutput;
  * Creates a syndication feed from a List of XML content resources.<p>
  * 
  * @author Alexander Kandzior 
+ * @author Michael Moossen
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  */
 public class CmsFeedGenerator {
 
-    /** The list of XML content entries that make up the feed. */
-    private List m_contentEntries;
+    /** Place holder for content handler defined mappings. */
+    private static final CmsFeedContentMapping EMPTY_MAPPING = new CmsFeedContentMapping();
+
+    /** This is a list of lists of XML content entries that make up the feed. */
+    private List m_contentEntriesList;
+
+    /** This id a list of default XML content mappings that apply in case the XML content does not use a special feed handler. */
+    private List m_defaultMappingList;
 
     /** The feed copyright message. */
     private String m_feedCopyright;
@@ -91,35 +97,53 @@ public class CmsFeedGenerator {
     /** The type of the feed. */
     private String m_feedType;
 
-    /** The default XML content mappings that apply in case the XML content does not use a special feed handler. */
-    private CmsFeedContentMapping m_defaultMapping;
-
     /**
      * Creates a new, empty feed generator.<p>
      */
     public CmsFeedGenerator() {
 
-        m_contentEntries = new ArrayList();
+        m_contentEntriesList = new ArrayList();
+        m_defaultMappingList = new ArrayList();
     }
 
     /**
      * Creates a new feed generator with a default feed mapping.<p>
      * 
      * @param defaultMapping the default feed mapping to use
+     * 
+     * @deprecated use {@link #addResourceSet(List, CmsFeedContentMapping)} instead
      */
     public CmsFeedGenerator(CmsFeedContentMapping defaultMapping) {
 
-        m_defaultMapping = defaultMapping;
+        m_defaultMappingList.add(defaultMapping);
+    }
+
+    /**
+     * Adds a new pair of resource list and default mapping.<p>
+     * 
+     * @param contentEntries the list of XML content entries that make up the feed to set
+     * @param defaultMapping the default feed mapping to use
+     */
+    public void addResourceSet(List contentEntries, CmsFeedContentMapping defaultMapping) {
+
+        m_contentEntriesList.add(contentEntries);
+        if (defaultMapping == null) {
+            m_defaultMappingList.add(EMPTY_MAPPING);
+        } else {
+            m_defaultMappingList.add(defaultMapping);
+        }
     }
 
     /**
      * Returns the list of XML content entries that make up the feed.<p>
      *
      * @return the list of XML content entries that make up the feed
+     * 
+     * @deprecated use {@link #addResourceSet(List, CmsFeedContentMapping)} instead
      */
     public List getContentEntries() {
 
-        return m_contentEntries;
+        return (List)m_contentEntriesList.get(0);
     }
 
     /**
@@ -165,37 +189,38 @@ public class CmsFeedGenerator {
             feed.setCopyright(m_feedCopyright);
         }
 
-        // now add the entries
-        List entries = new ArrayList(m_contentEntries.size());
-        for (int i = 0; i < m_contentEntries.size(); i++) {
-            // iterate over all content entries
-            Object obj = m_contentEntries.get(i);
-            CmsXmlContent content;
-            if (obj instanceof CmsXmlContent) {
-                content = (CmsXmlContent)obj;
-            } else {
-                CmsResource res = (CmsResource)obj;
-                CmsFile file = cms.readFile(res);
-                content = CmsXmlContentFactory.unmarshal(cms, file);
-            }
-            I_CmsXmlContentHandler handler = content.getContentDefinition().getContentHandler();
-            CmsFeedContentMapping mapping = null;
-            if (handler instanceof CmsFeedXmlContentHandler) {
-                // this content has a special feed handler
-                mapping = ((CmsFeedXmlContentHandler)handler).getFeedMapping();
-            } else {
-                // check if default handler applies to the content
-                mapping = m_defaultMapping;
-            }
-            if (mapping != null) {
-                SyndEntry entry = mapping.getEntryFromXmlContent(cms, content, locale);
-                if (entry != null) {
-                    entries.add(entry);
+        List allEntries = new ArrayList();
+        for (int k = 0; k < m_contentEntriesList.size(); k++) {
+            List contentEntries = (List)m_contentEntriesList.get(k);
+            CmsFeedContentMapping defaultMapping = (CmsFeedContentMapping)m_defaultMappingList.get(k);
+            // now add the entries
+            for (int i = 0; i < contentEntries.size(); i++) {
+                // iterate over all content entries
+                Object obj = contentEntries.get(i);
+                CmsXmlContent content;
+                if (obj instanceof CmsXmlContent) {
+                    content = (CmsXmlContent)obj;
+                } else {
+                    CmsResource res = (CmsResource)obj;
+                    CmsFile file = cms.readFile(res);
+                    content = CmsXmlContentFactory.unmarshal(cms, file);
+                }
+                I_CmsXmlContentHandler handler = content.getContentDefinition().getContentHandler();
+                CmsFeedContentMapping mapping = null;
+                if (handler instanceof CmsFeedXmlContentHandler) {
+                    // this content has a special feed handler
+                    mapping = ((CmsFeedXmlContentHandler)handler).getFeedMapping();
+                } else {
+                    // check if default handler applies to the content
+                    mapping = defaultMapping;
+                }
+                if (mapping != null) {
+                    allEntries.addAll(mapping.getRssEntries(cms, content, locale));
                 }
             }
         }
         // set the feed entries
-        feed.setEntries(entries);
+        feed.setEntries(allEntries);
 
         return feed;
     }
@@ -274,10 +299,16 @@ public class CmsFeedGenerator {
      * Sets the list of XML content entries that make up the feed.<p>
      *
      * @param contentEntries the list of XML content entries that make up the feed to set
+     * 
+     * @deprecated use {@link #addResourceSet(List, CmsFeedContentMapping)} instead
      */
     public void setContentEntries(List contentEntries) {
 
-        m_contentEntries = contentEntries;
+        if (m_contentEntriesList.isEmpty()) {
+            m_contentEntriesList.add(contentEntries);
+        } else {
+            m_contentEntriesList.set(0, contentEntries);
+        }
     }
 
     /**

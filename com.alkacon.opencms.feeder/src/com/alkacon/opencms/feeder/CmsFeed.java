@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.feeder/src/com/alkacon/opencms/feeder/CmsFeed.java,v $
- * Date   : $Date: 2007/12/13 15:48:47 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2008/12/13 13:23:24 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -32,7 +32,7 @@
 
 package com.alkacon.opencms.feeder;
 
-import org.opencms.file.CmsFile;
+import org.opencms.file.CmsDataAccessException;
 import org.opencms.file.CmsObject;
 import org.opencms.file.CmsResource;
 import org.opencms.file.collectors.I_CmsResourceCollector;
@@ -60,8 +60,9 @@ import com.sun.syndication.io.FeedException;
  * Creates a syndication feed from an XML content that uses the feed schema XSD.<p>
  * 
  * @author Alexander Kandzior 
+ * @author Michael Moossen
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  */
 public class CmsFeed {
 
@@ -72,10 +73,31 @@ public class CmsFeed {
     public static final String NODE_COPYRIGHT = "Copyright";
 
     /** Node name in the feed XSD. */
+    public static final String NODE_DATAFORM = "DataForm";
+
+    /** Node name in the feed XSD. */
     public static final String NODE_DESCRIPTION = "Description";
 
     /** Node name in the feed XSD. */
+    public static final String NODE_DESCRIPTIONFORMAT = "DescriptionFormat";
+
+    /** Node name in the feed XSD. */
+    public static final String NODE_ID = "Id";
+
+    /** Node name in the feed XSD. */
+    public static final String NODE_IMAGE = "Image";
+
+    /** Node name in the feed XSD. */
+    public static final String NODE_MAPPING = "Mapping";
+
+    /** Node name in the feed XSD. */
+    public static final String NODE_MAXENTRIES = "MaxEntries";
+
+    /** Node name in the feed XSD. */
     public static final String NODE_PARAMETER = "Parameter";
+
+    /** Node name in the feed XSD. */
+    public static final String NODE_RESOURCESET = "ResourceSet";
 
     /** Name of the required outer node for the XSD that defines the feed content. */
     public static final String NODE_SCHEMA = "AlkaconFeeds";
@@ -84,13 +106,7 @@ public class CmsFeed {
     public static final String NODE_TITLE = "Title";
 
     /** Node name in the feed XSD. */
-    public static final String NODE_IMAGE = "Image";
-
-    /** Node name in the feed XSD. */
     public static final String NODE_TYPE = "Type";
-
-    /** Node name in the feed XSD. */
-    public static final String NODE_MAPPING = "Mapping";
 
     /** The current users OpenCms context. */
     private CmsObject m_cms;
@@ -107,6 +123,9 @@ public class CmsFeed {
     /** The resource that defines the Link for the feed. */
     private CmsResource m_res;
 
+    /** The schema name. */
+    private String m_schemaName;
+
     /**
      * Creates a new, initialized feed based on the current URI of the given OpenCms user context.<p>
      * 
@@ -120,6 +139,26 @@ public class CmsFeed {
     throws CmsException {
 
         this(cms, cms.getRequestContext().getUri());
+    }
+
+    /**
+     * Creates a new feed based on the given resource.<p>
+     * 
+     * With this constructor, the feed will not be initialized. You must call {@link #init()} first
+     * before using the feed.<p>
+     * 
+     * The content must use the XSD from the Alkacon feed content definition.<p>
+     * 
+     * @param cms the current users OpenCms context
+     * @param locale the locale to use
+     * @param res the resource that defines the Link for the feed
+     * 
+     * @throws CmsException in case something goes wrong
+     */
+    public CmsFeed(CmsObject cms, Locale locale, CmsResource res)
+    throws CmsException {
+
+        this(cms, locale, res, CmsXmlContentFactory.unmarshal(cms, cms.readFile(res)));
     }
 
     /**
@@ -141,6 +180,7 @@ public class CmsFeed {
         m_locale = locale;
         m_res = res;
         m_content = content;
+        m_schemaName = m_content.getContentDefinition().getOuterName();
     }
 
     /**
@@ -156,11 +196,7 @@ public class CmsFeed {
     public CmsFeed(CmsObject cms, String resourceName)
     throws CmsException {
 
-        m_cms = cms;
-        m_locale = OpenCms.getLocaleManager().getDefaultLocale(cms, resourceName);
-        m_res = cms.readResource(resourceName);
-        CmsFile file = cms.readFile(m_res);
-        m_content = CmsXmlContentFactory.unmarshal(cms, file);
+        this(cms, OpenCms.getLocaleManager().getDefaultLocale(cms, resourceName), cms.readResource(resourceName));
         init();
     }
 
@@ -172,45 +208,17 @@ public class CmsFeed {
     public void init() throws CmsException {
 
         // make sure the schema is of the correct type
-        String outerName = m_content.getContentDefinition().getOuterName();
-        if (!NODE_SCHEMA.equals(outerName)) {
-            throw new CmsException(Messages.get().container(Messages.ERR_BAD_FEED_CD_2, outerName, NODE_SCHEMA));
+        if (!NODE_SCHEMA.equals(m_schemaName)) {
+            throw new CmsException(Messages.get().container(Messages.ERR_BAD_FEED_CD_2, m_schemaName, NODE_SCHEMA));
         }
 
-        // first lookup the collector        
-        String collectorStr = m_content.getStringValue(m_cms, NODE_COLLECTOR, m_locale);
-        I_CmsResourceCollector collector = OpenCms.getResourceManager().getContentCollector(collectorStr);
-        if (collector == null) {
-            throw new CmsException(Messages.get().container(Messages.ERR_BAD_FEED_CD_2, outerName, NODE_SCHEMA));
-        }
-        // use the collector to collect the resources for the feed 
-        String params = m_content.getStringValue(m_cms, NODE_PARAMETER, m_locale);
-        List entries = collector.getResults(m_cms, collectorStr, params);
+        CmsFeedGenerator feed = new CmsFeedGenerator();
+        processResourceSet(feed, "/"); // this is only for compatibility with v1.x
 
-        // process the default mappings (if set / available)
-        CmsFeedContentMapping defaultMapping = null;
-        int mapsize = m_content.getValues(NODE_MAPPING, m_locale).size();
-        if (mapsize > 1) {
-            defaultMapping = new CmsFeedContentMapping();
-            for (int i = 1; i <= mapsize; i++) {
-                String basePath = CmsXmlUtils.createXpath(NODE_MAPPING, i);
-
-                String field = m_content.getStringValue(m_cms, CmsXmlUtils.concatXpath(basePath, "Field"), m_locale);
-                String defaultValue = m_content.getStringValue(
-                    m_cms,
-                    CmsXmlUtils.concatXpath(basePath, "Default"),
-                    m_locale);
-                String maxLenghtStr = m_content.getStringValue(
-                    m_cms,
-                    CmsXmlUtils.concatXpath(basePath, "MaxLength"),
-                    m_locale);
-                List xmlNodes = m_content.getValues(CmsXmlUtils.concatXpath(basePath, "XmlNode"), m_locale);
-                List nodes = new ArrayList(xmlNodes.size());
-                for (int j = 0; j < xmlNodes.size(); j++) {
-                    nodes.add(((I_CmsXmlContentValue)xmlNodes.get(j)).getStringValue(m_cms));
-                }
-                defaultMapping.addFeedFieldMapping(nodes, field, maxLenghtStr, defaultValue);
-            }
+        int resSets = m_content.getValues(NODE_RESOURCESET, m_locale).size();
+        for (int i = 1; i <= resSets; i++) {
+            String resSetPath = CmsXmlUtils.createXpath(NODE_RESOURCESET, i);
+            processResourceSet(feed, resSetPath);
         }
 
         // process the feed image (if set / available)
@@ -235,8 +243,6 @@ public class CmsFeed {
             }
         }
 
-        // no errors until here, so we can really start to create the feed
-        CmsFeedGenerator feed = new CmsFeedGenerator(defaultMapping);
         // calculate the link with full server path
         feed.setFeedLink(OpenCms.getLinkManager().getServerLink(m_cms, m_res.getRootPath()));
         // calculate the encoding from the properties
@@ -248,9 +254,6 @@ public class CmsFeed {
         feed.setFeedCopyright(m_content.getStringValue(m_cms, NODE_COPYRIGHT, m_locale));
         feed.setFeedDescription(m_content.getStringValue(m_cms, NODE_DESCRIPTION, m_locale));
         feed.setFeedImage(image);
-
-        // set the feed entries
-        feed.setContentEntries(entries);
 
         // now store the created feed internally for later use
         m_feed = feed;
@@ -282,5 +285,71 @@ public class CmsFeed {
     public void write(Writer writer) throws IOException, FeedException, CmsException {
 
         m_feed.write(m_cms, m_locale, writer);
+    }
+
+    private void processResourceSet(CmsFeedGenerator feed, String resSetPath)
+    throws CmsException, CmsDataAccessException {
+
+        // first lookup the collector        
+        String collectorStr = m_content.getStringValue(
+            m_cms,
+            CmsXmlUtils.concatXpath(resSetPath, NODE_COLLECTOR),
+            m_locale);
+        I_CmsResourceCollector collector = OpenCms.getResourceManager().getContentCollector(collectorStr);
+        if (collector == null) {
+            throw new CmsException(Messages.get().container(Messages.ERR_BAD_FEED_CD_2, m_schemaName, NODE_SCHEMA));
+        }
+        // use the collector to collect the resources for the feed 
+        String params = m_content.getStringValue(m_cms, CmsXmlUtils.concatXpath(resSetPath, NODE_PARAMETER), m_locale);
+        List entries = collector.getResults(m_cms, collectorStr, params);
+
+        // description format
+        String descFormat = m_content.getStringValue(
+            m_cms,
+            CmsXmlUtils.concatXpath(resSetPath, NODE_DESCRIPTIONFORMAT),
+            m_locale);
+
+        // data form parameters
+        String dataPath = CmsXmlUtils.concatXpath(resSetPath, NODE_DATAFORM);
+        String dataType = m_content.getStringValue(m_cms, CmsXmlUtils.concatXpath(dataPath, NODE_ID), m_locale);
+        String maxEntriesVal = m_content.getStringValue(
+            m_cms,
+            CmsXmlUtils.concatXpath(dataPath, NODE_MAXENTRIES),
+            m_locale);
+        int maxEntries = -1;
+        if (maxEntriesVal != null) {
+            try {
+                maxEntries = Integer.parseInt(maxEntriesVal);
+            } catch (NumberFormatException e) {
+                // parsing problem, use default
+            }
+        }
+
+        // process the default mappings (if set / available)
+        CmsFeedContentMapping defaultMapping = null;
+        int mapsize = m_content.getValues(CmsXmlUtils.concatXpath(resSetPath, NODE_MAPPING), m_locale).size();
+        if (mapsize > 1) {
+            defaultMapping = new CmsFeedContentMapping(descFormat, dataType, maxEntries);
+            for (int j = 1; j <= mapsize; j++) {
+                String basePath = CmsXmlUtils.concatXpath(resSetPath, CmsXmlUtils.createXpath(NODE_MAPPING, j));
+
+                String field = m_content.getStringValue(m_cms, CmsXmlUtils.concatXpath(basePath, "Field"), m_locale);
+                String defaultValue = m_content.getStringValue(
+                    m_cms,
+                    CmsXmlUtils.concatXpath(basePath, "Default"),
+                    m_locale);
+                String maxLenghtStr = m_content.getStringValue(
+                    m_cms,
+                    CmsXmlUtils.concatXpath(basePath, "MaxLength"),
+                    m_locale);
+                List xmlNodes = m_content.getValues(CmsXmlUtils.concatXpath(basePath, "XmlNode"), m_locale);
+                List nodes = new ArrayList(xmlNodes.size());
+                for (int k = 0; k < xmlNodes.size(); k++) {
+                    nodes.add(((I_CmsXmlContentValue)xmlNodes.get(k)).getStringValue(m_cms));
+                }
+                defaultMapping.addFeedFieldMapping(nodes, field, maxLenghtStr, defaultValue);
+            }
+        }
+        feed.addResourceSet(entries, defaultMapping);
     }
 }

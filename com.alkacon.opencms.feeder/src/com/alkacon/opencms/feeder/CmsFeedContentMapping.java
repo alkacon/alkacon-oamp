@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.feeder/src/com/alkacon/opencms/feeder/CmsFeedContentMapping.java,v $
- * Date   : $Date: 2008/08/20 09:44:52 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2008/12/13 13:23:24 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -32,16 +32,20 @@
 
 package com.alkacon.opencms.feeder;
 
-import org.opencms.file.CmsFile;
+import com.alkacon.opencms.formgenerator.database.CmsFormDataAccess;
+import com.alkacon.opencms.formgenerator.database.CmsFormDataBean;
+import com.alkacon.opencms.formgenerator.database.CmsFormDatabaseFilter;
+
 import org.opencms.file.CmsObject;
 import org.opencms.file.CmsRequestContext;
 import org.opencms.file.collectors.CmsDateResourceComparator;
 import org.opencms.main.CmsException;
 import org.opencms.main.OpenCms;
+import org.opencms.util.CmsHtmlExtractor;
+import org.opencms.util.CmsMacroResolver;
 import org.opencms.util.CmsStringUtil;
 import org.opencms.xml.content.CmsXmlContent;
 import org.opencms.xml.content.I_CmsXmlContentHandler;
-import org.opencms.xml.types.CmsXmlDateTimeValue;
 import org.opencms.xml.types.CmsXmlHtmlValue;
 import org.opencms.xml.types.I_CmsXmlContentValue;
 
@@ -65,8 +69,9 @@ import com.sun.syndication.feed.synd.SyndEntryImpl;
  * Describes the mapping from an OpenCms XML content to a syndication feed entry.<p>
  * 
  * @author Alexander Kandzior 
+ * @author Michael Moossen
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.3 $ 
  */
 public class CmsFeedContentMapping {
 
@@ -240,6 +245,155 @@ public class CmsFeedContentMapping {
         }
     }
 
+    /**
+     * Macro resolver for generating rss entry fields.<p>
+     * 
+     * It provides access to xml content fields, resource properties, data form fields and more.<p>
+     */
+    class CmsFeedMacroResolver extends CmsMacroResolver {
+
+        /** Macro prefix name constant. */
+        public static final String MACRO_CONVERT_DATE = "convertToDate.";
+
+        /** Macro prefix name constant. */
+        public static final String MACRO_DATA = "data.";
+
+        /** Macro suffix name constant. */
+        public static final String MACRO_DATE = "DATE";
+
+        /** Macro name constant. */
+        public static final String MACRO_DESC_FORMAT = "desc.format";
+
+        /** Macro suffix name constant. */
+        public static final String MACRO_ID = "ID";
+
+        /** Macro prefix name constant. */
+        public static final String MACRO_LINK = "link.";
+
+        /** Macro null result constant. */
+        public static final String MACRO_NULL = "_NULL_";
+
+        /** Macro suffix name constant. */
+        public static final String MACRO_URI = "URI";
+
+        /** Macro prefix name constant. */
+        public static final String MACRO_XML = "xml.";
+
+        /** The cms context. */
+        private CmsObject m_cms;
+
+        /** The xml content to make available with macros. */
+        private CmsXmlContent m_content;
+
+        /** The optional data form data to make available with macros. */
+        private CmsFormDataBean m_dataBean;
+
+        /** The type (plain/html) of the last accessed xml content field. */
+        private String m_descType = null;
+
+        /** The locale to read the xml content fields from. */
+        private Locale m_locale;
+
+        /**
+         * Default constructor.<p>
+         * 
+         * @param cms the cms context
+         * @param content the xml content to make available with macros
+         * @param locale the locale to read the xml content fields from
+         * @param dataBean the optional data form data to make available with macros
+         */
+        public CmsFeedMacroResolver(CmsObject cms, CmsXmlContent content, Locale locale, CmsFormDataBean dataBean) {
+
+            m_content = content;
+            m_locale = locale;
+            m_cms = cms;
+            m_dataBean = dataBean;
+            setCmsObject(cms);
+            setKeepEmptyMacros(false);
+        }
+
+        /**
+         * @see org.opencms.util.CmsMacroResolver#getMacroValue(java.lang.String)
+         */
+        public String getMacroValue(String macro) {
+
+            String ret = null;
+            if (macro.equals(CmsFeedMacroResolver.MACRO_DESC_FORMAT)) {
+                return m_descType;
+            } else if (macro.startsWith(CmsFeedMacroResolver.MACRO_CONVERT_DATE)) {
+                String dateMacro = macro.substring(CmsFeedMacroResolver.MACRO_CONVERT_DATE.length());
+                try {
+                    // try to parse the date as long
+                    ret = "" + Long.valueOf(dateMacro).longValue();
+                } catch (NumberFormatException e) {
+                    ret = "-1";
+                    // no luck parsing, so we have no date - try using other options...
+                    if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(dateMacro)) {
+                        List items = CmsStringUtil.splitAsList(dateMacro, '|', true);
+                        ret = "" + CmsDateResourceComparator.calculateDate(m_cms, m_content.getFile(), items, -1);
+                    }
+                }
+            } else if (macro.startsWith(CmsFeedMacroResolver.MACRO_LINK)) {
+                String linkMacro = macro.substring(CmsFeedMacroResolver.MACRO_LINK.length());
+                ret = OpenCms.getLinkManager().getServerLink(m_cms, linkMacro);
+            } else if (macro.startsWith(CmsFeedMacroResolver.MACRO_XML)) {
+                String xmlMacro = macro.substring(CmsFeedMacroResolver.MACRO_XML.length());
+                if (xmlMacro.startsWith("_") && xmlMacro.endsWith("_") && (xmlMacro.length() > 2)) {
+                    xmlMacro = xmlMacro.substring(1, xmlMacro.length() - 1);
+                    if (xmlMacro.equals(CmsFeedMacroResolver.MACRO_URI)) {
+                        ret = m_cms.getSitePath(m_content.getFile());
+                    }
+                } else {
+                    I_CmsXmlContentValue xmlValue = m_content.getValue(xmlMacro, m_locale);
+                    if (xmlValue == null) {
+                        return CmsFeedMacroResolver.MACRO_NULL;
+                    } else {
+                        // save the last for the desc.format macro
+                        if (xmlValue instanceof CmsXmlHtmlValue) {
+                            // the content is HTML
+                            m_descType = CONTENT_TYPE_HTML;
+                        } else {
+                            // assume default "text/plain"
+                            m_descType = CONTENT_TYPE_TEXT;
+                        }
+                        return xmlValue.getStringValue(m_cms);
+                    }
+                }
+            } else if (macro.startsWith(I_CmsXmlContentHandler.MAPTO_PROPERTY)) {
+                String propertyMacro = macro.substring(I_CmsXmlContentHandler.MAPTO_PROPERTY.length());
+                try {
+                    ret = m_cms.readPropertyObject(m_content.getFile(), propertyMacro, true).getValue();
+                    if (ret == null) {
+                        ret = "";
+                    }
+                } catch (CmsException ex) {
+                    // if property could not be read, populate the value with text from the default value field
+                    ret = CmsFeedMacroResolver.MACRO_NULL;
+                }
+            } else if (macro.startsWith(I_CmsXmlContentHandler.MAPTO_ATTRIBUTE)) {
+                macro.substring(I_CmsXmlContentHandler.MAPTO_ATTRIBUTE.length());
+            } else if (macro.startsWith(CmsFeedMacroResolver.MACRO_DATA)) {
+                String dataMacro = macro.substring(CmsFeedMacroResolver.MACRO_DATA.length());
+                if (dataMacro.startsWith("_") && dataMacro.endsWith("_") && (dataMacro.length() > 2)) {
+                    dataMacro = dataMacro.substring(1, dataMacro.length() - 1);
+                    if (dataMacro.equals(CmsFeedMacroResolver.MACRO_ID)) {
+                        return "" + m_dataBean.getEntryId();
+                    } else if (dataMacro.equals(CmsFeedMacroResolver.MACRO_DATE)) {
+                        return "" + m_dataBean.getDateCreated();
+                    }
+                } else {
+                    String value = m_dataBean.getFieldValue(dataMacro);
+                    if (value != null) {
+                        return value;
+                    }
+                }
+            } else {
+                ret = super.getMacroValue(macro);
+            }
+            return ret;
+        }
+    }
+
     /** Content type "text/html". */
     public static final String CONTENT_TYPE_HTML = "text/html";
 
@@ -276,8 +430,17 @@ public class CmsFeedContentMapping {
     /** Constant list with all possible feed mappings. */
     public static final List MAPPINGS_LIST = Collections.unmodifiableList(Arrays.asList(MAPPINGS));
 
+    /** The data type id. */
+    private String m_dataType;
+
+    /** The description format. */
+    private String m_descFormat;
+
     /** The map of mappings from the XML content to the feed. */
     private Map m_feedMappings;
+
+    /** The max number of data entries per file. */
+    private int m_maxEntries;
 
     /**
      * Creates a new feed content mapping.<p>
@@ -285,6 +448,21 @@ public class CmsFeedContentMapping {
     public CmsFeedContentMapping() {
 
         m_feedMappings = new HashMap();
+    }
+
+    /**
+     * Constructor with additional parameters for data driven entries.<p>
+     * 
+     * @param descFormat the description format
+     * @param dataType the data type id
+     * @param maxEntries the max number of data entries per file
+     */
+    public CmsFeedContentMapping(String descFormat, String dataType, int maxEntries) {
+
+        this();
+        m_descFormat = descFormat;
+        m_dataType = dataType;
+        m_maxEntries = maxEntries;
     }
 
     /**
@@ -330,20 +508,14 @@ public class CmsFeedContentMapping {
     }
 
     /**
-     * Returns a feed entry created from the given XML content using the configured rules of this content mapping.<p>
+     * Returns a feed entry created from the given macro resolver using the configured rules of this content mapping.<p>
      * 
      * @param cms the current users OpenCms context
-     * @param content the XML content to create the feed entry from
-     * @param locale the locale to use in the XML content
+     * @param macroResolver the macro resolver to use to create the rss entry
      * 
-     * @return a feed entry created from the given XML content using the configured rules of this content mapping
+     * @return a feed entry created from the given macro resolver using the configured rules of this content mapping
      */
-    public SyndEntry getEntryFromXmlContent(CmsObject cms, CmsXmlContent content, Locale locale) {
-
-        if ((content == null) || (locale == null) || !content.hasLocale(locale)) {
-            // no entry can be created if input is silly
-            return null;
-        }
+    public SyndEntry getEntry(CmsObject cms, CmsMacroResolver macroResolver) {
 
         // get all configured mappings
         Set mappings = m_feedMappings.entrySet();
@@ -363,45 +535,51 @@ public class CmsFeedContentMapping {
             String feedField = (String)e.getKey();
             CmsFeedFieldMapping mapping = (CmsFeedFieldMapping)e.getValue();
 
-            I_CmsXmlContentValue xmlContentValue = null;
+            String macroValue = null;
             List xmlFields = mapping.getXmlFields();
             for (int j = 0, size = xmlFields.size(); j < size; j++) {
                 String xmlField = (String)xmlFields.get(j);
                 if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(xmlField)) {
-                    xmlContentValue = content.getValue(xmlField, locale);
-                    if (xmlContentValue != null) {
+                    macroValue = macroResolver.resolveMacros(xmlField);
+                    if (macroValue.equals(xmlField)) {
+                        macroValue = macroResolver.getMacroValue(CmsFeedMacroResolver.MACRO_XML + xmlField);
+                    }
+                    if ((macroValue != null) && !macroValue.equals(CmsFeedMacroResolver.MACRO_NULL)) {
                         // found a matching XML content node
                         break;
                     }
                 }
             }
             String value = null;
+            String type = m_descFormat;
+            if (type == null) {
+                type = macroResolver.getMacroValue(CmsFeedMacroResolver.MACRO_DESC_FORMAT);
+            } else if (type.equals("html")) {
+                type = CONTENT_TYPE_HTML;
+            } else {
+                type = CONTENT_TYPE_TEXT;
+            }
 
-            if (xmlContentValue != null) {
+            if ((macroValue != null) && !macroValue.equals(CmsFeedMacroResolver.MACRO_NULL)) {
                 // value was found in the content
-                value = xmlContentValue.getStringValue(cms);
+                value = macroValue;
             } else if (mapping.hasDefaultValue()
                 && mapping.getDefaultValue().startsWith(I_CmsXmlContentHandler.MAPTO_PROPERTY)) {
                 // value not found in content and default value defines a property.
-                String propertyName = mapping.getDefaultValue().substring(
-                    I_CmsXmlContentHandler.MAPTO_PROPERTY.length());
-                try {
-                    value = cms.readPropertyObject(content.getFile(), propertyName, true).getValue();
-                    if (value == null) {
-                        value = "";
-                    }
-                } catch (CmsException ex) {
+                value = macroResolver.getMacroValue(mapping.getDefaultValue());
+                if (value.equals(CmsFeedMacroResolver.MACRO_NULL)) {
                     // if property could not be read, populate the value with text from the default value field
                     value = mapping.getDefaultValue();
                 }
             } else if (mapping.hasDefaultValue()) {
                 // value not found in content, use default value
-                value = mapping.getDefaultValue();
+                value = macroResolver.resolveMacros(mapping.getDefaultValue());
             }
             if (value != null) {
                 if (mapping.hasMaxLenghtLimit()) {
                     // apply length restriction if required
-                    value = applyLengthRestriction(cms, xmlContentValue, value, mapping.getMaxLenght());
+                    value = applyLengthRestriction(cms, value, mapping.getMaxLenght());
+                    type = CONTENT_TYPE_TEXT;
                 }
                 // a value to map was found
                 int pos = MAPPINGS_LIST.indexOf(feedField);
@@ -416,24 +594,18 @@ public class CmsFeedContentMapping {
                     case 2: // Description
                         SyndContent description = new SyndContentImpl();
                         description.setValue(value);
-                        if (xmlContentValue instanceof CmsXmlHtmlValue) {
-                            // the content is HTML
-                            description.setType(CONTENT_TYPE_HTML);
-                        } else {
-                            // assume default "text/plain"
-                            description.setType(CONTENT_TYPE_TEXT);
-                        }
+                        description.setType(type);
                         result.setDescription(description);
                         hasDescription = true;
                         break;
                     case 3: // DatePublished
-                        publishedDate = convertToDate(cms, content.getFile(), xmlContentValue, value);
+                        publishedDate = convertToDate(value, macroResolver);
                         if (publishedDate != null) {
                             result.setPublishedDate(publishedDate);
                         }
                         break;
                     case 4: // DateUpdated
-                        Date updatedDate = convertToDate(cms, content.getFile(), xmlContentValue, value);
+                        Date updatedDate = convertToDate(value, macroResolver);
                         if (updatedDate != null) {
                             result.setUpdatedDate(updatedDate);
                         }
@@ -456,11 +628,16 @@ public class CmsFeedContentMapping {
             // we need at least an entry and an description
             if (publishedDate == null) {
                 // no publish date given, so we use the date the content was created
-                result.setPublishedDate(new Date(content.getFile().getDateCreated()));
+                result.setPublishedDate(convertToDate("dateCreated", macroResolver));
             }
             if (link == null) {
                 // calculate the link with full server path
-                link = OpenCms.getLinkManager().getServerLink(cms, cms.getSitePath(content.getFile()));
+                link = OpenCms.getLinkManager().getServerLink(
+                    cms,
+                    macroResolver.getMacroValue(CmsFeedMacroResolver.MACRO_XML
+                        + "_"
+                        + CmsFeedMacroResolver.MACRO_URI
+                        + "_"));
             }
             if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(link)) {
                 result.setLink(link);
@@ -538,31 +715,76 @@ public class CmsFeedContentMapping {
     }
 
     /**
+     * Returns all rss entries from the given xml content in the given locale.<p>
+     * 
+     * @param cms the cms context
+     * @param content the xml content to generate the rss entries for
+     * @param locale the locale
+     * 
+     * @return a list of {@link SyndEntry} objects
+     */
+    public List getRssEntries(CmsObject cms, CmsXmlContent content, Locale locale) {
+
+        List entries = new ArrayList();
+        if ((content == null) || (locale == null) || !content.hasLocale(locale)) {
+            // no entry can be created if input is silly
+            return entries;
+        }
+        // indicate we always want to use full links in the generated HTML output
+        cms.getRequestContext().setAttribute(CmsRequestContext.ATTRIBUTE_FULLLINKS, Boolean.TRUE);
+        try {
+            if (m_dataType == null) {
+                CmsMacroResolver rssMacroResolver = new CmsFeedMacroResolver(cms, content, locale, null);
+                SyndEntry entry = getEntry(cms, rssMacroResolver);
+                if (entry != null) {
+                    entries.add(entry);
+                }
+            } else {
+                CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.DEFAULT.filterResourceId(
+                    content.getFile().getStructureId()).filterFormId(m_dataType).filterOrderDesc().filterIndex(
+                    0,
+                    m_maxEntries);
+                List dataBeans = CmsFormDataAccess.getInstance().readForms(filter);
+                Iterator it = dataBeans.iterator();
+                while (it.hasNext()) {
+                    CmsFormDataBean dataBean = (CmsFormDataBean)it.next();
+                    CmsMacroResolver rssMacroResolver = new CmsFeedMacroResolver(cms, content, locale, dataBean);
+                    SyndEntry entry = getEntry(cms, rssMacroResolver);
+                    if (entry != null) {
+                        entries.add(entry);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // something went really wrong
+            e.printStackTrace();
+        } finally {
+            // remove the link processing attribute
+            cms.getRequestContext().removeAttribute(CmsRequestContext.ATTRIBUTE_FULLLINKS);
+        }
+        return entries;
+    }
+
+    /**
      * Applies the max length limitation of the current field to the given value.<p>
      * 
      * @param cms the current users OpenCms context
-     * @param xmlContentValue the XML content value
      * @param value the String value generated form the XML content value
      * @param maxLength the max length setting of the current field
      * 
      * @return the input with the max length limitation of the current field applied
      */
-    protected String applyLengthRestriction(
-        CmsObject cms,
-        I_CmsXmlContentValue xmlContentValue,
-        String value,
-        int maxLength) {
+    protected String applyLengthRestriction(CmsObject cms, String value, int maxLength) {
 
         if (value.length() <= maxLength) {
             return value;
         }
         String result;
-        // value is to long, apply limitation
-        if (xmlContentValue instanceof CmsXmlHtmlValue) {
-            // the content is HTML
-            result = xmlContentValue.getPlainText(cms);
-        } else {
-            // assume default "text/plain"
+        // value is too long, apply limitation
+        try {
+            // try to convert html to plain text
+            result = CmsHtmlExtractor.extractText(value, cms.getRequestContext().getEncoding());
+        } catch (Exception e) {
             result = value;
         }
         if (result.length() > maxLength) {
@@ -572,39 +794,29 @@ public class CmsFeedContentMapping {
     }
 
     /**
-     * Converts an XML content value to a Date.<p>
+     * Converts a value to a Date.<p>
      * 
-     * In case the XML content value itself can not be converted to a date, 
-     * the given String value is used to access the given files attributes or properties
+     * In case the value itself can not be converted to a date, 
+     * the given value is used to access the given files attributes or properties
      * using {@link CmsDateResourceComparator#calculateDate(CmsObject, org.opencms.file.CmsResource, List, long)}.<p>
      * 
-     * @param cms the current users OpenCms context
-     * @param file the current file from which the feed entry is created
-     * @param xmlContentValue the XML content value to convert
-     * @param stringValue the String value of the XML content value
+     * @param stringValue the value
+     * @param macroResolver the macro resolver
      * 
      * @return the converted Date, or <code>null</code> if no convertible data was found
      */
-    private Date convertToDate(CmsObject cms, CmsFile file, I_CmsXmlContentValue xmlContentValue, String stringValue) {
+    protected Date convertToDate(String stringValue, CmsMacroResolver macroResolver) {
 
+        String macroValue = macroResolver.getMacroValue(CmsFeedMacroResolver.MACRO_CONVERT_DATE + stringValue);
         Date result = null;
-        if (xmlContentValue instanceof CmsXmlDateTimeValue) {
-            // dates should be using the right XML content value type
-            result = new Date(((CmsXmlDateTimeValue)xmlContentValue).getDateTimeValue());
-        } else {
-            try {
-                // try to parse the date as long
-                result = new Date(Long.valueOf(stringValue).longValue());
-            } catch (NumberFormatException e) {
-                // no luck parsing, so we have no date - try using other options...
-                if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(stringValue)) {
-                    List items = CmsStringUtil.splitAsList(stringValue, '|', true);
-                    long date = CmsDateResourceComparator.calculateDate(cms, file, items, -1);
-                    if (date != -1) {
-                        result = new Date(date);
-                    }
-                }
+        try {
+            // try to parse the date as long
+            long date = Long.valueOf(macroValue).longValue();
+            if (date != -1) {
+                result = new Date(date);
             }
+        } catch (NumberFormatException e) {
+            // no luck parsing, skip value
         }
         return result;
     }

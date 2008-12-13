@@ -3,41 +3,32 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 	
 	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
-	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.feeder/schemas/alkacon-feed-image.xsd"/>
 	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.feeder/schemas/alkacon-feed-mappings.xsd"/>
-	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.feeder/schemas/alkacon-feed-resourceset.xsd"/>
 	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.feeder/schemas/alkacon-feed-dataform.xsd"/>
 		
-	<xsd:element name="AlkaconFeeds" type="OpenCmsAlkaconFeeds"/>
+	<xsd:element name="AlkaconFeedResourceSets" type="OpenCmsAlkaconFeedResourceSets"/>
 	
-	<xsd:complexType name="OpenCmsAlkaconFeeds">
+	<xsd:complexType name="OpenCmsAlkaconFeedResourceSets">
 		<xsd:sequence>
-			<xsd:element name="AlkaconFeed" type="OpenCmsAlkaconFeed" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="AlkaconFeedResourceSet" type="OpenCmsAlkaconFeedResourceSet" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
 
-	<xsd:complexType name="OpenCmsAlkaconFeed">
+	<xsd:complexType name="OpenCmsAlkaconFeedResourceSet">
 		<xsd:sequence>
-			<xsd:element name="Title" type="OpenCmsString" />
-			<xsd:element name="Type" type="OpenCmsString" default="rss_2.0" />
-			<xsd:element name="Description" type="OpenCmsString" minOccurs="0" />
-			<xsd:element name="Copyright" type="OpenCmsString" minOccurs="0" />
-			<xsd:element name="Image" type="OpenCmsAlkaconFeedImage" minOccurs="0" />
 			<xsd:element name="Collector" type="OpenCmsString" default="allInFolder" />
 			<xsd:element name="Parameter" type="OpenCmsString" />
 			<xsd:element name="DescriptionFormat" type="OpenCmsString" minOccurs="0" />
 			<xsd:element name="DataForm" type="OpenCmsAlkaconFeedDataForm" minOccurs="0" />
 			<xsd:element name="Mapping" type="OpenCmsAlkaconFeedMapping" minOccurs="0" maxOccurs="6" />
-			<xsd:element name="ResourceSet" type="OpenCmsAlkaconFeedResourceSet" minOccurs="0" maxOccurs="unbounded" />
 		</xsd:sequence>
-		<xsd:attribute name="language" type="OpenCmsLocale" use="required"/>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
 	</xsd:complexType>
 
 	<xsd:annotation>
 		<xsd:appinfo>
 			<resourcebundle name="com.alkacon.opencms.feeder.workplace"/>
 			<layouts>
-				<layout element="Type" widget="com.alkacon.opencms.feeder.CmsFeedSelectWidget" configuration="feedTypes" />
 				<layout element="Collector" widget="com.alkacon.opencms.feeder.CmsFeedSelectWidget" configuration="collectors" />
 				<layout element="Parameter" widget="VfsFileWidget" />
                                 <layout element="DescriptionFormat" widget="SelectorWidget" configuration="plain:text/plain|html*:text/html" />

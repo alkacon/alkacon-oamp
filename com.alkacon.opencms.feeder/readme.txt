@@ -52,5 +52,13 @@ Legend:
 * Bug fixed
 - General comment
 
+2.0.0 - ???
+! Improved RSS field expressivity using macros
+! Added support for 'resource sets' allowing the combination of different Xml-Content types 
+! Added RSS entries generation from data forms, like comments
+! Added field for explicitly specifying the type (plain/html) of the description field
+- Added sample file: /system/modules/com.alkacon.opencms.feeder/samples/
+- Updated to ROME 1.0 RC1
+
 1.0.0 - December 13, 2007
 - First public release

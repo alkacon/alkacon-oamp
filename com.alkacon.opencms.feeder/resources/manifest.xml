@@ -3,10 +3,10 @@
 <export>
 	<info>
 		<creator>Admin</creator>
-		<opencms_version>7.0.3</opencms_version>
-		<createdate>Mon, 10 Dec 2007 14:48:25 GMT</createdate>
-		<project>Offline</project>
-		<export_version>6</export_version>
+		<opencms_version>7.0.5</opencms_version>
+		<createdate>Tue, 28 Oct 2008 13:20:39 GMT</createdate>
+		<infoproject>Offline</infoproject>
+		<export_version>7</export_version>
 	</info>
 	<module>
 		<name>com.alkacon.opencms.feeder</name>
@@ -14,7 +14,7 @@
 		<group>Alkacon OAMP</group>
 		<class/>
 		<description><![CDATA[This module allows easy creation of several versions of syndication feeds (RSS, Atom) from XML contents.]]></description>
-		<version>1.0.0</version>
+		<version>2.0.0</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
 		<datecreated/>
@@ -51,10 +51,10 @@
 		<file>
 			<destination>system</destination>
 			<type>folder</type>
-			<uuidstructure>338e1d36-4b0a-11dc-972e-2f44fc71ede6</uuidstructure>
+			<uuidstructure>82636d85-5951-11dd-bd88-e30a09549266</uuidstructure>
 			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Wed, 15 Aug 2007 08:33:30 GMT</datecreated>
+			<datecreated>Thu, 24 Jul 2008 07:24:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -64,7 +64,7 @@
 					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
 					<flags>514</flags>
 					<permissionset>
-						<allowed>5</allowed>
+						<allowed>1</allowed>
 						<denied>0</denied>
 					</permissionset>
 				</accessentry>
@@ -73,10 +73,10 @@
 		<file>
 			<destination>system/modules</destination>
 			<type>folder</type>
-			<uuidstructure>82515fe7-11b7-11db-91cd-fdbae480bac9</uuidstructure>
-			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<uuidstructure>8321b4ae-5951-11dd-bd88-e30a09549266</uuidstructure>
+			<datelastmodified>Thu, 24 Jul 2008 07:24:11 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<datecreated>Thu, 24 Jul 2008 07:24:11 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -259,20 +259,53 @@
 			<accesscontrol/>
 		</file>
 		<file>
-			<source>system/modules/com.alkacon.opencms.feeder/lib/rome-0.9.jar</source>
-			<destination>system/modules/com.alkacon.opencms.feeder/lib/rome-0.9.jar</destination>
+			<source>system/modules/com.alkacon.opencms.feeder/lib/rome-1.0RC1.jar</source>
+			<destination>system/modules/com.alkacon.opencms.feeder/lib/rome-1.0RC1.jar</destination>
 			<type>binary</type>
-			<uuidstructure>aab286cf-4be6-11dc-91a6-2f44fc71ede6</uuidstructure>
-			<uuidresource>aab286d0-4be6-11dc-91a6-2f44fc71ede6</uuidresource>
-			<datelastmodified>Thu, 16 Aug 2007 10:54:24 GMT</datelastmodified>
+			<uuidstructure>37c466c9-a4ef-11dd-9bc5-e30a09549266</uuidstructure>
+			<uuidresource>37c466ca-a4ef-11dd-9bc5-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 28 Oct 2008 12:52:44 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Thu, 16 Aug 2007 10:51:39 GMT</datecreated>
+			<datecreated>Tue, 28 Oct 2008 12:52:03 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties>
 				<property>
 					<name>Title</name>
-					<value><![CDATA[ROME base libary]]></value>
+					<value><![CDATA[ROME base library]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.feeder/samples</destination>
+			<type>folder</type>
+			<uuidstructure>3d3fa802-a4e9-11dd-b5b7-e30a09549266</uuidstructure>
+			<datelastmodified>Tue, 28 Oct 2008 12:09:15 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 28 Oct 2008 12:09:15 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.feeder/samples/combined-comments-feed.xml</source>
+			<destination>system/modules/com.alkacon.opencms.feeder/samples/combined-comments-feed.xml</destination>
+			<type>alkacon-feed</type>
+			<uuidstructure>62945503-a4ef-11dd-9bc5-e30a09549266</uuidstructure>
+			<uuidresource>62945504-a4ef-11dd-9bc5-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 28 Oct 2008 12:56:41 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 28 Oct 2008 12:53:14 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.feeder/templates/alkacon-feed.jsp]]></value>
 				</property>
 			</properties>
 			<relations/>
@@ -288,6 +321,26 @@
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.feeder/schemas/alkacon-feed-dataform.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.feeder/schemas/alkacon-feed-dataform.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>6a5c5fa9-a4d9-11dd-965c-e30a09549266</uuidstructure>
+			<uuidresource>6a5c5faa-a4d9-11dd-965c-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 28 Oct 2008 10:37:07 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 28 Oct 2008 10:15:59 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Nested schema for data form options]]></value>
+				</property>
+			</properties>
 			<relations/>
 			<accesscontrol/>
 		</file>
@@ -332,12 +385,32 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<source>system/modules/com.alkacon.opencms.feeder/schemas/alkacon-feed-resourceset.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.feeder/schemas/alkacon-feed-resourceset.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>4dfcc91c-a1ce-11dd-b3b5-e30a09549266</uuidstructure>
+			<uuidresource>4dfcc91d-a1ce-11dd-b3b5-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 28 Oct 2008 10:27:58 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 24 Oct 2008 13:18:53 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Nested schema for resource set definition]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
 			<source>system/modules/com.alkacon.opencms.feeder/schemas/alkacon-feed.xsd</source>
 			<destination>system/modules/com.alkacon.opencms.feeder/schemas/alkacon-feed.xsd</destination>
 			<type>plain</type>
 			<uuidstructure>538f7062-4be7-11dc-91a6-2f44fc71ede6</uuidstructure>
 			<uuidresource>538f7063-4be7-11dc-91a6-2f44fc71ede6</uuidresource>
-			<datelastmodified>Thu, 23 Aug 2007 16:00:32 GMT</datelastmodified>
+			<datelastmodified>Tue, 28 Oct 2008 10:27:35 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Thu, 16 Aug 2007 10:56:22 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -370,7 +443,7 @@
 			<type>jsp</type>
 			<uuidstructure>69a5dd44-4c04-11dc-9dee-2f44fc71ede6</uuidstructure>
 			<uuidresource>b4bcaf5c-4bf4-11dc-8d10-2f44fc71ede6</uuidresource>
-			<datelastmodified>Thu, 16 Aug 2007 14:23:53 GMT</datelastmodified>
+			<datelastmodified>Tue, 28 Oct 2008 12:08:45 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Thu, 16 Aug 2007 12:32:09 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -418,7 +491,7 @@
 			<relations/>
 			<accesscontrol>
 				<accessentry>
-					<uuidprincipal>all_others</uuidprincipal>
+					<uuidprincipal>ALL_OTHERS</uuidprincipal>
 					<flags>134</flags>
 					<permissionset>
 						<allowed>0</allowed>
