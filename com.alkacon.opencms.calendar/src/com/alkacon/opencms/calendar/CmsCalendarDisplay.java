@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.calendar/src/com/alkacon/opencms/calendar/CmsCalendarDisplay.java,v $
- * Date   : $Date: 2008/04/25 14:50:41 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2009/02/05 09:49:31 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -74,7 +74,7 @@ import org.apache.commons.logging.Log;
  * @author Andreas Zahner
  * @author Peter Bonrad
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 6.0.1
  */
@@ -151,6 +151,9 @@ public class CmsCalendarDisplay extends CmsCalendar {
 
     /** The style. */
     private CmsCalendarStyle m_style;
+
+    /** Flag to determine if AJAX links should be created. */
+    private boolean m_useAjaxLinks;
 
     /** The type of the view which is displayed when clicking on a day.  */
     private int m_viewPeriod;
@@ -437,24 +440,51 @@ public class CmsCalendarDisplay extends CmsCalendar {
      */
     public String createLink(Calendar calendar, String uri, boolean useCmsLink, int viewPeriod) {
 
-        StringBuffer nextLink = new StringBuffer(64);
-
-        // append the URI to the JSP
-        nextLink.append(uri);
-
-        // append date parameters
-        nextLink.append("?").append(PARAM_YEAR).append("=").append(calendar.get(Calendar.YEAR));
-        nextLink.append("&amp;").append(PARAM_MONTH).append("=").append(calendar.get(Calendar.MONTH));
-        nextLink.append("&amp;").append(PARAM_DAY).append("=").append(calendar.get(Calendar.DATE));
-
-        // append view type parameter
-        nextLink.append("&amp;").append(PARAM_VIEWTYPE).append("=").append(viewPeriod);
-
-        // return a valid OpenCms link
-        if (useCmsLink) {
-            return getJsp().link(nextLink.toString());
+        if (isUseAjaxLinks()) {
+            StringBuffer ajaxLink = new StringBuffer(64);
+            String viewType = "";
+            switch (viewPeriod) {
+                case PERIOD_DAY:
+                    viewType = "day";
+                    break;
+                case PERIOD_WEEK:
+                    viewType = "week";
+                    break;
+                case PERIOD_MONTH:
+                    viewType = "month";
+                    break;
+                case PERIOD_YEAR:
+                    viewType = "year";
+                    break;
+                default:
+                    viewType = "day";
+            }
+            ajaxLink.append("calendarCenterShow('");
+            ajaxLink.append(viewType).append("', ");
+            ajaxLink.append(calendar.get(Calendar.DATE)).append(", ");
+            ajaxLink.append(calendar.get(Calendar.MONTH)).append(", ");
+            ajaxLink.append(calendar.get(Calendar.YEAR)).append(");");
+            return ajaxLink.toString();
         } else {
-            return nextLink.toString();
+            StringBuffer nextLink = new StringBuffer(64);
+    
+            // append the URI to the JSP
+            nextLink.append(uri);
+    
+            // append date parameters
+            nextLink.append("?").append(PARAM_YEAR).append("=").append(calendar.get(Calendar.YEAR));
+            nextLink.append("&amp;").append(PARAM_MONTH).append("=").append(calendar.get(Calendar.MONTH));
+            nextLink.append("&amp;").append(PARAM_DAY).append("=").append(calendar.get(Calendar.DATE));
+    
+            // append view type parameter
+            nextLink.append("&amp;").append(PARAM_VIEWTYPE).append("=").append(viewPeriod);
+    
+            // return a valid OpenCms link
+            if (useCmsLink) {
+                return getJsp().link(nextLink.toString());
+            } else {
+                return nextLink.toString();
+            }
         }
     }
 
@@ -1039,6 +1069,16 @@ public class CmsCalendarDisplay extends CmsCalendar {
     }
 
     /**
+     * Returns if AJAX links should be created for calendar pagination.<p>
+     * 
+     * @return true if AJAX links should be created for calendar pagination, otherwise false
+     */
+    public boolean isUseAjaxLinks() {
+
+        return m_useAjaxLinks;
+    }
+
+    /**
      * Sets the JSP action element to use.<p>
      *
      * @param jsp the JSP action element to use
@@ -1066,6 +1106,16 @@ public class CmsCalendarDisplay extends CmsCalendar {
     public void setStyle(CmsCalendarStyle style) {
 
         m_style = style;
+    }
+
+    /**
+     * Sets if AJAX links should be created for calendar pagination.<p>
+     * 
+     * @param useAjaxLinks true if AJAX links should be created for calendar pagination, otherwise false
+     */
+    public void setUseAjaxLinks(boolean useAjaxLinks) {
+
+        m_useAjaxLinks = useAjaxLinks;
     }
 
     /**

@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.calendar/src/com/alkacon/opencms/calendar/CmsCalendarMonthBean.java,v $
- * Date   : $Date: 2008/04/25 14:50:41 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2009/02/05 09:49:31 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -57,7 +57,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Andreas Zahner
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 6.0.1
  */
@@ -384,7 +384,7 @@ public class CmsCalendarMonthBean extends CmsCalendarDisplay {
      *
      * @param viewUri the URI to the view which is displayed when clicking on a day
      */
-    protected void setViewUri(String viewUri) {
+    public void setViewUri(String viewUri) {
 
         m_viewUri = viewUri;
     }
@@ -422,11 +422,16 @@ public class CmsCalendarMonthBean extends CmsCalendarDisplay {
             result.append("\"><a class=\"");
             result.append(getStyle().getStyleNavigation());
             result.append("\" href=\"");
-            calendar = getPreviousPeriod(new GregorianCalendar(year, month, 1), CmsCalendarDisplay.PERIOD_MONTH);
-            navLink.append(getJsp().getRequestContext().getUri());
-            navLink.append("?").append(PARAM_YEAR).append("=").append(calendar.get(Calendar.YEAR));
-            navLink.append("&amp;").append(PARAM_MONTH).append("=").append(calendar.get(Calendar.MONTH));
-            result.append(getJsp().link(navLink.toString()));
+            if (isUseAjaxLinks()) {
+                result.append("javascript:void(0);\" onclick=\"calendarSidePagination('prev');");
+            } else {
+                calendar = getPreviousPeriod(new GregorianCalendar(year, month, 1), CmsCalendarDisplay.PERIOD_MONTH);
+                navLink.append(getJsp().getRequestContext().getUri());
+                navLink.append("?").append(PARAM_YEAR).append("=").append(calendar.get(Calendar.YEAR));
+                navLink.append("&amp;").append(PARAM_MONTH).append("=").append(calendar.get(Calendar.MONTH));
+                result.append(getJsp().link(navLink.toString()));
+            }
+            
             result.append("\">&laquo;</a></td>\n");
         }
 
@@ -447,11 +452,16 @@ public class CmsCalendarMonthBean extends CmsCalendarDisplay {
             result.append("<a class=\"");
             result.append(getStyle().getStyleNavigation());
             result.append("\" href=\"");
-            navLink = new StringBuffer(64);
-            navLink.append(getJsp().getRequestContext().getUri());
-            navLink.append("?").append(PARAM_YEAR).append("=").append(currentCalendar.get(Calendar.YEAR));
-            navLink.append("&amp;").append(PARAM_MONTH).append("=").append(currentCalendar.get(Calendar.MONTH));
-            result.append(getJsp().link(navLink.toString()));
+            
+            if (isUseAjaxLinks()) {
+                result.append("javascript:void(0);\" onclick=\"calendarSidePagination('current');");
+            } else {
+                navLink = new StringBuffer(64);
+                navLink.append(getJsp().getRequestContext().getUri());
+                navLink.append("?").append(PARAM_YEAR).append("=").append(currentCalendar.get(Calendar.YEAR));
+                navLink.append("&amp;").append(PARAM_MONTH).append("=").append(currentCalendar.get(Calendar.MONTH));
+                result.append(getJsp().link(navLink.toString()));
+            }
             result.append("\">");
             result.append(df.format(calendar.getTime()));
             result.append("</a>");
@@ -472,11 +482,15 @@ public class CmsCalendarMonthBean extends CmsCalendarDisplay {
             result.append(getStyle().getStyleNavigation());
             result.append("\" href=\"");
             calendar = getNextPeriod(new GregorianCalendar(year, month, 1), CmsCalendarDisplay.PERIOD_MONTH);
-            navLink = new StringBuffer(64);
-            navLink.append(getJsp().getRequestContext().getUri());
-            navLink.append("?").append(PARAM_YEAR).append("=").append(calendar.get(Calendar.YEAR));
-            navLink.append("&amp;").append(PARAM_MONTH).append("=").append(calendar.get(Calendar.MONTH));
-            result.append(getJsp().link(navLink.toString()));
+            if (isUseAjaxLinks()) {
+                result.append("javascript:void(0);\" onclick=\"calendarSidePagination('next');");
+            } else {
+                navLink = new StringBuffer(64);
+                navLink.append(getJsp().getRequestContext().getUri());
+                navLink.append("?").append(PARAM_YEAR).append("=").append(calendar.get(Calendar.YEAR));
+                navLink.append("&amp;").append(PARAM_MONTH).append("=").append(calendar.get(Calendar.MONTH));
+                result.append(getJsp().link(navLink.toString()));
+            }
             result.append("\">&raquo;</a></td>\n");
         }
 

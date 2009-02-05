@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.calendar/src/com/alkacon/opencms/calendar/A_CmsCalendarSerialDateOptions.java,v $
- * Date   : $Date: 2008/04/25 14:50:41 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2009/02/05 09:49:31 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -33,11 +33,13 @@
 package com.alkacon.opencms.calendar;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Implements the basic methods of serial date options needed for serial date changes.<p>
+ * Implements the basic methods of serial date options needed for serial date changes and interruptions.<p>
  * 
  * @author Andreas Zahner
  */
@@ -45,6 +47,9 @@ public abstract class A_CmsCalendarSerialDateOptions implements I_CmsCalendarSer
 
     /** The serial date changes. */
     private List m_serialDateChanges;
+
+    /** The serial date interruptions. */
+    private List m_serialDateInterruptions;
 
     /**
      * @see com.alkacon.opencms.calendar.I_CmsCalendarSerialDateOptions#addSerialDateChange(com.alkacon.opencms.calendar.CmsCalendarSerialDateChange)
@@ -59,6 +64,18 @@ public abstract class A_CmsCalendarSerialDateOptions implements I_CmsCalendarSer
     }
 
     /**
+     * @see com.alkacon.opencms.calendar.I_CmsCalendarSerialDateOptions#addSerialDateInterruption(com.alkacon.opencms.calendar.CmsCalendarSerialDateInterruption)
+     */
+    public void addSerialDateInterruption(CmsCalendarSerialDateInterruption interruption) {
+
+        if (m_serialDateInterruptions == null) {
+            m_serialDateInterruptions = new ArrayList();
+        }
+        m_serialDateInterruptions.add(interruption);
+
+    }
+
+    /**
      * @see com.alkacon.opencms.calendar.I_CmsCalendarSerialDateOptions#getConfigurationValuesAsMap()
      */
     public abstract Map getConfigurationValuesAsMap();
@@ -69,6 +86,14 @@ public abstract class A_CmsCalendarSerialDateOptions implements I_CmsCalendarSer
     public List getSerialDateChanges() {
 
         return m_serialDateChanges;
+    }
+
+    /**
+     * @see com.alkacon.opencms.calendar.I_CmsCalendarSerialDateOptions#getSerialDateInterruptions()
+     */
+    public List getSerialDateInterruptions() {
+
+        return m_serialDateInterruptions;
     }
 
     /**
@@ -90,6 +115,14 @@ public abstract class A_CmsCalendarSerialDateOptions implements I_CmsCalendarSer
     }
 
     /**
+     * @see com.alkacon.opencms.calendar.I_CmsCalendarSerialDateOptions#setSerialDateInterruptions(java.util.List)
+     */
+    public void setSerialDateInterruptions(List serialDateInterruptions) {
+
+        m_serialDateInterruptions = serialDateInterruptions;
+    }
+
+    /**
      * Checks if the entry has to be changed by doing a lookup in the list of serial date changes.<p>
      * 
      * If the entry should not be shown in the date series, <code>null</code> is returned.<p>
@@ -99,27 +132,84 @@ public abstract class A_CmsCalendarSerialDateOptions implements I_CmsCalendarSer
      */
     protected CmsCalendarEntry checkChanges(CmsCalendarEntry entry) {
 
-        if (getSerialDateChanges() == null) {
-            // no changes configured, return unmodified entry
+        if (getSerialDateChanges() == null && getSerialDateInterruptions() == null) {
+            // no changes or interruptions configured, return unmodified entry
             return entry;
         }
-        CmsCalendarSerialDateChange changeTest = new CmsCalendarSerialDateChange(
-            entry.getEntryDate().getStartDate(),
-            null);
-        int changeIndex = getSerialDateChanges().indexOf(changeTest);
-        if (changeIndex != -1) {
-            // found a match, use the changed entry data
-            CmsCalendarSerialDateChange change = (CmsCalendarSerialDateChange)getSerialDateChanges().get(changeIndex);
-            if (change.isRemoved()) {
-                // entry has to be removed, return null
-                return null;
-            } else {
-                // change the data for this entry
-                entry.setEntryData(change.getEntryData());
-                entry.getEntryDate().setStartDate(change.getStartDate(), true);
+
+        if (getSerialDateInterruptions() != null) {
+            // check if the entry is in an interruption time interval
+            Iterator i = getSerialDateInterruptions().iterator();
+            while (i.hasNext()) {
+                CmsCalendarSerialDateInterruption intrpt = (CmsCalendarSerialDateInterruption)i.next();
+                Calendar entryStartDate = entry.getEntryDate().getStartDate();
+                if (intrpt.getStartDate().before(entryStartDate) && intrpt.getEndDate().after(entryStartDate)) {
+                    // entry is in interruption time interval, return null to remove it
+                    return null;
+                }
+            }
+        }
+
+        if (getSerialDateChanges() != null) {
+            // check if the serial entry is changed or removed
+            CmsCalendarSerialDateChange changeTest = new CmsCalendarSerialDateChange(
+                entry.getEntryDate().getStartDate(),
+                null);
+            int changeIndex = getSerialDateChanges().indexOf(changeTest);
+            if (changeIndex != -1) {
+                // found a match, use the changed entry data
+                CmsCalendarSerialDateChange change = (CmsCalendarSerialDateChange)getSerialDateChanges().get(
+                    changeIndex);
+                if (change.isRemoved()) {
+                    // entry has to be removed, return null
+                    return null;
+                } else {
+                    // change the data for this entry
+                    entry.setEntryData(change.getEntryData());
+                    entry.getEntryDate().setStartDate(change.getStartDate(), true);
+                }
             }
         }
         return entry;
+
+    }
+    
+    /**
+     * Checks if the loop to determine the view entries can be left depending on the serial type and dates.<p>
+     * 
+     * @param entryDate the date information of the serial entry
+     * @param runDate the Date of the current loop
+     * @param viewDate the view date
+     * @param occurences the current number of occurences of the serial entry
+     * @return true if the loop has to be interrupted, otherwise false
+     */
+    protected boolean checkLeaveLoop(
+        CmsCalendarEntryDateSerial entryDate,
+        Calendar runDate,
+        CmsCalendarEntryDate viewDate,
+        int occurences) {
+
+        // for the series end type: end date, check end date
+        if (entryDate.getSerialEndType() == I_CmsCalendarSerialDateOptions.END_TYPE_DATE
+            && runDate.after(entryDate.getSerialEndDate())) {
+            // run date is after series end date, interrupt
+            return true;
+        }
+
+        // for the series end type: n-times, check occurences
+        if (entryDate.getSerialEndType() == I_CmsCalendarSerialDateOptions.END_TYPE_TIMES
+            && occurences >= entryDate.getOccurences()) {
+            // interrupt after reaching maximum number of occurences
+            return true;
+        }
+
+        // check if the run date is before the end date
+        if (runDate.after(viewDate.getEndDate())) {
+            // the run date is after the view date, interrupt loop
+            return true;
+        }
+
+        return false;
     }
 
 }

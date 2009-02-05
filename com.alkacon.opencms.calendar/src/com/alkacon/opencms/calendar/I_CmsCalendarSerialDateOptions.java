@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.calendar/src/com/alkacon/opencms/calendar/I_CmsCalendarSerialDateOptions.java,v $
- * Date   : $Date: 2008/04/25 14:50:41 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2009/02/05 09:49:31 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -42,7 +42,7 @@ import java.util.Map;
  * 
  * @author Andreas Zahner
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 6.0.1
  */
@@ -108,6 +108,13 @@ public interface I_CmsCalendarSerialDateOptions {
      * @param change a change to the serial date
      */
     void addSerialDateChange(CmsCalendarSerialDateChange change);
+    
+    /**
+     * Adds a single {@link CmsCalendarSerialDateInterruption} to the list of interruptions.<p>
+     * 
+     * @param interruption an interruption of the serial date
+     */
+    void addSerialDateInterruption(CmsCalendarSerialDateInterruption interruption);
 
     /**
      * Returns the configuration values for the serial date as Map.<p>
@@ -124,6 +131,13 @@ public interface I_CmsCalendarSerialDateOptions {
      * @return a list with changes to the serial date
      */
     List getSerialDateChanges();
+    
+    /**
+     * Returns a list of interruptions to the serial date containing {@link CmsCalendarSerialDateInterruption} objects.<p>
+     * 
+     * @return a list with interruptions to the serial date
+     */
+    List getSerialDateInterruptions();
 
     /**
      * Returns the date serial type (e.g. daily, weekly, monthly, yearly).<p>
@@ -148,5 +162,12 @@ public interface I_CmsCalendarSerialDateOptions {
      * @param serialDateChanges the list with changes to the serial date
      */
     void setSerialDateChanges(List serialDateChanges);
+    
+    /**
+     * Sets the list with interruptions of the serial date.<p>
+     * 
+     * @param serialDateInterruptions the list with interruptions of the serial date
+     */
+    void setSerialDateInterruptions(List serialDateInterruptions);
 
 }

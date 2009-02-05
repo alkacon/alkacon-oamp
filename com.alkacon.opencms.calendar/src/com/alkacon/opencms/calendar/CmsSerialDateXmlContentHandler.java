@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.calendar/src/com/alkacon/opencms/calendar/CmsSerialDateXmlContentHandler.java,v $
- * Date   : $Date: 2008/04/25 14:50:41 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2009/02/05 09:49:31 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -69,20 +69,35 @@ public class CmsSerialDateXmlContentHandler extends CmsDefaultXmlContentHandler 
     /** The node name for the Change node. */
     public static final String NODE_CHANGE = "Change";
 
+    /** The node name for the End node. */
+    public static final String NODE_END = "End";
+
+    /** The node name for the Interruption node. */
+    public static final String NODE_INTERRUPTION = "Interruption";
+
     /** The node name for the Serialdate node. */
     public static final String NODE_SERIALDATE = "Serialdate";
 
-    /** Name of the property to write the serial date change information to. */
-    public static final String PROPERTY_SERIALDATE_CHANGE = "calendar.dateserialchange";
+    /** The node name for the Start node. */
+    public static final String NODE_START = "Start";
 
-    /** The flag inidicating that a series entry is changed. */
+    /** Name of the property to write the serial date change information to. */
+    public static final String PROPERTY_SERIALDATE_CHANGE = "calendar.dateserial.chg";
+
+    /** Name of the property to write the serial date interruption information to. */
+    public static final String PROPERTY_SERIALDATE_INTERRUPTION = "calendar.dateserial.int";
+
+    /** The flag indicating that a series entry is changed. */
     public static final String SERIES_FLAG_CHANGED = "chg";
 
-    /** The flag inidicating that a series entry is removed. */
+    /** The flag indicating that a series entry is removed. */
     public static final String SERIES_FLAG_REMOVED = "rem";
 
     /** The xpath for the first Change sub node. */
     public static final String XPATH_CHANGE = NODE_CHANGE + "[1]/" + NODE_CHANGE + "[1]";
+
+    /** The xpath for the first Change sub node. */
+    public static final String XPATH_INTERRUPTION = NODE_INTERRUPTION + "[1]/" + NODE_START + "[1]";
 
     /**
      * Empty constructor.<p>
@@ -180,7 +195,7 @@ public class CmsSerialDateXmlContentHandler extends CmsDefaultXmlContentHandler 
                                     break;
                                 }
                             }
-                            if (k > 0 && validChangeFound) {
+                            if (validChangeFound) {
                                 // appent delimiter to property value
                                 collectedChanges.append(CmsProperty.VALUE_LIST_DELIMITER);
                             }
@@ -220,6 +235,84 @@ public class CmsSerialDateXmlContentHandler extends CmsDefaultXmlContentHandler 
 
                 // map to individual value
                 CmsProperty p = new CmsProperty(PROPERTY_SERIALDATE_CHANGE, propValue, null, true);
+
+                // just store the string value in the selected property
+                rootCms.writePropertyObject(filename, p);
+            }
+        }
+
+        // check if the serial date interruption property has to be deleted
+        deletePropertyValue = false;
+        if (value.getName().equals(NODE_SERIALDATE)) {
+            if (!content.hasValue(XPATH_INTERRUPTION, locale)) {
+                deletePropertyValue = true;
+            }
+        }
+
+        if (deletePropertyValue || value.getPath().equals(XPATH_INTERRUPTION)) {
+
+            // get the original VFS file from the content to check if it is present
+            if (content.getFile() == null) {
+                throw new CmsXmlException(Messages.get().container(Messages.ERR_XMLCONTENT_RESOLVE_FILE_NOT_FOUND_0));
+            }
+
+            // create OpenCms user context initialized with "/" as site root to read all siblings
+            CmsObject rootCms = OpenCms.initCmsObject(cms);
+            rootCms.getRequestContext().setSiteRoot("/");
+            // read all siblings of the file
+            List siblings = rootCms.readSiblings(content.getFile().getRootPath(), CmsResourceFilter.IGNORE_EXPIRATION);
+
+            // for multiple language mappings, we need to ensure 
+            // a) all siblings are handled
+            // b) only the "right" locale is mapped to a sibling
+            for (int i = (siblings.size() - 1); i >= 0; i--) {
+                // get filename
+                String filename = ((CmsResource)siblings.get(i)).getRootPath();
+                Locale fileLocale = OpenCms.getLocaleManager().getDefaultLocale(rootCms, filename);
+
+                if (!fileLocale.equals(value.getLocale())) {
+                    // only map property if the locale fits
+                    continue;
+                }
+
+                // set the property value
+                String propValue = CmsProperty.DELETE_VALUE;
+                if (!deletePropertyValue) {
+                    // collect information about serial date changes                
+                    StringBuffer collectedInts = new StringBuffer(256);
+
+                    // get the interruption values to check
+                    List intValues = content.getValues(NODE_INTERRUPTION, locale);
+                    int intsSize = intValues.size();
+                    boolean validIntFound = false;
+
+                    for (int k = 0; k < intsSize; k++) {
+                        // loop the interruption values
+                        I_CmsXmlContentValue intValue = (I_CmsXmlContentValue)intValues.get(k);
+                        String xPath = intValue.getPath() + "/";
+                        // get the start date value for the interruption
+                        String startDateStr = content.getStringValue(cms, xPath + NODE_START, locale);
+                        // get the end date value for the interruption
+                        String endDateStr = content.getStringValue(cms, xPath + NODE_END, locale);
+
+                        if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(startDateStr)
+                            && CmsStringUtil.isNotEmptyOrWhitespaceOnly(endDateStr)) {
+                            // we have a valid interruption defined, append date values to property value
+                            if (validIntFound) {
+                                // append delimiter to property value
+                                collectedInts.append(CmsProperty.VALUE_LIST_DELIMITER);
+                            }
+                            collectedInts.append(startDateStr);
+                            collectedInts.append(CmsProperty.VALUE_MAP_DELIMITER);
+                            collectedInts.append(endDateStr);
+                            validIntFound = true;
+                        }
+                    }
+                    propValue = collectedInts.toString();
+                }
+
+                // map to individual value
+                CmsProperty p = new CmsProperty(PROPERTY_SERIALDATE_INTERRUPTION, propValue, null, true);
 
                 // just store the string value in the selected property
                 rootCms.writePropertyObject(filename, p);

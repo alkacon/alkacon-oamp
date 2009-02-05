@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.calendar/src/com/alkacon/opencms/calendar/CmsSerialDateContentBean.java,v $
- * Date   : $Date: 2008/04/25 14:50:41 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2009/02/05 09:49:31 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -243,6 +243,34 @@ public class CmsSerialDateContentBean extends CmsJspActionElement implements I_C
                 }
                 serialDate.getSerialOptions().addSerialDateChange(
                     new CmsCalendarSerialDateChange(startDate, entryDataClone));
+            }
+        }
+
+        // check interruptions
+        String serialInterruptions = null;
+        try {
+            serialInterruptions = cms.readPropertyObject(
+                resource,
+                CmsSerialDateXmlContentHandler.PROPERTY_SERIALDATE_INTERRUPTION,
+                false).getValue();
+        } catch (CmsException e) {
+            // failed to read property, ignore
+        }
+        if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(serialInterruptions)) {
+            // get the interruptions and analyze the String
+            List interruptionList = CmsStringUtil.splitAsList(serialInterruptions, CmsProperty.VALUE_LIST_DELIMITER);
+            for (int i = 0; i < interruptionList.size(); i++) {
+                String interruption = (String)interruptionList.get(i);
+                String[] interruptionEntry = CmsStringUtil.splitAsArray(interruption, CmsProperty.VALUE_MAP_DELIMITER);
+                // get the start date of the interruption
+                Calendar startDate = new GregorianCalendar(locale);
+                startDate.setTimeInMillis(Long.parseLong(interruptionEntry[0]));
+                // get the end date of the interruption
+                Calendar endDate = new GregorianCalendar(locale);
+                endDate.setTimeInMillis(Long.parseLong(interruptionEntry[1]));
+                // add the interruption to the serial date
+                serialDate.getSerialOptions().addSerialDateInterruption(
+                    new CmsCalendarSerialDateInterruption(startDate, endDate));
             }
         }
         return new CmsCalendarEntry(entryData, serialDate);

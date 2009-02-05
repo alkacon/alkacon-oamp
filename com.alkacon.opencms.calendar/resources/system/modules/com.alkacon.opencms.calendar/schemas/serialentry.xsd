@@ -2,6 +2,7 @@
 	
 	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
 	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.calendar/schemas/serialchange.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.calendar/schemas/serialinterruption.xsd"/>
 	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.calendar/schemas/entrylink.xsd"/>
 		
 	<xsd:element name="AlkaconCalendarSerialDates" type="OpenCmsAlkaconCalendarSerialDates"/>
@@ -22,6 +23,7 @@
 			<xsd:element name="Showtime" type="OpenCmsBoolean" />
 			<xsd:element name="Serialdate" type="OpenCmsString" />
 			<xsd:element name="Change" type="OpenCmsAlkaconCalendarSerialDateChange" minOccurs="0" maxOccurs="52" />
+			<xsd:element name="Interruption" type="OpenCmsAlkaconCalendarSerialDateInterruption" minOccurs="0" maxOccurs="10" />
 		</xsd:sequence>
 		<xsd:attribute name="language" type="OpenCmsLocale" use="required"/>
 	</xsd:complexType>

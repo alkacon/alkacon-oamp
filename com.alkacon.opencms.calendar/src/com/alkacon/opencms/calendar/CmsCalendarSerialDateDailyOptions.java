@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.calendar/src/com/alkacon/opencms/calendar/CmsCalendarSerialDateDailyOptions.java,v $
- * Date   : $Date: 2008/04/25 14:50:41 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2009/02/05 09:49:31 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -46,7 +46,7 @@ import java.util.Map;
  * 
  * @author Andreas Zahner
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 7.0
  */
@@ -213,13 +213,9 @@ public class CmsCalendarSerialDateDailyOptions extends A_CmsCalendarSerialDateOp
                 if (isEveryWorkingDay()) {
                     // increase run date to next day
                     runDate.add(Calendar.DAY_OF_YEAR, 1);
-                    //runDate.setTimeInMillis(runDate.getTimeInMillis() + CmsCalendarEntryDate.MILLIS_02_PER_DAY);
                 } else {
                     // increase run date with day interval for next test
                     runDate.add(Calendar.DAY_OF_YEAR, getDailyInterval());
-                    //runDate.setTimeInMillis(runDate.getTimeInMillis()
-                    //    + CmsCalendarEntryDate.MILLIS_02_PER_DAY
-                    //    * getDailyInterval());
                 }
             }
         }
@@ -258,44 +254,6 @@ public class CmsCalendarSerialDateDailyOptions extends A_CmsCalendarSerialDateOp
     public void setWorkingDays(List workingDays) {
 
         m_workingDaysList = workingDays;
-    }
-
-    /**
-     * Checks if the loop to determine the view entries can be left depending on the serial type and dates.<p>
-     * 
-     * @param entryDate the date information of the serial entry
-     * @param runDate the Date of the current loop
-     * @param viewDate the view date
-     * @param occurences the current number of occurences of the serial entry
-     * @return true if the loop has to be interrupted, otherwise false
-     */
-    private boolean checkLeaveLoop(
-        CmsCalendarEntryDateSerial entryDate,
-        Calendar runDate,
-        CmsCalendarEntryDate viewDate,
-        int occurences) {
-
-        // for the series end type: end date, check end date
-        if (entryDate.getSerialEndType() == I_CmsCalendarSerialDateOptions.END_TYPE_DATE
-            && runDate.after(entryDate.getSerialEndDate())) {
-            // run date is after series end date, interrupt
-            return true;
-        }
-
-        // for the series end type: n-times, check occurences
-        if (entryDate.getSerialEndType() == I_CmsCalendarSerialDateOptions.END_TYPE_TIMES
-            && occurences >= entryDate.getOccurences()) {
-            // interrupt after reaching maximum number of occurences
-            return true;
-        }
-
-        // check if the run date is before the end date
-        if (runDate.after(viewDate.getEndDate())) {
-            // the run date is after the view date, interrupt loop
-            return true;
-        }
-
-        return false;
     }
 
 }
