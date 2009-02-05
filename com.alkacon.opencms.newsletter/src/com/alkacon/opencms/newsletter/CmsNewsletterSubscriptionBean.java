@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterSubscriptionBean.java,v $
- * Date   : $Date: 2007/11/30 11:57:27 $
- * Version: $Revision: 1.9 $
+ * Date   : $Date: 2009/02/05 09:49:12 $
+ * Version: $Revision: 1.10 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -44,7 +44,6 @@ import org.opencms.main.CmsException;
 import org.opencms.main.CmsLog;
 import org.opencms.main.OpenCms;
 import org.opencms.module.CmsModule;
-import org.opencms.util.CmsHtmlExtractor;
 import org.opencms.util.CmsMacroResolver;
 import org.opencms.util.CmsStringUtil;
 import org.opencms.xml.content.CmsXmlContent;
@@ -65,7 +64,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.9 $ 
+ * @version $Revision: 1.10 $ 
  * 
  * @since 7.0.3 
  */
@@ -550,7 +549,7 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
             msg.append(getMacroResolver().resolveMacros(mailFoot));
             mail.setHtmlMsg(msg.toString());
             // second the text message
-            mail.setTextMsg(CmsHtmlExtractor.extractText(text, getCmsObject().getRequestContext().getEncoding()));
+            // mail.setTextMsg(CmsHtmlExtractor.extractText(text, getCmsObject().getRequestContext().getEncoding()));
             // send the mail
             mail.send();
             return true;
