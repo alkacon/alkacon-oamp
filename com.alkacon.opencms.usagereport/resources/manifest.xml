@@ -4,7 +4,7 @@
 	<info>
 		<creator>Admin</creator>
 		<opencms_version>7.0.5</opencms_version>
-		<createdate>Tue, 09 Dec 2008 13:57:12 GMT</createdate>
+		<createdate>Wed, 04 Feb 2009 08:04:29 GMT</createdate>
 		<infoproject>Offline</infoproject>
 		<export_version>7</export_version>
 	</info>
@@ -12,34 +12,56 @@
 		<name>com.alkacon.opencms.usagereport</name>
 		<nicename><![CDATA[Alkacon OpenCms Add-On Module Package Usage Report]]></nicename>
 		<group>Alkacon OAMP</group>
-		<class/>
+		<class>com.alkacon.opencms.usagereport.CmsUpdatefeedManager</class>
 		<description><![CDATA[<p>This module contains usage report functionality for OpenCms.</p>
 <p>This module can easily be used to create mails send to OpenCms with resources that are new created or recently changed.</p>
 <p><i>(c) 2008 by Alkacon Software GmbH (http://www.alkacon.com).</i></p>]]></description>
-		<version>1.0.0</version>
+		<version>1.0.1</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
 		<datecreated/>
 		<userinstalled/>
 		<dateinstalled/>
-		<dependencies/>
+		<dependencies>
+			<dependency name="com.alkacon.opencms.feeder" version="0"/>
+		</dependencies>
 		<exportpoints>
 			<exportpoint uri="/system/modules/com.alkacon.opencms.usagereport/lib/" destination="WEB-INF/lib/"/>
+			<exportpoint uri="/system/modules/com.alkacon.opencms.usagereport/classes/" destination="WEB-INF/classes/"/>
 		</exportpoints>
 		<resources>
 			<resource uri="/system/workplace/admin/notification/usage-report-notification"/>
 			<resource uri="/system/modules/com.alkacon.opencms.usagereport/"/>
 		</resources>
-		<parameters/>
+		<parameters>
+			<param name="timeframe.factor1">2</param>
+			<param name="timeframe.factor2">5</param>
+		</parameters>
+		<resourcetypes>
+			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="alkacon-updatefeed" id="125">
+				<properties>
+					<property>
+						<name>template-elements</name>
+						<value type="shared"><![CDATA[/system/modules/com.alkacon.opencms.usagereport/pages/alkacon-updatefeed.jsp]]></value>
+					</property>
+				</properties>
+				<param name="schema">/system/modules/com.alkacon.opencms.usagereport/schemas/alkacon-updatefeed.xsd</param>
+			</type>
+		</resourcetypes>
+		<explorertypes>
+			<explorertype name="alkacon-updatefeed" key="fileicon.alkacon-updatefeed" icon="alkacon-feed.png" reference="xmlcontent">
+				<newresource page="structurecontent" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-updatefeed" order="70" autosetnavigation="false" autosettitle="false" info="desc.alkacon-updatefeed"/>
+			</explorertype>
+		</explorertypes>
 	</module>
 	<files>
 		<file>
 			<destination>system</destination>
 			<type>folder</type>
-			<uuidstructure>009aac49-c5d7-11dd-8ac0-5ba7e870d907</uuidstructure>
-			<datelastmodified>Tue, 09 Dec 2008 09:51:51 GMT</datelastmodified>
+			<uuidstructure>2853d2eb-dbd2-11dd-bb26-197cffd57075</uuidstructure>
+			<datelastmodified>Tue, 06 Jan 2009 09:12:35 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Tue, 09 Dec 2008 09:51:51 GMT</datecreated>
+			<datecreated>Tue, 06 Jan 2009 09:12:35 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -58,10 +80,10 @@
 		<file>
 			<destination>system/modules</destination>
 			<type>folder</type>
-			<uuidstructure>014ff2c2-c5d7-11dd-8ac0-5ba7e870d907</uuidstructure>
-			<datelastmodified>Tue, 09 Dec 2008 09:51:52 GMT</datelastmodified>
+			<uuidstructure>28d22ae4-dbd2-11dd-bb26-197cffd57075</uuidstructure>
+			<datelastmodified>Tue, 06 Jan 2009 09:12:36 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Tue, 09 Dec 2008 09:51:52 GMT</datecreated>
+			<datecreated>Tue, 06 Jan 2009 09:12:36 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -84,6 +106,115 @@
 			<datelastmodified>Tue, 09 Dec 2008 13:53:01 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Tue, 09 Dec 2008 13:53:01 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.usagereport/classes</destination>
+			<type>folder</type>
+			<uuidstructure>165a0ac1-e92e-11dd-b4c8-197cffd57075</uuidstructure>
+			<datelastmodified>Fri, 23 Jan 2009 09:13:24 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 23 Jan 2009 09:13:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.usagereport/classes/com</destination>
+			<type>folder</type>
+			<uuidstructure>1e0da153-e92e-11dd-b4c8-197cffd57075</uuidstructure>
+			<datelastmodified>Fri, 23 Jan 2009 09:13:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 23 Jan 2009 09:13:37 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.usagereport/classes/com/alkacon</destination>
+			<type>folder</type>
+			<uuidstructure>26ca1c65-e92e-11dd-b4c8-197cffd57075</uuidstructure>
+			<datelastmodified>Fri, 23 Jan 2009 09:13:51 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 23 Jan 2009 09:13:51 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.usagereport/classes/com/alkacon/opencms</destination>
+			<type>folder</type>
+			<uuidstructure>2deeb967-e92e-11dd-b4c8-197cffd57075</uuidstructure>
+			<datelastmodified>Fri, 23 Jan 2009 09:14:03 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 23 Jan 2009 09:14:03 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.usagereport/classes/com/alkacon/opencms/usagereport</destination>
+			<type>folder</type>
+			<uuidstructure>3e38a569-e92e-11dd-b4c8-197cffd57075</uuidstructure>
+			<datelastmodified>Fri, 23 Jan 2009 09:14:31 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 23 Jan 2009 09:14:31 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.usagereport/classes/com/alkacon/opencms/usagereport/workplace.properties</source>
+			<destination>system/modules/com.alkacon.opencms.usagereport/classes/com/alkacon/opencms/usagereport/workplace.properties</destination>
+			<type>plain</type>
+			<uuidstructure>4e98153b-e92e-11dd-b4c8-197cffd57075</uuidstructure>
+			<uuidresource>4e98153c-e92e-11dd-b4c8-197cffd57075</uuidresource>
+			<datelastmodified>Tue, 03 Feb 2009 09:51:52 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 23 Jan 2009 09:14:58 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.usagereport/classes/com/alkacon/opencms/usagereport/workplace_de.properties</source>
+			<destination>system/modules/com.alkacon.opencms.usagereport/classes/com/alkacon/opencms/usagereport/workplace_de.properties</destination>
+			<type>plain</type>
+			<uuidstructure>6e19b9ef-e92e-11dd-b4c8-197cffd57075</uuidstructure>
+			<uuidresource>6e19b9f0-e92e-11dd-b4c8-197cffd57075</uuidresource>
+			<datelastmodified>Tue, 03 Feb 2009 09:52:14 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 23 Jan 2009 09:15:51 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.usagereport/classes/com/alkacon/opencms/usagereport/workplace_en.properties</destination>
+			<type>plain</type>
+			<uuidstructure>98ec4031-e92e-11dd-b4c8-197cffd57075</uuidstructure>
+			<uuidresource>4e98153c-e92e-11dd-b4c8-197cffd57075</uuidresource>
+			<datelastmodified>Tue, 03 Feb 2009 09:51:52 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 23 Jan 2009 09:14:58 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -118,6 +249,106 @@
 				<property>
 					<name>Title</name>
 					<value><![CDATA[com.alkacon.opencms.usagereport]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.usagereport/pages</destination>
+			<type>folder</type>
+			<uuidstructure>1b1da391-e952-11dd-a26a-197cffd57075</uuidstructure>
+			<datelastmodified>Fri, 23 Jan 2009 13:31:14 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 23 Jan 2009 13:31:14 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.usagereport/pages/alkacon-updatefeed.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.usagereport/pages/alkacon-updatefeed.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>373912d3-e952-11dd-a26a-197cffd57075</uuidstructure>
+			<uuidresource>373912d4-e952-11dd-a26a-197cffd57075</uuidresource>
+			<datelastmodified>Mon, 02 Feb 2009 16:54:07 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 23 Jan 2009 13:32:01 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[uri;timeout=720]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.usagereport/schemas</destination>
+			<type>folder</type>
+			<uuidstructure>2e13d1a5-e927-11dd-b4c8-197cffd57075</uuidstructure>
+			<datelastmodified>Fri, 23 Jan 2009 08:23:57 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 23 Jan 2009 08:23:57 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.usagereport/schemas/alkacon-updatefeed-folder.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.usagereport/schemas/alkacon-updatefeed-folder.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>6a1293bc-e93a-11dd-a8e6-197cffd57075</uuidstructure>
+			<uuidresource>6a1293bd-e93a-11dd-a8e6-197cffd57075</uuidresource>
+			<datelastmodified>Fri, 30 Jan 2009 11:42:20 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 23 Jan 2009 10:41:38 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.usagereport/schemas/alkacon-updatefeed-image.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.usagereport/schemas/alkacon-updatefeed-image.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>2f106034-e93a-11dd-a8e6-197cffd57075</uuidstructure>
+			<uuidresource>2f106035-e93a-11dd-a8e6-197cffd57075</uuidresource>
+			<datelastmodified>Fri, 23 Jan 2009 10:44:35 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 23 Jan 2009 10:39:59 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.usagereport/schemas/alkacon-updatefeed.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.usagereport/schemas/alkacon-updatefeed.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>567f1be7-e927-11dd-b4c8-197cffd57075</uuidstructure>
+			<uuidresource>567f1be8-e927-11dd-b4c8-197cffd57075</uuidresource>
+			<datelastmodified>Tue, 03 Feb 2009 09:52:30 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 23 Jan 2009 08:25:05 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[RSS update feed]]></value>
 				</property>
 			</properties>
 			<relations/>
