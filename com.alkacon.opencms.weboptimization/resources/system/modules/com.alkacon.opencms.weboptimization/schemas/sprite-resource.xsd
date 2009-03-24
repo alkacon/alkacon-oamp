@@ -1,0 +1,29 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.weboptimization/schemas/sprite-position.xsd"/>
+		
+	<xsd:element name="AlkaconSpriteResources" type="OpenCmsAlkaconSpriteResources"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconSpriteResources">
+		<xsd:sequence>
+			<xsd:element name="AlkaconSpriteResource" type="OpenCmsAlkaconSpriteResource" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconSpriteResource">
+		<xsd:sequence>
+			<xsd:element name="Path" type="OpenCmsVfsFile" minOccurs="1" maxOccurs="1" />
+			<xsd:element name="Position" type="OpenCmsAlkaconSpritePosition" minOccurs="1" maxOccurs="1" />
+			<xsd:element name="Selector" type="OpenCmsString" minOccurs="1" maxOccurs="1" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.weboptimization.workplace"/>
+		</xsd:appinfo>
+	</xsd:annotation>  
+	
+</xsd:schema>

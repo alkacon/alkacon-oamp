@@ -1,0 +1,31 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.weboptimization/schemas/sprite-resource.xsd"/>
+		
+	<xsd:element name="AlkaconSprites" type="OpenCmsAlkaconSprites"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconSprites">
+		<xsd:sequence>
+			<xsd:element name="AlkaconSprite" type="OpenCmsAlkaconSprite" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconSprite">
+		<xsd:sequence>
+			<xsd:element name="Resource" type="OpenCmsAlkaconSpriteResource" minOccurs="1" maxOccurs="unbounded" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="required"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.weboptimization.workplace"/>
+			<defaults>
+				<default element="Resource/Position/X" value="0" />
+				<default element="Resource/Position/Y" value="0" />
+			</defaults>
+		</xsd:appinfo>
+	</xsd:annotation>  
+	
+</xsd:schema>

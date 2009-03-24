@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<AlkaconSprites xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/com.alkacon.opencms.weboptimization/schemas/sprite.xsd">
+  <AlkaconSprite language="en">
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/example/resources/about.png]]></target>
+          <uuid>66cb6646-17e1-11de-9c3c-e30a09549266</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[0]]></X>
+        <Y><![CDATA[0]]></Y>
+      </Position>
+      <Selector><![CDATA[#sprite-about]]></Selector>
+    </Resource>
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/example/resources/contact.png]]></target>
+          <uuid>66dca466-17e1-11de-9c3c-e30a09549266</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[48]]></X>
+        <Y><![CDATA[0]]></Y>
+      </Position>
+      <Selector><![CDATA[#sprite-contact]]></Selector>
+    </Resource>
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/example/resources/gallery.png]]></target>
+          <uuid>66df638a-17e1-11de-9c3c-e30a09549266</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[0]]></X>
+        <Y><![CDATA[48]]></Y>
+      </Position>
+      <Selector><![CDATA[#sprite-gallery]]></Selector>
+    </Resource>
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/example/resources/guestbook.png]]></target>
+          <uuid>66e222ae-17e1-11de-9c3c-e30a09549266</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[48]]></X>
+        <Y><![CDATA[48]]></Y>
+      </Position>
+      <Selector><![CDATA[#sprite-guestbook]]></Selector>
+    </Resource>
+  </AlkaconSprite>
+</AlkaconSprites>

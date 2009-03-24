@@ -1,0 +1,26 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+		
+	<xsd:element name="AlkaconOptimizedCssOptions" type="OpenCmsAlkaconOptimizedCssOptions"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconOptimizedCssOptions">
+		<xsd:sequence>
+			<xsd:element name="AlkaconOptimizedCssOption" type="OpenCmsAlkaconOptimizedCssOption" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconOptimizedCssOption">
+		<xsd:sequence>
+			<xsd:element name="LineBreakPos" type="OpenCmsString" minOccurs="1" maxOccurs="1" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.weboptimization.workplace"/>
+		</xsd:appinfo>
+	</xsd:annotation>  
+	
+</xsd:schema>

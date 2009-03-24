@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<AlkaconSprites xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/com.alkacon.opencms.weboptimization/schemas/sprite.xsd">
+  <AlkaconSprite language="en">
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/example/test-sprite-hor.png]]></target>
+          <uuid>512247ce-17f9-11de-9b64-e30a09549266</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[0]]></X>
+        <Y><![CDATA[0]]></Y>
+      </Position>
+      <Selector><![CDATA[#sprite-hor]]></Selector>
+    </Resource>
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/example/test-sprite-vert.png]]></target>
+          <uuid>7cf0cd9e-17e1-11de-9c3c-e30a09549266</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[0]]></X>
+        <Y><![CDATA[48]]></Y>
+      </Position>
+      <Selector><![CDATA[#sprite-vert]]></Selector>
+    </Resource>
+  </AlkaconSprite>
+</AlkaconSprites>

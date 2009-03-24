@@ -1,0 +1,33 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.weboptimization/schemas/optimized-js-resource.xsd"/>
+		
+	<xsd:element name="AlkaconOptimizedJss" type="OpenCmsAlkaconOptimizedJss"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconOptimizedJss">
+		<xsd:sequence>
+			<xsd:element name="AlkaconOptimizedJs" type="OpenCmsAlkaconOptimizedJs" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconOptimizedJs">
+		<xsd:sequence>
+			<xsd:element name="Resource" type="OpenCmsAlkaconOptimizedJsResource" minOccurs="1" maxOccurs="unbounded" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="required"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.weboptimization.workplace"/>
+			<defaults>
+				<default element="Resource/Options/LineBreakPos" value="-1" />
+				<default element="Resource/Options/PreserveSemi" value="false" />
+				<default element="Resource/Options/Munge" value="true" />
+				<default element="Resource/Options/Optimize" value="true" />
+			</defaults>
+		</xsd:appinfo>
+	</xsd:annotation>  
+	
+</xsd:schema>

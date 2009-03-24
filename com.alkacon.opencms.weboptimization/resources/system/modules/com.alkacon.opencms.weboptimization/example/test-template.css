@@ -1,0 +1,10 @@
+<%@ page session="false" import="com.alkacon.opencms.weboptimization.*" %><%
+
+  CmsOptimizationSprite sprite = new CmsOptimizationSprite(pageContext, request, response);
+  // including sprite originals
+  sprite.includeOriginal("%(link.strong:/system/modules/com.alkacon.opencms.weboptimization/example/test-nested-sprite.png:7cb7cafa-1855-11de-bad4-e30a09549266)");
+  // including sprite optimized
+  sprite.includeOptimized("%(link.strong:/system/modules/com.alkacon.opencms.weboptimization/example/test-nested-sprite.png:7cb7cafa-1855-11de-bad4-e30a09549266)");
+  // including sprite depending of project
+  sprite.includeDefault("%(link.strong:/system/modules/com.alkacon.opencms.weboptimization/example/test-nested-sprite.png:7cb7cafa-1855-11de-bad4-e30a09549266)");
+%>

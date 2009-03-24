@@ -1,0 +1,1229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<export>
+	<info>
+		<creator>Admin</creator>
+		<opencms_version>7.0.5</opencms_version>
+		<createdate>Tue, 24 Mar 2009 10:32:20 GMT</createdate>
+		<infoproject>Offline</infoproject>
+		<export_version>7</export_version>
+	</info>
+	<module>
+		<name>com.alkacon.opencms.weboptimization</name>
+		<nicename><![CDATA[Alkacon OpenCms Add-On Module Package Web Optimization]]></nicename>
+		<group>Alkacon OAMP</group>
+		<class/>
+		<description><![CDATA[This module allows to compress js and css files, as well as to create image sprites, on the fly.]]></description>
+		<version>0.9.0</version>
+		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
+		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
+		<datecreated/>
+		<userinstalled/>
+		<dateinstalled/>
+		<dependencies/>
+		<exportpoints>
+			<exportpoint uri="/system/modules/com.alkacon.opencms.weboptimization/classes/" destination="WEB-INF/classes/"/>
+			<exportpoint uri="/system/modules/com.alkacon.opencms.weboptimization/lib/" destination="WEB-INF/lib/"/>
+		</exportpoints>
+		<resources>
+			<resource uri="/system/modules/com.alkacon.opencms.weboptimization/"/>
+			<resource uri="/system/workplace/resources/filetypes/alkacon-optimized-js.png"/>
+			<resource uri="/system/workplace/resources/filetypes/alkacon-optimized-css.png"/>
+			<resource uri="/system/workplace/resources/filetypes/alkacon-sprite.png"/>
+		</resources>
+		<parameters/>
+		<resourcetypes>
+			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="alkacon-optimized-js" id="762">
+				<properties>
+					<property>
+						<name>template-elements</name>
+						<value type="shared"><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/pages/optimized-js.jsp]]></value>
+					</property>
+				</properties>
+				<param name="schema">/system/modules/com.alkacon.opencms.weboptimization/schemas/optimized-js.xsd</param>
+			</type>
+			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="alkacon-optimized-css" id="763">
+				<properties>
+					<property>
+						<name>template-elements</name>
+						<value type="shared"><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/pages/optimized-css.jsp]]></value>
+					</property>
+				</properties>
+				<param name="schema">/system/modules/com.alkacon.opencms.weboptimization/schemas/optimized-css.xsd</param>
+			</type>
+			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="alkacon-sprite" id="764">
+				<properties>
+					<property>
+						<name>template-elements</name>
+						<value type="shared"><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/pages/sprite.jsp]]></value>
+					</property>
+				</properties>
+				<param name="schema">/system/modules/com.alkacon.opencms.weboptimization/schemas/sprite.xsd</param>
+			</type>
+		</resourcetypes>
+		<explorertypes>
+			<explorertype name="alkacon-optimized-js" key="fileicon.alkacon-optimized-js" icon="alkacon-optimized-js.png" reference="xmlcontent">
+				<newresource page="structurecontent" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-optimized-js" order="762" autosetnavigation="false" autosettitle="false" info="desc.alkacon-optimized-js"/>
+			</explorertype>
+			<explorertype name="alkacon-optimized-css" key="fileicon.alkacon-optimized-css" icon="alkacon-optimized-css.png" reference="xmlcontent">
+				<newresource page="structurecontent" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-optimized-css" order="763" autosetnavigation="false" autosettitle="false" info="desc.alkacon-optimized-css"/>
+			</explorertype>
+			<explorertype name="alkacon-sprite" key="fileicon.alkacon-sprite" icon="alkacon-sprite.png" reference="xmlcontent">
+				<newresource page="structurecontent" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-sprite" order="764" autosetnavigation="false" autosettitle="false" info="desc.alkacon-sprite"/>
+			</explorertype>
+		</explorertypes>
+	</module>
+	<files>
+		<file>
+			<destination>system</destination>
+			<type>folder</type>
+			<uuidstructure>82636d85-5951-11dd-bd88-e30a09549266</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 24 Jul 2008 07:24:10 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
+					<flags>514</flags>
+					<permissionset>
+						<allowed>1</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<destination>system/modules</destination>
+			<type>folder</type>
+			<uuidstructure>8321b4ae-5951-11dd-bd88-e30a09549266</uuidstructure>
+			<datelastmodified>Thu, 24 Jul 2008 07:24:11 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 24 Jul 2008 07:24:11 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
+					<flags>514</flags>
+					<permissionset>
+						<allowed>5</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.weboptimization</destination>
+			<type>folder</type>
+			<uuidstructure>4cac8127-120a-11de-8ac1-e30a09549266</uuidstructure>
+			<datelastmodified>Mon, 16 Mar 2009 09:10:31 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:31 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/classes</destination>
+			<type>folder</type>
+			<uuidstructure>4cb16329-120a-11de-8ac1-e30a09549266</uuidstructure>
+			<datelastmodified>Mon, 16 Mar 2009 09:10:31 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:31 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/classes/com</destination>
+			<type>folder</type>
+			<uuidstructure>4cb5a8eb-120a-11de-8ac1-e30a09549266</uuidstructure>
+			<datelastmodified>Mon, 16 Mar 2009 09:10:31 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:31 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/classes/com/alkacon</destination>
+			<type>folder</type>
+			<uuidstructure>4cc6e6fd-120a-11de-8ac1-e30a09549266</uuidstructure>
+			<datelastmodified>Mon, 16 Mar 2009 09:10:31 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:31 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/classes/com/alkacon/opencms</destination>
+			<type>folder</type>
+			<uuidstructure>4ccba1ef-120a-11de-8ac1-e30a09549266</uuidstructure>
+			<datelastmodified>Mon, 16 Mar 2009 09:10:31 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:31 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/classes/com/alkacon/opencms/weboptimization</destination>
+			<type>folder</type>
+			<uuidstructure>4ccfc0a1-120a-11de-8ac1-e30a09549266</uuidstructure>
+			<datelastmodified>Mon, 16 Mar 2009 09:10:31 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:31 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/classes/com/alkacon/opencms/weboptimization/workplace.properties</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/classes/com/alkacon/opencms/weboptimization/workplace.properties</destination>
+			<type>plain</type>
+			<uuidstructure>4cd36a23-120a-11de-8ac1-e30a09549266</uuidstructure>
+			<uuidresource>4cd36a24-120a-11de-8ac1-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 23 Mar 2009 22:05:10 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:31 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>content-encoding</name>
+					<value><![CDATA[ISO-8859-1]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/classes/com/alkacon/opencms/weboptimization/workplace_de.properties</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/classes/com/alkacon/opencms/weboptimization/workplace_de.properties</destination>
+			<type>plain</type>
+			<uuidstructure>4cd7afe5-120a-11de-8ac1-e30a09549266</uuidstructure>
+			<uuidresource>4cd7afe6-120a-11de-8ac1-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 23 Mar 2009 22:05:19 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:31 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>content-encoding</name>
+					<value><![CDATA[ISO-8859-1]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/classes/com/alkacon/opencms/weboptimization/workplace_en.properties</destination>
+			<type>plain</type>
+			<uuidstructure>7e943b49-120a-11de-8ac1-e30a09549266</uuidstructure>
+			<uuidresource>4cd36a24-120a-11de-8ac1-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 23 Mar 2009 22:05:10 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:31 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>content-encoding</name>
+					<value><![CDATA[ISO-8859-1]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example</destination>
+			<type>folder</type>
+			<uuidstructure>a091fc6a-127c-11de-a1a4-e30a09549266</uuidstructure>
+			<datelastmodified>Mon, 16 Mar 2009 22:49:02 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 22:48:54 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Example folder]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/example/test-folder.css</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example/test-folder.css</destination>
+			<type>alkacon-optimized-css</type>
+			<uuidstructure>629b60f9-127f-11de-a1a4-e30a09549266</uuidstructure>
+			<uuidresource>629b60fa-127f-11de-a1a4-e30a09549266</uuidresource>
+			<datelastmodified>Sat, 21 Mar 2009 11:33:44 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 23:08:39 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/pages/optimized-css.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/example/test-folder.js</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example/test-folder.js</destination>
+			<type>alkacon-optimized-js</type>
+			<uuidstructure>5c949006-127f-11de-a1a4-e30a09549266</uuidstructure>
+			<uuidresource>5c949007-127f-11de-a1a4-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 16 Mar 2009 23:08:58 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 23:08:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/pages/optimized-js.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/example/test-jsp.css</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example/test-jsp.css</destination>
+			<type>alkacon-optimized-css</type>
+			<uuidstructure>32685134-127e-11de-a1a4-e30a09549266</uuidstructure>
+			<uuidresource>32685135-127e-11de-a1a4-e30a09549266</uuidresource>
+			<datelastmodified>Sat, 21 Mar 2009 11:29:33 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 23:00:08 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/pages/optimized-css.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/example/test-jsp.js</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example/test-jsp.js</destination>
+			<type>alkacon-optimized-js</type>
+			<uuidstructure>40804caa-127f-11de-a1a4-e30a09549266</uuidstructure>
+			<uuidresource>40804cab-127f-11de-a1a4-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 16 Mar 2009 23:07:51 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 23:07:41 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/pages/optimized-js.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/example/test-nested.css</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example/test-nested.css</destination>
+			<type>alkacon-optimized-css</type>
+			<uuidstructure>efbd296c-185d-11de-9e1e-e30a09549266</uuidstructure>
+			<uuidresource>efbd296d-185d-11de-9e1e-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 24 Mar 2009 10:25:10 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 24 Mar 2009 10:24:20 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/pages/optimized-css.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/example/test-nested.js</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example/test-nested.js</destination>
+			<type>alkacon-optimized-js</type>
+			<uuidstructure>29743e58-185e-11de-9e1e-e30a09549266</uuidstructure>
+			<uuidresource>29743e59-185e-11de-9e1e-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 24 Mar 2009 10:26:19 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 24 Mar 2009 10:25:56 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/pages/optimized-js.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/example/test-sprite-2d.png</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example/test-sprite-2d.png</destination>
+			<type>alkacon-sprite</type>
+			<uuidstructure>6e6a5038-17f9-11de-9b64-e30a09549266</uuidstructure>
+			<uuidresource>6e6a5039-17f9-11de-9b64-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 23 Mar 2009 22:25:15 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 23 Mar 2009 22:24:53 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/pages/sprite.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/example/test-sprite-hor.png</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example/test-sprite-hor.png</destination>
+			<type>alkacon-sprite</type>
+			<uuidstructure>512247ce-17f9-11de-9b64-e30a09549266</uuidstructure>
+			<uuidresource>512247cf-17f9-11de-9b64-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 24 Mar 2009 10:21:54 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 23 Mar 2009 22:24:04 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/pages/sprite.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/example/test-sprite-nested.png</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example/test-sprite-nested.png</destination>
+			<type>alkacon-sprite</type>
+			<uuidstructure>7cb7cafa-1855-11de-bad4-e30a09549266</uuidstructure>
+			<uuidresource>7cb7cafb-1855-11de-bad4-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 24 Mar 2009 09:25:04 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 24 Mar 2009 09:23:51 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/pages/sprite.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/example/test-sprite-vert.png</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example/test-sprite-vert.png</destination>
+			<type>alkacon-sprite</type>
+			<uuidstructure>7cf0cd9e-17e1-11de-9c3c-e30a09549266</uuidstructure>
+			<uuidresource>7cf0cd9f-17e1-11de-9c3c-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 24 Mar 2009 10:22:32 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 23 Mar 2009 19:33:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/pages/sprite.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/example/test-sprite.html</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example/test-sprite.html</destination>
+			<type>jsp</type>
+			<uuidstructure>230f77fa-17fb-11de-9b64-e30a09549266</uuidstructure>
+			<uuidresource>230f77fb-17fb-11de-9b64-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 24 Mar 2009 10:28:56 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 23 Mar 2009 22:37:06 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[complete sprite test]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/example/test-template.css</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example/test-template.css</destination>
+			<type>jsp</type>
+			<uuidstructure>20c11096-17fa-11de-9b64-e30a09549266</uuidstructure>
+			<uuidresource>20c11097-17fa-11de-9b64-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 24 Mar 2009 10:14:55 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 23 Mar 2009 22:29:52 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[stylesheet example]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/example/test-template.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example/test-template.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>87156bc9-160c-11de-b19a-e30a09549266</uuidstructure>
+			<uuidresource>87156bca-160c-11de-b19a-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 23 Mar 2009 22:30:06 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Sat, 21 Mar 2009 11:36:32 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[template example]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example/resources</destination>
+			<type>folder</type>
+			<uuidstructure>af77c48d-127c-11de-a1a4-e30a09549266</uuidstructure>
+			<datelastmodified>Tue, 24 Mar 2009 10:28:31 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 22:49:19 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[some resources]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/example/resources/about.png</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example/resources/about.png</destination>
+			<type>image</type>
+			<uuidstructure>66cb6646-17e1-11de-9c3c-e30a09549266</uuidstructure>
+			<uuidresource>66cb6647-17e1-11de-9c3c-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 03 Nov 2008 19:56:10 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 23 Mar 2009 19:32:52 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[aboutus]]></value>
+				</property>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:48,h:48]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/example/resources/ajax13.js</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example/resources/ajax13.js</destination>
+			<type>plain</type>
+			<uuidstructure>33608941-127d-11de-a1a4-e30a09549266</uuidstructure>
+			<uuidresource>33608942-127d-11de-a1a4-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 16 Mar 2009 22:56:09 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 22:53:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/example/resources/browserDetection5.js</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example/resources/browserDetection5.js</destination>
+			<type>plain</type>
+			<uuidstructure>3369b104-127d-11de-a1a4-e30a09549266</uuidstructure>
+			<uuidresource>3369b105-127d-11de-a1a4-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 16 Mar 2009 22:56:14 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 22:53:01 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/example/resources/contact.png</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example/resources/contact.png</destination>
+			<type>image</type>
+			<uuidstructure>66dca466-17e1-11de-9c3c-e30a09549266</uuidstructure>
+			<uuidresource>66dca467-17e1-11de-9c3c-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 03 Nov 2008 19:56:10 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 23 Mar 2009 19:32:52 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[contact]]></value>
+				</property>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:48,h:48]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/example/resources/gallery.png</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example/resources/gallery.png</destination>
+			<type>image</type>
+			<uuidstructure>66df638a-17e1-11de-9c3c-e30a09549266</uuidstructure>
+			<uuidresource>66df638b-17e1-11de-9c3c-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 03 Nov 2008 19:56:11 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 23 Mar 2009 19:32:52 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[gallery]]></value>
+				</property>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:48,h:48]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/example/resources/guestbook.png</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example/resources/guestbook.png</destination>
+			<type>image</type>
+			<uuidstructure>66e222ae-17e1-11de-9c3c-e30a09549266</uuidstructure>
+			<uuidresource>66e222af-17e1-11de-9c3c-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 03 Nov 2008 19:56:11 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 23 Mar 2009 19:32:52 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[guestbook]]></value>
+				</property>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:48,h:48]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/example/resources/standard10.css</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example/resources/standard10.css</destination>
+			<type>plain</type>
+			<uuidstructure>336fcb87-127d-11de-a1a4-e30a09549266</uuidstructure>
+			<uuidresource>336fcb88-127d-11de-a1a4-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 16 Mar 2009 22:56:18 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 22:53:01 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/example/resources/test.css</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example/resources/test.css</destination>
+			<type>jsp</type>
+			<uuidstructure>00b7d3e1-127e-11de-a1a4-e30a09549266</uuidstructure>
+			<uuidresource>00b7d3e2-127e-11de-a1a4-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 17 Mar 2009 18:11:34 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 22:58:45 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[locale;uri]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/example/resources/test.js</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example/resources/test.js</destination>
+			<type>jsp</type>
+			<uuidstructure>9fc197ae-127d-11de-a1a4-e30a09549266</uuidstructure>
+			<uuidresource>9fc197af-127d-11de-a1a4-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 17 Mar 2009 18:11:24 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 22:56:02 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[locale;uri]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/example/resources/trainer7.css</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/example/resources/trainer7.css</destination>
+			<type>plain</type>
+			<uuidstructure>3372d8ca-127d-11de-a1a4-e30a09549266</uuidstructure>
+			<uuidresource>3372d8cb-127d-11de-a1a4-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 16 Mar 2009 22:56:23 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 22:53:01 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/lib</destination>
+			<type>folder</type>
+			<uuidstructure>4cdfc639-120a-11de-8ac1-e30a09549266</uuidstructure>
+			<datelastmodified>Mon, 16 Mar 2009 09:10:31 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:31 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/lib/com.alkacon.opencms.weboptimization.jar</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/lib/com.alkacon.opencms.weboptimization.jar</destination>
+			<type>binary</type>
+			<uuidstructure>4ce36fbb-120a-11de-8ac1-e30a09549266</uuidstructure>
+			<uuidresource>4ce36fbc-120a-11de-8ac1-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 19 Nov 2007 10:34:15 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:31 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/lib/yuicompressor-2.4.2.jar</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/lib/yuicompressor-2.4.2.jar</destination>
+			<type>binary</type>
+			<uuidstructure>4d066111-120a-11de-8ac1-e30a09549266</uuidstructure>
+			<uuidresource>4d066112-120a-11de-8ac1-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 19 Nov 2007 10:34:15 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:31 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/pages</destination>
+			<type>folder</type>
+			<uuidstructure>4d16dbd3-120a-11de-8ac1-e30a09549266</uuidstructure>
+			<datelastmodified>Mon, 16 Mar 2009 09:10:32 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:32 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/pages/optimized-css.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/pages/optimized-css.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>4d1a5e45-12ea-11de-8ac1-e30a0f5a9266</uuidstructure>
+			<uuidresource>4d1a5e46-12ea-11de-8ac1-e30a0f5a9266</uuidresource>
+			<datelastmodified>Mon, 23 Mar 2009 22:06:10 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:32 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Render for optimized css files]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[locale;uri]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/pages/optimized-js.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/pages/optimized-js.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>4d1a5e45-120a-11de-8ac1-e30a09549266</uuidstructure>
+			<uuidresource>4d1a5e46-120a-11de-8ac1-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 23 Mar 2009 22:06:21 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:32 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Render for optimized js files]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[locale;uri]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/pages/sprite.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/pages/sprite.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>4d1a5eab-12fa-11de-8ac1-e30a09549266</uuidstructure>
+			<uuidresource>4d1a5eac-12fa-11de-8ac1-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 23 Mar 2009 22:06:31 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:32 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Render for sprite files]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[locale;uri]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/schemas</destination>
+			<type>folder</type>
+			<uuidstructure>4d1fdc89-120a-11de-8ac1-e30a09549266</uuidstructure>
+			<datelastmodified>Mon, 16 Mar 2009 09:10:32 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:32 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/schemas/optimized-css-options.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/schemas/optimized-css-options.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>4d2e47eb-120a-11de-8ac1-e30a09549266</uuidstructure>
+			<uuidresource>4d2e47ec-120a-11de-8ac1-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 17 Mar 2009 19:32:39 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:32 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[optimized css options schema]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/schemas/optimized-css-resource.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/schemas/optimized-css-resource.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>4d27f2de-de0a-11de-8ac1-e30a09549266</uuidstructure>
+			<uuidresource>4d27f2df-de0a-11de-8ac1-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 17 Mar 2009 19:32:24 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:32 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Single optimized css resource schema]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/schemas/optimized-css.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/schemas/optimized-css.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>4d2c86c1-120a-f4de-8ac1-e30a09549266</uuidstructure>
+			<uuidresource>4d2c86c2-120a-f4de-8ac1-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 17 Mar 2009 19:33:23 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:32 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Main optimized css schema]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/schemas/optimized-js-options.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/schemas/optimized-js-options.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>4d2337eb-120a-11de-8ac1-e30a09549266</uuidstructure>
+			<uuidresource>4d2337ec-120a-11de-8ac1-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 17 Mar 2009 19:32:39 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:32 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[optimized js options schema]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/schemas/optimized-js-resource.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/schemas/optimized-js-resource.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>4d27f2de-120a-11de-8ac1-e30a09549266</uuidstructure>
+			<uuidresource>4d27f2df-120a-11de-8ac1-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 17 Mar 2009 19:32:24 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:32 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Single optimized js resource schema]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/schemas/optimized-js.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/schemas/optimized-js.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>4d2c86c1-120a-11de-8ac1-e30a09549266</uuidstructure>
+			<uuidresource>4d2c86c2-120a-11de-8ac1-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 17 Mar 2009 19:33:23 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:32 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Main optimized js schema]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/schemas/sprite-position.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/schemas/sprite-position.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>4d2337eb-22aa-11de-8ac1-e30a09549266</uuidstructure>
+			<uuidresource>4d2337ec-22aa-11de-8ac1-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 17 Mar 2009 19:32:39 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:32 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[optimized sprite position schema]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/schemas/sprite-resource.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/schemas/sprite-resource.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>4d27f2de-120a-5fde-84c1-e30a09549266</uuidstructure>
+			<uuidresource>4d27f2df-120a-5fde-84c1-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 23 Mar 2009 22:07:10 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:32 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Single sprite resource schema]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/schemas/sprite.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/schemas/sprite.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>4d2c86c1-12ca-12de-8ac1-e30a09549266</uuidstructure>
+			<uuidresource>4d2c86c2-12ca-12de-8ac1-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 23 Mar 2009 22:07:19 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:10:32 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Main sprite schema]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace</destination>
+			<type>folder</type>
+			<uuidstructure>825afce2-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>content-encoding</name>
+					<value><![CDATA[UTF-8]]></value>
+				</property>
+				<property>
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+				<property>
+					<name>login-form</name>
+					<value><![CDATA[/system/login/index.html]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>ALL_OTHERS</uuidprincipal>
+					<flags>134</flags>
+					<permissionset>
+						<allowed>0</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+				<accessentry>
+					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
+					<flags>518</flags>
+					<permissionset>
+						<allowed>5</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<destination>system/workplace/resources</destination>
+			<type>folder</type>
+			<uuidstructure>82c16052-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace/resources/filetypes</destination>
+			<type>folder</type>
+			<uuidstructure>83ca1dcc-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/filetypes/alkacon-optimized-css.png</source>
+			<destination>system/workplace/resources/filetypes/alkacon-optimized-css.png</destination>
+			<type>image</type>
+			<uuidstructure>9451bfea-12da-11de-8ac1-e30a09149266</uuidstructure>
+			<uuidresource>9451bfeb-12da-11de-8ac1-e30a09149266</uuidresource>
+			<datelastmodified>Mon, 16 Mar 2009 23:06:26 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:12:31 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/filetypes/alkacon-optimized-js.png</source>
+			<destination>system/workplace/resources/filetypes/alkacon-optimized-js.png</destination>
+			<type>image</type>
+			<uuidstructure>9451b8ea-120a-11de-8ac1-e30a09549266</uuidstructure>
+			<uuidresource>9451b8eb-120a-11de-8ac1-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 16 Mar 2009 23:06:26 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:12:31 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/filetypes/alkacon-sprite.png</source>
+			<destination>system/workplace/resources/filetypes/alkacon-sprite.png</destination>
+			<type>image</type>
+			<uuidstructure>9451b8ea-121a-11de-8ac2-e30a09549266</uuidstructure>
+			<uuidresource>9451b8eb-121a-11de-8ac2-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 16 Mar 2009 23:06:26 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 16 Mar 2009 09:12:31 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+	</files>
+</export>
