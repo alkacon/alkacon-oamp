@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<AlkaconOptimizedCsss xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/com.alkacon.opencms.weboptimization/schemas/optimized-css.xsd">
+  <AlkaconOptimizedCss language="en">
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/test/jquery.fancybox/jquery.fancybox.css]]></target>
+          <uuid>cd6cdf6e-1878-11de-bee7-e30a09549266</uuid>
+        </link>
+      </Path>
+    </Resource>
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/test/example/fancybox-sprite.css]]></target>
+          <uuid>28c3fb5d-187b-11de-bee7-e30a09549266</uuid>
+        </link>
+      </Path>
+    </Resource>
+  </AlkaconOptimizedCss>
+</AlkaconOptimizedCsss>

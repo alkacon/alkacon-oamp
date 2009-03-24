@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<AlkaconSprites xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/com.alkacon.opencms.weboptimization/schemas/sprite.xsd">
+  <AlkaconSprite language="en">
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/test/jquery.fancybox/fancy_progress.png]]></target>
+          <uuid>cd2faf1e-1878-11de-bee7-e30a09549266</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[0]]></X>
+        <Y><![CDATA[0]]></Y>
+      </Position>
+      <Selector><![CDATA[div#fancy_loading div]]></Selector>
+    </Resource>
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/test/jquery.fancybox/fancy_closebox.png]]></target>
+          <uuid>cd280df6-1878-11de-bee7-e30a09549266</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[40]]></X>
+        <Y><![CDATA[0]]></Y>
+      </Position>
+      <Selector><![CDATA[div#fancy_close]]></Selector>
+    </Resource>
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/test/jquery.fancybox/fancy_left.png]]></target>
+          <uuid>cd2bde8a-1878-11de-bee7-e30a09549266</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[40]]></X>
+        <Y><![CDATA[30]]></Y>
+      </Position>
+      <Selector><![CDATA[span#fancy_left_ico]]></Selector>
+    </Resource>
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/test/jquery.fancybox/fancy_right.png]]></target>
+          <uuid>cd32bc62-1878-11de-bee7-e30a09549266</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[40]]></X>
+        <Y><![CDATA[60]]></Y>
+      </Position>
+      <Selector><![CDATA[span#fancy_right_ico]]></Selector>
+    </Resource>
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/test/jquery.fancybox/fancy_shadow_nw.png]]></target>
+          <uuid>cd4a3c12-1878-11de-bee7-e30a09549266</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[42]]></X>
+        <Y><![CDATA[92]]></Y>
+      </Position>
+      <Selector><![CDATA[div.fancy_bg_nw]]></Selector>
+    </Resource>
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/test/jquery.fancybox/fancy_shadow_ne.png]]></target>
+          <uuid>cd47a3fe-1878-11de-bee7-e30a09549266</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[55]]></X>
+        <Y><![CDATA[92]]></Y>
+      </Position>
+      <Selector><![CDATA[div.fancy_bg_ne]]></Selector>
+    </Resource>
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/test/jquery.fancybox/fancy_shadow_sw.png]]></target>
+          <uuid>cd581ece-1878-11de-bee7-e30a09549266</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[42]]></X>
+        <Y><![CDATA[110]]></Y>
+      </Position>
+      <Selector><![CDATA[div.fancy_bg_sw]]></Selector>
+    </Resource>
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/test/jquery.fancybox/fancy_shadow_se.png]]></target>
+          <uuid>cd53d90a-1878-11de-bee7-e30a09549266</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[55]]></X>
+        <Y><![CDATA[110]]></Y>
+      </Position>
+      <Selector><![CDATA[div.fancy_bg_se]]></Selector>
+    </Resource>
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/test/jquery.fancybox/fancy_title_left.png]]></target>
+          <uuid>cd5d00d6-1878-11de-bee7-e30a09549266</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[40]]></X>
+        <Y><![CDATA[130]]></Y>
+      </Position>
+      <Selector><![CDATA[td#fancy_title_left]]></Selector>
+    </Resource>
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.weboptimization/test/jquery.fancybox/fancy_title_right.png]]></target>
+          <uuid>cd6209ee-1878-11de-bee7-e30a09549266</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[55]]></X>
+        <Y><![CDATA[130]]></Y>
+      </Position>
+      <Selector><![CDATA[td#fancy_title_right]]></Selector>
+    </Resource>
+  </AlkaconSprite>
+</AlkaconSprites>

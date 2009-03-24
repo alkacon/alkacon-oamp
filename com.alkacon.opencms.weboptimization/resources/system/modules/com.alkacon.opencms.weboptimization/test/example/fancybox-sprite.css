@@ -1,0 +1,11 @@
+<%@ page session="false" import="com.alkacon.opencms.weboptimization.*" %><%
+
+  CmsOptimizationSprite sprite = new CmsOptimizationSprite(pageContext, request, response);
+  sprite.includeOptimized("%(link.strong:/test/example/fancybox.png:8c85ec81-1879-11de-bee7-e30a09549266)");
+%>
+td#fancy_title_left { background-repeat: no-repeat; }
+td#fancy_title_right { background-repeat: no-repeat; }
+<%
+  sprite.includeOptimized("%(link.strong:/test/example/fancybox-x.png:771580d7-187d-11de-bee7-e30a09549266)");
+  sprite.includeOptimized("%(link.strong:/test/example/fancybox-y.png:92999cc8-187e-11de-bee7-e30a09549266)");
+%>
