@@ -1,6 +1,6 @@
 
                 Alkacon OpenCms Add-On Module Package: Web Optimization
-                       Version 1.0.0; March 24th, 2009
+                       Version 1.0.0; March 27th, 2009
 
 
                                     WARNING:
@@ -56,5 +56,5 @@ Legend:
 * Bug fixed
 - General comment
 
-1.0.0 - March 24th, 2009
+1.0.0 - March 27th, 2009
 - First public release
