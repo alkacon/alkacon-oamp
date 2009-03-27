@@ -1,6 +1,6 @@
 
                 Alkacon OpenCms Add-On Module Package: Web Optimization
-                       Version 0.9.0; March 24th, 2009
+                       Version 1.0.0; March 24th, 2009
 
 
                                     WARNING:
@@ -43,7 +43,7 @@ http://www.alkacon.com
 3. Installation
 
 A detailed description of the installation is described in the provided
-PDF file "Alkacon_OpenCms_WebOptimization_0.9.0.pdf".
+PDF file "Alkacon_OpenCms_WebOptimization_1.0.0.pdf".
 
 
 4. History of changes
@@ -56,5 +56,5 @@ Legend:
 * Bug fixed
 - General comment
 
-0.9.0 - March 24th, 2009
+1.0.0 - March 24th, 2009
 - First public release
