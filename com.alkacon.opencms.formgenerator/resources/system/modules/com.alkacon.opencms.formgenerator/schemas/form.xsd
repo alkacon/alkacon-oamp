@@ -23,8 +23,9 @@
 			<xsd:element name="DataTarget" type="OpenCmsDataTarget" minOccurs="0" maxOccurs="1"/>
 			<xsd:element name="MailText" type="OpenCmsHtml" />						
 			<xsd:element name="FormText" type="OpenCmsHtml" />
-			<xsd:element name="FormFooterText" type="OpenCmsHtml" minOccurs="0"/>	
 			<xsd:element name="InputField" type="OpenCmsAlkaconWebFormInputField" maxOccurs="unbounded" />
+			<xsd:element name="FormMiddleText" type="OpenCmsHtml" minOccurs="0" />
+			<xsd:element name="FormFooterText" type="OpenCmsHtml" minOccurs="0" />	
 			<xsd:element name="TargetUri" type="OpenCmsVfsFile" minOccurs="0" /> 				
 			<xsd:element name="FormConfirmation" type="OpenCmsHtml" />
 			<xsd:element name="FormCaptcha" type="OpenCmsAlkaconWebFormCaptcha" minOccurs="0" maxOccurs="1" />
@@ -48,6 +49,7 @@
 			<layouts>
 				<layout element="MailText" widget="HtmlWidget" configuration="formatselect,source,table" />
 				<layout element="FormText" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
+				<layout element="FormMiddleText" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
 				<layout element="FormFooterText" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
 				<layout element="FormConfirmation" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
 			</layouts>

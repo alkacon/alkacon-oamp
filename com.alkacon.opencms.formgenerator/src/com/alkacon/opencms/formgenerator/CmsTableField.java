@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsTableField.java,v $
- * Date   : $Date: 2008/06/02 13:16:38 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2009/04/01 16:02:20 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -51,9 +51,9 @@ import org.apache.commons.logging.Log;
  * 
  * This field can not be shown in the two column design.<p>
  * 
- * @author Anja Röttgers
+ * @author Anja Roettgers
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4 
  */

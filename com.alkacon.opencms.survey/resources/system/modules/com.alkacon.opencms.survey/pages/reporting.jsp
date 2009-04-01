@@ -31,6 +31,8 @@
 	
 	<c:set var="color" value="${content.valueList['Color']}"/>
 	<c:set var="group" value="${content.value['DetailGroup'] }"/>
+	<c:set var="showCount" value="${content.value['ShowCount']}"/>
+
 	
 	<c:if test="${!empty content.value['Text'] && (!param.detail || !cms.showDetail[group])}">
 		<c:out value="${content.value['Text']}" escapeXml="false"/>
@@ -57,7 +59,7 @@
 	
 				<%-- special caption for the overview page --%>
 				<c:if test="${!param.detail || !cms.showDetail[group]}">
-					<h2><fmt:message key="report.count.headline"><fmt:param value="${fn:length(workBean.list)}"/></fmt:message></h2>
+					<c:if test="${showCount == 'true'}"><h2><fmt:message key="report.count.headline"><fmt:param value="${fn:length(workBean.list)}"/></fmt:message></h2></c:if>
 					<c:if test="${cms.showDetail[group]}"><a class="linkDetail" href="<cms:link>${cms.requestContext.uri}?detail=true</cms:link>" title="<fmt:message key='report.next.detail.title'/>"><fmt:message key="report.next.detail.headline"/></a></c:if>
 				</c:if>
 				
@@ -74,7 +76,7 @@
 	
 						<%-- get the label for the field --%>
 						<c:set var="labeling" value="${cms.labeling[field.value['FieldLabel']]}"/>
-						<h3><c:out value="${labeling[0]}"/></h3>
+						<h3><c:out value="${labeling[0]}"/></h3><br/>
 
 						<%-- is the detail page --%>
 						<c:if test="${param.detail && cms.showDetail[group]}">
@@ -111,14 +113,14 @@
 											<c:set var="defValue" value="${fn:substringAfter(def, ':')}" />
 										</c:if>
 									</c:forTokens>
-									<p class="reportanswer"><c:out value="${defValue}"/>:</p>
+									<p class="reportanswer"><c:out value="${defValue}"/></p>
 									<span class="processbar">
 										<c:set var="curColor" value="${color[(status.index%fn:length(color))]}"/>
 										<span class="bar" style="width:${width * 100}%; background-color:${curColor}; color:${cms.textColor[curColor]};">
 											<fmt:formatNumber value="${width}" type="percent"/>
 										</span>
 									</span>
-									<span class="reportcount">(<c:out value="${itemValue}"/>)</span> 
+									<span class="reportcount"><c:if test="${showCount == 'true'}">(<c:out value="${itemValue}"/>)</c:if><br/><br/></span> 
 								</div>
 							    </c:if>
 							</c:forEach>

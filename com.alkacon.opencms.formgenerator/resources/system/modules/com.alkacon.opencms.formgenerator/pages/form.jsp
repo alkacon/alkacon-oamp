@@ -30,14 +30,16 @@ if (! showForm) {
 		cms.include("/system/modules/com.alkacon.opencms.formgenerator/elements/check.jsp");
 	}  else if(cms.showDownloadData()) {
 	    cms.include("/system/modules/com.alkacon.opencms.formgenerator/elements/datadownload.jsp");
-	} else if (cms.getFormConfiguration().hasTargetUri()) {
-		response.sendRedirect(cms.link(cms.getFormConfiguration().getTargetUri()));
 	} else {
 		// try to send a notification email with the submitted form field values
 		if (cms.sendData()) {
 			// successfully sent mail, show confirmation end page
-			request.setAttribute("formhandler", cms);
-			cms.include("/system/modules/com.alkacon.opencms.formgenerator/elements/confirmation.jsp");
+			if (cms.getFormConfiguration().hasTargetUri()) {
+				response.sendRedirect(cms.link(cms.getFormConfiguration().getTargetUri()));
+			} else {
+				request.setAttribute("formhandler", cms);
+				cms.include("/system/modules/com.alkacon.opencms.formgenerator/elements/confirmation.jsp");
+			}
 		} else {
 			// failure sending mail, show error output %>
 			<h3><%= messages.key("form.error.mail.headline") %></h3>
@@ -54,7 +56,16 @@ if (! showForm) {
 	// get the configured form elements
 	CmsForm formConfiguration = cms.getFormConfiguration();
 	List fields = formConfiguration.getFields();
-	
+
+	String enctype = "";
+	Iterator iter = fields.iterator();
+	while (iter.hasNext()) {
+	    I_CmsField tmp = (I_CmsField) iter.next();
+	    if (tmp.getType().equals("file")) {
+	        enctype = "enctype=\"multipart/form-data\"";
+	    }
+	}
+
 	// show form text
 	out.print(formConfiguration.getFormText());
 	
@@ -69,7 +80,7 @@ if (! showForm) {
 
 	// create the form head 
 	%>
-	<form name="emailform" action="<%= cms.link(cms.getRequestContext().getUri()) %>" method="post" enctype="multipart/form-data" <%= formConfiguration.getFormAttributes() %>>
+	<form name="emailform" action="<%= cms.link(cms.getRequestContext().getUri()) %>" method="post" <%= enctype %> <%= formConfiguration.getFormAttributes() %>>
 	<!-- Hidden form fields:  -->
         <input type="hidden" name="<%= CmsFormHandler.PARAM_FORMACTION %>"  id="<%= CmsFormHandler.PARAM_FORMACTION %>" value="<%= CmsFormHandler.ACTION_SUBMIT %>"/>
 	<%= messages.key("form.html.start") %>
@@ -91,7 +102,12 @@ if (! showForm) {
 		pos=field.getPosition();
 		place=field.getPlaceholder();
 	}
-	
+
+	// show form footer text
+	out.print("<tr><td><br/>");
+	out.print(formConfiguration.getFormMiddleText());
+	out.print("</td></tr>");
+
 	// create the form foot 
 	if (formConfiguration.hasMandatoryFields() && formConfiguration.isShowMandatory()) {
 		%><%= messages.key("form.html.row.start") %>
@@ -99,6 +115,7 @@ if (! showForm) {
 		<%= messages.key("form.html.row.end") %>
 		<%
 	}
+
 		%><%= messages.key("form.html.row.start") %>
 			<%= messages.key("form.html.button.start") %><input type="submit" value="<%= messages.key("form.button.submit") %>"  class="formbutton submitbutton"/><% if (formConfiguration.isShowReset()) { %>&nbsp;<input type="reset" value="<%= messages.key("form.button.reset") %>" class="formbutton resetbutton"/><% } %><%= messages.key("form.html.button.end") %>
 		<%= messages.key("form.html.row.end") %><%
@@ -107,6 +124,7 @@ if(isOffline && formConfiguration.isTransportDatabase()) { %>
 			<%= messages.key("form.html.button.start") %><input type="submit" onClick="javascript:document.getElementById('<%=CmsFormHandler.PARAM_FORMACTION %>').value='<%=CmsFormHandler.ACTION_DOWNLOAD_DATA_1 %>';"  value="<%= messages.key("form.button.downloaddata") %>" class="formbutton downloadbutton" /><%= messages.key("form.html.button.end") %>
 		<%= messages.key("form.html.row.end") %><%
 }
+
 %>
 	<%= messages.key("form.html.end") %>
        	</form><%

@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
- * Date   : $Date: 2008/08/29 10:42:21 $
- * Version: $Revision: 1.11 $
+ * Date   : $Date: 2009/04/01 16:02:20 $
+ * Version: $Revision: 1.12 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -63,7 +63,7 @@ import org.apache.commons.fileupload.FileItem;
  * @author Thomas Weckert 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  * 
  * @since 7.0.4 
  */
@@ -161,6 +161,9 @@ public class CmsForm {
 
     /** Configuration node name for the form footer text node. */
     public static final String NODE_FORMFOOTERTEXT = "FormFooterText";
+
+    /** Configuration node name for the form middle text node. */
+    public static final String NODE_FORMMIDDLETEXT = "FormMiddleText";
 
     /** Configuration node name for the form text node. */
     public static final String NODE_FORMTEXT = "FormText";
@@ -281,6 +284,9 @@ public class CmsForm {
 
     /** configuration value. */
     protected String m_formFooterText;
+
+    /** configuration value. */
+    protected String m_formMiddleText;
 
     /** The form id needed in case it is stored in the database. */
     protected String m_formId;
@@ -590,6 +596,16 @@ public class CmsForm {
     public String getFormFieldAttributes() {
 
         return m_formFieldAttributes;
+    }
+
+    /**
+     * Returns the form middle text.<p>
+     * 
+     * @return the form middle text
+     */
+    public String getFormMiddleText() {
+
+        return m_formMiddleText;
     }
 
     /**
@@ -1112,6 +1128,9 @@ public class CmsForm {
         // get the form text
         String stringValue = content.getStringValue(cms, NODE_FORMTEXT, locale);
         setFormText(getConfigurationValue(stringValue, ""));
+        // get the form middle text
+        stringValue = content.getStringValue(cms, NODE_FORMMIDDLETEXT, locale);
+        setFormMiddleText(getConfigurationValue(stringValue, ""));
         // get the form footer text
         stringValue = content.getStringValue(cms, NODE_FORMFOOTERTEXT, locale);
         setFormFooterText(getConfigurationValue(stringValue, ""));
@@ -1661,6 +1680,16 @@ public class CmsForm {
     protected void setFormFooterText(String formFooterText) {
 
         m_formFooterText = formFooterText;
+    }
+
+    /**
+     * Sets the form middle text.<p>
+     * 
+     * @param formMiddleText the form text
+     */
+    protected void setFormMiddleText(String formMiddleText) {
+
+        m_formMiddleText = formMiddleText;
     }
 
     /**

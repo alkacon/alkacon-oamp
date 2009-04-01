@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.survey/src/com/alkacon/opencms/survey/CmsFormReportingBean.java,v $
- * Date   : $Date: 2008/05/16 10:09:43 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2009/04/01 16:02:18 $
+ * Version: $Revision: 1.5 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -57,9 +57,9 @@ import org.apache.commons.collections.map.LazyMap;
 /**
  * Contains functions to show the reporting of the webform.<p>
  * 
- * @author Anja Röttgers
+ * @author Anja Roettgers
  * 
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * 
  * @since 7.0.4
  */
