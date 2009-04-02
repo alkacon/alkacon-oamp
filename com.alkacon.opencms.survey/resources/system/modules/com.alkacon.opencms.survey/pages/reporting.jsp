@@ -32,6 +32,7 @@
 	<c:set var="color" value="${content.valueList['Color']}"/>
 	<c:set var="group" value="${content.value['DetailGroup'] }"/>
 	<c:set var="showCount" value="${content.value['ShowCount']}"/>
+	<c:set var="AddText" value="${content.value['AddText']}" />
 
 	
 	<c:if test="${!empty content.value['Text'] && (!param.detail || !cms.showDetail[group])}">
@@ -130,8 +131,10 @@
 				</c:forEach>
 			</div>
 		</c:if>
-	
 	</cms:contentload>
+	</c:if>
+	<c:if test="${!empty content.value['AddText'] && (!param.detail || !cms.showDetail[group])}">
+		<c:out value="${content.value['AddText']}" escapeXml="false"/>
 	</c:if>
 </cms:contentload>
 </c:catch>

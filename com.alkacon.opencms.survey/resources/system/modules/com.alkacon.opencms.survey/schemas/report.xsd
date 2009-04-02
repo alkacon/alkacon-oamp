@@ -17,6 +17,7 @@
 			<xsd:element name="DetailGroup" type="OpenCmsString" minOccurs="0"/>
 			<xsd:element name="Text" type="OpenCmsString" minOccurs="0" />
 			<xsd:element name="ShowCount" type="OpenCmsBoolean" minOccurs="1" maxOccurs="1" />
+			<xsd:element name="AddText" type="OpenCmsHtml" minOccurs="0" />
 		</xsd:sequence>
 		<xsd:attribute name="language" type="OpenCmsLocale" use="required"/>
 	</xsd:complexType>
@@ -36,6 +37,7 @@
 			<layouts>
 				<layout element="Text" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
 				<layout element="DetailGroup" widget="GroupWidget" />
+				<layout element="AddText" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
 			</layouts>	
 		</xsd:appinfo>
 	</xsd:annotation>  
