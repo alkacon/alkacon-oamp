@@ -20,7 +20,9 @@
 		<datecreated/>
 		<userinstalled/>
 		<dateinstalled/>
-		<dependencies/>
+		<dependencies>
+			<dependency name="com.alkacon.opencms.formgenerator" version="0.0.1"/>
+		</dependencies>
 		<exportpoints>
 			<exportpoint uri="/system/modules/com.alkacon.opencms.feeder/classes/" destination="WEB-INF/classes/"/>
 			<exportpoint uri="/system/modules/com.alkacon.opencms.feeder/lib/" destination="WEB-INF/lib/"/>
