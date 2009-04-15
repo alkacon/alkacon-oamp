@@ -55,5 +55,9 @@ Legend:
 * Bug fixed
 - General comment
 
+1.0.1 - April 1, 2009
+! Am additional text area added to the bottom of the report.
+! If a user visits the form for the first time a cookie is set that makes sure a user can not vote twice.
+
 1.0.0 - July 4, 2008
 - First public release
