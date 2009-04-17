@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/export/CmsCvsExportBean.java,v $
- * Date   : $Date: 2008/05/16 10:09:43 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2009/04/17 07:27:59 $
+ * Version: $Revision: 1.5 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -32,17 +32,27 @@
 
 package com.alkacon.opencms.formgenerator.database.export;
 
+import com.alkacon.opencms.formgenerator.CmsForm;
 import com.alkacon.opencms.formgenerator.CmsFormHandler;
 import com.alkacon.opencms.formgenerator.database.CmsFormDataAccess;
 import com.alkacon.opencms.formgenerator.database.CmsFormDataBean;
 
+import org.opencms.main.CmsLog;
+import org.opencms.main.OpenCms;
+import org.opencms.util.CmsStringUtil;
+import org.opencms.util.CmsUUID;
+
 import java.sql.SQLException;
 import java.text.Collator;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+
+import org.apache.commons.logging.Log;
 
 /**
  * Bean that supports the data export.<p>
@@ -52,12 +62,15 @@ import java.util.Locale;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * 
  * @since 7.0.4
  *
  */
 public class CmsCvsExportBean {
+
+    /** The log object for this class. */
+    private static final Log LOG = CmsLog.getLog(CmsCvsExportBean.class);
 
     /** The default value delimiter for CSV files in Excel. */
     public static final char EXCEL_DEFAULT_CSV_DELMITER = ';';
@@ -120,6 +133,19 @@ public class CmsCvsExportBean {
          */
 
         StringBuffer result = new StringBuffer();
+        // Time format: 
+        DateFormat df = null;
+        String formatString = OpenCms.getModuleManager().getModule(CmsForm.MODULE_NAME).getParameter(
+            CmsForm.MODULE_PARAM_EXPORT_TIMEFORMATE);
+        if (CmsStringUtil.isNotEmpty(formatString)) {
+            try {
+                df = new SimpleDateFormat(formatString);
+            } catch (IllegalArgumentException iae) {
+                LOG.warn(Messages.get().getBundle().key(
+                    Messages.LOG_WARN_EXPORT_DATEFORMAT_ILLEGAL_2,
+                    new Object[] {CmsForm.MODULE_PARAM_EXPORT_TIMEFORMATE, formatString}));
+            }
+        }
         List columnNames = CmsFormDataAccess.getInstance().readFormFieldNames(
             formId,
             getStartTime().getTime(),
@@ -132,22 +158,29 @@ public class CmsCvsExportBean {
             getEndTime().getTime());
 
         // loop 1 - write the headers:
-        result.append("Creation date");
+        result.append(escapeExcelCsv("Creation date"));
         result.append(EXCEL_DEFAULT_CSV_DELMITER);
-        result.append("Resource path");
+        result.append(escapeExcelCsv("Resource path"));
+        result.append(EXCEL_DEFAULT_CSV_DELMITER);
+        result.append(escapeExcelCsv("Resource UUID"));
         result.append(EXCEL_DEFAULT_CSV_DELMITER);
         Iterator itColumns = columnNames.iterator();
         while (itColumns.hasNext()) {
             String columnName = (String)itColumns.next();
-            columnName = escapeExcelCsv(columnName);
-            result.append(columnName);
-            if (itColumns.hasNext()) {
-                result.append(EXCEL_DEFAULT_CSV_DELMITER);
+            // skip empty columns (previous versions saved CmsEmptyField with empty values which will not be deleted):
+            if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(columnName)) {
+                columnName = escapeExcelCsv(columnName);
+                result.append(columnName);
+                if (itColumns.hasNext()) {
+                    result.append(EXCEL_DEFAULT_CSV_DELMITER);
+                }
             }
         }
         result.append("\r\n");
         // loop 2 - write the data:
         Iterator itRows = dataEntries.iterator();
+        String path;
+        CmsUUID uuid = null;
         while (itRows.hasNext()) {
             CmsFormDataBean row = (CmsFormDataBean)itRows.next();
             // create an entry for each column, even if some rows (data sets) 
@@ -155,26 +188,38 @@ public class CmsCvsExportBean {
             // a) not entered 
             // b) the form was changed in structure over time 
             // c) developer errors,  hw /sw problems... 
-            result.append(new Date(row.getDateCreated()));
+            Date creationDate = new Date(row.getDateCreated());
+            if (df == null) {
+                result.append(creationDate);
+            } else {
+                result.append(df.format(creationDate));
+            }
+            DateFormat.getDateTimeInstance();
             result.append(EXCEL_DEFAULT_CSV_DELMITER);
-            String path;
+            uuid = row.getResourceId();
             try {
-                path = m_formHandler.getCmsObject().readResource(row.getResourceId()).getRootPath();
+                path = m_formHandler.getCmsObject().readResource(uuid).getRootPath();
             } catch (Exception e) {
                 path = row.getResourceId().toString();
             }
             result.append(path);
             result.append(EXCEL_DEFAULT_CSV_DELMITER);
+            result.append(String.valueOf(uuid));
+            result.append(EXCEL_DEFAULT_CSV_DELMITER);
             itColumns = columnNames.iterator();
             while (itColumns.hasNext()) {
                 String columnName = (String)itColumns.next();
-                String value = row.getFieldValue(columnName);
-                if (value != null) {
-                    value = escapeExcelCsv(value);
-                    result.append(value);
-                }
-                if (itColumns.hasNext()) {
-                    result.append(EXCEL_DEFAULT_CSV_DELMITER);
+                // skip empty columns (previous versions saved CmsEmptyField with empty values which will not be deleted):
+                if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(columnName)) {
+
+                    String value = row.getFieldValue(columnName);
+                    if (value != null) {
+                        value = escapeExcelCsv(value);
+                        result.append(value);
+                    }
+                    if (itColumns.hasNext()) {
+                        result.append(EXCEL_DEFAULT_CSV_DELMITER);
+                    }
                 }
             }
             result.append("\r\n");
