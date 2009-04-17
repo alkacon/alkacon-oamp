@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/export/CmsCvsExportBean.java,v $
- * Date   : $Date: 2009/04/17 07:27:59 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2009/04/17 15:35:56 $
+ * Version: $Revision: 1.6 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -37,8 +37,10 @@ import com.alkacon.opencms.formgenerator.CmsFormHandler;
 import com.alkacon.opencms.formgenerator.database.CmsFormDataAccess;
 import com.alkacon.opencms.formgenerator.database.CmsFormDataBean;
 
+import org.opencms.file.CmsObject;
 import org.opencms.main.CmsLog;
 import org.opencms.main.OpenCms;
+import org.opencms.module.CmsModule;
 import org.opencms.util.CmsStringUtil;
 import org.opencms.util.CmsUUID;
 
@@ -62,15 +64,12 @@ import org.apache.commons.logging.Log;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * 
  * @since 7.0.4
  *
  */
 public class CmsCvsExportBean {
-
-    /** The log object for this class. */
-    private static final Log LOG = CmsLog.getLog(CmsCvsExportBean.class);
 
     /** The default value delimiter for CSV files in Excel. */
     public static final char EXCEL_DEFAULT_CSV_DELMITER = ';';
@@ -81,11 +80,17 @@ public class CmsCvsExportBean {
     /** Request parameter for the start time of the data to export. */
     public static final String PARAM_EXPORT_DATA_TIME_START = "starttime";
 
+    /** The log object for this class. */
+    private static final Log LOG = CmsLog.getLog(CmsCvsExportBean.class);
+
     /** The end time for data sets to export. */
     private Date m_endTime;
 
     /** The form that was used to input the data to export. */
     private CmsFormHandler m_formHandler;
+
+    /** Needed to read the resource for the uuid. */
+    private CmsObject m_cms;
 
     /** The start time for data sets to export. */
     private Date m_startTime;
@@ -97,7 +102,19 @@ public class CmsCvsExportBean {
      */
     public CmsCvsExportBean(final CmsFormHandler formHandler) {
 
+        this(formHandler.getCmsObject());
         m_formHandler = formHandler;
+    }
+
+    /**
+     * Creates an instance that is not backed by a form but still offers 
+     * export functionality via <code>{@link #exportData(String, Locale)}</code>.<p>
+     * 
+     * @param cms Needed to read the resource for the uuid
+     */
+    public CmsCvsExportBean(final CmsObject cms) {
+
+        m_cms = cms;
         m_startTime = new Date(0);
         m_endTime = new Date(Long.MAX_VALUE);
     }
@@ -133,10 +150,23 @@ public class CmsCvsExportBean {
          */
 
         StringBuffer result = new StringBuffer();
+        CmsModule module = OpenCms.getModuleManager().getModule(CmsForm.MODULE_NAME);
         // Time format: 
         DateFormat df = null;
-        String formatString = OpenCms.getModuleManager().getModule(CmsForm.MODULE_NAME).getParameter(
-            CmsForm.MODULE_PARAM_EXPORT_TIMEFORMATE);
+        String formatString = module.getParameter(CmsForm.MODULE_PARAM_EXPORT_TIMEFORMATE);
+        // Line separator: 
+        boolean isWindowsLineSeparator = false;
+        boolean isUnixLineSeparator = false;
+
+        String lineSeparatorParam = module.getParameter(CmsForm.MODULE_PARAM_EXPORTLINESEPARATOR);
+        if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(lineSeparatorParam)) {
+            if (lineSeparatorParam.equals(CmsForm.MODULE_PARAMVALUE_EXPORTLINESEPARATOR_WINDOWS)) {
+                isWindowsLineSeparator = true;
+            } else if (lineSeparatorParam.equals(CmsForm.MODULE_PARAMVALUE_EXPORTLINESEPARATOR_UNIX)
+                || lineSeparatorParam.equals(CmsForm.MODULE_PARAMVALUE_EXPORTLINESEPARATOR_EXCEL)) {
+                isUnixLineSeparator = true;
+            }
+        }
         if (CmsStringUtil.isNotEmpty(formatString)) {
             try {
                 df = new SimpleDateFormat(formatString);
@@ -198,7 +228,7 @@ public class CmsCvsExportBean {
             result.append(EXCEL_DEFAULT_CSV_DELMITER);
             uuid = row.getResourceId();
             try {
-                path = m_formHandler.getCmsObject().readResource(uuid).getRootPath();
+                path = m_cms.readResource(uuid).getRootPath();
             } catch (Exception e) {
                 path = row.getResourceId().toString();
             }
@@ -214,6 +244,11 @@ public class CmsCvsExportBean {
 
                     String value = row.getFieldValue(columnName);
                     if (value != null) {
+                        if (isWindowsLineSeparator) {
+                            value = transformWindowsLineseparator(value);
+                        } else if (isUnixLineSeparator) {
+                            value = transformUnixLineseparator(value);
+                        }
                         value = escapeExcelCsv(value);
                         result.append(value);
                     }
@@ -300,6 +335,31 @@ public class CmsCvsExportBean {
         buffer.append("\"");
         result = buffer.toString();
         return result;
+    }
+
+    /**
+     * Replaces all "\r\n" to "\n".<p>
+     * 
+     * @param value the value to transform 
+     * 
+     * @return the input with unix line separators
+     */
+    private String transformUnixLineseparator(String value) {
+
+        return value.replaceAll("\r\n", "\n");
+    }
+
+    /**
+     * Replaces all "\n" to "\r\n".<p>
+     * 
+     * @param value the value to transform 
+     * 
+     * @return the input with windows line separators
+     */
+    private String transformWindowsLineseparator(String value) {
+
+        return value.replaceAll("\n", "\r\n");
+
     }
 
 }
