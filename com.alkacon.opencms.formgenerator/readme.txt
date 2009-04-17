@@ -60,12 +60,15 @@ Legend:
 
 * Fixed issues with CmsEmptyField stored to database. 
 * Fixed issue with CVS - export button not working in the workplace list for Internet Explorer.
+* Fixed issue with UUID in Resource Path column of CSV exported from workplace tool. 
 ! Added macro %(currentsite) for folder selection of widget com.alkacon.opencms.formgenerator.CmsSelectWidgetXMLContentType. 
 ! Added new middle text that is shown after the form data and before the submit button. 
 ! Added module parameter "export.encoding" to transform exported csv files (Microsoft - Excel Support: choose windows-1252). 
 ! Alternative tool location in the workplace, visibility of tool configurable by module parameter "usergroup". 
 ! Time format of exported csv data may be controlled by module parameter "export.timeformat". 
 ! CSS class attributes are generated form-specific via the new  "Style" configuration option.  
+! Added module parameter "export.linebreak" for configuration of the line break in exported CSV: Use "windows" or "unix".
+  For Excel compatibility use "unix" or "excel". 
 
 1.2.0 - May, 2008
 ! Added a new Administration Tool under Database Management.
