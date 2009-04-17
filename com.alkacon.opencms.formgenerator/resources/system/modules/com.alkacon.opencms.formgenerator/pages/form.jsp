@@ -13,7 +13,6 @@
     }
     CmsMessages messages = cms.getMessages();
 
-    System.err.println("Messages: " + messages.getClass().getName());
     // In case of downloading the csv file from database no template must be included: 
     boolean showTemplate = cms.showTemplate();
     String template = "";
