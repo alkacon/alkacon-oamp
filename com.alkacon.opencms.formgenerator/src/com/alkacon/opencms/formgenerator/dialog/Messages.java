@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/dialog/Messages.java,v $
- * Date   : $Date: 2008/03/26 15:36:21 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2009/04/17 07:29:10 $
+ * Version: $Revision: 1.4 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -38,13 +38,22 @@ import org.opencms.i18n.I_CmsMessageBundle;
 /**
  * Convenience class to access the localized messages of this OpenCms package.<p> 
  * 
- * @author Anja Röttgers
+ * @author Anja Roettgers
  * 
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * 
  * @since 7.0.4 
  */
 public final class Messages extends A_CmsMessageBundle {
+
+    /** Message constant for key in the resource bundle. */
+    public static final String ERR_TOOLHANDLER_READGROUP_3 = "ERR_TOOLHANDLER_READGROUP_3";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String ERR_TOOLHANDLER_MISSINGGROUP_2 = "ERR_TOOLHANDLER_MISSINGGROUP_2";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String ERR_TOOLHANDLER_CHECKGROUP_2 = "ERR_TOOLHANDLER_CHECKGROUP_2";
 
     /** Message constant for key in the resource bundle. */
     public static final String ERR_DELETE_SELECTED_FORM_0 = "ERR_DELETE_SELECTED_FORM_0";
