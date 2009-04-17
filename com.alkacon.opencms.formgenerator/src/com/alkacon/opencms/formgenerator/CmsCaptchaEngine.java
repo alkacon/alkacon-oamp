@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaEngine.java,v $
- * Date   : $Date: 2008/05/21 11:53:42 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2009/04/17 15:31:53 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -36,7 +36,6 @@ import org.opencms.main.OpenCms;
 import org.opencms.util.CmsStringUtil;
 
 import java.awt.image.ImageFilter;
-import java.util.Locale;
 
 import com.jhlabs.image.WaterFilter;
 import com.octo.captcha.CaptchaFactory;
@@ -61,7 +60,6 @@ import com.octo.captcha.component.word.wordgenerator.RandomWordGenerator;
 import com.octo.captcha.component.word.wordgenerator.WordGenerator;
 import com.octo.captcha.engine.CaptchaEngineException;
 import com.octo.captcha.engine.image.ImageCaptchaEngine;
-import com.octo.captcha.image.ImageCaptcha;
 import com.octo.captcha.image.ImageCaptchaFactory;
 import com.octo.captcha.image.gimpy.GimpyFactory;
 
@@ -72,7 +70,7 @@ import com.octo.captcha.image.gimpy.GimpyFactory;
  * @author Thomas Weckert
  * @author Achim Westermann
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4 
  */
@@ -98,20 +96,13 @@ public class CmsCaptchaEngine extends ImageCaptchaEngine {
         initGimpyFactory();
     }
 
-    /**
-     * @see com.octo.captcha.engine.image.ImageCaptchaEngine#getNextImageCaptcha()
+    /** This method build a ImageCaptchaFactory.
+     *
+     * @return a CaptchaFactory
      */
-    public ImageCaptcha getNextImageCaptcha() {
+    public com.octo.captcha.image.ImageCaptchaFactory getImageCaptchaFactory() {
 
-        return m_factory.getImageCaptcha();
-    }
-
-    /**
-     * @see com.octo.captcha.engine.image.ImageCaptchaEngine#getNextImageCaptcha(java.util.Locale)
-     */
-    public ImageCaptcha getNextImageCaptcha(Locale locale) {
-
-        return m_factory.getImageCaptcha(locale);
+        return m_factory;
     }
 
     /**
@@ -199,7 +190,7 @@ public class CmsCaptchaEngine extends ImageCaptchaEngine {
     /**
      * This does nothing. <p>
      * 
-     * A hardcored factory for deformation is used. 
+     * A hardcoded factory for deformation is used. 
      * <p>
      * 
      * @see com.octo.captcha.engine.CaptchaEngine#setFactories(com.octo.captcha.CaptchaFactory[])

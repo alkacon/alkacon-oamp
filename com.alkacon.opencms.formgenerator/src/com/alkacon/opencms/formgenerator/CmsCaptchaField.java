@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaField.java,v $
- * Date   : $Date: 2008/05/29 13:26:50 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2009/04/17 15:31:53 $
+ * Version: $Revision: 1.5 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -50,8 +50,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 
 import com.octo.captcha.CaptchaException;
+import com.octo.captcha.service.CaptchaService;
 import com.octo.captcha.service.CaptchaServiceException;
 import com.octo.captcha.service.image.ImageCaptchaService;
+import com.octo.captcha.service.text.TextCaptchaService;
 
 /**
  * Creates captcha images and validates the pharses submitted by a request parameter.
@@ -61,7 +63,7 @@ import com.octo.captcha.service.image.ImageCaptchaService;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * 
  * @since 7.0.4 
  */
@@ -156,15 +158,27 @@ public class CmsCaptchaField extends A_CmsField {
         buf.append(messages.key("form.html.field.start")).append("\n");
 
         // line #4
-        buf.append("<img id='form_captcha_id' src=\"").append(
-            formHandler.link("/system/modules/com.alkacon.opencms.formgenerator/pages/captcha.jsp?"
-                + captchaSettings.toRequestParams(formHandler.getCmsObject())
-                + "#"
-                + System.currentTimeMillis())).append("\" width=\"").append(captchaSettings.getImageWidth()).append(
-            "\" height=\"").append(captchaSettings.getImageHeight()).append("\" alt=\"\"/>").append("\n");
-
-        // line #5
-        buf.append("<br/>\n");
+        if (m_captchaSettings.isMathField()) {
+            // this is a math captcha, print the challenge directly
+            String sessionId = formHandler.getRequest().getSession(true).getId();
+            TextCaptchaService service = (TextCaptchaService)CmsCaptchaServiceCache.getSharedInstance().getCaptchaService(
+                m_captchaSettings,
+                formHandler.getCmsObject());
+            buf.append("<div style=\"margin: 0 0 2px 0;\">");
+            buf.append(service.getTextChallengeForID(
+                sessionId,
+                formHandler.getCmsObject().getRequestContext().getLocale()));
+            buf.append("</div>\n");
+        } else {
+            // image captcha, insert image
+            buf.append("<img id='form_captcha_id' src=\"").append(
+                formHandler.link("/system/modules/com.alkacon.opencms.formgenerator/pages/captcha.jsp?"
+                    + captchaSettings.toRequestParams(formHandler.getCmsObject())
+                    + "#"
+                    + System.currentTimeMillis())).append("\" width=\"").append(captchaSettings.getImageWidth()).append(
+                "\" height=\"").append(captchaSettings.getImageHeight()).append("\" alt=\"\"/>").append("\n");
+            buf.append("<br/>\n");
+        }
 
         // line #6
         buf.append("<input type=\"text\" name=\"").append(getName()).append("\" value=\"").append(getValue()).append(
@@ -214,7 +228,7 @@ public class CmsCaptchaField extends A_CmsField {
         if (CmsStringUtil.isNotEmpty(captchaPhrase)) {
 
             try {
-                ImageCaptchaService captchaService = CmsCaptchaServiceCache.getSharedInstance().getCaptchaService(
+                CaptchaService captchaService = CmsCaptchaServiceCache.getSharedInstance().getCaptchaService(
                     m_captchaSettings,
                     jsp.getCmsObject());
                 if (captchaService != null) {
@@ -247,9 +261,9 @@ public class CmsCaptchaField extends A_CmsField {
                 String sessionId = cms.getRequest().getSession().getId();
                 Locale locale = cms.getRequestContext().getLocale();
 
-                captchaImage = CmsCaptchaServiceCache.getSharedInstance().getCaptchaService(
+                captchaImage = ((ImageCaptchaService)CmsCaptchaServiceCache.getSharedInstance().getCaptchaService(
                     m_captchaSettings,
-                    cms.getCmsObject()).getImageChallengeForID(sessionId, locale);
+                    cms.getCmsObject())).getImageChallengeForID(sessionId, locale);
             } catch (CaptchaException cex) {
                 if (LOG.isErrorEnabled()) {
                     LOG.error(cex);

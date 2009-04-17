@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaSettings.java,v $
- * Date   : $Date: 2008/05/21 11:53:42 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2009/04/17 15:31:54 $
+ * Version: $Revision: 1.4 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -56,7 +56,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Achim Westermann
  * 
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * 
  * @since 7.0.4 
  */
@@ -88,6 +88,9 @@ public final class CmsCaptchaSettings implements Cloneable {
 
     /** Request parameter for the image width. */
     public static final String C_PARAM_IMAGE_WIDTH = "w";
+
+    /** Request parameter for the math flag to use for generation. */
+    public static final String C_PARAM_MATH = "math";
 
     /** Request parameter for the max. font size. */
     public static final String C_PARAM_MAX_FONT_SIZE = "maxfs";
@@ -134,6 +137,9 @@ public final class CmsCaptchaSettings implements Cloneable {
     /** Configuration node name for the optional captcha image width. */
     public static final String NODE_CAPTCHAPRESET_IMAGEWIDTH = "ImageWidth";
 
+    /** Configuration node name for the optional captcha math field flag. */
+    public static final String NODE_CAPTCHAPRESET_MATHFIELD = "MathField";
+
     /** Configuration node name for the optional captcha max. font size. */
     public static final String NODE_CAPTCHAPRESET_MAX_FONT_SIZE = "MaxFontSize";
 
@@ -175,6 +181,9 @@ public final class CmsCaptchaSettings implements Cloneable {
 
     /** The image width in pixels. */
     private int m_imageWidth = 150;
+
+    /** The math field flag. */
+    private boolean m_mathField;
 
     /** The maximum font size in pixels. */
     private int m_maxFontSize = 40;
@@ -500,6 +509,12 @@ public final class CmsCaptchaSettings implements Cloneable {
             setDictionary(stringValue);
         }
 
+        // math field flag
+        stringValue = getParameter(C_PARAM_MATH);
+        if (CmsStringUtil.isNotEmpty(stringValue)) {
+            setMathField(Boolean.valueOf(stringValue).booleanValue());
+        }
+
         // just for logging comfort (find misconfigured presets):
         stringValue = getParameter(C_PARAM_PRESET);
         if (CmsStringUtil.isNotEmpty(stringValue)) {
@@ -654,6 +669,12 @@ public final class CmsCaptchaSettings implements Cloneable {
                     setDictionary(stringValue);
                 }
 
+                // math field flag
+                stringValue = preset.getStringValue(cms, NODE_CAPTCHAPRESET_MATHFIELD, captchaSettingsLocale);
+                if (CmsStringUtil.isNotEmpty(stringValue)) {
+                    setMathField(Boolean.valueOf(stringValue).booleanValue());
+                }
+
             } else {
                 // the optional preset selector is missing...
             }
@@ -664,6 +685,16 @@ public final class CmsCaptchaSettings implements Cloneable {
             }
 
         }
+    }
+
+    /**
+     * Returns the math field flag.<p>
+     * 
+     * @return the math field flag
+     */
+    public boolean isMathField() {
+
+        return m_mathField;
     }
 
     /**
@@ -801,6 +832,16 @@ public final class CmsCaptchaSettings implements Cloneable {
     public void setImageWidth(int imageWidth) {
 
         m_imageWidth = imageWidth;
+    }
+
+    /**
+     * Sets the math field flag.<p>
+     * 
+     * @param mathField the math field flag
+     */
+    public void setMathField(boolean mathField) {
+
+        this.m_mathField = mathField;
     }
 
     /**

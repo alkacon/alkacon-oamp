@@ -13,6 +13,7 @@
 	<xsd:complexType name="OpenCmsCaptchaPreset">
 		<xsd:sequence>
             <xsd:element name="Name" type="OpenCmsString" />
+            <xsd:element name="MathField" type="OpenCmsBoolean" minOccurs="0" maxOccurs="1" />
             <xsd:element name="Characters" type="OpenCmsString" minOccurs="0" maxOccurs="1" />
             <xsd:element name="Dictionary" type="OpenCmsString" minOccurs="0" maxOccurs="1" />
 			<xsd:element name="ImageWidth" type="OpenCmsString" minOccurs="0" maxOccurs="1" />

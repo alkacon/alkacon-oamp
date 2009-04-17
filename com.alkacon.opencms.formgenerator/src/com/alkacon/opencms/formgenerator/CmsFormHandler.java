@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormHandler.java,v $
- * Date   : $Date: 2009/04/17 07:24:01 $
- * Version: $Revision: 1.10 $
+ * Date   : $Date: 2009/04/17 15:31:54 $
+ * Version: $Revision: 1.11 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -81,7 +81,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  * 
  * @since 7.0.4 
  */
@@ -840,7 +840,8 @@ public class CmsFormHandler extends CmsJspActionElement {
             theMail.setSubject(m_macroResolver.resolveMacros(getFormConfiguration().getMailSubjectPrefix()
                 + getFormConfiguration().getConfirmationMailSubject()));
             theMail.setHtmlMsg(createMailTextFromFields(true, true));
-            theMail.setTextMsg(createMailTextFromFields(false, true));
+            // do not set text message because TB ignores HTML mail otherwise
+            // theMail.setTextMsg(createMailTextFromFields(false, true));
             // send the mail
             theMail.send();
         } else {
@@ -1162,7 +1163,8 @@ public class CmsFormHandler extends CmsJspActionElement {
                 theMail.setSubject(m_macroResolver.resolveMacros(getFormConfiguration().getMailSubjectPrefix()
                     + getFormConfiguration().getMailSubject()));
                 theMail.setHtmlMsg(createMailTextFromFields(true, false));
-                theMail.setTextMsg(createMailTextFromFields(false, false));
+                // do not set text message because TB ignores HTML mail otherwise
+                // theMail.setTextMsg(createMailTextFromFields(false, false));
 
                 // attach file uploads
                 Map fileUploads = (Map)getRequest().getSession().getAttribute(ATTRIBUTE_FILEITEMS);
@@ -1193,8 +1195,14 @@ public class CmsFormHandler extends CmsJspActionElement {
                     theMail.setFrom(m_macroResolver.resolveMacros(getFormConfiguration().getMailFrom()));
                 }
                 theMail.setTo(createInternetAddresses(getFormConfiguration().getMailTo()));
-                theMail.setCc(createInternetAddresses(m_macroResolver.resolveMacros(getFormConfiguration().getMailCC())));
-                theMail.setBcc(createInternetAddresses(m_macroResolver.resolveMacros(getFormConfiguration().getMailBCC())));
+                List ccRec = createInternetAddresses(m_macroResolver.resolveMacros(getFormConfiguration().getMailCC()));
+                if (ccRec.size() > 0) {
+                    theMail.setCc(ccRec);
+                }
+                List bccRec = createInternetAddresses(m_macroResolver.resolveMacros(getFormConfiguration().getMailBCC()));
+                if (bccRec.size() > 0) {
+                    theMail.setBcc(bccRec);
+                }
                 theMail.setSubject(m_macroResolver.resolveMacros(getFormConfiguration().getMailSubjectPrefix()
                     + getFormConfiguration().getMailSubject()));
                 theMail.setMsg(createMailTextFromFields(false, false));
