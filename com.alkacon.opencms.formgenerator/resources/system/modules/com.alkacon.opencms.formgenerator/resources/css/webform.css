@@ -75,4 +75,44 @@
 		.webform_field_table tr th, .webform_field_table tr td {
 		white-space: nowrap;
 	}
-}
+	
+	/************************************************************************************************ 
+	 * Orange style: In the optional form configuration field "Style" "Orange" has been entered. 
+     * So the following styles are special for that webform:
+	************************************************************************************************/
+	td.webform_label_Orange {
+		color: orange;
+	}
+	
+	td.webform_field_Orange {
+		color: orange;
+	}
+	
+	td.webform_field_Orange input, td.webform_field_Orange select {
+		color: orange;
+		background-color: yellow;
+	}
+	
+	td.webform_middletext_Orange {
+		color: orange;
+	}
+	
+	td.webform_mandatory_Orange {
+		color: orange;
+	}
+	
+	td.webform_button_Orange input {
+		color: orange;
+		background-color: yellow;
+		font-weight: bold;
+	}
+	
+	td.webform_error_text_start_Orange {
+		color: orange;
+	}
+	
+	td.webform_error_start_Orange {
+		color: orange;
+	}
+	
+}    
