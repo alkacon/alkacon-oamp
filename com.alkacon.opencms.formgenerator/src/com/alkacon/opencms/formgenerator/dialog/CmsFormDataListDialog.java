@@ -1,32 +1,33 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/dialog/CmsFormDataListDialog.java,v $
- * Date   : $Date: 2008/06/23 07:36:57 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2009/04/17 07:28:35 $
+ * Version: $Revision: 1.6 $
  *
- * This library is part of OpenCms -
- * the Open Source Content Mananagement System
+ * This file is part of the Alkacon OpenCms Add-On Module Package
  *
- * Copyright (C) 2005 Alkacon Software GmbH (http://www.alkacon.com)
+ * Copyright (c) 2007 Alkacon Software GmbH (http://www.alkacon.com)
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
+ * The Alkacon OpenCms Add-On Module Package is free software: 
+ * you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * The Alkacon OpenCms Add-On Module Package is distributed 
+ * in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with the Alkacon OpenCms Add-On Module Package.  
+ * If not, see http://www.gnu.org/licenses/.
  *
  * For further information about Alkacon Software GmbH, please see the
- * company website: http://www.alkacon.com
+ * company website: http://www.alkacon.com.
  *
  * For further information about OpenCms, please see the
- * project website: http://www.opencms.org
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * project website: http://www.opencms.org.
  */
 
 package com.alkacon.opencms.formgenerator.dialog;
@@ -75,9 +76,9 @@ import org.apache.commons.logging.Log;
  * 
  * The dynamic columns are the configured fields of the current form.<p>
  * 
- * @author Anja Röttgers
+ * @author Anja Roettgers
  * 
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * 
  * @since 7.0.4
  */
@@ -299,12 +300,20 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
                     Iterator iterator = data.getAllFields().entrySet().iterator();
                     while (iterator.hasNext()) {
                         Map.Entry entry = (Map.Entry)iterator.next();
-                        Object value = entry.getValue();
-                        if ((value != null) && (value instanceof String)) {
-                            value = CmsStringUtil.escapeHtml((String)value);
-                            value = CmsStringUtil.trimToSize((String)value, STRING_TRIM_SIZE, " ...");
+                        /*
+                         * skip empty values: this is a hardening needed for previous versions of webform where 
+                         * CmsEmptyField was stored in db with empty key and value. If not skipped list API will 
+                         * throw an exception and the list will remain empty.  
+                         */
+                        String key = (String)entry.getKey();
+                        if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(key)) {
+                            Object value = entry.getValue();
+                            if ((value != null) && (value instanceof String)) {
+                                value = CmsStringUtil.escapeHtml((String)value);
+                                value = CmsStringUtil.trimToSize((String)value, STRING_TRIM_SIZE, " ...");
+                            }
+                            item.set(key, value);
                         }
-                        item.set((String)entry.getKey(), value);
                     }
                     result.add(item);
 
@@ -384,13 +393,20 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
                 for (int i = 0; i < columnNames.size(); i++) {
                     // add column for the form name
                     String name = (String)columnNames.get(i);
-                    CmsListColumnDefinition nameCol = new CmsListColumnDefinition(name);
-                    nameCol.setName(new CmsMessageContainer(null, CmsStringUtil.escapeHtml(name)));
-                    nameCol.setWidth("*");
-                    metadata.addColumn(nameCol);
+                    /*
+                     * skip empty values: this is a hardening needed for previous versions of webform where 
+                     * CmsEmptyField was stored in db with empty key and value. If not skipped list API will 
+                     * throw an exception and the list will remain empty.  
+                     */
+                    if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(name)) {
+                        CmsListColumnDefinition nameCol = new CmsListColumnDefinition(name);
+                        nameCol.setName(new CmsMessageContainer(null, CmsStringUtil.escapeHtml(name)));
+                        nameCol.setWidth("*");
+                        metadata.addColumn(nameCol);
 
-                    // add the new column to the search action
-                    searchAction.addColumn(nameCol);
+                        // add the new column to the search action
+                        searchAction.addColumn(nameCol);
+                    }
                 }
 
                 // add the search action
@@ -429,13 +445,13 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
                 url.append(LIST_PATH_EXPORT).append("?");
                 url.append(CmsFormListDialog.PARAM_FORM_ID).append("=").append(m_paramFormid);
                 String jsurl = OpenCms.getLinkManager().substituteLink(wp.getCms(), url.toString());
-                String title = "CSV - " + ((A_CmsListDialog)wp).getList().getName().key(wp.getLocale());
+                String windowname = "cvsexport";
                 String opts = "toolbar=no,location=no,directories=no,status=yes,menubar=0,scrollbars=yes,resizable=yes,top=150,left=660,width=450,height=450";
                 StringBuffer js = new StringBuffer(512);
                 js.append("window.open('");
                 js.append(jsurl);
                 js.append("', '");
-                js.append(title);
+                js.append(windowname);
                 js.append("', '");
                 js.append(opts);
                 js.append("');");
