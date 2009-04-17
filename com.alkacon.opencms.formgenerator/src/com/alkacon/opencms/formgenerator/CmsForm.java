@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
- * Date   : $Date: 2009/04/01 16:02:20 $
- * Version: $Revision: 1.12 $
+ * Date   : $Date: 2009/04/17 07:23:20 $
+ * Version: $Revision: 1.13 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -63,7 +63,7 @@ import org.apache.commons.fileupload.FileItem;
  * @author Thomas Weckert 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  * 
  * @since 7.0.4 
  */
@@ -86,6 +86,34 @@ public class CmsForm {
 
     /** Mail type: text mail. */
     public static final String MAILTYPE_TEXT = "text";
+
+    /** The module name. */
+    public static final String MODULE_NAME = CmsForm.class.getPackage().getName();
+
+    /** Name of the db index table space module parameter.  */
+    public static final String MODULE_PARAM_DB_INDEXTABLESPACE = "index-tablespace";
+
+    /** Name of the db-pool module parameter.  */
+    public static final String MODULE_PARAM_DB_POOL = "db-pool";
+
+    /** Name of the db-provider module parameter.  */
+    public static final String MODULE_PARAM_DB_PROVIDER = "db-provider";
+
+    /** Name of the module parameter for the configuration of the time format of the export data.  */
+    public static final String MODULE_PARAM_EXPORT_TIMEFORMATE = "export.timeformat";
+
+    /** 
+     * Module parameter for the content encoding (text encoding) of the exported csv data. This encoding may vary 
+     * from the value of the content-encoding property of the webform XML content because e.g. Microsoft Excel seems 
+     * to be hard-wired to use the windows-1252 encoding. 
+     */
+    public static final String MODULE_PARAM_EXPORTENCODING = "export.encoding";
+
+    /** Name of the group module parameter that is used to grant access to the workplace tool.  */
+    public static final String MODULE_PARAM_TOOL_GROUP = "usergroup";
+
+    /** Name of the upload folder module parameter.  */
+    public static final String MODULE_PARAM_UPLOADFOLDER = "uploadfolder";
 
     /** Configuration node name for the optional captcha. */
     public static final String NODE_CAPTCHA = "FormCaptcha";
@@ -216,6 +244,9 @@ public class CmsForm {
     /** Configuration node name for the Show reset button node. */
     public static final String NODE_SHOWRESET = "ShowReset";
 
+    /** Configuration node name for the CSS suffix node. */
+    public static final String NODE_STYLE = "Style";
+
     /** Configuration node name for the optional target URI. */
     public static final String NODE_TARGET_URI = "TargetUri";
 
@@ -285,11 +316,11 @@ public class CmsForm {
     /** configuration value. */
     protected String m_formFooterText;
 
-    /** configuration value. */
-    protected String m_formMiddleText;
-
     /** The form id needed in case it is stored in the database. */
     protected String m_formId;
+
+    /** configuration value. */
+    protected String m_formMiddleText;
 
     /** configuration value. */
     protected String m_formText;
@@ -336,12 +367,14 @@ public class CmsForm {
     /** If the reset button has to be shown. */
     protected boolean m_showReset;
 
+    /** The optional css suffix for css class atributes set on the generated HTML. */
+    protected String m_styleSuffix;
+
     /** configuration value. */
     protected String m_targetUri;
 
     /** Flag to signal that data should be stored in the database - defaults to false. */
     protected boolean m_transportDatabase;
-
     /** Flag to signal that data should be sent by email - defaults to true. */
     protected boolean m_transportEmail = true;
 
@@ -599,16 +632,6 @@ public class CmsForm {
     }
 
     /**
-     * Returns the form middle text.<p>
-     * 
-     * @return the form middle text
-     */
-    public String getFormMiddleText() {
-
-        return m_formMiddleText;
-    }
-
-    /**
      * Returns the form footer text.<p>
      * 
      * @return the form footer text
@@ -626,6 +649,16 @@ public class CmsForm {
     public String getFormId() {
 
         return m_formId;
+    }
+
+    /**
+     * Returns the form middle text.<p>
+     * 
+     * @return the form middle text
+     */
+    public String getFormMiddleText() {
+
+        return m_formMiddleText;
     }
 
     /**
@@ -736,6 +769,17 @@ public class CmsForm {
     public boolean getShowCheck() {
 
         return m_showCheck;
+    }
+
+    /**
+     * Returns the optional css suffix for css class atributes set on the generated HTML or null. 
+     * <p> 
+     * 
+     * @return the optional css suffix for css class atributes set on the generated HTML or null.
+     */
+    public String getStyleSuffix() {
+
+        return m_styleSuffix;
     }
 
     /**
@@ -901,6 +945,17 @@ public class CmsForm {
     public boolean isShowReset() {
 
         return m_showReset;
+    }
+
+    /**
+     * Returns true if a CSS - suffix is configured for this form. 
+     * <p> 
+     * 
+     * @return true if a CSS - suffix is configured for this form.
+     */
+    public boolean isStyleSuffix() {
+
+        return CmsStringUtil.isNotEmptyOrWhitespaceOnly(m_styleSuffix);
     }
 
     /**
@@ -1216,6 +1271,9 @@ public class CmsForm {
         // get the dynamic fields class
         stringValue = content.getStringValue(cms, pathPrefix + NODE_DYNAMICFIELDCLASS, locale);
         setDynamicFieldClass(getConfigurationValue(stringValue, ""));
+        // get the css style suffix fields class
+        stringValue = content.getStringValue(cms, pathPrefix + NODE_STYLE, locale);
+        setStyleSuffix(getConfigurationValue(stringValue, ""));
         // get the show mandatory setting
         stringValue = content.getStringValue(cms, pathPrefix + NODE_SHOWMANDATORY, locale);
         setShowMandatory(Boolean.valueOf(getConfigurationValue(stringValue, Boolean.TRUE.toString())).booleanValue());
@@ -1683,16 +1741,6 @@ public class CmsForm {
     }
 
     /**
-     * Sets the form middle text.<p>
-     * 
-     * @param formMiddleText the form text
-     */
-    protected void setFormMiddleText(String formMiddleText) {
-
-        m_formMiddleText = formMiddleText;
-    }
-
-    /**
      * Sets the id identifying the form entries that came from this form in the database.<p>
      * 
      * @param formId the id identifying the form entries that came from this form in the database
@@ -1700,6 +1748,16 @@ public class CmsForm {
     protected void setFormId(final String formId) {
 
         m_formId = formId;
+    }
+
+    /**
+     * Sets the form middle text.<p>
+     * 
+     * @param formMiddleText the form text
+     */
+    protected void setFormMiddleText(String formMiddleText) {
+
+        m_formMiddleText = formMiddleText;
     }
 
     /**
@@ -1820,6 +1878,17 @@ public class CmsForm {
     protected void setShowCheck(boolean showCheck) {
 
         m_showCheck = showCheck;
+    }
+
+    /**
+     * Sets the optional css suffix for css class atributes set on the generated HTML. 
+     * <p> 
+     * 
+     * @param styleSuffix the optional css suffix for css class atributes set on the generated HTML.
+     */
+    protected void setStyleSuffix(final String styleSuffix) {
+
+        m_styleSuffix = styleSuffix;
     }
 
     /**
