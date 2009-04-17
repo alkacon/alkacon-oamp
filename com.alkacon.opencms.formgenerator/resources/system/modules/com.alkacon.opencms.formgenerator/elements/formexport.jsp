@@ -1,4 +1,5 @@
-<%@page buffer="none" session="false" import="
+
+<%@page import="org.opencms.jsp.CmsJspActionElement"%><%@page buffer="none" session="false" import="
 	com.alkacon.opencms.formgenerator.database.export.*,
 	com.alkacon.opencms.formgenerator.*,
 	java.util.Date,
@@ -11,12 +12,13 @@
 	org.apache.commons.logging.*"%><%! 
 private static final Log LOG = CmsLog.getLog(CmsCvsExportBean.class);
 %><%
-	
+ 	CmsJspActionElement jsp = new CmsJspActionElement(pageContext, request, response);
+
 	// get the form id 
 	String formid=request.getParameter(CmsFormListDialog.PARAM_FORM_ID);
 	if(formid!=null)
 	{
-		CmsCvsExportBean exportBean = new CmsCvsExportBean(null);
+		CmsCvsExportBean exportBean = new CmsCvsExportBean(jsp.getCmsObject());
 		exportBean.setEndTime(new Date(Long.MAX_VALUE));
 		exportBean.setStartTime(new Date(0));
 		
