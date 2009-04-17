@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormHandler.java,v $
- * Date   : $Date: 2008/12/09 14:27:58 $
- * Version: $Revision: 1.9 $
+ * Date   : $Date: 2009/04/17 07:24:01 $
+ * Version: $Revision: 1.10 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -58,6 +58,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -80,11 +81,76 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  * 
  * @since 7.0.4 
  */
 public class CmsFormHandler extends CmsJspActionElement {
+
+    /**
+     * Hard - wired very special - and therefore internal class that toggles between parameterless messages for html 
+     * formatting depending on the existence of a configured style suffix (see {@link CmsForm#getStyleSuffix()}.
+     * <p>
+     * 
+     * @author Achim Westermann 
+     */
+    private class CmsMessagesOptionalStyle extends CmsMultiMessages {
+
+        /**
+         * Constructor for creating a new messages object initialized with the given locale.<p>
+         * 
+         * @param locale the locale to use for localization of the messages
+         */
+        public CmsMessagesOptionalStyle(Locale locale) {
+
+            super(locale);
+
+        }
+
+        /**
+         * Tries to look up the given key by adding the suffix ".1" to it.  If not found the original key is used for a 
+         * lookup. The style suffix (see {@link CmsForm#getStyleSuffix()} is passed as an argument to 
+         * {@link #key(String, Object[])}.
+         * <p>
+         * 
+         * @see org.opencms.i18n.CmsMessages#key(java.lang.String)
+         */
+        public String key(String keyName) {
+
+            String result = null;
+            if (m_formConfiguration != null) {
+                String styleSuffix = m_formConfiguration.getStyleSuffix();
+                if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(styleSuffix)) {
+                    result = key(keyName, new Object[] {styleSuffix});
+                }
+            }
+            // fall back: 
+            if (CmsStringUtil.isEmptyOrWhitespaceOnly(result)) {
+                result = super.key(keyName);
+            }
+            return result;
+        }
+
+        /**
+         * Tries to look up the given key by adding the suffix ".1" to it. If not found the original key is used for a 
+         * lookup.
+         * <p>
+         * 
+         * @see org.opencms.i18n.CmsMessages#key(java.lang.String, java.lang.Object[])
+         */
+        public String key(String key, Object[] args) {
+
+            String result = null;
+            String extendedKey = key.concat(".1");
+            result = super.key(extendedKey, args);
+            // fall - back: 
+            if (CmsStringUtil.isEmptyOrWhitespaceOnly(extendedKey)
+                || result.startsWith(CmsMessages.UNKNOWN_KEY_EXTENSION)) {
+                result = super.key(key, args);
+            }
+            return result;
+        }
+    }
 
     /** Request parameter value for the form action parameter: correct the input. */
     public static final String ACTION_CONFIRMED = "confirmed";
@@ -127,9 +193,6 @@ public class CmsFormHandler extends CmsJspActionElement {
 
     /** The log object for this class. */
     private static final Log LOG = CmsLog.getLog(CmsFormHandler.class);
-
-    /** The module name. */
-    private static final String MODULE = "com.alkacon.opencms.formgenerator";
 
     /** Contains eventual validation errors. */
     protected Map m_errors;
@@ -199,7 +262,7 @@ public class CmsFormHandler extends CmsJspActionElement {
     public void addMessages(CmsMessages messages) {
 
         CmsMultiMessages tmpOld = m_messages;
-        m_messages = new CmsMultiMessages(messages.getLocale());
+        m_messages = new CmsMessagesOptionalStyle(messages.getLocale());
         m_messages.addMessages(messages);
         if (tmpOld != null) {
             m_messages.addMessages(tmpOld.getMessages());
@@ -723,7 +786,7 @@ public class CmsFormHandler extends CmsJspActionElement {
         m_isValidatedCorrect = null;
         setInitial(CmsStringUtil.isEmpty(formAction));
         // get the localized messages
-        CmsModule module = OpenCms.getModuleManager().getModule(MODULE);
+        CmsModule module = OpenCms.getModuleManager().getModule(CmsForm.MODULE_NAME);
         String para = module.getParameter("message", "/com/alkacon/opencms/formgenerator/workplace");
 
         // get the site message
