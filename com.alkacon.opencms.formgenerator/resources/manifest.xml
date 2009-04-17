@@ -705,6 +705,26 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/lib/jcaptcha-all-1.0-RC6.jar</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/lib/jcaptcha-all-1.0-RC6.jar</destination>
+			<type>binary</type>
+			<uuidstructure>161e061e-6790-11dc-a439-7168be419889</uuidstructure>
+			<uuidresource>161e061f-6790-11dc-a439-7168be419889</uuidresource>
+			<datelastmodified>Thu, 20 Sep 2007 15:42:25 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 20 Sep 2007 15:42:25 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[jcaptcha-all-1.0-RC6]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>	
+		<file>
 			<source>system/modules/com.alkacon.opencms.formgenerator/lib/jcaptcha-1.0-all.jar</source>
 			<destination>system/modules/com.alkacon.opencms.formgenerator/lib/jcaptcha-1.0-all.jar</destination>
 			<type>binary</type>
