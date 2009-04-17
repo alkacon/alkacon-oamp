@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
- * Date   : $Date: 2009/04/17 07:23:20 $
- * Version: $Revision: 1.13 $
+ * Date   : $Date: 2009/04/17 15:36:35 $
+ * Version: $Revision: 1.14 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -63,7 +63,7 @@ import org.apache.commons.fileupload.FileItem;
  * @author Thomas Weckert 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  * 
  * @since 7.0.4 
  */
@@ -108,6 +108,30 @@ public class CmsForm {
      * to be hard-wired to use the windows-1252 encoding. 
      */
     public static final String MODULE_PARAM_EXPORTENCODING = "export.encoding";
+
+    /** 
+     * Module parameter for the line separator of the exported csv data. If set to 
+     * {@link #MODULE_PARAMVALUE_EXPORTLINESEPARATOR_WINDOWS} exported "\n" will be transformed to "\r\n".
+     */
+    public static final String MODULE_PARAM_EXPORTLINESEPARATOR = "export.lineseparator";
+
+    /** 
+     * Constant value for the module parameter {@link #MODULE_PARAM_EXPORTLINESEPARATOR} to have "\n" transformed to 
+     * "\r\n".
+     */
+    public static final String MODULE_PARAMVALUE_EXPORTLINESEPARATOR_WINDOWS = "windows";
+
+    /** 
+     * Constant value for the module parameter {@link #MODULE_PARAM_EXPORTLINESEPARATOR} to have "\r\n" transformed to 
+     * "\r\n", which is required for viewing the cvs in excel.
+     */
+    public static final String MODULE_PARAMVALUE_EXPORTLINESEPARATOR_EXCEL = "excel";
+
+    /** 
+     * Constant value for the module parameter {@link #MODULE_PARAM_EXPORTLINESEPARATOR} to have "\r\n" transformed to 
+     * "\r\n". 
+     */
+    public static final String MODULE_PARAMVALUE_EXPORTLINESEPARATOR_UNIX = "unix";
 
     /** Name of the group module parameter that is used to grant access to the workplace tool.  */
     public static final String MODULE_PARAM_TOOL_GROUP = "usergroup";
