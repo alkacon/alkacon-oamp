@@ -1,7 +1,10 @@
-<%@page buffer="none" session="false"
-	import="org.opencms.i18n.*,com.alkacon.opencms.formgenerator.database.export.*,org.opencms.flex.CmsFlexController,com.alkacon.opencms.formgenerator.*,java.util.*,org.opencms.util.*,org.opencms.widgets.*"%><%--
---%><%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms"%>
-<%
+<%--  
+WARNING: Do not auto - reformat! In case of data download a linebreak will cause: 
+"java.lang.IllegalStateException: getOutputStream() has already been called for this response".
+--%><%@page buffer="none" session="false" import="org.apache.commons.logging.*,java.io.OutputStreamWriter,org.opencms.module.CmsModule,org.opencms.i18n.*,com.alkacon.opencms.formgenerator.database.export.*,org.opencms.flex.CmsFlexController,com.alkacon.opencms.formgenerator.*,java.util.*,org.opencms.util.*,org.opencms.widgets.*,org.opencms.main.*"%><%--
+--%><%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms"%><%! 
+private static final Log LOG = CmsLog.getLog(CmsCvsExportBean.class);
+%><%
     // initialize the form handler
     CmsFormHandler cms = new CmsFormHandler(pageContext, request, response);
     boolean isOffline = !cms.getRequestContext().currentProject().isOnlineProject();
@@ -53,8 +56,6 @@ a.button {
 </style>
 <%
     } else {
-%>
-<%
     CmsCvsExportBean exportBean = new CmsCvsExportBean(cms);
 
         // Preparing the date values for the export bean: 
@@ -79,13 +80,24 @@ a.button {
         // try "inline" instead "attachment" and ie will open within browser window. 
         res.addHeader("Content-Disposition", "attachment; filename=" + form.getFormId() + ".csv;");
         res.addHeader("Content-Transfer-Encoding", "binary");
-        ServletOutputStream output = res.getOutputStream();
+        ServletOutputStream output = null;
+        OutputStreamWriter writer = null;
         try {	
-          output.write(exportBean.exportData().getBytes());
+            output = res.getOutputStream();
+            CmsModule webformModule = OpenCms.getModuleManager().getModule(CmsForm.MODULE_NAME);
+            String encoding = webformModule.getParameter(CmsForm.MODULE_PARAM_EXPORTENCODING);
+            if(CmsStringUtil.isEmptyOrWhitespaceOnly(encoding)) {
+                encoding = OpenCms.getSystemInfo().getDefaultEncoding();
+            }
+            writer = new OutputStreamWriter(output, encoding);
+            writer.write(exportBean.exportData());
+        } catch(RuntimeException f) { 
+        	LOG.error("Error serving data.", f);
+        	throw f;
         } finally {
-          if (output != null) {
-            output.flush();
-            output.close();
+          if (writer!= null) {
+            writer.flush();
+            writer.close();
           }
         }
     }
