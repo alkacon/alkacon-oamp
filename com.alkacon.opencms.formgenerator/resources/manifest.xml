@@ -40,6 +40,7 @@
 		<parameters>
 			<param name="db-pool">default</param>
 			<param name="export.encoding">windows-1252</param>
+			<param name="export.lineseparator">unix</param>
 			<param name="export.timeformat">EEE MMM dd HH:mm:ss z yyyy</param>
 			<param name="uploadfolder">C:/tmp</param>
 			<param name="usergroup">Users</param>
