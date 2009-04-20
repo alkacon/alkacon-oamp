@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/CmsFormDataAccess.java,v $
- * Date   : $Date: 2009/04/17 07:27:09 $
- * Version: $Revision: 1.9 $
+ * Date   : $Date: 2009/04/20 07:49:05 $
+ * Version: $Revision: 1.10 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -67,8 +67,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.apache.commons.fileupload.DefaultFileItem;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.logging.Log;
 
 /**
@@ -77,7 +77,7 @@ import org.apache.commons.logging.Log;
  * @author Achim Westermann
  * @author Michael Moossen
  * 
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  * 
  * @since 7.0.4
  */
@@ -596,7 +596,7 @@ public final class CmsFormDataAccess {
 
                     String fieldName = field.getDbLabel();
                     // returns null if we do not deal with a CmsUploadFileItem: 
-                    DiskFileItem fileItem = (DiskFileItem)formHandler.getUploadFile(field);
+                    DefaultFileItem fileItem = (DefaultFileItem)formHandler.getUploadFile(field);
                     List fieldValues = new ArrayList();
                     if (fileItem != null) {
                         // save the location of the file and 
