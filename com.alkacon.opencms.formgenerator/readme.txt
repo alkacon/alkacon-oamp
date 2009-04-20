@@ -67,8 +67,9 @@ Legend:
 ! Alternative tool location in the workplace, visibility of tool configurable by module parameter "usergroup". 
 ! Time format of exported csv data may be controlled by module parameter "export.timeformat". 
 ! CSS class attributes are generated form-specific via the new  "Style" configuration option.  
-! Added module parameter "export.linebreak" for configuration of the line break in exported CSV: Use "windows" or "unix".
+! Added module parameter "export.lineseparator" for configuration of the line break in exported CSV: Values are "windows" or "unix".
   For Excel compatibility use "unix" or "excel". 
+! New math captcha (maptcha) for verfication of human beeings filling out the form.
 
 1.2.0 - May, 2008
 ! Added a new Administration Tool under Database Management.
