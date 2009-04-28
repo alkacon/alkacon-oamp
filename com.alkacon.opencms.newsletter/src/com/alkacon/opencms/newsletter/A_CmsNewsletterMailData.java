@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/A_CmsNewsletterMailData.java,v $
- * Date   : $Date: 2008/12/09 14:29:28 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2009/04/28 15:20:43 $
+ * Version: $Revision: 1.6 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -42,6 +42,8 @@ import org.opencms.lock.CmsLock;
 import org.opencms.main.CmsException;
 import org.opencms.main.CmsLog;
 import org.opencms.main.OpenCms;
+import org.opencms.security.CmsOrganizationalUnit;
+import org.opencms.security.CmsRole;
 import org.opencms.xml.content.CmsXmlContent;
 import org.opencms.xml.content.CmsXmlContentFactory;
 
@@ -61,7 +63,7 @@ import org.apache.commons.mail.Email;
  *  
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.5 $ 
+ * @version $Revision: 1.6 $ 
  * 
  * @since 7.0.3 
  */
@@ -100,6 +102,9 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
     /** The Locale to use to read the newsletter content. */
     private Locale m_locale;
 
+    /** The organizational unit to send the newsletter to. */
+    private CmsOrganizationalUnit m_ou;
+
     /** The email subject. */
     private String m_subject;
 
@@ -129,10 +134,18 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
     public List getRecipients() throws CmsException {
 
         List recipients = new ArrayList();
-        Iterator i = getCms().getUsersOfGroup(getGroup().getName()).iterator();
+        Iterator i = recipients.iterator();
+        String groupName = "";
+        if (getGroup() != null) {
+            // iterate over mailing list members (i.e. an OpenCms group)
+            groupName = getGroup().getName();
+            i = getCms().getUsersOfGroup(groupName).iterator();
+        } else {
+            i = getOuUsers().iterator();
+        }
         while (i.hasNext()) {
             CmsUser user = (CmsUser)i.next();
-            if (CmsNewsletterManager.isActiveUser(user, getGroup().getName())) {
+            if (CmsNewsletterManager.isActiveUser(user, groupName)) {
                 // add active users to the recipients
                 try {
                     recipients.add(new InternetAddress(user.getEmail()));
@@ -180,6 +193,21 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
         CmsFile file = getCms().readFile(fileName);
         m_content = CmsXmlContentFactory.unmarshal(getCms(), file);
         m_group = group;
+        m_ou = null;
+        m_jsp = jsp;
+        m_locale = OpenCms.getLocaleManager().getDefaultLocale(getCms(), fileName);
+    }
+
+    /**
+     * @see com.alkacon.opencms.newsletter.I_CmsNewsletterMailData#initialize(org.opencms.jsp.CmsJspActionElement, org.opencms.security.CmsOrganizationalUnit, java.lang.String)
+     */
+    public void initialize(CmsJspActionElement jsp, CmsOrganizationalUnit ou, String fileName) throws CmsException {
+
+        m_cms = jsp.getCmsObject();
+        CmsFile file = getCms().readFile(fileName);
+        m_content = CmsXmlContentFactory.unmarshal(getCms(), file);
+        m_group = null;
+        m_ou = ou;
         m_jsp = jsp;
         m_locale = OpenCms.getLocaleManager().getDefaultLocale(getCms(), fileName);
     }
@@ -201,7 +229,11 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
         if (lock.isOwnedBy(getCms().getRequestContext().currentUser())) {
             // resource is locked by current user, write send information
             String value = "" + System.currentTimeMillis() + CmsProperty.VALUE_LIST_DELIMITER;
-            value += getGroup().getId();
+            if (getGroup() != null) {
+                value += getGroup().getId();
+            } else {
+                value += "ou:" + getOu().getName();
+            }
             CmsProperty property = new CmsProperty(CmsNewsletterManager.PROPERTY_NEWSLETTER_DATA, value, null, true);
             getCms().writePropertyObject(resourceName, property);
             try {
@@ -293,6 +325,50 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
     protected Locale getLocale() {
 
         return m_locale;
+    }
+
+    /**
+     * Returns the organizational unit to send the newsletter to.<p>
+     * 
+     * @return the organizational unit to send the newsletter to
+     */
+    protected CmsOrganizationalUnit getOu() {
+
+        return m_ou;
+    }
+
+    /**
+     * Returns the users for the current OU and all sub OUs which are no web user or newsletter units.<p>
+     * 
+     * @return the users for the current OU and all sub OUs
+     */
+    protected List getOuUsers() {
+
+        List result = new ArrayList(100);
+        try {
+            List units = OpenCms.getRoleManager().getOrgUnitsForRole(
+                getCms(),
+                CmsRole.ACCOUNT_MANAGER.forOrgUnit(getOu().getName()),
+                true);
+
+            for (Iterator i = units.iterator(); i.hasNext();) {
+                CmsOrganizationalUnit ou = (CmsOrganizationalUnit)i.next();
+                if (!ou.hasFlagWebuser()
+                    && !ou.getSimpleName().startsWith(CmsNewsletterManager.NEWSLETTER_OU_NAMEPREFIX)) {
+                    result.addAll(OpenCms.getOrgUnitManager().getUsers(getCms(), ou.getName(), false));
+                }
+            }
+        } catch (CmsException e) {
+            // log error
+            if (LOG.isErrorEnabled()) {
+                LOG.error(Messages.get().getBundle().key(
+                    Messages.LOG_ERROR_NEWSLETTER_UNITS_2,
+                    getCms().getRequestContext().currentUser(),
+                    getOu().getName()));
+            }
+        }
+
+        return result;
     }
 
     /**

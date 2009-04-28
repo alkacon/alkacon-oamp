@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsNewsletterResourcesCollector.java,v $
- * Date   : $Date: 2008/10/20 09:03:02 $
- * Version: $Revision: 1.9 $
+ * Date   : $Date: 2009/04/28 15:20:43 $
+ * Version: $Revision: 1.10 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -122,18 +122,40 @@ public class CmsNewsletterResourcesCollector extends A_CmsListResourceCollector 
                 List vals = CmsStringUtil.splitAsList(value, CmsProperty.VALUE_LIST_DELIMITER);
                 Date date = new Date(Long.parseLong((String)vals.get(0)));
                 String groupId = (String)vals.get(1);
-                String groupName = "";
-                try {
-                    CmsGroup group = resUtil.getCms().readGroup(new CmsUUID(groupId));
-                    groupName = group.getSimpleName();
-                } catch (CmsException e) {
-                    // group does not exist
-                    groupName = Messages.get().getBundle(getWp().getLocale()).key(Messages.GUI_NEWSLETTER_LIST_DATA_SEND_GROUPDUMMY_0);
+                if (groupId.startsWith("ou:")) {
+                    String ouFqn = "";
+                    if (groupId.length() > 3) {
+                        ouFqn = groupId.substring(3);
+                    }
+                    String ouName = "";
+                    try {
+                        ouName = OpenCms.getOrgUnitManager().readOrganizationalUnit(resUtil.getCms(), ouFqn).getSimpleName();
+                    } catch (Exception e) {
+                        // ignore, ouName could not be determined
+                    }
+                    value = Messages.get().getBundle(getWp().getLocale()).key(
+                        Messages.GUI_NEWSLETTER_LIST_DATA_SEND_OU_AT_2,
+                        date,
+                        ouName);
+                } else {
+                    String groupName = "";
+                    try {
+                        CmsGroup group = resUtil.getCms().readGroup(new CmsUUID(groupId));
+                        groupName = group.getSimpleName();
+                    } catch (CmsException e) {
+                        // group does not exist
+                        groupName = Messages.get().getBundle(getWp().getLocale()).key(
+                            Messages.GUI_NEWSLETTER_LIST_DATA_SEND_GROUPDUMMY_0);
+                    }
+                    value = Messages.get().getBundle(getWp().getLocale()).key(
+                        Messages.GUI_NEWSLETTER_LIST_DATA_SEND_AT_2,
+                        date,
+                        groupName);
                 }
-                value = Messages.get().getBundle(getWp().getLocale()).key(Messages.GUI_NEWSLETTER_LIST_DATA_SEND_AT_2, date, groupName);
             } else {
                 // show the "never sent" message
-                value = Messages.get().getBundle(getWp().getLocale()).key(Messages.GUI_NEWSLETTER_LIST_DATA_SEND_NEVER_0);
+                value = Messages.get().getBundle(getWp().getLocale()).key(
+                    Messages.GUI_NEWSLETTER_LIST_DATA_SEND_NEVER_0);
             }
         } catch (CmsException e) {
             // should never happen

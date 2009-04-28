@@ -14,7 +14,7 @@
 		<group>Alkacon OAMP</group>
 		<class>com.alkacon.opencms.newsletter.CmsNewsletterManager</class>
 		<description><![CDATA[This module allows the creation of newsletters sent by email to specific mailing lists.]]></description>
-		<version>1.0.1</version>
+		<version>1.0.2</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
 		<datecreated/>
@@ -1462,6 +1462,54 @@
 				<property>
 					<name>admintoolhandler-args</name>
 					<value><![CDATA[params:oufqn=${param.oufqn}&action=initial|path:/accounts/orgunit/mgmt/newnewsletter]]></value>
+				</property>
+				<property>
+					<name>admintoolhandler-class</name>
+					<value><![CDATA[com.alkacon.opencms.newsletter.admin.CmsNewsletterOrgUnitToolHandler]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/admin/newsletter/orgunit_send.jsp</source>
+			<destination>system/workplace/admin/newsletter/orgunit_send.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>90eb9242-2429-11de-8346-5fc9fa232cc8</uuidstructure>
+			<uuidresource>90eb9243-2429-11de-8346-5fc9fa232cc8</uuidresource>
+			<datelastmodified>Wed, 22 Apr 2009 08:21:48 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 08 Apr 2009 10:39:41 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Description</name>
+					<value><![CDATA[${key.GUI_ALK_OU_SENDNEWSLETTER_ADMIN_TOOL_HELP_0}]]></value>
+				</property>
+				<property>
+					<name>NavImage</name>
+					<value><![CDATA[tools/newsletter/icons/big/mailinglist_sendnewsletter.png]]></value>
+				</property>
+				<property>
+					<name>NavInfo</name>
+					<value><![CDATA[${key.GUI_ALK_NL_NEWORGUNIT_ADMIN_TOOL_GROUP_0}]]></value>
+				</property>
+				<property>
+					<name>NavPos</name>
+					<value><![CDATA[20]]></value>
+				</property>
+				<property>
+					<name>NavText</name>
+					<value><![CDATA[${key.GUI_ALK_OU_SENDNEWSLETTER_ADMIN_TOOL_NAME_0}:${key.GUI_ALK_OU_SENDNEWSLETTER_ADMIN_TOOL_NAVBARNAME_0}]]></value>
+				</property>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Send to Unit]]></value>
+				</property>
+				<property>
+					<name>admintoolhandler-args</name>
+					<value><![CDATA[params:oufqn=${param.oufqn}&action=initial|path:/accounts/orgunit/mgmt/sendnewsletter]]></value>
 				</property>
 				<property>
 					<name>admintoolhandler-class</name>

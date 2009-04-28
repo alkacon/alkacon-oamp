@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/I_CmsNewsletterMailData.java,v $
- * Date   : $Date: 2007/11/30 11:57:27 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2009/04/28 15:20:43 $
+ * Version: $Revision: 1.7 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -35,6 +35,7 @@ package com.alkacon.opencms.newsletter;
 import org.opencms.file.CmsGroup;
 import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.main.CmsException;
+import org.opencms.security.CmsOrganizationalUnit;
 import org.opencms.xml.content.CmsXmlContent;
 
 import java.util.List;
@@ -47,7 +48,7 @@ import org.apache.commons.mail.Email;
  * 
  * @author Andreas Zahner
  * 
- * @version $Revision: 1.6 $ 
+ * @version $Revision: 1.7 $ 
  * 
  * @since 7.0.3 
  */
@@ -100,6 +101,16 @@ public interface I_CmsNewsletterMailData {
      * @throws CmsException if reading the VFS file fails
      */
     void initialize(CmsJspActionElement jsp, CmsGroup group, String fileName) throws CmsException;
+
+    /**
+     * Initializes the necessary members to generate the email and the list of recipients.<p>
+     * 
+     * @param jsp the current action element
+     * @param ou the organizational unit to send the newsletter to
+     * @param fileName the fileName of a VFS file that can be used to generate the newsletter
+     * @throws CmsException if reading the VFS file fails
+     */
+    void initialize(CmsJspActionElement jsp, CmsOrganizationalUnit ou, String fileName) throws CmsException;
 
     /**
      * Checks if the newsletter can be sent or not.<p>

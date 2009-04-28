@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/Messages.java,v $
- * Date   : $Date: 2007/11/30 11:57:27 $
- * Version: $Revision: 1.9 $
+ * Date   : $Date: 2009/04/28 15:20:43 $
+ * Version: $Revision: 1.10 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -40,7 +40,7 @@ import org.opencms.i18n.I_CmsMessageBundle;
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.9 $ 
+ * @version $Revision: 1.10 $ 
  * 
  * @since 7.0.3 
  */
@@ -318,6 +318,9 @@ public final class Messages extends A_CmsMessageBundle {
 
     /** Message constant for key in the resource bundle. */
     public static final String LOG_ERROR_NEWSLETTER_SEND_FAILED_1 = "LOG_ERROR_NEWSLETTER_SEND_FAILED_1";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String LOG_ERROR_NEWSLETTER_UNITS_2 = "LOG_ERROR_NEWSLETTER_UNITS_2";
 
     /** Message constant for key in the resource bundle. */
     public static final String LOG_NEWSLETTER_CLEANUP_ERROR_DELETING_0 = "LOG_NEWSLETTER_CLEANUP_ERROR_DELETING_0";

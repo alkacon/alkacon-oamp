@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsListSendNewsletterAction.java,v $
- * Date   : $Date: 2007/11/30 11:57:27 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2009/04/28 15:20:43 $
+ * Version: $Revision: 1.6 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -47,7 +47,7 @@ import org.opencms.workplace.list.CmsListItem;
  * 
  * @author Andreas Zahner
  * 
- * @version $Revision: 1.5 $ 
+ * @version $Revision: 1.6 $ 
  * 
  * @since 7.0.3 
  */
@@ -77,13 +77,15 @@ public class CmsListSendNewsletterAction extends CmsListDirectAction {
     public CmsMessageContainer getHelpText() {
 
         CmsMessageContainer helptext = super.getHelpText();
-        if (helptext == null) {
-            if (isEnabled()) {
+
+        if (isEnabled()) {
+            if (super.getHelpText() == null) {
                 helptext = Messages.get().container(Messages.GUI_NEWSLETTER_LIST_ACTION_SEND_HELP_0);
-            } else {
-                helptext = Messages.get().container(Messages.GUI_NEWSLETTER_LIST_ACTION_SEND_DISABLED_HELP_0);
             }
+        } else {
+            helptext = Messages.get().container(Messages.GUI_NEWSLETTER_LIST_ACTION_SEND_DISABLED_HELP_0);
         }
+
         return helptext;
     }
 

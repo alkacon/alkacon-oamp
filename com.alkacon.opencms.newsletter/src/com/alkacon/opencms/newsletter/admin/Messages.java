@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/Messages.java,v $
- * Date   : $Date: 2007/11/30 11:57:27 $
- * Version: $Revision: 1.10 $
+ * Date   : $Date: 2009/04/28 15:20:43 $
+ * Version: $Revision: 1.11 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -251,6 +251,9 @@ public final class Messages extends A_CmsMessageBundle {
     public static final String GUI_NEWSLETTER_LIST_ACTION_SEND_HELP_0 = "GUI_NEWSLETTER_LIST_ACTION_SEND_HELP_0";
 
     /** Message constant for key in the resource bundle. */
+    public static final String GUI_NEWSLETTER_LIST_ACTION_SEND_OU_HELP_0 = "GUI_NEWSLETTER_LIST_ACTION_SEND_OU_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
     public static final String GUI_NEWSLETTER_LIST_COLS_DATA_0 = "GUI_NEWSLETTER_LIST_COLS_DATA_0";
 
     /** Message constant for key in the resource bundle. */
@@ -263,6 +266,9 @@ public final class Messages extends A_CmsMessageBundle {
     public static final String GUI_NEWSLETTER_LIST_COLS_SEND_HELP_0 = "GUI_NEWSLETTER_LIST_COLS_SEND_HELP_0";
 
     /** Message constant for key in the resource bundle. */
+    public static final String GUI_NEWSLETTER_LIST_COLS_SEND_OU_HELP_0 = "GUI_NEWSLETTER_LIST_COLS_SEND_OU_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
     public static final String GUI_NEWSLETTER_LIST_DATA_SEND_AT_2 = "GUI_NEWSLETTER_LIST_DATA_SEND_AT_2";
 
     /** Message constant for key in the resource bundle. */
@@ -270,6 +276,9 @@ public final class Messages extends A_CmsMessageBundle {
 
     /** Message constant for key in the resource bundle. */
     public static final String GUI_NEWSLETTER_LIST_DATA_SEND_NEVER_0 = "GUI_NEWSLETTER_LIST_DATA_SEND_NEVER_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_NEWSLETTER_LIST_DATA_SEND_OU_AT_2 = "GUI_NEWSLETTER_LIST_DATA_SEND_OU_AT_2";
 
     /** Message constant for key in the resource bundle. */
     public static final String GUI_NEWSLETTER_LIST_NAME_0 = "GUI_NEWSLETTER_LIST_NAME_0";

@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterManager.java,v $
- * Date   : $Date: 2007/11/30 11:57:27 $
- * Version: $Revision: 1.16 $
+ * Date   : $Date: 2009/04/28 15:20:42 $
+ * Version: $Revision: 1.17 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -56,7 +56,7 @@ import java.util.regex.Pattern;
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.16 $ 
+ * @version $Revision: 1.17 $ 
  * 
  * @since 7.0.3 
  */
@@ -118,13 +118,30 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
      * @param group the group to send the newsletter to
      * @param fileName the fileName of the newsletter
      * @return the initialized mail data class generating the newsletter mail and recipients
-     * @throws Exception if instanciating the mail data class fails
+     * @throws Exception if instantiating the mail data class fails
      */
     public static I_CmsNewsletterMailData getMailData(CmsJspActionElement jsp, CmsGroup group, String fileName)
     throws Exception {
 
         I_CmsNewsletterMailData result = getMailData();
         result.initialize(jsp, group, fileName);
+        return result;
+    }
+
+    /**
+     * Returns the initialized mail data class generating the newsletter mail and recipients.<p>
+     * 
+     * @param jsp the current action element
+     * @param ou the organizational unit to send the newsletter to
+     * @param fileName the fileName of the newsletter
+     * @return the initialized mail data class generating the newsletter mail and recipients
+     * @throws Exception if instantiating the mail data class fails
+     */
+    public static I_CmsNewsletterMailData getMailData(CmsJspActionElement jsp, CmsOrganizationalUnit ou, String fileName)
+    throws Exception {
+
+        I_CmsNewsletterMailData result = getMailData();
+        result.initialize(jsp, ou, fileName);
         return result;
     }
 
@@ -181,7 +198,7 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
     public static boolean isActiveUser(CmsUser user, String groupName) {
 
         Boolean active = (Boolean)user.getAdditionalInfo(USER_ADDITIONALINFO_ACTIVE + groupName);
-        return ((active != null && active.booleanValue()) || active == null) && user.isEnabled();
+        return (((active != null) && active.booleanValue()) || (active == null)) && user.isEnabled();
     }
 
     /**
@@ -274,7 +291,7 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
                 }
             }
             user.setAdditionalInfo(USER_ADDITIONALINFO_ACTIVE + groupName, Boolean.valueOf(activate));
-            if (activate && user.getAdditionalInfo().get(USER_ADDITIONALINFO_ACTIVE) != null) {
+            if (activate && (user.getAdditionalInfo().get(USER_ADDITIONALINFO_ACTIVE) != null)) {
                 // remove flag that this user is not active at all
                 user.deleteAdditionalInfo(USER_ADDITIONALINFO_ACTIVE);
             }
