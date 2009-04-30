@@ -1,0 +1,31 @@
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.excelimport/schemas/config_mapping.xsd"/>
+		
+	<xsd:element name="AlkaconExcelImportConfigs" type="OpenCmsAlkaconExcelImportConfigs"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconExcelImportConfigs">
+		<xsd:sequence>
+			<xsd:element name="AlkaconExcelImportConfig" type="OpenCmsAlkaconExcelImportConfig" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconExcelImportConfig">
+		<xsd:sequence>
+			<xsd:element name="ResourceType" type="OpenCmsString" minOccurs="1" />
+			<xsd:element name="Interface" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="Mapping" type="OpenCmsAlkaconExcelImportConfigMapping" minOccurs="0" maxOccurs="unbounded" />
+			<xsd:element name="MinWeight" type="OpenCmsString" minOccurs="1" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="required"/>
+	</xsd:complexType>
+	
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.excelimport.workplace"/>
+		</xsd:appinfo>
+
+	</xsd:annotation>  
+</xsd:schema>
