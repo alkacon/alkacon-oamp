@@ -43,6 +43,8 @@ $("#TB_title").attr("id","");
 $("#TB_closeAjaxWindow").addClass("cmt_TB_closeAjaxWindow");
 $("#TB_ajaxContent").addClass("cmt_TB_ajaxContent");
 $("#TB_ajaxWindowTitle").addClass("cmt_TB_ajaxWindowTitle");
+$("input[name^='InputField'][type='text']").css("width", "100%");
+$("textarea[name^='InputField']").css("width", "100%");
 </script>
 <%	} else {
 	    // problem while submitting
@@ -113,6 +115,7 @@ if (formConfiguration.hasMandatoryFields() && formConfiguration.isShowMandatory(
 out.print(formConfiguration.getFormFooterText());
 %>
 <script type="text/javascript">
+
 function submitEnter(e) {
     var key = (window.event) ? window.event.keyCode : (e) ? e.which : 0;
     if (key == 13) {
@@ -141,41 +144,43 @@ function cmtPost() {
        if (formConfiguration.getFieldByDbLabel("name") != null) { %>
 var nameField = '<%=formConfiguration.getFieldByDbLabel("name").getName()%>';
 var nameFieldValue = '<%= ("" + cms.getRequestContext().currentUser().getFirstname() + " " + cms.getRequestContext().currentUser().getLastname()).trim() %>';
-if ($("input[@name='"+nameField+"']").attr('value')) {
-	if ($("input[@name='"+nameField+"']").attr('value') == '') {
-		$("input[@name='"+nameField+"']").attr('value', nameFieldValue);
+
+if ($("input[name='"+nameField+"']").attr('value')) {
+	if ($("input[name='"+nameField+"']").attr('value') == '') {
+		$("input[name='"+nameField+"']").attr('value', nameFieldValue);
 	}
 } else {
-	$("input[@name='"+nameField+"']").attr('value', nameFieldValue);
+	$("input[name='"+nameField+"']").attr('value', nameFieldValue);
 }
+
 <%     } 
        if (formConfiguration.getFieldByDbLabel("email") != null) { %>
 var emailField = '<%=formConfiguration.getFieldByDbLabel("email").getName()%>';
 var emailFieldValue = '<%=cms.getRequestContext().currentUser().getEmail()%>';
-if ($("input[@name='"+emailField+"']").attr('value')) {
-	if ($("input[@name='"+emailField+"']").attr('value') == '') {
-		$("input[@name='"+emailField+"']").attr('value', emailFieldValue);
+if ($("input[name='"+emailField+"']").attr('value')) {
+	if ($("input[name='"+emailField+"']").attr('value') == '') {
+		$("input[name='"+emailField+"']").attr('value', emailFieldValue);
 	}
 } else {
-	$("input[@name='"+emailField+"']").attr('value', emailFieldValue);
+	$("input[name='"+emailField+"']").attr('value', emailFieldValue);
 }
 <%     } 
    } 
    if (formConfiguration.getFieldByDbLabel("comment") != null) { %>
 var commentField = '<%=formConfiguration.getFieldByDbLabel("comment").getName()%>';
 var maxLength = 1000;
-$("textarea[@name='"+commentField+"']").before("<div style='width: 99%; text-align: right; font-size: 9px;'><%=messages.key("form.comment.char.left")%></div>");
+$("textarea[name='"+commentField+"']").before("<div style='width: 99%; text-align: right; font-size: 9px;'><%=messages.key("form.comment.char.left")%></div>");
 function updateComment() {
-        var value = $("textarea[@name='"+commentField+"']").attr('value');
+        var value = $("textarea[name='"+commentField+"']").attr('value');
         if (value && (value.length > maxLength)) {
-		$("textarea[@name='"+commentField+"']").attr('value', value.substring(0, maxLength));
+		$("textarea[name='"+commentField+"']").attr('value', value.substring(0, maxLength));
 	} else {
 		$("#comment_charleft").text(maxLength - (value? value.length:0));
 	}
 }
-$("textarea[@name='"+commentField+"']").keydown(updateComment);
-$("textarea[@name='"+commentField+"']").keyup(updateComment);
-$("textarea[@name='"+commentField+"']").change(updateComment);
+$("textarea[name='"+commentField+"']").keydown(updateComment);
+$("textarea[name='"+commentField+"']").keyup(updateComment);
+$("textarea[name='"+commentField+"']").change(updateComment);
 updateComment();
 <%     } %>
 
@@ -184,4 +189,6 @@ $("#TB_title").attr("id","");
 $("#TB_closeAjaxWindow").addClass("cmt_TB_closeAjaxWindow");
 $("#TB_ajaxContent").addClass("cmt_TB_ajaxContent");
 $("#TB_ajaxWindowTitle").addClass("cmt_TB_ajaxWindowTitle");
+$("input[name^='InputField'][type='text']").css("width", "100%");
+$("textarea[name^='InputField']").css("width", "100%");
 </script>
