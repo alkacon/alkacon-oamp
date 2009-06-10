@@ -13,7 +13,7 @@
 		<nicename><![CDATA[Create XML contents from excel files to import]]></nicename>
 		<class/>
 		<description><![CDATA[Module to create XML contents from excel files to import]]></description>
-		<version>0.71</version>
+		<version>0.1</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
 		<datecreated/>
@@ -22,6 +22,7 @@
 		<dependencies/>
 		<exportpoints>
 			<exportpoint uri="/system/modules/com.alkacon.opencms.excelimport/classes/" destination="WEB-INF/classes/"/>
+			<exportpoint uri="/system/modules/com.alkacon.opencms.excelimport/lib/" destination=""/>
 		</exportpoints>
 		<resources>
 			<resource uri="/system/modules/com.alkacon.opencms.excelimport/"/>
@@ -241,6 +242,39 @@
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.excelimport/lib</destination>
+			<type>folder</type>
+			<uuidstructure>5ab8245c-55c1-11de-9471-5fc9fa232cc8</uuidstructure>
+			<datelastmodified>Wed, 10 Jun 2009 13:19:40 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 10 Jun 2009 13:19:40 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.excelimport/lib/com.alkacon.opencms.excelimport.jar</source>
+			<destination>system/modules/com.alkacon.opencms.excelimport/lib/com.alkacon.opencms.excelimport.jar</destination>
+			<type>plain</type>
+			<uuidstructure>7d8104cf-55c1-11de-9471-5fc9fa232cc8</uuidstructure>
+			<uuidresource>7d8104d0-55c1-11de-9471-5fc9fa232cc8</uuidresource>
+			<datelastmodified>Wed, 10 Jun 2009 13:20:39 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 10 Jun 2009 13:20:39 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[com.alkacon.opencms.excelimport]]></value>
+				</property>
+			</properties>
 			<relations/>
 			<accesscontrol/>
 		</file>
