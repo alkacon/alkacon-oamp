@@ -1,9 +1,23 @@
 <%@page buffer="none" session="false"
 	import="org.opencms.i18n.*,com.alkacon.opencms.formgenerator.*,java.util.*"%>
 <%
-    // initialize the form handler
-    CmsFormHandler cms = new CmsFormHandler(pageContext, request, response);
-    boolean isOffline = !cms.getRequestContext().currentProject().isOnlineProject();
+
+	///////////////////////////////////////////////////////////////////////////
+	// BEGIN: This is for compatibility with the survey module: DON'T CHANGE //
+	///////////////////////////////////////////////////////////////////////////
+		// initialize the form handler
+		CmsFormHandler cms = null;
+		CmsFormHandler cmsFf = (CmsFormHandler)pageContext.getAttribute("cmsF");
+		if (cmsFf == null) {
+			cms = new CmsFormHandler(pageContext, request, response);
+		} else {
+			cms = cmsFf;
+		}
+	/////////
+	// END //
+	/////////
+
+	boolean isOffline = !cms.getRequestContext().currentProject().isOnlineProject();
 
     // get the localized messages to create the form
     if (pageContext.getAttribute("addMessage") != null) {
