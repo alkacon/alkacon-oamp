@@ -55,9 +55,13 @@ Legend:
 * Bug fixed
 - General comment
 
+1.0.2 - June 15th, 2009 
+! Sending newsletters to OU users is now possible. 
+- This version only works with OpenCms 7.5.0 or later!
+
 1.0.1 - April 9th, 2008
 - Adapted code to work with OpenCms 7.0.4
-
+- This version only works with OpenCms 7.0.4!
 
 1.0.0 - November 28, 2007
 - First public release
