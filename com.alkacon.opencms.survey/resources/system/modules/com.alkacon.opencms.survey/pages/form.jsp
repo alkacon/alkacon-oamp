@@ -12,6 +12,7 @@ String value = String.valueOf(cmsF.getFormConfiguration().getFormId().hashCode()
 
 String cookieName = "Alkacon_OAMP_" + cmsF.getFormConfiguration().getFormId();
 Cookie cookies [] = request.getCookies();
+
 Cookie myCookie = null;
 if (cookies != null) {
 	for (int j = 0; j < cookies.length; j++) {
@@ -39,8 +40,11 @@ if ((myCookie != null) &&  (myCookie.getValue().equals(value))) {
 		c.setMaxAge(365 * 24 * 60 * 60);
 		response.addCookie(c);
 	}
+
+
 	%>
 	<c:set var="addMessage"><cms:property name="webformMessage" default="/com/alkacon/opencms/survey/webform" /></c:set>
+	<% pageContext.setAttribute("cmsF", cmsF); %>
 	<%@include file="%(link.strong:/system/modules/com.alkacon.opencms.formgenerator/pages/form.jsp:a424bd7e-11b7-11db-91cd-fdbae480baca)" %>
 	<%
 }
