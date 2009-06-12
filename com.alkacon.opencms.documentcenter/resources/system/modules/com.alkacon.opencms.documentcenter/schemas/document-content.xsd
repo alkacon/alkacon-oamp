@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>	
+	<xsd:element name="AlkaconDocumentContents" type="OpenCmsAlkaconDocumentContents"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconDocumentContents">
+		<xsd:sequence>
+			<xsd:element name="AlkaconDocumentContent" type="OpenCmsAlkaconDocumentContent" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconDocumentContent">
+		<xsd:sequence>
+			<xsd:element name="Header" type="OpenCmsString" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="Footer" type="OpenCmsString" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="Disclaimer" type="OpenCmsString" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="Disclaimer_Declined" type="OpenCmsString" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="FolderEmpty" type="OpenCmsString" minOccurs="0" maxOccurs="1" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="required"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<preview uri="${previewtempfile}" />
+
+			<layouts>
+				<layout element="Header" widget="HtmlWidget" configuration="height:400px,link,anchor,formatselect,source,imagegallery,downloadgallery,linkgallery,htmlgallery,tablegallery" />
+				<layout element="Footer" widget="HtmlWidget" configuration="height:400px,link,anchor,formatselect,source,imagegallery,downloadgallery,linkgallery,htmlgallery,tablegallery" />
+				<layout element="Disclaimer" widget="HtmlWidget" configuration="height:400px,link,anchor,formatselect,source,imagegallery,downloadgallery,linkgallery,htmlgallery,tablegallery" />
+				<layout element="Disclaimer_Declined" widget="HtmlWidget" configuration="height:400px,link,anchor,formatselect,source,imagegallery,downloadgallery,linkgallery,htmlgallery,tablegallery" />
+				<layout element="FolderEmpty" widget="HtmlWidget" configuration="height:400px,link,anchor,formatselect,source,imagegallery,downloadgallery,linkgallery,htmlgallery,tablegallery" />
+			</layouts>
+
+			<mappings>
+			</mappings>
+
+			<validationrules>
+			</validationrules>
+		</xsd:appinfo>
+	</xsd:annotation>
+
+</xsd:schema>
