@@ -56,8 +56,10 @@ Legend:
 * Bug fixed
 - General comment
 
-1.3.0 - April, 2009
+1.3.1 - June 15th, 2009
+- Compatibility update: this is the only version that works with OpenCms 7.5.0 or later!
 
+1.3.0 - April, 2009
 * Fixed issues with CmsEmptyField stored to database. 
 * Fixed issue with CVS - export button not working in the workplace list for Internet Explorer.
 * Fixed issue with UUID in Resource Path column of CSV exported from workplace tool. 
@@ -69,7 +71,7 @@ Legend:
 ! CSS class attributes are generated form-specific via the new  "Style" configuration option.  
 ! Added module parameter "export.lineseparator" for configuration of the line break in exported CSV: Values are "windows" or "unix".
   For Excel compatibility use "unix" or "excel". 
-! New math captcha (maptcha) for verfication of human beeings filling out the form.
+! New math captcha (maptcha) for verfication of human beeings filling out the form. 
 
 1.2.0 - May, 2008
 ! Added a new Administration Tool under Database Management.
