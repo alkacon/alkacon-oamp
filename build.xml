@@ -29,24 +29,24 @@
 		</classpath>
 	</taskdef>
 
-	<!-- internal target for modules.all property initialization -->
+	<!-- internal target for modules.comman.all property initialization -->
 	<target name="init-all">
 
 		<property file="${basedir}/all-modules.properties" />
 		<if>
 			<not>
-				<isset property="modules.all" />
+				<isset property="modules.common.all" />
 			</not>
 			<then>
 				<fail>
-    			property modules.all undefined.
+    			property modules.common.all undefined.
     		</fail>
 			</then>
 			<else>
-				<echo message="all: ${modules.all}" />
+				<echo message="all: ${modules.common.all}" />
 			</else>
 		</if>
-		<sortlist property="modules.all" value="${modules.all}" override="true" />
+		<sortlist property="modules.common.all" value="${modules.common.all}" override="true" />
 
 	</target>
 
@@ -60,15 +60,15 @@
 				<if>
 					<isset property="modules.selection" />
 					<then>
-						<selectionprompt property="modules.interactive" defaultvalue="${modules.selection}" allvalues="${modules.all}" prompt="Please select the modules to process:" title="Module Selection" columns="1" />
+						<selectionprompt property="modules.interactive" defaultvalue="${modules.selection}" allvalues="${modules.common.all}" prompt="Please select the modules to process:" title="Module Selection" columns="1" />
 						<!--
-						<selectiontreeprompt property="modules.interactive" defaultvalue="${modules.selection}" allvalues="${modules.all}" prompt="Please select the modules to process:" title="Module Selection" expansionLevels="2" />
+						<selectiontreeprompt property="modules.interactive" defaultvalue="${modules.selection}" allvalues="${modules.common.all}" prompt="Please select the modules to process:" title="Module Selection" expansionLevels="2" />
 						-->
 					</then>
 					<else>
-						<selectionprompt property="modules.interactive" defaultvalue="" allvalues="${modules.all}" prompt="Please select the modules to process:" title="Module Selection" columns="1" />
+						<selectionprompt property="modules.interactive" defaultvalue="" allvalues="${modules.common.all}" prompt="Please select the modules to process:" title="Module Selection" columns="1" />
 						<!--
-						<selectiontreeprompt property="modules.interactive" defaultvalue="" allvalues="${modules.all}" prompt="Please select the modules to process:" title="Module Selection" expansionLevels="2" />
+						<selectiontreeprompt property="modules.interactive" defaultvalue="" allvalues="${modules.common.all}" prompt="Please select the modules to process:" title="Module Selection" expansionLevels="2" />
 						-->
 					</else>
 				</if>
@@ -89,7 +89,7 @@
 			</elseif>
 			<else>
 				<!-- all mode -->
-				<property name="modules.var" value="${modules.all}" />
+				<property name="modules.var" value="${modules.common.all}" />
 			</else>
 		</if>
 	</target>
@@ -151,7 +151,7 @@
 
 	<target name="tomcat.copy" depends="init" description="Copies the given updated modules to Tomcat directory">
 
-		<ant antfile="${opencms.input}/build.xml" dir="${opencms.input}" inheritall="false" target="tomcat.copy" />
+		<ant antfile="${opencms.input}/modules/build.xml" dir="${opencms.input}/modules/" inheritall="false" target="tomcat.copy" />
 		<for list="${modules.var}" param="module" trim="yes">
 			<sequential>
 				<ant antfile="${basedir}/build-single.xml" target="tomcat.copy" inheritAll="false">

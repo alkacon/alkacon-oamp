@@ -3,7 +3,7 @@
 <export>
 	<info>
 		<creator>Admin</creator>
-		<opencms_version>7.0.3</opencms_version>
+		<opencms_version>7.5.0</opencms_version>
 		<createdate>Mon, 19 Nov 2007 10:34:56 GMT</createdate>
 		<project>Offline</project>
 		<export_version>6</export_version>
@@ -14,7 +14,7 @@
 		<group>Alkacon OAMP</group>
 		<class/>
 		<description><![CDATA[Commonly used utilities for the Alkacon OpenCms Extension modules.]]></description>
-		<version>1.0.0</version>
+		<version>1.0.1</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
 		<datecreated/>

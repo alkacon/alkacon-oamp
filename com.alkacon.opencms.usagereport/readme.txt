@@ -52,5 +52,13 @@ Legend:
 * Bug fixed
 - General comment
 
-1.0.0 - December 10, 2008
+1.0.1 - June 15th, 2009 (no release on alkacon.com)
+! Usage report now available via RSS feed 
+! This module now requires installation of the OAMP Feeder module
+- Compatibility update: this version only works with OpenCms 7.5.0 or later!
+
+1.0.0 - December 10th, 2008
 - First public release
+
+
+
