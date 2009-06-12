@@ -58,6 +58,7 @@ Legend:
 
 1.0.1 - month day, year 
 * Fixed jquery compatibility issues with version 1.3.2 
+- Compatiblity with OpenCms 7.5.0
 
 1.0.0 - July 15, 2008
 - First release
