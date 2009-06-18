@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.counter/src/com/alkacon/opencms/counter/CmsCounterManager.java,v $
- * Date   : $Date: 2008/02/25 16:29:38 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2009/06/18 17:26:12 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -55,9 +55,9 @@ import org.apache.commons.logging.Log;
 /**
  * This is a helper class that provides methods used for the table counter in the database.<p>
  * 
- * @author Anja Röttgers
+ * @author Anja Roettgers
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.3
  */
