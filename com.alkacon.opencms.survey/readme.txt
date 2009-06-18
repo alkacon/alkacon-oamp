@@ -55,6 +55,9 @@ Legend:
 * Bug fixed
 - General comment
 
+1.0.2 - month day, year
+* Avoid NullPointerException when advanced form configuration node in survey XML content is missing.
+
 1.0.1 - April 1, 2009
 ! Am additional text area added to the bottom of the report.
 ! If a user visits the form for the first time a cookie is set that makes sure a user can not vote twice.

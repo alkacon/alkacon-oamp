@@ -30,7 +30,9 @@ if ((myCookie != null) &&  (myCookie.getValue().equals(value))) {
 	%>
 		<cms:contentload collector="singleFile" param="%(opencms.uri)">
 			<cms:contentaccess var="content" scope="page" />
+				<c:if test="${content.hasValue['OptionalFormConfiguration']}">
 			${content.value['OptionalFormConfiguration'].value['CheckText']}
+				</c:if>
 		</cms:contentload>
 	<%
 	cmsF.include(template, "foot");
