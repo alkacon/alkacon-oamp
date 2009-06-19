@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.survey/src/com/alkacon/opencms/survey/CmsFormWorkBean.java,v $
- * Date   : $Date: 2009/06/19 09:38:06 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2009/06/19 09:41:31 $
+ * Version: $Revision: 1.4 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -67,7 +67,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Anja Roettgers
  * 
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * 
  * @since 7.0.4
  */
@@ -77,22 +77,16 @@ public class CmsFormWorkBean {
      * A comparator for the created date of two resources.<p>
      * 
      */
-    private static final Comparator COMPARE_DATE_CREATED = new Comparator() {
+    private static final Comparator<CmsFormDataBean> COMPARE_DATE_CREATED = new Comparator<CmsFormDataBean>() {
 
         /**
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
-        public int compare(Object o1, Object o2) {
+        public int compare(CmsFormDataBean o1, CmsFormDataBean o2) {
 
-            if ((o1 == o2) || !(o1 instanceof CmsFormDataBean) || !(o2 instanceof CmsFormDataBean)) {
-                return 0;
-            }
-
-            CmsFormDataBean r1 = (CmsFormDataBean)o1;
-            CmsFormDataBean r2 = (CmsFormDataBean)o2;
-
-            long date1 = r1.getDateCreated();
-            long date2 = r2.getDateCreated();
+        
+            long date1 = o1.getDateCreated();
+            long date2 = o2.getDateCreated();
 
             return (date1 > date2) ? -1 : (date1 < date2) ? 1 : 0;
         }
@@ -114,7 +108,7 @@ public class CmsFormWorkBean {
     private int m_page;
 
     /** Mapping from String dbfieldname to I_CmsField class. */
-    private Map m_fieldTypes = new HashMap();
+    private Map<String, I_CmsField> m_fieldTypes = new HashMap<String, I_CmsField>();
 
     /**
      * default constructor.<p>
