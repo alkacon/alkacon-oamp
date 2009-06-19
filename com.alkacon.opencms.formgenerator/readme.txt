@@ -56,6 +56,10 @@ Legend:
 * Bug fixed
 - General comment
 
+
+1.3.2 - month day , year
+- Slight API changes (wider access modifiers) for allowing bugfix version 1.0.2 of the OAMP survey module.
+
 1.3.1 - June 15th, 2009
 - Compatibility update: this is the only version that works with OpenCms 7.5.0 or later!
 

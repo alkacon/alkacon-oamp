@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
- * Date   : $Date: 2009/04/17 15:36:35 $
- * Version: $Revision: 1.14 $
+ * Date   : $Date: 2009/06/19 09:37:22 $
+ * Version: $Revision: 1.15 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -63,7 +63,7 @@ import org.apache.commons.fileupload.FileItem;
  * @author Thomas Weckert 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  * 
  * @since 7.0.4 
  */
@@ -1088,18 +1088,19 @@ public class CmsForm {
     /**
      * Checks if the given value is empty and returns in that case the default value.<p>
      * 
+     * No End-User method but needed by the survey module too.<p>
      * @param value the configuration value to check
      * @param defaultValue the default value to return in case the value is empty
      * @return the checked value
      */
-    protected String getConfigurationValue(String value, String defaultValue) {
+    public static String getConfigurationValue(String value, String defaultValue) {
 
         if (CmsStringUtil.isNotEmpty(value)) {
             return value;
         }
         return defaultValue;
     }
-
+    
     /**
      * Resolves the value of a dynamic field.<p>
      * 
