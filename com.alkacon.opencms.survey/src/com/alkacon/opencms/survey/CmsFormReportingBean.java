@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.survey/src/com/alkacon/opencms/survey/CmsFormReportingBean.java,v $
- * Date   : $Date: 2009/04/01 16:02:18 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2009/06/19 09:38:06 $
+ * Version: $Revision: 1.6 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -59,7 +59,7 @@ import org.apache.commons.collections.map.LazyMap;
  * 
  * @author Anja Roettgers
  * 
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * 
  * @since 7.0.4
  */
@@ -121,8 +121,11 @@ public class CmsFormReportingBean extends CmsJspActionElement {
     public CmsFormReportingBean(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         super(context, req, res);
+        
 
     }
+    
+
 
     /**
      * Checks if the given type is from the correct type to display in the report.<p>
@@ -175,29 +178,6 @@ public class CmsFormReportingBean extends CmsJspActionElement {
             });
         }
         return m_label;
-    }
-
-    /**
-     * Returns a lazy initialized map that provides the work bean for each parameter used as a key in the Map.<p> 
-     * 
-     * @return a lazy initialized map
-     */
-    public Map getReporting() {
-
-        if (m_reporting == null) {
-            m_reporting = LazyMap.decorate(new HashMap(), new Transformer() {
-
-                /**
-                 * @see org.apache.commons.collections.Transformer#transform(java.lang.Object)
-                 */
-                public Object transform(Object input) {
-
-                    String value = String.valueOf(input);
-                    return getReporting(value);
-                }
-            });
-        }
-        return m_reporting;
     }
 
     /**
@@ -293,21 +273,24 @@ public class CmsFormReportingBean extends CmsJspActionElement {
     /**
      * Returns the needed {@link CmsFormWorkBean} with the given parameters.<p>
      * 
-     * @param param the parameters containing the form id and the resource path separated with a separator
+     * @param formid the form id
+     * 
+     * @param formPath the path of the form
      * 
      * @return the work bean
      */
-    protected CmsFormWorkBean getReporting(String param) {
+    public CmsFormWorkBean getReporting(String formid, String formPath) {
 
+    	
         CmsFormWorkBean result = new CmsFormWorkBean();
-        String[] parameters = CmsStringUtil.splitAsArray(param, PARAM_SEPARATOR);
+        String[] parameters = CmsStringUtil.splitAsArray(formid, PARAM_SEPARATOR);
         if (parameters.length > 0) {
             String formId = parameters[0];
-            String resPath = null;
+            String resId = null;
             if (parameters.length > 1) {
-                resPath = parameters[1];
+                resId = parameters[1];
             }
-            result.init(formId, resPath);
+            result.init(formId, resId, formPath, this);
         }
         return result;
 

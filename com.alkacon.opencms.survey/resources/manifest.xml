@@ -23,7 +23,7 @@
 		<userinstalled/>
 		<dateinstalled/>
 		<dependencies>
-			<dependency name="com.alkacon.opencms.formgenerator" version="1.2.0"/>
+			<dependency name="com.alkacon.opencms.formgenerator" version="1.3.2"/>
 		</dependencies>
 		<exportpoints>
 			<exportpoint uri="/system/modules/com.alkacon.opencms.survey/lib/" destination="WEB-INF/lib/"/>
