@@ -58,6 +58,7 @@ Legend:
 
 
 1.3.2 - month day , year
+* Fixed issue with Microsoft Excel reformatting numerical columns (contribution by Mathias Lin, SYSVISION).
 - Slight API changes (wider access modifiers) for allowing bugfix version 1.0.2 of the OAMP survey module.
 
 1.3.1 - June 15th, 2009

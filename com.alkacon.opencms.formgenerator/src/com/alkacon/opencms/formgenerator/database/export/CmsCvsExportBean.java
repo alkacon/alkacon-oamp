@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/export/CmsCvsExportBean.java,v $
- * Date   : $Date: 2009/04/17 15:35:56 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2009/06/22 15:02:23 $
+ * Version: $Revision: 1.7 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -53,6 +53,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Scanner;
 
 import org.apache.commons.logging.Log;
 
@@ -64,7 +65,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  * 
  * @since 7.0.4
  *
@@ -322,7 +323,18 @@ public class CmsCvsExportBean {
     private String escapeExcelCsv(final String value) {
 
         String result = value;
+        
+        /*
+         * support for Microsoft Excel: If Excel detects numbers, it reformats the numbers 
+         * (stealing leading zeros or displaying large numbers in +E syntax:
+         */
+        boolean isNumber=false;
+        Scanner scanner = new Scanner(value);
+        isNumber = scanner.hasNextDouble() || scanner.hasNextLong();
         StringBuffer buffer = new StringBuffer();
+        if (isNumber) {
+            buffer.append("=");
+        }
         buffer.append("\"");
         char[] chars = value.toCharArray();
         for (int i = 0; i < chars.length; i++) {
