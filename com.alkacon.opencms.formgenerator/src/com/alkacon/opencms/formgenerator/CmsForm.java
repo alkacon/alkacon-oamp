@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
- * Date   : $Date: 2009/06/19 09:37:22 $
- * Version: $Revision: 1.15 $
+ * Date   : $Date: 2009/06/22 12:03:40 $
+ * Version: $Revision: 1.16 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -63,7 +63,7 @@ import org.apache.commons.fileupload.FileItem;
  * @author Thomas Weckert 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  * 
  * @since 7.0.4 
  */
@@ -123,7 +123,7 @@ public class CmsForm {
 
     /** 
      * Constant value for the module parameter {@link #MODULE_PARAM_EXPORTLINESEPARATOR} to have "\r\n" transformed to 
-     * "\r\n", which is required for viewing the cvs in excel.
+     * "\n", which is required for viewing the cvs in Microsoft (Windows!) Excel.
      */
     public static final String MODULE_PARAMVALUE_EXPORTLINESEPARATOR_EXCEL = "excel";
 
