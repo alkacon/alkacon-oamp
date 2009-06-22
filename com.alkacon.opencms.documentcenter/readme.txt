@@ -47,6 +47,7 @@ PDF file "Alkacon_OpenCms_DocCenter_1.0.0.pdf".
 
 
 4. History of changes
+! Croatian language added to the language-bundle 
 
 Changes are chronologically ordered from top (most recent)
 to bottom (least recent).
