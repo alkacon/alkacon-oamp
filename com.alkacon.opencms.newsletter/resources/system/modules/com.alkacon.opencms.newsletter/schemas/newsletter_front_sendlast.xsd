@@ -1,0 +1,33 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+		
+	<xsd:element name="AlkaconNewsletterSendLasts" type="OpenCmsAlkaconNewsletterSendLasts"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconNewsletterSendLasts">
+		<xsd:sequence>
+			<xsd:element name="AlkaconNewsletterSendLast" type="OpenCmsAlkaconNewsletterSendLast" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconNewsletterSendLast">
+		<xsd:sequence>
+			<xsd:element name="Active" type="OpenCmsBoolean" />
+			<xsd:element name="Headline" type="OpenCmsString" />
+			<xsd:element name="Ok" type="OpenCmsString" />						
+			<xsd:element name="Error" type="OpenCmsString" />		
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.newsletter.workplace"/>
+			<layouts>
+				<layout element="Ok" widget="TextareaWidget" configuration="3" />
+				<layout element="Error" widget="TextareaWidget" configuration="3" />
+			</layouts>
+		</xsd:appinfo>
+	</xsd:annotation>  
+	
+</xsd:schema>

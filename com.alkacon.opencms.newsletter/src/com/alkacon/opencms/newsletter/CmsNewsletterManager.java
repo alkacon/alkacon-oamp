@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterManager.java,v $
- * Date   : $Date: 2009/04/28 15:20:42 $
- * Version: $Revision: 1.17 $
+ * Date   : $Date: 2009/07/09 09:30:12 $
+ * Version: $Revision: 1.18 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -33,17 +33,23 @@
 package com.alkacon.opencms.newsletter;
 
 import org.opencms.configuration.CmsConfigurationManager;
+import org.opencms.file.CmsFile;
 import org.opencms.file.CmsGroup;
 import org.opencms.file.CmsObject;
 import org.opencms.file.CmsProject;
 import org.opencms.file.CmsUser;
+import org.opencms.file.types.CmsResourceTypeFolder;
+import org.opencms.file.types.CmsResourceTypePlain;
 import org.opencms.jsp.CmsJspActionElement;
+import org.opencms.lock.CmsLock;
 import org.opencms.main.CmsException;
 import org.opencms.main.OpenCms;
 import org.opencms.module.A_CmsModuleAction;
 import org.opencms.module.CmsModule;
 import org.opencms.security.CmsOrganizationalUnit;
 import org.opencms.security.CmsRole;
+import org.opencms.util.CmsUUID;
+import org.opencms.workplace.CmsWorkplace;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -56,7 +62,7 @@ import java.util.regex.Pattern;
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.17 $ 
+ * @version $Revision: 1.18 $ 
  * 
  * @since 7.0.3 
  */
@@ -88,6 +94,9 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
 
     /** Name of the additional user info: flag to determine if the newsletter user is marked for deletion. */
     public static final String USER_ADDITIONALINFO_TODELETE = "AlkNewsletter_UserToDelete:";
+
+    /** The VFS folder path where the information about last sent newsletters is saved. */
+    public static String VFS_PATH_NEWSLETTER_INFO = CmsWorkplace.VFS_PATH_SYSTEM + "shared/alkacon_newsletter/";
 
     /** The default password for all newsletter users, can/should be overwritten in the module parameter. */
     private static final String PASSWORD_USER = "Uw82-Qn!";
@@ -146,10 +155,27 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
     }
 
     /**
+     * Returns the initialized mail data class generating the newsletter mail and recipients.<p>
+     * 
+     * @param jsp the current action element
+     * @param recipients the recipients of the newsletter mail, items have to be of type {@link javax.mail.internet.InternetAddress}
+     * @param fileName the fileName of the newsletter
+     * @return the initialized mail data class generating the newsletter mail and recipients
+     * @throws Exception if instantiating the mail data class fails
+     */
+    public static I_CmsNewsletterMailData getMailData(CmsJspActionElement jsp, List recipients, String fileName)
+    throws Exception {
+
+        I_CmsNewsletterMailData result = getMailData();
+        result.initialize(jsp, recipients, fileName);
+        return result;
+    }
+
+    /**
      * Returns the resource type name of the mail data XML content.<p>
      * 
      * @return the resource type name of the mail data XML content
-     * @throws Exception if instanciating the mail data class fails
+     * @throws Exception if instantiating the mail data class fails
      */
     public static String getMailDataResourceTypeName() throws Exception {
 
@@ -219,6 +245,25 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
 
         // store the admin CmsObject as member
         m_adminCms = adminCms;
+
+        // check if the folder exists where the last sent newsletter information is saved
+        if (!getAdminCms().existsResource(VFS_PATH_NEWSLETTER_INFO)) {
+            try {
+                // in order to create the folder, we have to switch to an offline project
+                CmsObject cms = OpenCms.initCmsObject(getAdminCms());
+                String projectName = OpenCms.getModuleManager().getModule(MODULE_NAME).getParameter(
+                    MODULE_PARAM_PROJECT_NAME,
+                    "Offline");
+                CmsProject project = cms.readProject(projectName);
+                cms.getRequestContext().setCurrentProject(project);
+                // create folder where the newsletter info files should be saved to
+
+                cms.createResource(VFS_PATH_NEWSLETTER_INFO, CmsResourceTypeFolder.getStaticTypeId());
+                OpenCms.getPublishManager().publishResource(cms, VFS_PATH_NEWSLETTER_INFO);
+            } catch (Exception e) {
+                // TODO: error creating folder, log info
+            }
+        }
     }
 
     /**
@@ -371,6 +416,61 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
     }
 
     /**
+     * Returns if information about the last sent newsletter exists for the given group ID.<p>
+     * 
+     * @param groupId the group ID to check the presence of an information file
+     * 
+     * @return <code>true</code> if information about the last sent newsletter exists, otherwise <code>false</code>
+     */
+    protected boolean existsSentNewsletterInfo(CmsUUID groupId) {
+
+        // file path where the newsletter info file is saved
+        String infoFilePath = VFS_PATH_NEWSLETTER_INFO + NEWSLETTER_OU_NAMEPREFIX + groupId.hashCode();
+        return getAdminCms().existsResource(infoFilePath);
+    }
+
+    /**
+     * Returns if information about the last sent newsletter exists for the given group name.<p>
+     * 
+     * @param groupName the group name to check the presence of an information file
+     * 
+     * @return <code>true</code> if information about the last sent newsletter exists, otherwise <code>false</code>
+     */
+    protected boolean existsSentNewsletterInfo(String groupName) {
+
+        try {
+            CmsUUID groupId = getAdminCms().readGroup(groupName).getId();
+            return existsSentNewsletterInfo(groupId);
+        } catch (CmsException e) {
+            // error reading group
+            return false;
+        }
+    }
+
+    /**
+     * Returns the UUID of the last sent newsletter resource or <code>null</code>, if the information is not found.<p>
+     * 
+     * @param groupName the group name to get the last sent newsletter resource UUID
+     * 
+     * @return the UUID of the last sent newsletter resource
+     */
+    protected CmsUUID getSentNewsletterInfo(String groupName) {
+
+        try {
+            CmsUUID groupId = getAdminCms().readGroup(groupName).getId();
+            String infoFilePath = VFS_PATH_NEWSLETTER_INFO + NEWSLETTER_OU_NAMEPREFIX + groupId.hashCode();
+            if (getAdminCms().existsResource(infoFilePath)) {
+                // we have an info file, read the content and return it as UUID
+                String idStr = new String(getAdminCms().readFile(infoFilePath).getContents());
+                return new CmsUUID(idStr);
+            }
+        } catch (CmsException e) {
+            // error reading info file
+        }
+        return null;
+    }
+
+    /**
      * Marks a newsletter user to be deleted, this is necessary for the deletion confirmation.<p>
      * 
      * @param email the email address of the user
@@ -389,6 +489,52 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
             // error reading or writing user
             return false;
         }
+    }
+
+    /**
+     * Saves the information about the last sent newsletter resource to a file in <code>/system/shared/alkacon_newsletter/</code>.<p>
+     * 
+     * This can be used to send the last newsletter to newly registered subscribers.<p>
+     * 
+     * @param groupId the ID of the mailing list group to which the newsletter has been sent
+     * @param id the structure ID of the newsletter resource
+     */
+    protected void saveSentNewsletterInfo(CmsUUID groupId, CmsUUID id) {
+
+        try {
+            // in order to write the info, we have to switch to an offline project
+            CmsObject cms = OpenCms.initCmsObject(getAdminCms());
+            String projectName = OpenCms.getModuleManager().getModule(MODULE_NAME).getParameter(
+                MODULE_PARAM_PROJECT_NAME,
+                "Offline");
+            CmsProject project = cms.readProject(projectName);
+            cms.getRequestContext().setCurrentProject(project);
+            // file name of the info file containing the path of the sent newsletter
+            String infoFileName = NEWSLETTER_OU_NAMEPREFIX + groupId.hashCode();
+            // folder where the newsletter info file should be saved
+            String infoFilePath = VFS_PATH_NEWSLETTER_INFO + infoFileName;
+
+            if (!cms.existsResource(infoFilePath)) {
+                cms.createResource(infoFilePath, CmsResourceTypePlain.getStaticTypeId(), id.toString().getBytes(), null);
+            } else {
+                CmsLock lock = cms.getLock(infoFilePath);
+                if (lock.isNullLock()) {
+                    cms.lockResource(infoFilePath);
+                    lock = cms.getLock(infoFilePath);
+                }
+                if (lock.isOwnedBy(cms.getRequestContext().currentUser())) {
+                    CmsFile file = cms.readFile(infoFilePath);
+                    file.setContents(id.toString().getBytes());
+                    cms.writeFile(file);
+                }
+            }
+            cms.unlockResource(infoFilePath);
+            OpenCms.getPublishManager().publishResource(cms, infoFilePath);
+        } catch (Exception e) {
+            // TODO: failed to save the information
+            return;
+        }
+
     }
 
     /**

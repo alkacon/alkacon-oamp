@@ -35,6 +35,11 @@
 				<default element="Subscribe/SubscribeError" value="%(key.default.alknewsletter.subscribe.error)" />
 				<default element="Subscribe/UnSubscribeOk" value="%(key.default.alknewsletter.unsubscribe.ok)" />
 				<default element="Subscribe/UnSubscribeError" value="%(key.default.alknewsletter.unsubscribe.error)" />
+				
+				<default element="Subscribe/SendLast/Active" value="true" />
+				<default element="Subscribe/SendLast/Headline" value="%(key.default.alknewsletter.sendlast.headline)" />
+				<default element="Subscribe/SendLast/Ok" value="%(key.default.alknewsletter.sendlast.ok)" />
+				<default element="Subscribe/SendLast/Error" value="%(key.default.alknewsletter.sendlast.error)" />
 
 				<default element="Confirm/Confirm" value="true" />
 

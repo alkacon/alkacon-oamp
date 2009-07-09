@@ -11,7 +11,7 @@ form.newslettersubscription-form {
 }
 
 /* Block around the form radio buttons and corresponding text */
-div.newslettersubscription-radio {
+div.newslettersubscription-radio, div.newslettersubscription-check {
 	padding: 0 0 4px 0;
 }
 

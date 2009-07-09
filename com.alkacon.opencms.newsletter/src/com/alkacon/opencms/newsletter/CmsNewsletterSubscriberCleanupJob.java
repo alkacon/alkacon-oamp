@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterSubscriberCleanupJob.java,v $
- * Date   : $Date: 2007/11/30 11:57:27 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2009/07/09 09:30:12 $
+ * Version: $Revision: 1.5 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -57,7 +57,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Andreas Zahner
  * 
- * @version $Revision: 1.4 $ 
+ * @version $Revision: 1.5 $ 
  * 
  * @since 7.0.3 
  */
@@ -83,7 +83,7 @@ public class CmsNewsletterSubscriberCleanupJob implements I_CmsScheduledJob {
             maxAge = 24f * 7f;
         }
 
-        // calculate oldest possible date for the cache files
+        // calculate oldest possible date for the unconfirmed subscribers
         long expireDate = System.currentTimeMillis() - (long)(maxAge * 60f * 60f * 1000f);
 
         // now perform the image cache cleanup
@@ -115,7 +115,7 @@ public class CmsNewsletterSubscriberCleanupJob implements I_CmsScheduledJob {
                     CmsUser user = (CmsUser)k.next();
                     // get the additional info value for the subscriber
                     Boolean active = (Boolean)user.getAdditionalInfo(CmsNewsletterManager.USER_ADDITIONALINFO_ACTIVE);
-                    if (active != null && !active.booleanValue()) {
+                    if ((active != null) && !active.booleanValue()) {
                         // found additional info & value is false, check creation date
                         if (user.getDateCreated() < expireDate) {
                             // user is older than specified maximum age, delete it

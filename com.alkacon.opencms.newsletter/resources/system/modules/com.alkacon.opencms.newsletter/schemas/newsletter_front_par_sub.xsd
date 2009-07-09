@@ -1,6 +1,7 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 	
 	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.newsletter/schemas/newsletter_front_sendlast.xsd"/>
 		
 	<xsd:element name="AlkaconNewsletterSubscriptions" type="OpenCmsAlkaconNewsletterSubscriptions"/>
 	
@@ -17,7 +18,8 @@
 			<xsd:element name="SubscribeOk" type="OpenCmsString" />
 			<xsd:element name="SubscribeError" type="OpenCmsString" />
 			<xsd:element name="UnSubscribeOk" type="OpenCmsString" />
-			<xsd:element name="UnSubscribeError" type="OpenCmsString" />			
+			<xsd:element name="UnSubscribeError" type="OpenCmsString" />
+			<xsd:element name="SendLast" type="OpenCmsAlkaconNewsletterSendLast" minOccurs="0" />		
 		</xsd:sequence>
 		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
 	</xsd:complexType>

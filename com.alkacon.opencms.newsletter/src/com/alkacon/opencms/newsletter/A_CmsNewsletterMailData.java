@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/A_CmsNewsletterMailData.java,v $
- * Date   : $Date: 2009/04/28 15:20:43 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2009/07/09 09:30:12 $
+ * Version: $Revision: 1.7 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -42,6 +42,7 @@ import org.opencms.lock.CmsLock;
 import org.opencms.main.CmsException;
 import org.opencms.main.CmsLog;
 import org.opencms.main.OpenCms;
+import org.opencms.module.CmsModule;
 import org.opencms.security.CmsOrganizationalUnit;
 import org.opencms.security.CmsRole;
 import org.opencms.xml.content.CmsXmlContent;
@@ -63,7 +64,7 @@ import org.apache.commons.mail.Email;
  *  
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.6 $ 
+ * @version $Revision: 1.7 $ 
  * 
  * @since 7.0.3 
  */
@@ -105,13 +106,16 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
     /** The organizational unit to send the newsletter to. */
     private CmsOrganizationalUnit m_ou;
 
+    /** The list of recipients to send the newsletter to. */
+    private List m_recipients;
+
     /** The email subject. */
     private String m_subject;
 
     /**
-     * Returns the newsletter xml content.<p>
+     * Returns the newsletter XML content.<p>
      * 
-     * @return the newsletter xml content
+     * @return the newsletter XML content
      */
     public CmsXmlContent getContent() {
 
@@ -133,6 +137,11 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
      */
     public List getRecipients() throws CmsException {
 
+        if (m_recipients != null) {
+            // we have explicitly set recipients, use these
+            return m_recipients;
+        }
+        // we have a group or an OU to check for recipients
         List recipients = new ArrayList();
         Iterator i = recipients.iterator();
         String groupName = "";
@@ -140,7 +149,7 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
             // iterate over mailing list members (i.e. an OpenCms group)
             groupName = getGroup().getName();
             i = getCms().getUsersOfGroup(groupName).iterator();
-        } else {
+        } else if (getOu() != null) {
             i = getOuUsers().iterator();
         }
         while (i.hasNext()) {
@@ -189,13 +198,7 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
      */
     public void initialize(CmsJspActionElement jsp, CmsGroup group, String fileName) throws CmsException {
 
-        m_cms = jsp.getCmsObject();
-        CmsFile file = getCms().readFile(fileName);
-        m_content = CmsXmlContentFactory.unmarshal(getCms(), file);
-        m_group = group;
-        m_ou = null;
-        m_jsp = jsp;
-        m_locale = OpenCms.getLocaleManager().getDefaultLocale(getCms(), fileName);
+        initialize(jsp, group, null, null, fileName);
     }
 
     /**
@@ -203,13 +206,15 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
      */
     public void initialize(CmsJspActionElement jsp, CmsOrganizationalUnit ou, String fileName) throws CmsException {
 
-        m_cms = jsp.getCmsObject();
-        CmsFile file = getCms().readFile(fileName);
-        m_content = CmsXmlContentFactory.unmarshal(getCms(), file);
-        m_group = null;
-        m_ou = ou;
-        m_jsp = jsp;
-        m_locale = OpenCms.getLocaleManager().getDefaultLocale(getCms(), fileName);
+        initialize(jsp, null, ou, null, fileName);
+    }
+
+    /**
+     * @see com.alkacon.opencms.newsletter.I_CmsNewsletterMailData#initialize(CmsJspActionElement, List, String)
+     */
+    public void initialize(CmsJspActionElement jsp, List recipients, String fileName) throws CmsException {
+
+        initialize(jsp, null, null, recipients, fileName);
     }
 
     /**
@@ -217,40 +222,56 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
      */
     public boolean isSendable() throws CmsException {
 
-        CmsFile file = getContent().getFile();
-        String resourceName = getCms().getSitePath(file);
-        CmsLock lock = getCms().getLock(file);
-        boolean unLocked = false;
-        if (lock.isNullLock()) {
-            unLocked = true;
-            getCms().lockResource(resourceName);
-            lock = getCms().getLock(file);
-        }
-        if (lock.isOwnedBy(getCms().getRequestContext().currentUser())) {
-            // resource is locked by current user, write send information
-            String value = "" + System.currentTimeMillis() + CmsProperty.VALUE_LIST_DELIMITER;
-            if (getGroup() != null) {
-                value += getGroup().getId();
+        if (m_recipients == null) {
+            // we have a group or OU to send the newsletter to, store send information
+            CmsFile file = getContent().getFile();
+            String resourceName = getCms().getSitePath(file);
+            CmsLock lock = getCms().getLock(file);
+            boolean unLocked = false;
+            if (lock.isNullLock()) {
+                unLocked = true;
+                getCms().lockResource(resourceName);
+                lock = getCms().getLock(file);
+            }
+            if (lock.isOwnedBy(getCms().getRequestContext().currentUser())) {
+                // resource is locked by current user, write send information
+                String value = String.valueOf(System.currentTimeMillis()) + CmsProperty.VALUE_LIST_DELIMITER;
+                if (getGroup() != null) {
+                    value += getGroup().getId();
+                    CmsModule module = OpenCms.getModuleManager().getModule(CmsNewsletterManager.MODULE_NAME);
+                    ((CmsNewsletterManager)module.getActionInstance()).saveSentNewsletterInfo(
+                        getGroup().getId(),
+                        file.getStructureId());
+                } else if (getOu() != null) {
+                    value += "ou:" + getOu().getName();
+                }
+                CmsProperty property = new CmsProperty(CmsNewsletterManager.PROPERTY_NEWSLETTER_DATA, value, null, true);
+                getCms().writePropertyObject(resourceName, property);
+                try {
+                    getCms().unlockResource(resourceName);
+                    unLocked = false;
+                    OpenCms.getPublishManager().publishResource(getCms(), resourceName);
+                } catch (Exception e) {
+                    // unlocking and publishing failed maybe a parent folder is locked
+                }
             } else {
-                value += "ou:" + getOu().getName();
+                // resource is not locked by current user
+                return false;
             }
-            CmsProperty property = new CmsProperty(CmsNewsletterManager.PROPERTY_NEWSLETTER_DATA, value, null, true);
-            getCms().writePropertyObject(resourceName, property);
-            try {
+            if (unLocked) {
                 getCms().unlockResource(resourceName);
-                unLocked = false;
-                OpenCms.getPublishManager().publishResource(getCms(), resourceName);
-            } catch (Exception e) {
-                // unlocking and publishing failed maybe a parent folder is locked
             }
-        } else {
-            // resource is not locked by current user
-            return false;
-        }
-        if (unLocked) {
-            getCms().unlockResource(resourceName);
         }
         return true;
+    }
+
+    /**
+     * @see com.alkacon.opencms.newsletter.I_CmsNewsletterMailData#setRecipients(java.util.List)
+     */
+    public void setRecipients(List recipients) {
+
+        m_recipients = recipients;
+
     }
 
     /**
@@ -391,5 +412,35 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
      * @throws CmsException if extracting text fails
      */
     protected abstract String getText() throws CmsException;
+
+    /**
+     * Initializes the necessary members to generate the email and the list of recipients.<p>
+     * 
+     * To make the newsletter work as expected, exactly one parameter of group, organizational unit or
+     * list of recipients should not be <code>null</code>.<p> 
+     * 
+     * @param jsp the current action element
+     * @param group the mailing list group to send the newsletter to
+     * @param ou the organizational unit to send the newsletter to
+     * @param recipients the recipients of the newsletter mail, items have to be of type {@link javax.mail.internet.InternetAddress}
+     * @param fileName the fileName of a VFS file that can be used to generate the newsletter
+     * @throws CmsException if reading the VFS file fails
+     */
+    private void initialize(
+        CmsJspActionElement jsp,
+        CmsGroup group,
+        CmsOrganizationalUnit ou,
+        List recipients,
+        String fileName) throws CmsException {
+
+        m_cms = jsp.getCmsObject();
+        CmsFile file = getCms().readFile(fileName);
+        m_content = CmsXmlContentFactory.unmarshal(getCms(), file);
+        m_group = group;
+        m_ou = ou;
+        m_recipients = recipients;
+        m_jsp = jsp;
+        m_locale = OpenCms.getLocaleManager().getDefaultLocale(getCms(), fileName);
+    }
 
 }

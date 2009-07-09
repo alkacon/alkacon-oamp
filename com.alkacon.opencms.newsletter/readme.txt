@@ -55,6 +55,9 @@ Legend:
 * Bug fixed
 - General comment
 
+1.0.3 - month day, 2009
+! Selectable option to send last newsletter to new subscribers
+
 1.0.2 - June 15th, 2009 
 ! Sending newsletters to OU users is now possible. 
 - This version only works with OpenCms 7.5.0 or later!

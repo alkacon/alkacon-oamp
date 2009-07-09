@@ -20,32 +20,45 @@ if (CmsStringUtil.isNotEmpty(template)) {
 
 switch (cms.getAction()) {
 
-case 0:
+case CmsNewsletterSubscriptionBean.ACTION_SUBSCRIBE:
 	// the subscription action
 	%><h1><%= cms.getConfigText("Subscribe/Headline") %></h1><p><%
 	out.print(cms.actionSubscribe());
-	%><p><%
+	if (!cms.isConfirmationEnabled() && cms.isShowSendLastNewsletter()) { %>
+		<%@include file="%(link.strong:/system/modules/com.alkacon.opencms.newsletter/pages/includes/form-sendlast.jsp:62c86790-6b9a-11de-b895-5fc9fa232cc8)" %>
+	<%}
+	%></p><%
 break;
 
-case 1:
+case CmsNewsletterSubscriptionBean.ACTION_UNSUBSCRIBE:
 	// the unsubscription action
 	%><h1><%= cms.getConfigText("Subscribe/Headline") %></h1><p><%
 	out.print(cms.actionUnsubscribe());
-	%><p><%
+	%></p><%
 break;
 
-case 2:
+case CmsNewsletterSubscriptionBean.ACTION_CONFIRMSUBSCRIPTION:
 	// the confirm action: subscribe
 	%><h1><%= cms.getConfigText("Confirm/Subscribe/Headline") %></h1><p><%
 	out.print(cms.actionConfirmSubscribe());
-	%><p><%
+	if (cms.isShowSendLastNewsletter()) { %>
+		<%@include file="%(link.strong:/system/modules/com.alkacon.opencms.newsletter/pages/includes/form-sendlast.jsp:62c86790-6b9a-11de-b895-5fc9fa232cc8)" %>
+	<%}
+	%></p><%
 break;
 
-case 3:
+case CmsNewsletterSubscriptionBean.ACTION_CONFIRMUNSUBSCRIPTION:
 	// the confirm action: unsubscribe
 	%><h1><%= cms.getConfigText("Confirm/UnSubscribe/Headline") %></h1><p><%
 	out.print(cms.actionConfirmUnsubscribe());
-	%><p><%
+	%></p><%
+break;
+
+case CmsNewsletterSubscriptionBean.ACTION_SENDLASTNEWSLETTER:
+	// the action: send last newsletter
+	%><h1><%= cms.getConfigText("Subscribe/SendLast/Headline") %></h1><p><%
+	out.print(cms.actionSendLastNewsletter());
+	%></p><%
 break;
 
 default:

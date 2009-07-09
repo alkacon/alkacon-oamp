@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/I_CmsNewsletterMailData.java,v $
- * Date   : $Date: 2009/04/28 15:20:43 $
- * Version: $Revision: 1.7 $
+ * Date   : $Date: 2009/07/09 09:30:12 $
+ * Version: $Revision: 1.8 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -48,7 +48,7 @@ import org.apache.commons.mail.Email;
  * 
  * @author Andreas Zahner
  * 
- * @version $Revision: 1.7 $ 
+ * @version $Revision: 1.8 $ 
  * 
  * @since 7.0.3 
  */
@@ -113,6 +113,16 @@ public interface I_CmsNewsletterMailData {
     void initialize(CmsJspActionElement jsp, CmsOrganizationalUnit ou, String fileName) throws CmsException;
 
     /**
+     * Initializes the necessary members to generate the email and the list of recipients.<p>
+     * 
+     * @param jsp the current action element
+     * @param recipients the recipients of the newsletter mail, items have to be of type {@link javax.mail.internet.InternetAddress}
+     * @param fileName the fileName of a VFS file that can be used to generate the newsletter
+     * @throws CmsException if reading the VFS file fails
+     */
+    void initialize(CmsJspActionElement jsp, List recipients, String fileName) throws CmsException;
+
+    /**
      * Checks if the newsletter can be sent or not.<p>
      * 
      * This method can also write some data like the timestamp when the newsletter has been sent
@@ -122,4 +132,12 @@ public interface I_CmsNewsletterMailData {
      * @throws CmsException if something goes wrong
      */
     boolean isSendable() throws CmsException;
+
+    /**
+     * Sets the recipients of the newsletter mail, items have to be of type {@link javax.mail.internet.InternetAddress}.<p>
+     * 
+     * @param recipients the recipients of the newsletter mail
+     */
+    void setRecipients(List recipients);
+
 }

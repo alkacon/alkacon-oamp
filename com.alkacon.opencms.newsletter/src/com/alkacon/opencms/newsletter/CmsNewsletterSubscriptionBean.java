@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterSubscriptionBean.java,v $
- * Date   : $Date: 2009/02/05 09:49:12 $
- * Version: $Revision: 1.10 $
+ * Date   : $Date: 2009/07/09 09:30:12 $
+ * Version: $Revision: 1.11 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -46,6 +46,7 @@ import org.opencms.main.OpenCms;
 import org.opencms.module.CmsModule;
 import org.opencms.util.CmsMacroResolver;
 import org.opencms.util.CmsStringUtil;
+import org.opencms.util.CmsUUID;
 import org.opencms.xml.content.CmsXmlContent;
 import org.opencms.xml.content.CmsXmlContentFactory;
 
@@ -53,6 +54,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
@@ -64,7 +66,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.10 $ 
+ * @version $Revision: 1.11 $ 
  * 
  * @since 7.0.3 
  */
@@ -75,6 +77,9 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
 
     /** The name of the action confirm the unsubscription. */
     public static final int ACTION_CONFIRMUNSUBSCRIPTION = 3;
+
+    /** The name of the action send the last newsletter to the user. */
+    public static final int ACTION_SENDLASTNEWSLETTER = 4;
 
     /** The name of the action: subscribe. */
     public static final int ACTION_SUBSCRIBE = 0;
@@ -105,6 +110,9 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
 
     /** The title macro that can be used in the configuration content. */
     private static final String MACRO_TITLE = "title";
+
+    /** The node name for the Active node. */
+    private static final String NODE_ACTIVE = "Active";
 
     /** The node name for the Confirm node. */
     private static final String NODE_CONFIRM = "Confirm";
@@ -148,6 +156,9 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
     /** The xpath to the confirm mail subnodes. */
     private static final String XPATH_2_MAIL = XPATH_1_CONFIRM + "Mail/";
 
+    /** The xpath to the send last newsletter subnodes. */
+    private static final String XPATH_2_SENDLAST = XPATH_1_SUBSCRIBE + "SendLast/";
+
     /** The xpath to the confirm subscribe subnodes. */
     private static final String XPATH_2_SUBSCRIBE = XPATH_1_CONFIRM + "Subscribe/";
 
@@ -166,6 +177,7 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
     /** The email address for the newsletter subscribe/unsubscribe actions. */
     private String m_email;
 
+    /** The list of errors that might occur during un-/subscription. */
     private List m_errors;
 
     /** the localized messages. */
@@ -173,6 +185,9 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
 
     /** The resolver to use on the subscription page configuration texts. */
     private CmsMacroResolver m_resolver;
+
+    /** The flag that indicates if the subscription was successful.  */
+    private boolean m_subscribeSuccess;
 
     /**
      * Empty constructor, required for every JavaBean.
@@ -196,9 +211,9 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
     }
 
     /**
-     * Performs subscription confirmation action and returns the text ouput for the result page.<p>
+     * Performs subscription confirmation action and returns the text output for the result page.<p>
      * 
-     * @return the text ouput for the result page, according to the success of the subscription action
+     * @return the text output for the result page, according to the success of the subscription action
      */
     public String actionConfirmSubscribe() {
 
@@ -207,24 +222,66 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
             // try to activate the newsletter user
             if (getNewsletterManager().activateNewsletterUser(getEmail(), getConfigText(NODE_MAILINGLIST))) {
                 result = getConfigText(XPATH_2_SUBSCRIBE + NODE_OK);
+                setSubscribeSuccess(true);
             }
         }
         return result;
     }
 
     /**
-     * Performs unsubscribe confirmation action and returns the text ouput for the result page.<p>
+     * Performs unsubscribe confirmation action and returns the text output for the result page.<p>
      * 
-     * @return the text ouput for the result page, according to the success of the unsubscribe confirmation action
+     * @return the text output for the result page, according to the success of the unsubscribe confirmation action
      */
     public String actionConfirmUnsubscribe() {
 
         String result = getConfigText(XPATH_2_UNSUBSCRIBE + NODE_ERROR);
         if (CmsStringUtil.isNotEmpty(getEmail())) {
             // try to delete the newsletter user
-            if (getNewsletterManager().deleteNewsletterUser(getEmail(), getConfigText(NODE_MAILINGLIST), isConfirmationEnabled())) {
+            if (getNewsletterManager().deleteNewsletterUser(
+                getEmail(),
+                getConfigText(NODE_MAILINGLIST),
+                isConfirmationEnabled())) {
                 result = getConfigText(XPATH_2_UNSUBSCRIBE + NODE_OK);
             }
+        }
+        return result;
+    }
+
+    /**
+     * Performs the send last newsletter to subscriber action and returns the text output for the result page.<p>
+     * 
+     * @return the text output for the result page, according to the success of the send last newsletter to subscriber action
+     */
+    public String actionSendLastNewsletter() {
+
+        String result = getConfigText(XPATH_2_SENDLAST + NODE_ERROR);
+        try {
+            // get the newsletter file from the found ID
+            CmsUUID fileId = getNewsletterManager().getSentNewsletterInfo(getConfigText(NODE_MAILINGLIST));
+            if (fileId != null) {
+                // found last sent newsletter ID, try to send the newsletter
+                CmsResource res = getCmsObject().readResource(fileId);
+                String fileName = getRequestContext().getSitePath(res);
+                if (CmsStringUtil.isNotEmpty(fileName)) {
+                    // generate the newsletter mail and list of recipients (with the subscriber email)
+                    List recipients = new ArrayList(1);
+                    recipients.add(new InternetAddress(getEmail()));
+                    I_CmsNewsletterMailData mailData = CmsNewsletterManager.getMailData(this, recipients, fileName);
+                    String rootPath = res.getRootPath();
+                    if (mailData.getContent() != null) {
+                        rootPath = mailData.getContent().getFile().getRootPath();
+                    }
+                    if (mailData.isSendable()) {
+                        // send the email to the new subscriber
+                        CmsNewsletterMail nlMail = new CmsNewsletterMail(mailData, mailData.getRecipients(), rootPath);
+                        nlMail.start();
+                    }
+                    result = getConfigText(XPATH_2_SENDLAST + NODE_OK);
+                }
+            }
+        } catch (Exception e) {
+            // sending last newsletter failed, show error
         }
         return result;
     }
@@ -243,6 +300,7 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
             String groupName = getConfigText(NODE_MAILINGLIST);
             CmsUser user = getNewsletterManager().createNewsletterUser(getEmail(), groupName, !isConfirmationEnabled());
             if (user != null) {
+                setSubscribeSuccess(true);
                 if (isConfirmationEnabled()) {
                     setLinkMacro(ACTION_CONFIRMSUBSCRIPTION, getEmail());
                     if (sendConfirmationMail(
@@ -398,7 +456,7 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
                 m_action = Integer.parseInt(action);
                 m_checkedAction = m_action;
                 m_email = req.getParameter(PARAM_EMAIL);
-                if (m_action == ACTION_CONFIRMSUBSCRIPTION || m_action == ACTION_CONFIRMUNSUBSCRIPTION) {
+                if ((m_action == ACTION_CONFIRMSUBSCRIPTION) || (m_action == ACTION_CONFIRMUNSUBSCRIPTION)) {
                     // decrypt email parameter if action is a confirm action
                     m_email = CmsStringCrypter.decrypt(m_email, CRYPT_PASSWORD);
                 }
@@ -407,14 +465,13 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
             }
             // validate the parameters
             validate();
-
         }
     }
 
     /**
      * Returns if the subscription confirmation is enabled.<p>
      * 
-     * @return true if the subscription confirmation is enabled, otherwise false
+     * @return <code>true</code> if the subscription confirmation is enabled, otherwise <code>false</code>
      */
     public boolean isConfirmationEnabled() {
 
@@ -423,9 +480,42 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
     }
 
     /**
+     * Returns if the send last newsletter to subscriber form should be shown.<p>
+     * 
+     * @return <code>true</code> if the send last newsletter to subscriber form should be shown, otherwise <code>false</code>
+     */
+    public boolean isShowSendLastNewsletter() {
+
+        String activeStr = getConfigText(XPATH_2_SENDLAST + NODE_ACTIVE);
+        return Boolean.valueOf(activeStr).booleanValue()
+            && isSubscribeSuccess()
+            && getNewsletterManager().existsSentNewsletterInfo(getConfigText(NODE_MAILINGLIST));
+    }
+
+    /**
+     * Returns if the subscription was successful.<p>
+     * 
+     * @return <code>true</code> if the subscription was successful, otherwise <code>false</code>
+     */
+    public boolean isSubscribeSuccess() {
+
+        return m_subscribeSuccess;
+    }
+
+    /**
+     * Sets if the subscription was successful.<p>
+     * 
+     * @param success the result of the subscription process
+     */
+    private void setSubscribeSuccess(boolean success) {
+
+        m_subscribeSuccess = success;
+    }
+
+    /**
      * Returns if validation errors are found for the subscription process.<p>
      * 
-     * @return true if validation errors are found, otherwise false
+     * @return <code>true</code> if validation errors are found, otherwise <code>false</code>
      */
     public boolean isValid() {
 
@@ -615,7 +705,7 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
     private void validate() {
 
         // check the action
-        if (getAction() < 0 || getAction() > 3) {
+        if ((getAction() < ACTION_SUBSCRIBE) || (getAction() > ACTION_SENDLASTNEWSLETTER)) {
             m_errors.add(key("validation.alknewsletter.error.action"));
             setAction(-1);
         }
@@ -630,12 +720,14 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
             resetAction = true;
         }
 
-        // check user existance depending on action if email address is valid
+        // check user existence depending on action if email address is valid
         if (!resetAction) {
-            if (getAction() == ACTION_SUBSCRIBE && getNewsletterManager().existsNewsletterUser(getEmail(), getConfigText(NODE_MAILINGLIST))) {
+            if ((getAction() == ACTION_SUBSCRIBE)
+                && getNewsletterManager().existsNewsletterUser(getEmail(), getConfigText(NODE_MAILINGLIST))) {
                 m_errors.add(key("validation.alknewsletter.error.userexists"));
                 resetAction = true;
-            } else if (getAction() == ACTION_UNSUBSCRIBE && !getNewsletterManager().existsNewsletterUser(getEmail(), getConfigText(NODE_MAILINGLIST))) {
+            } else if ((getAction() == ACTION_UNSUBSCRIBE)
+                && !getNewsletterManager().existsNewsletterUser(getEmail(), getConfigText(NODE_MAILINGLIST))) {
                 m_errors.add(key("validation.alknewsletter.error.usernotexists"));
                 resetAction = true;
             }
@@ -643,7 +735,7 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
         }
 
         // reset the action if errors were found
-        if (resetAction && (getAction() == ACTION_SUBSCRIBE || getAction() == ACTION_UNSUBSCRIBE)) {
+        if (resetAction && ((getAction() == ACTION_SUBSCRIBE) || (getAction() == ACTION_UNSUBSCRIBE))) {
             setAction(-1);
         }
     }
