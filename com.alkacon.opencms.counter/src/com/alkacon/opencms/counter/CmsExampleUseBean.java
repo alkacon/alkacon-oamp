@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.counter/src/com/alkacon/opencms/counter/CmsExampleUseBean.java,v $
- * Date   : $Date: 2008/02/28 08:16:45 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2009/07/21 12:36:04 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -44,9 +44,9 @@ import javax.servlet.jsp.PageContext;
 /**
  * This class shows in easy examples how to use this module.<p>
  * 
- * @author Anja Röttgers
+ * @author Anja Roettgers
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.3
  */

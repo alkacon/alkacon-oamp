@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.counter/src/com/alkacon/opencms/counter/CmsCounterDialog.java,v $
- * Date   : $Date: 2008/02/25 16:29:38 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2009/07/21 12:35:57 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -57,9 +57,9 @@ import org.apache.commons.logging.Log;
 /**
  * Dialog to create a list of counters based on the database-tables in the administration view.<p>
  * 
- * @author Anja Röttgers
+ * @author Anja Roettgers
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.3
  */
