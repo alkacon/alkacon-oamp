@@ -59,6 +59,7 @@ Legend:
 
 1.3.2 - month day , year
 * Fixed issue with Microsoft Excel reformatting numerical columns (contribution by Mathias Lin, SYSVISION).
+* Fixed issue with file upload fields not working in version 1.3.1 / OpenCms 7.5.0. 
 - Slight API changes (wider access modifiers) for allowing bugfix version 1.0.2 of the OAMP survey module.
 
 1.3.1 - June 15th, 2009
