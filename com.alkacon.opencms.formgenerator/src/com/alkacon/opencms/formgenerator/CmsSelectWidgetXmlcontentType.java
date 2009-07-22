@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsSelectWidgetXmlcontentType.java,v $
- * Date   : $Date: 2009/04/17 07:26:50 $
- * Version: $Revision: 1.7 $
+ * Date   : $Date: 2009/07/22 08:21:49 $
+ * Version: $Revision: 1.8 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -170,7 +170,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  * 
  * @since 7.0.4
  * 
@@ -183,7 +183,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
      * 
      * @author Achim Westermann
      * 
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      * 
      * @since 6.1.6
      * 
@@ -308,7 +308,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
      * 
      * @author Achim Westermann
      * 
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      * 
      * @since 6.1.6
      * 
@@ -435,7 +435,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
     private Map m_filterProperties;
 
     /**
-     * If true it is not tried to match the editor locale with the existance of the locale in the XML content or as
+     * If true it is not tried to match the editor locale with the existence of the locale in the XML content or as
      * locale property of the corresponding resource.
      */
     private boolean m_ignoreLocaleMatching;
