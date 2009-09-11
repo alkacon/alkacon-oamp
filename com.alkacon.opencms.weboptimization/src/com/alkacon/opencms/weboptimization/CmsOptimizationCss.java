@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.weboptimization/src/com/alkacon/opencms/weboptimization/CmsOptimizationCss.java,v $
- * Date   : $Date: 2009/03/24 12:52:42 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2009/09/11 07:39:52 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -65,7 +65,7 @@ import com.yahoo.platform.yui.compressor.CssCompressor;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 7.0.6
  */
@@ -116,6 +116,8 @@ public class CmsOptimizationCss extends CmsOptimizationBean {
     /**
      * Include the given optimized file, will include the original 
      * files in the offline project for debugging purposes.<p>
+     * 
+     * @param path the uri of the file to be included
      * 
      * @throws Exception if something goes wrong
      */

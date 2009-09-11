@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.weboptimization/src/com/alkacon/opencms/weboptimization/CmsOptimizationJs.java,v $
- * Date   : $Date: 2009/03/24 12:52:43 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2009/09/11 07:39:52 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -65,7 +65,7 @@ import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 7.0.6
  */
@@ -116,6 +116,8 @@ public class CmsOptimizationJs extends CmsOptimizationBean {
     /**
      * Include the given optimized file, will include the original 
      * files in the offline project for debugging purposes.<p>
+     * 
+     * @param path the uri of the file to be included
      * 
      * @throws Exception if something goes wrong
      */
@@ -189,9 +191,9 @@ public class CmsOptimizationJs extends CmsOptimizationBean {
                 LOG.warn(Messages.get().getBundle().key(Messages.LOG_WARN_NOTHING_TO_PROCESS_1, uri));
                 continue;
             }
-            
+
             Iterator itRes = resorces.iterator();
-            while(itRes.hasNext()) {
+            while (itRes.hasNext()) {
                 CmsResource res = (CmsResource)itRes.next();
                 String resPath = cms.getSitePath(res);
                 if (res.getTypeId() == RESOURCE_TYPE_JS) {
@@ -272,8 +274,13 @@ public class CmsOptimizationJs extends CmsOptimizationBean {
         try {
             // process the js code
             JavaScriptCompressor jsc = new JavaScriptCompressor(reader, new CmsOptimizationJsErrorReporter());
-            jsc.compress(getJspContext().getOut(), options.getLineBreakPos(), options.isMunge(), verbose, options.isPreserveSemi(), !options
-                .isOptimize());
+            jsc.compress(
+                getJspContext().getOut(),
+                options.getLineBreakPos(),
+                options.isMunge(),
+                verbose,
+                options.isPreserveSemi(),
+                !options.isOptimize());
         } finally {
             try {
                 reader.close();

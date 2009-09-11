@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.weboptimization/src/com/alkacon/opencms/weboptimization/CmsOptimizationSprite.java,v $
- * Date   : $Date: 2009/03/24 12:52:42 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2009/09/11 07:39:52 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -32,6 +32,8 @@
 
 package com.alkacon.opencms.weboptimization;
 
+import com.alkacon.simapi.Simapi;
+
 import org.opencms.file.CmsFile;
 import org.opencms.file.CmsObject;
 import org.opencms.file.CmsResource;
@@ -57,14 +59,12 @@ import javax.servlet.jsp.PageContext;
 
 import org.apache.commons.logging.Log;
 
-import com.alkacon.simapi.Simapi;
-
 /**
  * Bean for optimizing images.<p>
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 7.0.6
  */
@@ -121,7 +121,7 @@ public class CmsOptimizationSprite extends CmsOptimizationBean {
             newHeight = options.getY() + image.getHeight();
         }
         Graphics2D g2d = sprite.createGraphics();
-        if (newHeight > 0 || newWidth > 0) {
+        if ((newHeight > 0) || (newWidth > 0)) {
             // adjust sprite size if needed
             if (newHeight < 0) {
                 newHeight = sprite.getHeight();
@@ -144,6 +144,8 @@ public class CmsOptimizationSprite extends CmsOptimizationBean {
      * Create css rules for the given optimized sprite, 
      * will create css rules for the original images 
      * in the offline project for debugging purposes.<p>
+     * 
+     * @param path the uri of the file to be included
      * 
      * @throws Exception if something goes wrong
      */
@@ -192,7 +194,7 @@ public class CmsOptimizationSprite extends CmsOptimizationBean {
 
         // check the resource type
         String type = Simapi.getImageType(file.getRootPath());
-        if (file.getTypeId() != RESOURCE_TYPE_SPRITE || type == null) {
+        if ((file.getTypeId() != RESOURCE_TYPE_SPRITE) || (type == null)) {
             throw new CmsIllegalArgumentException(Messages.get().container(
                 Messages.ERR_NOT_SUPPORTED_RESOURCE_TYPE_2,
                 cms.getRequestContext().getUri(),

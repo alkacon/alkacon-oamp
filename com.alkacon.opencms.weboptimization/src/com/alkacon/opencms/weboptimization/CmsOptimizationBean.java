@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.weboptimization/src/com/alkacon/opencms/weboptimization/CmsOptimizationBean.java,v $
- * Date   : $Date: 2009/03/24 12:52:42 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2009/09/11 07:39:52 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -63,7 +63,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 7.0.6
  */
@@ -173,6 +173,7 @@ public class CmsOptimizationBean extends CmsJspActionElement {
     /**
      * Returns the processed output of an OpenCms resource.<p>
      * 
+     * @param cms the cms context
      * @param resource the resource to process
      * 
      * @return the processed output
@@ -186,7 +187,10 @@ public class CmsOptimizationBean extends CmsJspActionElement {
         if (loader.getLoaderId() == CmsXmlContentLoader.RESOURCE_LOADER_ID) {
             // HACK: the A_CmsXmlDocumentLoader.getTemplatePropertyDefinition() method is not accessible :(
             String templatePropertyDef = CmsPropertyDefinition.PROPERTY_TEMPLATE_ELEMENTS;
-            CmsTemplateLoaderFacade loaderFacade = OpenCms.getResourceManager().getTemplateLoaderFacade(cms, resource, templatePropertyDef);
+            CmsTemplateLoaderFacade loaderFacade = OpenCms.getResourceManager().getTemplateLoaderFacade(
+                cms,
+                resource,
+                templatePropertyDef);
             loader = loaderFacade.getLoader();
             String oldUri = cms.getRequestContext().getUri();
             try {
