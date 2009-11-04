@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsEmptyField.java,v $
- * Date   : $Date: 2008/01/17 15:24:55 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2009/11/04 08:45:30 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -29,6 +29,7 @@
  * For further information about OpenCms, please see the
  * project website: http://www.opencms.org.
  */
+
 package com.alkacon.opencms.formgenerator;
 
 import org.opencms.i18n.CmsMessages;
@@ -37,7 +38,7 @@ import org.opencms.util.CmsStringUtil;
 /**
  * Represents a empty field.<p>
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4 
  * 
@@ -74,7 +75,7 @@ public class CmsEmptyField extends A_CmsField {
 
         //line #3 start
         buf.append(messages.key("form.html.field.start"));
-        String value = CmsStringUtil.escapeHtml(getValue());
+        String value = getValue();
         //if the default value is set, then the text is output
         if (CmsStringUtil.isEmptyOrWhitespaceOnly(value)) {
             buf.append("&nbsp;");
