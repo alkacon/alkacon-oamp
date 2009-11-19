@@ -56,7 +56,10 @@ Legend:
 * Bug fixed
 - General comment
 
-1.0.1 - month day, year 
+1.0.2 - November 19, 2009
+* Fixed issue with the not opening thickbox
+
+1.0.1 - June 12, 2009
 * Fixed jquery compatibility issues with version 1.3.2 
 - Compatiblity with OpenCms 7.5.0
 

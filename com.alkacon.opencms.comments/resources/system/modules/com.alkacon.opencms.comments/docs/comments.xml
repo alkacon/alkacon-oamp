@@ -3,11 +3,10 @@
 <AlkaconCommentForms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/com.alkacon.opencms.comments/schemas/comment.xsd">
   <AlkaconCommentForm language="en">
     <Options>
-      <Moderated>true</Moderated>
+      <Moderated>false</Moderated>
       <List><![CDATA[5]]></List>
-      <Security><![CDATA[view]]></Security>
-      <OrgUnit><![CDATA[test]]></OrgUnit>
-      <Minimized>true</Minimized>
+      <Security><![CDATA[none]]></Security>
+      <Minimized>false</Minimized>
       <OfferLogin>false</OfferLogin>
     </Options>
     <InputField>
