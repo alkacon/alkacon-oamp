@@ -57,7 +57,7 @@ Legend:
 - General comment
 
 1.0.2 - November 19, 2009
-* Fixed issue with the not opening thickbox
+* Fixed issue with the not opening comments box
 
 1.0.1 - June 12, 2009
 * Fixed jquery compatibility issues with version 1.3.2 
