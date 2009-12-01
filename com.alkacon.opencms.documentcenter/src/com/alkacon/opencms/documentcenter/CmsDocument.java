@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.documentcenter/src/com/alkacon/opencms/documentcenter/CmsDocument.java,v $
- * Date   : $Date: 2009/06/19 21:22:16 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2009/12/01 14:58:00 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -59,7 +59,7 @@ import java.util.regex.Pattern;
  * @author Andreas Zahner 
  * @author Peter Bonrad
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.3 $ 
  * 
  * @since 6.0.0 
  */
@@ -157,6 +157,9 @@ public class CmsDocument extends Object {
 
     /** The document matching the current locale, may be the object instance itself. */
     private CmsDocument m_currentLocaleDocument;
+
+	/** The creation data. */
+    private long m_dateCreated;
 
     /** The date format to use for creating date outputs. */
     private DateFormat m_dateFormat;
@@ -531,7 +534,13 @@ public class CmsDocument extends Object {
      */
     public long getDateCreated() {
 
-        return m_cmsResource.getDateCreated();
+        if (m_dateCreated != 0) {
+            // the property for date created is set for this resource
+            return m_dateCreated;
+        } else {
+            // the property for date created is empty, so take the date created of the resource
+            return m_cmsResource.getDateCreated();
+        }
     }
 
     /**
@@ -542,7 +551,13 @@ public class CmsDocument extends Object {
 
     public String getDateCreatedString() {
 
-        return getDateFormat().format(new Date(getDateCreated()));
+        if (m_dateCreated != 0) {
+            // the property for date created is set for this resource
+            return getDateFormat().format(new Date(m_dateCreated));
+        } else {
+            // the property for date created is empty, so take the date created of the resource
+            return getDateFormat().format(new Date(getDateCreated()));
+        }
     }
 
     /**
@@ -1079,6 +1094,16 @@ public class CmsDocument extends Object {
     public void setCurrentLocale(Locale currentLocale) {
 
         m_currentLocale = currentLocale;
+    }
+
+    /**
+     * Sets the date created.<p>
+     *
+     * @param dateCreated the date created
+     */
+    public void setDateCreated(long dateCreated) {
+
+        m_dateCreated = dateCreated;
     }
 
     /**

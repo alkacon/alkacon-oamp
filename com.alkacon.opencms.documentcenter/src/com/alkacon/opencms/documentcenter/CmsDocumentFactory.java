@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.documentcenter/src/com/alkacon/opencms/documentcenter/CmsDocumentFactory.java,v $
- * Date   : $Date: 2009/06/19 21:22:16 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2009/12/01 14:58:00 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -38,13 +38,16 @@ import org.opencms.file.CmsPropertyDefinition;
 import org.opencms.file.CmsResource;
 import org.opencms.main.CmsException;
 import org.opencms.util.CmsStringUtil;
+import org.opencms.widgets.CmsCalendarWidget;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -52,7 +55,7 @@ import java.util.Map;
  * 
  * @author  Andreas Zahner 
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.3 $ 
  * 
  * @since 6.2.0 
  */
@@ -481,8 +484,41 @@ public final class CmsDocumentFactory {
         }
         String sortOrder = (String)allProperties.get(CmsDocument.PROPERTY_SORTORDER);
 
-        // return the initialized document
-        return new CmsDocument(resource, path, cms.getRequestContext().getLocale(), title, sortOrder);
+        // initialize the document
+        CmsDocument cmsDocument = new CmsDocument(resource, path, cms.getRequestContext().getLocale(), title, sortOrder);
+
+        // read the property for date created
+        String dateCreated = null;
+        try {
+            dateCreated = cms.readPropertyObject(resource, "docs.datecreated", false).getValue();
+        } catch (CmsException e) {
+            // ignore, property might not be defined
+        }
+        // if the property for date created is not empty, so set this property as date created to the resource
+        if (CmsStringUtil.isNotEmpty(dateCreated)) {
+            // get the long value from the date string
+            long creationDate = 0;
+            try {
+                // try if the property docs.createddata is in german format
+                creationDate = CmsCalendarWidget.getCalendarDate(org.opencms.workplace.Messages.get().getBundle(
+                    new Locale("de")), dateCreated, false);
+            } catch (ParseException e1) {
+                // try if the property docs.createddata is in english format
+                try {
+                    creationDate = CmsCalendarWidget.getCalendarDate(org.opencms.workplace.Messages.get().getBundle(
+                        new Locale("en")), dateCreated, false);
+                } catch (ParseException e2) {
+                    // invalid data format, do nothing else
+                }
+            }
+            // set the property to the document
+            if (creationDate != 0) {
+                cmsDocument.setDateCreated(creationDate);
+            }
+        }
+
+        // return the document
+        return cmsDocument;
 
     }
 
