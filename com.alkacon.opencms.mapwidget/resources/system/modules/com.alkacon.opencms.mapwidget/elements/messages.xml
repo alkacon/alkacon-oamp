@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<MMMessages xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/com.alkacon.opencms.mapwidget/schemas/messages.xsd">
+  <MMMessage language="en">
+    <Label>
+      <Latitude><![CDATA[Latitude:]]></Latitude>
+      <Longitude><![CDATA[Longitude:]]></Longitude>
+      <Address><![CDATA[Address:]]></Address>
+      <Zoom><![CDATA[Zoom:]]></Zoom>
+      <Size><![CDATA[Size:]]></Size>
+      <Type><![CDATA[Type:]]></Type>
+      <Mode><![CDATA[Mode:]]></Mode>
+    </Label>
+    <Type>
+      <Map><![CDATA[Map]]></Map>
+      <Satellite><![CDATA[Satellite]]></Satellite>
+      <Hybrid><![CDATA[Hybrid]]></Hybrid>
+      <Terrain><![CDATA[Terrain]]></Terrain>
+    </Type>
+    <Mode>
+      <Static><![CDATA[Static]]></Static>
+      <Dynamic><![CDATA[Dynamic]]></Dynamic>
+    </Mode>
+  </MMMessage>
+</MMMessages>

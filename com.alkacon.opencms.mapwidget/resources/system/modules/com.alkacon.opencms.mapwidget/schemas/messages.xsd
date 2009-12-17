@@ -1,0 +1,29 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+  <xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+  <xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.mapwidget/schemas/message-labels.xsd"/>
+  <xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.mapwidget/schemas/message-types.xsd"/>
+  <xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.mapwidget/schemas/message-modes.xsd"/>
+
+  <xsd:element name="MMMessages" type="OpenCmsMMMessages"/>
+	
+  <xsd:complexType name="OpenCmsMMMessages">
+    <xsd:sequence>
+      <xsd:element name="MMMessage" type="OpenCmsMMMessage" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="OpenCmsMMMessage">
+    <xsd:sequence>
+      <xsd:element name="Label" type="OpenCmsMMMessageLabel" />
+      <xsd:element name="Type" type="OpenCmsMMMessageType" />
+      <xsd:element name="Mode" type="OpenCmsMMMessageMode" />
+    </xsd:sequence>
+    <xsd:attribute name="language" type="OpenCmsLocale" use="required"/>
+  </xsd:complexType>
+
+  <xsd:annotation>
+    <xsd:appinfo>
+    </xsd:appinfo>
+  </xsd:annotation>  
+</xsd:schema>

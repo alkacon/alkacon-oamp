@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<export>
+	<info>
+		<creator>Admin</creator>
+		<opencms_version>7.0.5</opencms_version>
+		<createdate>Tue, 19 May 2009 15:24:18 GMT</createdate>
+		<infoproject>Offline</infoproject>
+		<export_version>7</export_version>
+	</info>
+	<module>
+		<name>com.alkacon.opencms.mapwidget</name>
+		<nicename><![CDATA[Alkacon OpenCms Add-On Module Package Google Map Widget]]></nicename>
+		<group>Alkacon OAMP</group>
+		<class/>
+		<description><![CDATA[A Google Map XML Content Editor Widget]]></description>
+		<version>0.9.1</version>
+		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
+		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
+		<datecreated/>
+		<userinstalled/>
+		<dateinstalled/>
+		<dependencies/>
+		<exportpoints>
+			<exportpoint uri="/system/modules/com.alkacon.opencms.mapwidget/lib/" destination="WEB-INF/lib/"/>
+		</exportpoints>
+		<resources>
+			<resource uri="/system/modules/com.alkacon.opencms.mapwidget/"/>
+		</resources>
+		<parameters/>
+	</module>
+	<files>
+		<file>
+			<destination>system</destination>
+			<type>folder</type>
+			<uuidstructure>82636d85-5951-11dd-bd88-e30a09549266</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 24 Jul 2008 07:24:10 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
+					<flags>514</flags>
+					<permissionset>
+						<allowed>1</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<destination>system/modules</destination>
+			<type>folder</type>
+			<uuidstructure>8321b4ae-5951-11dd-bd88-e30a09549266</uuidstructure>
+			<datelastmodified>Thu, 24 Jul 2008 07:24:11 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 24 Jul 2008 07:24:11 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
+					<flags>514</flags>
+					<permissionset>
+						<allowed>5</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.mapwidget</destination>
+			<type>folder</type>
+			<uuidstructure>7ddd0695-330a-11de-bdd4-e30a09549266</uuidstructure>
+			<datelastmodified>Mon, 27 Apr 2009 09:05:02 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Apr 2009 09:05:02 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/test.html</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/test.html</destination>
+			<type>xmlcontent</type>
+			<uuidstructure>581dac9e-326c-11de-a3c1-e30a09549266</uuidstructure>
+			<uuidresource>581dac9f-326c-11de-a3c1-e30a09549266</uuidresource>
+			<datelastmodified>Thu, 30 Apr 2009 19:13:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Sun, 26 Apr 2009 14:12:58 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>template</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.mapwidget/templates/test.jsp]]></value>
+				</property>
+				<property>
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.mapwidget/pages/test.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/elements</destination>
+			<type>folder</type>
+			<uuidstructure>7de78de7-330a-11de-bdd4-e30a09549266</uuidstructure>
+			<datelastmodified>Mon, 27 Apr 2009 09:48:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Apr 2009 09:05:02 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>export</name>
+					<value><![CDATA[true]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/elements/header.include.html</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/elements/header.include.html</destination>
+			<type>jsp</type>
+			<uuidstructure>18a3ad0d-330b-11de-bdd4-e30a09549266</uuidstructure>
+			<uuidresource>18a3ad0e-330b-11de-bdd4-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 19 May 2009 15:23:30 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Apr 2009 09:09:21 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>export</name>
+					<value><![CDATA[true]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/elements/html-templates.xml</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/elements/html-templates.xml</destination>
+			<type>xmlcontent</type>
+			<uuidstructure>e71c0d75-34d4-11de-bcac-e30a09549266</uuidstructure>
+			<uuidresource>e71c0d76-34d4-11de-bcac-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 05 May 2009 20:19:23 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 29 Apr 2009 15:46:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/elements/map.workplace.key</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/elements/map.workplace.key</destination>
+			<type>plain</type>
+			<uuidstructure>f17734ec-31b0-11de-85f3-e30a09549266</uuidstructure>
+			<uuidresource>f17734ed-31b0-11de-85f3-e30a09549266</uuidresource>
+			<datelastmodified>Sat, 25 Apr 2009 15:52:16 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Sat, 25 Apr 2009 15:51:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/elements/messages.xml</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/elements/messages.xml</destination>
+			<type>xmlcontent</type>
+			<uuidstructure>4fe9b99f-34d1-11de-bcac-e30a09549266</uuidstructure>
+			<uuidresource>4fe9b9a0-34d1-11de-bcac-e30a09549266</uuidresource>
+			<datelastmodified>Wed, 29 Apr 2009 22:39:49 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 29 Apr 2009 15:20:46 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/lib</destination>
+			<type>folder</type>
+			<uuidstructure>799e1b12-3318-11de-bdd4-e30a09549266</uuidstructure>
+			<datelastmodified>Mon, 27 Apr 2009 10:45:08 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Apr 2009 10:45:08 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/lib/com.alkacon.opencms.mapwidget.jar</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/lib/com.alkacon.opencms.mapwidget.jar</destination>
+			<type>binary</type>
+			<uuidstructure>84cb9625-3318-11de-bdd4-e30a09549266</uuidstructure>
+			<uuidresource>84cb9626-3318-11de-bdd4-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 27 Apr 2009 10:45:26 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Apr 2009 10:45:26 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[com.alkacon.opencms.mapwidget]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/pages</destination>
+			<type>folder</type>
+			<uuidstructure>fa800ee4-3375-11de-8877-e30a09549266</uuidstructure>
+			<datelastmodified>Mon, 27 Apr 2009 21:54:27 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Apr 2009 21:54:27 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/pages/test.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/pages/test.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>f176176a-3372-11de-8877-e30a09549266</uuidstructure>
+			<uuidresource>f176176b-3372-11de-8877-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 05 May 2009 20:15:41 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Apr 2009 21:32:43 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/resources</destination>
+			<type>folder</type>
+			<uuidstructure>9a55ff29-330a-11de-bdd4-e30a09549266</uuidstructure>
+			<datelastmodified>Mon, 27 Apr 2009 10:46:05 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Apr 2009 09:05:49 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>export</name>
+					<value><![CDATA[true]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/resources/displaymap.js</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/resources/displaymap.js</destination>
+			<type>plain</type>
+			<uuidstructure>5a35bd72-33d7-11de-9d04-e30a09549266</uuidstructure>
+			<uuidresource>5a35bd73-33d7-11de-9d04-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 28 Apr 2009 09:31:34 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 28 Apr 2009 09:31:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/resources/fg.button.css</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/resources/fg.button.css</destination>
+			<type>plain</type>
+			<uuidstructure>be76c28f-31b1-11de-85f3-e30a09549266</uuidstructure>
+			<uuidresource>be76c290-31b1-11de-85f3-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 27 Apr 2009 21:31:05 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Sat, 25 Apr 2009 15:57:14 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/resources/fg.menu.css</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/resources/fg.menu.css</destination>
+			<type>plain</type>
+			<uuidstructure>be836cc2-31b1-11de-85f3-e30a09549266</uuidstructure>
+			<uuidresource>be836cc3-31b1-11de-85f3-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 27 Apr 2009 21:31:16 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Sat, 25 Apr 2009 15:57:14 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/resources/fg.menu.js</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/resources/fg.menu.js</destination>
+			<type>plain</type>
+			<uuidstructure>be8abfc5-31b1-11de-85f3-e30a09549266</uuidstructure>
+			<uuidresource>be8abfc6-31b1-11de-85f3-e30a09549266</uuidresource>
+			<datelastmodified>Sun, 03 May 2009 21:00:53 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Sat, 25 Apr 2009 15:57:14 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/resources/jquery.forms.js</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/resources/jquery.forms.js</destination>
+			<type>plain</type>
+			<uuidstructure>be963178-31b1-11de-85f3-e30a09549266</uuidstructure>
+			<uuidresource>be963179-31b1-11de-85f3-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 05 May 2009 21:02:14 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Sat, 25 Apr 2009 15:57:14 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/resources/jquery.listenForChange.js</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/resources/jquery.listenForChange.js</destination>
+			<type>plain</type>
+			<uuidstructure>be9e20bb-31b1-11de-85f3-e30a09549266</uuidstructure>
+			<uuidresource>be9e20bc-31b1-11de-85f3-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 27 Apr 2009 21:31:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Sat, 25 Apr 2009 15:57:14 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/resources/jquery.mapWidget.js</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/resources/jquery.mapWidget.js</destination>
+			<type>plain</type>
+			<uuidstructure>bea54cae-31b1-11de-85f3-e30a09549266</uuidstructure>
+			<uuidresource>bea54caf-31b1-11de-85f3-e30a09549266</uuidresource>
+			<datelastmodified>Wed, 06 May 2009 11:45:16 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Sat, 25 Apr 2009 15:57:14 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/resources/jquery.metadata.js</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/resources/jquery.metadata.js</destination>
+			<type>plain</type>
+			<uuidstructure>9d56c45d-336b-11de-9a85-e30a09549266</uuidstructure>
+			<uuidresource>9d56c45e-336b-11de-9a85-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 27 Apr 2009 20:40:46 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Apr 2009 20:40:16 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/resources/map.css</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/resources/map.css</destination>
+			<type>plain</type>
+			<uuidstructure>d77d6d2a-31b0-11de-85f3-e30a09549266</uuidstructure>
+			<uuidresource>d77d6d2b-31b0-11de-85f3-e30a09549266</uuidresource>
+			<datelastmodified>Sun, 03 May 2009 21:06:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Sat, 25 Apr 2009 15:50:46 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/resources/spinner_bar.gif</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/resources/spinner_bar.gif</destination>
+			<type>image</type>
+			<uuidstructure>bf318721-31b1-11de-85f3-e30a09549266</uuidstructure>
+			<uuidresource>bf318722-31b1-11de-85f3-e30a09549266</uuidresource>
+			<datelastmodified>Mon, 27 Apr 2009 21:30:55 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Sat, 25 Apr 2009 15:57:15 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/schemas</destination>
+			<type>folder</type>
+			<uuidstructure>a728c5cb-330a-11de-bdd4-e30a09549266</uuidstructure>
+			<datelastmodified>Mon, 27 Apr 2009 09:48:55 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Apr 2009 09:06:11 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>export</name>
+					<value><![CDATA[true]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/schemas/html-templates.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/schemas/html-templates.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>14c4daa3-34d4-11de-bcac-e30a09549266</uuidstructure>
+			<uuidresource>14c4daa4-34d4-11de-bcac-e30a09549266</uuidresource>
+			<datelastmodified>Wed, 29 Apr 2009 15:56:49 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 29 Apr 2009 15:40:35 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/schemas/map.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/schemas/map.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>9b4bd06c-326b-11de-a3c1-e30a09549266</uuidstructure>
+			<uuidresource>9b4bd06d-326b-11de-a3c1-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 28 Apr 2009 09:20:49 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Sun, 26 Apr 2009 14:07:41 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/schemas/message-labels.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/schemas/message-labels.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>4a138b09-34d0-11de-bcac-e30a09549266</uuidstructure>
+			<uuidresource>4a138b0a-34d0-11de-bcac-e30a09549266</uuidresource>
+			<datelastmodified>Wed, 29 Apr 2009 15:23:11 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 29 Apr 2009 15:13:26 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/schemas/message-modes.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/schemas/message-modes.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>b3e1e09b-34d0-11de-bcac-e30a09549266</uuidstructure>
+			<uuidresource>b3e1e09c-34d0-11de-bcac-e30a09549266</uuidresource>
+			<datelastmodified>Wed, 29 Apr 2009 15:23:19 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 29 Apr 2009 15:16:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/schemas/message-types.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/schemas/message-types.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>c383a5bd-34d0-11de-bcac-e30a09549266</uuidstructure>
+			<uuidresource>c383a5be-34d0-11de-bcac-e30a09549266</uuidresource>
+			<datelastmodified>Wed, 29 Apr 2009 15:23:25 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 29 Apr 2009 15:16:50 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/schemas/messages.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/schemas/messages.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>ded837f7-34cf-11de-bcac-e30a09549266</uuidstructure>
+			<uuidresource>ded837f8-34cf-11de-bcac-e30a09549266</uuidresource>
+			<datelastmodified>Wed, 29 Apr 2009 16:41:20 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 29 Apr 2009 15:10:26 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/schemas/place.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/schemas/place.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>cd59b5df-32a3-11de-ac8d-e30a09549266</uuidstructure>
+			<uuidresource>cd59b5e0-32a3-11de-ac8d-e30a09549266</uuidresource>
+			<datelastmodified>Sun, 03 May 2009 21:04:41 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Sun, 26 Apr 2009 20:49:57 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/templates</destination>
+			<type>folder</type>
+			<uuidstructure>1a0e3e0d-3373-11de-8877-e30a09549266</uuidstructure>
+			<datelastmodified>Mon, 27 Apr 2009 21:33:51 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Apr 2009 21:33:51 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.mapwidget/templates/test.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.mapwidget/templates/test.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>2367473f-3373-11de-8877-e30a09549266</uuidstructure>
+			<uuidresource>23674740-3373-11de-8877-e30a09549266</uuidresource>
+			<datelastmodified>Tue, 28 Apr 2009 09:33:55 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Apr 2009 21:34:07 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+	</files>
+</export>
