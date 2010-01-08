@@ -1,0 +1,34 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+		
+	<xsd:element name="AlkaconOptimizedBehaviours" type="OpenCmsAlkaconOptimizedBehaviours"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconOptimizedBehaviours">
+		<xsd:sequence>
+			<xsd:element name="AlkaconOptimizedBehaviour" type="OpenCmsAlkaconOptimizedBehaviour" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconOptimizedBehaviour">
+		<xsd:sequence>
+			<xsd:element name="Offline" type="OpenCmsString" minOccurs="1" maxOccurs="1" />
+			<xsd:element name="Online" type="OpenCmsString" minOccurs="1" maxOccurs="1" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.weboptimization.workplace"/>
+			<layouts>
+				<layout element="Offline" widget="RadioSelectWidget" configuration="original*:${key.label.AlkaconOptimizedBehaviour.original}|optimized:${key.label.AlkaconOptimizedBehaviour.optimized}" />
+				<layout element="Online" widget="RadioSelectWidget" configuration="original:${key.label.AlkaconOptimizedBehaviour.original}|optimized*:${key.label.AlkaconOptimizedBehaviour.optimized}" />
+			</layouts>
+			<defaults>
+				<default element="Offline" value="original"/>
+				<default element="Online" value="optimized"/>
+			</defaults>
+		</xsd:appinfo>
+	</xsd:annotation>
+</xsd:schema>

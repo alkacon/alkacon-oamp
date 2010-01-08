@@ -4,7 +4,7 @@
 	<info>
 		<creator>Admin</creator>
 		<opencms_version>7.0.5</opencms_version>
-		<createdate>Tue, 24 Mar 2009 10:32:20 GMT</createdate>
+		<createdate>Sat, 02 Jan 2010 20:10:46 GMT</createdate>
 		<infoproject>Offline</infoproject>
 		<export_version>7</export_version>
 	</info>
@@ -14,7 +14,7 @@
 		<group>Alkacon OAMP</group>
 		<class/>
 		<description><![CDATA[This module allows to compress js and css files, as well as to create image sprites, on the fly.]]></description>
-		<version>1.0.0</version>
+		<version>1.0.1</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
 		<datecreated/>
@@ -917,6 +917,26 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<source>system/modules/com.alkacon.opencms.weboptimization/schemas/optimized-behaviour.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.weboptimization/schemas/optimized-behaviour.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>07fb4c8c-f7be-11de-8684-e30a09549266</uuidstructure>
+			<uuidresource>07fb4c8d-f7be-11de-8684-e30a09549266</uuidresource>
+			<datelastmodified>Sat, 02 Jan 2010 17:08:19 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Sat, 02 Jan 2010 16:44:01 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[behaviour schema]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
 			<source>system/modules/com.alkacon.opencms.weboptimization/schemas/optimized-css-options.xsd</source>
 			<destination>system/modules/com.alkacon.opencms.weboptimization/schemas/optimized-css-options.xsd</destination>
 			<type>plain</type>
@@ -942,7 +962,7 @@
 			<type>plain</type>
 			<uuidstructure>4d27f2de-de0a-11de-8ac1-e30a09549266</uuidstructure>
 			<uuidresource>4d27f2df-de0a-11de-8ac1-e30a09549266</uuidresource>
-			<datelastmodified>Tue, 17 Mar 2009 19:32:24 GMT</datelastmodified>
+			<datelastmodified>Sat, 02 Jan 2010 17:05:11 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 16 Mar 2009 09:10:32 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -1002,7 +1022,7 @@
 			<type>plain</type>
 			<uuidstructure>4d27f2de-120a-11de-8ac1-e30a09549266</uuidstructure>
 			<uuidresource>4d27f2df-120a-11de-8ac1-e30a09549266</uuidresource>
-			<datelastmodified>Tue, 17 Mar 2009 19:32:24 GMT</datelastmodified>
+			<datelastmodified>Sat, 02 Jan 2010 17:04:42 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 16 Mar 2009 09:10:32 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -1062,7 +1082,7 @@
 			<type>plain</type>
 			<uuidstructure>4d27f2de-120a-5fde-84c1-e30a09549266</uuidstructure>
 			<uuidresource>4d27f2df-120a-5fde-84c1-e30a09549266</uuidresource>
-			<datelastmodified>Mon, 23 Mar 2009 22:07:10 GMT</datelastmodified>
+			<datelastmodified>Sat, 02 Jan 2010 17:05:32 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 16 Mar 2009 09:10:32 GMT</datecreated>
 			<usercreated>Admin</usercreated>

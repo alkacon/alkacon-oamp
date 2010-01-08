@@ -2,6 +2,7 @@
 	
 	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
 	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.weboptimization/schemas/sprite-position.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.weboptimization/schemas/optimized-behaviour.xsd"/>
 		
 	<xsd:element name="AlkaconSpriteResources" type="OpenCmsAlkaconSpriteResources"/>
 	
@@ -16,6 +17,7 @@
 			<xsd:element name="Path" type="OpenCmsVfsFile" minOccurs="1" maxOccurs="1" />
 			<xsd:element name="Position" type="OpenCmsAlkaconSpritePosition" minOccurs="1" maxOccurs="1" />
 			<xsd:element name="Selector" type="OpenCmsString" minOccurs="1" maxOccurs="1" />
+			<xsd:element name="Behaviour" type="OpenCmsAlkaconOptimizedBehaviour" minOccurs="0" maxOccurs="1" />
 		</xsd:sequence>
 		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
 	</xsd:complexType>

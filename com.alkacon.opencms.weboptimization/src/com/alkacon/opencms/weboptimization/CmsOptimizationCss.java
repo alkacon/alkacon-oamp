@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.weboptimization/src/com/alkacon/opencms/weboptimization/CmsOptimizationCss.java,v $
- * Date   : $Date: 2009/09/11 07:39:52 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2010/01/08 09:46:05 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -36,7 +36,6 @@ import org.opencms.file.CmsFile;
 import org.opencms.file.CmsObject;
 import org.opencms.file.CmsResource;
 import org.opencms.main.CmsIllegalArgumentException;
-import org.opencms.main.CmsLog;
 import org.opencms.xml.CmsXmlUtils;
 import org.opencms.xml.content.CmsXmlContent;
 import org.opencms.xml.content.CmsXmlContentFactory;
@@ -48,15 +47,12 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
-
-import org.apache.commons.logging.Log;
 
 import com.yahoo.platform.yui.compressor.CssCompressor;
 
@@ -65,7 +61,7 @@ import com.yahoo.platform.yui.compressor.CssCompressor;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.3 $ 
  * 
  * @since 7.0.6
  */
@@ -98,9 +94,6 @@ public class CmsOptimizationCss extends CmsOptimizationBean {
     /** text/css type constant. */
     protected static final String TYPE_TEXT_CSS = "text/css";
 
-    /** The log object for this class. */
-    private static final Log LOG = CmsLog.getLog(CmsOptimizationCss.class);
-
     /**
      * Default constructor.
      * 
@@ -113,99 +106,41 @@ public class CmsOptimizationCss extends CmsOptimizationBean {
         super(context, req, res);
     }
 
-    /**
-     * Include the given optimized file, will include the original 
-     * files in the offline project for debugging purposes.<p>
-     * 
-     * @param path the uri of the file to be included
-     * 
-     * @throws Exception if something goes wrong
-     */
-    public void includeDefault(String path) throws Exception {
+	/**
+	 * @see com.alkacon.opencms.weboptimization.CmsOptimizationBean#includeDefault(java.lang.String,
+	 *      com.alkacon.opencms.weboptimization.CmsOptimizationBean.IncludeMode)
+	 */
+	@Override
+	public void includeDefault(String path, IncludeMode mode) throws Exception {
 
-        if (getCmsObject().getRequestContext().currentProject().isOnlineProject()) {
-            includeOptimized(path);
-        } else {
-            includeOriginal(path);
-        }
-    }
-
-    /**
-     * Will include the optimized file.<p>
-     * 
-     * @param path the optimized file uri
-     *  
-     * @throws Exception if something goes wrong
-     */
-    public void includeOptimized(String path) throws Exception {
-
-        CmsObject cms = getCmsObject();
-        // check the resource type
-        CmsResource res = cms.readResource(path);
-        if (res.getTypeId() != RESOURCE_TYPE_CSS) {
-            throw new CmsIllegalArgumentException(Messages.get().container(
-                Messages.ERR_NOT_SUPPORTED_RESOURCE_TYPE_2,
-                path,
-                new Integer(res.getTypeId())));
-        }
-        writeCssInclude(cms, path);
-    }
-
-    /**
-     * Will include the original files.<p>
-     * 
-     * @param path the optimized file uri
-     *  
-     * @throws Exception if something goes wrong
-     */
-    public void includeOriginal(String path) throws Exception {
-
-        CmsObject cms = getCmsObject();
-        CmsFile file = cms.readFile(path);
-
-        // check the resource type
-        if (file.getTypeId() != RESOURCE_TYPE_CSS) {
-            throw new CmsIllegalArgumentException(Messages.get().container(
-                Messages.ERR_NOT_SUPPORTED_RESOURCE_TYPE_2,
-                path,
-                new Integer(file.getTypeId())));
-        }
-
-        // read the XML content
-        CmsXmlContent xml = CmsXmlContentFactory.unmarshal(cms, file);
-
-        // resolve the locale
-        Locale locale = resolveLocale(cms, xml);
-
-        // iterate the resources
-        Iterator itPath = xml.getValues(N_RESOURCE, locale).iterator();
-        while (itPath.hasNext()) {
-            I_CmsXmlContentValue value = (I_CmsXmlContentValue)itPath.next();
-            // get the uri
-            String xpath = CmsXmlUtils.concatXpath(value.getPath(), N_PATH);
-            String uri = xml.getValue(xpath, locale).getStringValue(cms);
-
-            // retrieve the actual files to process
-            List resorces = resolveResource(cms, uri, EXT_CSS);
-            if (resorces.isEmpty()) {
-                LOG.warn(Messages.get().getBundle().key(Messages.LOG_WARN_NOTHING_TO_PROCESS_1, uri));
-                continue;
-            }
-
-            Iterator itRes = resorces.iterator();
-            while (itRes.hasNext()) {
-                CmsResource res = (CmsResource)itRes.next();
-                String resPath = cms.getSitePath(res);
-                if (res.getTypeId() == RESOURCE_TYPE_CSS) {
-                    // recurse in case of nested optimized resources
-                    includeOriginal(resPath);
-                } else {
-                    // handle this resource
-                    writeCssInclude(cms, resPath);
-                }
-            }
-        }
-    }
+		CmsObject cms = getCmsObject();
+		// check the resource type
+		CmsFile file = cms.readFile(path);
+		if (file.getTypeId() != RESOURCE_TYPE_CSS) {
+			throw new CmsIllegalArgumentException(Messages.get().container(
+					Messages.ERR_NOT_SUPPORTED_RESOURCE_TYPE_2, path,
+					new Integer(file.getTypeId())));
+		}
+		if (mode == IncludeMode.OPTIMIZED) {
+			// if we are forcing optimization
+			// handle this resource
+			writeCssInclude(cms, path);
+			return;
+		}
+		
+		Resolution resolution = resolveInclude(cms, file, mode, EXT_CSS, RESOURCE_TYPE_CSS);
+		if (resolution.hasOptimizedLeft()) {
+			// handle this resource
+			writeCssInclude(cms, path);
+		}
+		Iterator<CmsResource> itRes = resolution.getResources().iterator();
+		while (itRes.hasNext()) {
+			CmsResource res = itRes.next();
+			String resPath = cms.getSitePath(res);
+			// handle this resource
+			writeCssInclude(cms, resPath);
+		}
+	}
 
     /**
      * Will optimize the resources taken from the underlying XML content.<p>
@@ -230,11 +165,16 @@ public class CmsOptimizationCss extends CmsOptimizationBean {
 
         // resolve the locale
         Locale locale = resolveLocale(cms, xml);
+		// cache the current project
+		boolean online = cms.getRequestContext().currentProject().isOnlineProject();
 
         // iterate the resources
-        Iterator itRes = xml.getValues(N_RESOURCE, locale).iterator();
+        Iterator<I_CmsXmlContentValue> itRes = xml.getValues(N_RESOURCE, locale).iterator();
         while (itRes.hasNext()) {
-            I_CmsXmlContentValue value = (I_CmsXmlContentValue)itRes.next();
+            I_CmsXmlContentValue value = itRes.next();
+            if (!isOptimized(cms, xml, value, locale, online)) {
+            	continue;
+            }
             // get the path
             String xpath = CmsXmlUtils.concatXpath(value.getPath(), N_PATH);
             String path = xml.getValue(xpath, locale).getStringValue(cms);
@@ -285,7 +225,7 @@ public class CmsOptimizationCss extends CmsOptimizationBean {
      */
     public void writeCssInclude(CmsObject cms, String uri) throws IOException {
 
-        Map attrs = new HashMap();
+        Map<String,String> attrs = new HashMap<String,String>();
         attrs.put(ATTR_HREF, link(uri));
         attrs.put(ATTR_TYPE, TYPE_TEXT_CSS);
         attrs.put(ATTR_REL, REL_STYLESHEET);

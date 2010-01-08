@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.weboptimization/src/com/alkacon/opencms/weboptimization/CmsOptimizationBean.java,v $
- * Date   : $Date: 2009/09/11 07:39:52 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2010/01/08 09:46:05 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -32,6 +32,7 @@
 
 package com.alkacon.opencms.weboptimization;
 
+import org.opencms.file.CmsFile;
 import org.opencms.file.CmsObject;
 import org.opencms.file.CmsPropertyDefinition;
 import org.opencms.file.CmsResource;
@@ -44,7 +45,10 @@ import org.opencms.loader.I_CmsResourceLoader;
 import org.opencms.main.CmsException;
 import org.opencms.main.CmsLog;
 import org.opencms.main.OpenCms;
+import org.opencms.xml.CmsXmlUtils;
 import org.opencms.xml.content.CmsXmlContent;
+import org.opencms.xml.content.CmsXmlContentFactory;
+import org.opencms.xml.types.I_CmsXmlContentValue;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -63,11 +67,89 @@ import org.apache.commons.logging.Log;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.3 $ 
  * 
  * @since 7.0.6
  */
-public class CmsOptimizationBean extends CmsJspActionElement {
+public abstract class CmsOptimizationBean extends CmsJspActionElement {
+
+	/**
+     * The inclusion mode.<p>
+     */
+    protected enum IncludeMode {
+    	/** Optimized mode. */
+    	OPTIMIZED, 
+    	/** Original mode.*/
+    	ORIGINAL, 
+    	/** Automatic mode. */
+    	AUTO;
+    }
+
+	/**
+	 * The parsing results.<p>
+	 */
+	protected static class Resolution {
+		
+		/** List of original resources. */
+		private List<CmsResource> m_resources = new ArrayList<CmsResource>();
+		
+		/** Are there any optimized resource left?. */
+		private boolean m_hasOptimizedLeft;
+
+		/**
+		 * Adds the given resource to the list.<p>
+		 * 
+		 * @param resource the resource to add
+		 */
+		public void addResource(CmsResource resource) {
+			
+			if (!m_resources.contains(resource)) {
+				m_resources.add(resource);
+			}
+		}
+
+		/**
+		 * Returns the list of resources.<p>
+		 * 
+		 * @return the list of resources
+		 */
+		public List<CmsResource> getResources() {
+			
+			return m_resources;
+		}
+
+		/**
+		 * Checks if there is at least one optimized resource left.<p>
+		 * 
+		 * @return <code>true</code> if there is at least one optimized resource left
+		 */
+		public boolean hasOptimizedLeft() {
+			
+			return m_hasOptimizedLeft;
+		}
+
+		/**
+		 * Merges the data with the given resolution.<p>
+		 * 
+		 * @param resolution the resolution to merge with
+		 */
+		public void merge(Resolution resolution) {
+			
+			if(resolution.hasOptimizedLeft()) {
+				setOptimizedLeft();
+			}
+			m_resources.addAll(resolution.getResources());
+		}
+		
+		/**
+		 * Sets the flag indicating that there is at least one optimized
+		 * resource left.<p>
+		 */
+		public void setOptimizedLeft() {
+			
+			m_hasOptimizedLeft = true;
+		}
+	}
 
     /** type attribute constant. */
     protected static final String ATTR_TYPE = "type";
@@ -81,8 +163,20 @@ public class CmsOptimizationBean extends CmsJspActionElement {
     /** Node name constant. */
     protected static final String N_PATH = "Path";
 
-    /** Node resource constant. */
+    /** Node name constant. */
     protected static final String N_RESOURCE = "Resource";
+
+    /** Node name constant. */
+    protected static final String N_BEHAVIOUR = "Behaviour";
+
+    /** Behaviour value constant. */
+    protected static final String BEHAVIOUR_OPTIMIZED = "optimized";
+
+    /** Node name constant. */
+    protected static final String N_ONLINE = "Online";
+
+    /** Node name constant. */
+    protected static final String N_OFFLINE = "Offline";
 
     /** The log object for this class. */
     private static final Log LOG = CmsLog.getLog(CmsOptimizationBean.class);
@@ -98,7 +192,7 @@ public class CmsOptimizationBean extends CmsJspActionElement {
 
         super(context, req, res);
     }
-
+    
     /**
      * Creates a new HTML tag with the given name and attributes.<p>
      * 
@@ -108,15 +202,15 @@ public class CmsOptimizationBean extends CmsJspActionElement {
      * 
      * @return the HTML code
      */
-    protected String createTag(String tag, Map attr, boolean xmlStyle) {
+    protected String createTag(String tag, Map<String,String> attr, boolean xmlStyle) {
 
         StringBuffer sb = new StringBuffer();
         sb.append("<");
         sb.append(tag);
         if (attr != null) {
-            Iterator it = attr.entrySet().iterator();
+            Iterator<Map.Entry<String,String>> it = attr.entrySet().iterator();
             while (it.hasNext()) {
-                Map.Entry entry = (Map.Entry)it.next();
+                Map.Entry<String,String> entry = it.next();
                 sb.append(" ");
                 sb.append(entry.getKey());
                 sb.append("=\"");
@@ -136,7 +230,7 @@ public class CmsOptimizationBean extends CmsJspActionElement {
         }
         return sb.toString();
     }
-
+    
     /**
      * Returns the content of all files of the given path with the 'right' extension.<p> 
      * 
@@ -153,17 +247,17 @@ public class CmsOptimizationBean extends CmsJspActionElement {
         String ext = cms.getRequestContext().getUri().substring(cms.getRequestContext().getUri().lastIndexOf('.'));
 
         // retrieve the actual files to process
-        List resorces = resolveResource(cms, path, ext);
-        if (resorces.isEmpty()) {
+        List<CmsResource> resources = resolveResource(cms, path, ext);
+        if (resources.isEmpty()) {
             LOG.warn(Messages.get().getBundle().key(Messages.LOG_WARN_NOTHING_TO_PROCESS_1, path));
             return "";
         }
 
         // merge file contents
         StringBuffer sb = new StringBuffer();
-        Iterator itRes = resorces.iterator();
+        Iterator<CmsResource> itRes = resources.iterator();
         while (itRes.hasNext()) {
-            CmsResource res = (CmsResource)itRes.next();
+            CmsResource res = itRes.next();
             byte[] data = getBinaryContent(cms, res);
             sb.append(new String(data, getRequestContext().getEncoding()));
         }
@@ -205,6 +299,154 @@ public class CmsOptimizationBean extends CmsJspActionElement {
     }
 
     /**
+     * Creates code for the given optimized resource, 
+     * by default it will use the original code in the 
+     * offline project for debugging purposes, and 
+     * optimized code in the online project for optimal 
+     * performance.<p>
+     * 
+     * @param path the uri of the file to be included
+     * 
+     * @throws Exception if something goes wrong
+     */
+    public void includeDefault(String path) throws Exception {
+
+    	includeDefault(path, IncludeMode.AUTO);
+    }
+
+    /**
+     * Creates optimized code for the optimized resource, depending on the mode.<p>
+     * 
+     * @param path the optimized resource uri
+     * @param mode the mode to use
+     *  
+     * @throws Exception if something goes wrong
+     */
+    protected abstract void includeDefault(String path, IncludeMode mode) throws Exception;
+
+	/**
+     * Creates optimized code for the optimized resource.<p>
+     * 
+     * @param path the optimized resource uri
+     *  
+     * @throws Exception if something goes wrong
+     */
+    public void includeOptimized(String path) throws Exception {
+
+    	includeDefault(path, IncludeMode.OPTIMIZED);
+    }
+
+    /**
+     * Creates original code for the optimized resource.<p>
+     * 
+     * @param path the optimized resource uri
+     *  
+     * @throws Exception if something goes wrong
+     */
+    public void includeOriginal(String path) throws Exception {
+
+    	includeDefault(path, IncludeMode.ORIGINAL);
+    }
+
+    /**
+	 * Checks if the given resource node has to be optimized.<p>
+	 * 
+	 * @param cms the current cms context
+	 * @param xml the xml content to use
+	 * @param value the resource xml node
+	 * @param locale the locale to use
+	 * @param online if online or offline
+	 * 
+	 * @return <code>true</code> if the given resource node has to be optimized
+	 */
+	protected boolean isOptimized(CmsObject cms, CmsXmlContent xml, I_CmsXmlContentValue value, Locale locale, boolean online) {
+
+		boolean optimized = false;
+		String xpath = CmsXmlUtils.concatXpath(value.getPath(), N_BEHAVIOUR);
+		I_CmsXmlContentValue behaviour = xml.getValue(xpath, locale);
+		if (behaviour == null) {
+			if (online) {
+				optimized = true;
+			}
+		} else {
+			if (online) {
+				xpath = CmsXmlUtils.concatXpath(behaviour.getPath(), N_ONLINE);
+			} else {
+				xpath = CmsXmlUtils.concatXpath(behaviour.getPath(), N_OFFLINE);
+			}
+			I_CmsXmlContentValue p = xml.getValue(xpath, locale);
+			optimized = p.getStringValue(cms).equals(BEHAVIOUR_OPTIMIZED);
+		}
+		return optimized;
+	}
+
+    /**
+	 * Resolves the given file.<p>
+	 * 
+	 * @param cms the current context
+	 * @param file the file to resolve
+	 * @param mode the mode to use
+	 * @param extension the file extension to restrict the inclusion
+	 * @param type the resource type id for recursion
+	 * 
+	 * @return the resolution
+	 * 
+	 * @throws CmsException if something goes wrong
+	 */
+	protected Resolution resolveInclude(CmsObject cms, CmsFile file, IncludeMode mode, String extension, int type) throws CmsException {
+
+		Resolution resolution = new Resolution();
+		// read the XML content
+		CmsXmlContent xml = CmsXmlContentFactory.unmarshal(cms, file);
+
+		// resolve the locale
+		Locale locale = resolveLocale(cms, xml);
+
+		// cache the current project
+		boolean online = cms.getRequestContext().currentProject().isOnlineProject();
+
+		// iterate the resources
+		Iterator<I_CmsXmlContentValue> itPath = xml.getValues(N_RESOURCE, locale).iterator();
+		while (itPath.hasNext()) {
+			I_CmsXmlContentValue value = itPath.next();
+			// get the uri
+			String xpath = CmsXmlUtils.concatXpath(value.getPath(), N_PATH);
+			String uri = xml.getValue(xpath, locale).getStringValue(cms);
+
+			// retrieve the actual files to process
+			List<CmsResource> resorces = resolveResource(cms, uri, extension);
+			if (resorces.isEmpty()) {
+				LOG.warn(Messages.get().getBundle().key(
+						Messages.LOG_WARN_NOTHING_TO_PROCESS_1, uri));
+				continue;
+			}
+
+			if (mode == IncludeMode.AUTO) {
+				// compute the mode to use
+				boolean optimized = isOptimized(cms, xml, value, locale, online);
+				if (optimized) {
+					resolution.setOptimizedLeft();
+					// if optimized it will be handled while rendering
+					continue;
+				}
+			}
+			
+			Iterator<CmsResource> itRes = resorces.iterator();
+			while (itRes.hasNext()) {
+				CmsResource res = itRes.next();
+				if (res.getTypeId() == type) {
+					// recurse in case of nested optimized resources
+					resolution.merge(resolveInclude(cms, cms.readFile(res), mode,extension, type));
+				} else {
+					// handle this resource
+					resolution.addResource(res);
+				}
+			}
+		}
+		return resolution;
+	}
+
+    /**
      * Resolves the right locale to use.<p>
      * 
      * @param cms the cms context
@@ -239,17 +481,17 @@ public class CmsOptimizationBean extends CmsJspActionElement {
      * 
      * @throws CmsException if something goes wrong
      */
-    protected List resolveResource(CmsObject cms, String path, String ext) throws CmsException {
+    protected List<CmsResource> resolveResource(CmsObject cms, String path, String ext) throws CmsException {
 
         CmsResource res = cms.readResource(path);
 
-        List resorces = new ArrayList();
+        List<CmsResource> resorces = new ArrayList<CmsResource>();
         if (res.isFolder()) {
             // if folder, get all files with the given extension in the folder
-            List files = cms.readResources(path, CmsResourceFilter.DEFAULT_FILES);
-            Iterator itFiles = files.iterator();
+            List<CmsResource> files = cms.readResources(path, CmsResourceFilter.DEFAULT_FILES);
+            Iterator<CmsResource> itFiles = files.iterator();
             while (itFiles.hasNext()) {
-                CmsResource file = (CmsResource)itFiles.next();
+                CmsResource file = itFiles.next();
                 if (file.getRootPath().endsWith(ext)) {
                     resorces.add(file);
                 }

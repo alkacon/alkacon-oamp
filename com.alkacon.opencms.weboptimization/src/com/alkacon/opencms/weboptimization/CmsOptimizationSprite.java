@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.weboptimization/src/com/alkacon/opencms/weboptimization/CmsOptimizationSprite.java,v $
- * Date   : $Date: 2009/09/11 07:39:52 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2010/01/08 09:46:05 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -64,7 +64,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.3 $ 
  * 
  * @since 7.0.6
  */
@@ -141,46 +141,23 @@ public class CmsOptimizationSprite extends CmsOptimizationBean {
     }
 
     /**
-     * Create css rules for the given optimized sprite, 
-     * will create css rules for the original images 
-     * in the offline project for debugging purposes.<p>
-     * 
-     * @param path the uri of the file to be included
-     * 
-     * @throws Exception if something goes wrong
-     */
-    public void includeDefault(String path) throws Exception {
+	 * @see com.alkacon.opencms.weboptimization.CmsOptimizationBean#includeDefault(java.lang.String,
+	 *      com.alkacon.opencms.weboptimization.CmsOptimizationBean.IncludeMode)
+	 */
+	@Override
+	public void includeDefault(String path, IncludeMode mode) throws Exception {
 
-        if (getCmsObject().getRequestContext().currentProject().isOnlineProject()) {
-            includeOptimized(path);
-        } else {
-            includeOriginal(path);
-        }
-    }
-
-    /**
-     * Will create css rules for the optimized sprite.<p>
-     * 
-     * @param path the optimized sprite uri
-     *  
-     * @throws Exception if something goes wrong
-     */
-    public void includeOptimized(String path) throws Exception {
-
-        includeSprite(path, true, null);
-    }
-
-    /**
-     * Will create css rules for the original images.<p>
-     * 
-     * @param path the optimized sprite uri
-     *  
-     * @throws Exception if something goes wrong
-     */
-    public void includeOriginal(String path) throws Exception {
-
-        includeSprite(path, false, null);
-    }
+		CmsObject cms = getCmsObject();
+		// check the resource type
+		CmsFile file = cms.readFile(path);
+		if (file.getTypeId() != RESOURCE_TYPE_SPRITE) {
+			throw new CmsIllegalArgumentException(Messages.get().container(
+					Messages.ERR_NOT_SUPPORTED_RESOURCE_TYPE_2, path,
+					new Integer(file.getTypeId())));
+		}
+		
+		resolveSpriteInclude(cms, file, mode, null);
+	}
 
     /**
      * Will optimize the resources taken from the underlying XML content.<p>
@@ -206,12 +183,17 @@ public class CmsOptimizationSprite extends CmsOptimizationBean {
 
         // resolve the locale
         Locale locale = resolveLocale(cms, xml);
+		// cache the current project
+		boolean online = cms.getRequestContext().currentProject().isOnlineProject();
 
         BufferedImage sprite = new BufferedImage(1, 1, BufferedImage.TYPE_4BYTE_ABGR);
         // iterate the resources
-        Iterator itPath = xml.getValues(N_RESOURCE, locale).iterator();
+        Iterator<I_CmsXmlContentValue> itPath = xml.getValues(N_RESOURCE, locale).iterator();
         while (itPath.hasNext()) {
-            I_CmsXmlContentValue value = (I_CmsXmlContentValue)itPath.next();
+            I_CmsXmlContentValue value = itPath.next();
+            if (!isOptimized(cms, xml, value, locale, online)) {
+            	continue;
+            }
             // get the path
             String xpath = CmsXmlUtils.concatXpath(value.getPath(), N_PATH);
             String path = xml.getValue(xpath, locale).getStringValue(cms);
@@ -242,55 +224,18 @@ public class CmsOptimizationSprite extends CmsOptimizationBean {
         writeImage(sprite, type);
     }
 
-    /**
-     * Writes a new css sprite rule for the given resource.<p>
-     * 
-     * @param uri the resource to use
-     * @param opts the options to use
-     * 
-     * @throws IOException if something goes wrong 
-     */
-    public void writeSpriteInclude(String uri, CmsOptimizationSpriteOptions opts) throws IOException {
-
-        StringBuffer sb = new StringBuffer();
-
-        sb.append(opts.getSelector());
-        sb.append(" { background-image: url(");
-        sb.append(link(uri));
-        sb.append(");");
-        if ((opts.getX() != 0) || (opts.getY() != 0)) {
-            sb.append(" background-position: ");
-            sb.append(-opts.getX());
-            sb.append("px ");
-            sb.append(-opts.getY());
-            sb.append("px;");
-        }
-        sb.append(" }");
-
-        getJspContext().getOut().println(sb.toString());
-    }
-
-    /**
+	/**
      * Will create css rules for the given optimized sprite.<p>
      * 
      * @param path the optimized file uri
-     * @param optimized if to write the rules for the optimized image or the originals
+     * @param mode the inclusion mode
      * @param offset optional position offset, used when called recursively
      *  
      * @throws Exception if something goes wrong
      */
-    protected void includeSprite(String path, boolean optimized, CmsOptimizationSpriteOptions offset) throws Exception {
+    protected void resolveSpriteInclude(CmsObject cms, CmsFile file, IncludeMode mode, CmsOptimizationSpriteOptions offset) throws Exception {
 
-        CmsObject cms = getCmsObject();
-        CmsFile file = cms.readFile(path);
-
-        // check the resource type
-        if (file.getTypeId() != RESOURCE_TYPE_SPRITE) {
-            throw new CmsIllegalArgumentException(Messages.get().container(
-                Messages.ERR_NOT_SUPPORTED_RESOURCE_TYPE_2,
-                path,
-                new Integer(file.getTypeId())));
-        }
+        String path = cms.getSitePath(file);
 
         // read the XML content
         CmsXmlContent xml = CmsXmlContentFactory.unmarshal(cms, file);
@@ -298,10 +243,13 @@ public class CmsOptimizationSprite extends CmsOptimizationBean {
         // resolve the locale
         Locale locale = resolveLocale(cms, xml);
 
+		// cache the current project
+		boolean online = cms.getRequestContext().currentProject().isOnlineProject();
+
         // iterate the resources
-        Iterator itRes = xml.getValues(N_RESOURCE, locale).iterator();
+        Iterator<I_CmsXmlContentValue> itRes = xml.getValues(N_RESOURCE, locale).iterator();
         while (itRes.hasNext()) {
-            I_CmsXmlContentValue value = (I_CmsXmlContentValue)itRes.next();
+            I_CmsXmlContentValue value = itRes.next();
             // get the uri
             String xpath = CmsXmlUtils.concatXpath(value.getPath(), N_PATH);
             String uri = xml.getValue(xpath, locale).getStringValue(cms);
@@ -313,6 +261,12 @@ public class CmsOptimizationSprite extends CmsOptimizationBean {
                 continue;
             }
 
+            boolean optimized = (mode == IncludeMode.OPTIMIZED);
+			if (mode == IncludeMode.AUTO) {
+				// compute the mode to use
+				optimized = isOptimized(cms, xml, value, locale, online);
+			}
+			
             // get the options
             CmsOptimizationSpriteOptions opts = new CmsOptimizationSpriteOptions();
             xpath = CmsXmlUtils.concatXpath(value.getPath(), N_POSITION);
@@ -333,7 +287,7 @@ public class CmsOptimizationSprite extends CmsOptimizationBean {
             }
             if (res.getTypeId() == RESOURCE_TYPE_SPRITE) {
                 // recurse in case of nested sprites
-                includeSprite(uri, optimized, opts);
+            	resolveSpriteInclude(cms, cms.readFile(res), mode, opts);
             } else {
                 // handle this resource
                 if (optimized) {
@@ -366,5 +320,33 @@ public class CmsOptimizationSprite extends CmsOptimizationBean {
         stream.flush();
         stream.close();
         writer.dispose();
+    }
+
+    /**
+     * Writes a new css sprite rule for the given resource.<p>
+     * 
+     * @param uri the resource to use
+     * @param opts the options to use
+     * 
+     * @throws IOException if something goes wrong 
+     */
+    public void writeSpriteInclude(String uri, CmsOptimizationSpriteOptions opts) throws IOException {
+
+        StringBuffer sb = new StringBuffer();
+
+        sb.append(opts.getSelector());
+        sb.append(" { background-image: url(");
+        sb.append(link(uri));
+        sb.append(");");
+        if ((opts.getX() != 0) || (opts.getY() != 0)) {
+            sb.append(" background-position: ");
+            sb.append(-opts.getX());
+            sb.append("px ");
+            sb.append(-opts.getY());
+            sb.append("px;");
+        }
+        sb.append(" }");
+
+        getJspContext().getOut().println(sb.toString());
     }
 }
