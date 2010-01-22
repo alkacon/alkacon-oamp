@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.calendar/src/com/alkacon/opencms/calendar/CmsCalendarDisplay.java,v $
- * Date   : $Date: 2009/02/05 09:49:31 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2010/01/22 09:19:46 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -74,7 +74,7 @@ import org.apache.commons.logging.Log;
  * @author Andreas Zahner
  * @author Peter Bonrad
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.3 $ 
  * 
  * @since 6.0.1
  */
@@ -184,8 +184,8 @@ public class CmsCalendarDisplay extends CmsCalendar {
      */
     public static boolean isCurrentDay(Calendar current, Calendar day) {
 
-        return (current.get(Calendar.DATE) == day.get(Calendar.DATE)
-            && current.get(Calendar.YEAR) == day.get(Calendar.YEAR) && current.get(Calendar.MONTH) == day.get(Calendar.MONTH));
+        return ((current.get(Calendar.DATE) == day.get(Calendar.DATE))
+            && (current.get(Calendar.YEAR) == day.get(Calendar.YEAR)) && (current.get(Calendar.MONTH) == day.get(Calendar.MONTH)));
     }
 
     /**
@@ -467,18 +467,18 @@ public class CmsCalendarDisplay extends CmsCalendar {
             return ajaxLink.toString();
         } else {
             StringBuffer nextLink = new StringBuffer(64);
-    
+
             // append the URI to the JSP
             nextLink.append(uri);
-    
+
             // append date parameters
             nextLink.append("?").append(PARAM_YEAR).append("=").append(calendar.get(Calendar.YEAR));
             nextLink.append("&amp;").append(PARAM_MONTH).append("=").append(calendar.get(Calendar.MONTH));
             nextLink.append("&amp;").append(PARAM_DAY).append("=").append(calendar.get(Calendar.DATE));
-    
+
             // append view type parameter
             nextLink.append("&amp;").append(PARAM_VIEWTYPE).append("=").append(viewPeriod);
-    
+
             // return a valid OpenCms link
             if (useCmsLink) {
                 return getJsp().link(nextLink.toString());
@@ -628,11 +628,7 @@ public class CmsCalendarDisplay extends CmsCalendar {
 
             // increase day to next day
             runDay.add(Calendar.DAY_OF_YEAR, 1);
-            if (runDay.get(Calendar.YEAR) > endDay.get(Calendar.YEAR)) {
-                // runDay has reached endDay -> stop loop
-                break;
-            }
-            if (runDay.get(Calendar.DAY_OF_YEAR) > endDay.get(Calendar.DAY_OF_YEAR)) {
+            if (runDay.after(endDay)) {
                 // runDay has reached endDay -> stop loop
                 break;
             }
