@@ -4,7 +4,7 @@
 	<info>
 		<creator>Admin</creator>
 		<opencms_version>7.5.0</opencms_version>
-		<createdate>Wed, 23 Apr 2008 08:53:52 GMT</createdate>
+		<createdate>Mon, 06 Jul 2009 08:55:50 GMT</createdate>
 		<infoproject>Offline</infoproject>
 		<export_version>7</export_version>
 	</info>
@@ -16,7 +16,7 @@
 		<description><![CDATA[<p>This module contains survey form functionality for OpenCms.</p>
 <p>This module can easily be used to create online survey forms.</p>
 <p><i>(c) 2008 by Alkacon Software GmbH (http://www.alkacon.com).</i></p>]]></description>
-		<version>1.0.2</version>
+		<version>1.0.4</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
 		<datecreated/>
@@ -35,34 +35,19 @@
 		</resources>
 		<parameters/>
 		<resourcetypes>
-			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="alkacon-surveyReport" id="79">
+			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="alkacon-survey" id="80">
 				<properties>
 					<property>
 						<name>template-elements</name>
-						<value type="shared"><![CDATA[/system/modules/com.alkacon.opencms.survey/pages/reporting.jsp]]></value>
+						<value type="shared"><![CDATA[/system/modules/com.alkacon.opencms.survey/pages/survey.jsp]]></value>
 					</property>
 				</properties>
-				<param name="schema">/system/modules/com.alkacon.opencms.survey/schemas/report.xsd</param>
-			</type>
-			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="alkacon-survey" id="59">
-				<properties>
-					<property>
-						<name>template-elements</name>
-						<value type="shared"><![CDATA[/system/modules/com.alkacon.opencms.survey/pages/form.jsp]]></value>
-					</property>
-				</properties>
-				<param name="schema">/system/modules/com.alkacon.opencms.formgenerator/schemas/form.xsd</param>
+				<param name="schema">/system/modules/com.alkacon.opencms.survey/schemas/survey.xsd</param>
 			</type>
 		</resourcetypes>
 		<explorertypes>
-			<explorertype name="alkacon-surveyReport" key="fileicon.alkacon-surveyReport" icon="alkacon-survey.gif" reference="xmlcontent">
-				<newresource page="structurecontent" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-surveyReport" order="65" autosetnavigation="false" autosettitle="false" info="desc.surveyReport"/>
-				<accesscontrol>
-					<accessentry principal="ROLE.WORKPLACE_USER" permissions="+r+v+w+c"/>
-				</accesscontrol>
-			</explorertype>
 			<explorertype name="alkacon-survey" key="fileicon.alkacon-survey" icon="alkacon-webform.gif" reference="xmlcontent">
-				<newresource page="structurecontent" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-survey" order="65" autosetnavigation="false" autosettitle="false" info="desc.survey"/>
+				<newresource page="structurecontent" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-survey" order="999" autosetnavigation="false" autosettitle="false" info="desc.survey"/>
 				<accesscontrol>
 					<accessentry principal="ROLE.WORKPLACE_USER" permissions="+r+v+w+c"/>
 				</accesscontrol>
@@ -73,10 +58,10 @@
 		<file>
 			<destination>system</destination>
 			<type>folder</type>
-			<uuidstructure>0fc6fafe-ef46-11dc-b8e3-371bb8ed1b84</uuidstructure>
-			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<uuidstructure>0df5a6fc-6159-11de-b0fa-25c0204583a8</uuidstructure>
+			<datelastmodified>Thu, 25 Jun 2009 07:23:18 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Tue, 11 Mar 2008 08:35:10 GMT</datecreated>
+			<datecreated>Thu, 25 Jun 2009 07:23:18 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -95,10 +80,10 @@
 		<file>
 			<destination>system/modules</destination>
 			<type>folder</type>
-			<uuidstructure>107c1a67-ef46-11dc-b8e3-371bb8ed1b84</uuidstructure>
-			<datelastmodified>Tue, 11 Mar 2008 08:35:11 GMT</datelastmodified>
+			<uuidstructure>0e7fe5d5-6159-11de-b0fa-25c0204583a8</uuidstructure>
+			<datelastmodified>Thu, 25 Jun 2009 07:23:19 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Tue, 11 Mar 2008 08:35:11 GMT</datecreated>
+			<datecreated>Thu, 25 Jun 2009 07:23:19 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -198,7 +183,7 @@
 			<type>plain</type>
 			<uuidstructure>6ebb158e-1052-11dd-84af-371bb8ed1b84</uuidstructure>
 			<uuidresource>6ebb158f-1052-11dd-84af-371bb8ed1b84</uuidresource>
-			<datelastmodified>Tue, 22 Apr 2008 09:56:52 GMT</datelastmodified>
+			<datelastmodified>Fri, 03 Jul 2009 15:14:03 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Tue, 22 Apr 2008 09:56:52 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -213,7 +198,7 @@
 			<type>plain</type>
 			<uuidstructure>6ece2860-1052-11dd-84af-371bb8ed1b84</uuidstructure>
 			<uuidresource>6ece2861-1052-11dd-84af-371bb8ed1b84</uuidresource>
-			<datelastmodified>Tue, 22 Apr 2008 09:56:52 GMT</datelastmodified>
+			<datelastmodified>Fri, 03 Jul 2009 15:14:12 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Tue, 22 Apr 2008 09:56:52 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -243,7 +228,7 @@
 			<type>plain</type>
 			<uuidstructure>6edeca32-1052-11dd-84af-371bb8ed1b84</uuidstructure>
 			<uuidresource>6edeca33-1052-11dd-84af-371bb8ed1b84</uuidresource>
-			<datelastmodified>Tue, 22 Apr 2008 09:56:52 GMT</datelastmodified>
+			<datelastmodified>Fri, 03 Jul 2009 15:15:36 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Tue, 22 Apr 2008 09:56:52 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -271,7 +256,7 @@
 			<type>jsp</type>
 			<uuidstructure>6eace4bb-1052-11dd-84af-371bb8ed1b84</uuidstructure>
 			<uuidresource>6eace4bc-1052-11dd-84af-371bb8ed1b84</uuidresource>
-			<datelastmodified>Tue, 22 Apr 2008 09:56:52 GMT</datelastmodified>
+			<datelastmodified>Tue, 30 Jun 2009 13:08:29 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Tue, 22 Apr 2008 09:56:52 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -332,9 +317,29 @@
 			<type>jsp</type>
 			<uuidstructure>c1cc3c27-110c-11dd-b26f-371bb8ed1b84</uuidstructure>
 			<uuidresource>c1cc3c28-110c-11dd-b26f-371bb8ed1b84</uuidresource>
-			<datelastmodified>Wed, 23 Apr 2008 08:26:15 GMT</datelastmodified>
+			<datelastmodified>Fri, 03 Jul 2009 07:50:08 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Wed, 23 Apr 2008 08:10:37 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.survey/pages/form.jsp.bak</source>
+			<destination>system/modules/com.alkacon.opencms.survey/pages/form.jsp.bak</destination>
+			<type>jsp</type>
+			<uuidstructure>a7fe2178-6193-11de-bb28-25c0204583a8</uuidstructure>
+			<uuidresource>a7fe2179-6193-11de-bb28-25c0204583a8</uuidresource>
+			<datelastmodified>Thu, 25 Jun 2009 09:32:51 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 25 Jun 2009 14:22:47 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties>
@@ -352,9 +357,89 @@
 			<type>jsp</type>
 			<uuidstructure>6e820426-1052-11dd-84af-371bb8ed1b84</uuidstructure>
 			<uuidresource>6e820427-1052-11dd-84af-371bb8ed1b84</uuidresource>
-			<datelastmodified>Tue, 22 Apr 2008 09:56:51 GMT</datelastmodified>
+			<datelastmodified>Fri, 03 Jul 2009 15:09:04 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Tue, 22 Apr 2008 09:56:51 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.survey/pages/reporting.jsp.bak</source>
+			<destination>system/modules/com.alkacon.opencms.survey/pages/reporting.jsp.bak</destination>
+			<type>jsp</type>
+			<uuidstructure>acaae0ab-6193-11de-bb28-25c0204583a8</uuidstructure>
+			<uuidresource>acaae0ac-6193-11de-bb28-25c0204583a8</uuidresource>
+			<datelastmodified>Thu, 25 Jun 2009 09:59:55 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 25 Jun 2009 14:22:55 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.survey/pages/reporting.jsp.bak2</source>
+			<destination>system/modules/com.alkacon.opencms.survey/pages/reporting.jsp.bak2</destination>
+			<type>jsp</type>
+			<uuidstructure>79a3e4b4-671d-11de-ac69-25c0204583a8</uuidstructure>
+			<uuidresource>79a3e4b5-671d-11de-ac69-25c0204583a8</uuidresource>
+			<datelastmodified>Thu, 02 Jul 2009 15:23:55 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 02 Jul 2009 15:31:56 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.survey/pages/reporting.jsp.bak3</source>
+			<destination>system/modules/com.alkacon.opencms.survey/pages/reporting.jsp.bak3</destination>
+			<type>jsp</type>
+			<uuidstructure>6e82b934-67a1-11de-823c-25c0204583a8</uuidstructure>
+			<uuidresource>6e82b935-67a1-11de-823c-25c0204583a8</uuidresource>
+			<datelastmodified>Fri, 03 Jul 2009 07:14:51 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 03 Jul 2009 07:16:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.survey/pages/survey.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.survey/pages/survey.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>1ede7738-6174-11de-b665-25c0204583a8</uuidstructure>
+			<uuidresource>1ede7739-6174-11de-b665-25c0204583a8</uuidresource>
+			<datelastmodified>Thu, 02 Jul 2009 15:07:01 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 25 Jun 2009 10:37:02 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties>
@@ -398,7 +483,7 @@
 			<type>plain</type>
 			<uuidstructure>6e99d1e9-1052-11dd-84af-371bb8ed1b84</uuidstructure>
 			<uuidresource>6e99d1ea-1052-11dd-84af-371bb8ed1b84</uuidresource>
-			<datelastmodified>Tue, 22 Apr 2008 09:56:51 GMT</datelastmodified>
+			<datelastmodified>Fri, 03 Jul 2009 08:16:32 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Tue, 22 Apr 2008 09:56:51 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -459,9 +544,24 @@
 			<type>plain</type>
 			<uuidstructure>6e716254-1052-11dd-84af-371bb8ed1b84</uuidstructure>
 			<uuidresource>6e716255-1052-11dd-84af-371bb8ed1b84</uuidresource>
-			<datelastmodified>Tue, 22 Apr 2008 09:56:51 GMT</datelastmodified>
+			<datelastmodified>Fri, 03 Jul 2009 15:00:30 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Tue, 22 Apr 2008 09:56:51 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.survey/schemas/survey.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.survey/schemas/survey.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>43682ab2-6188-11de-b665-25c0204583a8</uuidstructure>
+			<uuidresource>43682ab3-6188-11de-b665-25c0204583a8</uuidresource>
+			<datelastmodified>Mon, 29 Jun 2009 10:53:06 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 25 Jun 2009 13:01:14 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>

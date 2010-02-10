@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaSettings.java,v $
- * Date   : $Date: 2009/04/17 15:31:54 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2010/02/10 09:25:31 $
+ * Version: $Revision: 1.5 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -56,7 +56,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Achim Westermann
  * 
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * 
  * @since 7.0.4 
  */
@@ -546,10 +546,8 @@ public final class CmsCaptchaSettings implements Cloneable {
     public void init(CmsObject cms, CmsXmlContent content, Locale locale) {
 
         try {
-            String captchaSettingsPath = content.getStringValue(
-                cms,
-                new StringBuffer(CmsForm.NODE_CAPTCHA).append("/").append(CmsForm.NODE_CAPTCHA_PRESET).toString(),
-                locale);
+            String captchaSettingsPath = CmsFormContentUtil.getContentStringValue(content, cms, new StringBuffer(
+                CmsForm.NODE_CAPTCHA).append("/").append(CmsForm.NODE_CAPTCHA_PRESET).toString(), locale);
             if (CmsStringUtil.isNotEmpty(captchaSettingsPath)) {
                 m_presetPath = captchaSettingsPath;
                 CmsFile captchaSettingsFile = cms.readFile(captchaSettingsPath);

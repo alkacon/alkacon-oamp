@@ -4,6 +4,13 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ page import="org.opencms.jsp.*" %>
+<%@ page import="org.opencms.file.*" %>
+<%@ page import="java.util.*" %>
+<%@ page import="java.text.*" %>
+<%@page import="org.opencms.util.*" %>
+<%@ page import="com.alkacon.opencms.survey.*" %>
+
 <%
 	// initialize the bean
 	CmsFormReportingBean cms = new CmsFormReportingBean(pageContext, request, response);
@@ -31,32 +38,50 @@
 <fmt:setLocale value="${locale}" />
 <fmt:bundle basename="com.alkacon.opencms.survey.frontend">
 
-	<c:catch var="error">
+	<c:catch var="error"> 
 		<cms:contentload collector="singleFile" param="%(opencms.uri)">
-			<cms:contentaccess var="content" />
+			<cms:contentaccess var="rootContent" />
+
+			<c:set var="content" value="${rootContent.value.SurveyReport}" />
+			<c:set var="webform" value="${rootContent.value.Form}" />
+			
 
 			<c:set var="color" value="${content.valueList['Color']}" />
+			<c:choose>
+				<c:when test="${content.value.AverageColor.exists}">
+					<c:set var="avgcolor" value="${content.value.AverageColor.stringValue}" />
+				</c:when>
+				<c:otherwise>
+					<c:set var="avgcolor"  value="#ff0000" />
+				</c:otherwise>
+			</c:choose>
+			<c:if test="${empty avgcolor}"><c:set var="avgcolor" value="#ffff00" /></c:if>
 			<c:set var="group" value="${content.value['DetailGroup'] }" />
 			<c:set var="showCount" value="${content.value['ShowCount']}" />
+			<c:set var="showCount" value="${(showCount == 'true') || cms.showDetail[group]}" />
 			<c:set var="AddText" value="${content.value['AddText']}" />
-
+			<c:if test="${surveyIsClosed}">${content.value['SurveyClosedText']}</c:if>
 
 			<c:if
 				test="${!empty content.value['Text'] && (!param.detail || !cms.showDetail[group])}">
 				<c:out value="${content.value['Text']}" escapeXml="false" />
 			</c:if>
 
-			<c:set var="webformpath" value="${content.value['Webform']}" />
-			<c:if test="${!webformpath.isEmptyOrWhitespaceOnly}">
-				<cms:contentload collector="singleFile" param="${webformpath}">
-					<cms:contentaccess var="webform" />
+			<% 
+				CmsJspActionElement cjae = new CmsJspActionElement(pageContext, request, response);
+				CmsRequestContext req = cjae.getRequestContext();
+				pageContext.setAttribute("webformpath", req.getUri());
+			%>
+				
+
 
 					<%-- look if the work bean already initialized --%>
 					<c:if test="${empty workBean}">
-						<c:if
+								<c:if
 							test="${!empty webform.value['DataTarget'] && fn:indexOf(webform.value['DataTarget/Transport'],'database') >= 0}">
 							<c:set var="formid" value="${webform.value['DataTarget/FormId']}" />
 							<c:if test="${!empty formid}">
+						
 								<%--special case if resource filter: <c:set var="itemParam" value="${formid}${cms.separator}${cms.requestContext.siteRoot}${resPath}"/>--%>
 								<%
 					            CmsFormWorkBean workbean = cms.getReporting(String.valueOf(pageContext.getAttribute("formid")), String.valueOf(pageContext.getAttribute("webformpath")));
@@ -75,9 +100,9 @@
 									<fmt:param value="${fn:length(workBean.list)}" />
 								</fmt:message></h2>
 							</c:if>
-							<c:if test="${cms.showDetail[group]}">
+							<c:if test="${cms.showDetail[group] && fn:length(workBean.list) > 0}">
 								<a class="linkDetail"
-									href="<cms:link>${cms.requestContext.uri}?detail=true</cms:link>"
+									href="<cms:link>${cms.requestContext.uri}?report=true&detail=true</cms:link>"
 									title="<fmt:message key='report.next.detail.title'/>"><fmt:message
 									key="report.next.detail.headline" /></a>
 							</c:if>
@@ -95,6 +120,26 @@
 								file="%(link.strong:/system/modules/com.alkacon.opencms.survey/elements/include_paging.jsp:6eace4bb-1052-11dd-84af-371bb8ed1b84)"%>
 						</c:if> <%-- for each field print the answers --%> <c:forEach var="field"
 							items="${webform.valueList['InputField']}">
+							<c:set var="fieldOptionsBean" value="${field.value.FieldOptions}" />
+							<c:set var="fieldOptionsStr" value="" />
+							<c:if test="${fieldOptionsBean.exists}">
+								<c:set var="fieldOptionsStr" value="${fieldOptionsBean.stringValue}" />
+								
+							</c:if>
+							<% String fieldOptionsString = (String)pageContext.getAttribute("fieldOptionsStr");
+							   							   
+							   Map fieldOptions = CmsStringUtil.splitAsMap(fieldOptionsString, "|", "=");
+							   
+							   pageContext.setAttribute("fieldOptions", fieldOptions);
+							   
+							%>
+							<c:set var="averageDigits" value="1" />
+							<%
+								Long averageDigits = CmsAverageUtil.parseLong((String)fieldOptions.get("averageDigits"));
+								if (averageDigits != null) pageContext.setAttribute("averageDigits", averageDigits);
+								
+							%>
+
 							<c:if
 								test="${(param.detail && cms.showDetail[group]) || cms.fieldTypeCorrect[field.value['FieldType']]}">
 
@@ -105,11 +150,14 @@
 								<br />
 
 								<%-- is the detail page --%>
+								
 								<c:if test="${param.detail && cms.showDetail[group]}">
+								
 									<c:set var="itemParam"
 										value="${labeling[1]}${cms.separator}${curPage}${cms.separator}${field.value['FieldType']}" />
 									<c:forEach var="item"
 										items="${workBean.answerByField[itemParam]}">
+										
 										<div class="reportitem"><c:set var="defValue"
 											value="${item}" /> <c:forTokens
 											items="${field.value['FieldDefault']}" delims="|" var="def">
@@ -122,57 +170,97 @@
 										</div>
 									</c:forEach>
 								</c:if>
+									<c:set var="showAverage" value="${fieldOptions.showAverage}" />
 
 								<%-- is the overview page --%>
-								<c:if test="${!param.detail || !cms.showDetail[group]}">
-									<c:set var="answerCounts"
-										value="${workBean.answers[labeling[1]]}" />
-									<c:set var="answerList"
-										value="${fn:split(field.value['FieldDefault'], '|')}" />
-									<c:forEach var="item" items="${answerList}" varStatus="status">
-										<c:set var="itemKey" value="${item}" />
-										<c:if test="${fn:contains(itemKey, ':')}">
-											<c:set var="itemKey"
-												value="${fn:substringBefore(itemKey, ':')}" />
-										</c:if>
-										<c:set var="itemValue" value="${answerCounts[itemKey]}" />
-										<c:if test="${!empty itemValue}">
-											<div class="reportitem"><c:set var="width"
-												value="${ (itemValue/fn:length(workBean.list)) }" /> <c:set
-												var="defValue" value="${itemKey}" /> <c:forTokens
-												items="${field.value['FieldDefault']}" delims="|" var="def">
-												<c:if
-													test="${fn:contains(def, ':') && fn:substringBefore(def, ':') == itemKey}">
-													<c:set var="defValue"
-														value="${fn:substringAfter(def, ':')}" />
-												</c:if>
-											</c:forTokens>
-											<p class="reportanswer"><c:out value="${defValue}" /></p>
-											<span class="processbar"> <c:set var="curColor"
-												value="${color[(status.index%fn:length(color))]}" /> <span
-												class="bar"
-												style="width:${width * 100}%; background-color:${curColor}; color:${cms.textColor[curColor]};">
-											<fmt:formatNumber value="${width}" type="percent" /> </span> </span> <span
-												class="reportcount"><c:if
-												test="${showCount == 'true'}">(<c:out
-													value="${itemValue}" />)</c:if><br />
-											<br />
-											</span></div>
-										</c:if>
-									</c:forEach>
-								</c:if>
+																
+								<c:if test="${(!param.detail || !cms.showDetail[group])}">
+									
+									<c:if test="${showAverage eq 'true' || showAverage eq 'only'}">
+										<c:set var="avg" value="${workBean.averagesForFields[labeling[1]]}" />
+									
+										<c:if test="${!empty avg}">
+											<c:set var="displayAvg"><fmt:formatNumber value="${avg}" minFractionDigits="${averageDigits}" maxFractionDigits="${averageDigits}" /></c:set>
+											
+											
+												<c:out value="${fieldOptions.averageText}" />
+											
+											<c:set var="barColor" value="${content.value.Color.stringValue}" />
+											<c:set var="fieldDefault" value="${field.value.FieldDefault.stringValue}" />
+											
+											<%
+												String color = (String)pageContext.getAttribute("avgcolor");
+												if (color == null) color = "#000000";
+												String fieldDefault = (String)pageContext.getAttribute("fieldDefault");
+												if (fieldDefault == null) fieldDefault = "";												
+												String avg = (String)pageContext.getAttribute("avg").toString();
+												String displayAvg = (String)pageContext.getAttribute("displayAvg");
+												if ("desc".equals(fieldOptions.get("orientation"))) {
+													out.println(CmsAverageUtil.getBarHtmlReverse(fieldDefault, avg, displayAvg, color));
+												} else {
+													out.println(CmsAverageUtil.getBarHtml(fieldDefault, avg, displayAvg, color));
+												}
+												//out.println(fieldOptions.get("averageText"));
+												
+											%> <br /><br /><br />
 
+										
+										</c:if>
+										
+									</c:if>
+									<c:if test="${showAverage ne 'only'}">
+										<c:set var="answerCounts"
+											value="${workBean.answers[labeling[1]]}" />
+										<c:set var="answerList"
+											value="${fn:split(field.value['FieldDefault'], '|')}" />
+	
+										<c:set var="colorIndex" value="0" />
+										<c:forEach var="item" items="${answerList}" varStatus="status">
+											
+											<c:set var="itemKey" value="${item}" />
+											<c:if test="${fn:contains(itemKey, ':')}">
+												<c:set var="itemKey"
+													value="${fn:substringBefore(itemKey, ':')}" />
+											</c:if>
+											<c:set var="itemValue" value="${answerCounts[itemKey]}" />
+	
+											<c:if test="${!empty itemValue}">
+												<div class="reportitem"><c:set var="width"
+													value="${ (itemValue/fn:length(workBean.list)) }" /> <c:set
+													var="defValue" value="${itemKey}" /> <c:forTokens
+													items="${field.value['FieldDefault']}" delims="|" var="def">
+													<c:if
+														test="${fn:contains(def, ':') && fn:substringBefore(def, ':') == itemKey}">
+														<c:set var="defValue"
+															value="${fn:substringAfter(def, ':')}" />
+													</c:if>
+												</c:forTokens>
+												<p class="reportanswer"><c:out value="${defValue}" /></p>
+												<span class="processbar"> <c:set var="curColor"
+													value="${color[(colorIndex%fn:length(color))]}" /> <span
+													class="bar"
+													style="width:${width * 100}%; background-color:${curColor}; color:${cms.textColor[curColor]};">
+												<fmt:formatNumber value="${width}" type="percent" /> </span> </span> <span
+													class="reportcount"><c:if
+													test="${showCount == 'true'}">(<c:out
+														value="${itemValue}" />)</c:if><br />
+												<br />
+												</span></div>
+												<c:set var="colorIndex" value="${colorIndex + 1}" />
+											</c:if>
+										</c:forEach>
+									</c:if>
+								</c:if>
 							</c:if>
 						</c:forEach></div>
 					</c:if>
-				</cms:contentload>
-			</c:if>
+
 			<c:if
 				test="${!empty content.value['AddText'] && (!param.detail || !cms.showDetail[group])}">
 				<c:out value="${content.value['AddText']}" escapeXml="false" />
 			</c:if>
 		</cms:contentload>
-	</c:catch>
+	</c:catch> 
 
 	<c:if test="${empty workBean && empty error}">
 		<h1><fmt:message key="report.error.headline" /></h1>
@@ -180,6 +268,7 @@
 	</c:if>
 
 	<c:if test="${!empty error}">
+		errorpage
 		<h1><fmt:message key="report.error.headline" /></h1>
 		<p><fmt:message key="report.error.text" /><c:out
 			value="${ error }" /></p>

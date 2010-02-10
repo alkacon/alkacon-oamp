@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.survey/src/com/alkacon/opencms/survey/CmsFormReportingBean.java,v $
- * Date   : $Date: 2009/06/19 09:38:06 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2010/02/10 09:25:31 $
+ * Version: $Revision: 1.7 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -40,6 +40,7 @@ import com.alkacon.opencms.formgenerator.I_CmsField;
 import org.opencms.file.CmsGroup;
 import org.opencms.file.CmsUser;
 import org.opencms.jsp.CmsJspActionElement;
+import org.opencms.main.CmsLog;
 import org.opencms.util.CmsStringUtil;
 
 import java.awt.Color;
@@ -53,13 +54,14 @@ import javax.servlet.jsp.PageContext;
 
 import org.apache.commons.collections.Transformer;
 import org.apache.commons.collections.map.LazyMap;
+import org.apache.commons.logging.Log;
 
 /**
  * Contains functions to show the reporting of the webform.<p>
  * 
  * @author Anja Roettgers
  * 
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  * 
  * @since 7.0.4
  */
@@ -70,6 +72,9 @@ public class CmsFormReportingBean extends CmsJspActionElement {
 
     /** the separator between light and dark colors.**/
     public static final int SEP_DARK_LIGHT = (3 * 255) / 2;
+
+    /** The log object for this class. */
+    private static final Log LOG = CmsLog.getLog(CmsFormReportingBean.class);
 
     /** 
      * Till now, only special types can be reported.<p>
@@ -121,11 +126,8 @@ public class CmsFormReportingBean extends CmsJspActionElement {
     public CmsFormReportingBean(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         super(context, req, res);
-        
 
     }
-    
-
 
     /**
      * Checks if the given type is from the correct type to display in the report.<p>
@@ -281,9 +283,9 @@ public class CmsFormReportingBean extends CmsJspActionElement {
      */
     public CmsFormWorkBean getReporting(String formid, String formPath) {
 
-    	
         CmsFormWorkBean result = new CmsFormWorkBean();
         String[] parameters = CmsStringUtil.splitAsArray(formid, PARAM_SEPARATOR);
+
         if (parameters.length > 0) {
             String formId = parameters[0];
             String resId = null;

@@ -12,14 +12,15 @@
 
 	<xsd:complexType name="OpenCmsAlkaconSurveyReport">
 		<xsd:sequence>
-			<xsd:element name="Webform" type="OpenCmsVfsFile"/>
 			<xsd:element name="Color" type="OpenCmsColor" minOccurs="1" maxOccurs="unbounded"/>
 			<xsd:element name="DetailGroup" type="OpenCmsString" minOccurs="0"/>
+			<xsd:element name="AverageColor" type="OpenCmsColor" minOccurs="0" maxOccurs="1" />
 			<xsd:element name="Text" type="OpenCmsString" minOccurs="0" />
 			<xsd:element name="ShowCount" type="OpenCmsBoolean" minOccurs="1" maxOccurs="1" />
 			<xsd:element name="AddText" type="OpenCmsHtml" minOccurs="0" />
+			<xsd:element name="SurveyClosedText" type="OpenCmsHtml" minOccurs="0" maxOccurs="1" />
 		</xsd:sequence>
-		<xsd:attribute name="language" type="OpenCmsLocale" use="required"/>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
 	</xsd:complexType>
 
 	<xsd:annotation>
@@ -28,9 +29,9 @@
 			<preview uri="${previewtempfile}" />
 			<defaults>
 				<default element="DetailGroup" value="Administrators"/>
+				<default element="AverageColor" value="#ffff00" />
 			</defaults>
 			<validationrules>
-				<rule element="Webform" regex=".+" type="error" message="${key.err.xmlcontent.field.empty}"/>
 				<rule element="Color" regex=".+" type="error" message="${key.err.xmlcontent.field.empty}"/>
 				<rule element="DetailGroup" regex=".+" type="error" message="${key.err.xmlcontent.field.empty}"/>
 			</validationrules>

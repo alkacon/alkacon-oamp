@@ -4,7 +4,7 @@
 	<info>
 		<creator>Admin</creator>
 		<opencms_version>7.5.0</opencms_version>
-		<createdate>Thu, 16 Apr 2009 14:26:05 GMT</createdate>
+		<createdate>Mon, 06 Jul 2009 08:55:27 GMT</createdate>
 		<infoproject>Offline</infoproject>
 		<export_version>7</export_version>
 	</info>
@@ -16,7 +16,7 @@
 		<description><![CDATA[<p>This module contains online form functionality for OpenCms.</p>
 <p>This module can easily be used to create online input forms.</p>
 <p><i>(c) 2009 by Alkacon Software GmbH (http://www.alkacon.com).</i></p>]]></description>
-		<version>1.3.2</version>
+		<version>1.3.5</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
 		<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
@@ -69,28 +69,46 @@
 		<file>
 			<destination>system</destination>
 			<type>folder</type>
-			<uuidstructure>6f0db124-0098-11dd-a08b-111d34530985</uuidstructure>
-			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<uuidstructure>0df5a6fc-6159-11de-b0fa-25c0204583a8</uuidstructure>
+			<datelastmodified>Thu, 25 Jun 2009 07:23:18 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Wed, 02 Apr 2008 09:37:38 GMT</datecreated>
+			<datecreated>Thu, 25 Jun 2009 07:23:18 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
 			<relations/>
-			<accesscontrol/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
+					<flags>514</flags>
+					<permissionset>
+						<allowed>1</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
 		</file>
 		<file>
 			<destination>system/modules</destination>
 			<type>folder</type>
-			<uuidstructure>6f3d4cdd-0098-11dd-a08b-111d34530985</uuidstructure>
-			<datelastmodified>Wed, 02 Apr 2008 09:37:39 GMT</datelastmodified>
+			<uuidstructure>0e7fe5d5-6159-11de-b0fa-25c0204583a8</uuidstructure>
+			<datelastmodified>Thu, 25 Jun 2009 07:23:19 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Wed, 02 Apr 2008 09:37:39 GMT</datecreated>
+			<datecreated>Thu, 25 Jun 2009 07:23:19 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
 			<relations/>
-			<accesscontrol/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
+					<flags>514</flags>
+					<permissionset>
+						<allowed>5</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
 		</file>
 		<file>
 			<destination>system/modules/com.alkacon.opencms.formgenerator</destination>
@@ -426,7 +444,7 @@
 			<type>plain</type>
 			<uuidstructure>8f79292a-2d87-11dd-9c25-5fc9fa232cc8</uuidstructure>
 			<uuidresource>8f79292b-2d87-11dd-9c25-5fc9fa232cc8</uuidresource>
-			<datelastmodified>Wed, 21 May 2008 09:18:53 GMT</datelastmodified>
+			<datelastmodified>Wed, 01 Jul 2009 08:51:54 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -446,7 +464,7 @@
 			<type>plain</type>
 			<uuidstructure>a40352ac-11b7-11db-91cd-fdbae480baca</uuidstructure>
 			<uuidresource>ef61baa7-695b-11d9-8aac-f55bb5376c25</uuidresource>
-			<datelastmodified>Fri, 21 Dec 2007 14:16:01 GMT</datelastmodified>
+			<datelastmodified>Wed, 01 Jul 2009 08:52:22 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -465,7 +483,7 @@
 			<type>plain</type>
 			<uuidstructure>a93f84e2-2d87-11dd-9c25-5fc9fa232cc8</uuidstructure>
 			<uuidresource>8f79292b-2d87-11dd-9c25-5fc9fa232cc8</uuidresource>
-			<datelastmodified>Wed, 21 May 2008 09:18:53 GMT</datelastmodified>
+			<datelastmodified>Wed, 01 Jul 2009 08:51:54 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -686,6 +704,26 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/lib/jcaptcha-1.0-all.jar</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/lib/jcaptcha-1.0-all.jar</destination>
+			<type>binary</type>
+			<uuidstructure>5f0ec210-0fea-11de-9d54-8374f46a75af</uuidstructure>
+			<uuidresource>5f0ec211-0fea-11de-9d54-8374f46a75af</uuidresource>
+			<datelastmodified>Fri, 13 Mar 2009 16:16:55 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 13 Mar 2009 16:16:55 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[jcaptcha-1.0-all]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
 			<source>system/modules/com.alkacon.opencms.formgenerator/lib/jcaptcha-all-1.0-RC2.0.1.jar</source>
 			<destination>system/modules/com.alkacon.opencms.formgenerator/lib/jcaptcha-all-1.0-RC2.0.1.jar</destination>
 			<type>binary</type>
@@ -720,26 +758,6 @@
 				<property>
 					<name>Title</name>
 					<value><![CDATA[jcaptcha-all-1.0-RC6]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol/>
-		</file>	
-		<file>
-			<source>system/modules/com.alkacon.opencms.formgenerator/lib/jcaptcha-1.0-all.jar</source>
-			<destination>system/modules/com.alkacon.opencms.formgenerator/lib/jcaptcha-1.0-all.jar</destination>
-			<type>binary</type>
-			<uuidstructure>5f0ec210-0fea-11de-9d54-8374f46a75af</uuidstructure>
-			<uuidresource>5f0ec211-0fea-11de-9d54-8374f46a75af</uuidresource>
-			<datelastmodified>Fri, 13 Mar 2009 16:16:55 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Fri, 13 Mar 2009 16:16:55 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property>
-					<name>Title</name>
-					<value><![CDATA[jcaptcha-1.0-all]]></value>
 				</property>
 			</properties>
 			<relations/>
@@ -796,7 +814,7 @@
 			<type>jsp</type>
 			<uuidstructure>a424bd7e-11b7-11db-91cd-fdbae480baca</uuidstructure>
 			<uuidresource>ffb9f73b-63b8-11d9-ab74-f55bb5376c25</uuidresource>
-			<datelastmodified>Tue, 15 Jan 2008 08:34:38 GMT</datelastmodified>
+			<datelastmodified>Fri, 26 Jun 2009 13:32:23 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -903,7 +921,7 @@
 			<type>plain</type>
 			<uuidstructure>a42e5a78-11b7-11db-91cd-fdbae480baca</uuidstructure>
 			<uuidresource>a58c4c68-630d-11d9-ba58-f55bb5376c25</uuidresource>
-			<datelastmodified>Fri, 21 Dec 2007 13:15:14 GMT</datelastmodified>
+			<datelastmodified>Thu, 25 Jun 2009 13:30:03 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -943,7 +961,7 @@
 			<type>plain</type>
 			<uuidstructure>a430a46b-11b7-11db-91cd-fdbae480baca</uuidstructure>
 			<uuidresource>adf38d6e-630b-11d9-ba58-f55bb5376c25</uuidresource>
-			<datelastmodified>Fri, 21 Dec 2007 13:12:02 GMT</datelastmodified>
+			<datelastmodified>Wed, 01 Jul 2009 11:03:27 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -1041,7 +1059,24 @@
 				</property>
 			</properties>
 			<relations/>
-			<accesscontrol/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>ALL_OTHERS</uuidprincipal>
+					<flags>134</flags>
+					<permissionset>
+						<allowed>0</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+				<accessentry>
+					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
+					<flags>518</flags>
+					<permissionset>
+						<allowed>5</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
 		</file>
 		<file>
 			<destination>system/workplace/admin</destination>
@@ -1594,7 +1629,7 @@
 			<type>jsp</type>
 			<uuidstructure>7c6d1fcb-29d6-11de-8eae-03821fc5d684</uuidstructure>
 			<uuidresource>e034e415-f500-11dc-b0bf-371bb8ed1b84</uuidresource>
-			<datelastmodified>Thu, 16 Apr 2009 07:35:32 GMT</datelastmodified>
+			<datelastmodified>Wed, 19 Mar 2008 16:28:06 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Tue, 18 Mar 2008 15:35:02 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -1633,7 +1668,7 @@
 			<type>jsp</type>
 			<uuidstructure>7c7b50a1-29d6-11de-8eae-03821fc5d684</uuidstructure>
 			<uuidresource>7cc20750-f115-11dc-a71e-371bb8ed1b84</uuidresource>
-			<datelastmodified>Thu, 16 Apr 2009 07:33:17 GMT</datelastmodified>
+			<datelastmodified>Mon, 17 Mar 2008 15:14:16 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Thu, 13 Mar 2008 15:52:30 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -1684,7 +1719,7 @@
 			<destination>system/workplace/resources/filetypes</destination>
 			<type>folder</type>
 			<uuidstructure>83ca1dcc-11b7-11db-91cd-fdbae480bac9</uuidstructure>
-			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<datelastmodified>Mon, 27 Jun 2005 08:00:00 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
 			<usercreated>Admin</usercreated>

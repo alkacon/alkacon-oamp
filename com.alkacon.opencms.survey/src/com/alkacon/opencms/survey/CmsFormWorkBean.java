@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.survey/src/com/alkacon/opencms/survey/CmsFormWorkBean.java,v $
- * Date   : $Date: 2009/06/19 09:41:31 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2010/02/10 09:25:31 $
+ * Version: $Revision: 1.5 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -34,6 +34,7 @@ package com.alkacon.opencms.survey;
 import com.alkacon.opencms.formgenerator.CmsCheckboxField;
 import com.alkacon.opencms.formgenerator.CmsFieldFactory;
 import com.alkacon.opencms.formgenerator.CmsForm;
+import com.alkacon.opencms.formgenerator.CmsFormContentUtil;
 import com.alkacon.opencms.formgenerator.I_CmsField;
 import com.alkacon.opencms.formgenerator.database.CmsFormDataAccess;
 import com.alkacon.opencms.formgenerator.database.CmsFormDataBean;
@@ -67,7 +68,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Anja Roettgers
  * 
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * 
  * @since 7.0.4
  */
@@ -84,7 +85,6 @@ public class CmsFormWorkBean {
          */
         public int compare(CmsFormDataBean o1, CmsFormDataBean o2) {
 
-        
             long date1 = o1.getDateCreated();
             long date2 = o2.getDateCreated();
 
@@ -165,6 +165,7 @@ public class CmsFormWorkBean {
         List result = new ArrayList();
         String[] param = CmsStringUtil.splitAsArray(parameters, CmsFormReportingBean.PARAM_SEPARATOR);
         if ((param.length <= 2) || (m_list == null)) {
+
             return result;
         }
 
@@ -184,13 +185,15 @@ public class CmsFormWorkBean {
         }
 
         // only the correct types can be splitted
-        I_CmsField formField = (I_CmsField)this.m_fieldTypes.get(param[2]);
+        I_CmsField formField = this.m_fieldTypes.get(param[2]);
         if (CmsFormReportingBean.isFieldTypeCorrect(param[2])) {
             if (isMultiSelectField(formField)) {
                 result = CmsStringUtil.splitAsList(value, ',');
             } else {
                 result.add(value);
             }
+        } else {
+            result.add(value);
         }
         return result;
     }
@@ -237,10 +240,9 @@ public class CmsFormWorkBean {
         for (int i = 0; i < m_list.size(); i++) {
             data = (CmsFormDataBean)m_list.get(i);
             value = data.getFieldValue(field);
-
             // a value can be null if its not a mandatory field
             if (value != null) {
-                formField = (I_CmsField)this.m_fieldTypes.get(field);
+                formField = this.m_fieldTypes.get(field);
                 if (isMultiSelectField(formField)) {
                     answers = CmsStringUtil.splitAsList(value, ',');
                 } else {
@@ -261,6 +263,51 @@ public class CmsFormWorkBean {
             }
         }
         return result;
+    }
+
+    /**
+     * Returns the average of the numeric entries for this field, or null if there are no numeric
+     * entries. 
+     * 
+     * @param field The name of the field for which averages should be calculated.
+     * @return the average of the field values, or null if there were no non-numeric field values
+     */
+    public Double getAverageForField(String field) {
+
+        long count = 0;
+        double sum = 0;
+        for (int i = 0; i < m_list.size(); i++) {
+            CmsFormDataBean data = (CmsFormDataBean)m_list.get(i);
+            String valueAsString = data.getFieldValue(field);
+            double value = 0;
+            try {
+                value = Double.parseDouble(valueAsString);
+                count += 1;
+                sum += value;
+            } catch (Exception e) {
+                // don't count non-numeric strings or nulls
+            }
+        }
+        if (count == 0) {
+            return null;
+        }
+        return new Double(sum / count);
+    }
+
+    /**
+     * Returns a lazy map that maps fields to the average value produced by {@link CmsFormWorkBean#getAverageForField(String)}
+     * @return a lazy map that maps fields to the average value produced by {@link CmsFormWorkBean#getAverageForField(String)}
+     * 
+     */
+    public Map getAveragesForFields() {
+
+        return LazyMap.decorate(new HashMap(), new Transformer() {
+
+            public Object transform(Object o) {
+
+                return getAverageForField((String)o);
+            }
+        });
     }
 
     /**
@@ -313,13 +360,14 @@ public class CmsFormWorkBean {
                 CmsFile file = cms.readFile(resource);
                 CmsXmlContent xmlContent = CmsXmlContentFactory.unmarshal(cms, file);
 
-                List fieldValues = xmlContent.getValues(CmsForm.NODE_INPUTFIELD, locale);
+                List fieldValues = CmsFormContentUtil.getContentValues(xmlContent, CmsForm.NODE_INPUTFIELD, locale);
                 int fieldValueSize = fieldValues.size();
                 CmsFieldFactory fieldFactory = CmsFieldFactory.getSharedInstance();
                 String dbFieldName;
 
                 for (int i = 0; i < fieldValueSize; i++) {
                     I_CmsXmlContentValue inputField = (I_CmsXmlContentValue)fieldValues.get(i);
+
                     String inputFieldPath = inputField.getPath() + "/";
                     I_CmsField field = null;
 
