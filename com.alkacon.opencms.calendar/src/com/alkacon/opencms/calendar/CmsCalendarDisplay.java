@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.calendar/src/com/alkacon/opencms/calendar/CmsCalendarDisplay.java,v $
- * Date   : $Date: 2010/01/22 09:19:46 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2010/02/10 08:54:49 $
+ * Version: $Revision: 1.4 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -36,6 +36,7 @@ import com.alkacon.opencms.commons.CmsCollectorConfiguration;
 import com.alkacon.opencms.commons.CmsConfigurableCollector;
 
 import org.opencms.file.CmsFile;
+import org.opencms.file.CmsObject;
 import org.opencms.file.CmsPropertyDefinition;
 import org.opencms.file.CmsResource;
 import org.opencms.file.collectors.I_CmsResourceCollector;
@@ -74,7 +75,7 @@ import org.apache.commons.logging.Log;
  * @author Andreas Zahner
  * @author Peter Bonrad
  * 
- * @version $Revision: 1.3 $ 
+ * @version $Revision: 1.4 $ 
  * 
  * @since 6.0.1
  */
@@ -1150,24 +1151,25 @@ public class CmsCalendarDisplay extends CmsCalendar {
         String pTitle,
         String pDescription) {
 
+        CmsObject cms = getJsp().getCmsObject();
         List result = new ArrayList(resources.size());
         // instanciate default serial date content class
         I_CmsCalendarSerialDateContent defaultContent = new CmsSerialDateContentBean();
         for (int i = resources.size() - 1; i > -1; i--) {
             // loop the resources
             CmsResource res = (CmsResource)resources.get(i);
-            String resPath = getJsp().getRequestContext().getSitePath(res);
             // read the title of the resource
-            String title = getJsp().property(pTitle, resPath, null);
+            String title = getPropertyValue(cms, res, pTitle, null);
             // read the start date property
-            String startDate = getJsp().property(pStartDate, resPath, null);
+            String startDate = getPropertyValue(cms, res, pStartDate, null);
             if (CmsStringUtil.isNotEmpty(title) && CmsStringUtil.isNotEmpty(startDate)) {
                 // required properties were found, resource can be used as an entry
-                String endDate = getJsp().property(pEndDate, resPath, startDate);
-                String description = getJsp().property(pDescription, resPath, "");
-                String showTimeStr = getJsp().property(
+                String endDate = getPropertyValue(cms, res, pEndDate, startDate);
+                String description = getPropertyValue(cms, res, pDescription, "");
+                String showTimeStr = getPropertyValue(
+                    cms,
+                    res,
                     I_CmsCalendarEntryData.PROPERTY_CALENDAR_SHOWTIME,
-                    resPath,
                     CmsStringUtil.TRUE);
                 // determine entry resource type
                 String type = "";
@@ -1175,9 +1177,11 @@ public class CmsCalendarDisplay extends CmsCalendar {
                     type = OpenCms.getResourceManager().getResourceType(res.getTypeId()).getTypeName();
                 } catch (CmsException e) {
                     // ignore, this information is not important
+                    LOG.warn(e.getLocalizedMessage(), e);
                 }
 
                 // create the calendar entry data
+                String resPath = getJsp().getRequestContext().getSitePath(res);
                 CmsCalendarEntryData entryData = new CmsCalendarEntryData(title, description, type, resPath, 0);
                 entryData.setShowTime(Boolean.valueOf(showTimeStr).booleanValue());
 
@@ -1199,16 +1203,16 @@ public class CmsCalendarDisplay extends CmsCalendar {
                 } else {
                     // this might be a serial date, try to create it
                     CmsCalendarEntry entry = null;
-                    String clazzName = getJsp().property(PROPERTY_CALENDAR_ENDDATE, resPath, "");
+                    String clazzName = getPropertyValue(cms, res, pEndDate, null);
                     if (CmsStringUtil.isEmpty(clazzName)) {
                         // did not find a class name in the property, use default content bean to get entry
-                        entry = defaultContent.getSerialEntryForCalendar(getJsp().getCmsObject(), res);
+                        entry = defaultContent.getSerialEntryForCalendar(cms, res);
                     } else {
                         // found a class name, use it to get the entry 
                         try {
                             I_CmsCalendarSerialDateContent serialContent = (I_CmsCalendarSerialDateContent)Class.forName(
                                 clazzName).newInstance();
-                            entry = serialContent.getSerialEntryForCalendar(getJsp().getCmsObject(), res);
+                            entry = serialContent.getSerialEntryForCalendar(cms, res);
                         } catch (Exception e) {
                             // implementing class was not found
                             if (LOG.isErrorEnabled()) {
@@ -1216,7 +1220,7 @@ public class CmsCalendarDisplay extends CmsCalendar {
                                     Messages.LOG_CALENDAR_SERIALDATE_CLASS_3,
                                     clazzName,
                                     PROPERTY_CALENDAR_ENDDATE,
-                                    resPath));
+                                    resPath), e);
                             }
                         }
                     }
@@ -1227,6 +1231,26 @@ public class CmsCalendarDisplay extends CmsCalendar {
             }
         }
         return result;
+    }
+
+    /**
+     * Returns value of the given property from the given resource, or the given default value if any problem.<p>
+     * 
+     * @param cms the current CMS context
+     * @param resource the resource 
+     * @param propertyName the property name
+     * @param defaultValue the default value
+     * 
+     * @return value of the given property from the given resource
+     */
+    protected String getPropertyValue(CmsObject cms, CmsResource resource, String propertyName, String defaultValue) {
+
+        try {
+            return cms.readPropertyObject(resource, propertyName, false).getValue(defaultValue);
+        } catch (CmsException e) {
+            LOG.warn(e.getLocalizedMessage(), e);
+            return defaultValue;
+        }
     }
 
     /**
