@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.registration/src/com/alkacon/opencms/registration/CmsRegistrationXmlContentHandler.java,v $
- * Date   : $Date: 2008/02/19 13:22:30 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2010/02/19 13:25:46 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -56,7 +56,7 @@ import java.util.Locale;
  *  
  * @author Michael Moossen
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *  
  * @since 7.0.3
  */
@@ -76,55 +76,58 @@ public class CmsRegistrationXmlContentHandler extends CmsDefaultXmlContentHandle
     public CmsFile prepareForWrite(CmsObject cms, CmsXmlContent content, CmsFile file) throws CmsException {
 
         // for each locale
-        Iterator locales = content.getLocales().iterator();
-        while (locales.hasNext()) {
-            Locale locale = (Locale)locales.next();
-            // check the account manager role for the given organizational unit 
-            CmsOrganizationalUnit ou = OpenCms.getOrgUnitManager().readOrganizationalUnit(
-                cms,
-                content.getStringValue(cms, CmsRegistrationForm.NODE_ACTION
-                    + "/"
-                    + CmsRegistrationForm.NODE_ORGANIZATIONALUNIT, locale));
-            OpenCms.getRoleManager().checkRole(cms, CmsRole.ACCOUNT_MANAGER.forOrgUnit(ou.getName()));
-            // check the account manager role for the organizational unit of the given group
-            if (content.getValue(CmsRegistrationForm.NODE_ACTION + "/" + CmsRegistrationForm.NODE_GROUP, locale) != null) {
-                String groupName = content.getStringValue(cms, CmsRegistrationForm.NODE_ACTION
-                    + "/"
-                    + CmsRegistrationForm.NODE_GROUP, locale);
-                if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(groupName)) {
-                    CmsGroup group = cms.readGroup(groupName);
-                    OpenCms.getRoleManager().checkRole(cms, CmsRole.ACCOUNT_MANAGER.forOrgUnit(group.getOuFqn()));
-                }
-            }
-            // check mandatory fields
-            List mandatories = new ArrayList(Arrays.asList(new String[] {"email", "password", "login"}));
-            if (Boolean.valueOf(
-                content.getStringValue(cms, CmsRegistrationForm.NODE_ACTION
-                    + "/"
-                    + CmsRegistrationForm.NODE_EMAILASLOGIN, locale)).booleanValue()) {
-                mandatories.remove(2);
-            }
-            Iterator fields = content.getValues(CmsForm.NODE_INPUTFIELD, locale).iterator();
-            while (fields.hasNext()) {
-                I_CmsXmlContentValue inputField = (I_CmsXmlContentValue)fields.next();
-                String stringValue = content.getStringValue(
+        if (file.getName().indexOf("~") != 0) {
+            Iterator locales = content.getLocales().iterator();
+            while (locales.hasNext()) {
+                Locale locale = (Locale)locales.next();
+                // check the account manager role for the given organizational unit 
+                CmsOrganizationalUnit ou = OpenCms.getOrgUnitManager().readOrganizationalUnit(
                     cms,
-                    inputField.getPath() + "/" + CmsForm.NODE_FIELDLABEL,
-                    locale);
-                if (mandatories.contains(stringValue)) {
-                    mandatories.remove(stringValue);
-                } else {
-                    int pos = stringValue.lastIndexOf("|");
-                    if ((pos >= 0) && (pos < stringValue.length() - 1)) {
-                        stringValue = stringValue.substring(pos + 1);
-                        if (mandatories.contains(stringValue)) {
-                            mandatories.remove(stringValue);
+                    content.getStringValue(cms, CmsRegistrationForm.NODE_ACTION
+                        + "/"
+                        + CmsRegistrationForm.NODE_ORGANIZATIONALUNIT, locale));
+                OpenCms.getRoleManager().checkRole(cms, CmsRole.ACCOUNT_MANAGER.forOrgUnit(ou.getName()));
+                // check the account manager role for the organizational unit of the given group
+                if (content.getValue(CmsRegistrationForm.NODE_ACTION + "/" + CmsRegistrationForm.NODE_GROUP, locale) != null) {
+                    String groupName = content.getStringValue(cms, CmsRegistrationForm.NODE_ACTION
+                        + "/"
+                        + CmsRegistrationForm.NODE_GROUP, locale);
+                    if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(groupName)) {
+                        CmsGroup group = cms.readGroup(groupName);
+                        OpenCms.getRoleManager().checkRole(cms, CmsRole.ACCOUNT_MANAGER.forOrgUnit(group.getOuFqn()));
+                    }
+                }
+                // check mandatory fields
+                List mandatories = new ArrayList(Arrays.asList(new String[] {"email", "password", "login"}));
+                if (Boolean.valueOf(
+                    content.getStringValue(cms, CmsRegistrationForm.NODE_ACTION
+                        + "/"
+                        + CmsRegistrationForm.NODE_EMAILASLOGIN, locale)).booleanValue()) {
+                    mandatories.remove(2);
+                }
+                Iterator fields = content.getValues(CmsForm.NODE_INPUTFIELD, locale).iterator();
+                while (fields.hasNext()) {
+                    I_CmsXmlContentValue inputField = (I_CmsXmlContentValue)fields.next();
+                    String stringValue = content.getStringValue(cms, inputField.getPath()
+                        + "/"
+                        + CmsForm.NODE_FIELDLABEL, locale);
+                    if (mandatories.contains(stringValue)) {
+                        mandatories.remove(stringValue);
+                    } else {
+                        int pos = stringValue.lastIndexOf("|");
+                        if ((pos >= 0) && (pos < stringValue.length() - 1)) {
+                            stringValue = stringValue.substring(pos + 1);
+                            if (mandatories.contains(stringValue)) {
+                                mandatories.remove(stringValue);
+                            }
                         }
                     }
                 }
-            }
-            if (!mandatories.isEmpty()) {
-                throw new CmsException(Messages.get().container(Messages.ERR_MANDATORY_FIELDS_MISSING_1, mandatories));
+                if (!mandatories.isEmpty()) {
+                    throw new CmsException(Messages.get().container(
+                        Messages.ERR_MANDATORY_FIELDS_MISSING_1,
+                        mandatories));
+                }
             }
         }
         return super.prepareForWrite(cms, content, file);
