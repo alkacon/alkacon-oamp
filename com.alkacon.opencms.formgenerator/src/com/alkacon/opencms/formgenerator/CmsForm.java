@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
- * Date   : $Date: 2010/02/10 09:25:31 $
- * Version: $Revision: 1.17 $
+ * Date   : $Date: 2010/02/19 16:07:14 $
+ * Version: $Revision: 1.18 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -69,7 +69,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  * 
  * @since 7.0.4 
  */
@@ -1160,7 +1160,6 @@ public class CmsForm {
     /**
      * Checks if the given value is empty and returns in that case the default value.<p>
      * 
-     * No End-User method but needed by the survey module too.<p>
      * @param value the configuration value to check
      * @param defaultValue the default value to return in case the value is empty
      * @return the checked value
@@ -1169,6 +1168,24 @@ public class CmsForm {
 
         if (CmsStringUtil.isNotEmpty(value)) {
             return value;
+        }
+        return defaultValue;
+    }
+
+    /**
+     * If the given value is not empty, macros in it will be resolved, otherwise returns the default value.<p>
+     * 
+     * @param resolver the macro resolver to use
+     * @param value the configuration value to check and resolve macros in
+     * @param defaultValue the default value to return in case the value is empty
+     * 
+     * @return the checked value
+     */
+    public static String getConfigurationValue(CmsMacroResolver resolver, String value, String defaultValue) {
+
+        if (CmsStringUtil.isNotEmpty(value)) {
+            String result = resolver.resolveMacros(value);
+            return result;
         }
         return defaultValue;
     }
@@ -1277,18 +1294,21 @@ public class CmsForm {
     protected void initFormGlobalConfiguration(CmsXmlContent content, CmsObject cms, Locale locale, CmsMessages messages)
     throws Exception {
 
+        // create a macro resolver with the cms object
+        CmsMacroResolver resolver = CmsMacroResolver.newInstance().setCmsObject(cms).setKeepEmptyMacros(true);
+
         // get the form text
         String stringValue = getContentStringValue(content, cms, NODE_FORMTEXT, locale);
-        setFormText(getConfigurationValue(stringValue, ""));
+        setFormText(getConfigurationValue(resolver, stringValue, ""));
         // get the form middle text
         stringValue = getContentStringValue(content, cms, NODE_FORMMIDDLETEXT, locale);
-        setFormMiddleText(getConfigurationValue(stringValue, ""));
+        setFormMiddleText(getConfigurationValue(resolver, stringValue, ""));
         // get the form footer text
         stringValue = getContentStringValue(content, cms, NODE_FORMFOOTERTEXT, locale);
-        setFormFooterText(getConfigurationValue(stringValue, ""));
+        setFormFooterText(getConfigurationValue(resolver, stringValue, ""));
         // get the form confirmation text
         stringValue = getContentStringValue(content, cms, NODE_FORMCONFIRMATION, locale);
-        setFormConfirmationText(getConfigurationValue(stringValue, ""));
+        setFormConfirmationText(getConfigurationValue(resolver, stringValue, ""));
         // get the optional target URI
         stringValue = getContentStringValue(content, cms, NODE_TARGET_URI, locale);
         setTargetUri(getConfigurationValue(stringValue, ""));
@@ -1300,7 +1320,7 @@ public class CmsForm {
         setMailTo(getConfigurationValue(stringValue, ""));
         // get the mail subject
         stringValue = getContentStringValue(content, cms, NODE_MAILSUBJECT, locale);
-        setMailSubject(getConfigurationValue(stringValue, ""));
+        setMailSubject(getConfigurationValue(resolver, stringValue, ""));
         // get the optional mail subject prefix from localized messages
         stringValue = messages.key("form.mailsubject.prefix");
         if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(stringValue)) {
@@ -1315,10 +1335,10 @@ public class CmsForm {
         if (mailTextValue != null) {
             // get the mail text as plain text
             stringValue = mailTextValue.getPlainText(cms);
-            setMailTextPlain(getConfigurationValue(stringValue, ""));
+            setMailTextPlain(getConfigurationValue(resolver, stringValue, ""));
             // get the mail text
             stringValue = mailTextValue.getStringValue(cms);
-            setMailText(getConfigurationValue(stringValue, ""));
+            setMailText(getConfigurationValue(resolver, stringValue, ""));
         } else {
             setMailTextPlain("");
             setMailText("");
@@ -1364,7 +1384,7 @@ public class CmsForm {
         setShowCheck(Boolean.valueOf(stringValue).booleanValue());
         // get the check page text
         stringValue = getContentStringValue(content, cms, pathPrefix + NODE_FORMCHECKTEXT, locale);
-        setFormCheckText(getConfigurationValue(stringValue, ""));
+        setFormCheckText(getConfigurationValue(resolver, stringValue, ""));
         // get the dynamic fields class
         stringValue = getContentStringValue(content, cms, pathPrefix + NODE_DYNAMICFIELDCLASS, locale);
         setDynamicFieldClass(getConfigurationValue(stringValue, ""));
@@ -1410,9 +1430,9 @@ public class CmsForm {
             if (mailTextValue != null) {
                 // get the confirmation mail text
                 stringValue = mailTextValue.getPlainText(cms);
-                setConfirmationMailTextPlain(getConfigurationValue(stringValue, ""));
+                setConfirmationMailTextPlain(getConfigurationValue(resolver, stringValue, ""));
                 stringValue = mailTextValue.getStringValue(cms);
-                setConfirmationMailText(getConfigurationValue(stringValue, ""));
+                setConfirmationMailText(getConfigurationValue(resolver, stringValue, ""));
             } else {
                 setConfirmationMailTextPlain("");
                 setConfirmationMailText("");

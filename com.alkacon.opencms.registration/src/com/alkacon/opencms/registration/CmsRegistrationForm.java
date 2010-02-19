@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.registration/src/com/alkacon/opencms/registration/CmsRegistrationForm.java,v $
- * Date   : $Date: 2008/02/28 08:16:45 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2010/02/19 16:07:33 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -42,6 +42,7 @@ import org.opencms.file.CmsObject;
 import org.opencms.i18n.CmsMessages;
 import org.opencms.main.CmsIllegalArgumentException;
 import org.opencms.main.OpenCms;
+import org.opencms.util.CmsMacroResolver;
 import org.opencms.util.CmsStringUtil;
 import org.opencms.xml.content.CmsXmlContent;
 import org.opencms.xml.content.CmsXmlContentFactory;
@@ -56,7 +57,7 @@ import java.util.Locale;
  * 
  * @author Michael Moossen 
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4 
  */
@@ -287,20 +288,23 @@ public class CmsRegistrationForm extends CmsForm {
     protected void initFormGlobalConfiguration(CmsXmlContent content, CmsObject cms, Locale locale, CmsMessages messages)
     throws Exception {
 
+        // create a macro resolver with the cms object
+        CmsMacroResolver resolver = CmsMacroResolver.newInstance().setCmsObject(cms).setKeepEmptyMacros(true);
+
         // get the form text
         String stringValue = content.getStringValue(cms, NODE_FORMTEXT, locale);
-        setFormText(getConfigurationValue(stringValue, ""));
+        setFormText(getConfigurationValue(resolver, stringValue, ""));
         // get the form footer text
         stringValue = content.getStringValue(cms, NODE_FORMFOOTERTEXT, locale);
-        setFormFooterText(getConfigurationValue(stringValue, ""));
+        setFormFooterText(getConfigurationValue(resolver, stringValue, ""));
 
         // get the activation text
         stringValue = content.getStringValue(cms, NODE_ACTIVATIONTEXT, locale);
-        setFormActivationText(getConfigurationValue(stringValue, ""));
+        setFormActivationText(getConfigurationValue(resolver, stringValue, ""));
 
         // get the form confirmation text
         stringValue = content.getStringValue(cms, NODE_FORMCONFIRMATION, locale);
-        setFormConfirmationText(getConfigurationValue(stringValue, ""));
+        setFormConfirmationText(getConfigurationValue(resolver, stringValue, ""));
         // get the unused target URI
         setTargetUri("");
 
@@ -312,7 +316,7 @@ public class CmsRegistrationForm extends CmsForm {
         setShowCheck(Boolean.valueOf(stringValue).booleanValue());
         // get the check page text
         stringValue = content.getStringValue(cms, pathPrefix + NODE_FORMCHECKTEXT, locale);
-        setFormCheckText(getConfigurationValue(stringValue, ""));
+        setFormCheckText(getConfigurationValue(resolver, stringValue, ""));
         // get the dynamic fields class
         stringValue = content.getStringValue(cms, pathPrefix + NODE_DYNAMICFIELDCLASS, locale);
         setDynamicFieldClass(getConfigurationValue(stringValue, ""));
