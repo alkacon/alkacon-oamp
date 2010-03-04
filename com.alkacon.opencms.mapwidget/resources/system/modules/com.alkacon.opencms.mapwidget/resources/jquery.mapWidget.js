@@ -530,10 +530,11 @@ $.fn.mmMap = function(/**AsocArray*/options) /**jQuery*/ {
     // fill the supported map types
     var types = {};
     $.each(map.getMapTypes(), function(/**int*/i, /**GMapType*/type) {
+      var typeName = type.getUrlArg();
       // remember the type
-      types[type.getName().toLowerCase()] = type;
+      types[typeName] = type;
       // create a new option for this type
-      $type.append($("<option />").attr('value', type.getName().toLowerCase()).text(type.getName()));
+      $type.append($("<option />").attr('value', typeName).text(type.getName()));
     });
     // bind type to map
     $type.bind('change', function() {

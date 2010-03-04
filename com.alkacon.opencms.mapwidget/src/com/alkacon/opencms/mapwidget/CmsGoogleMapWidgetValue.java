@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.mapwidget/src/com/alkacon/opencms/mapwidget/CmsGoogleMapWidgetValue.java,v $
- * Date   : $Date: 2009/12/17 19:38:28 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2010/03/04 10:21:38 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -60,7 +60,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 7.0.5
  */
@@ -138,16 +138,13 @@ public class CmsGoogleMapWidgetValue {
     public static final class CmsGoogleMapType extends A_CmsModeStringEnumeration {
 
         /** Constant for the hybrid property. */
-        protected static final CmsGoogleMapType TYPE_HYBRID = new CmsGoogleMapType("hybrid");
+        protected static final CmsGoogleMapType TYPE_HYBRID = new CmsGoogleMapType("h");
 
         /** Constant for the normal type. */
-        protected static final CmsGoogleMapType TYPE_MAP = new CmsGoogleMapType("map");
-
-        /** Constant for the physical property. */
-        protected static final CmsGoogleMapType TYPE_PHYSICAL = new CmsGoogleMapType("physical");
+        protected static final CmsGoogleMapType TYPE_MAP = new CmsGoogleMapType("m");
 
         /** Constant for the satellite property. */
-        protected static final CmsGoogleMapType TYPE_SATELLITE = new CmsGoogleMapType("satellite");
+        protected static final CmsGoogleMapType TYPE_SATELLITE = new CmsGoogleMapType("k");
 
         /** The serial version id. */
         private static final long serialVersionUID = 4648592639170665274L;
@@ -163,9 +160,6 @@ public class CmsGoogleMapWidgetValue {
 
             if (mapType == null) {
                 return null;
-            }
-            if (mapType.equalsIgnoreCase(CmsGoogleMapType.TYPE_PHYSICAL.getMode())) {
-                return CmsGoogleMapType.TYPE_PHYSICAL;
             }
             if (mapType.equalsIgnoreCase(CmsGoogleMapType.TYPE_HYBRID.getMode())) {
                 return CmsGoogleMapType.TYPE_HYBRID;
@@ -207,16 +201,6 @@ public class CmsGoogleMapWidgetValue {
         public boolean isMap() {
 
             return this == CmsGoogleMapType.TYPE_MAP;
-        }
-
-        /**
-         * Checks if <code>this</code> is {@link #TYPE_PHYSICAL}.<p>
-         * 
-         * @return <code>true</code>, if <code>this</code> is {@link #TYPE_PHYSICAL}
-         */
-        public boolean isPhysical() {
-
-            return this == CmsGoogleMapType.TYPE_PHYSICAL;
         }
 
         /**
@@ -262,9 +246,6 @@ public class CmsGoogleMapWidgetValue {
 
     /** Constant for the map type normal. */
     public static final CmsGoogleMapType MAPTYPE_MAP = CmsGoogleMapType.TYPE_MAP;
-
-    /** Constant for the map type physical. */
-    public static final CmsGoogleMapType MAPTYPE_PHYSICAL = CmsGoogleMapType.TYPE_PHYSICAL;
 
     /** Constant for the map type satellite. */
     public static final CmsGoogleMapType MAPTYPE_SATELLITE = CmsGoogleMapType.TYPE_SATELLITE;
