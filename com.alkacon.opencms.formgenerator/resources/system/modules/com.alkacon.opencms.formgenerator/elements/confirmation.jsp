@@ -30,6 +30,8 @@ for (int i = 0, n = resultList.size(); i < n; i++) {
         value = formHandler.convertToHtmlValue(value);
     }else if (current instanceof CmsTableField) {
         value = ((CmsTableField)current).buildHtml(formHandler.getMessages(),false);
+    }else if (current instanceof CmsPasswordField) {
+        value = value.replaceAll(".", "*");
     }else {
         value = formHandler.convertToHtmlValue(value);
     }
