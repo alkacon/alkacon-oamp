@@ -31,30 +31,30 @@
 			<a href="javascript:doAction('delete','${comment.entryId}');" ><img title="<fmt:message key="comment.manager.delete" />" alt="<fmt:message key="comment.manager.delete" />" src='<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/resources/delete.png:ada571e4-1dc0-11dd-9741-111d34530985)</cms:link>' width='20' height='20'></a>
 		</div>
 		<div class="cmtCommentTitle">
-			<c:out value="${comment.field['subject']}"  />
+			<c:out value="${comment.field['subject']}" escapeXml="true" />
 		</div>
 		<div class="cmtCommentSubtitle">
 			<fmt:message key="comment.header.view.2" >
-				<fmt:param value="${comment.field['name']}" />
-				<fmt:param value="${date}" />
+				<fmt:param value="${fn:escapeXml(comment.field['name'])}" />
+				<fmt:param value="${fn:escapeXml(date)}" />
 			</fmt:message>
 		</div>
 	</div>
 	<div class="cmtCommentManager" >
 		<fmt:message key="comment.manager.username.1" >
-			<fmt:param value="${comment.field['username']}" />
+			<fmt:param value="${fn:escapeXml(comment.field['username'])}" />
 		</fmt:message><br>
 		<fmt:message key="comment.manager.email.1" >
-			<fmt:param value="${comment.field['email']}" />
+			<fmt:param value="${fn:escapeXml(comment.field['email'])}" />
 		</fmt:message><br>
 		<fmt:message key="comment.manager.ipaddress.1" >
-			<fmt:param value="${comment.field['ipaddress']}" />
+			<fmt:param value="${fn:escapeXml(comment.field['ipaddress'])}" />
 		</fmt:message><br>
 		<fmt:message key="comment.manager.count.1" >
-			<fmt:param value="${alkaconCmt.countByAuthor[comment.field['username']]}" />
+			<fmt:param value="${fn:escapeXml(alkaconCmt.countByAuthor[comment.field['username']])}" />
 		</fmt:message>
 	</div>
 	<div class="cmtCommentBody" >
-		<c:out value="${comment.field['comment']}"  escapeXml="false" />
+		<c:out value="${comment.field['comment']}"  escapeXml="true" />
 	</div>
 </div>

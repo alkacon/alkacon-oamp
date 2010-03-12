@@ -56,8 +56,9 @@ Legend:
 * Bug fixed
 - General comment
 
-1.0.2 - November 19, 2009
+1.0.2 - February 19th, 2009
 * Fixed issue with the not opening comments box
+* Implemented security enhancements
 
 1.0.1 - June 12, 2009
 * Fixed jquery compatibility issues with version 1.3.2 
