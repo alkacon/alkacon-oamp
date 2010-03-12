@@ -55,7 +55,7 @@ Legend:
 * Bug fixed
 - General comment
 
-1.0.2 - month day, year
+1.0.2 - February 19th, 2010
 * Avoid NullPointerException when advanced form configuration node in survey XML content is missing. 
 * Fixed issue with empty report in case of commas in labels. 
 - This version requires version 1.3.2 of OAMP webform.

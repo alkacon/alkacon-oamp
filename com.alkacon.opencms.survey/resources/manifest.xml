@@ -16,7 +16,7 @@
 		<description><![CDATA[<p>This module contains survey form functionality for OpenCms.</p>
 <p>This module can easily be used to create online survey forms.</p>
 <p><i>(c) 2008 by Alkacon Software GmbH (http://www.alkacon.com).</i></p>]]></description>
-		<version>1.0.4</version>
+		<version>1.0.1</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
 		<datecreated/>
@@ -332,26 +332,6 @@
 			<accesscontrol/>
 		</file>
 		<file>
-			<source>system/modules/com.alkacon.opencms.survey/pages/form.jsp.bak</source>
-			<destination>system/modules/com.alkacon.opencms.survey/pages/form.jsp.bak</destination>
-			<type>jsp</type>
-			<uuidstructure>a7fe2178-6193-11de-bb28-25c0204583a8</uuidstructure>
-			<uuidresource>a7fe2179-6193-11de-bb28-25c0204583a8</uuidresource>
-			<datelastmodified>Thu, 25 Jun 2009 09:32:51 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Thu, 25 Jun 2009 14:22:47 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property type="shared">
-					<name>export</name>
-					<value><![CDATA[false]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol/>
-		</file>
-		<file>
 			<source>system/modules/com.alkacon.opencms.survey/pages/reporting.jsp</source>
 			<destination>system/modules/com.alkacon.opencms.survey/pages/reporting.jsp</destination>
 			<type>jsp</type>
@@ -360,66 +340,6 @@
 			<datelastmodified>Fri, 03 Jul 2009 15:09:04 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Tue, 22 Apr 2008 09:56:51 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property type="shared">
-					<name>export</name>
-					<value><![CDATA[false]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol/>
-		</file>
-		<file>
-			<source>system/modules/com.alkacon.opencms.survey/pages/reporting.jsp.bak</source>
-			<destination>system/modules/com.alkacon.opencms.survey/pages/reporting.jsp.bak</destination>
-			<type>jsp</type>
-			<uuidstructure>acaae0ab-6193-11de-bb28-25c0204583a8</uuidstructure>
-			<uuidresource>acaae0ac-6193-11de-bb28-25c0204583a8</uuidresource>
-			<datelastmodified>Thu, 25 Jun 2009 09:59:55 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Thu, 25 Jun 2009 14:22:55 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property type="shared">
-					<name>export</name>
-					<value><![CDATA[false]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol/>
-		</file>
-		<file>
-			<source>system/modules/com.alkacon.opencms.survey/pages/reporting.jsp.bak2</source>
-			<destination>system/modules/com.alkacon.opencms.survey/pages/reporting.jsp.bak2</destination>
-			<type>jsp</type>
-			<uuidstructure>79a3e4b4-671d-11de-ac69-25c0204583a8</uuidstructure>
-			<uuidresource>79a3e4b5-671d-11de-ac69-25c0204583a8</uuidresource>
-			<datelastmodified>Thu, 02 Jul 2009 15:23:55 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Thu, 02 Jul 2009 15:31:56 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property type="shared">
-					<name>export</name>
-					<value><![CDATA[false]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol/>
-		</file>
-		<file>
-			<source>system/modules/com.alkacon.opencms.survey/pages/reporting.jsp.bak3</source>
-			<destination>system/modules/com.alkacon.opencms.survey/pages/reporting.jsp.bak3</destination>
-			<type>jsp</type>
-			<uuidstructure>6e82b934-67a1-11de-823c-25c0204583a8</uuidstructure>
-			<uuidresource>6e82b935-67a1-11de-823c-25c0204583a8</uuidresource>
-			<datelastmodified>Fri, 03 Jul 2009 07:14:51 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Fri, 03 Jul 2009 07:16:30 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties>

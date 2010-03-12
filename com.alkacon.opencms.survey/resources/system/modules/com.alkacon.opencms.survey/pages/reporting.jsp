@@ -113,7 +113,7 @@
 								<fmt:param value="${fn:length(workBean.list)}" />
 							</fmt:message></h2>
 							<a class="linkDetail"
-								href="<cms:link>${cms.requestContext.uri}</cms:link>"
+								href="<cms:link>${cms.requestContext.uri}?report=true</cms:link>"
 								title="<fmt:message key='report.back.overview.title'/>"><fmt:message
 								key="report.back.overview.headline" /></a>
 							<%@include
