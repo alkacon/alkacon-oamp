@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterManager.java,v $
- * Date   : $Date: 2009/07/09 09:30:12 $
- * Version: $Revision: 1.18 $
+ * Date   : $Date: 2010/03/18 13:13:42 $
+ * Version: $Revision: 1.19 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -43,6 +43,7 @@ import org.opencms.file.types.CmsResourceTypePlain;
 import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.lock.CmsLock;
 import org.opencms.main.CmsException;
+import org.opencms.main.CmsLog;
 import org.opencms.main.OpenCms;
 import org.opencms.module.A_CmsModuleAction;
 import org.opencms.module.CmsModule;
@@ -56,13 +57,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.commons.logging.Log;
+
 /**
  * Provides methods to manage the subscribers (users) for the newsletter, to get all newsletter units and to get the
  * initialized mail data class to use for sending the newsletter emails.<p>
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.18 $ 
+ * @version $Revision: 1.19 $ 
  * 
  * @since 7.0.3 
  */
@@ -100,6 +103,9 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
 
     /** The default password for all newsletter users, can/should be overwritten in the module parameter. */
     private static final String PASSWORD_USER = "Uw82-Qn!";
+
+    /** The log object for this class. */
+    private static final Log LOG = CmsLog.getLog(CmsNewsletterManager.class);
 
     /** The admin CmsObject that is used for user/group operations. */
     private CmsObject m_adminCms;
@@ -345,7 +351,7 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
             // add the user to the given mailing list group
             getAdminCms().addUserToGroup(user.getName(), groupName);
         } catch (CmsException e) {
-            // error creating user or modifying user
+            LOG.error("Error while creating user or modifying user: " + email, e);
         }
         return user;
     }
@@ -390,7 +396,7 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
                 return true;
             }
         } catch (CmsException e) {
-            // error reading or deleting user
+            LOG.error("Error while deleting the webuser: " + email, e);
         }
         return false;
     }
