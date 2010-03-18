@@ -55,6 +55,9 @@ Legend:
 * Bug fixed
 - General comment
 
+1.0.4 - month day, 2010
+! Added support for using images in the HTML messages
+
 1.0.3 - month day, 2009
 ! Selectable option to send last newsletter to new subscribers
 
