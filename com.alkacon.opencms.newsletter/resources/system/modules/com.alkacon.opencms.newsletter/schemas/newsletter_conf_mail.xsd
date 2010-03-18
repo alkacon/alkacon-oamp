@@ -22,6 +22,7 @@
 	<xsd:annotation>
 		<xsd:appinfo>
 			<resourcebundle name="com.alkacon.opencms.newsletter.workplace"/>
+			<handler class="com.alkacon.opencms.newsletter.CmsNewsletterXmlContentHandler" />
 			<preview uri="${previewtempfile}" />
 			<defaults>
 				<default element="MailHead" value="%(key.default.alknewslettermail.conf.head)" />

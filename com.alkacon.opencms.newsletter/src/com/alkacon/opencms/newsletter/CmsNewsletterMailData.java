@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterMailData.java,v $
- * Date   : $Date: 2008/12/09 14:29:28 $
- * Version: $Revision: 1.7 $
+ * Date   : $Date: 2010/03/18 09:07:53 $
+ * Version: $Revision: 1.8 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -56,7 +56,7 @@ import org.apache.commons.mail.EmailException;
  *  
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.7 $ 
+ * @version $Revision: 1.8 $ 
  * 
  * @since 7.0.3 
  */
@@ -259,7 +259,8 @@ public class CmsNewsletterMailData extends A_CmsNewsletterMailData {
             mailHtml.append(mailHead);
             mailHtml.append(text);
             mailHtml.append(mailFoot);
-            return mailHtml.toString();
+            // resolve eventual macros in result
+            return resolveMacros(mailHtml.toString());
         } else {
             // create the content of the text mail
             try {

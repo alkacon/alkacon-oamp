@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/A_CmsNewsletterMailData.java,v $
- * Date   : $Date: 2009/07/09 09:30:12 $
- * Version: $Revision: 1.7 $
+ * Date   : $Date: 2010/03/18 09:07:53 $
+ * Version: $Revision: 1.8 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -45,6 +45,7 @@ import org.opencms.main.OpenCms;
 import org.opencms.module.CmsModule;
 import org.opencms.security.CmsOrganizationalUnit;
 import org.opencms.security.CmsRole;
+import org.opencms.util.CmsMacroResolver;
 import org.opencms.xml.content.CmsXmlContent;
 import org.opencms.xml.content.CmsXmlContentFactory;
 
@@ -64,11 +65,17 @@ import org.apache.commons.mail.Email;
  *  
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.7 $ 
+ * @version $Revision: 1.8 $ 
  * 
  * @since 7.0.3 
  */
 public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData {
+
+    /** The macro name for the "siteurl" macro. */
+    protected static final String MACRO_SITEURL = "siteurl";
+
+    /** The macro name for the "title" macro. */
+    protected static final String MACRO_TITLE = "title";
 
     /** The node name for the BCC node. */
     protected static final String NODE_BCC = "BCC";
@@ -412,6 +419,20 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
      * @throws CmsException if extracting text fails
      */
     protected abstract String getText() throws CmsException;
+
+    /**
+     * Returns the input with resolved macros.<p>
+     * 
+     * @param input the input to resolve
+     * @return the input with resolved macros
+     */
+    protected String resolveMacros(String input) {
+
+        CmsMacroResolver resolver = CmsMacroResolver.newInstance().setCmsObject(getCms()).setKeepEmptyMacros(false);
+        resolver.addMacro(MACRO_SITEURL, OpenCms.getSiteManager().getCurrentSite(getCms()).getUrl());
+        resolver.addMacro(MACRO_TITLE, getSubject());
+        return resolver.resolveMacros(input);
+    }
 
     /**
      * Initializes the necessary members to generate the email and the list of recipients.<p>
