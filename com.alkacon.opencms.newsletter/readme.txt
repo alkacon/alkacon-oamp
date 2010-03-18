@@ -57,6 +57,7 @@ Legend:
 
 1.0.4 - month day, 2010
 ! Added support for using images in the HTML messages
+! Added optional field for sender name for email
 
 1.0.3 - month day, 2009
 ! Selectable option to send last newsletter to new subscribers

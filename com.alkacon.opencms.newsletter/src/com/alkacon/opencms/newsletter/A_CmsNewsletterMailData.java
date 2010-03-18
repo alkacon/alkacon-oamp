@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/A_CmsNewsletterMailData.java,v $
- * Date   : $Date: 2010/03/18 09:07:53 $
- * Version: $Revision: 1.8 $
+ * Date   : $Date: 2010/03/18 13:07:26 $
+ * Version: $Revision: 1.9 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -65,7 +65,7 @@ import org.apache.commons.mail.Email;
  *  
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.8 $ 
+ * @version $Revision: 1.9 $ 
  * 
  * @since 7.0.3 
  */
@@ -82,6 +82,9 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
 
     /** The node name for the From node. */
     protected static final String NODE_FROM = "From";
+
+    /** The node name for the From name node. */
+    protected static final String NODE_FROM_NAME = "FromName";
 
     /** The node name for the Subject node. */
     protected static final String NODE_SUBJECT = "Subject";
@@ -100,6 +103,9 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
 
     /** The email from address. */
     private String m_from;
+
+    /** The email from name. */
+    private String m_fromName;
 
     /** The group to send the newsletter to. */
     private CmsGroup m_group;
@@ -315,6 +321,19 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
             m_from = getContent().getStringValue(getCms(), NODE_FROM, getLocale());
         }
         return m_from;
+    }
+
+    /**
+     * Returns the email from address.<p>
+     * 
+     * @return the email from address
+     */
+    protected String getFromName() {
+
+        if (m_fromName == null) {
+            m_fromName = getContent().getStringValue(getCms(), NODE_FROM_NAME, getLocale());
+        }
+        return m_fromName;
     }
 
     /**

@@ -13,6 +13,7 @@
 	<xsd:complexType name="OpenCmsAlkaconNewsletterConfirmMail">
 		<xsd:sequence>
 			<xsd:element name="MailFrom" type="OpenCmsString" />
+			<xsd:element name="MailFromName" type="OpenCmsString" minOccurs="0" maxOccurs="1" />
 			<xsd:element name="ConfFile" type="OpenCmsVfsFile" minOccurs="0" />				
 			<xsd:element name="MailHead" type="OpenCmsString" />
 			<xsd:element name="MailFoot" type="OpenCmsString" />						

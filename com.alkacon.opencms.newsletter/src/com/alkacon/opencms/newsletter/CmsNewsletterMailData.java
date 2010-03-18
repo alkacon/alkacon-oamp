@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterMailData.java,v $
- * Date   : $Date: 2010/03/18 09:07:53 $
- * Version: $Revision: 1.8 $
+ * Date   : $Date: 2010/03/18 13:07:26 $
+ * Version: $Revision: 1.9 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -56,7 +56,7 @@ import org.apache.commons.mail.EmailException;
  *  
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.8 $ 
+ * @version $Revision: 1.9 $ 
  * 
  * @since 7.0.3 
  */
@@ -134,13 +134,18 @@ public class CmsNewsletterMailData extends A_CmsNewsletterMailData {
 
         // get the email data from the content fields
         String from = getFrom();
+        String fromName = getFromName();
         String subject = getSubject();
 
         if (isHtmlMail()) {
             // create and send HTML email
             CmsHtmlMail mail = new CmsHtmlMail();
             try {
-                mail.setFrom(from);
+                if (CmsStringUtil.isEmptyOrWhitespaceOnly(fromName)) {
+                    mail.setFrom(from);
+                } else {
+                    mail.setFrom(from, fromName);
+                }
             } catch (EmailException e) {
                 // log invalid from email address
                 if (LOG.isErrorEnabled()) {
@@ -169,7 +174,11 @@ public class CmsNewsletterMailData extends A_CmsNewsletterMailData {
             // create and send text only email
             CmsSimpleMail mail = new CmsSimpleMail();
             try {
-                mail.setFrom(from);
+                if (CmsStringUtil.isEmptyOrWhitespaceOnly(fromName)) {
+                    mail.setFrom(from);
+                } else {
+                    mail.setFrom(from, fromName);
+                }
             } catch (EmailException e) {
                 // log invalid from email address
                 if (LOG.isErrorEnabled()) {

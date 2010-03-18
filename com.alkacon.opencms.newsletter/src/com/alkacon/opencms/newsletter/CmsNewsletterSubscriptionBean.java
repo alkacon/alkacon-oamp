@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterSubscriptionBean.java,v $
- * Date   : $Date: 2009/07/09 09:30:12 $
- * Version: $Revision: 1.11 $
+ * Date   : $Date: 2010/03/18 13:07:26 $
+ * Version: $Revision: 1.12 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -66,7 +66,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.11 $ 
+ * @version $Revision: 1.12 $ 
  * 
  * @since 7.0.3 
  */
@@ -122,6 +122,9 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
 
     /** The node name for the MailFrom node. */
     private static final String NODE_MAILFROM = "MailFrom";
+
+    /** The node name for the MailFrom name node. */
+    private static final String NODE_MAILFROM_NAME = "MailFromName";
 
     /** The node name for the MailingList node. */
     private static final String NODE_MAILINGLIST = "MailingList";
@@ -595,7 +598,13 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
         try {
             // set the email addresses
             mail.addTo(getEmail());
-            mail.setFrom(getConfigText(XPATH_2_MAIL + NODE_MAILFROM));
+            String mailFrom = getConfigText(XPATH_2_MAIL + NODE_MAILFROM);
+            String mailFromName = getConfigText(XPATH_2_MAIL + NODE_MAILFROM_NAME);
+            if (CmsStringUtil.isEmptyOrWhitespaceOnly(mailFromName)) {
+                mail.setFrom(mailFrom);
+            } else {
+                mail.setFrom(mailFrom, mailFromName);
+            }
             // set the subject and title macro
             mail.setSubject(subject);
             setTitleMacro(subject);
