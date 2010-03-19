@@ -1,11 +1,11 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaService.java,v $
- * Date   : $Date: 2008/08/29 10:42:21 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2010/03/19 15:31:08 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
- * Copyright (c) 2007 Alkacon Software GmbH (http://www.alkacon.com)
+ * Copyright (c) 2010 Alkacon Software GmbH (http://www.alkacon.com)
  *
  * The Alkacon OpenCms Add-On Module Package is free software: 
  * you can redistribute it and/or modify
@@ -29,6 +29,7 @@
  * For further information about OpenCms, please see the
  * project website: http://www.opencms.org.
  */
+
 package com.alkacon.opencms.formgenerator;
 
 import com.octo.captcha.service.captchastore.MapCaptchaStore;
@@ -42,11 +43,11 @@ import com.octo.captcha.service.image.AbstractManageableImageCaptchaService;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4 
  */
-public class CmsCaptchaService extends AbstractManageableImageCaptchaService  {
+public class CmsCaptchaService extends AbstractManageableImageCaptchaService {
 
     /**
      * Creates a new captcha service.
@@ -64,11 +65,9 @@ public class CmsCaptchaService extends AbstractManageableImageCaptchaService  {
      */
     public CmsCaptchaService(CmsCaptchaSettings captchaSettings) {
 
-        super(new MapCaptchaStore(), new CmsCaptchaEngine(captchaSettings), 180, 100000, 75000);    
+        super(new MapCaptchaStore(), new CmsCaptchaEngine(captchaSettings), 180, 100000, 75000);
     }
-    
-    
-    
+
     /**
      * Implant new captcha settings to this service.
      * <p>
@@ -84,8 +83,5 @@ public class CmsCaptchaService extends AbstractManageableImageCaptchaService  {
         CmsCaptchaEngine captchaEngine = (CmsCaptchaEngine)engine;
         captchaEngine.setSettings(settings);
     }
-    
-    
-    
 
 }

@@ -1,11 +1,11 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFieldItem.java,v $
- * Date   : $Date: 2008/05/16 10:09:30 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2010/03/19 15:31:11 $
+ * Version: $Revision: 1.4 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
- * Copyright (c) 2007 Alkacon Software GmbH (http://www.alkacon.com)
+ * Copyright (c) 2010 Alkacon Software GmbH (http://www.alkacon.com)
  *
  * The Alkacon OpenCms Add-On Module Package is free software: 
  * you can redistribute it and/or modify
@@ -40,7 +40,7 @@ package com.alkacon.opencms.formgenerator;
  * 
  * @author Andreas Zahner 
  * 
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * 
  * @since 7.0.4 
  */

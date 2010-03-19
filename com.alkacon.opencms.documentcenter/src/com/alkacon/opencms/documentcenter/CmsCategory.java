@@ -1,11 +1,11 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.documentcenter/src/com/alkacon/opencms/documentcenter/CmsCategory.java,v $
- * Date   : $Date: 2009/06/19 21:22:16 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2010/03/19 15:31:13 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
- * Copyright (c) 2009 Alkacon Software GmbH (http://www.alkacon.com)
+ * Copyright (c) 2010 Alkacon Software GmbH (http://www.alkacon.com)
  *
  * The Alkacon OpenCms Add-On Module Package is free software: 
  * you can redistribute it and/or modify
@@ -51,7 +51,7 @@ import java.util.Locale;
  *
  * @author  Andreas Zahner 
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.3 $ 
  * 
  * @since 6.0.0 
  */

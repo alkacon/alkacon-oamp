@@ -1,11 +1,11 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsSelectWidgetXmlcontentType.java,v $
- * Date   : $Date: 2009/07/22 08:21:49 $
- * Version: $Revision: 1.8 $
+ * Date   : $Date: 2010/03/19 15:31:09 $
+ * Version: $Revision: 1.9 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
- * Copyright (c) 2007 Alkacon Software GmbH (http://www.alkacon.com)
+ * Copyright (c) 2010 Alkacon Software GmbH (http://www.alkacon.com)
  *
  * The Alkacon OpenCms Add-On Module Package is free software: 
  * you can redistribute it and/or modify
@@ -170,7 +170,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  * 
  * @since 7.0.4
  * 
@@ -183,7 +183,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
      * 
      * @author Achim Westermann
      * 
-     * @version $Revision: 1.8 $
+     * @version $Revision: 1.9 $
      * 
      * @since 6.1.6
      * 
@@ -308,7 +308,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
      * 
      * @author Achim Westermann
      * 
-     * @version $Revision: 1.8 $
+     * @version $Revision: 1.9 $
      * 
      * @since 6.1.6
      * 

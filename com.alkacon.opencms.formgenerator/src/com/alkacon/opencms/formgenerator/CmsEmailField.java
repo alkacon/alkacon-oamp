@@ -1,11 +1,11 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsEmailField.java,v $
- * Date   : $Date: 2007/12/21 14:34:00 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2010/03/19 15:31:09 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
- * Copyright (c) 2007 Alkacon Software GmbH (http://www.alkacon.com)
+ * Copyright (c) 2010 Alkacon Software GmbH (http://www.alkacon.com)
  *
  * The Alkacon OpenCms Add-On Module Package is free software: 
  * you can redistribute it and/or modify
@@ -29,15 +29,15 @@
  * For further information about OpenCms, please see the
  * project website: http://www.opencms.org.
  */
-package com.alkacon.opencms.formgenerator;
 
+package com.alkacon.opencms.formgenerator;
 
 /**
  * Represents a text input field for an email address.<p>
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4 
  */
@@ -45,7 +45,7 @@ public class CmsEmailField extends CmsTextField {
 
     /** HTML field type: email field. */
     private static final String TYPE = "email";
-    
+
     /** Regular expression to validate email addresses. */
     public static final String VALIDATION_REGEX = "(\\w[-._\\w]*\\w@\\w[-._\\w]*\\w\\.\\w{2,4})";
 
@@ -56,15 +56,15 @@ public class CmsEmailField extends CmsTextField {
 
         return TYPE;
     }
-    
+
     /**
      * Returns the type of the input field, e.g. "text" or "select".<p>
      * 
      * @return the type of the input field
      */
     public static String getStaticType() {
-        
+
         return TYPE;
     }
-    
+
 }

@@ -1,11 +1,11 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsHiddenField.java,v $
- * Date   : $Date: 2008/05/16 10:09:30 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2010/03/19 15:31:11 $
+ * Version: $Revision: 1.4 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
- * Copyright (c) 2007 Alkacon Software GmbH (http://www.alkacon.com)
+ * Copyright (c) 2010 Alkacon Software GmbH (http://www.alkacon.com)
  *
  * The Alkacon OpenCms Add-On Module Package is free software: 
  * you can redistribute it and/or modify
@@ -29,6 +29,7 @@
  * For further information about OpenCms, please see the
  * project website: http://www.opencms.org.
  */
+
 package com.alkacon.opencms.formgenerator;
 
 import org.opencms.i18n.CmsMessages;
@@ -39,7 +40,7 @@ import org.opencms.util.CmsStringUtil;
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * 
  * @since 7.0.4 
  */
@@ -55,26 +56,26 @@ public class CmsHiddenField extends A_CmsField {
 
         return TYPE;
     }
-    
+
     /**
      * Returns the type of the input field, e.g. "text" or "select".<p>
      * 
      * @return the type of the input field
      */
     public static String getStaticType() {
-        
+
         return TYPE;
     }
-    
+
     /**
      * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, org.opencms.i18n.CmsMessages, String, boolean)
      */
     public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory) {
-        
+
         StringBuffer buf = new StringBuffer();
         buf.append("<input type=\"hidden\" name=\"").append(getName());
         buf.append("\" value=\"").append(CmsStringUtil.escapeHtml(getValue())).append("\"/>\n");
         return buf.toString();
     }
-    
+
 }

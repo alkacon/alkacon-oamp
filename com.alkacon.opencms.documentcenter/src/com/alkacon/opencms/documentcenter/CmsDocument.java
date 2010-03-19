@@ -1,11 +1,11 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.documentcenter/src/com/alkacon/opencms/documentcenter/CmsDocument.java,v $
- * Date   : $Date: 2009/12/01 14:58:00 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2010/03/19 15:31:13 $
+ * Version: $Revision: 1.4 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
- * Copyright (c) 2009 Alkacon Software GmbH (http://www.alkacon.com)
+ * Copyright (c) 2010 Alkacon Software GmbH (http://www.alkacon.com)
  *
  * The Alkacon OpenCms Add-On Module Package is free software: 
  * you can redistribute it and/or modify
@@ -59,7 +59,7 @@ import java.util.regex.Pattern;
  * @author Andreas Zahner 
  * @author Peter Bonrad
  * 
- * @version $Revision: 1.3 $ 
+ * @version $Revision: 1.4 $ 
  * 
  * @since 6.0.0 
  */
@@ -158,7 +158,7 @@ public class CmsDocument extends Object {
     /** The document matching the current locale, may be the object instance itself. */
     private CmsDocument m_currentLocaleDocument;
 
-	/** The creation data. */
+    /** The creation data. */
     private long m_dateCreated;
 
     /** The date format to use for creating date outputs. */

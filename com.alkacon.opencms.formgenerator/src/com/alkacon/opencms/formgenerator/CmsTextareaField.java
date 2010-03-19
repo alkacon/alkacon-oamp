@@ -1,11 +1,11 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsTextareaField.java,v $
- * Date   : $Date: 2008/07/01 13:28:27 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2010/03/19 15:31:11 $
+ * Version: $Revision: 1.6 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
- * Copyright (c) 2007 Alkacon Software GmbH (http://www.alkacon.com)
+ * Copyright (c) 2010 Alkacon Software GmbH (http://www.alkacon.com)
  *
  * The Alkacon OpenCms Add-On Module Package is free software: 
  * you can redistribute it and/or modify
@@ -42,7 +42,7 @@ import org.opencms.util.I_CmsMacroResolver;
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * 
  * @since 7.0.4 
  */
@@ -85,7 +85,7 @@ public class CmsTextareaField extends A_CmsField {
             if (CmsFormHandler.ERROR_MANDATORY.equals(errorKey)) {
                 errorMessage = messages.key("form.error.mandatory");
             } else if (CmsStringUtil.isNotEmpty(getErrorMessage())
-                && getErrorMessage().indexOf(I_CmsMacroResolver.MACRO_DELIMITER) != 0) {
+                && (getErrorMessage().indexOf(I_CmsMacroResolver.MACRO_DELIMITER) != 0)) {
                 errorMessage = getErrorMessage();
             } else {
                 errorMessage = messages.key("form.error.validation");
@@ -98,7 +98,7 @@ public class CmsTextareaField extends A_CmsField {
         }
 
         if (CmsStringUtil.isNotEmpty(getErrorMessage())
-            && getErrorMessage().indexOf(I_CmsMacroResolver.MACRO_DELIMITER) == 0) {
+            && (getErrorMessage().indexOf(I_CmsMacroResolver.MACRO_DELIMITER) == 0)) {
             attributes = " " + getErrorMessage().substring(2, getErrorMessage().length() - 1);
         }
 
@@ -116,9 +116,9 @@ public class CmsTextareaField extends A_CmsField {
             messages.key("form.html.multiline.label.end")).append("\n");
 
         // line #3
-        buf.append(messages.key("form.html.multiline.field.start")).append("<textarea cols=\"5\" rows=\"5\" name=\"").append(getName()).append(
-            "\"").append(formHandler.getFormConfiguration().getFormFieldAttributes()).append(attributes).append(">").append(
-            CmsEncoder.escapeXml(getValue())).append("</textarea>").append(errorMessage).append(
+        buf.append(messages.key("form.html.multiline.field.start")).append("<textarea cols=\"5\" rows=\"5\" name=\"").append(
+            getName()).append("\"").append(formHandler.getFormConfiguration().getFormFieldAttributes()).append(
+            attributes).append(">").append(CmsEncoder.escapeXml(getValue())).append("</textarea>").append(errorMessage).append(
             messages.key("form.html.multiline.field.end")).append("\n");
 
         // line #4

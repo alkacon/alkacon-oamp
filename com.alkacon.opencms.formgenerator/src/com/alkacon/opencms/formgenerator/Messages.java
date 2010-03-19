@@ -1,11 +1,11 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/Messages.java,v $
- * Date   : $Date: 2008/05/16 10:09:30 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2010/03/19 15:31:08 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
- * Copyright (c) 2007 Alkacon Software GmbH (http://www.alkacon.com)
+ * Copyright (c) 2010 Alkacon Software GmbH (http://www.alkacon.com)
  *
  * The Alkacon OpenCms Add-On Module Package is free software: 
  * you can redistribute it and/or modify
@@ -29,6 +29,7 @@
  * For further information about OpenCms, please see the
  * project website: http://www.opencms.org.
  */
+
 package com.alkacon.opencms.formgenerator;
 
 import org.opencms.i18n.A_CmsMessageBundle;
@@ -39,20 +40,20 @@ import org.opencms.i18n.I_CmsMessageBundle;
  * 
  * @author Achim Westermann 
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.3 $ 
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4 
  */
 public final class Messages extends A_CmsMessageBundle {
-    
+
     /** Message constant for key in the resource bundle. */
     public static final String ERR_INIT_TABLE_FIELD_UNEQUAL_0 = "ERR_INIT_TABLE_FIELD_UNEQUAL_0";
 
     /** Message constant for key in the resource bundle. */
     public static final String ERR_INIT_TABLE_FIELD_UNIQUE_1 = "ERR_INIT_TABLE_FIELD_UNIQUE_1";
-    
+
     /** Message constant for key in the resource bundle. */
     public static final String ERR_INIT_INPUT_FIELD_MISSING_ITEM_2 = "ERR_INIT_INPUT_FIELD_MISSING_ITEM_2";
 
@@ -94,7 +95,7 @@ public final class Messages extends A_CmsMessageBundle {
 
     /** Message constant for key in the resource bundle. */
     public static final String LOG_ERR_PATTERN_SYNTAX_0 = "LOG_ERR_PATTERN_SYNTAX_0";
-    
+
     /** Message constant for key in the resource bundle. */
     public static final String LOG_ERR_READING_CUSTOM_FORM_FIELD_PROPERTIES_1 = "LOG_ERR_READING_CUSTOM_FORM_FIELD_PROPERTIES_1";
 
