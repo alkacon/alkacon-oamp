@@ -57,5 +57,10 @@ Legend:
 * Bug fixed
 - General comment
 
+1.0.1 - March 19th, 2009
+- Get the locale only from the request context
+* Adjusted some keys in the german properties files
+* Open document history in the same/another window
+
 1.0.0 - June 15th, 2009
 - First public release

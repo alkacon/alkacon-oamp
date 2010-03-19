@@ -39,7 +39,7 @@ String disclaimer = cms.property("disclaimer_page", "search", "(none)");
 Map properties = cms.properties("search");
 
 // get locale and message properties for disclaimer text!
-String locale = cms.property("locale", "search", "en").toLowerCase();
+String locale = cms.getRequestContext().getLocale().toString();
 CmsMessages messages = cms.getMessages("com.alkacon.opencms.documentcenter.messages_documents", locale);
 properties.put("locale", locale);
 

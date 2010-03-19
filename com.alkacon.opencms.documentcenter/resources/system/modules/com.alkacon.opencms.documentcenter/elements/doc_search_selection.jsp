@@ -8,7 +8,7 @@
 	
 		
 	// get locale and message properties
-	String locale = cms.property("locale", "search", "en").toLowerCase();
+	String locale = cms.getRequestContext().getLocale().toString();
 	CmsMessages messages = cms.getMessages("com.alkacon.opencms.documentcenter.messages_documents", locale);
 
 	// New documents search selector

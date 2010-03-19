@@ -221,7 +221,7 @@ if (documentList.size() > 0) {
 				out.print( messages.getDate(currentDocument.getDateLastModified()) );
 			} else {
 				out.print( "<a href=\"" +cms.link(versionLink) +"?page_type=versions&document=" + cms.getRequestContext().removeSiteRoot(currentDocument.getRootPath()) +"\" "
-				          +"title=\"" +messages.key("documentlist.link.showversions") +"\" target=\" + openWin + \" >"
+				          +"title=\"" +messages.key("documentlist.link.showversions") +"\" target=\"" + openWin + "\" >"
 				          + messages.getDate(currentDocument.getDateLastModified()) +"</a>" );
 			}
 		} else {

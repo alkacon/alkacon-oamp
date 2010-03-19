@@ -19,7 +19,7 @@ String folderUri = cms.getRequestContext().getFolderUri();
 Map properties = cms.properties("search");
 
 // get locale and message properties
-String locale = cms.property("locale", "search", "en").toLowerCase();
+String locale = cms.getRequestContext().getLocale().toString();
 CmsMessages messages = cms.getMessages("com.alkacon.opencms.documentcenter.messages_documents", locale);
 
 // check type of page to display navigation and documentlist or not
