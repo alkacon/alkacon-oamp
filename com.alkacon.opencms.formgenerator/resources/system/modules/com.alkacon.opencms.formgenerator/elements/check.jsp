@@ -34,7 +34,10 @@ List resultList = formHandler.getFormConfiguration().getFields();
 
 for (int i = 0, n = resultList.size(); i < n; i++) {
 	I_CmsField current = (I_CmsField)resultList.get(i);
-	if (!CmsDynamicField.class.isAssignableFrom(current.getClass()) && !CmsHiddenField.class.isAssignableFrom(current.getClass()) && !CmsCaptchaField.class.isAssignableFrom(current.getClass())) {
+	if ((!CmsDynamicField.class.isAssignableFrom(current.getClass()) && !CmsHiddenField.class.isAssignableFrom(current.getClass()) && !CmsCaptchaField.class.isAssignableFrom(current.getClass()) && !CmsHiddenDisplayField.class.isAssignableFrom(current.getClass())) || (CmsDisplayField.class.isAssignableFrom(current.getClass()))) {
+		if (current instanceof CmsEmptyField) {
+	    	continue;
+		}    
 		String label = current.getLabel();
 		if (current instanceof CmsTableField) {
 		    label = ((CmsTableField)current).buildLabel(formHandler.getMessages(),false,false);
@@ -44,6 +47,9 @@ for (int i = 0, n = resultList.size(); i < n; i++) {
 	        value = ((CmsTableField)current).buildHtml(formHandler.getMessages(),false);
 	    }else if (current instanceof CmsPasswordField) {
 	        value = value.replaceAll(".", "*");
+	    }else if (current instanceof CmsFileUploadField) {
+	  		value = CmsFormHandler.getTruncatedFileItemName(value);
+	  		value = formHandler.convertToHtmlValue(value);
 	    }else {
 	        value = formHandler.convertToHtmlValue(value);
 	    }

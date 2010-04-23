@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFileUploadField.java,v $
- * Date   : $Date: 2010/03/19 15:31:11 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2010/04/23 09:53:17 $
+ * Version: $Revision: 1.5 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -37,6 +37,8 @@ import org.opencms.main.CmsLog;
 import org.opencms.util.CmsStringUtil;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,7 +46,7 @@ import java.util.Map;
  * 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * 
  * @since 7.0.4 
  */
@@ -69,15 +71,38 @@ public class CmsFileUploadField extends A_CmsField {
     /**
      * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, org.opencms.i18n.CmsMessages, String, boolean)
      */
-    public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory) {
+    public String buildHtml(
+        CmsFormHandler formHandler,
+        CmsMessages messages,
+        String errorKey,
+        boolean showMandatory,
+        String infoKey) {
 
         StringBuffer buf = new StringBuffer();
         String fieldLabel = getLabel();
-        String errorMessage = "";
+        String message = "";
         String mandatory = "";
 
-        if (CmsStringUtil.isNotEmpty(errorKey)) {
+        // info message
+        if (CmsStringUtil.isNotEmpty(infoKey)) {
 
+            String infoMessage = "";
+            if (CmsFormHandler.INFO_UPLOAD_FIELD_MANDATORY_FILLED_OUT.equals(infoKey)) {
+                String value = getValue();
+                value = CmsFormHandler.getTruncatedFileItemName(value);
+                infoMessage = messages.key("form.html.info.fileuploadname", value);
+            } else if (CmsStringUtil.isNotEmpty(getErrorMessage())) {
+                infoMessage = getInfoMessage();
+            }
+            infoMessage = messages.key("form.html.info.start") + infoMessage + messages.key("form.html.info.end");
+            fieldLabel = messages.key("form.html.label.info.start")
+                + fieldLabel
+                + messages.key("form.html.label.info.end");
+            message = message + infoMessage;
+        }
+        // error message
+        if (CmsStringUtil.isNotEmpty(errorKey)) {
+            String errorMessage = "";
             if (CmsFormHandler.ERROR_MANDATORY.equals(errorKey)) {
                 errorMessage = messages.key("form.error.mandatory");
             } else if (CmsStringUtil.isNotEmpty(getErrorMessage())) {
@@ -90,6 +115,7 @@ public class CmsFileUploadField extends A_CmsField {
             fieldLabel = messages.key("form.html.label.error.start")
                 + fieldLabel
                 + messages.key("form.html.label.error.end");
+            message = message + errorMessage;
         }
 
         if (isMandatory() && showMandatory) {
@@ -106,9 +132,10 @@ public class CmsFileUploadField extends A_CmsField {
             messages.key("form.html.label.end")).append("\n");
 
         // line #3
+        String value = CmsStringUtil.escapeHtml(getValue());
         buf.append(messages.key("form.html.field.start")).append("<input type=\"file\" name=\"").append(getName()).append(
             "\" value=\"").append(CmsStringUtil.escapeHtml(getValue())).append("\"").append(
-            formHandler.getFormConfiguration().getFormFieldAttributes()).append("/>").append(errorMessage).append(
+            formHandler.getFormConfiguration().getFormFieldAttributes()).append("/>").append(message).append(
             messages.key("form.html.field.end")).append("\n");
 
         // line #4
@@ -138,6 +165,19 @@ public class CmsFileUploadField extends A_CmsField {
     }
 
     /**
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#validate(CmsFormHandler)
+     */
+    public String validateForInfo(CmsFormHandler formHandler) {
+
+        String validationInfo = "";
+        String param = formHandler.getParameter(getName());
+        if (CmsStringUtil.isNotEmpty(param)) {
+            validationInfo = CmsFormHandler.INFO_UPLOAD_FIELD_MANDATORY_FILLED_OUT;
+        }
+        return validationInfo;
+    }
+
+    /**
      * Validates the input value of this field.<p>
      * 
      * @return {@link CmsFormHandler#ERROR_VALIDATION} if validation of the input value failed
@@ -146,20 +186,76 @@ public class CmsFileUploadField extends A_CmsField {
 
         // validate non-empty values with given regular expression
         if (CmsStringUtil.isNotEmpty(getValue()) && CmsStringUtil.isNotEmpty(getValidationExpression())) {
-            Map substitutions = new HashMap();
-            substitutions.put("<", "");
-            substitutions.put("kb", "");
 
-            int maxSize = Integer.parseInt(CmsStringUtil.substitute(getValidationExpression(), substitutions)) * 1024;
-            try {
-                if (m_fileSize > maxSize) {
+            // get the validation expressions for document type and file size
+            String valExpDocType = "";
+            String valExpFileSize = "";
+            // check if there are validations for document type and file size
+            if (getValidationExpression().contains("|")) {
+                // validation expression for document type and file size
+                int indexPipe = getValidationExpression().indexOf("|");
+                valExpFileSize = getValidationExpression().substring(0, indexPipe);
+                valExpDocType = getValidationExpression().substring(indexPipe + 1);
+            } else {
+                // only validation expression for file size
+                valExpFileSize = getValidationExpression();
+            }
+
+            // document type
+            if (CmsStringUtil.isNotEmpty(valExpDocType)) {
+                boolean docTypeOk = false;
+                // get the type of the file to upload
+                String selDocType = "";
+                if (getValue().contains(".")) {
+                    int indType = getValue().lastIndexOf(".") + 1;
+                    if (getValue().length() >= indType) {
+                        selDocType = getValue().substring(indType).toUpperCase();
+                    }
+                }
+                // get the allowed document types
+                int confDocStart = getValidationExpression().indexOf("|") + 1;
+                // check that there are entries after the pipe symbol
+                if (getValidationExpression().length() >= confDocStart) {
+                    String allowedDocTypes = getValidationExpression().substring(confDocStart);
+                    // make the document type string to a list
+                    List listDocTypes = CmsStringUtil.splitAsList(allowedDocTypes, ",");
+                    // iterate over all allowed document types and check if on eof them is the selected one
+                    if (listDocTypes != null) {
+                        Iterator iter = listDocTypes.iterator();
+                        while (iter.hasNext()) {
+                            // get the next allowed document type
+                            String nextDocType = (String)iter.next();
+                            nextDocType = nextDocType.toUpperCase().trim();
+                            // check the next allowed document type to the type of the file to upload
+                            if (nextDocType.equals(selDocType)) {
+                                docTypeOk = true;
+                            }
+                        }
+                    }
+                }
+                // the document type is not allowed
+                if (!docTypeOk) {
                     return CmsFormHandler.ERROR_VALIDATION;
                 }
-            } catch (Exception e) {
-                // syntax error in regular expression, log to opencms.log
-                CmsLog.getLog(CmsFileUploadField.class).error(
-                    Messages.get().getBundle().key(Messages.LOG_ERR_PATTERN_SYNTAX_0),
-                    e);
+            }
+
+            // file upload size
+            if (CmsStringUtil.isNotEmpty(valExpFileSize)) {
+                Map substitutions = new HashMap();
+                substitutions.put("<", "");
+                substitutions.put("kb", "");
+
+                int maxSize = Integer.parseInt(CmsStringUtil.substitute(valExpFileSize, substitutions)) * 1024;
+                try {
+                    if (m_fileSize > maxSize) {
+                        return CmsFormHandler.ERROR_VALIDATION;
+                    }
+                } catch (Exception e) {
+                    // syntax error in regular expression, log to opencms.log
+                    CmsLog.getLog(CmsFileUploadField.class).error(
+                        Messages.get().getBundle().key(Messages.LOG_ERR_PATTERN_SYNTAX_0),
+                        e);
+                }
             }
         }
         return "";

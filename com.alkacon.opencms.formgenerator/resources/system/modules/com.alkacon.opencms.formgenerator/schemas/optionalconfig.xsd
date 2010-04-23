@@ -1,6 +1,7 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 	
 	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/link.xsd"/>
 		
 	<xsd:element name="OptionalAlkaconWebFormConfigurations" type="OpenCmsOptionalAlkaconWebFormConfigurations"/>
 	
@@ -23,6 +24,8 @@
 			<xsd:element name="FormFieldAttributes" type="OpenCmsString" />
 			<xsd:element name="DynamicFieldClass" type="OpenCmsString" minOccurs="1" />
 			<xsd:element name="Style" type="OpenCmsString" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="PropertyFile" type="OpenCmsString" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="ActionClass" type="OpenCmsString" minOccurs="0" maxOccurs="1" />
 		</xsd:sequence>
 		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
 	</xsd:complexType>

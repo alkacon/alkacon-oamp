@@ -42,6 +42,7 @@
 			<defaults>
 				<default element="OptionalFormConfiguration/ShowMandatory" value="true" />
 				<default element="OptionalFormConfiguration/ShowReset" value="true" />
+				<default element="OptionalFormConfiguration/ActionClass" value="com.alkacon.opencms.formgenerator.DefaultActionHandler" />
 			</defaults>
 			<validationrules>
 				<rule element="DataTarget/FormId" regex=".+" type="error" message="%(err.xmlcontent.field.empty)"/>
@@ -53,6 +54,14 @@
 				<layout element="FormFooterText" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
 				<layout element="FormConfirmation" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
 			</layouts>
+			<mappings>
+				<mapping element="OptionalFormConfiguration/PropertyFile" mapto="property:webform.propertyfile" />
+			</mappings>
+			<tabs>				
+				<tab element="MailFrom" name="MailFrom" collapse="false" />
+				<tab element="InputField" name="InputField" collapse="false" />
+				<tab element="FormMiddleText" collapse="true" />			
+			</tabs>
 		</xsd:appinfo>
 	</xsd:annotation>  
 	

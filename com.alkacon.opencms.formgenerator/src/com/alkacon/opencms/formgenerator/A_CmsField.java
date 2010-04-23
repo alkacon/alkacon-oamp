@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/A_CmsField.java,v $
- * Date   : $Date: 2010/03/19 15:31:10 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2010/04/23 09:53:17 $
+ * Version: $Revision: 1.5 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -32,6 +32,7 @@
 
 package com.alkacon.opencms.formgenerator;
 
+import org.opencms.i18n.CmsMessages;
 import org.opencms.main.CmsLog;
 import org.opencms.util.CmsStringUtil;
 
@@ -50,7 +51,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.4 $ 
+ * @version $Revision: 1.5 $ 
  * 
  * @since 7.0.4 
  */
@@ -61,6 +62,7 @@ public abstract class A_CmsField implements I_CmsField {
 
     private String m_dbLabel;
     private String m_errorMessage;
+    private String m_infoMessage;
     private List m_items;
     private String m_label;
     private boolean m_mandatory;
@@ -69,6 +71,7 @@ public abstract class A_CmsField implements I_CmsField {
     private int m_position;
     private String m_validationExpression;
     private String m_value;
+    private int m_fieldNr;
 
     /**
      * Default constructor.<p>
@@ -84,6 +87,43 @@ public abstract class A_CmsField implements I_CmsField {
         m_placeholder = 0;
         m_position = 0;
         m_dbLabel = "";
+        m_fieldNr = 0;
+    }
+
+    /**
+     * Builds the HTML input element for this element to be used in a frontend JSP.<p>
+     * 
+     * @param formHandler the handler of the current form
+     * @param messages a resource bundle containing HTML snippets to build the HTML element
+     * @param errorKey the key of the current error message
+     * @param showMandatory flag to determine if the mandatory mark should be shown or not
+     * 
+     * @return the HTML input element for this element to be used in a frontend JSP
+     */
+    public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory) {
+
+        return "";
+    }
+
+    /**
+     * Builds the HTML input element for this element to be used in a frontend JSP.<p>
+     * 
+     * @param formHandler the handler of the current form
+     * @param messages a resource bundle containing HTML snippets to build the HTML element
+     * @param errorKey the key of the current error message
+     * @param showMandatory flag to determine if the mandatory mark should be shown or not
+     * @param infoKey the key of the current info message
+     * 
+     * @return the HTML input element for this element to be used in a frontend JSP
+     */
+    public String buildHtml(
+        CmsFormHandler formHandler,
+        CmsMessages messages,
+        String errorKey,
+        boolean showMandatory,
+        String infoKey) {
+
+        return buildHtml(formHandler, messages, errorKey, showMandatory);
     }
 
     /**
@@ -100,6 +140,22 @@ public abstract class A_CmsField implements I_CmsField {
     public String getErrorMessage() {
 
         return m_errorMessage;
+    }
+
+    /**
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#getFieldNr()
+     */
+    public int getFieldNr() {
+
+        return m_fieldNr;
+    }
+
+    /**
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#getErrorMessage()
+     */
+    public String getInfoMessage() {
+
+        return m_infoMessage;
     }
 
     /**
@@ -193,6 +249,22 @@ public abstract class A_CmsField implements I_CmsField {
     }
 
     /**
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#setFieldNr(java.lang.String)
+     */
+    public void setFieldNr(int fieldNr) {
+
+        m_fieldNr = fieldNr;
+    }
+
+    /**
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#setErrorMessage(java.lang.String)
+     */
+    public void setInfoMessage(String infoMessage) {
+
+        m_infoMessage = infoMessage;
+    }
+
+    /**
      * @see com.alkacon.opencms.formgenerator.I_CmsField#setItems(java.util.List)
      */
     public void setItems(List items) {
@@ -246,29 +318,6 @@ public abstract class A_CmsField implements I_CmsField {
     public void setValidationExpression(String expression) {
 
         m_validationExpression = expression;
-    }
-
-    /**
-     * Returns the selected items.<p>
-     * 
-     * @return the selected items
-     */
-    protected List getSelectedItems() {
-
-        List selected = new ArrayList();
-        List values = (getValue() == null ? null : CmsStringUtil.splitAsList(getValue(), ",", true));
-        Iterator i = getItems().iterator();
-        while (i.hasNext()) {
-            CmsFieldItem curOption = (CmsFieldItem)i.next();
-            if (values != null) {
-                if (values.contains(curOption.getValue())) {
-                    selected.add(curOption);
-                }
-            } else if (curOption.isSelected()) {
-                selected.add(curOption);
-            }
-        }
-        return selected;
     }
 
     /**
@@ -328,6 +377,14 @@ public abstract class A_CmsField implements I_CmsField {
     }
 
     /**
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#validate(CmsFormHandler)
+     */
+    public String validateForInfo(CmsFormHandler formHandler) {
+
+        return "";
+    }
+
+    /**
      * @see java.lang.Object#finalize()
      */
     protected void finalize() throws Throwable {
@@ -340,6 +397,29 @@ public abstract class A_CmsField implements I_CmsField {
             // ignore
         }
         super.finalize();
+    }
+
+    /**
+     * Returns the selected items.<p>
+     * 
+     * @return the selected items
+     */
+    protected List getSelectedItems() {
+
+        List selected = new ArrayList();
+        List values = (getValue() == null ? null : CmsStringUtil.splitAsList(getValue(), ",", true));
+        Iterator i = getItems().iterator();
+        while (i.hasNext()) {
+            CmsFieldItem curOption = (CmsFieldItem)i.next();
+            if (values != null) {
+                if (values.contains(curOption.getValue())) {
+                    selected.add(curOption);
+                }
+            } else if (curOption.isSelected()) {
+                selected.add(curOption);
+            }
+        }
+        return selected;
     }
 
     /**
@@ -467,4 +547,5 @@ public abstract class A_CmsField implements I_CmsField {
 
         return null;
     }
+
 }

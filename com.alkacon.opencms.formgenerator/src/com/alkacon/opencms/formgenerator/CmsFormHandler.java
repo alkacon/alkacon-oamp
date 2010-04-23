@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormHandler.java,v $
- * Date   : $Date: 2010/03/19 15:31:09 $
- * Version: $Revision: 1.13 $
+ * Date   : $Date: 2010/04/23 09:53:17 $
+ * Version: $Revision: 1.14 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -34,6 +34,7 @@ package com.alkacon.opencms.formgenerator;
 
 import com.alkacon.opencms.formgenerator.database.CmsFormDataAccess;
 
+import org.opencms.file.CmsProperty;
 import org.opencms.file.CmsResource;
 import org.opencms.i18n.CmsEncoder;
 import org.opencms.i18n.CmsMessages;
@@ -81,7 +82,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  * 
  * @since 7.0.4 
  */
@@ -176,6 +177,9 @@ public class CmsFormHandler extends CmsJspActionElement {
     /** Form error: validation error of input. */
     public static final String ERROR_VALIDATION = "validation";
 
+    /** Form info: mandatory upload field filled out already. */
+    public static final String INFO_UPLOAD_FIELD_MANDATORY_FILLED_OUT = "uploadfield_mandatory_filled_out";
+
     /** Macro name for the date macro that can be used in mail text fields. */
     public static final String MACRO_DATE = "date";
 
@@ -202,6 +206,9 @@ public class CmsFormHandler extends CmsJspActionElement {
 
     /** Temporarily stores the fields as hidden fields in the String. */
     protected String m_hiddenFields;
+
+    /** Contains eventual validation infos. */
+    protected Map m_infos;
 
     /** Flag indicating if the form is displayed for the first time. */
     protected boolean m_initial;
@@ -251,7 +258,38 @@ public class CmsFormHandler extends CmsJspActionElement {
 
         super(context, req, res);
         m_errors = new HashMap();
+        m_infos = new HashMap();
         init(req, formConfigUri);
+    }
+
+    /**
+     * Gets the truncated file item name. Some clients, such as the Opera browser, do include path information. 
+     * This method only returns the the base file name.<p>
+     * 
+     * @param name the file item name
+     * 
+     * @return the truncated file item name
+     */
+    public static String getTruncatedFileItemName(String name) {
+
+        // here is not used the File.separator, because there are problems is the 
+        // OpenCms OS and the explores OS are different
+        // for example if you have an OpenCms on Unix and you use the 
+        // formgenerator in a browser in Windows
+        if (name.contains("/")) {
+            int lastIndex = name.lastIndexOf("/");
+            if (name.length() > lastIndex) {
+                name = name.substring(lastIndex + 1);
+                return name;
+            }
+        } else if (name.contains("\\")) {
+            int lastIndex = name.lastIndexOf("\\");
+            if (name.length() > lastIndex) {
+                name = name.substring(lastIndex + 1);
+                return name;
+            }
+        }
+        return name;
     }
 
     /**
@@ -455,17 +493,26 @@ public class CmsFormHandler extends CmsJspActionElement {
         Iterator i = fieldValues.iterator();
         while (i.hasNext()) {
             I_CmsField current = (I_CmsField)i.next();
+            if (current instanceof CmsPagingField) {
+                continue;
+            }
             if (!useInFormDataMacro(current)) {
                 continue;
             }
             String value = current.toString();
-            if ((current instanceof CmsDynamicField)) {
+            if (((current instanceof CmsDynamicField) && !((current instanceof CmsDisplayField) || (current instanceof CmsHiddenDisplayField)))) {
                 if (!current.isMandatory()) {
                     // show dynamic fields only if they are marked as mandatory
                     continue;
                 }
                 // compute the value for the dynamic field
                 value = getFormConfiguration().getFieldStringValueByName(current.getName());
+            } else if ((current instanceof CmsHiddenDisplayField) || (current instanceof CmsEmptyField)) {
+                // do not show hidden display fields and empty fields
+                continue;
+            } else if (current instanceof CmsFileUploadField) {
+                value = current.getValue();
+                value = CmsFormHandler.getTruncatedFileItemName(value);
             }
             if (isHtmlMail) {
                 // format output as HTML
@@ -668,6 +715,16 @@ public class CmsFormHandler extends CmsJspActionElement {
     }
 
     /**
+     * Returns the infos found when validating the form.<p>
+     * 
+     * @return the infos found when validating the form
+     */
+    public Map getInfos() {
+
+        return m_infos;
+    }
+
+    /**
      * Returns the localized messages.<p>
      *
      * @return the localized messages
@@ -736,6 +793,10 @@ public class CmsFormHandler extends CmsJspActionElement {
      */
     public void init(HttpServletRequest req, String formConfigUri) throws Exception {
 
+        // read the form configuration file from VFS
+        if (CmsStringUtil.isEmpty(formConfigUri)) {
+            formConfigUri = getRequestContext().getUri();
+        }
         m_mulipartFileItems = CmsRequestUtil.readMultipartFileItems(req);
         m_macroResolver = CmsMacroResolver.newInstance();
         m_macroResolver.setKeepEmptyMacros(true);
@@ -801,8 +862,17 @@ public class CmsFormHandler extends CmsJspActionElement {
                 para = fileSite;
             }
         }
-
-        addMessages(new CmsMessages(para, getRequestContext().getLocale()));
+        // use the optional property file if configured
+        String propertyFile = null;
+        CmsProperty cmsProperty = getCmsObject().readPropertyObject(formConfigUri, "webform.propertyfile", false);
+        if (cmsProperty != null) {
+            propertyFile = cmsProperty.getValue();
+        }
+        if (CmsStringUtil.isNotEmpty(propertyFile)) {
+            addMessages(new CmsMessages(propertyFile, getRequestContext().getLocale()));
+        } else {
+            addMessages(new CmsMessages(para, getRequestContext().getLocale()));
+        }
         // get the form configuration
         setFormConfiguration(new CmsForm(this, getMessages(), isInitial(), formConfigUri, formAction));
     }
@@ -815,6 +885,24 @@ public class CmsFormHandler extends CmsJspActionElement {
     public boolean isInitial() {
 
         return m_initial;
+    }
+
+    /**
+     * Prepares the after webform action.<p>
+     */
+    public void prepareAfterWebformAction() {
+
+        String actionClass = getFormConfiguration().getActionClass();
+        if (CmsStringUtil.isNotEmpty(actionClass)) {
+            try {
+                I_CmsWebformActionHandler handler = getObject(actionClass);
+                handler.afterWebformAction(getCmsObject(), this);
+            } catch (Exception e) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Invalid webform action handler class: " + actionClass, e);
+                }
+            }
+        }
     }
 
     /**
@@ -879,9 +967,16 @@ public class CmsFormHandler extends CmsJspActionElement {
             // add field values as macros
             while (itFields.hasNext()) {
                 I_CmsField field = (I_CmsField)itFields.next();
+                if (field instanceof CmsPagingField) {
+                    continue;
+                }
                 String fValue = field.getValue();
-                if (field instanceof CmsDynamicField) {
+                if ((field instanceof CmsDynamicField)
+                    && !((field instanceof CmsDisplayField) || (field instanceof CmsHiddenDisplayField))) {
                     fValue = data.getFieldStringValueByName(field.getName());
+                }
+                if (field instanceof CmsFileUploadField) {
+                    fValue = CmsFormHandler.getTruncatedFileItemName(fValue);
                 }
                 m_macroResolver.addMacro(field.getLabel(), fValue);
                 if (!field.getLabel().equals(field.getDbLabel())) {
@@ -1002,6 +1097,10 @@ public class CmsFormHandler extends CmsJspActionElement {
             result = false;
         } else if (ACTION_DOWNLOAD_DATA_2.equalsIgnoreCase(formAction)) {
             result = false;
+        } else if (CmsStringUtil.isNotEmpty(getParameter("back"))) {
+            result = true;
+        } else if ((CmsStringUtil.isNotEmpty(getParameter("page"))) && CmsStringUtil.isEmpty(getParameter("finalpage"))) {
+            result = true;
         }
 
         return result;
@@ -1038,11 +1137,24 @@ public class CmsFormHandler extends CmsJspActionElement {
         }
 
         boolean allOk = true;
+        boolean checkCaptcha = false;
+
+        // if the previous button was used, then no validation is necessary here
+        if (CmsStringUtil.isNotEmpty(getParameter("back"))) {
+            return true;
+        }
+
         // iterate the form fields
         List fields = getFormConfiguration().getFields();
 
+        int pagingPos = fields.size();
+        if (CmsStringUtil.isNotEmpty(getParameter("page"))) {
+            int value = new Integer(getParameter("page")).intValue();
+            pagingPos = CmsPagingField.getLastFieldPosFromPage(this, value) + 1;
+        }
+
         // validate each form field
-        for (int i = 0, n = fields.size(); i < n; i++) {
+        for (int i = 0, n = pagingPos; i < n; i++) {
 
             I_CmsField currentField = (I_CmsField)fields.get(i);
 
@@ -1052,9 +1164,17 @@ public class CmsFormHandler extends CmsJspActionElement {
 
             if (CmsCaptchaField.class.isAssignableFrom(currentField.getClass())) {
                 // the captcha field doesn't get validated here...
+                checkCaptcha = true;
                 continue;
             }
 
+            // check if a file upload field is empty, but it was filled out already
+            String validationInfo = "";
+            validationInfo = currentField.validateForInfo(this);
+            if (CmsStringUtil.isNotEmpty(validationInfo)) {
+                getInfos().put(currentField.getName(), validationInfo);
+            }
+            // check for validation errors
             String validationError = currentField.validate(this);
             if (CmsStringUtil.isNotEmpty(validationError)) {
                 getErrors().put(currentField.getName(), validationError);
@@ -1062,18 +1182,20 @@ public class CmsFormHandler extends CmsJspActionElement {
             }
         }
 
-        CmsCaptchaField captchaField = getFormConfiguration().getCaptchaField();
-        if (captchaField != null) {
+        if (checkCaptcha) {
+            CmsCaptchaField captchaField = getFormConfiguration().getCaptchaField();
+            if (captchaField != null) {
 
-            boolean captchaFieldIsOnInputPage = getFormConfiguration().captchaFieldIsOnInputPage()
-                && getFormConfiguration().isInputFormSubmitted();
-            boolean captchaFieldIsOnCheckPage = getFormConfiguration().captchaFieldIsOnCheckPage()
-                && getFormConfiguration().isCheckPageSubmitted();
+                boolean captchaFieldIsOnInputPage = getFormConfiguration().captchaFieldIsOnInputPage()
+                    && getFormConfiguration().isInputFormSubmitted();
+                boolean captchaFieldIsOnCheckPage = getFormConfiguration().captchaFieldIsOnCheckPage()
+                    && getFormConfiguration().isCheckPageSubmitted();
 
-            if (captchaFieldIsOnInputPage || captchaFieldIsOnCheckPage) {
-                if (!captchaField.validateCaptchaPhrase(this, captchaField.getValue())) {
-                    getErrors().put(captchaField.getName(), ERROR_VALIDATION);
-                    allOk = false;
+                if (captchaFieldIsOnInputPage || captchaFieldIsOnCheckPage) {
+                    if (!captchaField.validateCaptchaPhrase(this, captchaField.getValue())) {
+                        getErrors().put(captchaField.getName(), ERROR_VALIDATION);
+                        allOk = false;
+                    }
                 }
             }
         }
@@ -1262,5 +1384,21 @@ public class CmsFormHandler extends CmsJspActionElement {
 
         // don't show the letter of agreement (CmsPrivacyField) and captcha field value
         return !((field instanceof CmsPrivacyField) || (field instanceof CmsCaptchaField));
+    }
+
+    /**
+     * Creates an object from data type I_CmsWebformActionHandler.<p>
+     * 
+     * @param className name from class to create an object from
+     * 
+     * @return object from data type I_CmsWebformActionHandler
+     */
+    private I_CmsWebformActionHandler getObject(String className) throws Exception {
+
+        I_CmsWebformActionHandler object = null;
+        Class c = Class.forName(className);
+        object = (I_CmsWebformActionHandler)c.newInstance();
+
+        return object;
     }
 }

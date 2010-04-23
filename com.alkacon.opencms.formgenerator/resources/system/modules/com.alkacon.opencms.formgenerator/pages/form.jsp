@@ -1,5 +1,5 @@
 <%@page buffer="none" session="false"
-	import="org.opencms.i18n.*,com.alkacon.opencms.formgenerator.*,java.util.*"%>
+	import="org.opencms.i18n.*,com.alkacon.opencms.formgenerator.*,java.util.*, org.opencms.util.*"%>
 <%
 
 	///////////////////////////////////////////////////////////////////////////
@@ -26,6 +26,9 @@
             cms.getRequestContext().getLocale()));
     }
     CmsMessages messages = cms.getMessages();
+    
+    // is there a paging used
+    boolean paging = false;
 
     // In case of downloading the csv file from database no template must be included: 
     boolean showTemplate = cms.showTemplate();
@@ -56,6 +59,8 @@
                     request.setAttribute("formhandler", cms);
                     cms.include("/system/modules/com.alkacon.opencms.formgenerator/elements/confirmation.jsp");
                 }
+                // prepare the webform action class if configured
+                cms.prepareAfterWebformAction();
             } else {
                 // failure sending mail, show error output
 %>
@@ -70,10 +75,10 @@
         }
 
     } else {
-
         // get the configured form elements
         CmsForm formConfiguration = cms.getFormConfiguration();
         List fields = formConfiguration.getFields();
+        pageContext.setAttribute("fieldssize", fields.size());
 
         String enctype = "";
         Iterator iter = fields.iterator();
@@ -108,21 +113,49 @@
 <%
     // create the html output to display the form fields
         int pos = 0;
+	    int fieldNr = 0;
         int place = 0;
-        for (int i = 0, n = fields.size(); i < n; i++) {
-
+        int currPage = 1;
+        int pagingPos = 0;
+        if (cms.getParameterMap().containsKey("back") && cms.getParameterMap().containsKey("page")) {
+        	String pagingString[] = (String[])cms.getParameterMap().get("page");
+        	currPage = new Integer(pagingString[0]).intValue();
+        	currPage = CmsPagingField.getPreviousPage(currPage);
+        } else if (cms.getParameterMap().containsKey("page") && !cms.hasValidationErrors()) {
+        	String pagingString[] = (String[])cms.getParameterMap().get("page");
+        	currPage = new Integer(pagingString[0]).intValue();
+        	currPage = CmsPagingField.getNextPage(currPage);
+        } else if (cms.getParameterMap().containsKey("page") && cms.hasValidationErrors()) {
+        	String pagingString[] = (String[])cms.getParameterMap().get("page");
+        	currPage = new Integer(pagingString[0]).intValue();
+        }
+        pagingPos = CmsPagingField.getFirstFieldPosFromPage(cms, currPage);
+        fieldNr = pagingPos;
+        pageContext.setAttribute("page", currPage);
+        for (int i = pagingPos, n = fields.size(); i < n; i++) {
+            fieldNr += 1;
             // loop through all form input fields 
             I_CmsField field = (I_CmsField)fields.get(i);
 
             if (i == n - 1)
-                place = 1; //the last one must close the tr
+               	place = 1; //the last one must close the tr
             field.setPlaceholder(place);
             field.setPosition(pos);
+            field.setFieldNr(fieldNr);
             String errorMessage = (String)cms.getErrors().get(field.getName());
-
-            out.println(field.buildHtml(cms, messages, errorMessage, formConfiguration.isShowMandatory()));
+            String infoMessage = (String)cms.getInfos().get(field.getName());
+            // validate the file upload field here already because of the lost values ion these fields
+            if (field instanceof CmsFileUploadField) {
+            	infoMessage = field.validateForInfo(cms);
+            }
+	    out.println(field.buildHtml(cms, messages, errorMessage, formConfiguration.isShowMandatory(), infoMessage));
             pos = field.getPosition();
             place = field.getPlaceholder();
+            // if there is a paging field do not show the following fields
+            if (field instanceof CmsPagingField) {
+               	paging = true;
+            	break;
+            }
         }
 
         // show form footer text
@@ -134,12 +167,17 @@
         if (formConfiguration.hasMandatoryFields() && formConfiguration.isShowMandatory()) {
 %><%=messages.key("form.html.row.start")%> <%=messages.key("form.html.mandatory.start")%><%=messages.key("form.message.mandatory")%><%=messages.key("form.html.mandatory.end")%>
 <%=messages.key("form.html.row.end")%> <%
-     }
- %><%=messages.key("form.html.row.start")%> <%=messages.key("form.html.button.start")%><input
-	type="submit" value="<%=messages.key("form.button.submit")%>"
-	class="formbutton submitbutton" />
-<%
-    if (formConfiguration.isShowReset()) {
+     } if (!paging) {
+     %><%=messages.key("form.html.row.start")%> <%=messages.key("form.html.button.start")%> <%
+     if (cms.getParameterMap().containsKey("page")) {
+          out.println(CmsPagingField.appendHiddenFields(cms, messages, fields.size()));
+     	%><input type='hidden' name='page' value='${page}' />
+     	  <input type='hidden' name='finalpage' value='true' />
+     	  <input type='submit' value='<%=messages.key("form.button.prev")%>' name='back' class='formbutton prevbutton' /> <%
+     } %>
+   <input type="submit" value="<%=messages.key("form.button.submit")%>" class="formbutton submitbutton" />  <%  
+   }
+   if (formConfiguration.isShowReset() && !paging) {
 %>&nbsp;<input type="reset"
 	value="<%=messages.key("form.button.reset")%>"
 	class="formbutton resetbutton" />
@@ -147,7 +185,7 @@
     }
 %><%=messages.key("form.html.button.end")%> <%=messages.key("form.html.row.end")%>
 <%
-    if (isOffline && formConfiguration.isTransportDatabase()) {
+    if (isOffline && formConfiguration.isTransportDatabase() && !paging) {
 %> <%=messages.key("form.html.row.start")%>
 <%=messages.key("form.html.button.start")%><input type="submit"
 	onClick="javascript:document.getElementById('<%=CmsFormHandler.PARAM_FORMACTION%>').value='<%=CmsFormHandler.ACTION_DOWNLOAD_DATA_1%>';"

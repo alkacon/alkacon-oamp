@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
- * Date   : $Date: 2010/03/19 15:31:08 $
- * Version: $Revision: 1.19 $
+ * Date   : $Date: 2010/04/23 09:53:17 $
+ * Version: $Revision: 1.20 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -69,13 +69,11 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  * 
  * @since 7.0.4 
  */
 public class CmsForm {
-
-    private static final Log LOG = CmsLog.getLog(CmsForm.class);
 
     /** Constant used as value in the XML content defining that the data target is database. */
     public static final String DATATARGET_DATABASE = "database";
@@ -123,11 +121,11 @@ public class CmsForm {
      */
     public static final String MODULE_PARAM_EXPORTLINESEPARATOR = "export.lineseparator";
 
-    /** 
-     * Constant value for the module parameter {@link #MODULE_PARAM_EXPORTLINESEPARATOR} to have "\n" transformed to 
-     * "\r\n".
-     */
-    public static final String MODULE_PARAMVALUE_EXPORTLINESEPARATOR_WINDOWS = "windows";
+    /** Name of the group module parameter that is used to grant access to the workplace tool.  */
+    public static final String MODULE_PARAM_TOOL_GROUP = "usergroup";
+
+    /** Name of the upload folder module parameter.  */
+    public static final String MODULE_PARAM_UPLOADFOLDER = "uploadfolder";
 
     /** 
      * Constant value for the module parameter {@link #MODULE_PARAM_EXPORTLINESEPARATOR} to have "\r\n" transformed to 
@@ -141,11 +139,14 @@ public class CmsForm {
      */
     public static final String MODULE_PARAMVALUE_EXPORTLINESEPARATOR_UNIX = "unix";
 
-    /** Name of the group module parameter that is used to grant access to the workplace tool.  */
-    public static final String MODULE_PARAM_TOOL_GROUP = "usergroup";
+    /** 
+     * Constant value for the module parameter {@link #MODULE_PARAM_EXPORTLINESEPARATOR} to have "\n" transformed to 
+     * "\r\n".
+     */
+    public static final String MODULE_PARAMVALUE_EXPORTLINESEPARATOR_WINDOWS = "windows";
 
-    /** Name of the upload folder module parameter.  */
-    public static final String MODULE_PARAM_UPLOADFOLDER = "uploadfolder";
+    /** Configuration node name for the optional webform action class. */
+    public static final String NODE_ACTION_CLASS = "ActionClass";
 
     /** Configuration node name for the optional captcha. */
     public static final String NODE_CAPTCHA = "FormCaptcha";
@@ -240,6 +241,9 @@ public class CmsForm {
     /** Configuration node name for the item value node. */
     public static final String NODE_ITEMVALUE = "ItemValue";
 
+    /** Configuration node name for the optional link node. */
+    public static final String NODE_LINK = "Link";
+
     /** Configuration node name for the Email bcc recipient(s) node. */
     public static final String NODE_MAILBCC = "MailBCC";
 
@@ -261,11 +265,17 @@ public class CmsForm {
     /** Configuration node name for the Email type node. */
     public static final String NODE_MAILTYPE = "MailType";
 
+    /** Parent node for a nested web form */
+    public static final String NODE_NESTED_FORM = "Form";
+
     /** Configuration node name for the optional form configuration. */
     public static final String NODE_OPTIONALCONFIGURATION = "OptionalFormConfiguration";
 
     /** Configuration node name for the optional confirmation mail configuration. */
     public static final String NODE_OPTIONALCONFIRMATION = "OptionalConfirmationMail";
+
+    /** Configuration node name for the optional property file. */
+    public static final String NODE_PROPERTY_FILE = "PropertyFile";
 
     /** Configuration node name for the Show check page node. */
     public static final String NODE_SHOWCHECK = "ShowCheck";
@@ -282,14 +292,16 @@ public class CmsForm {
     /** Configuration node name for the optional target URI. */
     public static final String NODE_TARGET_URI = "TargetUri";
 
-    /** Parent node for a nested web form */
-    public static final String NODE_NESTED_FORM = "Form";
-
     /** Request parameter name for the optional send confirmation email checkbox. */
     public static final String PARAM_SENDCONFIRMATION = "sendconfirmation";
 
+    private static final Log LOG = CmsLog.getLog(CmsForm.class);
+
     /** Resource type ID of XML content forms. */
     private static final String TYPE_NAME = "alkacon-webform";
+
+    /** configuration value. */
+    protected String m_actionClass;
 
     /** The captcha field. */
     protected CmsCaptchaField m_captchaField;
@@ -393,6 +405,9 @@ public class CmsForm {
     /** The map of request parameters. */
     protected Map m_parameterMap;
 
+    /** configuration value. */
+    protected String m_propertyFile;
+
     /** If the check page has to be shown. */
     protected boolean m_showCheck;
 
@@ -445,6 +460,39 @@ public class CmsForm {
     }
 
     /**
+     * If the given value is not empty, macros in it will be resolved, otherwise returns the default value.<p>
+     * 
+     * @param resolver the macro resolver to use
+     * @param value the configuration value to check and resolve macros in
+     * @param defaultValue the default value to return in case the value is empty
+     * 
+     * @return the checked value
+     */
+    public static String getConfigurationValue(CmsMacroResolver resolver, String value, String defaultValue) {
+
+        if (CmsStringUtil.isNotEmpty(value)) {
+            String result = resolver.resolveMacros(value);
+            return result;
+        }
+        return defaultValue;
+    }
+
+    /**
+     * Checks if the given value is empty and returns in that case the default value.<p>
+     * 
+     * @param value the configuration value to check
+     * @param defaultValue the default value to return in case the value is empty
+     * @return the checked value
+     */
+    public static String getConfigurationValue(String value, String defaultValue) {
+
+        if (CmsStringUtil.isNotEmpty(value)) {
+            return value;
+        }
+        return defaultValue;
+    }
+
+    /**
      * Returns the resource type name of XML content forms.<p>
      * 
      * @return the resource type name of XML content forms
@@ -475,6 +523,17 @@ public class CmsForm {
     }
 
     /**
+     * Returns the action class. 
+     * <p> 
+     * 
+     * @return the action class.
+     */
+    public String getActionClass() {
+
+        return m_actionClass;
+    }
+
+    /**
      * Returns a list of field objects, inclusive dynamic fields, for the online form.<p>
      * 
      * @return a list of field objects, inclusive dynamic fields
@@ -484,36 +543,6 @@ public class CmsForm {
         List allFields = new ArrayList(m_fields);
         allFields.addAll(m_dynaFields);
         return allFields;
-    }
-
-    /**
-     * Returns the (opt.) captcha field of this form.<p>
-     * 
-     * @return the (opt.) captcha field of this form
-     */
-    public CmsCaptchaField getCaptchaField() {
-
-        return m_captchaField;
-    }
-
-    /**
-     * Returns the form configuration errors.<p>
-     *
-     * @return the form configuration errors
-     */
-    public List getConfigurationErrors() {
-
-        return m_configurationErrors;
-    }
-
-    /**
-     * Returns the configuration Uri.<p>
-     *
-     * @return the configuration Uri
-     */
-    public String getConfigUri() {
-
-        return m_configUri;
     }
 
     //    /**
@@ -576,6 +605,36 @@ public class CmsForm {
     //
     //        return content.getValues(getNestedPathPrefix(content, NODE_NESTED_FORM, locale) + path, locale);
     //    }
+
+    /**
+     * Returns the (opt.) captcha field of this form.<p>
+     * 
+     * @return the (opt.) captcha field of this form
+     */
+    public CmsCaptchaField getCaptchaField() {
+
+        return m_captchaField;
+    }
+
+    /**
+     * Returns the form configuration errors.<p>
+     *
+     * @return the form configuration errors
+     */
+    public List getConfigurationErrors() {
+
+        return m_configurationErrors;
+    }
+
+    /**
+     * Returns the configuration Uri.<p>
+     *
+     * @return the configuration Uri
+     */
+    public String getConfigUri() {
+
+        return m_configUri;
+    }
 
     /**
      * Returns the label for the optional confirmation mail checkbox on the input form.<p>
@@ -678,7 +737,7 @@ public class CmsForm {
         I_CmsField field = (I_CmsField)m_fieldsByName.get(fieldName);
         if (field != null) {
             String fieldValue = field.getValue();
-            if (field instanceof CmsDynamicField) {
+            if ((field instanceof CmsDynamicField)) {
                 fieldValue = getDynamicFieldValue((CmsDynamicField)field);
             }
             return (fieldValue != null) ? fieldValue.trim() : "";
@@ -855,6 +914,17 @@ public class CmsForm {
     public String getMailType() {
 
         return m_mailType;
+    }
+
+    /**
+     * Returns the property file. 
+     * <p> 
+     * 
+     * @return the property file.
+     */
+    public String getPropertyFile() {
+
+        return m_propertyFile;
     }
 
     /**
@@ -1116,7 +1186,9 @@ public class CmsForm {
      */
     protected void addField(I_CmsField field) {
 
-        if (field instanceof CmsDynamicField) {
+        if ((field instanceof CmsDisplayField) || (field instanceof CmsHiddenDisplayField)) {
+            m_fields.add(field);
+        } else if (field instanceof CmsDynamicField) {
             m_dynaFields.add(field);
         } else {
             m_fields.add(field);
@@ -1155,39 +1227,6 @@ public class CmsForm {
         items.add(item);
         field.setItems(items);
         return field;
-    }
-
-    /**
-     * Checks if the given value is empty and returns in that case the default value.<p>
-     * 
-     * @param value the configuration value to check
-     * @param defaultValue the default value to return in case the value is empty
-     * @return the checked value
-     */
-    public static String getConfigurationValue(String value, String defaultValue) {
-
-        if (CmsStringUtil.isNotEmpty(value)) {
-            return value;
-        }
-        return defaultValue;
-    }
-
-    /**
-     * If the given value is not empty, macros in it will be resolved, otherwise returns the default value.<p>
-     * 
-     * @param resolver the macro resolver to use
-     * @param value the configuration value to check and resolve macros in
-     * @param defaultValue the default value to return in case the value is empty
-     * 
-     * @return the checked value
-     */
-    public static String getConfigurationValue(CmsMacroResolver resolver, String value, String defaultValue) {
-
-        if (CmsStringUtil.isNotEmpty(value)) {
-            String result = resolver.resolveMacros(value);
-            return result;
-        }
-        return defaultValue;
     }
 
     /**
@@ -1391,6 +1430,12 @@ public class CmsForm {
         // get the css style suffix fields class
         stringValue = getContentStringValue(content, cms, pathPrefix + NODE_STYLE, locale);
         setStyleSuffix(getConfigurationValue(stringValue, ""));
+        // get the optional property file
+        stringValue = getContentStringValue(content, cms, pathPrefix + NODE_PROPERTY_FILE, locale);
+        setPropertyFile(getConfigurationValue(stringValue, ""));
+        // get the optional webform action class
+        stringValue = getContentStringValue(content, cms, pathPrefix + NODE_ACTION_CLASS, locale);
+        setActionClass(getConfigurationValue(stringValue, ""));
         // get the show mandatory setting
         stringValue = getContentStringValue(content, cms, pathPrefix + NODE_SHOWMANDATORY, locale);
         setShowMandatory(Boolean.valueOf(getConfigurationValue(stringValue, Boolean.TRUE.toString())).booleanValue());
@@ -1633,19 +1678,67 @@ public class CmsForm {
                 && !CmsTableField.class.isAssignableFrom(field.getClass())) {
                 // only fill in values from configuration file if called initially
                 if (!field.needsItems()) {
-                    String fieldValue = content.getStringValue(
+                    if (CmsDisplayField.class.isAssignableFrom(field.getClass())
+                        || CmsHiddenDisplayField.class.isAssignableFrom(field.getClass())) {
+                        String fieldValue = getDynamicFieldValue((CmsDynamicField)field);
+                        field.setValue(fieldValue);
+                    } else {
+                        String fieldValue = content.getStringValue(
 
-                    cms, inputFieldPath + NODE_FIELDDEFAULTVALUE, locale);
-                    if (CmsStringUtil.isNotEmpty(fieldValue)) {
-                        CmsMacroResolver resolver = CmsMacroResolver.newInstance().setCmsObject(cms).setJspPageContext(
-                            jsp.getJspContext());
-                        field.setValue(resolver.resolveMacros(fieldValue));
+                        cms, inputFieldPath + NODE_FIELDDEFAULTVALUE, locale);
+                        if (CmsStringUtil.isNotEmpty(fieldValue)) {
+                            CmsMacroResolver resolver = CmsMacroResolver.newInstance().setCmsObject(cms).setJspPageContext(
+                                jsp.getJspContext());
+                            field.setValue(resolver.resolveMacros(fieldValue));
+                        }
                     }
                 } else {
                     // for field that needs items, 
                     // the default value is used to set the items and not really a value
                     field.setValue(null);
                 }
+            } else if (CmsFileUploadField.class.isAssignableFrom(field.getClass())) {
+                // specific handling for file upload fields, because if they are filled out
+                // they also shall be filled out if there are empty because there was an
+                // other mandatory field not filled out or there was browsed through
+                // different pages with the "prev" and the "next" buttons
+                // here are also used hidden fields on the current page, that is why
+                // it is possible that there are tow fields with the same name, one field
+                // is the file upload field, the second one is the hidden field
+                // the file upload field is the first one, the hidden field is the second one
+                String[] parameterValues = (String[])m_parameterMap.get(field.getName());
+                StringBuffer value = new StringBuffer();
+                if (parameterValues != null) {
+                    if (parameterValues.length == 1) {
+                        // there file upload field value is empty, so take the hidden field value
+                        value.append(parameterValues[0]);
+                    } else {
+                        // there are two fields with the same name
+                        if (parameterValues[0].isEmpty()) {
+                            // the file upload field is empty, so take the hidden field value
+                            value.append(parameterValues[1]);
+                        } else {
+                            // the file upload field is not empty, so take this value, because
+                            // so the user choosed another file than before (in the hidden field)
+                            value.append(parameterValues[0]);
+                        }
+                    }
+                }
+                field.setValue(value.toString());
+            } else if (CmsDisplayField.class.isAssignableFrom(field.getClass())
+                || CmsDisplayField.class.isAssignableFrom(field.getClass())) {
+                String fieldValue = getDynamicFieldValue((CmsDynamicField)field);
+                if (CmsStringUtil.isEmpty(fieldValue)) {
+                    // get field value from request for standard fields
+                    String[] parameterValues = (String[])m_parameterMap.get(field.getName());
+                    if (parameterValues != null) {
+                        fieldValue = parameterValues[0];
+                    }
+                }
+                field.setValue(fieldValue);
+            } else if (CmsEmptyField.class.isAssignableFrom(field.getClass())) {
+                String fieldValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDDEFAULTVALUE, locale);
+                field.setValue(fieldValue);
             } else if (!CmsTableField.class.isAssignableFrom(field.getClass())) {
                 // get field value from request for standard fields
                 String[] parameterValues = (String[])m_parameterMap.get(field.getName());
@@ -1732,6 +1825,17 @@ public class CmsForm {
             result = Boolean.toString(true);
         }
         return result;
+    }
+
+    /**
+     * Sets the action class. 
+     * <p> 
+     * 
+     * @param actionClass the action class.
+     */
+    protected void setActionClass(final String actionClass) {
+
+        m_actionClass = actionClass;
     }
 
     /**
@@ -2002,6 +2106,17 @@ public class CmsForm {
     protected void setMailType(String mailType) {
 
         m_mailType = mailType;
+    }
+
+    /**
+     * Sets the property file. 
+     * <p> 
+     * 
+     * @param propertyFile the property file.
+     */
+    protected void setPropertyFile(final String propertyFile) {
+
+        m_propertyFile = propertyFile;
     }
 
     /**

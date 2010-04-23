@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/I_CmsField.java,v $
- * Date   : $Date: 2010/03/19 15:31:11 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2010/04/23 09:53:17 $
+ * Version: $Revision: 1.6 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -41,7 +41,7 @@ import java.util.List;
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * 
  * @since 7.0.4 
  */
@@ -60,6 +60,24 @@ public interface I_CmsField {
     String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory);
 
     /**
+     * Builds the HTML input element for this element to be used in a frontend JSP.<p>
+     * 
+     * @param formHandler the handler of the current form
+     * @param messages a resource bundle containing HTML snippets to build the HTML element
+     * @param errorKey the key of the current error message
+     * @param showMandatory flag to determine if the mandatory mark should be shown or not
+     * @param infoKey the key of the current info message
+     * 
+     * @return the HTML input element for this element to be used in a frontend JSP
+     */
+    String buildHtml(
+        CmsFormHandler formHandler,
+        CmsMessages messages,
+        String errorKey,
+        boolean showMandatory,
+        String infoKey);
+
+    /**
      * Returns the database label.<p>
      *
      * @return the database label
@@ -72,6 +90,13 @@ public interface I_CmsField {
      * @return a custom error message for validation errors, or null
      */
     String getErrorMessage();
+
+    /**
+     * Returns the field number.<p>
+     *
+     * @return the field number
+     */
+    int getFieldNr();
 
     /**
      * Returns the list of items for select boxes, radio buttons and checkboxes.<p>
@@ -165,6 +190,13 @@ public interface I_CmsField {
     void setErrorMessage(String errorMessage);
 
     /**
+     * Sets the field number.<p>
+     * 
+     * @param fieldNr the field number
+     */
+    void setFieldNr(int fieldNr);
+
+    /**
      * Sets the list of items for select boxes, radio buttons and checkboxes.<p>
      * 
      * The list contains CmsFieldItem objects with the following information:
@@ -235,5 +267,14 @@ public interface I_CmsField {
      * @return null in case of no error, {@link CmsFormHandler#ERROR_VALIDATION} if validation of the input value failed, {@link CmsFormHandler#ERROR_VALIDATION} if validation of the input value failed
      */
     String validate(CmsFormHandler formHandler);
+
+    /**
+     * Validates this field by validating it's constraints and input value.<p>
+     * 
+     * @param formHandler the handler of the current form
+     * 
+     * @return null in case of no error, {@link CmsFormHandler#ERROR_VALIDATION} if validation of the input value failed, {@link CmsFormHandler#ERROR_VALIDATION} if validation of the input value failed
+     */
+    String validateForInfo(CmsFormHandler formHandler);
 
 }

@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/CmsFormDataAccess.java,v $
- * Date   : $Date: 2010/03/19 15:31:14 $
- * Version: $Revision: 1.12 $
+ * Date   : $Date: 2010/04/23 09:53:18 $
+ * Version: $Revision: 1.13 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -32,11 +32,14 @@
 
 package com.alkacon.opencms.formgenerator.database;
 
+import com.alkacon.opencms.formgenerator.CmsDisplayField;
 import com.alkacon.opencms.formgenerator.CmsDynamicField;
 import com.alkacon.opencms.formgenerator.CmsEmptyField;
 import com.alkacon.opencms.formgenerator.CmsFieldItem;
 import com.alkacon.opencms.formgenerator.CmsForm;
 import com.alkacon.opencms.formgenerator.CmsFormHandler;
+import com.alkacon.opencms.formgenerator.CmsHiddenDisplayField;
+import com.alkacon.opencms.formgenerator.CmsPagingField;
 import com.alkacon.opencms.formgenerator.CmsTableField;
 import com.alkacon.opencms.formgenerator.I_CmsField;
 
@@ -76,7 +79,7 @@ import org.apache.commons.logging.Log;
  * @author Achim Westermann
  * @author Michael Moossen
  * 
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  * 
  * @since 7.0.4
  */
@@ -590,6 +593,9 @@ public final class CmsFormDataAccess {
             Iterator itFormFields = formFields.iterator();
             while (itFormFields.hasNext()) {
                 I_CmsField field = (I_CmsField)itFormFields.next();
+                if (field instanceof CmsPagingField) {
+                    continue;
+                }
                 // do not store empty fields: users will not be able to enter something and "duplicate entry" errors may happen
                 if (!(field instanceof CmsEmptyField)) {
 
@@ -602,6 +608,8 @@ public final class CmsFormDataAccess {
                         // store it from the temp file to a save place: 
                         File uploadFile = storeFile(fileItem, formHandler);
                         fieldValues.add(uploadFile.getAbsolutePath());
+                    } else if ((field instanceof CmsDisplayField) || (field instanceof CmsHiddenDisplayField)) {
+                        fieldValues.add(field.getValue());
                     } else if (field instanceof CmsDynamicField) {
                         fieldValues.add(formHandler.getFormConfiguration().getFieldStringValueByName(field.getName()));
                     } else if (field instanceof CmsTableField) {
@@ -625,26 +633,30 @@ public final class CmsFormDataAccess {
                         stmt.setString(2, fieldName);
                         stmt.setString(3, fieldValue);
 
-                        /*
-                         * At this level we can allow to loose a field value and try 
-                         * to save the others instead of failing everything. 
-                         */
-                        try {
-                            rc = stmt.executeUpdate();
-                        } catch (SQLException sqlex) {
-                            LOG.error(
-                                Messages.get().getBundle().key(
+                        // only save not empty field values
+                        if (CmsStringUtil.isNotEmpty(fieldValue)) {
+                            /*
+                             * At this level we can allow to loose a field value and try 
+                             * to save the others instead of failing everything. 
+                             */
+                            try {
+                                rc = stmt.executeUpdate();
+                            } catch (SQLException sqlex) {
+                                LOG.error(Messages.get().getBundle().key(
                                     Messages.LOG_ERR_DATAACCESS_SQL_WRITE_FIELD_3,
                                     new Object[] {
                                         fieldName,
                                         fieldValue,
-                                        formHandler.createMailTextFromFields(false, false)}),
-                                sqlex);
-                        }
-                        if (rc != 1) {
-                            LOG.error(Messages.get().getBundle().key(
-                                Messages.LOG_ERR_DATAACCESS_SQL_WRITE_FIELD_3,
-                                new Object[] {fieldName, fieldValue, formHandler.createMailTextFromFields(false, false)}));
+                                        formHandler.createMailTextFromFields(false, false)}), sqlex);
+                            }
+                            if (rc != 1) {
+                                LOG.error(Messages.get().getBundle().key(
+                                    Messages.LOG_ERR_DATAACCESS_SQL_WRITE_FIELD_3,
+                                    new Object[] {
+                                        fieldName,
+                                        fieldValue,
+                                        formHandler.createMailTextFromFields(false, false)}));
+                            }
                         }
                     }
                 }
@@ -1027,7 +1039,12 @@ public final class CmsFormDataAccess {
         try {
             File folder = new File(filePath);
             CmsFileUtil.assertFolder(folder, CmsFileUtil.MODE_READ, true);
-            storeFile = new File(folder, item.getName());
+            String itemName = item.getName();
+            // In most cases, this will be the base file name, without path information. However, 
+            // some clients, such as the Opera browser, do include path information. 
+            // That is why here is to assure that the base name is used here.
+            itemName = CmsFormHandler.getTruncatedFileItemName(itemName);
+            storeFile = new File(folder, itemName);
             byte[] contents = item.get();
             try {
                 OutputStream out = new FileOutputStream(storeFile);

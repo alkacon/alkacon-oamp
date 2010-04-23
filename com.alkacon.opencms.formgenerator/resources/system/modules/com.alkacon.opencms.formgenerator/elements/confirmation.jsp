@@ -12,7 +12,7 @@ List resultList = formHandler.getFormConfiguration().getAllFields();
 
 for (int i = 0, n = resultList.size(); i < n; i++) {
 	I_CmsField current = (I_CmsField)resultList.get(i);
-	if (CmsHiddenField.class.isAssignableFrom(current.getClass()) || CmsPrivacyField.class.isAssignableFrom(current.getClass()) || CmsCaptchaField.class.isAssignableFrom(current.getClass())) {
+	if (CmsHiddenField.class.isAssignableFrom(current.getClass()) || CmsPrivacyField.class.isAssignableFrom(current.getClass()) || CmsCaptchaField.class.isAssignableFrom(current.getClass()) || CmsEmptyField.class.isAssignableFrom(current.getClass())) {
 		continue;
 	}
 	String label = current.getLabel();
@@ -20,7 +20,11 @@ for (int i = 0, n = resultList.size(); i < n; i++) {
 	    label = ((CmsTableField)current).buildLabel(formHandler.getMessages(),false,false);
 	}
 	String value = current.toString();
-    if ((current instanceof CmsDynamicField)) {
+    if ((current instanceof CmsDisplayField)) {
+    	value = formHandler.convertToHtmlValue(value);
+    } else if ((current instanceof CmsHiddenDisplayField)) {
+    	continue;
+    } else if ((current instanceof CmsDynamicField)) {
         if (!current.isMandatory()) {
             // show dynamic fields only if they are marked as mandatory
             continue;
@@ -32,6 +36,9 @@ for (int i = 0, n = resultList.size(); i < n; i++) {
         value = ((CmsTableField)current).buildHtml(formHandler.getMessages(),false);
     }else if (current instanceof CmsPasswordField) {
         value = value.replaceAll(".", "*");
+    }else if (current instanceof CmsFileUploadField) {
+	value = CmsFormHandler.getTruncatedFileItemName(value);
+	value = formHandler.convertToHtmlValue(value);
     }else {
         value = formHandler.convertToHtmlValue(value);
     }

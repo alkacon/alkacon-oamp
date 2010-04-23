@@ -57,11 +57,12 @@ Legend:
 - General comment
 
 
-1.3.2 - February 18th, 2010
+1.3.2 - April 23th, 2010
 * Fixed issue with Microsoft Excel reformatting numerical columns (contribution by Mathias Lin, SYSVISION).
 * Fixed issue with file upload fields not working in version 1.3.1 / OpenCms 7.5.0. 
 - Slight API changes (wider access modifiers) for allowing bugfix version 1.0.2 of the OAMP survey module.
-- Added password field
+- Added some new field input types (password field, display field, hidden display field)
+- Added possibilities for a special property file per web form and an action class after the form was saved/sent
 
 1.3.1 - June 15th, 2009
 - Compatibility update: this is the only version that works with OpenCms 7.5.0 or later!
