@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.registration/src/com/alkacon/opencms/registration/CmsRegistrationFormHandler.java,v $
- * Date   : $Date: 2008/05/14 15:40:39 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2010/05/21 13:50:25 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -76,7 +76,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4 
  */
@@ -316,26 +316,26 @@ public class CmsRegistrationFormHandler extends CmsFormHandler {
      */
     public void init(HttpServletRequest req, String formConfigUri) throws Exception {
 
-        m_mulipartFileItems = CmsRequestUtil.readMultipartFileItems(req);
+        m_multipartFileItems = CmsRequestUtil.readMultipartFileItems(req);
         m_macroResolver = CmsMacroResolver.newInstance();
         m_macroResolver.setKeepEmptyMacros(true);
 
-        if (m_mulipartFileItems != null) {
+        if (m_multipartFileItems != null) {
             m_parameterMap = CmsRequestUtil.readParameterMapFromMultiPart(
                 getRequestContext().getEncoding(),
-                m_mulipartFileItems);
+                m_multipartFileItems);
         } else {
             m_parameterMap = new HashMap();
             m_parameterMap.putAll(getRequest().getParameterMap());
         }
 
-        if (m_mulipartFileItems != null) {
+        if (m_multipartFileItems != null) {
             Map fileUploads = (Map)req.getSession().getAttribute(ATTRIBUTE_FILEITEMS);
             if (fileUploads == null) {
                 fileUploads = new HashMap();
             }
             // check, if there are any attachments
-            Iterator i = m_mulipartFileItems.iterator();
+            Iterator i = m_multipartFileItems.iterator();
             while (i.hasNext()) {
                 FileItem fileItem = (FileItem)i.next();
                 if (CmsStringUtil.isNotEmpty(fileItem.getName())) {
