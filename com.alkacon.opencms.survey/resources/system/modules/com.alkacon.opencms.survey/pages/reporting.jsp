@@ -120,7 +120,7 @@
 								file="%(link.strong:/system/modules/com.alkacon.opencms.survey/elements/include_paging.jsp:6eace4bb-1052-11dd-84af-371bb8ed1b84)"%>
 						</c:if> <%-- for each field print the answers --%> <c:forEach var="field"
 							items="${webform.valueList['InputField']}">
-							<c:set var="fieldOptionsBean" value="${field.value.FieldOptions}" />
+							<c:set var="fieldOptionsBean" value="${field.value.FieldParams}" />
 							<c:set var="fieldOptionsStr" value="" />
 							<c:if test="${fieldOptionsBean.exists}">
 								<c:set var="fieldOptionsStr" value="${fieldOptionsBean.stringValue}" />
