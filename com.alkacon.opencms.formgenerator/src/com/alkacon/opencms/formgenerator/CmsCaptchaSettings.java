@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaSettings.java,v $
- * Date   : $Date: 2010/03/19 15:31:11 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2010/05/21 13:49:16 $
+ * Version: $Revision: 1.7 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.logging.Log;
 
 /**
@@ -56,7 +57,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Achim Westermann
  * 
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  * 
  * @since 7.0.4 
  */
@@ -174,7 +175,7 @@ public final class CmsCaptchaSettings implements Cloneable {
     private Color m_fontColor = Color.BLACK;
 
     /** The amount of holes per glyph. */
-    private Integer m_holesPerGlyp = new Integer(0);
+    private Integer m_holesPerGlyph = new Integer(0);
 
     /** The image height in pixels. */
     private int m_imageHeight = 50;
@@ -198,14 +199,14 @@ public final class CmsCaptchaSettings implements Cloneable {
     private int m_minPhraseLength = 5;
 
     /** The map of request parameters. */
-    private Map m_parameterMap;
+    private Map<String, String[]> m_parameterMap;
 
     /**
      * The path to the preset configuration (captchapreset) that has been used to initialize these
      * settings. This is read only, as the path is internally read from a nested CmsForm/FormCaptcha
      * XML content.
      */
-    private String m_presetPath = "factory defaults (classfile)";
+    private String m_presetPath = "factory_defaults_(classfile)";
 
     /** The flag that decides wethter a background image or a background color is used. */
     private boolean m_useBackgroundImage = true;
@@ -342,7 +343,7 @@ public final class CmsCaptchaSettings implements Cloneable {
      */
     public Integer getHolesPerGlyph() {
 
-        return m_holesPerGlyp;
+        return m_holesPerGlyph;
     }
 
     /**
@@ -415,8 +416,8 @@ public final class CmsCaptchaSettings implements Cloneable {
      */
     public void init(CmsJspActionElement jsp) {
 
-        List multipartFileItems = CmsRequestUtil.readMultipartFileItems(jsp.getRequest());
-        m_parameterMap = new HashMap();
+        List<FileItem> multipartFileItems = CmsRequestUtil.readMultipartFileItems(jsp.getRequest());
+        m_parameterMap = new HashMap<String, String[]>();
         if (multipartFileItems != null) {
             m_parameterMap = CmsRequestUtil.readParameterMapFromMultiPart(
                 jsp.getRequestContext().getEncoding(),
@@ -809,7 +810,7 @@ public final class CmsCaptchaSettings implements Cloneable {
      */
     public void setHolesPerGlyph(int holes) {
 
-        m_holesPerGlyp = new Integer(holes);
+        m_holesPerGlyph = new Integer(holes);
     }
 
     /**
@@ -913,7 +914,7 @@ public final class CmsCaptchaSettings implements Cloneable {
             CmsEncoder.escape(getFontColorString(), cms.getRequestContext().getEncoding()));
         buf.append("&amp;").append(C_PARAM_BACKGROUND_COLOR).append("=").append(
             CmsEncoder.escape(getBackgroundColorString(), cms.getRequestContext().getEncoding()));
-        buf.append("&amp;").append(C_PARAM_HOLES_PER_GLYPH).append("=").append(m_holesPerGlyp);
+        buf.append("&amp;").append(C_PARAM_HOLES_PER_GLYPH).append("=").append(m_holesPerGlyph);
         buf.append("&amp;").append(C_PARAM_FILTER_AMPLITUDE).append("=").append(m_filterAmplitude);
         buf.append("&amp;").append(C_PARAM_FILTER_WAVE_LENGTH).append("=").append(m_filterWaveLength);
         if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(getCharacterPool())) {
@@ -930,6 +931,7 @@ public final class CmsCaptchaSettings implements Cloneable {
     /**
      * @see java.lang.Object#clone()
      */
+    @Override
     protected Object clone() {
 
         CmsCaptchaSettings result = new CmsCaptchaSettings();
@@ -938,7 +940,7 @@ public final class CmsCaptchaSettings implements Cloneable {
         result.m_filterAmplitude = m_filterAmplitude;
         result.m_filterWaveLength = m_filterWaveLength;
         result.m_fontColor = m_fontColor;
-        result.m_holesPerGlyp = m_holesPerGlyp;
+        result.m_holesPerGlyph = m_holesPerGlyph;
         result.m_imageHeight = m_imageHeight;
         result.m_imageWidth = m_imageWidth;
         result.m_maxFontSize = m_maxFontSize;
@@ -1003,7 +1005,7 @@ public final class CmsCaptchaSettings implements Cloneable {
     private String getParameter(String parameter) {
 
         try {
-            return ((String[])m_parameterMap.get(parameter))[0];
+            return (m_parameterMap.get(parameter))[0];
         } catch (NullPointerException e) {
             return "";
         }

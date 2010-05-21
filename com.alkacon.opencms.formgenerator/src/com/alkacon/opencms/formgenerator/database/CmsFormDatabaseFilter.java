@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/CmsFormDatabaseFilter.java,v $
- * Date   : $Date: 2010/03/19 15:31:14 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2010/05/21 13:49:27 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -45,7 +45,7 @@ import java.util.Set;
  * 
  * @author Michael Moossen 
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.3 $ 
  * 
  * @since 7.0.5
  */
@@ -79,7 +79,7 @@ public final class CmsFormDatabaseFilter implements Cloneable {
     private int m_entryId;
 
     /** The fields to filter. */
-    private Map m_fields = new HashMap();
+    private Map<String, String> m_fields = new HashMap<String, String>();
 
     /** To filter forms for a given form id. */
     private String m_formId;
@@ -93,14 +93,14 @@ public final class CmsFormDatabaseFilter implements Cloneable {
     /** To filter forms ending with the given index. */
     private int m_indexTo = INDEX_IGNORE_TO;
 
-    /** If asc order, desc order otherwise. */
+    /** If ascending order, descending order otherwise. */
     private boolean m_orderAsc;
 
     /** To filter forms for a given resource id. */
     private CmsUUID m_resourceId;
 
     /** The states to filter. */
-    private Set m_states = new HashSet();
+    private Set<Integer> m_states = new HashSet<Integer>();
 
     /**
      * Private constructor.<p>
@@ -115,6 +115,7 @@ public final class CmsFormDatabaseFilter implements Cloneable {
     /**
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
 
         CmsFormDatabaseFilter filter = new CmsFormDatabaseFilter(m_headersOnly);
@@ -125,8 +126,8 @@ public final class CmsFormDatabaseFilter implements Cloneable {
         filter.m_dateTo = m_dateTo;
         filter.m_indexFrom = m_indexFrom;
         filter.m_indexTo = m_indexTo;
-        filter.m_states = new HashSet(m_states);
-        filter.m_fields = new HashMap(m_fields);
+        filter.m_states = new HashSet<Integer>(m_states);
+        filter.m_fields = new HashMap<String, String>(m_fields);
         filter.m_orderAsc = m_orderAsc;
         return filter;
     }
@@ -283,7 +284,7 @@ public final class CmsFormDatabaseFilter implements Cloneable {
      *
      * @return the fields to filter
      */
-    public Map getFields() {
+    public Map<String, String> getFields() {
 
         return Collections.unmodifiableMap(m_fields);
     }
@@ -343,7 +344,7 @@ public final class CmsFormDatabaseFilter implements Cloneable {
      *
      * @return the states to filter
      */
-    public Set getStates() {
+    public Set<Integer> getStates() {
 
         return Collections.unmodifiableSet(m_states);
     }
@@ -359,9 +360,9 @@ public final class CmsFormDatabaseFilter implements Cloneable {
     }
 
     /**
-     * Checks if the order is asc.<p>
+     * Checks if the order is ascending.<p>
      *
-     * @return <code>true</code> if the order is asc
+     * @return <code>true</code> if the order is ascending
      */
     public boolean isOrderAsc() {
 
@@ -408,6 +409,7 @@ public final class CmsFormDatabaseFilter implements Cloneable {
     /**
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
 
         StringBuffer str = new StringBuffer(128);
@@ -438,7 +440,7 @@ public final class CmsFormDatabaseFilter implements Cloneable {
             str.append(", ").append("states").append("=").append(m_states);
         }
         if (!m_fields.isEmpty()) {
-            str.append("fields").append("=").append(m_fields);
+            str.append(", ").append("fields").append("=").append(m_fields);
         }
         str.append("]");
         return str.toString();

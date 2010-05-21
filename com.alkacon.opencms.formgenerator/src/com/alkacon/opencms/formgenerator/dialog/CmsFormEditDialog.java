@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/dialog/CmsFormEditDialog.java,v $
- * Date   : $Date: 2010/03/19 15:31:12 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2010/05/21 13:49:30 $
+ * Version: $Revision: 1.6 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -32,12 +32,18 @@
 
 package com.alkacon.opencms.formgenerator.dialog;
 
+import com.alkacon.opencms.formgenerator.CmsForm;
 import com.alkacon.opencms.formgenerator.database.CmsFormDataAccess;
 import com.alkacon.opencms.formgenerator.database.CmsFormDataBean;
 
+import org.opencms.file.CmsResource;
+import org.opencms.file.CmsResourceFilter;
 import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.main.CmsException;
 import org.opencms.main.CmsLog;
+import org.opencms.main.OpenCms;
+import org.opencms.security.CmsPermissionSet;
+import org.opencms.security.CmsRole;
 import org.opencms.util.CmsStringUtil;
 import org.opencms.widgets.CmsDisplayWidget;
 import org.opencms.widgets.CmsInputWidget;
@@ -63,13 +69,13 @@ import org.apache.commons.logging.Log;
  * 
  * @author Anja Roettgers 
  * 
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * 
  * @since 7.0.4 
  */
 public class CmsFormEditDialog extends CmsWidgetDialog {
 
-    /** the length to cut the string text.*/
+    /** The length to cut the string text.*/
     public static final int STRING_TRIM_SIZE = 200;
 
     /** The log object for this class. */
@@ -78,11 +84,14 @@ public class CmsFormEditDialog extends CmsWidgetDialog {
     /** Defines which pages are valid for this dialog. */
     private static final String[] PAGES = {"page1"};
 
-    /** localized messages Keys prefix. */
+    /** Localized messages keys prefix. */
     private static final String WEBFORM_KEY_PREFIX = "webform_prefix";
 
+    /** Constant indicating that no upload folder was defined. */
+    private static final String WEBFORM_UPLOADFOLDER_NONE = "none";
+
     /** a map with all fields and values. */
-    private HashMap m_fields;
+    private HashMap<String, CmsFormDataEditBean> m_fields;
 
     /** contains the original data of current entry.**/
     private CmsFormDataBean m_formData;
@@ -119,12 +128,16 @@ public class CmsFormEditDialog extends CmsWidgetDialog {
      * 
      * @see org.opencms.workplace.CmsWidgetDialog#actionCommit()
      */
+    @Override
     public void actionCommit() {
 
-        List errors = new ArrayList();
+        List<Exception> errors = new ArrayList<Exception>();
         try {
             // get the list of all fields 
-            List columnNames = CmsFormDataAccess.getInstance().readFormFieldNames(m_paramFormid, 0, Long.MAX_VALUE);
+            List<String> columnNames = CmsFormDataAccess.getInstance().readFormFieldNames(
+                m_paramFormid,
+                0,
+                Long.MAX_VALUE);
 
             // for each field look if the value has changed and update the database
             String column = null;
@@ -134,8 +147,8 @@ public class CmsFormEditDialog extends CmsWidgetDialog {
             for (int i = 0; i < columnNames.size(); i++) {
                 try {
                     // get for the field the old and new value
-                    column = (String)columnNames.get(i);
-                    data = (CmsFormDataEditBean)m_fields.get(column);
+                    column = columnNames.get(i);
+                    data = m_fields.get(column);
                     orgValue = m_formData.getFieldValue(column);
                     value = data.getValue();
                     if (LOG.isDebugEnabled()) {
@@ -206,6 +219,7 @@ public class CmsFormEditDialog extends CmsWidgetDialog {
      * 
      * @see org.opencms.workplace.CmsWorkplace#keyDefault(java.lang.String, java.lang.String)
      */
+    @Override
     public String keyDefault(String keyName, String defaultValue) {
 
         return getMessages().keyDefault(keyName, CmsStringUtil.escapeHtml(defaultValue));
@@ -238,6 +252,7 @@ public class CmsFormEditDialog extends CmsWidgetDialog {
      * 
      * @see org.opencms.workplace.CmsWidgetDialog#defineWidgets()
      */
+    @Override
     protected void defineWidgets() {
 
         try {
@@ -254,6 +269,7 @@ public class CmsFormEditDialog extends CmsWidgetDialog {
     /**
      * @see org.opencms.workplace.CmsWidgetDialog#getPageArray()
      */
+    @Override
     protected String[] getPageArray() {
 
         return PAGES;
@@ -262,6 +278,7 @@ public class CmsFormEditDialog extends CmsWidgetDialog {
     /**
      * @see org.opencms.workplace.CmsWorkplace#initMessages()
      */
+    @Override
     protected void initMessages() {
 
         // add specific dialog resource bundle
@@ -272,6 +289,7 @@ public class CmsFormEditDialog extends CmsWidgetDialog {
     /**
      * @see org.opencms.workplace.CmsWidgetDialog#validateParamaters()
      */
+    @Override
     protected void validateParamaters() throws Exception {
 
         if (CmsStringUtil.isEmptyOrWhitespaceOnly(m_paramEntryid)
@@ -289,11 +307,26 @@ public class CmsFormEditDialog extends CmsWidgetDialog {
     private void addDynamicWidgets() throws Exception {
 
         if (m_fields == null) {
-            m_fields = new HashMap();
+            m_fields = new HashMap<String, CmsFormDataEditBean>();
         }
 
         // get the list of all fields 
-        List columnNames = CmsFormDataAccess.getInstance().readFormFieldNames(m_paramFormid, 0, Long.MAX_VALUE);
+        List<String> columnNames = CmsFormDataAccess.getInstance().readFormFieldNames(m_paramFormid, 0, Long.MAX_VALUE);
+
+        // determine if the columns can be edited by the current user
+        boolean editable;
+        try {
+            CmsResource formFile = getCms().readResource(m_formData.getResourceId());
+            editable = OpenCms.getRoleManager().hasRole(getCms(), CmsRole.DATABASE_MANAGER)
+                || getCms().hasPermissions(formFile, CmsPermissionSet.ACCESS_WRITE, false, CmsResourceFilter.ALL);
+        } catch (CmsException e) {
+            // error reading form resource, only check roles of current user
+            editable = OpenCms.getRoleManager().hasRole(getCms(), CmsRole.DATABASE_MANAGER);
+        }
+
+        String uploadFolder = OpenCms.getModuleManager().getModule(CmsForm.MODULE_NAME).getParameter(
+            CmsForm.MODULE_PARAM_UPLOADFOLDER,
+            WEBFORM_UPLOADFOLDER_NONE);
 
         // for each column create a widget
         String column;
@@ -302,9 +335,9 @@ public class CmsFormEditDialog extends CmsWidgetDialog {
         for (int i = 0; i < columnNames.size(); i++) {
 
             // get the entry and fill the columns
-            column = (String)columnNames.get(i);
+            column = columnNames.get(i);
             value = m_formData.getFieldValue(column);
-            edit = createEditEntry(value);
+            edit = createEditEntry(value, uploadFolder, editable);
             addWidget(new CmsWidgetDialogParameter(edit, "value", column, "", PAGES[0], edit.getWidget(), 0, 1));
             m_fields.put(column, edit);
         }
@@ -384,14 +417,20 @@ public class CmsFormEditDialog extends CmsWidgetDialog {
      * Creates the Objects to edit the dynamic columns.<p>
      * 
      * @param value the current value
+     * @param uploadFolder the upload folder path
+     * @param editable indicates if the entry can be edited by the current user
      * 
      * @return the Object contains the current value and the widget to edit
      */
-    private CmsFormDataEditBean createEditEntry(String value) {
+    private CmsFormDataEditBean createEditEntry(String value, String uploadFolder, boolean editable) {
 
         I_CmsWidget widget;
 
-        if (isTextareaWidget(value)) {
+        if (!uploadFolder.equals(WEBFORM_UPLOADFOLDER_NONE) && value.startsWith(uploadFolder)) {
+            widget = new CmsFormFileWidget();
+        } else if (!editable) {
+            widget = new CmsDisplayWidget();
+        } else if (isTextareaWidget(value)) {
             widget = new CmsTextareaWidget(5);
         } else {
             widget = new CmsInputWidget();

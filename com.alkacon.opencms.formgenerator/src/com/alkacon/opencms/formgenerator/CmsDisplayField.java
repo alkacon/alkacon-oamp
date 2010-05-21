@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsDisplayField.java,v $
- * Date   : $Date: 2010/04/23 09:53:17 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2010/05/21 13:49:18 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -41,7 +41,7 @@ import org.opencms.util.CmsStringUtil;
  * 
  * @author Mario Jaeger
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.5.2
  */
@@ -66,12 +66,16 @@ public class CmsDisplayField extends CmsDynamicField {
     @Override
     public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory) {
 
-        StringBuffer buf = new StringBuffer();
+        StringBuffer buf = new StringBuffer(128);
         String fieldLabel = getLabel();
 
         // line #1
         if (showRowStart(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.start")).append("\n");
+            if (isSubField()) {
+                buf.append(messages.key("form.html.row.subfield.start")).append("\n");
+            } else {
+                buf.append(messages.key("form.html.row.start")).append("\n");
+            }
         }
 
         // line #2
@@ -79,14 +83,26 @@ public class CmsDisplayField extends CmsDynamicField {
             "\n");
 
         // line #3
-        buf.append(messages.key("form.html.field.start")).append("<input type=\"text\" name=\"").append(getName()).append(
-            "\" value=\"").append(CmsStringUtil.escapeHtml(getValue())).append("\"").append(
-            formHandler.getFormConfiguration().getFormFieldAttributes()).append("READONLY>").append(
-            messages.key("form.html.field.end")).append("\n");
+        buf.append(messages.key("form.html.field.start"));
+        String value = getValue();
+        // if the default value is set, then the text is shown
+        if (CmsStringUtil.isEmptyOrWhitespaceOnly(value)) {
+            buf.append("&nbsp;");
+        } else {
+            buf.append(value);
+        }
+        // append the value as hidden field
+        buf.append("<input type=\"hidden\" name=\"").append(getName()).append("\" value=\"").append(
+            CmsStringUtil.escapeHtml(getValue())).append("\" />\n");
+        buf.append(messages.key("form.html.field.end")).append("\n");
 
         // line #4
         if (showRowEnd(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.end")).append("\n");
+            if (isSubField()) {
+                buf.append(messages.key("form.html.row.subfield.end")).append("\n");
+            } else {
+                buf.append(messages.key("form.html.row.end")).append("\n");
+            }
         }
 
         return buf.toString();

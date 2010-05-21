@@ -1,118 +1,208 @@
 /*
- * Example for the Alkacon OAMP Webform Module
+ * Example for the Alkacon OAMP Webform Module, used as default CSS.
+ *
+ * The CSS to use can be specified as module parameter "css".
+ * If no value is defined, this CSS file shipped with the module is used.
+ * 
+ * Important: to generate valid XHTML code, specify "false" as module parameter value
+ * and include the CSS in your template head manually.
  */
- 
-@charset "UTF-8";
 @media all
 {
+	/* webform table */
+	table.webform_table {
+		width: 100%;
+		border-spacing: 0;
+		border: none;
+		background-color: #FFF;
+	}
+	
 	/* labels */
 	td.webform_label, td.webform_label_multi {
+		width: 30%;
+		vertical-align: top;
 		font-weight: bold;
-		padding: 5px 0px 3px 0px;
+		padding: 4px 2px 4px 0;
+	}
+	
+	/* fields */
+	td.webform_field, td.webform_field_multi {
+		padding: 4px 0 4px 2px;
 	}
 	
 	/* additional fields */
+	table.webform_table input.onlineform {
+		width: 99%;
+		padding: 2px 0;
+		border: 1px solid #888;
+	}
+
 	table.webform_table select {
-		height: 20px;
+		width: 99%;
+		padding: 2px 0;
+		border: 1px solid #888;
+		height: 22px;
 	}
 
 	table.webform_table textarea {
+		width: 99%;
+		padding: 2px 0;
+		border: 1px solid #888;
 		height: 60px;
 	}
 
 	table.webform_table tr td.webform_button {
 		text-align: center;
 	}
-	
+
 	/* error */
-	span.webform_label_error{
-		color: #CC0000;
+	span.webform_label_error {
+		color: #C00;
 	}
-	
-	span.webform_msg_error{
-		color: #CC0000; 
+
+	span.webform_msg_error {
+		color: #C00; 
 		font-weight: bold;
 	}
 	
 	/* checkbox */
-	table.webform_checkbox_row{
+	table.webform_checkbox, table.webform_checkbox_row {
+		margin-top: 0;
+		border: none;
+	}
+	
+	table.webform_checkbox {
+		padding: 
+	}
+
+	table.webform_checkbox_row {
 		float: left; 
 		padding: 0px 8px 0px 0px;
+		background-color: #FFF;
 	}
-	
-	td.webform_field_checkbox, td.webform_field_checkbox_row{
+
+	td.webform_field_checkbox, td.webform_field_checkbox_row {
+		vertical-align: top;
 		padding: 2px 0px 2px 0px;
 	}
-	
-	td.webform_label_checkbox{
+
+	td.webform_label_checkbox {
 		padding: 2px 0px 2px 5px;
 	}
 
-	td.webform_label_checkbox_row{
+	td.webform_label_checkbox_row {
 		padding: 2px 0px 2px 3px;
 	}
-	
+
 	/* radio */
-	table.webform_radio_row{
+	table.webform_radio, table.webform_radio_row {
+		margin-top: 0;
+		border: none;
+	}
+
+	table.webform_radio_row {
 		float: left; 
 		padding: 0px 8px 0px 0px;
+		background-color: #FFF;
 	}
-	
-	td.webform_field_radio, td.webform_field_radio_row{
+
+	td.webform_field_radio, td.webform_field_radio_row {
+		vertical-align: top;
 		padding: 4px 0px 0px 0px;
 	}
-	
-	td.webform_label_radio, td.webform_label_radio_row{
-		padding: 1px 0px 0px 5px;
+
+	td.webform_label_radio, td.webform_label_radio_row {
+		padding: 2px 0px 2px 5px;
 	}
-	
+
 	/* table field */
-	table.webform_label_table{
+	table.webform_label_table, table.webform_field_table {
+		margin-top: 0;
 		vertical-align: top;
+		border: none;
 	}
-	
+
 	.webform_label_table tr th, .webform_label_table tr td, 
-		.webform_field_table tr th, .webform_field_table tr td {
+	.webform_field_table tr th, .webform_field_table tr td {
 		white-space: nowrap;
 	}
+
+	.webform_field_table tr th, .webform_field_table tr td {
+		text-align: left;
+	}
+
+	.webform_field_table input {
+		border: 1px solid #888;
+	}
+
+	/* sub field sets */
+	table.webform_table tbody.webform_subfields td.webform_label,
+	table.webform_table tbody.webform_subfields td.webform_label_multi,
+	table.webform_table tbody.webform_subfields td.webform_field {
+	}
 	
+	table.webform_table tbody.webform_subfields td.webform_label,
+	table.webform_table tbody.webform_subfields td.webform_label_multi {
+	}
+
+	table.webform_table tbody.webform_subfields td.webform_field {
+		background-color: #EEE;
+	}
+
+
+	/* submit and other buttons */
+	table.webform_table input.formbutton {
+		margin-top: 10px;
+	}
+
+	/* check page */
+	table.webform_check_table {
+		margin-top: 14px;
+		border: none;
+	}
+
+	/* confirmation page */
+	table.webform_confirm_table {
+		margin-top: 14px;
+		border: none;
+	}
+
 	/************************************************************************************************ 
-	 * Orange style: In the optional form configuration field "Style" "Orange" has been entered. 
-     * So the following styles are special for that webform:
+	 * Orange style: In the optional form configuration field "Style" "orange" has been entered. 
+	 * So the following styles are special for that webform:
 	************************************************************************************************/
-	td.webform_label_Orange {
+	td.webform_label_orange {
 		color: orange;
 	}
-	
-	td.webform_field_Orange {
+
+	td.webform_field_orange {
 		color: orange;
 	}
-	
-	td.webform_field_Orange input, td.webform_field_Orange select {
+
+	td.webform_field_orange input, td.webform_field_orange select {
 		color: orange;
 		background-color: yellow;
 	}
-	
-	td.webform_middletext_Orange {
+
+	td.webform_middletext_orange {
 		color: orange;
 	}
-	
-	td.webform_mandatory_Orange {
+
+	td.webform_mandatory_orange {
 		color: orange;
 	}
-	
-	td.webform_button_Orange input {
+
+	td.webform_button_orange input {
 		color: orange;
 		background-color: yellow;
 		font-weight: bold;
 	}
-	
-	td.webform_error_text_start_Orange {
+
+	td.webform_error_text_start_orange {
 		color: orange;
 	}
-	
-	td.webform_error_start_Orange {
+
+	td.webform_error_start_orange {
 		color: orange;
 	}
-	
 }    

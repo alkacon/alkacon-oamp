@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/export/CmsCvsExportBean.java,v $
- * Date   : $Date: 2010/03/19 15:31:13 $
- * Version: $Revision: 1.8 $
+ * Date   : $Date: 2010/05/21 13:49:19 $
+ * Version: $Revision: 1.9 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -65,7 +65,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  * 
  * @since 7.0.4
  *
@@ -90,7 +90,7 @@ public class CmsCvsExportBean {
     /** The form that was used to input the data to export. */
     private CmsFormHandler m_formHandler;
 
-    /** Needed to read the resource for the uuid. */
+    /** Needed to read the resource for the UUID. */
     private CmsObject m_cms;
 
     /** The start time for data sets to export. */
@@ -111,7 +111,7 @@ public class CmsCvsExportBean {
      * Creates an instance that is not backed by a form but still offers 
      * export functionality via <code>{@link #exportData(String, Locale)}</code>.<p>
      * 
-     * @param cms Needed to read the resource for the uuid
+     * @param cms Needed to read the resource for the UUID
      */
     public CmsCvsExportBean(final CmsObject cms) {
 
@@ -133,14 +133,14 @@ public class CmsCvsExportBean {
     }
 
     /**
-     * Returns the csv export file content.<p> 
+     * Returns the CSV export file content.<p> 
      * 
-     * @param formId the current selected webform
+     * @param formId the current selected web form
      * @param locale the current local
      * 
-     * @return the csv export file content
+     * @return the CSV export file content
      * 
-     * @throws SQLException if sth goes wrong 
+     * @throws SQLException if something goes wrong 
      */
     public String exportData(String formId, Locale locale) throws SQLException {
 
@@ -177,13 +177,13 @@ public class CmsCvsExportBean {
                     new Object[] {CmsForm.MODULE_PARAM_EXPORT_TIMEFORMATE, formatString}));
             }
         }
-        List columnNames = CmsFormDataAccess.getInstance().readFormFieldNames(
+        List<String> columnNames = CmsFormDataAccess.getInstance().readFormFieldNames(
             formId,
             getStartTime().getTime(),
             getEndTime().getTime());
         Collections.sort(columnNames, Collator.getInstance(locale));
 
-        List dataEntries = CmsFormDataAccess.getInstance().readForms(
+        List<CmsFormDataBean> dataEntries = CmsFormDataAccess.getInstance().readForms(
             formId,
             getStartTime().getTime(),
             getEndTime().getTime());
@@ -195,9 +195,9 @@ public class CmsCvsExportBean {
         result.append(EXCEL_DEFAULT_CSV_DELMITER);
         result.append(escapeExcelCsv("Resource UUID"));
         result.append(EXCEL_DEFAULT_CSV_DELMITER);
-        Iterator itColumns = columnNames.iterator();
+        Iterator<String> itColumns = columnNames.iterator();
         while (itColumns.hasNext()) {
-            String columnName = (String)itColumns.next();
+            String columnName = itColumns.next();
             // skip empty columns (previous versions saved CmsEmptyField with empty values which will not be deleted):
             if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(columnName)) {
                 columnName = escapeExcelCsv(columnName);
@@ -209,11 +209,11 @@ public class CmsCvsExportBean {
         }
         result.append("\r\n");
         // loop 2 - write the data:
-        Iterator itRows = dataEntries.iterator();
+        Iterator<CmsFormDataBean> itRows = dataEntries.iterator();
         String path;
         CmsUUID uuid = null;
         while (itRows.hasNext()) {
-            CmsFormDataBean row = (CmsFormDataBean)itRows.next();
+            CmsFormDataBean row = itRows.next();
             // create an entry for each column, even if some rows (data sets) 
             // do not contain the field value because it was 
             // a) not entered 
@@ -239,7 +239,7 @@ public class CmsCvsExportBean {
             result.append(EXCEL_DEFAULT_CSV_DELMITER);
             itColumns = columnNames.iterator();
             while (itColumns.hasNext()) {
-                String columnName = (String)itColumns.next();
+                String columnName = itColumns.next();
                 // skip empty columns (previous versions saved CmsEmptyField with empty values which will not be deleted):
                 if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(columnName)) {
 
@@ -354,7 +354,7 @@ public class CmsCvsExportBean {
      * 
      * @param value the value to transform 
      * 
-     * @return the input with unix line separators
+     * @return the input with Unix line separators
      */
     private String transformUnixLineseparator(String value) {
 

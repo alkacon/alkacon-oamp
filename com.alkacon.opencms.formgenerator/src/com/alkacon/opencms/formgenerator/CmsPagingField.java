@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsPagingField.java,v $
- * Date   : $Date: 2010/04/23 09:53:17 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2010/05/21 13:49:16 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -32,25 +32,28 @@
 
 package com.alkacon.opencms.formgenerator;
 
+import org.opencms.i18n.CmsEncoder;
 import org.opencms.i18n.CmsMessages;
+import org.opencms.util.CmsStringUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Represents a new page field.<p>
  * 
- * @version $Revision: 1.1 $
+ * @author Mario Jaeger
  * 
- * @since 7.0.4
+ * @version $Revision: 1.2 $
+ * 
+ * @since 7.5.2
  * 
  */
 public class CmsPagingField extends A_CmsField {
 
     /** The list with all paging fields. */
-    private static ArrayList m_fields = null;
+    private static List<Integer> m_fields;
 
     /** HTML field type: hidden field. */
     private static final String TYPE = "paging";
@@ -66,38 +69,29 @@ public class CmsPagingField extends A_CmsField {
      */
     public static StringBuffer appendHiddenFields(CmsFormHandler formHandler, CmsMessages messages, int position) {
 
-        StringBuffer buf = new StringBuffer();
-        // get the parameter map
-        Map parameters = formHandler.getParameterMap();
+        StringBuffer buf = new StringBuffer(512);
+
         // loop through all form input field before that paging field, otherwise there are doubled parameter values
         // as input fields and hidden fields, for example if there are invalid inputs
-        CmsForm formConfiguration = formHandler.getFormConfiguration();
-        List fields = formConfiguration.getFields();
+        List<I_CmsField> fields = formHandler.getFormConfiguration().getFields();
         int page = CmsPagingField.getPageFromField(formHandler, position);
         for (int i = 0, n = fields.size(); i < n; i++) {
             // loop through all form input fields which are NOT in the current page
-            I_CmsField field = (I_CmsField)fields.get(i);
+            I_CmsField field = fields.get(i);
             int fieldPage = CmsPagingField.getPageFromField(formHandler, i + 1);
             if ((fieldPage != page) || (field instanceof CmsFileUploadField)) {
-                String name = field.getName();
-                if (parameters.containsKey(name)) {
-                    String[] values = (String[])parameters.get(name);
-                    String value = values[0];
-                    buf.append("<input type='hidden' name='" + name + "' value='" + value + "' />").append("\n");
-                }
-            } else {
-                // specific handling for file upload fields
-                // also write the hidden values for them if they are empty but there are values in the request parameters
-                if (field instanceof CmsFileUploadField) {
-                    String name = field.getName();
-                    if (parameters.containsKey(name)) {
-                        String[] values = (String[])parameters.get(name);
-                        String value = values[0];
-                        buf.append("<input type='hidden' name='" + name + "' value='" + value + "' />").append("\n");
+                buf.append(createHiddenField(field));
+                if (field.hasCurrentSubFields()) {
+                    // check the sub fields of the field
+                    Iterator<I_CmsField> it = field.getCurrentSubFields().iterator();
+                    while (it.hasNext()) {
+                        I_CmsField subField = it.next();
+                        buf.append(createHiddenField(subField));
                     }
                 }
             }
         }
+
         return buf;
     }
 
@@ -119,7 +113,7 @@ public class CmsPagingField extends A_CmsField {
         if (page == 1) {
             firstField = 0;
         } else {
-            firstField = ((Integer)m_fields.get(page - 2)).intValue() + 1;
+            firstField = (m_fields.get(page - 2)).intValue() + 1;
         }
         return firstField;
     }
@@ -139,7 +133,7 @@ public class CmsPagingField extends A_CmsField {
         // initialize the fields list
         CmsPagingField.initializeFields(formHandler);
         // get the last field
-        lastField = ((Integer)m_fields.get(page - 1)).intValue();
+        lastField = (m_fields.get(page - 1)).intValue();
         return lastField;
     }
 
@@ -182,6 +176,42 @@ public class CmsPagingField extends A_CmsField {
     }
 
     /**
+     * Returns the HTML of a hidden field storing the field value.<p>
+     * 
+     * @param field the input field to create a hidden field from
+     * 
+     * @return the HTML of a hidden field storing the field value
+     */
+    private static StringBuffer createHiddenField(I_CmsField field) {
+
+        StringBuffer buf = new StringBuffer(64);
+
+        if (field.needsItems()) {
+            // specific handling for check boxes, radio buttons and select boxes: get the items of this field
+            List<CmsFieldItem> items = ((A_CmsField)field).getSelectedItems();
+            Iterator<CmsFieldItem> iter = items.iterator();
+            while (iter.hasNext()) {
+                CmsFieldItem currItem = iter.next();
+                // only create hidden fields for not empty values
+                if (CmsStringUtil.isNotEmpty(currItem.getValue())) {
+                    // put the current value in a hidden field
+                    buf.append("<input type=\"hidden\" name=\"").append(field.getName()).append("\" value=\"").append(
+                        CmsEncoder.escapeXml(currItem.getValue())).append("\" />").append("\n");
+                }
+            }
+        } else {
+            // only create hidden fields for not empty values
+            if (CmsStringUtil.isNotEmpty(field.getValue())) {
+                // put the current value in a hidden field
+                buf.append("<input type=\"hidden\" name=\"").append(field.getName()).append("\" value=\"").append(
+                    CmsEncoder.escapeXml(field.getValue())).append("\" />").append("\n");
+            }
+        }
+
+        return buf;
+    }
+
+    /**
      * Gets the page to the current field.<p>
      * 
      * @param fieldNr the current field number
@@ -199,9 +229,9 @@ public class CmsPagingField extends A_CmsField {
         // initialize the fields list
         CmsPagingField.initializeFields(formHandler);
         // loop over the fields list
-        Iterator iter = m_fields.iterator();
+        Iterator<Integer> iter = m_fields.iterator();
         while (iter.hasNext()) {
-            int pos = ((Integer)iter.next()).intValue();
+            int pos = (iter.next()).intValue();
             if ((fieldNr > previousPos) && (fieldNr <= pos)) {
                 return page;
             }
@@ -217,31 +247,36 @@ public class CmsPagingField extends A_CmsField {
     private static void initializeFields(CmsFormHandler formHandler) {
 
         // get the positions of all paging fields
-        m_fields = new ArrayList();
+        m_fields = new ArrayList<Integer>();
         CmsForm formConfiguration = formHandler.getFormConfiguration();
-        List fields = formConfiguration.getFields();
+        List<I_CmsField> fields = formConfiguration.getFields();
         for (int pos = 0, n = fields.size(); pos < n; pos++) {
             // loop through all form input fields 
-            I_CmsField field = (I_CmsField)fields.get(pos);
+            I_CmsField field = fields.get(pos);
             // only use the paging fields
             if (field instanceof CmsPagingField) {
-                m_fields.add(pos);
+                m_fields.add(new Integer(pos));
             }
         }
         // add the last element as end element
-        m_fields.add(fields.size() - 1);
+        m_fields.add(new Integer(fields.size() - 1));
     }
 
     /**
      * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, org.opencms.i18n.CmsMessages, String, boolean)
      */
+    @Override
     public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory) {
 
-        StringBuffer buf = new StringBuffer();
+        StringBuffer buf = new StringBuffer(256);
 
         // line #1
         if (showRowStart(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.start")).append("\n");
+            if (isSubField()) {
+                buf.append(messages.key("form.html.row.subfield.start")).append("\n");
+            } else {
+                buf.append(messages.key("form.html.row.start")).append("\n");
+            }
         }
 
         // line #2
@@ -249,30 +284,28 @@ public class CmsPagingField extends A_CmsField {
 
         // line #3
         buf.append(messages.key("form.html.field.start")).append("\n");
-        // append the input fiels values from last pages as hidden values
+        // append the input field values from last pages as hidden values
         buf.append(appendHiddenFields(formHandler, messages, getFieldNr()));
         // append the back button if necessary
         if (isNotFirstPage(CmsPagingField.getPageFromField(formHandler, getFieldNr()))) {
-            buf.append(
-                "<input type='submit' value='"
-                    + messages.key("form.button.prev")
-                    + "' name='back' class='formbutton prevbutton' />").append("\n");
+            buf.append("<input type=\"submit\" value=\"").append(messages.key("form.button.prev")).append(
+                "\" name=\"back\" class=\"formbutton prevbutton\" />\n");
         }
         // append the next button
-        buf.append(
-            "<input type='submit' value='" + messages.key("form.button.next") + "' class='formbutton nextbutton' />").append(
-            "\n");
+        buf.append("<input type=\"submit\" value=\"").append(messages.key("form.button.next")).append(
+            "\" class=\"formbutton nextbutton\" />\n");
         // append the hidden field with page info
-        buf.append(
-            "<input type='hidden' name='page' value='"
-                + CmsPagingField.getPageFromField(formHandler, getFieldNr())
-                + "' />").append("\n");
+        buf.append("<input type=\"hidden\" name=\"page\" value=\"").append(
+            CmsPagingField.getPageFromField(formHandler, getFieldNr())).append("\" />\n");
         buf.append(messages.key("form.html.field.end")).append("\n");
-        buf.append(messages.key("form.html.label.end")).append("\n");
 
         // line #4
         if (showRowEnd(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.end")).append("\n");
+            if (isSubField()) {
+                buf.append(messages.key("form.html.row.subfield.end")).append("\n");
+            } else {
+                buf.append(messages.key("form.html.row.end")).append("\n");
+            }
         }
 
         return buf.toString();

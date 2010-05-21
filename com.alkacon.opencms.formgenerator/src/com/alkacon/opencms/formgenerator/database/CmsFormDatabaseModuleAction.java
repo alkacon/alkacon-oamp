@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/CmsFormDatabaseModuleAction.java,v $
- * Date   : $Date: 2010/03/19 15:31:14 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2010/05/21 13:49:28 $
+ * Version: $Revision: 1.7 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -43,11 +43,11 @@ import java.sql.SQLException;
 import org.apache.commons.logging.Log;
 
 /**
- * Module action class used to ensure that the required database tables for form data are there. <p>
+ * Module action class used to ensure that the required database tables for form data are there.<p>
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  * 
  * @since 7.0.4
  *
@@ -58,16 +58,17 @@ public class CmsFormDatabaseModuleAction extends A_CmsModuleAction {
     private static final Log LOG = CmsLog.getLog(CmsFormDatabaseModuleAction.class);
 
     /**
-     * Defcon.<p>
+     * Empty constructor.<p>
      */
     public CmsFormDatabaseModuleAction() {
 
-        // nop
+        // noop
     }
 
     /**
      * @see org.opencms.module.A_CmsModuleAction#initialize(org.opencms.file.CmsObject, org.opencms.configuration.CmsConfigurationManager, org.opencms.module.CmsModule)
      */
+    @Override
     public void initialize(CmsObject adminCms, CmsConfigurationManager configurationManager, CmsModule module) {
 
         super.initialize(adminCms, configurationManager, module);

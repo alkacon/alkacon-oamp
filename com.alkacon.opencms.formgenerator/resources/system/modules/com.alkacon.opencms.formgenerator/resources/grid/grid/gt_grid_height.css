@@ -1,0 +1,1202 @@
+body { 	font-size:12px;	}
+form { 	padding: 0px; 	margin: 0px; }
+div { 	font-size:12px;		padding: 0px; 	margin: 0px; }
+td {	font-size:12px;	}
+
+
+/* ========================= */
+.gt-grid {
+	position: relative;
+	width:100%;
+}
+
+.gt-b-ie {
+	/* overflow-y : hidden; */
+}
+
+.gt-b-opera  {
+	/* overflow : hidden; */
+}
+
+.gt-b-safari  {}
+.gt-b-strict {}
+.gt-b-boxmodel  {}
+
+.gt-grid textarea{
+	font-size : 12px;
+}
+
+.gt-viewport {
+	position: relative;
+	left:0px; 
+	top: 0px;
+	width: 100%;
+	overflow: hidden;
+	background: #ffffff;
+	border:1px solid #cccccc;
+}
+
+/* todo */
+.gt-simple-scrollbar {
+	scrollbar-3dlight-color:#C0C0C0;
+	scrollbar-darkshadow-color:#C0C0C0;
+	scrollbar-arrow-color:#999999;
+	scrollbar-face-color:#DDDDDD;
+	scrollbar-highlight-color:#DDDDDD;
+	scrollbar-shadow-color:#DDDDDD;
+	scrollbar-track-color:#E9E9E9;
+}
+
+
+
+.gt-head-div ,.gt-panel-head {
+	position: relative;
+	z-index:2;
+	overflow:hidden;
+	text-align:left;
+	width:100%;
+	padding-left:0px;
+	background: #ebeadb url(./skin/default/images/hd_row_over_bg.gif) repeat-x;
+	height: 24px;
+}
+
+.gt-panel {
+	border:1px solid #cccccc;
+}
+
+.gt-panel-body {
+	width:100%;
+	padding:0px;
+}
+
+.gt-panel-body table {
+	width:100%;
+}
+
+.gt-panel-body td {
+	padding:2px;
+}
+
+
+.gt-panel-head {
+	position: static;
+	z-index:1;
+	font-weight:bold ;
+	color : #333333 ; 
+	padding : 0px;
+	height: 22px;
+	border-bottom : 1px solid #cccccc;
+}
+
+.gt-panel-head span {
+	display:block;
+	margin:4px 1px 0px 4px;
+}
+
+.gt-button-area {
+	width:100%;
+	text-align:center;
+	padding:5px 0px 5px 0px;
+}
+
+.gt-body-div {
+	position: relative;
+	overflow: auto;
+	text-align:left;
+	width:100%;
+	height:100%;
+}
+
+.gt-head-wrap {
+	float:left;
+	width:10000px;
+}
+
+
+.gt-head-table  , .gt-table {
+  margin-left:0px;
+  table-layout: fixed;
+}
+
+
+
+.gt-freeze-view {
+	overflow: hidden;
+}
+
+/*  ====================== */
+
+.gt-hd-row { }
+
+.gt-row {
+	background-color:#ffffff;
+}
+
+.gt-hd-row .gt-hd-row-over {
+	background: #ebeadb url(./skin/default/images/hd_row_over_bg.gif) repeat-x;
+}
+
+
+
+.gt-hd-row td ,.gt-row td {
+	font: normal 12px arial, tahoma, helvetica, sans-serif;	
+	height:21px;
+	vertical-align: top;
+
+	white-space:nowrap;
+
+	border-right: 1px solid #d6d6d6;
+	border-bottom: 1px solid #d6d6d6;
+
+	word-break:keep-all;
+	word-wrap:normal;
+
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+
+	-moz-outline: none;
+	-moz-user-focus: normal;
+}
+
+.gt-row-empty td {
+	border-right: 1px solid #ffffff;
+	border-bottom: 1px solid #ffffff;
+}
+
+.gt-hd-row td {
+	height:22px;
+	border-right: 1px solid #778899;
+	border-bottom: 1px solid #778899;
+	background: #ebeadb url(./skin/default/images/hd_row_bg.gif) repeat-x;
+}
+
+/* =============================== */
+
+.gt-inner {
+	qdisplay: block;
+	padding : 1px 2px 1px 2px;
+	height:89px;
+	line-height:16px;
+	overflow: hidden;
+	white-space:nowrap;
+	word-break:keep-all;
+	word-wrap:normal;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+}
+
+.gt-hd-row td .gt-inner {
+	position: relative;
+	cursor: default;
+	padding : 3px 1px 0px 3px;
+	font-weight:bold ;
+	color : #333333 ;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+}
+
+.gt-inner-left {
+	/* text-align : left ; */
+}
+.gt-inner-center {
+	text-align : center ;
+}
+.gt-inner-right {
+	text-align : right ;
+}
+/*  ======== for box-mode ========== */
+
+.gt-b-ie .gt-head-table , .gt-b-ie .gt-table, .gt-b-safari .gt-head-table , .gt-b-safari .gt-table  {
+	table-layout: fixed;
+}
+
+
+.gt-b-ie .gt-row td {
+	height:22px;
+}
+
+.gt-b-ie .gt-hd-row td , .gt-b-safari .gt-hd-row td {
+	height:23px;
+}
+
+
+
+.gt-b-ie .gt-hd-row td .gt-inner , .gt-b-ie .gt-inner {
+	width: 100%;
+}
+
+.gt-b-ie .gt-row td .gt-inner {
+	margin-top : 2px;
+	padding-top : 0px;
+	padding-bottom : 0px;
+}
+
+.gt-b-ie .gt-hd-row td .gt-inner {
+	height:22px;
+}
+
+
+
+.gt-b-ie .gt-hd-row td .gt-inner input {
+	position:absolute;
+	top:0px;
+}
+
+
+/* =============================== */
+
+.gt-table thead tr td , .gt-table thead th td {
+	font-weight:bold ;
+	background: #ebeadb url(./skin/default/images/hd_row_bg.gif) repeat-x;
+}
+
+.gt-hd-hidden td .gt-inner{
+	display:none;
+}
+
+.gt-inner-tall2 {
+margin-top:10px;
+}
+
+.gt-row td.gt-index-col {
+	text-align:right;
+	cursor: pointer;
+	letter-spacing : -1px;
+	font:normal 9px arial, helvetica, sans-serif;
+	background: #e0e0e0 url(./skin/default/images/cell_index_bg.gif) repeat-x ;
+}
+
+.gt-row td.gt-index-col .gt-inner {
+	padding : 1px 2px 1px 2px;
+}
+
+
+/* =============================== */
+
+
+.gt-row-even {
+	background-color:#f3f6f5;
+}
+
+.gt-row-new {
+	background-color: #fff9f3;
+}
+
+.gt-row-over td {
+	cursor: default;
+	border-bottom: 1px solid #ff9966;
+}
+
+.gt-row-over td.gt-cell-group {
+	/* background: #ffeedd; */
+	background-image: url();
+}
+
+.gt-row-del td {
+	color:#888888;
+	background : #e0e0e0 url(./skin/default/images/row_del.gif) repeat-x center center ;
+}
+
+.gt-row-selected td {
+	background-color: #eef6ff;
+}
+
+.gt-row-selected td.gt-cell-group {
+	background-color: #eef6ff;
+}
+
+
+.gt-cell-group {
+	background-color: #eef6ff;
+}
+
+/* =============================== */
+
+
+.gt-hd-tool {
+	display: block;
+	position: absolute;
+	z-index: 2;
+	height: 20px;
+	top: 2px;
+	right: 0px;
+}
+
+.gt-hd-tool span {
+	float:left;
+	font-size:1px;
+}
+
+.gt-hd-split {
+	qdisplay:block;
+	height: 16px;
+	width:6px;
+	overflow: hidden;
+	background: url(./skin/default/images/tool_split.gif)  repeat-y 3px center;
+
+}
+
+.gt-b-ie .gt-hd-split {
+	background-position: 4px center;
+}
+
+
+.gt-split-line {
+	position: absolute;
+	top: 0px;
+	height: 50px;
+	width: 2px;
+	z-index: 13;
+	display: none;
+	overflow: hidden;
+	cursor: col-resize;
+	border:0px;
+	padding:0px;
+	margin:0px;
+	background: #cccccc;
+	-moz-user-select: none;
+    -khtml-user-select: none;
+}
+
+
+
+.gt-hd-icon {
+	position: relative;	
+	left:12px;
+	width:11px;
+	height:10px;
+	background-position: 11px 11px ;
+	background-repeat :no-repeat;
+	background-image: url(./skin/default/images/s_sort_asc_desc.gif);
+}
+
+.gt-hd-asc {
+	background-position: 0px 0px ;
+}
+
+.gt-hd-desc {
+	background-position: -11px 0px ;
+}
+
+
+.gt-hd-button {
+	position: relative;	
+	top:7px;
+	width:12px;
+	height:10px;
+	qbackground: url(./skin/default/images/hd_menu_btn.gif) no-repeat 11px 11px;
+}
+
+.gt-hd-row-over .gt-hd-button {
+	cursor:pointer;
+	background-position: 1px 0px;
+}
+
+.gt-nodata-cell div {
+	margin-left : 30%;
+}
+
+/* =================================*/
+
+
+
+.gt-freeze-div {
+ 	overflow: hidden;
+	position: absolute;
+	text-align:left;
+	top:1px;
+	left:1px;
+	z-index:13;
+	border-right:1px solid #999999;
+
+}
+
+/* ========================== */
+
+.gt-input-text {
+	margin : 0px;
+	padding-bottom:0pt;
+	padding:2px 1px 0px 1px;
+	height:21px;
+	line-height:18px;
+	vertical-align:middle;
+	border:1px solid #aabbcc;
+}
+
+.gt-input-select {
+	vertical-align:middle;
+	height:21px;
+	font:normal 12px arial, tahoma, helvetica, sans-serif;
+}
+
+.gt-input-button {
+	vertical-align:middle;
+	line-height:18px;
+	height:21px;
+	border:1px solid #336699;
+	background : url(./skin/default/images/input_button_bg.gif) repeat-x 0px -2px;
+}
+
+
+/* ================================*/
+
+.gt-toolbar-box {
+	width:100%;
+	position: relative;
+	height:24px;
+	left:0px;
+	bottom:0px;
+	display:block;
+	cursor:default;
+	overflow:hidden;
+	border: 1px solid #cccccc;
+	border-top: 0px;
+	background:url(./skin/default/images/toolbar_bg.gif) repeat 0px 0px; 
+
+}
+
+.gt-toolbar-box-top {
+	border-bottom: 0px;
+	border: 1px solid #cccccc;
+}
+
+.gt-toolbar {
+	height:23px;
+	margin-top:1px;
+
+}
+
+.gt-tool-resize {
+	position: absolute;
+	cursor:se-resize;
+	bottom:0px;
+	right:0px;
+	width:10px;
+	height:10px;
+	z-index:20;
+	font-size:1px;
+	background:url(./skin/default/images/tool_resize.gif) no-repeat 0px 0px;
+
+    -moz-user-select: none;
+    -khtml-user-select: none;
+}
+
+.gt-cell-tooltip {
+	position: absolute;
+	padding:2px;
+	z-index:101;
+	border:1px solid #666666;
+	background : #fff9f3;
+
+}
+
+.gt-grid-mask {
+	position: absolute;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+	z-index:30;
+	display:none;
+	background:transparent;
+	border:0px solid #ff0000;
+
+}
+
+.gt-grid-mask-bg {
+	width:100%;
+	height:100%;
+	display:none;
+	background: #eeeeee;
+    -moz-opacity: 0.5;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+
+
+.gt-grid-mask-show, .gt-grid-mask-show .gt-grid-mask-bg {
+	display:block;
+	text-align:left;
+}
+
+
+.gt-grid-mask-show-trp {
+    -moz-opacity: 0.0;
+    opacity: 0.0;
+    filter: alpha(opacity=0);
+}
+
+.gt-grid-dialog ,.gt-grid-waiting  {
+	position: absolute;
+	left : 50%;
+	top : 50%;
+	text-align:left;
+	display:none;
+	background : #eceef3;
+	border:1px solid #336699;
+}
+
+.gt-grid-dialog {
+	z-index:99;
+	width : 300px;
+	height : 150px;
+	margin-left : -150px;
+	margin-top : -75px;
+
+}
+
+.gt-grid-waiting {
+	z-index:101;
+	width : 200px;
+	height : 50px;
+	margin-left : -100px;
+	margin-top : -50px;
+}
+
+.gt-grid-waiting-icon {
+	float:left;
+	width:16px;
+	height:16px;
+	margin:5px;
+	margin-top:15px;
+	background:url(./skin/default/images/s_loading.gif) no-repeat; 
+}
+
+.gt-grid-waiting-text {
+	float:left;
+	margin:0px;
+	margin-top:18px;
+}
+
+
+/* =========================== */
+
+
+
+.gt-dialog-head {
+	padding:0px;
+	position: relative;
+	height:19px;
+	width:100%;
+	border-bottom:1px solid #b0c7d7;
+	background-image: url(./skin/default/images/toolbar_bg.gif);
+
+}
+
+.gt-b-ie .gt-dialog-head {
+	height:20px;
+}
+
+.gt-dialog-head-icon {
+	float:left;
+	display:block;
+	margin:2px;
+}
+
+.gt-dialog-head-text {
+	float:left;
+	margin-top:3px;
+}
+
+.gt-dialog-head-button {
+	position: absolute;
+	right:3px;
+	top:3px;
+	width:16px;
+	border: 0px solid #ff0000;
+}
+
+.gt-dialog-head-button a {
+	cursor: pointer ;
+	height: 15px;
+	display:block;
+	width:100%;
+	text-decoration : none;
+	background : url(./skin/default/images/dialog_close_btn.gif) no-repeat 0px 0px;
+	-moz-opacity: 0.5;
+    opacity: .50;
+    filter: alpha(opacity=50);
+}
+
+.gt-dialog-head-button a:hover {
+    -moz-opacity: 1;
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
+
+
+.gt-dialog-body {
+	border:0px;
+	width:100%;
+	padding:0px;
+	margin:0px;
+	overflow:auto;
+	text-align:left;
+}
+
+/* =========================== */
+
+.gt-dialog-buttonzone-h {
+	width:99%;
+	text-align: center;
+}
+
+.gt-dialog-buttonzone-h button {
+	margin:3px;
+}
+
+.gt-dialog-buttonzone-v {
+	text-align:center;
+	float:left;
+	display:inline; 
+	width : 90px;
+}
+
+.gt-dialog-buttonzone-v button {
+	float:left;
+	margin:10px;
+	position: relative;
+	top:95px;
+	width:60px;
+}
+
+/* =========================== */
+
+.gt-column-dialog , .gt-filter-dialog {
+	float:left;
+	display:inline;
+	margin:5px;
+	overflow:auto;
+	width:150px;height:180px;
+	background:#ffffff;
+	border:1px solid #999999;
+}
+
+.gt-filter-dialog {
+	float : none;
+	display:block;
+}
+
+.gt-filter-dialog div {
+	margin:0px;
+}
+
+.gt-filter-item input {
+	margin: 2px;
+}
+
+.gt-filter-col-text { width:60px; }
+
+.gt-filter-field-text { width:100px; }
+
+.gt-filter-del ,.gt-filter-up ,.gt-filter-down { width : 50px  }
+
+
+.gt-filter-field-box {
+	display:inline;
+	width:90px;
+	height:24px;
+	margin : 0px;
+	padding:0px;
+	overflow :hidden;
+
+}
+.gt-filter-field-box select , .gt-filter-field-box input {
+	width:89px;
+	margin: 0px;
+}
+
+.gt-b-ie .gt-filter-field-box select {
+	margin-top:2px;
+}
+
+/*  ====================== */
+
+.gt-editor-cache {
+	position: absolute;
+	overflow:hidden;
+	height:1px;
+	width:1px;
+	display: none;
+}
+
+.gt-editor-container {
+
+	position: absolute;
+	top:0px;
+	left:0px;
+	padding:0px;
+	z-index:22;
+	overflow:hidden;
+	height:21px;
+	border:0px dashed #335599;
+	background:#ffffff;
+}
+
+.gt-editor-text , .gt-editor-select {
+	display: block;
+	float:left;
+	width:99%;
+	height:20px;
+	font:normal 11px arial, verdana, tahoma, helvetica, sans-serif;	
+	vertical-align: middle;
+	margin:0px;
+	padding:1px;
+	border:1px solid #558899;
+	qmargin-right:3px;
+
+}
+
+
+.gt-editor-date{
+	width:16px;
+	height:16px;
+	display: block;
+	position: absolute;
+	top:0px;
+	right:0px;
+	cursor:pointer;
+	border: 0px none #dddddd;
+	background:transparent url(./skin/default/images/icon_calendar.gif) no-repeat center center;
+
+}
+
+.gt-editor-err {
+	border:1px solid #ff0000;
+}
+
+
+td.gt-cell-actived {
+	background-color:#ffddee;
+
+}
+
+td.gt-cell-actived-editable {
+	background-color:#eeffdd;
+}
+
+td.gt-cell-vaildfailed {
+	background-color:#ffaabb;
+}
+
+
+td.gt-cell-updated {
+	background-repeat :no-repeat;
+	background-position : right top;
+	background-image : url(./skin/default/images/cell_updated.gif) 
+
+}
+/* ========================== */
+
+
+
+.gt-grid-ghost-rect {
+	position: absolute;
+	top:5px;
+	z-index:30;
+	display:none;
+	border:1px solid #3366cc;
+	background: #dde0e3;
+	-moz-user-select: none;
+    -khtml-user-select: none;
+    -moz-opacity: 0.5;
+    opacity: .50;
+    filter: alpha(opacity=50);
+
+}
+
+
+.gt-head-ghost {
+	position: absolute;
+	cursor:move;
+	z-index:15;
+	top: 0px;
+	height:20px;
+	display : none;
+
+	font:normal 12px arial, verdana, tahoma, helvetica, sans-serif;	
+	font-weight:bold;
+
+	line-height:16px;
+    white-space: nowrap;
+	vertical-align: top;
+	overflow:hidden;
+
+	color: #000000;
+	background:#cccccc;
+
+	-o-text-overflow: ellipsis;
+	text-overflow: ellipsis;
+
+	-moz-outline: none;
+	-moz-user-focus: none;
+
+	-moz-user-select: none;
+	-khtml-user-select: none;
+
+    -moz-opacity: 0.6;
+    opacity: .60;
+    filter: alpha(opacity=60);
+
+}
+
+
+.gt-head-ghost span {
+	display: block;
+	white-space:nowrap;
+	padding: 2px 3px 0px 4px;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+}
+
+
+.gt-b-safari .gt-head-ghost {
+	cursor:default;
+}
+
+
+.gt-column-moveflag  {
+	position: absolute;
+	z-index:8;
+	font-size:1px;
+	overflow:hidden;
+	top: 0px;
+	height:21px;
+	width:2px;
+	display : none;
+	background:#6693ff;
+}
+
+
+
+/* ================= */
+
+.gt-log-box {
+	width:600px;
+	height:55px;
+	overflow:scroll;
+	white-space:nowrap;
+}
+
+/* ================= */
+.gt-popmenu {
+	display:block;
+	width:130px;
+	position: absolute;
+	z-index:20;
+	border:1px solid #99bbdd;
+	background: #ffffff ;
+}
+
+.gt-menuitem {
+	display:block;
+	height:23px; 
+	cursor:pointer;
+	text-decoration : none;
+	border:0px solid #ff0000;
+	color:#335566;
+}
+
+.gt-menuitem:hover {
+	background: #ccddee;
+}
+
+.gt-menu-activemenu {
+	background:  #eef3ff;
+}
+
+.gt-menu-icon {
+	display: block;
+	float:left;
+	height:23px; 
+	width:20px;
+	font-size:1px;
+	vertical-align: middle;
+	overflow:hidden;
+	background-repeat:	no-repeat ;
+	background-position : center center;
+	border:0px solid #ff000;
+	background-color:  #ddeeff;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+
+}
+.gt-checkboxtext {
+	display: block;
+	float:left;
+	padding: 5px 0px 0px 2px;
+	vertical-align: middle;
+	overflow:hidden;
+	border:0px solid #00ff00;
+}
+
+.gt-aftericon {
+	display: block;
+	float:right;
+	width:0px;
+	height:23px;
+	font-size:1px;
+	vertical-align: middle;
+	overflow:hidden;
+	border:0px solid #ff0000;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	background-repeat:	no-repeat ;
+	background-position : center center;
+}
+
+.gt-menu-parent {
+	width:12px;
+	background-image: url(./skin/default/images/menu_hassub.gif) ;
+}
+
+.gt-icon-freeze {
+	background-image: url(./skin/default/images/menu_icon_lock.gif);
+
+}
+.gt-icon-skin {
+	background-image: url(./skin/default/images/menu_icon_themes.gif);
+
+}
+.gt-icon-hidecol {
+	background-image: url(./skin/default/images/menu_icon_hidecol.gif);
+
+}
+.gt-icon-groupcol {
+	background-image: url(./skin/default/images/menu_icon_column_group.gif);
+
+}
+
+.gt-icon-checkbox {
+	background-image: url(./skin/default/images/s_checked.gif);
+}
+.gt-icon-radiobox {
+	background-image: url(./skin/default/images/s_radiochecked.gif);
+}
+
+
+.gt-icon-unchecked {
+background-image: url(./skin/default/images/s_unchecked.gif);
+}
+
+
+.gt-image-button {
+	display: block;
+	float:left;
+	padding:0px;
+	vertical-align: middle;
+	width:19px;
+	height:19px;
+	padding:0px;
+	text-decoration : none;
+	margin:1px;
+	font-size:1px;
+	background:transparent;
+	border:0px solid #336699;
+	-moz-user-select: none;
+    -khtml-user-select: none;
+}
+
+.gt-image-button:hover {
+	background : url(./skin/default/images/button_bg.gif) no-repeat center center;
+}
+
+.gt-image-button div , .gt-image-button button{
+	width:100%;
+	height:100%;
+	cursor:pointer;
+	font-size:1px;
+	border:0px solid #ff0000;
+}
+
+
+.gt-image-button-down {
+	background : url(./skin/default/images/button_down_bg.gif) no-repeat center center;
+}
+
+.gt-button-disable {
+	cursor:default;
+    -moz-opacity: 0.4;
+    opacity: .40;
+    filter: alpha(opacity=40);
+}
+
+.gt-button-disable:hover {
+	background : url();
+}
+
+.gt-button-disable div, .gt-button-disable button {
+	cursor:default;
+}
+
+
+.gt-button-split {
+	width:5px;
+	height:19px;
+	vertical-align: middle;
+	background : url(./skin/default/images/tool_split.gif)  no-repeat center center
+}
+
+
+.gt-first-page {
+	background : url(./skin/default/images/page_first.gif) no-repeat center center;
+}
+
+
+.gt-prev-page {
+	background : url(./skin/default/images/page_prev.gif) no-repeat center center;
+}
+
+.gt-next-page {
+	background : url(./skin/default/images/page_next.gif) no-repeat center center;
+}
+
+.gt-last-page {
+	background : url(./skin/default/images/page_last.gif) no-repeat center center;
+}
+
+.gt-goto-page {
+	background : url(./skin/default/images/page_goto.gif) no-repeat center center;
+}
+
+
+.gt-toolbar-text {
+	font:normal 12px arial, verdana, tahoma, helvetica, sans-serif;	
+	float:left;
+	vertical-align: top;
+	margin:2px;
+	color:#335566;
+}
+
+
+.gt-b-ie .gt-toolbar-text {
+	margin-top:5px;
+}
+
+.gt-page-input {
+	font:normal 11px  tahoma,verdana,arial, helvetica, sans-serif;
+	float:left;
+	width:25px;
+	height:15px;
+	vertical-align: top;
+	margin-top:3px;
+	text-align:right;
+	border:1px solid #558899;
+}
+
+
+
+.gt-pagesize-select {
+	display: block;
+	float:left;
+	width:41px;
+	height:16px;
+	font:normal 11px  tahoma,verdana,arial, helvetica, sans-serif;
+	vertical-align: bottom;
+	margin-top:2px;
+	text-align:right;
+	border:1px solid #558899;
+}
+
+.gt-b-ie .gt-pagesize-select {
+	width:45px;
+}
+
+.gt-b-safari .gt-pagesize-select {
+	width:50px;
+}
+
+.gt-page-state {
+	display: block;
+	float:right;
+	top:0px;
+	padding-top:2px;
+	font:normal 12px arial, verdana, tahoma, helvetica, sans-serif;	
+	color:#335566;
+}
+
+.gt-page-state div {
+	padding:2px 7px 0px 0px;
+	overflow:hidden;
+}
+
+.gt-page-state-left {
+	float:left;
+	padding-left:5px;
+}
+
+.gt-tool-gridmenu {
+	background : url(./skin/default/images/icon_grid_menu.gif) no-repeat center center;
+}
+
+.gt-tool-add {
+	background : url(./skin/default/images/tool_add.gif) no-repeat center center;
+}
+
+.gt-tool-del {
+	background : url(./skin/default/images/tool_del.gif) no-repeat center center;
+}
+
+.gt-tool-save {
+	background : url(./skin/default/images/tool_save.gif) no-repeat center center;
+}
+
+.gt-tool-reload {
+	background : url(./skin/default/images/tool_reload.gif) no-repeat center center;
+}
+
+.gt-tool-print {
+	background : url(./skin/default/images/tool_print.gif) no-repeat center center;
+}
+
+.gt-tool-xls {
+	background : url(./skin/default/images/tool_xls.gif) no-repeat center center;
+}
+
+.gt-tool-pdf {
+	background : url(./skin/default/images/tool_pdf.gif) no-repeat center center;
+}
+
+.gt-tool-csv {
+	background : url(./skin/default/images/tool_csv.gif) no-repeat center center;
+}
+
+.gt-tool-xml {
+	background : url(./skin/default/images/tool_xml.gif) no-repeat center center;
+}
+
+
+.gt-tool-filter {
+	background : url(./skin/default/images/tool_filter.gif) no-repeat center center;
+}
+
+.gt-tool-chart {
+	background : url(./skin/default/images/tool_chart.gif) no-repeat center center;
+}
+
+
+/* ========================== */
+
+.gt-hidden {
+	width:0px;
+	height:0px;
+	padding:0px;
+	margin:0px;
+	overflow : hidden;
+}
+
+.gt-breakline , .breakline {
+	white-space:normal;
+	word-break:break-all;
+	word-wrap:break-word;
+}
+
+.gt-nobreakline , .nobreakline {
+	white-space:nowrap;
+	word-break:keep-all;
+	word-wrap:normal;
+}
+
+/* ========================== */
+
+

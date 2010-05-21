@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsDynamicField.java,v $
- * Date   : $Date: 2010/03/19 15:31:09 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2010/05/21 13:49:17 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -35,11 +35,11 @@ package com.alkacon.opencms.formgenerator;
 import org.opencms.i18n.CmsMessages;
 
 /**
- * Represents a dynamic field, ie. its value will be generated just before committing data.<p>
+ * Represents a dynamic field, i.e. its value will be generated just before committing data.<p>
  * 
  * @author Michael Moossen 
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4 
  */
@@ -64,6 +64,7 @@ public class CmsDynamicField extends A_CmsField {
     /**
      * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, org.opencms.i18n.CmsMessages, String, boolean)
      */
+    @Override
     public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory) {
 
         StringBuffer buf = new StringBuffer();

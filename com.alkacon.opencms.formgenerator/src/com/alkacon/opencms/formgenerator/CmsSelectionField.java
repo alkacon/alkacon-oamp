@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsSelectionField.java,v $
- * Date   : $Date: 2010/03/19 15:31:10 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2010/05/21 13:49:15 $
+ * Version: $Revision: 1.6 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -43,7 +43,7 @@ import java.util.List;
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * 
  * @since 7.0.4 
  */
@@ -65,9 +65,10 @@ public class CmsSelectionField extends A_CmsField {
     /**
      * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, org.opencms.i18n.CmsMessages, String, boolean)
      */
+    @Override
     public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory) {
 
-        StringBuffer buf = new StringBuffer();
+        StringBuffer buf = new StringBuffer(128);
         String fieldLabel = getLabel();
         String errorMessage = "";
         String mandatory = "";
@@ -94,7 +95,11 @@ public class CmsSelectionField extends A_CmsField {
 
         // line #1
         if (showRowStart(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.start")).append("\n");
+            if (isSubField()) {
+                buf.append(messages.key("form.html.row.subfield.start")).append("\n");
+            } else {
+                buf.append(messages.key("form.html.row.start")).append("\n");
+            }
         }
 
         // line #2
@@ -102,15 +107,20 @@ public class CmsSelectionField extends A_CmsField {
             messages.key("form.html.label.end")).append("\n");
 
         // line #3
-        buf.append(messages.key("form.html.field.start")).append("<select name=\"").append(getName()).append("\"").append(
-            formHandler.getFormConfiguration().getFormFieldAttributes()).append(">").append("\n");
+        String attrOnChange = "";
+        if (hasSubFields()) {
+            attrOnChange = " onchange=\"toggleWebformSubFields(this);\"";
+        }
 
-        List selected = getSelectedItems();
+        buf.append(messages.key("form.html.field.start")).append("<select name=\"").append(getName()).append("\"").append(
+            formHandler.getFormConfiguration().getFormFieldAttributes()).append(attrOnChange).append(">").append("\n");
+
+        List<CmsFieldItem> selected = getSelectedItems();
         // add the options
-        Iterator i = getItems().iterator();
+        Iterator<CmsFieldItem> i = getItems().iterator();
         while (i.hasNext()) {
 
-            CmsFieldItem curOption = (CmsFieldItem)i.next();
+            CmsFieldItem curOption = i.next();
             String selStr = "";
             if (selected.contains(curOption)) {
                 selStr = " selected=\"selected\"";
@@ -125,7 +135,11 @@ public class CmsSelectionField extends A_CmsField {
         buf.append(messages.key("form.html.field.end")).append("\n");
 
         if (showRowEnd(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.end")).append("\n");
+            if (isSubField()) {
+                buf.append(messages.key("form.html.row.subfield.end")).append("\n");
+            } else {
+                buf.append(messages.key("form.html.row.end")).append("\n");
+            }
         }
 
         return buf.toString();
@@ -142,6 +156,7 @@ public class CmsSelectionField extends A_CmsField {
     /**
      * @see com.alkacon.opencms.formgenerator.A_CmsField#needsItems()
      */
+    @Override
     public boolean needsItems() {
 
         return true;

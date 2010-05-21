@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaField.java,v $
- * Date   : $Date: 2010/03/19 15:31:09 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2010/05/21 13:49:16 $
+ * Version: $Revision: 1.7 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -63,7 +63,7 @@ import com.octo.captcha.service.text.TextCaptchaService;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  * 
  * @since 7.0.4 
  */
@@ -116,9 +116,10 @@ public class CmsCaptchaField extends A_CmsField {
      * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler,
      *      org.opencms.i18n.CmsMessages, String, boolean)
      */
+    @Override
     public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory) {
 
-        StringBuffer buf = new StringBuffer();
+        StringBuffer buf = new StringBuffer(128);
         String fieldLabel = getLabel();
         String errorMessage = "";
         String mandatory = "";
@@ -171,7 +172,7 @@ public class CmsCaptchaField extends A_CmsField {
             buf.append("</div>\n");
         } else {
             // image captcha, insert image
-            buf.append("<img id='form_captcha_id' src=\"").append(
+            buf.append("<img id=\"form_captcha_id\" src=\"").append(
                 formHandler.link("/system/modules/com.alkacon.opencms.formgenerator/pages/captcha.jsp?"
                     + captchaSettings.toRequestParams(formHandler.getCmsObject())
                     + "#"
@@ -235,9 +236,11 @@ public class CmsCaptchaField extends A_CmsField {
                     result = captchaService.validateResponseForID(sessionId, captchaPhrase).booleanValue();
                 }
             } catch (CaptchaServiceException cse) {
-                // most often this will be 
+                // most often this will be
                 // "com.octo.captcha.service.CaptchaServiceException: Invalid ID, could not validate unexisting or already validated captcha"
-                // in case someone hits the back button and submits again 
+                // in case someone hits the back button and submits again
+                String error = cse.getLocalizedMessage();
+                String test = error;
             }
         }
 

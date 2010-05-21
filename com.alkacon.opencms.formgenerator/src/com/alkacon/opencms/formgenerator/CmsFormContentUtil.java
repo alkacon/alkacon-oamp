@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormContentUtil.java,v $
- * Date   : $Date: 2010/03/19 15:31:10 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2010/05/21 13:49:18 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -41,25 +41,17 @@ import java.util.Locale;
 /**
  * Utility class for accessing form content elements. 
  */
-public class CmsFormContentUtil {
+public final class CmsFormContentUtil {
 
+    /** Node name for a nested form. */
     public static final String NODE_NESTED_FORM = "Form";
 
     /**
-     * Creates an xpath prefix which is either empty or consists of a given parent node path, depending on
-     * whether the parent node path exists in the XML content.<p>
-     *  
-     * @param content the XML content
-     * @param parentNode the parent node path
-     * @param locale the locale to use
-     * @return the path prefix (either the empty string or parentNode + "/")
+     * Hidden constructor.<p>
      */
-    public static String getNestedPathPrefix(CmsXmlContent content, String parentNode, Locale locale) {
+    private CmsFormContentUtil() {
 
-        if (content.hasValue(parentNode, locale)) {
-            return parentNode + "/";
-        }
-        return "";
+        // noop
     }
 
     /**
@@ -74,7 +66,6 @@ public class CmsFormContentUtil {
      */
     public static String getContentStringValue(CmsXmlContent content, CmsObject cms, String path, Locale locale) {
 
-        String p = getNestedPathPrefix(content, NODE_NESTED_FORM, locale) + path;
         return content.getStringValue(cms, getNestedPathPrefix(content, NODE_NESTED_FORM, locale) + path, locale);
     }
 
@@ -99,11 +90,28 @@ public class CmsFormContentUtil {
      * @param content
      * @param path
      * @param locale
-     * @return
+     * @return a list of content values from the given content
      */
-    public static List getContentValues(CmsXmlContent content, String path, Locale locale) {
+    public static List<I_CmsXmlContentValue> getContentValues(CmsXmlContent content, String path, Locale locale) {
 
         return content.getValues(getNestedPathPrefix(content, NODE_NESTED_FORM, locale) + path, locale);
+    }
+
+    /**
+     * Creates an xpath prefix which is either empty or consists of a given parent node path, depending on
+     * whether the parent node path exists in the XML content.<p>
+     *  
+     * @param content the XML content
+     * @param parentNode the parent node path
+     * @param locale the locale to use
+     * @return the path prefix (either the empty string or parentNode + "/")
+     */
+    public static String getNestedPathPrefix(CmsXmlContent content, String parentNode, Locale locale) {
+
+        if (content.hasValue(parentNode, locale)) {
+            return parentNode + "/";
+        }
+        return "";
     }
 
 }

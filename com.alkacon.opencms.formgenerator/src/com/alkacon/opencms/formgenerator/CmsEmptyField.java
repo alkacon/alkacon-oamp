@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsEmptyField.java,v $
- * Date   : $Date: 2010/03/19 15:31:09 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2010/05/21 13:49:14 $
+ * Version: $Revision: 1.5 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -38,7 +38,7 @@ import org.opencms.util.CmsStringUtil;
 /**
  * Represents a empty field.<p>
  * 
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * 
  * @since 7.0.4 
  * 
@@ -61,12 +61,17 @@ public class CmsEmptyField extends A_CmsField {
     /**
      * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, org.opencms.i18n.CmsMessages, String, boolean)
      */
+    @Override
     public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory) {
 
-        StringBuffer buf = new StringBuffer();
+        StringBuffer buf = new StringBuffer(64);
         //line #1 start
         if (showRowStart(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.start")).append("\n");
+            if (isSubField()) {
+                buf.append(messages.key("form.html.row.subfield.start")).append("\n");
+            } else {
+                buf.append(messages.key("form.html.row.start")).append("\n");
+            }
         }
 
         //line #2 start
@@ -87,7 +92,11 @@ public class CmsEmptyField extends A_CmsField {
 
         //line #1 end
         if (showRowEnd(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.end")).append("\n");
+            if (isSubField()) {
+                buf.append(messages.key("form.html.row.subfield.end")).append("\n");
+            } else {
+                buf.append(messages.key("form.html.row.end")).append("\n");
+            }
         }
         return buf.toString();
     }

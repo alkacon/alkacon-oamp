@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsPrivacyField.java,v $
- * Date   : $Date: 2010/03/19 15:31:12 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2010/05/21 13:49:18 $
+ * Version: $Revision: 1.4 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -38,7 +38,7 @@ import org.opencms.util.CmsStringUtil;
 /**
  * Represents a check box with a link.<p>
  * 
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * 
  * @since 7.0.4 
  * 
@@ -61,9 +61,10 @@ public class CmsPrivacyField extends CmsCheckboxField {
     /**
      * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, org.opencms.i18n.CmsMessages, String, boolean)
      */
+    @Override
     public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory) {
 
-        StringBuffer buf = new StringBuffer();
+        StringBuffer buf = new StringBuffer(128);
         String fieldLabel = getLabel();
         String errorMessage = "";
         String mandatory = "";
@@ -98,7 +99,11 @@ public class CmsPrivacyField extends CmsCheckboxField {
 
         // line #1
         if (showRowStart(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.start")).append("\n");
+            if (isSubField()) {
+                buf.append(messages.key("form.html.row.subfield.start")).append("\n");
+            } else {
+                buf.append(messages.key("form.html.row.start")).append("\n");
+            }
         }
 
         // add the item
@@ -111,7 +116,7 @@ public class CmsPrivacyField extends CmsCheckboxField {
             // line #3
             buf.append(messages.key("form.html.field.start")).append("\n");
 
-            CmsFieldItem curOption = (CmsFieldItem)getItems().get(0);
+            CmsFieldItem curOption = getItems().get(0);
             String checked = "";
             if (curOption.isSelected()) {
                 checked = " checked=\"checked\"";
@@ -136,7 +141,11 @@ public class CmsPrivacyField extends CmsCheckboxField {
         buf.append(messages.key("form.html.field.end")).append("\n");
 
         if (showRowEnd(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.end")).append("\n");
+            if (isSubField()) {
+                buf.append(messages.key("form.html.row.subfield.end")).append("\n");
+            } else {
+                buf.append(messages.key("form.html.row.end")).append("\n");
+            }
         }
 
         return buf.toString();
@@ -145,6 +154,7 @@ public class CmsPrivacyField extends CmsCheckboxField {
     /**
      * @see com.alkacon.opencms.formgenerator.I_CmsField#getType()
      */
+    @Override
     public String getType() {
 
         return TYPE;

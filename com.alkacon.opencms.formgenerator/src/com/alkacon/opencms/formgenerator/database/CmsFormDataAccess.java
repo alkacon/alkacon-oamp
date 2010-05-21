@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/CmsFormDataAccess.java,v $
- * Date   : $Date: 2010/04/23 09:53:18 $
- * Version: $Revision: 1.13 $
+ * Date   : $Date: 2010/05/21 13:49:27 $
+ * Version: $Revision: 1.14 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -44,6 +44,8 @@ import com.alkacon.opencms.formgenerator.CmsTableField;
 import com.alkacon.opencms.formgenerator.I_CmsField;
 
 import org.opencms.file.CmsObject;
+import org.opencms.file.CmsProject;
+import org.opencms.file.types.CmsResourceTypeFolder;
 import org.opencms.main.CmsException;
 import org.opencms.main.CmsLog;
 import org.opencms.main.CmsRuntimeException;
@@ -62,13 +64,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.logging.Log;
@@ -79,7 +84,7 @@ import org.apache.commons.logging.Log;
  * @author Achim Westermann
  * @author Michael Moossen
  * 
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  * 
  * @since 7.0.4
  */
@@ -137,7 +142,7 @@ public final class CmsFormDataAccess {
     private String m_db;
 
     /** A map holding all SQL queries. */
-    private Map m_queries;
+    private Map<Object, Object> m_queries;
 
     /**
      * Default constructor.<p>
@@ -156,7 +161,7 @@ public final class CmsFormDataAccess {
                 Messages.LOG_ERR_DATAACCESS_MODULE_PARAM_MISSING_2,
                 new Object[] {CmsForm.MODULE_PARAM_DB_POOL, CmsForm.MODULE_NAME}));
         }
-        m_queries = new HashMap();
+        m_queries = new HashMap<Object, Object>();
         loadQueryProperties(DB_PATH + DB_GENERIC + PROPERTIES_EXTENSION);
         m_db = DB_GENERIC;
         String db = module.getParameter(CmsForm.MODULE_PARAM_DB_PROVIDER);
@@ -186,13 +191,13 @@ public final class CmsFormDataAccess {
      *      
      * @throws SQLException if something goes wrong 
      */
-    public Map countForms() throws SQLException {
+    public Map<String, Integer> countForms() throws SQLException {
 
         Connection con = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
-        Map result = new HashMap();
+        Map<String, Integer> result = new HashMap<String, Integer>();
         try {
             con = getConnection();
             stmt = con.prepareStatement(getQuery("READ_FORM_NAMES"));
@@ -223,7 +228,7 @@ public final class CmsFormDataAccess {
         int result = 0;
 
         try {
-            List params = new ArrayList();
+            List<Object> params = new ArrayList<Object>();
             con = getConnection();
             stmt = con.prepareStatement(getReadQuery(filter, params, true));
             for (int i = 0; i < params.size(); i++) {
@@ -307,11 +312,11 @@ public final class CmsFormDataAccess {
 
         CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.DEFAULT;
         filter = filter.filterEntryId(entryId);
-        List forms = readForms(filter);
+        List<CmsFormDataBean> forms = readForms(filter);
         if (forms.isEmpty()) {
             return null;
         }
-        return (CmsFormDataBean)forms.get(0);
+        return forms.get(0);
     }
 
     /**
@@ -329,13 +334,13 @@ public final class CmsFormDataAccess {
      *      
      * @throws SQLException if sth goes wrong 
      */
-    public List readFormFieldNames(final String formId, long start, long end) throws SQLException {
+    public List<String> readFormFieldNames(final String formId, long start, long end) throws SQLException {
 
         Connection con = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
-        List result = new ArrayList();
+        List<String> result = new ArrayList<String>();
         try {
             con = getConnection();
             stmt = con.prepareStatement(getQuery("READ_FORM_FIELD_NAMES"));
@@ -363,15 +368,15 @@ public final class CmsFormDataAccess {
      *      
      * @throws SQLException if sth goes wrong 
      */
-    public List readForms(CmsFormDatabaseFilter filter) throws SQLException {
+    public List<CmsFormDataBean> readForms(CmsFormDatabaseFilter filter) throws SQLException {
 
         Connection con = null;
         PreparedStatement stmt = null;
         ResultSet res = null;
-        List result = new ArrayList();
+        List<CmsFormDataBean> result = new ArrayList<CmsFormDataBean>();
 
         try {
-            List params = new ArrayList();
+            List<Object> params = new ArrayList<Object>();
             con = getConnection();
             stmt = con.prepareStatement(getReadQuery(filter, params, false));
             for (int i = 0; i < params.size(); i++) {
@@ -435,7 +440,7 @@ public final class CmsFormDataAccess {
      *      
      * @throws SQLException if sth goes wrong 
      */
-    public List readForms(String formId, long start, long end) throws SQLException {
+    public List<CmsFormDataBean> readForms(String formId, long start, long end) throws SQLException {
 
         CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.DEFAULT;
         filter = filter.filterFormId(formId);
@@ -459,7 +464,8 @@ public final class CmsFormDataAccess {
      *      
      * @throws SQLException if sth goes wrong 
      */
-    public List readFormsForFieldValue(String formId, String fieldName, String fieldValue) throws SQLException {
+    public List<CmsFormDataBean> readFormsForFieldValue(String formId, String fieldName, String fieldValue)
+    throws SQLException {
 
         CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.DEFAULT;
         filter = filter.filterFormId(formId);
@@ -482,19 +488,22 @@ public final class CmsFormDataAccess {
         PreparedStatement stmt = null;
         try {
 
-            // delete the current field in the webform
+            // delete the current field in the web form
             con = getConnection();
             stmt = con.prepareStatement(getQuery("DELETE_FORM_FIELD"));
             stmt.setInt(1, formEntryId);
             stmt.setString(2, field);
-            stmt.executeUpdate();
+            int rowCount = stmt.executeUpdate();
 
-            // add the new entry if its not empty
-            if (!CmsStringUtil.isEmptyOrWhitespaceOnly(value)) {
+            // add the new entry if its not empty or if database row was present before
+            if (!CmsStringUtil.isEmptyOrWhitespaceOnly(value) || (rowCount > 0)) {
                 closeAll(null, stmt, null);
                 stmt = con.prepareStatement(getQuery("WRITE_FORM_DATA"));
                 stmt.setInt(1, formEntryId);
                 stmt.setString(2, field);
+                if (value == null) {
+                    value = "";
+                }
                 stmt.setString(3, value);
                 stmt.executeUpdate();
             }
@@ -537,7 +546,7 @@ public final class CmsFormDataAccess {
      * 
      * @return true if successful 
      * 
-     * @throws SQLException if sth goes wrong 
+     * @throws SQLException if something goes wrong 
      * 
      * @see com.alkacon.opencms.formgenerator.CmsForm#getAllFields()
      */
@@ -589,75 +598,68 @@ public final class CmsFormDataAccess {
             // 3) Now insert the data values for this submission with that ref_id: 
             stmt = con.prepareStatement(getQuery("WRITE_FORM_DATA"));
             // loop over all form fields: 
-            List formFields = form.getAllFields();
-            Iterator itFormFields = formFields.iterator();
+            List<I_CmsField> formFields = form.getAllFields(false, true, true);
+            Iterator<I_CmsField> itFormFields = formFields.iterator();
             while (itFormFields.hasNext()) {
-                I_CmsField field = (I_CmsField)itFormFields.next();
-                if (field instanceof CmsPagingField) {
+                I_CmsField field = itFormFields.next();
+                // do not store empty fields: users will not be able to enter something and "duplicate entry" errors may happen
+                // do not store paging fields as well
+                if ((field instanceof CmsPagingField) || (field instanceof CmsEmptyField)) {
                     continue;
                 }
-                // do not store empty fields: users will not be able to enter something and "duplicate entry" errors may happen
-                if (!(field instanceof CmsEmptyField)) {
 
-                    String fieldName = field.getDbLabel();
-                    // returns null if we do not deal with a CmsUploadFileItem: 
-                    FileItem fileItem = formHandler.getUploadFile(field);
-                    List fieldValues = new ArrayList();
-                    if (fileItem != null) {
-                        // save the location of the file and 
-                        // store it from the temp file to a save place: 
-                        File uploadFile = storeFile(fileItem, formHandler);
-                        fieldValues.add(uploadFile.getAbsolutePath());
-                    } else if ((field instanceof CmsDisplayField) || (field instanceof CmsHiddenDisplayField)) {
-                        fieldValues.add(field.getValue());
-                    } else if (field instanceof CmsDynamicField) {
-                        fieldValues.add(formHandler.getFormConfiguration().getFieldStringValueByName(field.getName()));
-                    } else if (field instanceof CmsTableField) {
-                        fieldValues = field.getItems();
-                    } else {
-                        fieldValues.add(field.getValue());
+                // returns null if we do not deal with a CmsUploadFileItem: 
+                FileItem fileItem = formHandler.getUploadFile(field);
+                List<String> fieldNames = new ArrayList<String>();
+                List<String> fieldValues = new ArrayList<String>();
+                if (fileItem != null) {
+                    // save the location of the file and 
+                    // store it from the temp file to a save place: 
+                    String absPath = storeFile(fileItem, formHandler);
+                    fieldNames.add(field.getDbLabel());
+                    fieldValues.add(absPath);
+                } else if ((field instanceof CmsDisplayField) || (field instanceof CmsHiddenDisplayField)) {
+                    fieldNames.add(field.getDbLabel());
+                    fieldValues.add(field.getValue());
+                } else if (field instanceof CmsDynamicField) {
+                    fieldNames.add(field.getDbLabel());
+                    fieldValues.add(formHandler.getFormConfiguration().getFieldStringValueByName(field.getName()));
+                } else if (field instanceof CmsTableField) {
+                    for (int i = 0; i < field.getItems().size(); i++) {
+                        CmsFieldItem fieldItem = field.getItems().get(i);
+                        fieldNames.add(fieldItem.getDbLabel());
+                        fieldValues.add(fieldItem.getValue());
                     }
+                } else {
+                    fieldNames.add(field.getDbLabel());
+                    fieldValues.add(field.getValue());
+                }
 
-                    // a field can contain more than one value, so for all values one entry is created
-                    for (int i = 0; i < fieldValues.size(); i++) {
-                        Object fieldObject = fieldValues.get(i);
-                        String fieldValue;
-                        if (fieldObject instanceof CmsFieldItem) {
-                            CmsFieldItem fieldItem = (CmsFieldItem)fieldObject;
-                            fieldName = fieldItem.getDbLabel();
-                            fieldValue = fieldItem.getValue();
-                        } else {
-                            fieldValue = String.valueOf(fieldObject);
-                        }
-                        stmt.setInt(1, newId);
-                        stmt.setString(2, fieldName);
-                        stmt.setString(3, fieldValue);
+                // a field can contain more than one value (e.g. table field), so for all values one entry is created
+                for (int i = 0; i < fieldValues.size(); i++) {
+                    String fieldName = fieldNames.get(i);
+                    String fieldValue = fieldValues.get(i);
+                    stmt.setInt(1, newId);
+                    stmt.setString(2, fieldName);
+                    stmt.setString(3, fieldValue);
 
-                        // only save not empty field values
-                        if (CmsStringUtil.isNotEmpty(fieldValue)) {
-                            /*
-                             * At this level we can allow to loose a field value and try 
-                             * to save the others instead of failing everything. 
-                             */
-                            try {
-                                rc = stmt.executeUpdate();
-                            } catch (SQLException sqlex) {
-                                LOG.error(Messages.get().getBundle().key(
-                                    Messages.LOG_ERR_DATAACCESS_SQL_WRITE_FIELD_3,
-                                    new Object[] {
-                                        fieldName,
-                                        fieldValue,
-                                        formHandler.createMailTextFromFields(false, false)}), sqlex);
-                            }
-                            if (rc != 1) {
-                                LOG.error(Messages.get().getBundle().key(
-                                    Messages.LOG_ERR_DATAACCESS_SQL_WRITE_FIELD_3,
-                                    new Object[] {
-                                        fieldName,
-                                        fieldValue,
-                                        formHandler.createMailTextFromFields(false, false)}));
-                            }
-                        }
+                    /*
+                     * at this level we can allow to loose a field value and try 
+                     * to save the others instead of failing everything. 
+                     */
+                    try {
+                        rc = stmt.executeUpdate();
+                    } catch (SQLException sqlex) {
+                        LOG.error(
+                            Messages.get().getBundle().key(
+                                Messages.LOG_ERR_DATAACCESS_SQL_WRITE_FIELD_3,
+                                new Object[] {fieldName, fieldValue, formHandler.createMailTextFromFields(false, false)}),
+                            sqlex);
+                    }
+                    if (rc != 1) {
+                        LOG.error(Messages.get().getBundle().key(
+                            Messages.LOG_ERR_DATAACCESS_SQL_WRITE_FIELD_3,
+                            new Object[] {fieldName, fieldValue, formHandler.createMailTextFromFields(false, false)}));
                     }
                 }
             }
@@ -864,7 +866,7 @@ public final class CmsFormDataAccess {
      * 
      * @return the sql statement string
      */
-    private String getReadQuery(CmsFormDatabaseFilter filter, List params, boolean count) {
+    private String getReadQuery(CmsFormDatabaseFilter filter, List<Object> params, boolean count) {
 
         StringBuffer sql = new StringBuffer(128);
         params.clear(); // be sure the parameters list is clear
@@ -925,7 +927,7 @@ public final class CmsFormDataAccess {
         }
 
         // states filter
-        Set states = filter.getStates();
+        Set<Integer> states = filter.getStates();
         if (!states.isEmpty()) {
             if (where.length() > 0) {
                 where.append(" ").append(getQuery("COND_AND")).append(" ");
@@ -938,22 +940,22 @@ public final class CmsFormDataAccess {
                 }
             }
             where.append(getQuery("FILTER_STATES", ph));
-            Iterator it = states.iterator();
+            Iterator<Integer> it = states.iterator();
             while (it.hasNext()) {
-                Integer state = (Integer)it.next();
+                Integer state = it.next();
                 params.add(state);
             }
         }
         // fields filter
-        Map fields = filter.getFields();
+        Map<String, String> fields = filter.getFields();
         if (!fields.isEmpty()) {
             if (where.length() > 0) {
                 where.append(" ").append(getQuery("COND_AND")).append(" ");
             }
             int i = 0;
-            Iterator it = fields.entrySet().iterator();
+            Iterator<Entry<String, String>> it = fields.entrySet().iterator();
             while (it.hasNext()) {
-                Map.Entry field = (Map.Entry)it.next();
+                Map.Entry<String, String> field = it.next();
                 where.append(getQuery("FILTER_FIELD", "" + i));
                 params.add(field.getKey());
                 params.add(field.getValue());
@@ -1012,6 +1014,8 @@ public final class CmsFormDataAccess {
      * Stores the content of the given file to a 
      * place specified by the module parameter "uploadfolder".<p>
      * 
+     * Also the parameters "uploadvfs" and "uploadproject" can be used to store the file inside the OpenCms VFS.<p>
+     * 
      * The content of the upload file item is only inside a temporary file. 
      * This must be called, when the form submission is stored to the database 
      * as the content would be lost.<p>
@@ -1019,50 +1023,121 @@ public final class CmsFormDataAccess {
      * @param item the upload file item to store 
      * @param formHandler only used for exception logging 
      * 
-     * @return the file were the content is stored 
+     * @return the absolute path of the created file 
      */
-    private File storeFile(FileItem item, CmsFormHandler formHandler) {
+    private String storeFile(FileItem item, CmsFormHandler formHandler) {
 
-        File storeFile = null;
+        String fullResourceName = "";
         CmsModule module = OpenCms.getModuleManager().getModule(CmsForm.MODULE_NAME);
         if (module == null) {
             throw new CmsRuntimeException(Messages.get().container(
                 Messages.LOG_ERR_DATAACCESS_MODULE_MISSING_1,
                 new Object[] {CmsForm.MODULE_NAME}));
         }
+        // read the path to store the files from module parameters
         String filePath = module.getParameter(CmsForm.MODULE_PARAM_UPLOADFOLDER);
         if (CmsStringUtil.isEmptyOrWhitespaceOnly(filePath)) {
             throw new CmsRuntimeException(Messages.get().container(
                 Messages.LOG_ERR_DATAACCESS_MODULE_PARAM_MISSING_2,
                 new Object[] {CmsForm.MODULE_PARAM_UPLOADFOLDER, CmsForm.MODULE_NAME}));
         }
-        try {
-            File folder = new File(filePath);
-            CmsFileUtil.assertFolder(folder, CmsFileUtil.MODE_READ, true);
-            String itemName = item.getName();
-            // In most cases, this will be the base file name, without path information. However, 
-            // some clients, such as the Opera browser, do include path information. 
-            // That is why here is to assure that the base name is used here.
-            itemName = CmsFormHandler.getTruncatedFileItemName(itemName);
-            storeFile = new File(folder, itemName);
-            byte[] contents = item.get();
+        // get the sub folder to store the files
+        String formName = formHandler.getFormConfiguration().getFormId();
+        formName = m_cms.getRequestContext().getFileTranslator().translateResource(formName);
+
+        // generate file name
+        String itemName = item.getName();
+        // In most cases, this will be the base file name, without path information. However, 
+        // some clients, such as the Opera browser, do include path information. 
+        // That is why here is to assure that the base name is used.
+        itemName = CmsFormHandler.getTruncatedFileItemName(itemName);
+        // add an (almost) unique prefix to the file to prevent overwriting of files with the same name
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss_");
+        itemName = sdf.format(new Date()) + itemName;
+        // determine upload target: RFS (default) or VFS
+        String vfsUpload = module.getParameter(CmsForm.MODULE_PARAM_UPLOADVFS, CmsStringUtil.FALSE);
+        if (Boolean.valueOf(vfsUpload).booleanValue()) {
+            // upload to OpenCms VFS
+            if (!filePath.endsWith("/")) {
+                filePath += "/";
+            }
+            // translate resource name to valid VFS resource name
+            itemName = m_cms.getRequestContext().getFileTranslator().translateResource(itemName);
+
+            // store current project
+            CmsProject currProject = m_cms.getRequestContext().currentProject();
             try {
-                OutputStream out = new FileOutputStream(storeFile);
-                out.write(contents);
-                out.flush();
-                out.close();
-            } catch (IOException e) {
-                // should never happen
+                // switch to an offline project
+                String projectName = module.getParameter(CmsForm.MODULE_PARAM_UPLOADPROJECT, "Offline");
+                m_cms.getRequestContext().setCurrentProject(m_cms.readProject(projectName));
+                // check if the sub folder exists and create it if necessary
+                String subFolder = filePath + formName;
+                if (!m_cms.existsResource(subFolder)) {
+                    try {
+                        m_cms.createResource(subFolder, CmsResourceTypeFolder.getStaticTypeId(), null, null);
+                        m_cms.unlockResource(subFolder);
+                        // publish the folder
+                        OpenCms.getPublishManager().publishResource(m_cms, subFolder);
+                        // wait a little bit to avoid problems when publishing the uploaded file afterwards
+                        OpenCms.getPublishManager().waitWhileRunning(3000);
+                        // set the file path to sub folder
+                        filePath = subFolder + "/";
+                    } catch (Exception e) {
+                        // error creating the folder in VFS
+                        LOG.error(e);
+                    }
+                }
+                // create full resource name
+                fullResourceName = filePath + itemName;
+                // determine the resource type id from the given information
+                int resTypeId = OpenCms.getResourceManager().getDefaultTypeForName(itemName).getTypeId();
+                // create the resource in VFS
+                m_cms.createResource(fullResourceName, resTypeId, item.get(), null);
+                m_cms.unlockResource(fullResourceName);
+                try {
+                    // publish the resource
+                    OpenCms.getPublishManager().publishResource(m_cms, fullResourceName);
+                } catch (Exception e) {
+                    // error publishing the created file
+                    LOG.error(e);
+                }
+            } catch (CmsException e) {
+                // error creating the file in VFS
                 LOG.error(Messages.get().getBundle().key(
                     Messages.LOG_ERR_DATAACCESS_UPLOADFILE_LOST_1,
                     new Object[] {formHandler.createMailTextFromFields(false, false)}), e);
+            } finally {
+                // switch back to stored project
+                m_cms.getRequestContext().setCurrentProject(currProject);
             }
-        } catch (CmsRfsException ex) {
-            LOG.error(Messages.get().getBundle().key(
-                Messages.LOG_ERR_DATAACCESS_UPLOADFILE_LOST_1,
-                new Object[] {formHandler.createMailTextFromFields(false, false)}), ex);
+        } else {
+            // upload to server RFS
+            try {
+                File folder = new File(filePath);
+                CmsFileUtil.assertFolder(folder, CmsFileUtil.MODE_READ, true);
+                File subFolder = new File(folder, formName);
+                CmsFileUtil.assertFolder(subFolder, CmsFileUtil.MODE_READ, true);
+                File storeFile = new File(subFolder, itemName);
+                fullResourceName = storeFile.getAbsolutePath();
+                byte[] contents = item.get();
+                try {
+                    OutputStream out = new FileOutputStream(storeFile);
+                    out.write(contents);
+                    out.flush();
+                    out.close();
+                } catch (IOException e) {
+                    // should never happen
+                    LOG.error(Messages.get().getBundle().key(
+                        Messages.LOG_ERR_DATAACCESS_UPLOADFILE_LOST_1,
+                        new Object[] {formHandler.createMailTextFromFields(false, false)}), e);
+                }
+            } catch (CmsRfsException ex) {
+                LOG.error(Messages.get().getBundle().key(
+                    Messages.LOG_ERR_DATAACCESS_UPLOADFILE_LOST_1,
+                    new Object[] {formHandler.createMailTextFromFields(false, false)}), ex);
+            }
         }
-        return storeFile;
+        return fullResourceName;
     }
 
     /**

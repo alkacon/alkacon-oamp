@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/I_CmsField.java,v $
- * Date   : $Date: 2010/04/23 09:53:17 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2010/05/21 13:49:17 $
+ * Version: $Revision: 1.7 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -35,17 +35,26 @@ package com.alkacon.opencms.formgenerator;
 import org.opencms.i18n.CmsMessages;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Defines the methods required for form fields.<p>
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  * 
  * @since 7.0.4 
  */
 public interface I_CmsField {
+
+    /**
+     * Adds a sub field that is shown for the given field value.<p>
+     * 
+     * @param fieldValue the field value for which the subfield is shown
+     * @param subField the configured input field
+     */
+    void addSubField(String fieldValue, I_CmsField subField);
 
     /**
      * Builds the HTML input element for this element to be used in a frontend JSP.<p>
@@ -78,6 +87,22 @@ public interface I_CmsField {
         String infoKey);
 
     /**
+     * Builds the HTML for the text below the input field to be used in a frontend JSP.<p>
+     * 
+     * @param messages a resource bundle containing HTML snippets to build the HTML element
+     * 
+     * @return the HTML for the text below the input field
+     */
+    String buildText(CmsMessages messages);
+
+    /**
+     * Returns the sub fields for the field depending on the current field value.<p>
+     * 
+     * @return the sub fields for the field depending on the current field value
+     */
+    List<I_CmsField> getCurrentSubFields();
+
+    /**
      * Returns the database label.<p>
      *
      * @return the database label
@@ -99,6 +124,13 @@ public interface I_CmsField {
     int getFieldNr();
 
     /**
+     * Returns additional information for the input field, e.g. for the file upload field.<p>
+     * 
+     * @return additional information for the input field
+     */
+    String getInfoMessage();
+
+    /**
      * Returns the list of items for select boxes, radio buttons and checkboxes.<p>
      * 
      * The list contains CmsFieldItem objects with the following information:
@@ -110,7 +142,7 @@ public interface I_CmsField {
      * 
      * @return the list of items for select boxes, radio buttons and checkboxes
      */
-    List getItems();
+    List<CmsFieldItem> getItems();
 
     /**
      * Returns the description text of the input field.<p>
@@ -127,6 +159,15 @@ public interface I_CmsField {
     String getName();
 
     /**
+     * Returns the (optional) parameters of the input field.<p>
+     * 
+     * Parameters are configured as <code>key=value</code> pairs, separated by a <code>|</code> in the field configuration.<p>
+     * 
+     * @return the (optional) parameters of the input field
+     */
+    Map<String, String> getParameters();
+
+    /**
      * Returns the place holder.<p>
      *
      * @return the place holder
@@ -139,6 +180,29 @@ public interface I_CmsField {
      * @return the position
      */
     int getPosition();
+
+    /**
+     * Returns all defined sub fields for the field.<p>
+     * 
+     * The key is the value of the field for which the subfields are shown.<p>
+     * 
+     * @return all defined sub fields for the field
+     */
+    Map<String, List<I_CmsField>> getSubFields();
+
+    /**
+     * Returns the JavaScript that is necessary for the correct sub field functionality.<p>
+     * 
+     * @return the JavaScript that is necessary for the correct sub field functionality
+     */
+    String getSubFieldScript();
+
+    /**
+     * Returns the text that is displayed below the input field.<p>
+     * 
+     * @return the text that is displayed below the input field
+     */
+    CmsFieldText getText();
 
     /**
      * Returns the type of the input field, e.g. "text" or "select".<p>
@@ -162,16 +226,44 @@ public interface I_CmsField {
     String getValue();
 
     /**
+     * Returns if the field has sub fields for the current field value.<p>
+     * 
+     * @return <code>true</code> if the field has sub fields for the current field value, otherwise <code>false</code>
+     */
+    boolean hasCurrentSubFields();
+
+    /**
+     * Returns if the field has sub fields defined.<p>
+     * 
+     * @return <code>true</code> if the field has sub fields defined, otherwise <code>false</code>
+     */
+    boolean hasSubFields();
+
+    /**
+     * Returns if text should be displayed below the input field.<p>
+     * 
+     * @return <code>true</code> if text should be displayed below the input field, otherwise <code>false</code>
+     */
+    boolean hasText();
+
+    /**
      * Returns if this input field is mandatory.<p>
      * 
-     * @return true if this input field is mandatory, otherwise false
+     * @return <code>true</code> if this input field is mandatory, otherwise <code>false</code>
      */
     boolean isMandatory();
 
     /**
+     * Returns if this field is a sub field.<p>
+     * 
+     * @return <code>true</code> if this field is a sub field, otherwise <code>false</code>
+     */
+    boolean isSubField();
+
+    /**
      * Checks if an item list is needed for this field.<p>
      * 
-     * @return true if an item list is needed for this field, otherwise false
+     * @return <code>true</code> if an item list is needed for this field, otherwise <code>false</code>
      */
     boolean needsItems();
 
@@ -197,6 +289,13 @@ public interface I_CmsField {
     void setFieldNr(int fieldNr);
 
     /**
+     * Sets additional information for the input field, e.g. for the file upload field.<p>
+     * 
+     * @param infoMessage additional information for the input field
+     */
+    void setInfoMessage(String infoMessage);
+
+    /**
      * Sets the list of items for select boxes, radio buttons and checkboxes.<p>
      * 
      * The list contains CmsFieldItem objects with the following information:
@@ -208,7 +307,7 @@ public interface I_CmsField {
      * 
      * @param items the list of items for select boxes, radio buttons and checkboxes
      */
-    void setItems(List items);
+    void setItems(List<CmsFieldItem> items);
 
     /**
      * Sets the description text of the input field.<p>
@@ -232,6 +331,15 @@ public interface I_CmsField {
     void setName(String name);
 
     /**
+     * Sets the (optional) parameters of the input field.<p>
+     * 
+     * Parameters are configured as <code>key=value</code> pairs, separated by a <code>|</code> in the field configuration.<p>
+     * 
+     * @param parameters the (optional) parameters of the input field
+     */
+    void setParameters(String parameters);
+
+    /**
      * Sets the place holder.<p>
      *
      * @param placeholder the place holder to set
@@ -244,6 +352,20 @@ public interface I_CmsField {
      * @param position the position to set
      */
     void setPosition(int position);
+
+    /**
+     * Sets the flag if this field is a sub field.<p>
+     * 
+     * @param subField the flag if this field is a sub field
+     */
+    void setSubField(boolean subField);
+
+    /**
+     * Sets the text that is displayed below the input field.<p>
+     * 
+     * @param text the text that is displayed below the input field
+     */
+    void setText(CmsFieldText text);
 
     /**
      * Sets the regular expression that is used for validation of the field.<p>

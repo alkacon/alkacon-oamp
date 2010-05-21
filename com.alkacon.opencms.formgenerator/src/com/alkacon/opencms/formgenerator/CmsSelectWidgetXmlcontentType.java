@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsSelectWidgetXmlcontentType.java,v $
- * Date   : $Date: 2010/03/19 15:31:09 $
- * Version: $Revision: 1.9 $
+ * Date   : $Date: 2010/05/21 13:49:14 $
+ * Version: $Revision: 1.10 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -170,7 +170,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  * 
  * @since 7.0.4
  * 
@@ -183,7 +183,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
      * 
      * @author Achim Westermann
      * 
-     * @version $Revision: 1.9 $
+     * @version $Revision: 1.10 $
      * 
      * @since 6.1.6
      * 
@@ -308,7 +308,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
      * 
      * @author Achim Westermann
      * 
-     * @version $Revision: 1.9 $
+     * @version $Revision: 1.10 $
      * 
      * @since 6.1.6
      * 
@@ -523,6 +523,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
     /**
      * @see org.opencms.widgets.CmsSelectWidget#newInstance()
      */
+    @Override
     public I_CmsWidget newInstance() {
 
         return new CmsSelectWidgetXmlcontentType(getConfiguration());
@@ -561,6 +562,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
      * @throws CmsIllegalArgumentException
      *             if the "folder" property of the configuration does not denote a folder within the VFS.
      */
+    @Override
     protected List parseSelectOptions(CmsObject cms, I_CmsWidgetDialog widgetDialog, I_CmsWidgetParameter param)
     throws CmsIllegalArgumentException {
 

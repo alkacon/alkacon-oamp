@@ -56,6 +56,22 @@ Legend:
 * Bug fixed
 - General comment
 
+1.4.0 - May, 2010
+! Added sub fields that are shown for select boxes or radio button fields depending on the chosen value
+! Configurable front end report output of form entries stored in the database
+! Uploaded files can now be stored in the OpenCms VFS instead of the servers real file system
+! Static text can be shown between single input fields
+! Option to keep the user session when viewing forms by sending a server request in a configurable time interval
+! Option to generate valid XHTML output
+! Option to define unique fields if storing submitted forms in the database
+! Added form availability to show a configurable error text after the form is expired
+! The CSS used for the emails can now be changed individually
+! The detail view of forms stored in the database allows to view the uploaded files
+! Only users with the role "Database Manager" or with write permissions on the corresponding form file
+  can edit the stored database entries
+* Unconfigured new form does not throw an error anymore when previewing it
+- Improved formatting of generated text emails
+- Improved editor layout for forms by adding tabs
 
 1.3.2 - April 23th, 2010
 * Fixed issue with Microsoft Excel reformatting numerical columns (contribution by Mathias Lin, SYSVISION).
@@ -79,7 +95,7 @@ Legend:
 ! CSS class attributes are generated form-specific via the new  "Style" configuration option.  
 ! Added module parameter "export.lineseparator" for configuration of the line break in exported CSV: Values are "windows" or "unix".
   For Excel compatibility use "unix" or "excel". 
-! New math captcha (maptcha) for verfication of human beeings filling out the form. 
+! New math captcha (maptcha) for verification of human beings filling out the form. 
 
 1.2.0 - May, 2008
 ! Added a new Administration Tool under Database Management.

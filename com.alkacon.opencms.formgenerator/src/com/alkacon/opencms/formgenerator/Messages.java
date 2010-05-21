@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/Messages.java,v $
- * Date   : $Date: 2010/03/19 15:31:08 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2010/05/21 13:49:14 $
+ * Version: $Revision: 1.4 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -40,13 +40,16 @@ import org.opencms.i18n.I_CmsMessageBundle;
  * 
  * @author Achim Westermann 
  * 
- * @version $Revision: 1.3 $ 
+ * @version $Revision: 1.4 $ 
  * 
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * 
  * @since 7.0.4 
  */
 public final class Messages extends A_CmsMessageBundle {
+
+    /** Message constant for key in the resource bundle. */
+    public static final String ERR_INIT_INPUT_FIELD_MISSING_ITEM_2 = "ERR_INIT_INPUT_FIELD_MISSING_ITEM_2";
 
     /** Message constant for key in the resource bundle. */
     public static final String ERR_INIT_TABLE_FIELD_UNEQUAL_0 = "ERR_INIT_TABLE_FIELD_UNEQUAL_0";
@@ -55,7 +58,7 @@ public final class Messages extends A_CmsMessageBundle {
     public static final String ERR_INIT_TABLE_FIELD_UNIQUE_1 = "ERR_INIT_TABLE_FIELD_UNIQUE_1";
 
     /** Message constant for key in the resource bundle. */
-    public static final String ERR_INIT_INPUT_FIELD_MISSING_ITEM_2 = "ERR_INIT_INPUT_FIELD_MISSING_ITEM_2";
+    public static final String ERR_REPORT_NO_FORM_URI_0 = "ERR_REPORT_NO_FORM_URI_0";
 
     /** Message constant for key in the resource bundle. */
     public static final String ERR_SELECTWIDGET_CONFIGURATION_2 = "ERR_SELECTWIDGET_CONFIGURATION_2";
@@ -115,6 +118,14 @@ public final class Messages extends A_CmsMessageBundle {
     private static final I_CmsMessageBundle INSTANCE = new Messages();
 
     /**
+     * Hides the public constructor for this utility class.<p>
+     */
+    private Messages() {
+
+        // hide the constructor
+    }
+
+    /**
      * Returns an instance of this localized message accessor.<p>
      * 
      * @return an instance of this localized message accessor
@@ -122,14 +133,6 @@ public final class Messages extends A_CmsMessageBundle {
     public static I_CmsMessageBundle get() {
 
         return INSTANCE;
-    }
-
-    /**
-     * Hides the public constructor for this utility class.<p>
-     */
-    private Messages() {
-
-        // hide the constructor
     }
 
     /**

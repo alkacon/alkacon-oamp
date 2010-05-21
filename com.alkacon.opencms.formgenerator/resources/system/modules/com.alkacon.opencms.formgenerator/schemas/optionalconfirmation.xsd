@@ -26,6 +26,7 @@
 		<xsd:appinfo>
 			<resourcebundle name="com.alkacon.opencms.formgenerator.workplace"/>
 			<layouts>
+				<layout element="ConfirmationField" widget="com.alkacon.opencms.formgenerator.CmsSelectFieldWidget" configuration="referencebylabel=true|convertfieldindex=true|fieldtype=email" />
 				<layout element="ConfirmationMailText" widget="HtmlWidget" configuration="formatselect,source,table" />
 			</layouts>
 		</xsd:appinfo>

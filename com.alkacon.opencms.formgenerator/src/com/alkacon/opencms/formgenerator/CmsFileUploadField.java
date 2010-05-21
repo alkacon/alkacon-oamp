@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFileUploadField.java,v $
- * Date   : $Date: 2010/04/23 09:53:17 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2010/05/21 13:49:18 $
+ * Version: $Revision: 1.6 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -46,7 +46,7 @@ import java.util.Map;
  * 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * 
  * @since 7.0.4 
  */
@@ -71,6 +71,7 @@ public class CmsFileUploadField extends A_CmsField {
     /**
      * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, org.opencms.i18n.CmsMessages, String, boolean)
      */
+    @Override
     public String buildHtml(
         CmsFormHandler formHandler,
         CmsMessages messages,
@@ -78,7 +79,7 @@ public class CmsFileUploadField extends A_CmsField {
         boolean showMandatory,
         String infoKey) {
 
-        StringBuffer buf = new StringBuffer();
+        StringBuffer buf = new StringBuffer(256);
         String fieldLabel = getLabel();
         String message = "";
         String mandatory = "";
@@ -132,7 +133,6 @@ public class CmsFileUploadField extends A_CmsField {
             messages.key("form.html.label.end")).append("\n");
 
         // line #3
-        String value = CmsStringUtil.escapeHtml(getValue());
         buf.append(messages.key("form.html.field.start")).append("<input type=\"file\" name=\"").append(getName()).append(
             "\" value=\"").append(CmsStringUtil.escapeHtml(getValue())).append("\"").append(
             formHandler.getFormConfiguration().getFormFieldAttributes()).append("/>").append(message).append(
@@ -141,6 +141,10 @@ public class CmsFileUploadField extends A_CmsField {
         // line #4
         if (showRowEnd(messages.key("form.html.col.two"))) {
             buf.append(messages.key("form.html.row.end")).append("\n");
+        }
+
+        if (hasText()) {
+            buf.append(buildText(messages));
         }
 
         return buf.toString();
@@ -165,8 +169,9 @@ public class CmsFileUploadField extends A_CmsField {
     }
 
     /**
-     * @see com.alkacon.opencms.formgenerator.I_CmsField#validate(CmsFormHandler)
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#validateForInfo(CmsFormHandler)
      */
+    @Override
     public String validateForInfo(CmsFormHandler formHandler) {
 
         String validationInfo = "";
@@ -182,6 +187,7 @@ public class CmsFileUploadField extends A_CmsField {
      * 
      * @return {@link CmsFormHandler#ERROR_VALIDATION} if validation of the input value failed
      */
+    @Override
     protected String validateValue() {
 
         // validate non-empty values with given regular expression
@@ -218,13 +224,13 @@ public class CmsFileUploadField extends A_CmsField {
                 if (getValidationExpression().length() >= confDocStart) {
                     String allowedDocTypes = getValidationExpression().substring(confDocStart);
                     // make the document type string to a list
-                    List listDocTypes = CmsStringUtil.splitAsList(allowedDocTypes, ",");
+                    List<String> listDocTypes = CmsStringUtil.splitAsList(allowedDocTypes, ",");
                     // iterate over all allowed document types and check if on eof them is the selected one
                     if (listDocTypes != null) {
-                        Iterator iter = listDocTypes.iterator();
+                        Iterator<String> iter = listDocTypes.iterator();
                         while (iter.hasNext()) {
                             // get the next allowed document type
-                            String nextDocType = (String)iter.next();
+                            String nextDocType = iter.next();
                             nextDocType = nextDocType.toUpperCase().trim();
                             // check the next allowed document type to the type of the file to upload
                             if (nextDocType.equals(selDocType)) {
@@ -241,7 +247,7 @@ public class CmsFileUploadField extends A_CmsField {
 
             // file upload size
             if (CmsStringUtil.isNotEmpty(valExpFileSize)) {
-                Map substitutions = new HashMap();
+                Map<String, String> substitutions = new HashMap<String, String>();
                 substitutions.put("<", "");
                 substitutions.put("kb", "");
 

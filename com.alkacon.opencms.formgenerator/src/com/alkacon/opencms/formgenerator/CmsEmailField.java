@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsEmailField.java,v $
- * Date   : $Date: 2010/03/19 15:31:09 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2010/05/21 13:49:17 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -37,7 +37,7 @@ package com.alkacon.opencms.formgenerator;
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4 
  */
@@ -52,6 +52,7 @@ public class CmsEmailField extends CmsTextField {
     /**
      * @see com.alkacon.opencms.formgenerator.I_CmsField#getType()
      */
+    @Override
     public String getType() {
 
         return TYPE;

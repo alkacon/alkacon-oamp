@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsPasswordField.java,v $
- * Date   : $Date: 2010/03/19 15:31:11 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2010/05/21 13:49:18 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -40,7 +40,7 @@ import org.opencms.util.CmsStringUtil;
  * 
  * @author Mario Jaeger
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.5.2 
  */
@@ -70,9 +70,10 @@ public class CmsPasswordField extends A_CmsField {
     /**
      * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, org.opencms.i18n.CmsMessages, String, boolean)
      */
+    @Override
     public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory) {
 
-        StringBuffer buf = new StringBuffer();
+        StringBuffer buf = new StringBuffer(128);
         String fieldLabel = getLabel();
         String errorMessage = "";
         String mandatory = "";
@@ -100,7 +101,11 @@ public class CmsPasswordField extends A_CmsField {
         // line #1
         //if(!messages.key("form.html.useCounter").equalsIgnoreCase("true") || !(pos % 2==0)){
         if (showRowStart(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.start")).append("\n");
+            if (isSubField()) {
+                buf.append(messages.key("form.html.row.subfield.start")).append("\n");
+            } else {
+                buf.append(messages.key("form.html.row.start")).append("\n");
+            }
         }
 
         // line #2
@@ -116,7 +121,11 @@ public class CmsPasswordField extends A_CmsField {
         // line #4
         //if(!messages.key("form.html.useCounter").equalsIgnoreCase("true") || (pos % 2==0)){
         if (showRowEnd(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.end")).append("\n");
+            if (isSubField()) {
+                buf.append(messages.key("form.html.row.subfield.end")).append("\n");
+            } else {
+                buf.append(messages.key("form.html.row.end")).append("\n");
+            }
         }
 
         return buf.toString();

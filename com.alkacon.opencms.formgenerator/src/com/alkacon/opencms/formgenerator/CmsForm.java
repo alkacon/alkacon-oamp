@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
- * Date   : $Date: 2010/04/23 09:53:17 $
- * Version: $Revision: 1.20 $
+ * Date   : $Date: 2010/05/21 13:49:17 $
+ * Version: $Revision: 1.21 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -41,7 +41,7 @@ import org.opencms.file.CmsFile;
 import org.opencms.file.CmsObject;
 import org.opencms.i18n.CmsMessages;
 import org.opencms.jsp.CmsJspActionElement;
-import org.opencms.main.CmsLog;
+import org.opencms.main.OpenCms;
 import org.opencms.util.CmsMacroResolver;
 import org.opencms.util.CmsStringUtil;
 import org.opencms.xml.content.CmsXmlContent;
@@ -56,9 +56,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.Map.Entry;
 
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.logging.Log;
 
 /**
  * Represents an input form with all configured fields and options.<p>
@@ -69,7 +69,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  * 
  * @since 7.0.4 
  */
@@ -96,16 +96,19 @@ public class CmsForm {
     /** The module name. */
     public static final String MODULE_NAME = CmsForm.class.getPackage().getName();
 
-    /** Name of the db index table space module parameter.  */
+    /** Name of the CSS style sheet module parameter. */
+    public static final String MODULE_PARAM_CSS = "css";
+
+    /** Name of the db index table space module parameter. */
     public static final String MODULE_PARAM_DB_INDEXTABLESPACE = "index-tablespace";
 
-    /** Name of the db-pool module parameter.  */
+    /** Name of the db-pool module parameter. */
     public static final String MODULE_PARAM_DB_POOL = "db-pool";
 
-    /** Name of the db-provider module parameter.  */
+    /** Name of the db-provider module parameter. */
     public static final String MODULE_PARAM_DB_PROVIDER = "db-provider";
 
-    /** Name of the module parameter for the configuration of the time format of the export data.  */
+    /** Name of the module parameter for the configuration of the time format of the export data. */
     public static final String MODULE_PARAM_EXPORT_TIMEFORMATE = "export.timeformat";
 
     /** 
@@ -121,11 +124,17 @@ public class CmsForm {
      */
     public static final String MODULE_PARAM_EXPORTLINESEPARATOR = "export.lineseparator";
 
-    /** Name of the group module parameter that is used to grant access to the workplace tool.  */
+    /** Name of the group module parameter that is used to grant access to the workplace tool. */
     public static final String MODULE_PARAM_TOOL_GROUP = "usergroup";
 
-    /** Name of the upload folder module parameter.  */
+    /** Name of the upload folder module parameter. */
     public static final String MODULE_PARAM_UPLOADFOLDER = "uploadfolder";
+
+    /** Name of the upload project module parameter. */
+    public static final String MODULE_PARAM_UPLOADPROJECT = "uploadproject";
+
+    /** Name of the upload VFS module parameter. */
+    public static final String MODULE_PARAM_UPLOADVFS = "uploadvfs";
 
     /** 
      * Constant value for the module parameter {@link #MODULE_PARAM_EXPORTLINESEPARATOR} to have "\r\n" transformed to 
@@ -154,6 +163,9 @@ public class CmsForm {
     /** Configuration node name for the optional captcha. */
     public static final String NODE_CAPTCHA_PRESET = "Preset";
 
+    /** Configuration node name for the column to show the text. */
+    public static final String NODE_COLUMN = "Column";
+
     /** Configuration node name for the confirmation mail checkbox label text. */
     public static final String NODE_CONFIRMATIONMAILCHECKBOXLABEL = "ConfirmationCheckboxLabel";
 
@@ -181,6 +193,9 @@ public class CmsForm {
     /** Configuration node name for the transport field in the optional nested data target. */
     public static final String NODE_DATATARGET_TRANSPORT = "Transport";
 
+    /** Configuration node name for the date. */
+    public static final String NODE_DATE = "Date";
+
     /** Configuration node name for the optional dynamic field class node. */
     public static final String NODE_DYNAMICFIELDCLASS = "DynamicFieldClass";
 
@@ -201,6 +216,9 @@ public class CmsForm {
 
     /** Configuration node name for the field mandatory node. */
     public static final String NODE_FIELDMANDATORY = "FieldMandatory";
+
+    /** Configuration node name for the field params node. */
+    public static final String NODE_FIELDPARAMS = "FieldParams";
 
     /** Configuration node name for the field type node. */
     public static final String NODE_FIELDTYPE = "FieldType";
@@ -241,31 +259,37 @@ public class CmsForm {
     /** Configuration node name for the item value node. */
     public static final String NODE_ITEMVALUE = "ItemValue";
 
+    /** Configuration node name for the optional keep session node. */
+    public static final String NODE_KEEPSESSION = "KeepSession";
+
     /** Configuration node name for the optional link node. */
     public static final String NODE_LINK = "Link";
 
-    /** Configuration node name for the Email bcc recipient(s) node. */
+    /** Configuration node name for the email BCC recipient(s) node. */
     public static final String NODE_MAILBCC = "MailBCC";
 
-    /** Configuration node name for the Email cc recipient(s) node. */
+    /** Configuration node name for the email CC recipient(s) node. */
     public static final String NODE_MAILCC = "MailCC";
 
-    /** Configuration node name for the Email sender address node. */
+    /** Configuration node name for the email CSS style sheet node. */
+    public static final String NODE_MAILCSS = "MailCSS";
+
+    /** Configuration node name for the email sender address node. */
     public static final String NODE_MAILFROM = "MailFrom";
 
-    /** Configuration node name for the Email subject node. */
+    /** Configuration node name for the email subject node. */
     public static final String NODE_MAILSUBJECT = "MailSubject";
 
-    /** Configuration node name for the Email text node. */
+    /** Configuration node name for the email text node. */
     public static final String NODE_MAILTEXT = "MailText";
 
-    /** Configuration node name for the Email recipient(s) node. */
+    /** Configuration node name for the email recipient(s) node. */
     public static final String NODE_MAILTO = "MailTo";
 
-    /** Configuration node name for the Email type node. */
+    /** Configuration node name for the email type node. */
     public static final String NODE_MAILTYPE = "MailType";
 
-    /** Parent node for a nested web form */
+    /** Parent node for a nested web form. */
     public static final String NODE_NESTED_FORM = "Form";
 
     /** Configuration node name for the optional form configuration. */
@@ -273,6 +297,18 @@ public class CmsForm {
 
     /** Configuration node name for the optional confirmation mail configuration. */
     public static final String NODE_OPTIONALCONFIRMATION = "OptionalConfirmationMail";
+
+    /** Configuration node name for the optional form expiration configuration. */
+    public static final String NODE_OPTIONALEXPIRATION = "OptionalFormExpiration";
+
+    /** Configuration node name for the optional field text configuration. */
+    public static final String NODE_OPTIONALFIELDTEXT = "OptionalFieldText";
+
+    /** Configuration node name for the optional sub field configuration. */
+    public static final String NODE_OPTIONALSUBFIELD = "OptionalSubField";
+
+    /** Configuration node name for the parent field. */
+    public static final String NODE_PARENTFIELD = "ParentField";
 
     /** Configuration node name for the optional property file. */
     public static final String NODE_PROPERTY_FILE = "PropertyFile";
@@ -292,10 +328,14 @@ public class CmsForm {
     /** Configuration node name for the optional target URI. */
     public static final String NODE_TARGET_URI = "TargetUri";
 
+    /** Configuration node name for the text node. */
+    public static final String NODE_TEXT = "Text";
+
+    /** Configuration node name for the value. */
+    public static final String NODE_VALUE = "Value";
+
     /** Request parameter name for the optional send confirmation email checkbox. */
     public static final String PARAM_SENDCONFIRMATION = "sendconfirmation";
-
-    private static final Log LOG = CmsLog.getLog(CmsForm.class);
 
     /** Resource type ID of XML content forms. */
     private static final String TYPE_NAME = "alkacon-webform";
@@ -306,10 +346,10 @@ public class CmsForm {
     /** The captcha field. */
     protected CmsCaptchaField m_captchaField;
 
-    /** list of possible configuration errors. */
-    protected List m_configurationErrors;
+    /** The list of possible configuration errors. */
+    protected List<String> m_configurationErrors;
 
-    /** Configuration Uri. */
+    /** The form configuration URI. */
     protected String m_configUri;
 
     /** configuration value. */
@@ -320,6 +360,9 @@ public class CmsForm {
 
     /** configuration value. */
     protected int m_confirmationMailField;
+
+    /** configuration value. */
+    protected String m_confirmationMailFieldDbLabel;
 
     /** configuration value. */
     protected boolean m_confirmationMailOptional;
@@ -334,16 +377,22 @@ public class CmsForm {
     protected String m_confirmationMailTextPlain;
 
     /** Stores the form dynamic input fields. */
-    protected List m_dynaFields;
+    protected List<I_CmsField> m_dynaFields;
 
     /** The class name for the dynamic field value resolver. */
     protected String m_dynamicFieldClass;
 
+    /** The optional form expiration date. */
+    protected long m_expirationDate;
+
+    /** The form expiration text. */
+    protected String m_expirationText;
+
     /** Stores the form input fields. */
-    protected List m_fields;
+    protected List<I_CmsField> m_fields;
 
     /** Allows to access form fields internally by name. */
-    protected Map m_fieldsByName;
+    protected Map<String, I_CmsField> m_fieldsByName;
 
     /** configuration value. */
     protected String m_formAction;
@@ -381,7 +430,10 @@ public class CmsForm {
     /** configuration value. */
     protected String m_mailCC;
 
-    /** configuration value. */
+    /** The optional email CSS style sheet. */
+    protected String m_mailCSS;
+
+    /** The mail sender address. */
     protected String m_mailFrom;
 
     /** configuration value. */
@@ -399,32 +451,36 @@ public class CmsForm {
     /** configuration value. */
     protected String m_mailTo;
 
-    /** configuration value. */
+    /** The email type, either HTML or text mail. */
     protected String m_mailType;
 
     /** The map of request parameters. */
-    protected Map m_parameterMap;
+    protected Map<String, String[]> m_parameterMap;
 
-    /** configuration value. */
+    /** The optional property file URI. */
     protected String m_propertyFile;
 
-    /** If the check page has to be shown. */
+    /** Interval to refresh the session. */
+    protected int m_refreshSessionInterval;
+
+    /** Flag if the check page has to be shown. */
     protected boolean m_showCheck;
 
-    /** If the text to explain mandatory fields has to be shown. */
+    /** Flag if the text to explain mandatory fields has to be shown. */
     protected boolean m_showMandatory;
 
-    /** If the reset button has to be shown. */
+    /** Flag if the reset button has to be shown. */
     protected boolean m_showReset;
 
     /** The optional css suffix for css class atributes set on the generated HTML. */
     protected String m_styleSuffix;
 
-    /** configuration value. */
+    /** The form target URI. */
     protected String m_targetUri;
 
     /** Flag to signal that data should be stored in the database - defaults to false. */
     protected boolean m_transportDatabase;
+
     /** Flag to signal that data should be sent by email - defaults to true. */
     protected boolean m_transportEmail = true;
 
@@ -534,77 +590,64 @@ public class CmsForm {
     }
 
     /**
-     * Returns a list of field objects, inclusive dynamic fields, for the online form.<p>
+     * Returns a list of field objects, exclusive sub fields, inclusive dynamic fields, for the online form.<p>
      * 
-     * @return a list of field objects, inclusive dynamic fields
+     * @return a list of field objects, exclusive sub fields, inclusive dynamic fields
      */
-    public List getAllFields() {
+    public List<I_CmsField> getAllFields() {
 
-        List allFields = new ArrayList(m_fields);
-        allFields.addAll(m_dynaFields);
-        return allFields;
+        return getAllFields(false, false, true);
     }
 
-    //    /**
-    //     * Creates an xpath prefix which is either empty or consists of a given parent node path, depending on
-    //     * whether the parent node path exists in the XML content.<p>
-    //     *  
-    //     * @param content the XML content
-    //     * @param parentNode the parent node path
-    //     * @param locale the locale to use
-    //     * @return the path prefix (either the empty string or parentNode + "/")
-    //     */
-    //    protected String getNestedPathPrefix(CmsXmlContent content, String parentNode, Locale locale) {
-    //
-    //        if (content.hasValue(parentNode, locale)) {
-    //            return parentNode + "/";
-    //        }
-    //        return "";
-    //    }
-    //
-    //    /**
-    //     * Returns a content value from the given content, but from a nested path if a NODE_NESTED_FORM node
-    //     * is present.<p>
-    //     * 
-    //     * @param content the XML content
-    //     * @param cms the CmsObject to be used for VFS operations
-    //     * @param path the path of the content value
-    //     * @param locale the locale to use
-    //     * @return the content value from the given path, or a nested path if the NODE_NESTED_FORM content value is present.
-    //     */
-    //    protected String getContentStringValue(CmsXmlContent content, CmsObject cms, String path, Locale locale) {
-    //
-    //        String p = getNestedPathPrefix(content, NODE_NESTED_FORM, locale) + path;
-    //        return content.getStringValue(cms, getNestedPathPrefix(content, NODE_NESTED_FORM, locale) + path, locale);
-    //    }
-    //
-    //    /**
-    //     * Returns a content value from the given content, but from a nested path if a NODE_NESTED_FORM node is
-    //     * present.<p>
-    //     * 
-    //     * @param content the XML content
-    //     * @param path the path of the content value
-    //     * @param locale the locale to use
-    //     * @return the content value from a given path, or a nested path if the NODE_NESTED_FORM content value is present.
-    //     */
-    //    protected I_CmsXmlContentValue getContentValue(CmsXmlContent content, String path, Locale locale) {
-    //
-    //        return content.getValue(getNestedPathPrefix(content, NODE_NESTED_FORM, locale) + path, locale);
-    //    }
-    //
-    //    /**
-    //     * Returns a list of content values from the given content, but from a nested path if a NODE_NESTED_FORM node
-    //     * is present.<p>
-    //     *  
-    //     * @param content
-    //     * @param path
-    //     * @param locale
-    //     * @return
-    //     */
-    //    protected List getContentValues(CmsXmlContent content, String path, Locale locale) {
-    //
-    //        return content.getValues(getNestedPathPrefix(content, NODE_NESTED_FORM, locale) + path, locale);
-    //    }
+    /**
+     * Returns a list of field objects, depending on the given parameters.<p>
+     * @param includeShownSubFields indicates if only the shown sub fields should be included
+     * @param includeAllSubFields indicates if all possible sub fields should be included
+     * @param includeDynamicFields indicates if the dynamic fields should be included
+     * 
+     * @return a list of field objects, depending on the given parameters
+     */
+    public List<I_CmsField> getAllFields(
+        boolean includeShownSubFields,
+        boolean includeAllSubFields,
+        boolean includeDynamicFields) {
+
+        List<I_CmsField> result = new ArrayList<I_CmsField>(m_fields.size() + 16);
+        if (includeAllSubFields) {
+            // all sub fields have to be added
+            Iterator<I_CmsField> i = m_fields.iterator();
+            while (i.hasNext()) {
+                I_CmsField field = i.next();
+                result.add(field);
+                if (field.hasSubFields()) {
+                    Iterator<Entry<String, List<I_CmsField>>> k = field.getSubFields().entrySet().iterator();
+                    while (k.hasNext()) {
+                        Map.Entry<String, List<I_CmsField>> entry = k.next();
+                        result.addAll(entry.getValue());
+                    }
+                }
+            }
+        } else if (includeShownSubFields) {
+            // only shown sub fields have to be added
+            Iterator<I_CmsField> i = m_fields.iterator();
+            while (i.hasNext()) {
+                I_CmsField field = i.next();
+                result.add(field);
+                if (field.hasCurrentSubFields()) {
+                    result.addAll(field.getCurrentSubFields());
+                }
+            }
+        } else {
+            // no sub fields have to be added
+            result = new ArrayList<I_CmsField>(m_fields);
+        }
+
+        if (includeDynamicFields) {
+            result.addAll(m_dynaFields);
+        }
+
+        return result;
+    }
 
     /**
      * Returns the (opt.) captcha field of this form.<p>
@@ -621,7 +664,7 @@ public class CmsForm {
      *
      * @return the form configuration errors
      */
-    public List getConfigurationErrors() {
+    public List<String> getConfigurationErrors() {
 
         return m_configurationErrors;
     }
@@ -647,13 +690,49 @@ public class CmsForm {
     }
 
     /**
+     * Returns the confirmation mail receiver email address.<p>
+     * 
+     * @return the confirmation mail receiver email address or <code>null</code> if not found
+     */
+    public String getConfirmationMailEmail() {
+
+        if (getConfirmationMailField() != -1) {
+            try {
+                I_CmsField mailField = getFields().get(getConfirmationMailField());
+                return mailField.getValue();
+            } catch (Exception e) {
+                // field not found
+            }
+        } else if (CmsStringUtil.isNotEmpty(getConfirmationMailFieldDbLabel())) {
+            I_CmsField mailField = getFieldByDbLabel(getConfirmationMailFieldDbLabel());
+            if (mailField != null) {
+                return mailField.getValue();
+            }
+        }
+        return null;
+    }
+
+    /**
      * Returns the index number of the input field containing the email address for the optional confirmation mail.<p>
      *
      * @return the index number of the input field containing the email address for the optional confirmation mail
+     * 
+     * @deprecated use {@link #getConfirmationMailFieldDbLabel()} instead
      */
+    @Deprecated
     public int getConfirmationMailField() {
 
         return m_confirmationMailField;
+    }
+
+    /**
+     * Returns the DB label of the input field containing the email address for the optional confirmation mail.<p>
+     *
+     * @return the DB label of the input field containing the email address for the optional confirmation mail
+     */
+    public String getConfirmationMailFieldDbLabel() {
+
+        return m_confirmationMailFieldDbLabel;
     }
 
     /**
@@ -697,6 +776,26 @@ public class CmsForm {
     }
 
     /**
+     * Returns the optional form expiration date.<p>
+     * 
+     * @return the optional form expiration date
+     */
+    public long getExpirationDate() {
+
+        return m_expirationDate;
+    }
+
+    /**
+     * Returns the form expiration text.<p>
+     * 
+     * @return the form expiration text
+     */
+    public String getExpirationText() {
+
+        return m_expirationText;
+    }
+
+    /**
      * Returns the field with the given database label.<p>
      * 
      * @param dbLabel the database label
@@ -705,9 +804,9 @@ public class CmsForm {
      */
     public I_CmsField getFieldByDbLabel(String dbLabel) {
 
-        Iterator it = getAllFields().iterator();
+        Iterator<I_CmsField> it = getAllFields(false, true, true).iterator();
         while (it.hasNext()) {
-            I_CmsField field = (I_CmsField)it.next();
+            I_CmsField field = it.next();
             if (field.getDbLabel().equals(dbLabel)) {
                 return field;
             }
@@ -720,7 +819,7 @@ public class CmsForm {
      * 
      * @return a list of field objects for the online form
      */
-    public List getFields() {
+    public List<I_CmsField> getFields() {
 
         return m_fields;
     }
@@ -734,7 +833,7 @@ public class CmsForm {
      */
     public String getFieldStringValueByName(String fieldName) {
 
-        I_CmsField field = (I_CmsField)m_fieldsByName.get(fieldName);
+        I_CmsField field = m_fieldsByName.get(fieldName);
         if (field != null) {
             String fieldValue = field.getValue();
             if ((field instanceof CmsDynamicField)) {
@@ -847,6 +946,16 @@ public class CmsForm {
     }
 
     /**
+     * Returns the optional email CSS style sheet.<p>
+     * 
+     * @return the optional email CSS style sheet
+     */
+    public String getMailCSS() {
+
+        return m_mailCSS;
+    }
+
+    /**
      * Returns the mail sender address.<p>
      * 
      * @return the mail sender address
@@ -928,6 +1037,16 @@ public class CmsForm {
     }
 
     /**
+     * Returns the interval to refresh the session.<p>
+     * 
+     * @return the interval to refresh the session
+     */
+    public int getRefreshSessionInterval() {
+
+        return m_refreshSessionInterval;
+    }
+
+    /**
      * Returns if the check page should be shown.<p>
      *
      * @return true if the check page should be shown, otherwise false
@@ -938,10 +1057,10 @@ public class CmsForm {
     }
 
     /**
-     * Returns the optional css suffix for css class atributes set on the generated HTML or null. 
+     * Returns the optional CSS suffix for CSS class attributes set on the generated HTML or null. 
      * <p> 
      * 
-     * @return the optional css suffix for css class atributes set on the generated HTML or null.
+     * @return the optional CSS suffix for CSS class attributes set on the generated HTML or null.
      */
     public String getStyleSuffix() {
 
@@ -1027,16 +1146,36 @@ public class CmsForm {
         CmsFile file = jsp.getCmsObject().readFile(formConfigUri);
         CmsXmlContent content = CmsXmlContentFactory.unmarshal(jsp.getCmsObject(), file);
 
-        // get current Locale
+        // get current locale
         Locale locale = jsp.getRequestContext().getLocale();
+        if (!content.hasLocale(locale)) {
+            // the current locale is not available in the content, use other locale
+            boolean foundLocale = false;
+            List<Locale> defaultLocales = OpenCms.getLocaleManager().getDefaultLocales(
+                jsp.getCmsObject(),
+                formConfigUri);
+            // first try to get one of the default locales
+            for (Iterator<Locale> i = defaultLocales.iterator(); i.hasNext();) {
+                Locale defaultLocale = i.next();
+                if (content.hasLocale(defaultLocale)) {
+                    locale = defaultLocale;
+                    foundLocale = true;
+                    break;
+                }
+            }
+            if (!foundLocale) {
+                // no locale found yet, use first one of content as fallback
+                locale = content.getLocales().get(0);
+            }
+        }
 
         // init member variables
         initMembers();
 
         m_formAction = formAction;
-        m_fields = new ArrayList();
-        m_dynaFields = new ArrayList();
-        m_fieldsByName = new HashMap();
+        m_fields = new ArrayList<I_CmsField>();
+        m_dynaFields = new ArrayList<I_CmsField>();
+        m_fieldsByName = new HashMap<String, I_CmsField>();
 
         // initialize general form configuration
         initFormGlobalConfiguration(content, jsp.getCmsObject(), locale, messages);
@@ -1091,6 +1230,16 @@ public class CmsForm {
     public boolean isInputFormSubmitted() {
 
         return CmsFormHandler.ACTION_SUBMIT.equals(m_formAction);
+    }
+
+    /**
+     * Returns if the session should be refreshed when displaying the form.<p>
+     * 
+     * @return <code>true</code> if the session should be refreshed, otherwise <code>false</code>
+     */
+    public boolean isRefreshSession() {
+
+        return m_refreshSessionInterval > 0;
     }
 
     /**
@@ -1149,9 +1298,9 @@ public class CmsForm {
      */
     public void removeCaptchaField() {
 
-        Iterator it = m_fields.iterator();
+        Iterator<I_CmsField> it = m_fields.iterator();
         while (it.hasNext()) {
-            I_CmsField field = (I_CmsField)it.next();
+            I_CmsField field = it.next();
             if (field instanceof CmsCaptchaField) {
                 it.remove();
                 m_fieldsByName.remove(field.getName());
@@ -1223,7 +1372,7 @@ public class CmsForm {
             getConfirmationMailCheckboxLabel(),
             isChecked,
             false);
-        List items = new ArrayList(1);
+        List<CmsFieldItem> items = new ArrayList<CmsFieldItem>(1);
         items.add(item);
         field.setItems(items);
         return field;
@@ -1271,7 +1420,7 @@ public class CmsForm {
     protected String getParameter(String parameter) {
 
         try {
-            return ((String[])m_parameterMap.get(parameter))[0];
+            return (m_parameterMap.get(parameter))[0];
         } catch (NullPointerException e) {
             return "";
         }
@@ -1372,12 +1521,13 @@ public class CmsForm {
 
         CmsXmlHtmlValue mailTextValue = (CmsXmlHtmlValue)getContentValue(content, NODE_MAILTEXT, locale);
         if (mailTextValue != null) {
-            // get the mail text as plain text
-            stringValue = mailTextValue.getPlainText(cms);
-            setMailTextPlain(getConfigurationValue(resolver, stringValue, ""));
             // get the mail text
             stringValue = mailTextValue.getStringValue(cms);
-            setMailText(getConfigurationValue(resolver, stringValue, ""));
+            stringValue = getConfigurationValue(resolver, stringValue, "");
+            setMailText(stringValue);
+            // get the mail text as plain text
+            stringValue = CmsHtmlToTextConverter.htmlToText(stringValue, cms.getRequestContext().getEncoding());
+            setMailTextPlain(stringValue);
         } else {
             setMailTextPlain("");
             setMailText("");
@@ -1406,53 +1556,74 @@ public class CmsForm {
         stringValue = getContentStringValue(content, cms, pathPrefix + NODE_DATATARGET_FORMID, locale);
         setFormId(getConfigurationValue(stringValue, content.getFile().getRootPath()));
 
-        // optional configuration options
-        pathPrefix = NODE_OPTIONALCONFIGURATION + "/";
+        if (content.hasValue(NODE_OPTIONALCONFIGURATION, locale)) {
+            // optional configuration options
+            pathPrefix = NODE_OPTIONALCONFIGURATION + "/";
 
-        // get the mail type
-        stringValue = getContentStringValue(content, cms, pathPrefix + NODE_MAILTYPE, locale);
-        setMailType(getConfigurationValue(stringValue, MAILTYPE_HTML));
-        // get the mail CC recipient(s)
-        stringValue = getContentStringValue(content, cms, pathPrefix + NODE_MAILCC, locale);
-        setMailCC(getConfigurationValue(stringValue, ""));
-        // get the mail BCC recipient(s)
-        stringValue = getContentStringValue(content, cms, pathPrefix + NODE_MAILBCC, locale);
-        setMailBCC(getConfigurationValue(stringValue, ""));
-        // get the form check page flag
-        stringValue = getContentStringValue(content, cms, pathPrefix + NODE_SHOWCHECK, locale);
-        setShowCheck(Boolean.valueOf(stringValue).booleanValue());
-        // get the check page text
-        stringValue = getContentStringValue(content, cms, pathPrefix + NODE_FORMCHECKTEXT, locale);
-        setFormCheckText(getConfigurationValue(resolver, stringValue, ""));
-        // get the dynamic fields class
-        stringValue = getContentStringValue(content, cms, pathPrefix + NODE_DYNAMICFIELDCLASS, locale);
-        setDynamicFieldClass(getConfigurationValue(stringValue, ""));
-        // get the css style suffix fields class
-        stringValue = getContentStringValue(content, cms, pathPrefix + NODE_STYLE, locale);
-        setStyleSuffix(getConfigurationValue(stringValue, ""));
-        // get the optional property file
-        stringValue = getContentStringValue(content, cms, pathPrefix + NODE_PROPERTY_FILE, locale);
-        setPropertyFile(getConfigurationValue(stringValue, ""));
-        // get the optional webform action class
-        stringValue = getContentStringValue(content, cms, pathPrefix + NODE_ACTION_CLASS, locale);
-        setActionClass(getConfigurationValue(stringValue, ""));
-        // get the show mandatory setting
-        stringValue = getContentStringValue(content, cms, pathPrefix + NODE_SHOWMANDATORY, locale);
-        setShowMandatory(Boolean.valueOf(getConfigurationValue(stringValue, Boolean.TRUE.toString())).booleanValue());
-        // get the show reset button setting
-        stringValue = getContentStringValue(content, cms, pathPrefix + NODE_SHOWRESET, locale);
-        setShowReset(Boolean.valueOf(getConfigurationValue(stringValue, Boolean.TRUE.toString())).booleanValue());
-        // get the form attributes
-        stringValue = getContentStringValue(content, cms, pathPrefix + NODE_FORMATTRIBUTES, locale);
-        if (CmsStringUtil.isNotEmpty(stringValue)) {
-            setFormAttributes(" " + stringValue);
-        }
-        // get the field attributes
-        stringValue = getContentStringValue(content, cms, pathPrefix + NODE_FORMFIELDATTRIBUTES, locale);
-        if (CmsStringUtil.isNotEmpty(stringValue)) {
-            setFormFieldAttributes(" " + stringValue);
+            // get the mail type
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_MAILTYPE, locale);
+            setMailType(getConfigurationValue(stringValue, MAILTYPE_HTML));
+            // get the mail CC recipient(s)
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_MAILCC, locale);
+            setMailCC(getConfigurationValue(stringValue, ""));
+            // get the mail BCC recipient(s)
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_MAILBCC, locale);
+            setMailBCC(getConfigurationValue(stringValue, ""));
+            // get the mail CSS style sheet
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_MAILCSS, locale);
+            setMailCSS(getConfigurationValue(stringValue, ""));
+            // get the form check page flag
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_SHOWCHECK, locale);
+            setShowCheck(Boolean.valueOf(stringValue).booleanValue());
+            // get the check page text
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_FORMCHECKTEXT, locale);
+            setFormCheckText(getConfigurationValue(resolver, stringValue, ""));
+            // get the dynamic fields class
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_DYNAMICFIELDCLASS, locale);
+            setDynamicFieldClass(getConfigurationValue(stringValue, ""));
+            // get the css style suffix fields class
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_STYLE, locale);
+            setStyleSuffix(getConfigurationValue(stringValue, ""));
+            // get the optional property file
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_PROPERTY_FILE, locale);
+            setPropertyFile(getConfigurationValue(stringValue, ""));
+            // get the optional web form action class
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_ACTION_CLASS, locale);
+            setActionClass(getConfigurationValue(stringValue, ""));
+            // get the show mandatory setting
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_SHOWMANDATORY, locale);
+            setShowMandatory(Boolean.valueOf(getConfigurationValue(stringValue, Boolean.TRUE.toString())).booleanValue());
+            // get the show reset button setting
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_SHOWRESET, locale);
+            setShowReset(Boolean.valueOf(getConfigurationValue(stringValue, Boolean.TRUE.toString())).booleanValue());
+            // get the form attributes
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_FORMATTRIBUTES, locale);
+            if (CmsStringUtil.isNotEmpty(stringValue)) {
+                setFormAttributes(" " + stringValue);
+            }
+            // get the field attributes
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_FORMFIELDATTRIBUTES, locale);
+            if (CmsStringUtil.isNotEmpty(stringValue)) {
+                setFormFieldAttributes(" " + stringValue);
+            } else {
+                // no field attributes specified, check default field attributes
+                String defaultAttributes = messages.key("form.field.default.attributes");
+                if (CmsStringUtil.isNotEmpty(defaultAttributes)) {
+                    setFormFieldAttributes(" " + defaultAttributes);
+                }
+            }
+            // get the refresh session interval
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_KEEPSESSION, locale);
+            if (CmsStringUtil.isNotEmpty(stringValue)) {
+                try {
+                    setRefreshSessionInterval(Integer.parseInt(stringValue) * 1000);
+                } catch (NumberFormatException nfe) {
+                    // invalid value found, just do not set value
+                }
+            }
         } else {
-            // no field attributes specified, check default field attributes
+            // no optional configuration enabled
+            // set default field attributes if present
             String defaultAttributes = messages.key("form.field.default.attributes");
             if (CmsStringUtil.isNotEmpty(defaultAttributes)) {
                 setFormFieldAttributes(" " + defaultAttributes);
@@ -1474,10 +1645,12 @@ public class CmsForm {
             mailTextValue = (CmsXmlHtmlValue)getContentValue(content, pathPrefix + NODE_CONFIRMATIONMAILTEXT, locale);
             if (mailTextValue != null) {
                 // get the confirmation mail text
-                stringValue = mailTextValue.getPlainText(cms);
-                setConfirmationMailTextPlain(getConfigurationValue(resolver, stringValue, ""));
                 stringValue = mailTextValue.getStringValue(cms);
-                setConfirmationMailText(getConfigurationValue(resolver, stringValue, ""));
+                stringValue = getConfigurationValue(resolver, stringValue, "");
+                setConfirmationMailText(stringValue);
+                // get the confirmation mail text as plain text
+                stringValue = CmsHtmlToTextConverter.htmlToText(stringValue, cms.getRequestContext().getEncoding());
+                setConfirmationMailTextPlain(stringValue);
             } else {
                 setConfirmationMailTextPlain("");
                 setConfirmationMailText("");
@@ -1485,11 +1658,13 @@ public class CmsForm {
 
             // get the confirmation mail field index number
             stringValue = getContentStringValue(content, cms, pathPrefix + NODE_CONFIRMATIONMAILFIELD, locale);
-            int fieldIndex = 1;
+            stringValue = getConfigurationValue(stringValue, "nonumber");
+            int fieldIndex = -1;
             try {
-                fieldIndex = Integer.parseInt(getConfigurationValue(stringValue, "1")) - 1;
+                fieldIndex = Integer.parseInt(stringValue) - 1;
             } catch (Exception e) {
-                // ignore this exception, use first field
+                // no field number given, store DB label
+                setConfirmationMailFieldDbLabel(stringValue);
             }
             setConfirmationMailField(fieldIndex);
             // get the confirmation mail optional flag
@@ -1500,6 +1675,19 @@ public class CmsForm {
             setConfirmationMailCheckboxLabel(getConfigurationValue(
                 stringValue,
                 messages.key("form.confirmation.checkbox")));
+        }
+
+        if (content.hasValue(NODE_OPTIONALEXPIRATION, locale)) {
+            // optional confirmation mail nodes
+            pathPrefix = NODE_OPTIONALEXPIRATION + "/";
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_DATE, locale);
+            try {
+                setExpirationDate(Long.parseLong(stringValue));
+            } catch (Exception e) {
+                // no valid expiration date defined, ignore setting
+            }
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_TEXT, locale);
+            setExpirationText(getConfigurationValue(stringValue, ""));
         }
     }
 
@@ -1520,246 +1708,61 @@ public class CmsForm {
         CmsMessages messages,
         boolean initial) throws CmsConfigurationException {
 
-        CmsObject cms = jsp.getCmsObject();
-        List fieldValues = getContentValues(content, NODE_INPUTFIELD, locale);
-        int fieldValueSize = fieldValues.size();
-        Map fileUploads = (Map)jsp.getRequest().getSession().getAttribute(CmsFormHandler.ATTRIBUTE_FILEITEMS);
-
-        for (int i = 0; i < fieldValueSize; i++) {
-            I_CmsXmlContentValue inputField = (I_CmsXmlContentValue)fieldValues.get(i);
-            String inputFieldPath = inputField.getPath() + "/";
-
-            // get the field from the factory for the specified type
-            //*we don't use getContentStringValue, since the path comes directly from the input field
-            String stringValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDTYPE, locale);
-
-            I_CmsField field = getField(stringValue);
-
-            // create the field name
-            String fieldName = inputFieldPath.substring(0, inputFieldPath.length() - 1);
-
-            // cut off the xml content index ("[number]") and replace by "-number":
-            int indexStart = fieldName.lastIndexOf('[') + 1;
-            String index = fieldName.substring(indexStart, fieldName.length() - 1);
-            fieldName = new StringBuffer(fieldName.substring(0, indexStart - 1)).append('-').append(index).toString();
-
-            // cut off initial path all but the last path segments
-            // (make sure there is a slash in the string first).
-            fieldName = "/" + fieldName;
-            int slashIndex = fieldName.lastIndexOf("/");
-            fieldName = fieldName.substring(slashIndex + 1);
-
-            field.setName(fieldName);
-            // get the field labels
-            stringValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDLABEL, locale);
-
-            String locLabel = getConfigurationValue(stringValue, "");
-            String dbLabel = locLabel;
-            int pos = locLabel.indexOf("|");
-            if (pos > -1) {
-                locLabel = locLabel.substring(0, pos);
-                if (pos + 1 < dbLabel.length()) {
-                    dbLabel = dbLabel.substring(pos + 1);
-                }
-            }
-            field.setLabel(locLabel);
-            field.setDbLabel(dbLabel);
-
-            // validation error message
-            stringValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDERRORMESSAGE, locale);
-            field.setErrorMessage(stringValue);
-
-            // fill object members in case this is no hidden field
-            if (!CmsHiddenField.class.isAssignableFrom(field.getClass())) {
-                // get the field validation regular expression
-                stringValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDVALIDATION, locale);
-                if (CmsEmailField.class.isAssignableFrom(field.getClass()) && CmsStringUtil.isEmpty(stringValue)) {
-                    // set default email validation expression for confirmation email address input field
-                    field.setValidationExpression(CmsEmailField.VALIDATION_REGEX);
-                } else {
-                    field.setValidationExpression(getConfigurationValue(stringValue, ""));
-                }
-                if (CmsFileUploadField.class.isAssignableFrom(field.getClass())) {
-                    if (fileUploads != null) {
-                        FileItem attachment = (FileItem)fileUploads.get(field.getName());
-                        if (attachment != null) {
-                            ((CmsFileUploadField)field).setFileSize(attachment.get().length);
-                        }
-                    }
-                }
-
-                // get the field mandatory flag
-                stringValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDMANDATORY, locale);
-                boolean isMandatory = Boolean.valueOf(stringValue).booleanValue();
-                field.setMandatory(isMandatory);
-                if (isMandatory) {
-                    // set flag that determines if mandatory fields are present
-                    setHasMandatoryFields(true);
-                }
-
-                // special case by table fields 
-                if (CmsTableField.class.isAssignableFrom(field.getClass())) {
-                    CmsTableField tableField = (CmsTableField)field;
-                    String fieldValue = content.getStringValue(
-
-                    cms, inputFieldPath + NODE_FIELDDEFAULTVALUE, locale);
-                    tableField.parseDefault(fieldValue, m_parameterMap);
-                }
-
-                if (field.needsItems()) {
-                    // create items for checkboxes, radio buttons and selectboxes
-                    String fieldValue = content.getStringValue(
-
-                    cms, inputFieldPath + NODE_FIELDDEFAULTVALUE, locale);
-                    if (CmsStringUtil.isNotEmpty(fieldValue)) {
-                        // get items from String 
-                        boolean showInRow = false;
-                        if (fieldValue.startsWith(MACRO_SHOW_ITEMS_IN_ROW)) {
-                            showInRow = true;
-                            fieldValue = fieldValue.substring(MACRO_SHOW_ITEMS_IN_ROW.length());
-                        }
-                        StringTokenizer T = new StringTokenizer(fieldValue, "|");
-                        List items = new ArrayList(T.countTokens());
-                        while (T.hasMoreTokens()) {
-                            String part = T.nextToken();
-                            // check preselection of current item
-                            boolean isPreselected = part.indexOf('*') != -1;
-                            String value = "";
-                            String label = "";
-                            String selected = "";
-                            int delimPos = part.indexOf(':');
-                            if (delimPos != -1) {
-                                // a special label text is given
-                                value = part.substring(0, delimPos);
-                                label = part.substring(delimPos + 1);
-                            } else {
-                                // no special label text present, use complete String
-                                value = part;
-                                label = value;
-                            }
-
-                            if (isPreselected) {
-                                // remove preselected flag marker from Strings
-                                value = CmsStringUtil.substitute(value, "*", "");
-                                label = CmsStringUtil.substitute(label, "*", "");
-                            }
-
-                            if (initial) {
-                                // only fill in values from configuration file if called initially
-                                if (isPreselected) {
-                                    selected = Boolean.toString(true);
-                                }
-                            } else {
-                                // get selected flag from request for current item
-                                selected = readSelectedFromRequest(field, value);
-                            }
-
-                            // add new item object
-                            items.add(new CmsFieldItem(
-                                value,
-                                label,
-                                Boolean.valueOf(selected).booleanValue(),
-                                showInRow));
-
-                        }
-                        field.setItems(items);
-                    } else {
-                        // no items specified for checkbox, radio button or selectbox
-                        throw new CmsConfigurationException(Messages.get().container(
-                            Messages.ERR_INIT_INPUT_FIELD_MISSING_ITEM_2,
-                            field.getName(),
-                            field.getType()));
-                    }
-                }
-            }
-            // get the field value
-            if (initial
-                && CmsStringUtil.isEmpty(getParameter(field.getName()))
-                && !CmsTableField.class.isAssignableFrom(field.getClass())) {
-                // only fill in values from configuration file if called initially
-                if (!field.needsItems()) {
-                    if (CmsDisplayField.class.isAssignableFrom(field.getClass())
-                        || CmsHiddenDisplayField.class.isAssignableFrom(field.getClass())) {
-                        String fieldValue = getDynamicFieldValue((CmsDynamicField)field);
-                        field.setValue(fieldValue);
-                    } else {
-                        String fieldValue = content.getStringValue(
-
-                        cms, inputFieldPath + NODE_FIELDDEFAULTVALUE, locale);
-                        if (CmsStringUtil.isNotEmpty(fieldValue)) {
-                            CmsMacroResolver resolver = CmsMacroResolver.newInstance().setCmsObject(cms).setJspPageContext(
-                                jsp.getJspContext());
-                            field.setValue(resolver.resolveMacros(fieldValue));
-                        }
-                    }
-                } else {
-                    // for field that needs items, 
-                    // the default value is used to set the items and not really a value
-                    field.setValue(null);
-                }
-            } else if (CmsFileUploadField.class.isAssignableFrom(field.getClass())) {
-                // specific handling for file upload fields, because if they are filled out
-                // they also shall be filled out if there are empty because there was an
-                // other mandatory field not filled out or there was browsed through
-                // different pages with the "prev" and the "next" buttons
-                // here are also used hidden fields on the current page, that is why
-                // it is possible that there are tow fields with the same name, one field
-                // is the file upload field, the second one is the hidden field
-                // the file upload field is the first one, the hidden field is the second one
-                String[] parameterValues = (String[])m_parameterMap.get(field.getName());
-                StringBuffer value = new StringBuffer();
-                if (parameterValues != null) {
-                    if (parameterValues.length == 1) {
-                        // there file upload field value is empty, so take the hidden field value
-                        value.append(parameterValues[0]);
-                    } else {
-                        // there are two fields with the same name
-                        if (parameterValues[0].isEmpty()) {
-                            // the file upload field is empty, so take the hidden field value
-                            value.append(parameterValues[1]);
-                        } else {
-                            // the file upload field is not empty, so take this value, because
-                            // so the user choosed another file than before (in the hidden field)
-                            value.append(parameterValues[0]);
-                        }
-                    }
-                }
-                field.setValue(value.toString());
-            } else if (CmsDisplayField.class.isAssignableFrom(field.getClass())
-                || CmsDisplayField.class.isAssignableFrom(field.getClass())) {
-                String fieldValue = getDynamicFieldValue((CmsDynamicField)field);
-                if (CmsStringUtil.isEmpty(fieldValue)) {
-                    // get field value from request for standard fields
-                    String[] parameterValues = (String[])m_parameterMap.get(field.getName());
-                    if (parameterValues != null) {
-                        fieldValue = parameterValues[0];
-                    }
-                }
-                field.setValue(fieldValue);
-            } else if (CmsEmptyField.class.isAssignableFrom(field.getClass())) {
-                String fieldValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDDEFAULTVALUE, locale);
-                field.setValue(fieldValue);
-            } else if (!CmsTableField.class.isAssignableFrom(field.getClass())) {
-                // get field value from request for standard fields
-                String[] parameterValues = (String[])m_parameterMap.get(field.getName());
-                StringBuffer value = new StringBuffer();
-                if (parameterValues != null) {
-                    for (int j = 0; j < parameterValues.length; j++) {
-                        if (j != 0) {
-                            value.append(", ");
-                        }
-                        value.append(parameterValues[j]);
-                    }
-                }
-                field.setValue(value.toString());
-            }
-
-            addField(field);
-
+        // initialize the optional field texts
+        Map<String, CmsFieldText> fieldTexts = new HashMap<String, CmsFieldText>();
+        List<I_CmsXmlContentValue> textValues = getContentValues(content, NODE_OPTIONALFIELDTEXT, locale);
+        for (Iterator<I_CmsXmlContentValue> i = textValues.iterator(); i.hasNext();) {
+            I_CmsXmlContentValue textField = i.next();
+            String textFieldPath = textField.getPath() + "/";
+            String fieldLabel = content.getStringValue(jsp.getCmsObject(), textFieldPath + NODE_INPUTFIELD, locale);
+            String fieldText = content.getStringValue(jsp.getCmsObject(), textFieldPath + NODE_TEXT, locale);
+            String column = content.getStringValue(jsp.getCmsObject(), textFieldPath + NODE_COLUMN, locale);
+            fieldTexts.put(fieldLabel, new CmsFieldText(fieldText, column));
         }
 
-        // validate the form configuration
-        validateFormConfiguration(messages);
+        // store the xPaths to the sub field definitions
+        Map<String, List<String>> subFieldPaths = new HashMap<String, List<String>>();
+        List<I_CmsXmlContentValue> subFieldValues = getContentValues(content, NODE_OPTIONALSUBFIELD, locale);
+        for (Iterator<I_CmsXmlContentValue> i = subFieldValues.iterator(); i.hasNext();) {
+            I_CmsXmlContentValue subField = i.next();
+            String fieldLabel = content.getStringValue(
+                jsp.getCmsObject(),
+                subField.getPath() + "/" + NODE_PARENTFIELD,
+                locale);
+            List<String> storedPaths = subFieldPaths.get(fieldLabel);
+            if (storedPaths == null) {
+                storedPaths = new ArrayList<String>();
+            }
+            storedPaths.add(subField.getPath());
+            subFieldPaths.put(fieldLabel, storedPaths);
+        }
+
+        // get the file uploads stored in the session
+        Map<String, FileItem> fileUploads = (Map<String, FileItem>)jsp.getRequest().getSession().getAttribute(
+            CmsFormHandler.ATTRIBUTE_FILEITEMS);
+
+        // initialize the defined input fields
+        List<I_CmsXmlContentValue> fieldValues = getContentValues(content, NODE_INPUTFIELD, locale);
+        for (Iterator<I_CmsXmlContentValue> i = fieldValues.iterator(); i.hasNext();) {
+            // add the initialized field
+            addField(createInputField(
+                i.next().getPath(),
+                content,
+                jsp,
+                locale,
+                messages,
+                fieldTexts,
+                subFieldPaths,
+                fileUploads,
+                "",
+                initial,
+                false));
+        }
+
+        if (!jsp.getRequestContext().currentProject().isOnlineProject()) {
+            // validate the form configuration in offline project
+            validateFormConfiguration(messages);
+        }
 
         if (isConfirmationMailEnabled() && isConfirmationMailOptional()) {
             // add the checkbox to activate confirmation mail for customer
@@ -1773,7 +1776,7 @@ public class CmsForm {
      */
     protected void initMembers() {
 
-        setConfigurationErrors(new ArrayList());
+        setConfigurationErrors(new ArrayList<String>());
         setFormAttributes("");
         setFormCheckText("");
         setFormConfirmationText("");
@@ -1791,6 +1794,7 @@ public class CmsForm {
         setConfirmationMailSubject("");
         setConfirmationMailText("");
         setConfirmationMailTextPlain("");
+        setRefreshSessionInterval(-1);
         setShowMandatory(true);
         setShowReset(true);
     }
@@ -1809,7 +1813,7 @@ public class CmsForm {
         if (field.needsItems()) {
             // select box or radio button or checkbox
             try {
-                String[] values = (String[])m_parameterMap.get(field.getName());
+                String[] values = m_parameterMap.get(field.getName());
                 for (int i = 0; i < values.length; i++) {
                     if (CmsStringUtil.isNotEmpty(values[i]) && values[i].equals(value)) {
                         // mark this as selected
@@ -1843,7 +1847,7 @@ public class CmsForm {
      *
      * @param configurationErrors the form configuration errors
      */
-    protected void setConfigurationErrors(List configurationErrors) {
+    protected void setConfigurationErrors(List<String> configurationErrors) {
 
         m_configurationErrors = configurationErrors;
     }
@@ -1872,10 +1876,23 @@ public class CmsForm {
      * Sets the index number of the input field containing the email address for the optional confirmation mail.<p>
      *
      * @param confirmationMailFieldName the name of the input field containing the email address for the optional confirmation mail
+     * 
+     * @deprecated use {@link #setConfirmationMailFieldDbLabel(String)} instead
      */
+    @Deprecated
     protected void setConfirmationMailField(int confirmationMailFieldName) {
 
         m_confirmationMailField = confirmationMailFieldName;
+    }
+
+    /**
+     * Sets the DB label of the input field containing the email address for the optional confirmation mail.<p>
+     *
+     * @param confirmationMailFieldDbLabel the DB label of the input field containing the email address for the optional confirmation mail
+     */
+    protected void setConfirmationMailFieldDbLabel(String confirmationMailFieldDbLabel) {
+
+        m_confirmationMailFieldDbLabel = confirmationMailFieldDbLabel;
     }
 
     /**
@@ -1926,6 +1943,26 @@ public class CmsForm {
     protected void setDynamicFieldClass(String className) {
 
         m_dynamicFieldClass = className;
+    }
+
+    /**
+     * Sets the optional form expiration date.<p>
+     * 
+     * @param expirationDate the optional form expiration date
+     */
+    protected void setExpirationDate(long expirationDate) {
+
+        m_expirationDate = expirationDate;
+    }
+
+    /**
+     * Sets the form expiration text.<p>
+     * 
+     * @param expirationText the form expiration text
+     */
+    protected void setExpirationText(String expirationText) {
+
+        m_expirationText = expirationText;
     }
 
     /**
@@ -2039,6 +2076,16 @@ public class CmsForm {
     }
 
     /**
+     * Sets the optional email CSS style sheet.<p>
+     * 
+     * @param mailCSS the optional email CSS style sheet
+     */
+    protected void setMailCSS(String mailCSS) {
+
+        m_mailCSS = mailCSS;
+    }
+
+    /**
      * Sets the mail sender address.<p>
      * 
      * @param mailFrom the mail sender address
@@ -2120,6 +2167,16 @@ public class CmsForm {
     }
 
     /**
+     * Sets the interval to refresh the session.<p>
+     * 
+     * @param refreshSessionInterval the interval to refresh the session
+     */
+    protected void setRefreshSessionInterval(int refreshSessionInterval) {
+
+        m_refreshSessionInterval = refreshSessionInterval;
+    }
+
+    /**
      * Sets if the check page should be shown.<p>
      *
      * @param showCheck true if the check page should be shown, otherwise false
@@ -2182,20 +2239,329 @@ public class CmsForm {
 
         if (isConfirmationMailEnabled()) {
             // confirmation mail is enabled, make simple field check to avoid errors
-            I_CmsField confirmField;
-            try {
-                // try to get the confirmation email field
-                confirmField = (I_CmsField)getFields().get(getConfirmationMailField());
-            } catch (IndexOutOfBoundsException e) {
-                // specified confirmation email field does not exist
-                getConfigurationErrors().add(messages.key("form.configuration.error.emailfield.notfound"));
-                setConfirmationMailEnabled(false);
-                return;
+            I_CmsField confirmField = null;
+            if (getConfirmationMailField() != -1) {
+                try {
+                    // try to get the confirmation email field
+                    confirmField = getFields().get(getConfirmationMailField());
+                } catch (IndexOutOfBoundsException e) {
+                    // specified confirmation email field does not exist
+                    getConfigurationErrors().add(messages.key("form.configuration.error.emailfield.notfound"));
+                    setConfirmationMailEnabled(false);
+                    return;
+                }
+            } else if (CmsStringUtil.isNotEmpty(getConfirmationMailFieldDbLabel())) {
+                confirmField = getFieldByDbLabel(getConfirmationMailFieldDbLabel());
+                if (confirmField == null) {
+                    getConfigurationErrors().add(messages.key("form.configuration.error.emailfield.notfound"));
+                    setConfirmationMailEnabled(false);
+                    return;
+                }
             }
-            if (!CmsEmailField.class.isAssignableFrom(confirmField.getClass())) {
+            if ((confirmField != null) && !CmsEmailField.class.isAssignableFrom(confirmField.getClass())) {
                 // specified confirmation mail input field has wrong field type
                 getConfigurationErrors().add(messages.key("form.configuration.error.emailfield.type"));
             }
         }
+    }
+
+    /**
+     * Initializes the field objects of the form.<p>
+     * 
+     * @param xPath the xPath of the input field to initialize
+     * @param content the XML configuration content
+     * @param jsp the initialized CmsJspActionElement to access the OpenCms API
+     * @param locale the currently active Locale
+     * @param messages the localized messages
+     * @param fieldTexts the optional field texts
+     * @param subFieldPaths the optional sub field xPaths
+     * @param fileUploads the uploaded files
+     * @param subFieldNameSuffix the suffix for the sub field name used to create the HTML code and request parameter names
+     * @param initial if true, field values are filled with values specified in the XML configuration, otherwise values are read from the request
+     * @param subField indicates if a sub field should be created
+     * 
+     * @return an initialized input field
+     * 
+     * @throws CmsConfigurationException if parsing the configuration fails 
+     */
+    private I_CmsField createInputField(
+        String xPath,
+        CmsXmlContent content,
+        CmsJspActionElement jsp,
+        Locale locale,
+        CmsMessages messages,
+        Map<String, CmsFieldText> fieldTexts,
+        Map<String, List<String>> subFieldPaths,
+        Map<String, FileItem> fileUploads,
+        String subFieldNameSuffix,
+        boolean initial,
+        boolean subField) throws CmsConfigurationException {
+
+        CmsObject cms = jsp.getCmsObject();
+
+        // create the xPath prefix
+        String inputFieldPath = xPath + "/";
+
+        // get the field from the factory for the specified type
+        // important: we don't use getContentStringValue, since the path comes directly from the input field
+        String stringValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDTYPE, locale);
+        I_CmsField field = getField(stringValue);
+
+        // get the field labels
+        stringValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDLABEL, locale);
+
+        String locLabel = getConfigurationValue(stringValue, "");
+        String dbLabel = locLabel;
+        int pos = locLabel.indexOf('|');
+        if (pos > -1) {
+            locLabel = locLabel.substring(0, pos);
+            if (pos + 1 < dbLabel.length()) {
+                dbLabel = dbLabel.substring(pos + 1);
+            }
+        }
+        field.setLabel(locLabel);
+        field.setDbLabel(dbLabel);
+
+        // create the field name
+        String fieldName = xPath;
+        // cut off the XML content index ("[number]") and replace by "-number":
+        int indexStart = fieldName.lastIndexOf('[') + 1;
+        String index = fieldName.substring(indexStart, fieldName.length() - 1);
+        fieldName = new StringBuffer(fieldName.substring(0, indexStart - 1)).append('-').append(index).toString();
+        // cut off initial path all but the last path segments
+        // (make sure there is a slash in the string first).
+        fieldName = "/" + fieldName;
+        int slashIndex = fieldName.lastIndexOf("/");
+        fieldName = fieldName.substring(slashIndex + 1);
+        field.setName(fieldName + subFieldNameSuffix);
+
+        // get the optional text that is shown below the field
+        CmsFieldText fieldText = fieldTexts.get(dbLabel);
+        if (fieldText != null) {
+            field.setText(fieldText);
+        }
+
+        // get the optional subfields
+        if (!subField) {
+            List<String> subFieldPathList = subFieldPaths.get(dbLabel);
+            if (subFieldPathList != null) {
+                // there are sub fields defined for this input field
+                for (Iterator<String> i = subFieldPathList.iterator(); i.hasNext();) {
+                    String subPath = i.next() + "/";
+                    String fieldValue = content.getStringValue(cms, subPath + NODE_VALUE, locale);
+                    if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(fieldValue)) {
+                        // a field value is specified, add the sub fields for the value
+                        String suffix = new StringBuffer("-").append(index).append("-").append(fieldValue.hashCode()).toString();
+                        List<I_CmsXmlContentValue> fieldValues = content.getValues(subPath + NODE_INPUTFIELD, locale);
+                        for (Iterator<I_CmsXmlContentValue> k = fieldValues.iterator(); k.hasNext();) {
+                            field.addSubField(fieldValue, createInputField(
+                                k.next().getPath(),
+                                content,
+                                jsp,
+                                locale,
+                                messages,
+                                fieldTexts,
+                                subFieldPaths,
+                                fileUploads,
+                                suffix,
+                                initial,
+                                true));
+                        }
+                    }
+                }
+            }
+        } else {
+            // mark this field as sub field
+            field.setSubField(subField);
+        }
+
+        // get the field parameters
+        stringValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDPARAMS, locale);
+        field.setParameters(stringValue);
+
+        // validation error message
+        stringValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDERRORMESSAGE, locale);
+        field.setErrorMessage(stringValue);
+
+        // fill object members in case this is no hidden field
+        if (!CmsHiddenField.class.isAssignableFrom(field.getClass())) {
+            // get the field validation regular expression
+            stringValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDVALIDATION, locale);
+            if (CmsEmailField.class.isAssignableFrom(field.getClass()) && CmsStringUtil.isEmpty(stringValue)) {
+                // set default email validation expression for confirmation email address input field
+                field.setValidationExpression(CmsEmailField.VALIDATION_REGEX);
+            } else {
+                field.setValidationExpression(getConfigurationValue(stringValue, ""));
+            }
+            if (CmsFileUploadField.class.isAssignableFrom(field.getClass())) {
+                if (fileUploads != null) {
+                    FileItem attachment = fileUploads.get(field.getName());
+                    if (attachment != null) {
+                        ((CmsFileUploadField)field).setFileSize(attachment.get().length);
+                    }
+                }
+            }
+
+            // get the field mandatory flag
+            stringValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDMANDATORY, locale);
+            boolean isMandatory = Boolean.valueOf(stringValue).booleanValue();
+            field.setMandatory(isMandatory);
+            if (isMandatory) {
+                // set flag that determines if mandatory fields are present
+                setHasMandatoryFields(true);
+            }
+
+            // special case by table fields 
+            if (CmsTableField.class.isAssignableFrom(field.getClass())) {
+                CmsTableField tableField = (CmsTableField)field;
+                String fieldValue = content.getStringValue(
+
+                cms, inputFieldPath + NODE_FIELDDEFAULTVALUE, locale);
+                tableField.parseDefault(fieldValue, m_parameterMap);
+            }
+
+            if (field.needsItems()) {
+                // create items for checkboxes, radio buttons and selectboxes
+                String fieldValue = content.getStringValue(
+
+                cms, inputFieldPath + NODE_FIELDDEFAULTVALUE, locale);
+                if (CmsStringUtil.isNotEmpty(fieldValue)) {
+                    // get items from String 
+                    boolean showInRow = false;
+                    if (fieldValue.startsWith(MACRO_SHOW_ITEMS_IN_ROW)) {
+                        showInRow = true;
+                        fieldValue = fieldValue.substring(MACRO_SHOW_ITEMS_IN_ROW.length());
+                    }
+                    StringTokenizer T = new StringTokenizer(fieldValue, "|");
+                    List<CmsFieldItem> items = new ArrayList<CmsFieldItem>(T.countTokens());
+                    while (T.hasMoreTokens()) {
+                        String part = T.nextToken();
+                        // check pre selection of current item
+                        boolean isPreselected = part.indexOf('*') != -1;
+                        String value = "";
+                        String label = "";
+                        String selected = "";
+                        int delimPos = part.indexOf(':');
+                        if (delimPos != -1) {
+                            // a special label text is given
+                            value = part.substring(0, delimPos);
+                            label = part.substring(delimPos + 1);
+                        } else {
+                            // no special label text present, use complete String
+                            value = part;
+                            label = value;
+                        }
+
+                        if (isPreselected) {
+                            // remove preselected flag marker from Strings
+                            value = CmsStringUtil.substitute(value, "*", "");
+                            label = CmsStringUtil.substitute(label, "*", "");
+                        }
+
+                        if (initial) {
+                            // only fill in values from configuration file if called initially
+                            if (isPreselected) {
+                                selected = Boolean.toString(true);
+                            }
+                        } else {
+                            // get selected flag from request for current item
+                            selected = readSelectedFromRequest(field, value);
+                        }
+
+                        // add new item object
+                        items.add(new CmsFieldItem(value, label, Boolean.valueOf(selected).booleanValue(), showInRow));
+
+                    }
+                    field.setItems(items);
+                } else {
+                    // no items specified for checkbox, radio button or selectbox
+                    throw new CmsConfigurationException(Messages.get().container(
+                        Messages.ERR_INIT_INPUT_FIELD_MISSING_ITEM_2,
+                        field.getName(),
+                        field.getType()));
+                }
+            }
+        }
+        // get the field value
+        if (initial
+            && CmsStringUtil.isEmpty(getParameter(field.getName()))
+            && !CmsTableField.class.isAssignableFrom(field.getClass())) {
+            // only fill in values from configuration file if called initially
+            if (!field.needsItems()) {
+                if (CmsDisplayField.class.isAssignableFrom(field.getClass())
+                    || CmsHiddenDisplayField.class.isAssignableFrom(field.getClass())) {
+                    String fieldValue = getDynamicFieldValue((CmsDynamicField)field);
+                    field.setValue(fieldValue);
+                } else {
+                    String fieldValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDDEFAULTVALUE, locale);
+                    if (CmsStringUtil.isNotEmpty(fieldValue)) {
+                        CmsMacroResolver resolver = CmsMacroResolver.newInstance().setCmsObject(cms).setJspPageContext(
+                            jsp.getJspContext());
+                        fieldValue = resolver.resolveMacros(fieldValue);
+                        field.setValue(fieldValue.trim());
+                    }
+                }
+            } else {
+                // for field that needs items, 
+                // the default value is used to set the items and not really a value
+                field.setValue(null);
+            }
+        } else if (CmsFileUploadField.class.isAssignableFrom(field.getClass())) {
+            // specific handling for file upload fields, because if they are filled out
+            // they also shall be filled out if there are empty because there was an
+            // other mandatory field not filled out or there was browsed through
+            // different pages with the "prev" and the "next" buttons
+            // here are also used hidden fields on the current page, that is why
+            // it is possible that there are tow fields with the same name, one field
+            // is the file upload field, the second one is the hidden field
+            // the file upload field is the first one, the hidden field is the second one
+            String[] parameterValues = m_parameterMap.get(field.getName());
+            StringBuffer value = new StringBuffer();
+            if (parameterValues != null) {
+                if (parameterValues.length == 1) {
+                    // there file upload field value is empty, so take the hidden field value
+                    value.append(parameterValues[0]);
+                } else {
+                    // there are two fields with the same name
+                    if (parameterValues[0].isEmpty()) {
+                        // the file upload field is empty, so take the hidden field value
+                        value.append(parameterValues[1]);
+                    } else {
+                        // the file upload field is not empty, so take this value, because
+                        // so the user choosed another file than before (in the hidden field)
+                        value.append(parameterValues[0]);
+                    }
+                }
+            }
+            field.setValue(value.toString());
+        } else if (CmsDisplayField.class.isAssignableFrom(field.getClass())
+            || CmsDisplayField.class.isAssignableFrom(field.getClass())) {
+            String fieldValue = getDynamicFieldValue((CmsDynamicField)field);
+            if (CmsStringUtil.isEmpty(fieldValue)) {
+                // get field value from request for standard fields
+                String[] parameterValues = m_parameterMap.get(field.getName());
+                if (parameterValues != null) {
+                    fieldValue = parameterValues[0];
+                }
+            }
+            field.setValue(fieldValue);
+        } else if (CmsEmptyField.class.isAssignableFrom(field.getClass())) {
+            String fieldValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDDEFAULTVALUE, locale);
+            field.setValue(fieldValue);
+        } else if (!CmsTableField.class.isAssignableFrom(field.getClass())) {
+            // get field value from request for standard fields
+            String[] parameterValues = m_parameterMap.get(field.getName());
+            StringBuffer value = new StringBuffer();
+            if (parameterValues != null) {
+                for (int j = 0; j < parameterValues.length; j++) {
+                    if (j != 0) {
+                        value.append(", ");
+                    }
+                    value.append(parameterValues[j]);
+                }
+            }
+            field.setValue(value.toString());
+        }
+        return field;
     }
 }

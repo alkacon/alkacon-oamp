@@ -4,7 +4,7 @@
 	<info>
 		<creator>Admin</creator>
 		<opencms_version>7.5.2</opencms_version>
-		<createdate>Thu, 01 Apr 2010 14:20:29 GMT</createdate>
+		<createdate>Fri, 21 May 2010 13:17:36 GMT</createdate>
 		<infoproject>Offline</infoproject>
 		<export_version>7</export_version>
 	</info>
@@ -16,7 +16,7 @@
 		<description><![CDATA[<p>This module contains online form functionality for OpenCms.</p>
 <p>This module can easily be used to create online input forms.</p>
 <p><i>(c) 2010 by Alkacon Software GmbH (http://www.alkacon.com).</i></p>]]></description>
-		<version>1.3.2</version>
+		<version>1.4.0</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
 		<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
@@ -31,17 +31,24 @@
 		<resources>
 			<resource uri="/system/modules/com.alkacon.opencms.formgenerator/"/>
 			<resource uri="/system/workplace/resources/filetypes/alkacon-webform.gif"/>
+			<resource uri="/system/workplace/resources/filetypes/alkacon-webformreport.gif"/>
 			<resource uri="/system/workplace/admin/captcha/"/>
 			<resource uri="/system/workplace/resources/tools/database/icons/big/webform.png"/>
+			<resource uri="/system/workplace/resources/tools/database/buttons/webform_download.png"/>
+			<resource uri="/system/workplace/resources/tools/database/buttons/webform_delete_disabled.png"/>
 			<resource uri="/system/workplace/resources/tools/database/buttons/webform_edit.png"/>
 			<resource uri="/system/workplace/admin/database/formgenerator/"/>
+			<resource uri="/system/workplace/admin/formgenerator/"/>
 		</resources>
 		<parameters>
+			<param name="css">/system/modules/com.alkacon.opencms.formgenerator/resources/css/webform.css</param>
 			<param name="db-pool">default</param>
 			<param name="export.encoding">windows-1252</param>
 			<param name="export.lineseparator">unix</param>
 			<param name="export.timeformat">EEE MMM dd HH:mm:ss z yyyy</param>
-			<param name="uploadfolder">C:\tmp\lgttest</param>
+			<param name="uploadfolder">/system/shared/webform</param>
+			<param name="uploadproject">Offline</param>
+			<param name="uploadvfs">true</param>
 			<param name="usergroup">Users</param>
 		</parameters>
 		<resourcetypes>
@@ -54,10 +61,25 @@
 				</properties>
 				<param name="schema">/system/modules/com.alkacon.opencms.formgenerator/schemas/form.xsd</param>
 			</type>
+			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="alkacon-webformreport" id="265">
+				<properties>
+					<property>
+						<name>template-elements</name>
+						<value type="shared"><![CDATA[/system/modules/com.alkacon.opencms.formgenerator/pages/report.jsp]]></value>
+					</property>
+				</properties>
+				<param name="schema">/system/modules/com.alkacon.opencms.formgenerator/schemas/report.xsd</param>
+			</type>
 		</resourcetypes>
 		<explorertypes>
 			<explorertype name="alkacon-webform" key="fileicon.alkacon-webform" icon="alkacon-webform.gif" reference="xmlcontent">
 				<newresource page="structurecontent" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-webform" order="65" autosetnavigation="false" autosettitle="false" info="desc.webform"/>
+				<accesscontrol>
+					<accessentry principal="ROLE.WORKPLACE_USER" permissions="+r+v+w+c"/>
+				</accesscontrol>
+			</explorertype>
+			<explorertype name="alkacon-webformreport" key="fileicon.alkacon-webformreport" icon="alkacon-webformreport.gif" reference="xmlcontent">
+				<newresource page="structurecontent" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-webformreport" order="66" autosetnavigation="false" autosettitle="false" info="desc.webformreport"/>
 				<accesscontrol>
 					<accessentry principal="ROLE.WORKPLACE_USER" permissions="+r+v+w+c"/>
 				</accesscontrol>
@@ -68,10 +90,10 @@
 		<file>
 			<destination>system</destination>
 			<type>folder</type>
-			<uuidstructure>934f73d1-38c3-11df-80fa-3d32187f986d</uuidstructure>
-			<datelastmodified>Fri, 26 Mar 2010 10:37:28 GMT</datelastmodified>
+			<uuidstructure>b4462175-5107-11df-896e-3d965a9c8d62</uuidstructure>
+			<datelastmodified>Mon, 26 Apr 2010 07:45:37 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Fri, 26 Mar 2010 10:37:28 GMT</datecreated>
+			<datecreated>Mon, 26 Apr 2010 07:45:37 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -90,10 +112,10 @@
 		<file>
 			<destination>system/modules</destination>
 			<type>folder</type>
-			<uuidstructure>93e0de9a-38c3-11df-80fa-3d32187f986d</uuidstructure>
-			<datelastmodified>Fri, 26 Mar 2010 10:37:29 GMT</datelastmodified>
+			<uuidstructure>b4f1cafe-5107-11df-896e-3d965a9c8d62</uuidstructure>
+			<datelastmodified>Mon, 26 Apr 2010 07:45:38 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Fri, 26 Mar 2010 10:37:29 GMT</datecreated>
+			<datecreated>Mon, 26 Apr 2010 07:45:38 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -438,12 +460,32 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/classes/com/alkacon/opencms/formgenerator/messages_de.properties</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/classes/com/alkacon/opencms/formgenerator/messages_de.properties</destination>
+			<type>plain</type>
+			<uuidstructure>e5ad6993-6196-11df-b6d9-3d965a9c8d62</uuidstructure>
+			<uuidresource>e5ad6994-6196-11df-b6d9-3d965a9c8d62</uuidresource>
+			<datelastmodified>Mon, 17 May 2010 09:32:39 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 17 May 2010 09:30:57 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>content-encoding</name>
+					<value><![CDATA[ISO-8859-1]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
 			<source>system/modules/com.alkacon.opencms.formgenerator/classes/com/alkacon/opencms/formgenerator/workplace.properties</source>
 			<destination>system/modules/com.alkacon.opencms.formgenerator/classes/com/alkacon/opencms/formgenerator/workplace.properties</destination>
 			<type>plain</type>
 			<uuidstructure>8f79292a-2d87-11dd-9c25-5fc9fa232cc8</uuidstructure>
 			<uuidresource>8f79292b-2d87-11dd-9c25-5fc9fa232cc8</uuidresource>
-			<datelastmodified>Wed, 01 Jul 2009 08:51:54 GMT</datelastmodified>
+			<datelastmodified>Fri, 21 May 2010 09:03:14 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -463,7 +505,7 @@
 			<type>plain</type>
 			<uuidstructure>a40352ac-11b7-11db-91cd-fdbae480baca</uuidstructure>
 			<uuidresource>ef61baa7-695b-11d9-8aac-f55bb5376c25</uuidresource>
-			<datelastmodified>Wed, 01 Jul 2009 08:52:22 GMT</datelastmodified>
+			<datelastmodified>Wed, 19 May 2010 09:56:05 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -482,7 +524,7 @@
 			<type>plain</type>
 			<uuidstructure>a93f84e2-2d87-11dd-9c25-5fc9fa232cc8</uuidstructure>
 			<uuidresource>8f79292b-2d87-11dd-9c25-5fc9fa232cc8</uuidresource>
-			<datelastmodified>Wed, 01 Jul 2009 08:51:54 GMT</datelastmodified>
+			<datelastmodified>Fri, 21 May 2010 09:03:14 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -555,7 +597,7 @@
 			<type>jsp</type>
 			<uuidstructure>a40f3999-11b7-11db-91cd-fdbae480baca</uuidstructure>
 			<uuidresource>9f6e5555-654f-11d9-ba18-f55bb5376c25</uuidresource>
-			<datelastmodified>Mon, 17 Dec 2007 11:17:20 GMT</datelastmodified>
+			<datelastmodified>Mon, 10 May 2010 15:36:58 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -575,7 +617,7 @@
 			<type>jsp</type>
 			<uuidstructure>a411aa9c-11b7-11db-91cd-fdbae480baca</uuidstructure>
 			<uuidresource>ea1cd525-6884-11d9-9876-f55bb5376c25</uuidresource>
-			<datelastmodified>Mon, 17 Dec 2007 11:17:28 GMT</datelastmodified>
+			<datelastmodified>Mon, 10 May 2010 15:35:10 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -599,7 +641,7 @@
 			<type>jsp</type>
 			<uuidstructure>768a9b43-99ce-11dc-bb5d-93c509c2a6ad</uuidstructure>
 			<uuidresource>768a9b44-99ce-11dc-bb5d-93c509c2a6ad</uuidresource>
-			<datelastmodified>Mon, 14 Jan 2008 16:16:37 GMT</datelastmodified>
+			<datelastmodified>Fri, 07 May 2010 14:59:49 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Fri, 23 Nov 2007 14:14:54 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -607,7 +649,7 @@
 			<properties>
 				<property>
 					<name>Title</name>
-					<value><![CDATA[Form confirmation end page]]></value>
+					<value><![CDATA[Form data download page]]></value>
 				</property>
 				<property>
 					<name>content-encoding</name>
@@ -640,6 +682,54 @@
 				<property>
 					<name>cache</name>
 					<value><![CDATA[false]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/elements/keepsession.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/elements/keepsession.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>61bfeaf7-5138-11df-a2e5-3d965a9c8d62</uuidstructure>
+			<uuidresource>61bfeaf8-5138-11df-a2e5-3d965a9c8d62</uuidresource>
+			<datelastmodified>Mon, 26 Apr 2010 13:36:30 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 26 Apr 2010 13:34:04 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Trigger JSP to keep the session (optional)]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/elements/report_css.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/elements/report_css.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>f3c877a5-6357-11df-962d-3d965a9c8d62</uuidstructure>
+			<uuidresource>f3c877a6-6357-11df-962d-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 19 May 2010 15:06:35 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 19 May 2010 15:05:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Includes CSS files for the report page]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[always]]></value>
 				</property>
 				<property type="shared">
 					<name>export</name>
@@ -813,7 +903,7 @@
 			<type>jsp</type>
 			<uuidstructure>a424bd7e-11b7-11db-91cd-fdbae480baca</uuidstructure>
 			<uuidresource>ffb9f73b-63b8-11d9-ab74-f55bb5376c25</uuidresource>
-			<datelastmodified>Thu, 01 Apr 2010 13:42:32 GMT</datelastmodified>
+			<datelastmodified>Mon, 10 May 2010 14:08:00 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -826,6 +916,34 @@
 				<property>
 					<name>cache</name>
 					<value><![CDATA[never]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/pages/report.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/pages/report.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>d460e01c-5db0-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>d460e01d-5db0-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 19 May 2010 15:26:21 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 10:26:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Report page]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[uri;no-params;timeout=2]]></value>
 				</property>
 				<property type="shared">
 					<name>export</name>
@@ -867,7 +985,7 @@
 			<type>plain</type>
 			<uuidstructure>0ff14f71-fff7-11dc-a6ff-371bb8ed1b84</uuidstructure>
 			<uuidresource>0ff14f72-fff7-11dc-a6ff-371bb8ed1b84</uuidresource>
-			<datelastmodified>Tue, 01 Apr 2008 14:23:11 GMT</datelastmodified>
+			<datelastmodified>Fri, 21 May 2010 09:17:37 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Tue, 01 Apr 2008 14:22:30 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -875,7 +993,2723 @@
 			<properties>
 				<property>
 					<name>Title</name>
-					<value><![CDATA[Example Webform CSS]]></value>
+					<value><![CDATA[Default webform CSS]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid</destination>
+			<type>folder</type>
+			<uuidstructure>7e3edca8-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<datelastmodified>Wed, 12 May 2010 13:30:12 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:12 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/lgpl.html</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/lgpl.html</destination>
+			<type>plain</type>
+			<uuidstructure>89009d96-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>89009d97-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/readme.txt</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/readme.txt</destination>
+			<type>plain</type>
+			<uuidstructure>89055889-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>8905588a-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid</destination>
+			<type>folder</type>
+			<uuidstructure>844a417a-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<datelastmodified>Wed, 12 May 2010 13:30:22 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:22 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/gt_grid.css</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/gt_grid.css</destination>
+			<type>plain</type>
+			<uuidstructure>8565eb17-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>8565eb18-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/gt_grid_all.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/gt_grid_all.js</destination>
+			<type>plain</type>
+			<uuidstructure>856f60fa-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>856f60fb-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/gt_grid_height.css</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/gt_grid_height.css</destination>
+			<type>plain</type>
+			<uuidstructure>85768ced-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>85768cee-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/gt_msg_cn.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/gt_msg_cn.js</destination>
+			<type>plain</type>
+			<uuidstructure>857b6ef0-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>857b6ef1-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/gt_msg_de.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/gt_msg_de.js</destination>
+			<type>plain</type>
+			<uuidstructure>c561ef1c-5dce-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>c561ef1d-5dce-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 19 May 2010 08:13:25 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 14:00:50 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/gt_msg_en.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/gt_msg_en.js</destination>
+			<type>plain</type>
+			<uuidstructure>858273d3-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>858273d4-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/calendar</destination>
+			<type>folder</type>
+			<uuidstructure>844efc6c-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<datelastmodified>Wed, 12 May 2010 13:30:22 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:22 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/calendar/calendar-blue.css</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/calendar/calendar-blue.css</destination>
+			<type>plain</type>
+			<uuidstructure>8453b75e-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>8453b75f-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:22 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/calendar/calendar-cn-utf8.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/calendar/calendar-cn-utf8.js</destination>
+			<type>plain</type>
+			<uuidstructure>845f9e41-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>845f9e42-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/calendar/calendar-cn.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/calendar/calendar-cn.js</destination>
+			<type>plain</type>
+			<uuidstructure>84645934-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>84645935-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/calendar/calendar-en.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/calendar/calendar-en.js</destination>
+			<type>plain</type>
+			<uuidstructure>846b8527-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>846b8528-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/calendar/calendar-setup.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/calendar/calendar-setup.js</destination>
+			<type>plain</type>
+			<uuidstructure>84776c0a-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>84776c0b-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/calendar/calendar.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/calendar/calendar.js</destination>
+			<type>plain</type>
+			<uuidstructure>847c4e0d-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>847c4e0e-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/calendar/simple-1.html</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/calendar/simple-1.html</destination>
+			<type>plain</type>
+			<uuidstructure>8485c3f0-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>8485c3f1-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart</destination>
+			<type>folder</type>
+			<uuidstructure>848a7ee3-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<datelastmodified>Wed, 12 May 2010 13:30:23 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts</destination>
+			<type>folder</type>
+			<uuidstructure>848f60e5-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<datelastmodified>Wed, 12 May 2010 13:30:23 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/ChangeDataXML.html</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/ChangeDataXML.html</destination>
+			<type>plain</type>
+			<uuidstructure>84968cd7-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>84968cd8-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/Chart.html</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/Chart.html</destination>
+			<type>plain</type>
+			<uuidstructure>849d91ba-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>849d91bb-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/ChartChange.html</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/ChartChange.html</destination>
+			<type>plain</type>
+			<uuidstructure>84a4bdad-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>84a4bdae-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/FusionCharts.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/FusionCharts.js</destination>
+			<type>plain</type>
+			<uuidstructure>85613024-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>85613025-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts</destination>
+			<type>folder</type>
+			<uuidstructure>84abe9a0-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<datelastmodified>Wed, 12 May 2010 13:30:23 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_Area2D.swf</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_Area2D.swf</destination>
+			<type>plain</type>
+			<uuidstructure>84b0a492-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>84b0a493-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_Bar2D.swf</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_Bar2D.swf</destination>
+			<type>plain</type>
+			<uuidstructure>84b7d085-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>84b7d086-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_Candlestick.swf</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_Candlestick.swf</destination>
+			<type>plain</type>
+			<uuidstructure>84c16d78-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>84c16d79-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_Column2D.swf</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_Column2D.swf</destination>
+			<type>plain</type>
+			<uuidstructure>84cae35b-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>84cae35c-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_Column3D.swf</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_Column3D.swf</destination>
+			<type>plain</type>
+			<uuidstructure>84d4804e-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>84d4804f-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_Doughnut2D.swf</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_Doughnut2D.swf</destination>
+			<type>plain</type>
+			<uuidstructure>84dbac41-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>84dbac42-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_Funnel.swf</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_Funnel.swf</destination>
+			<type>plain</type>
+			<uuidstructure>84e2d834-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>84e2d835-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_Gantt.swf</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_Gantt.swf</destination>
+			<type>plain</type>
+			<uuidstructure>84e9dd17-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>84e9dd18-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_Line.swf</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_Line.swf</destination>
+			<type>plain</type>
+			<uuidstructure>84f37a0a-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>84f37a0b-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_MSArea2D.swf</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_MSArea2D.swf</destination>
+			<type>plain</type>
+			<uuidstructure>84faa5fd-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>84faa5fe-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_MSBar2D.swf</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_MSBar2D.swf</destination>
+			<type>plain</type>
+			<uuidstructure>8501d1f0-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>8501d1f1-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_MSColumn2D.swf</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_MSColumn2D.swf</destination>
+			<type>plain</type>
+			<uuidstructure>8508fde3-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>8508fde4-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_MSColumn2DLineDY.swf</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_MSColumn2DLineDY.swf</destination>
+			<type>plain</type>
+			<uuidstructure>851002c6-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>851002c7-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_MSColumn3D.swf</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_MSColumn3D.swf</destination>
+			<type>plain</type>
+			<uuidstructure>85172eb9-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>85172eba-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_MSColumn3DLineDY.swf</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_MSColumn3DLineDY.swf</destination>
+			<type>plain</type>
+			<uuidstructure>8523159c-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>8523159d-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_MSLine.swf</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_MSLine.swf</destination>
+			<type>plain</type>
+			<uuidstructure>852a418f-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>852a4190-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_Pie2D.swf</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_Pie2D.swf</destination>
+			<type>plain</type>
+			<uuidstructure>85316d82-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>85316d83-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_Pie3D.swf</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_Pie3D.swf</destination>
+			<type>plain</type>
+			<uuidstructure>85389975-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>85389976-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_StackedArea2D.swf</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_StackedArea2D.swf</destination>
+			<type>plain</type>
+			<uuidstructure>853fc568-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>853fc569-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_StackedBar2D.swf</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_StackedBar2D.swf</destination>
+			<type>plain</type>
+			<uuidstructure>8546f15b-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>8546f15c-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_StackedColumn2D.swf</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_StackedColumn2D.swf</destination>
+			<type>plain</type>
+			<uuidstructure>8550673e-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>8550673f-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_StackedColumn3D.swf</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/flashchart/fusioncharts/charts/FCF_StackedColumn3D.swf</destination>
+			<type>plain</type>
+			<uuidstructure>85579331-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>85579332-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin</destination>
+			<type>folder</type>
+			<uuidstructure>858c10c6-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<datelastmodified>Wed, 12 May 2010 13:30:24 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:24 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default</destination>
+			<type>folder</type>
+			<uuidstructure>8590cbb8-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<datelastmodified>Wed, 12 May 2010 13:30:25 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:25 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/skinstyle.css</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/skinstyle.css</destination>
+			<type>plain</type>
+			<uuidstructure>87477c20-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>87477c21-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:27 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images</destination>
+			<type>folder</type>
+			<uuidstructure>859586aa-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<datelastmodified>Wed, 12 May 2010 13:30:25 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:25 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/button_bg.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/button_bg.gif</destination>
+			<type>image</type>
+			<uuidstructure>859f239c-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>859f239d-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:25 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:19,h:19]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/button_down_bg.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/button_down_bg.gif</destination>
+			<type>image</type>
+			<uuidstructure>85a89880-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>85a89881-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:25 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:19,h:19]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/cell_index_bg.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/cell_index_bg.gif</destination>
+			<type>image</type>
+			<uuidstructure>85b23574-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>85b23575-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:25 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:3,h:148]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/cell_updated.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/cell_updated.gif</destination>
+			<type>image</type>
+			<uuidstructure>85c08d58-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>85c08d59-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:25 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:8,h:8]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/dialog_close_btn.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/dialog_close_btn.gif</destination>
+			<type>image</type>
+			<uuidstructure>85c7b94c-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>85c7b94d-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:25 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:15,h:15]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/hd_menu_btn.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/hd_menu_btn.gif</destination>
+			<type>image</type>
+			<uuidstructure>85d12f30-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>85d12f31-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:25 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:10,h:10]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/hd_row_bg.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/hd_row_bg.gif</destination>
+			<type>image</type>
+			<uuidstructure>85d85b24-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>85d85b25-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:25 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:1,h:50]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/hd_row_over_bg.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/hd_row_over_bg.gif</destination>
+			<type>image</type>
+			<uuidstructure>85e1d108-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>85e1d109-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:25 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:1,h:50]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/icon_calendar.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/icon_calendar.gif</destination>
+			<type>image</type>
+			<uuidstructure>85eb6dfc-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>85eb6dfd-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:25 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/icon_grid_menu.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/icon_grid_menu.gif</destination>
+			<type>image</type>
+			<uuidstructure>85f754e0-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>85f754e1-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:25 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:12,h:13]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/input_button_bg.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/input_button_bg.gif</destination>
+			<type>image</type>
+			<uuidstructure>8600f1d4-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>8600f1d5-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:25 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:3,h:23]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/input_text_bg.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/input_text_bg.gif</destination>
+			<type>image</type>
+			<uuidstructure>8607f6b8-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>8607f6b9-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:25 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:1,h:18]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/menu_hassub.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/menu_hassub.gif</destination>
+			<type>image</type>
+			<uuidstructure>861193ac-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>861193ad-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:25 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:12,h:9]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/menu_icon_column_group.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/menu_icon_column_group.gif</destination>
+			<type>image</type>
+			<uuidstructure>86223580-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>86223581-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:25 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/menu_icon_hidecol.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/menu_icon_hidecol.gif</destination>
+			<type>image</type>
+			<uuidstructure>862bd274-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>862bd275-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:26 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/menu_icon_lock.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/menu_icon_lock.gif</destination>
+			<type>image</type>
+			<uuidstructure>8637b958-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>8637b959-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:26 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/menu_icon_themes.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/menu_icon_themes.gif</destination>
+			<type>image</type>
+			<uuidstructure>8643a03c-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>8643a03d-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:26 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/page_first.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/page_first.gif</destination>
+			<type>image</type>
+			<uuidstructure>864d3d30-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>864d3d31-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:26 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/page_goto.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/page_goto.gif</destination>
+			<type>image</type>
+			<uuidstructure>8656b314-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>8656b315-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:26 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/page_last.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/page_last.gif</destination>
+			<type>image</type>
+			<uuidstructure>86605008-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>86605009-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:26 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/page_next.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/page_next.gif</destination>
+			<type>image</type>
+			<uuidstructure>866754ec-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>866754ed-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:26 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/page_prev.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/page_prev.gif</destination>
+			<type>image</type>
+			<uuidstructure>8670f1e0-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>8670f1e1-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:26 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/row_del.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/row_del.gif</destination>
+			<type>image</type>
+			<uuidstructure>86781dd4-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>86781dd5-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:26 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:1,h:15]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/row_over.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/row_over.gif</destination>
+			<type>image</type>
+			<uuidstructure>867f49c8-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>867f49c9-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:26 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:1,h:20]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/s_checked.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/s_checked.gif</destination>
+			<type>image</type>
+			<uuidstructure>868675bc-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>868675bd-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:26 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:12,h:12]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/s_loading.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/s_loading.gif</destination>
+			<type>image</type>
+			<uuidstructure>86925ca0-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>86925ca1-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:26 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/s_radiochecked.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/s_radiochecked.gif</destination>
+			<type>image</type>
+			<uuidstructure>869e4384-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>869e4385-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:26 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:12,h:12]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/s_sort_asc_desc.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/s_sort_asc_desc.gif</destination>
+			<type>image</type>
+			<uuidstructure>86a7b968-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>86a7b969-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:26 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:22,h:4]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/s_unchecked.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/s_unchecked.gif</destination>
+			<type>image</type>
+			<uuidstructure>86aee55c-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>86aee55d-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:26 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:12,h:12]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool__csv.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool__csv.gif</destination>
+			<type>image</type>
+			<uuidstructure>8740502c-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>8740502d-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:27 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:15,h:14]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_add.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_add.gif</destination>
+			<type>image</type>
+			<uuidstructure>86c1f834-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>86c1f835-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:27 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:15,h:15]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_chart.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_chart.gif</destination>
+			<type>image</type>
+			<uuidstructure>86c92428-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>86c92429-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:27 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_csv.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_csv.gif</destination>
+			<type>image</type>
+			<uuidstructure>86d0501c-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>86d0501d-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:27 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:15,h:14]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_del.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_del.gif</destination>
+			<type>image</type>
+			<uuidstructure>86d9c600-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>86d9c601-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:27 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:15,h:15]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_filter.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_filter.gif</destination>
+			<type>image</type>
+			<uuidstructure>86e0f1f4-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>86e0f1f5-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:27 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_filtered.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_filtered.gif</destination>
+			<type>image</type>
+			<uuidstructure>86ea8ee8-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>86ea8ee9-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:27 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_pdf.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_pdf.gif</destination>
+			<type>image</type>
+			<uuidstructure>86f1badc-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>86f1badd-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:27 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:14,h:13]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_print.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_print.gif</destination>
+			<type>image</type>
+			<uuidstructure>86f8e6d0-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>86f8e6d1-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:27 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:15,h:15]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_reload.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_reload.gif</destination>
+			<type>image</type>
+			<uuidstructure>8704cdb4-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>8704cdb5-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:27 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:15,h:15]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_resize.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_resize.gif</destination>
+			<type>image</type>
+			<uuidstructure>870e4398-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>870e4399-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:27 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:10,h:10]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_save.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_save.gif</destination>
+			<type>image</type>
+			<uuidstructure>87156f8c-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>87156f8d-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:27 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:15,h:15]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_split.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_split.gif</destination>
+			<type>image</type>
+			<uuidstructure>87261160-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>87261161-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:27 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:2,h:13]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_xls.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_xls.gif</destination>
+			<type>image</type>
+			<uuidstructure>872fae54-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>872fae55-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:27 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:15,h:15]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_xml.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/tool_xml.gif</destination>
+			<type>image</type>
+			<uuidstructure>8736da48-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>8736da49-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:27 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/toolbar_bg.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/default/images/toolbar_bg.gif</destination>
+			<type>image</type>
+			<uuidstructure>86b88250-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>86b88251-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:26 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:3,h:25]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac</destination>
+			<type>folder</type>
+			<uuidstructure>874ea813-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<datelastmodified>Wed, 12 May 2010 13:30:27 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:27 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/skinstyle.css</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/skinstyle.css</destination>
+			<type>plain</type>
+			<uuidstructure>87db57f3-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>87db57f4-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images</destination>
+			<type>folder</type>
+			<uuidstructure>8755d405-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<datelastmodified>Wed, 12 May 2010 13:30:27 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:27 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/button_bg.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/button_bg.gif</destination>
+			<type>image</type>
+			<uuidstructure>875cfff7-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>875cfff8-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:19,h:19]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/button_down_bg.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/button_down_bg.gif</destination>
+			<type>image</type>
+			<uuidstructure>87642beb-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>87642bec-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:19,h:19]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/dialog_close_btn.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/dialog_close_btn.gif</destination>
+			<type>image</type>
+			<uuidstructure>876b57df-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>876b57e0-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:15,h:15]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/hd_row_bg.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/hd_row_bg.gif</destination>
+			<type>image</type>
+			<uuidstructure>87725cc3-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>87725cc4-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:1,h:50]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/hd_row_over_bg.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/hd_row_over_bg.gif</destination>
+			<type>image</type>
+			<uuidstructure>877bf9b7-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>877bf9b8-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:1,h:50]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/menu_hassub.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/menu_hassub.gif</destination>
+			<type>image</type>
+			<uuidstructure>878325ab-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>878325ac-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:12,h:9]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/page_first.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/page_first.gif</destination>
+			<type>image</type>
+			<uuidstructure>878c9b8f-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>878c9b90-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/page_goto.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/page_goto.gif</destination>
+			<type>image</type>
+			<uuidstructure>8793c783-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>8793c784-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/page_last.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/page_last.gif</destination>
+			<type>image</type>
+			<uuidstructure>879fae67-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>879fae68-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/page_next.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/page_next.gif</destination>
+			<type>image</type>
+			<uuidstructure>87a94b5b-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>87a94b5c-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/page_prev.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/page_prev.gif</destination>
+			<type>image</type>
+			<uuidstructure>87b0774f-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>87b07750-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/s_sort_asc_desc.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/s_sort_asc_desc.gif</destination>
+			<type>image</type>
+			<uuidstructure>87b9ed33-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>87b9ed34-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:22,h:4]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/tool_reload.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/tool_reload.gif</destination>
+			<type>image</type>
+			<uuidstructure>87cd000b-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>87cd000c-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:15,h:15]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/tool_save.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/tool_save.gif</destination>
+			<type>image</type>
+			<uuidstructure>87d42bff-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>87d42c00-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:15,h:15]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/toolbar_bg.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/mac/images/toolbar_bg.gif</destination>
+			<type>image</type>
+			<uuidstructure>87c38a27-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>87c38a28-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:3,h:25]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink</destination>
+			<type>folder</type>
+			<uuidstructure>87e012e6-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<datelastmodified>Wed, 12 May 2010 13:30:28 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/skinstyle.css</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/skinstyle.css</destination>
+			<type>plain</type>
+			<uuidstructure>886595d2-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>886595d3-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images</destination>
+			<type>folder</type>
+			<uuidstructure>87e73ed8-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<datelastmodified>Wed, 12 May 2010 13:30:28 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/cell_index_bg.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/cell_index_bg.gif</destination>
+			<type>image</type>
+			<uuidstructure>87f0dbca-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>87f0dbcb-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:3,h:148]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/dialog_close_btn.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/dialog_close_btn.gif</destination>
+			<type>image</type>
+			<uuidstructure>87f7e0ae-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>87f7e0af-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:15,h:15]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/hd_row_bg.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/hd_row_bg.gif</destination>
+			<type>image</type>
+			<uuidstructure>87ff0ba2-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>87ff0ba3-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:1,h:60]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/hd_row_over_bg.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/hd_row_over_bg.gif</destination>
+			<type>image</type>
+			<uuidstructure>8808a896-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>8808a897-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:1,h:60]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/menu_hassub.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/menu_hassub.gif</destination>
+			<type>image</type>
+			<uuidstructure>880fd48a-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>880fd48b-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:12,h:9]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/page_first.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/page_first.gif</destination>
+			<type>image</type>
+			<uuidstructure>88194a6e-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>88194a6f-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/page_goto.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/page_goto.gif</destination>
+			<type>image</type>
+			<uuidstructure>88207662-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>88207663-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/page_last.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/page_last.gif</destination>
+			<type>image</type>
+			<uuidstructure>8827a256-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>8827a257-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/page_next.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/page_next.gif</destination>
+			<type>image</type>
+			<uuidstructure>8831183a-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>8831183b-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/page_prev.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/page_prev.gif</destination>
+			<type>image</type>
+			<uuidstructure>8838442e-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>8838442f-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/s_sort_asc_desc.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/s_sort_asc_desc.gif</destination>
+			<type>image</type>
+			<uuidstructure>883f7022-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>883f7023-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:22,h:4]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/tab-close.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/tab-close.gif</destination>
+			<type>image</type>
+			<uuidstructure>88490d16-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>88490d17-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:11,h:11]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/tool_reload.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/tool_reload.gif</destination>
+			<type>image</type>
+			<uuidstructure>885e69de-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>885e69df-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:15,h:15]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/toolbar_bg.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/pink/images/toolbar_bg.gif</destination>
+			<type>image</type>
+			<uuidstructure>885282fa-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>885282fb-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:3,h:25]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/vista</destination>
+			<type>folder</type>
+			<uuidstructure>886cc1c5-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<datelastmodified>Wed, 12 May 2010 13:30:29 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/vista/skinstyle.css</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/vista/skinstyle.css</destination>
+			<type>plain</type>
+			<uuidstructure>88a3894d-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>88a3894e-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/vista/images</destination>
+			<type>folder</type>
+			<uuidstructure>88717cb7-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<datelastmodified>Wed, 12 May 2010 13:30:29 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/vista/images/cell_index_bg.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/vista/images/cell_index_bg.gif</destination>
+			<type>image</type>
+			<uuidstructure>8878a8a9-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>8878a8aa-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:3,h:148]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/vista/images/hd_row_bg.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/vista/images/hd_row_bg.gif</destination>
+			<type>image</type>
+			<uuidstructure>88848f8d-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>88848f8e-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:1,h:50]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/vista/images/hd_row_over_bg.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/vista/images/hd_row_over_bg.gif</destination>
+			<type>image</type>
+			<uuidstructure>888bbb81-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>888bbb82-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:1,h:50]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/vista/images/s_sort_asc_desc.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/vista/images/s_sort_asc_desc.gif</destination>
+			<type>image</type>
+			<uuidstructure>88955875-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>88955876-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:22,h:4]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/vista/images/toolbar_bg.gif</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/skin/vista/images/toolbar_bg.gif</destination>
+			<type>image</type>
+			<uuidstructure>889c8469-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>889c846a-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:3,h:25]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src</destination>
+			<type>folder</type>
+			<uuidstructure>88aab540-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<datelastmodified>Wed, 12 May 2010 13:30:30 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src/gt_ajax.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src/gt_ajax.js</destination>
+			<type>plain</type>
+			<uuidstructure>88af9742-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>88af9743-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src/gt_base.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src/gt_base.js</destination>
+			<type>plain</type>
+			<uuidstructure>88b69c25-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>88b69c26-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src/gt_chart.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src/gt_chart.js</destination>
+			<type>plain</type>
+			<uuidstructure>88bb7e28-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>88bb7e29-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src/gt_column.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src/gt_column.js</destination>
+			<type>plain</type>
+			<uuidstructure>88c2aa1b-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>88c2aa1c-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src/gt_const.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src/gt_const.js</destination>
+			<type>plain</type>
+			<uuidstructure>88c9aefe-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>88c9aeff-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src/gt_dataset.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src/gt_dataset.js</destination>
+			<type>plain</type>
+			<uuidstructure>88d0daf1-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>88d0daf2-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src/gt_dialog.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src/gt_dialog.js</destination>
+			<type>plain</type>
+			<uuidstructure>88d806e4-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>88d806e5-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src/gt_editor.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src/gt_editor.js</destination>
+			<type>plain</type>
+			<uuidstructure>88dcc1d7-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>88dcc1d8-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src/gt_grid.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src/gt_grid.js</destination>
+			<type>plain</type>
+			<uuidstructure>88e3edca-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>88e3edcb-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src/gt_template.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src/gt_template.js</destination>
+			<type>plain</type>
+			<uuidstructure>88efd4ad-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>88efd4ae-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src/gt_tool.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src/gt_tool.js</destination>
+			<type>plain</type>
+			<uuidstructure>88f4b6b0-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>88f4b6b1-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src/gt_validator.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/grid/src/gt_validator.js</destination>
+			<type>plain</type>
+			<uuidstructure>88fbe2a3-5dca-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>88fbe2a4-5dca-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 13:55:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 13:30:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/js</destination>
+			<type>folder</type>
+			<uuidstructure>ba69dda1-5139-11df-a2e5-3d965a9c8d62</uuidstructure>
+			<datelastmodified>Mon, 26 Apr 2010 13:43:42 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 26 Apr 2010 13:43:42 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/js/dateformat.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/js/dateformat.js</destination>
+			<type>plain</type>
+			<uuidstructure>a64f91f1-6320-11df-9e21-3d965a9c8d62</uuidstructure>
+			<uuidresource>a64f91f2-6320-11df-9e21-3d965a9c8d62</uuidresource>
+			<datelastmodified>Fri, 21 May 2010 13:11:43 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 19 May 2010 08:29:32 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[JS to format a date]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/js/keepsession.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/js/keepsession.js</destination>
+			<type>plain</type>
+			<uuidstructure>c4c2a393-5139-11df-a2e5-3d965a9c8d62</uuidstructure>
+			<uuidresource>c4c2a394-5139-11df-a2e5-3d965a9c8d62</uuidresource>
+			<datelastmodified>Mon, 26 Apr 2010 15:26:23 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 26 Apr 2010 13:44:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[JS to send a request for session keeping]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/js/subfields.js</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/js/subfields.js</destination>
+			<type>plain</type>
+			<uuidstructure>dc73637f-591c-11df-9da7-3d965a9c8d62</uuidstructure>
+			<uuidresource>dc736380-591c-11df-9da7-3d965a9c8d62</uuidresource>
+			<datelastmodified>Fri, 07 May 2010 10:01:06 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 06 May 2010 14:37:13 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[JS for sub field functionality]]></value>
 				</property>
 			</properties>
 			<relations/>
@@ -920,7 +3754,7 @@
 			<type>plain</type>
 			<uuidstructure>a42e5a78-11b7-11db-91cd-fdbae480baca</uuidstructure>
 			<uuidresource>a58c4c68-630d-11d9-ba58-f55bb5376c25</uuidresource>
-			<datelastmodified>Thu, 01 Apr 2010 08:14:16 GMT</datelastmodified>
+			<datelastmodified>Tue, 11 May 2010 10:58:01 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -940,7 +3774,7 @@
 			<type>plain</type>
 			<uuidstructure>584af392-99cb-11dc-bb5d-93c509c2a6ad</uuidstructure>
 			<uuidresource>584af393-99cb-11dc-bb5d-93c509c2a6ad</uuidresource>
-			<datelastmodified>Fri, 21 Dec 2007 14:03:53 GMT</datelastmodified>
+			<datelastmodified>Tue, 11 May 2010 10:06:38 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Fri, 23 Nov 2007 13:52:35 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -960,7 +3794,7 @@
 			<type>plain</type>
 			<uuidstructure>a430a46b-11b7-11db-91cd-fdbae480baca</uuidstructure>
 			<uuidresource>adf38d6e-630b-11d9-ba58-f55bb5376c25</uuidresource>
-			<datelastmodified>Mon, 29 Mar 2010 07:21:49 GMT</datelastmodified>
+			<datelastmodified>Tue, 11 May 2010 10:12:33 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -1000,7 +3834,7 @@
 			<type>plain</type>
 			<uuidstructure>a433156e-11b7-11db-91cd-fdbae480baca</uuidstructure>
 			<uuidresource>03161053-689a-11d9-b9b0-f55bb5376c25</uuidresource>
-			<datelastmodified>Thu, 01 Apr 2010 08:12:09 GMT</datelastmodified>
+			<datelastmodified>Thu, 29 Apr 2010 13:20:10 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -1020,7 +3854,7 @@
 			<type>plain</type>
 			<uuidstructure>a4355f61-11b7-11db-91cd-fdbae480baca</uuidstructure>
 			<uuidresource>477afeb3-739e-11d9-9536-eb1fdbd690a6</uuidresource>
-			<datelastmodified>Fri, 21 Dec 2007 13:13:42 GMT</datelastmodified>
+			<datelastmodified>Tue, 11 May 2010 14:28:07 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -1029,6 +3863,46 @@
 				<property>
 					<name>Title</name>
 					<value><![CDATA[Nested XSD for optional confirmation email]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/schemas/optionalexpiration.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/schemas/optionalexpiration.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>69f6df83-5375-11df-924e-3d965a9c8d62</uuidstructure>
+			<uuidresource>69f6df84-5375-11df-924e-3d965a9c8d62</uuidresource>
+			<datelastmodified>Thu, 29 Apr 2010 12:25:51 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 29 Apr 2010 09:55:59 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>512</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Nested XSD for optional expiration]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/schemas/optionalfieldtext.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/schemas/optionalfieldtext.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>701ed372-56b2-11df-9ff2-3d965a9c8d62</uuidstructure>
+			<uuidresource>701ed373-56b2-11df-9ff2-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 07:50:49 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 03 May 2010 12:50:22 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>512</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Nested XSD for optional field texts]]></value>
 				</property>
 			</properties>
 			<relations/>
@@ -1049,6 +3923,46 @@
 				<property>
 					<name>Title</name>
 					<value><![CDATA[Nested XSD for optional captcha images]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/schemas/optionalsubfield.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/schemas/optionalsubfield.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>4fb26d74-5822-11df-b1de-3d965a9c8d62</uuidstructure>
+			<uuidresource>4fb26d75-5822-11df-b1de-3d965a9c8d62</uuidresource>
+			<datelastmodified>Tue, 11 May 2010 10:10:18 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 05 May 2010 08:43:43 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>512</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Nested XSD for optional sub field]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/schemas/report.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/schemas/report.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>383cbbb1-5da7-11df-848d-3d965a9c8d62</uuidstructure>
+			<uuidresource>383cbbb2-5da7-11df-848d-3d965a9c8d62</uuidresource>
+			<datelastmodified>Fri, 21 May 2010 07:59:57 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 09:17:42 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[XSD for form database reports]]></value>
 				</property>
 			</properties>
 			<relations/>
@@ -1403,7 +4317,7 @@
 			<destination>system/workplace/admin/database/formgenerator</destination>
 			<type>folder</type>
 			<uuidstructure>71bace4a-f114-11dc-a71e-371bb8ed1b84</uuidstructure>
-			<datelastmodified>Mon, 17 Mar 2008 14:43:21 GMT</datelastmodified>
+			<datelastmodified>Wed, 28 Apr 2010 08:48:26 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Thu, 13 Mar 2008 15:45:02 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -1444,6 +4358,26 @@
 				<property>
 					<name>default-file</name>
 					<value><![CDATA[form.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/admin/database/formgenerator/downloadTrigger.jsp</source>
+			<destination>system/workplace/admin/database/formgenerator/downloadTrigger.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>60e478b0-5775-11df-8f48-3d965a9c8d62</uuidstructure>
+			<uuidresource>60e478b1-5775-11df-8f48-3d965a9c8d62</uuidresource>
+			<datelastmodified>Tue, 04 May 2010 12:23:58 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 May 2010 12:05:49 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Download-Trigger]]></value>
 				</property>
 			</properties>
 			<relations/>
@@ -1554,6 +4488,157 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<destination>system/workplace/admin/formgenerator</destination>
+			<type>folder</type>
+			<uuidstructure>7c4dfefe-29d6-11de-8eae-03821fc5d684</uuidstructure>
+			<datelastmodified>Thu, 16 Apr 2009 09:25:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 15 Apr 2009 16:00:05 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Description</name>
+					<value><![CDATA[${key.GUI_WEBFORM_ADMIN_TOOL_HELP_0}]]></value>
+				</property>
+				<property>
+					<name>NavImage</name>
+					<value><![CDATA[tools/database/icons/big/webform.png]]></value>
+				</property>
+				<property>
+					<name>NavInfo</name>
+					<value><![CDATA[${key.GUI_JOBS_ADMIN_TOOL_GROUP_0}]]></value>
+				</property>
+				<property>
+					<name>NavPos</name>
+					<value><![CDATA[121]]></value>
+				</property>
+				<property>
+					<name>NavText</name>
+					<value><![CDATA[${key.GUI_WEBFORM_ADMIN_TOOL_NAME_0}]]></value>
+				</property>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[OAMP Webform]]></value>
+				</property>
+				<property>
+					<name>admintoolhandler-args</name>
+					<value><![CDATA[params:action=initial|path:/formgenerator]]></value>
+				</property>
+				<property>
+					<name>admintoolhandler-class</name>
+					<value><![CDATA[com.alkacon.opencms.formgenerator.dialog.CmsFormgeneratorToolHandler]]></value>
+				</property>
+				<property>
+					<name>default-file</name>
+					<value><![CDATA[form.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace/admin/formgenerator/form.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>7c6111d9-29d6-11de-8eae-03821fc5d684</uuidstructure>
+			<uuidresource>4afc124b-f100-11dc-9e13-371bb8ed1b84</uuidresource>
+			<datelastmodified>Mon, 17 Mar 2008 10:13:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 13 Mar 2008 13:20:47 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Show the forms]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace/admin/formgenerator/formedit.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>7c6d1fcb-29d6-11de-8eae-03821fc5d684</uuidstructure>
+			<uuidresource>e034e415-f500-11dc-b0bf-371bb8ed1b84</uuidresource>
+			<datelastmodified>Wed, 19 Mar 2008 16:28:06 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 18 Mar 2008 15:35:02 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Description</name>
+					<value><![CDATA[${key.GUI_WEBFORM_EDIT_ADMIN_TOOL_HELP_0}]]></value>
+				</property>
+				<property>
+					<name>NavText</name>
+					<value><![CDATA[${key.GUI_WEBFORM_EDIT_ADMIN_TOOL_NAME_0}]]></value>
+				</property>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Show the form in edit mode]]></value>
+				</property>
+				<property>
+					<name>admintoolhandler-args</name>
+					<value><![CDATA[params:formid=${param.formid}&entryid=${param.entryid}&action=initial|path:/formgenerator/form/edit]]></value>
+				</property>
+				<property>
+					<name>admintoolhandler-class</name>
+					<value><![CDATA[org.opencms.workplace.tools.CmsInvisibleToolHandler]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace/admin/formgenerator/formfields.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>7c7b50a1-29d6-11de-8eae-03821fc5d684</uuidstructure>
+			<uuidresource>7cc20750-f115-11dc-a71e-371bb8ed1b84</uuidresource>
+			<datelastmodified>Mon, 17 Mar 2008 15:14:16 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 13 Mar 2008 15:52:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Description</name>
+					<value><![CDATA[${key.GUI_WEBFORM_ENTRY_ADMIN_TOOL_HELP_0}]]></value>
+				</property>
+				<property>
+					<name>NavText</name>
+					<value><![CDATA[${key.GUI_WEBFORM_ENTRY_ADMIN_TOOL_NAME_0}]]></value>
+				</property>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Show the form fields of a form]]></value>
+				</property>
+				<property>
+					<name>admintoolhandler-args</name>
+					<value><![CDATA[params:formid=${param.formid}&action=initial|path:/formgenerator/form]]></value>
+				</property>
+				<property>
+					<name>admintoolhandler-class</name>
+					<value><![CDATA[org.opencms.workplace.tools.CmsInvisibleToolHandler]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
 			<destination>system/workplace/resources</destination>
 			<type>folder</type>
 			<uuidstructure>82c16052-11b7-11db-91cd-fdbae480bac9</uuidstructure>
@@ -1588,6 +4673,26 @@
 			<datelastmodified>Mon, 17 Dec 2007 10:41:38 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 17 Dec 2007 10:36:07 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/filetypes/alkacon-webformreport.gif</source>
+			<destination>system/workplace/resources/filetypes/alkacon-webformreport.gif</destination>
+			<type>image</type>
+			<uuidstructure>aa6efd2b-5dad-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>aa6efd2c-5dad-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 12 May 2010 10:03:58 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 10:03:51 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties>
@@ -1640,6 +4745,46 @@
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/tools/database/buttons/webform_delete_disabled.png</source>
+			<destination>system/workplace/resources/tools/database/buttons/webform_delete_disabled.png</destination>
+			<type>image</type>
+			<uuidstructure>653210b5-52a7-11df-8769-3d965a9c8d62</uuidstructure>
+			<uuidresource>653210b6-52a7-11df-8769-3d965a9c8d62</uuidresource>
+			<datelastmodified>Wed, 29 Nov 2006 11:30:23 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 28 Apr 2010 09:21:15 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:20,h:20]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/tools/database/buttons/webform_download.png</source>
+			<destination>system/workplace/resources/tools/database/buttons/webform_download.png</destination>
+			<type>image</type>
+			<uuidstructure>e26dd70a-577a-11df-b9f9-3d965a9c8d62</uuidstructure>
+			<uuidresource>e26dd70b-577a-11df-b9f9-3d965a9c8d62</uuidresource>
+			<datelastmodified>Tue, 04 May 2010 12:45:22 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 May 2010 12:45:14 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
 			<relations/>
 			<accesscontrol/>
 		</file>

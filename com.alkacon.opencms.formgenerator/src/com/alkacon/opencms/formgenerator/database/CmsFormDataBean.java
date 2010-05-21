@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/CmsFormDataBean.java,v $
- * Date   : $Date: 2010/03/19 15:31:14 $
- * Version: $Revision: 1.7 $
+ * Date   : $Date: 2010/05/21 13:49:27 $
+ * Version: $Revision: 1.8 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -48,7 +48,7 @@ import java.util.TreeMap;
  * @author Achim Westermann
  * @author Michael Moossen
  * 
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  * 
  * @since 7.0.4
  */
@@ -60,8 +60,8 @@ public class CmsFormDataBean {
     /** The entry id. */
     private int m_entryId;
 
-    /** The <code>SortedMap&lt;{@link String}, {@link java.util.Map.Entry}&gt;</code> with all field entries. */
-    private SortedMap m_fieldEntries;
+    /** The <code>SortedMap&lt;{@link String}, String&gt;</code> with all field entries. */
+    private SortedMap<String, String> m_fieldEntries;
 
     /** the name of the form. **/
     private String m_formId;
@@ -77,7 +77,7 @@ public class CmsFormDataBean {
      */
     protected CmsFormDataBean() {
 
-        m_fieldEntries = new TreeMap();
+        m_fieldEntries = new TreeMap<String, String>();
     }
 
     /**
@@ -87,7 +87,7 @@ public class CmsFormDataBean {
      * 
      * @see java.util.Map#keySet()
      */
-    public Set getAllFieldLabels() {
+    public Set<String> getAllFieldLabels() {
 
         return m_fieldEntries.keySet();
     }
@@ -98,7 +98,7 @@ public class CmsFormDataBean {
      * 
      * @return all fields in the form
      */
-    public Map getAllFields() {
+    public Map<String, String> getAllFields() {
 
         return Collections.unmodifiableMap(m_fieldEntries);
     }
@@ -110,7 +110,7 @@ public class CmsFormDataBean {
      * 
      * @see java.util.Map#values()
      */
-    public Collection getAllFieldValues() {
+    public Collection<String> getAllFieldValues() {
 
         return m_fieldEntries.values();
     }
@@ -145,7 +145,7 @@ public class CmsFormDataBean {
      * 
      * @see #getAllFields
      */
-    public Map getField() {
+    public Map<String, String> getField() {
 
         return getAllFields();
     }
@@ -162,7 +162,7 @@ public class CmsFormDataBean {
      */
     public String getFieldValue(String fieldLabel) {
 
-        return (String)m_fieldEntries.get(fieldLabel);
+        return m_fieldEntries.get(fieldLabel);
     }
 
     /**

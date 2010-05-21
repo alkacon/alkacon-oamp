@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFieldValue.java,v $
- * Date   : $Date: 2010/03/19 15:31:11 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2010/05/21 13:49:17 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -42,7 +42,7 @@ import java.util.Iterator;
  * 
  * @author Andreas Zahner 
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.0.4 
  */
@@ -66,11 +66,11 @@ public class CmsFieldValue {
 
         if (field.needsItems()) {
             // check which item has been selected
-            StringBuffer fieldValue = new StringBuffer(8);
-            Iterator k = field.getItems().iterator();
+            StringBuffer fieldValue = new StringBuffer(16);
+            Iterator<CmsFieldItem> k = field.getItems().iterator();
             boolean isSelected = false;
             while (k.hasNext()) {
-                CmsFieldItem currentItem = (CmsFieldItem)k.next();
+                CmsFieldItem currentItem = k.next();
                 if (currentItem.isSelected()) {
                     if (isSelected) {
                         fieldValue.append(", ");

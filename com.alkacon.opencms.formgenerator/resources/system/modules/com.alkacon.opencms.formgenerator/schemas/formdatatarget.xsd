@@ -22,7 +22,7 @@
 		<xsd:appinfo>
 			<resourcebundle name="com.alkacon.opencms.formgenerator.workplace"/>
 			<validationrules>
-				<rule element="FormId" regex=".+" type="error" message="%(key.err.xmlcontent.field.empty)"/>
+				<rule element="FormId" regex=".+" type="error" message="%(key.alkacon-webform.err.xmlcontent.field.empty)"/>
 			</validationrules>
 			<layouts>
 				<layout element="Transport" widget="SelectorWidget" configuration="email*:%(key.alkacon-webform.datatarget.email)|database:%(key.alkacon-webform.datatarget.database)|email-database:%(key.alkacon-webform.datatarget.email-database)" />

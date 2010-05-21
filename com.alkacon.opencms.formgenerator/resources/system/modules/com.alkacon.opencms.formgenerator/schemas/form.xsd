@@ -4,7 +4,10 @@
 	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/inputfield.xsd"/>
 	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/optionalconfig.xsd"/>
 	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/optionalconfirmation.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/optionalexpiration.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/optionalfieldtext.xsd"/>
 	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/optionalformcaptcha.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/optionalsubfield.xsd"/>
 	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/formdatatarget.xsd"/>
 		
 	<xsd:element name="AlkaconWebForms" type="OpenCmsAlkaconWebForms"/>
@@ -17,19 +20,26 @@
 
 	<xsd:complexType name="OpenCmsAlkaconWebForm">
 		<xsd:sequence>
+			<xsd:element name="DataTarget" type="OpenCmsDataTarget" minOccurs="0" />
 			<xsd:element name="MailFrom" type="OpenCmsString" />
 			<xsd:element name="MailTo" type="OpenCmsString" />
 			<xsd:element name="MailSubject" type="OpenCmsString" />
-			<xsd:element name="DataTarget" type="OpenCmsDataTarget" minOccurs="0" maxOccurs="1"/>
-			<xsd:element name="MailText" type="OpenCmsHtml" />						
+			<xsd:element name="MailText" type="OpenCmsHtml" />				
 			<xsd:element name="FormText" type="OpenCmsHtml" />
-			<xsd:element name="InputField" type="OpenCmsAlkaconWebFormInputField" maxOccurs="unbounded" />
 			<xsd:element name="FormMiddleText" type="OpenCmsHtml" minOccurs="0" />
-			<xsd:element name="FormFooterText" type="OpenCmsHtml" minOccurs="0" />	
-			<xsd:element name="TargetUri" type="OpenCmsVfsFile" minOccurs="0" /> 				
+			<xsd:element name="FormFooterText" type="OpenCmsHtml" minOccurs="0" />
 			<xsd:element name="FormConfirmation" type="OpenCmsHtml" />
-			<xsd:element name="FormCaptcha" type="OpenCmsAlkaconWebFormCaptcha" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="TargetUri" type="OpenCmsVfsFile" minOccurs="0" />
+			<xsd:element name="OptionalFormExpiration" type="OpenCmsOptionalAlkaconWebFormExpiration" minOccurs="0" />
+
+			<xsd:element name="InputField" type="OpenCmsAlkaconWebFormInputField" maxOccurs="unbounded" />
+
+			<xsd:element name="OptionalSubField" type="OpenCmsOptionalAlkaconWebFormSubField" minOccurs="0" maxOccurs="unbounded" />
+
+			<xsd:element name="FormCaptcha" type="OpenCmsAlkaconWebFormCaptcha" minOccurs="0" />
 			<xsd:element name="OptionalFormConfiguration" type="OpenCmsOptionalAlkaconWebFormConfiguration" minOccurs="0" />
+			<xsd:element name="OptionalFieldText" type="OpenCmsOptionalAlkaconWebFormFieldText" minOccurs="0" maxOccurs="unbounded" />
+
 			<xsd:element name="OptionalConfirmationMail" type="OpenCmsOptionalAlkaconWebFormConfirmationMail" minOccurs="0" />
 		</xsd:sequence>
 		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
@@ -40,12 +50,17 @@
 			<resourcebundle name="com.alkacon.opencms.formgenerator.workplace"/>
 			<preview uri="${previewtempfile}" />
 			<defaults>
+				<default element="OptionalFormConfiguration/MailCSS" value="%(key.form.email.css)" />
 				<default element="OptionalFormConfiguration/ShowMandatory" value="true" />
 				<default element="OptionalFormConfiguration/ShowReset" value="true" />
 				<default element="OptionalFormConfiguration/ActionClass" value="com.alkacon.opencms.formgenerator.DefaultActionHandler" />
+				<default element="OptionalFormConfiguration/KeepSession" value="360" />
+				<default element="OptionalFormExpiration/Date" value="%(currenttime)" />
 			</defaults>
 			<validationrules>
-				<rule element="DataTarget/FormId" regex=".+" type="error" message="%(err.xmlcontent.field.empty)"/>
+				<rule element="MailFrom" regex=".+" type="warning" message="%(key.alkacon-webform.warn.xmlcontent.field.empty)"/>
+				<rule element="MailTo" regex=".+" type="warning" message="%(key.alkacon-webform.warn.xmlcontent.field.empty)"/>
+				<rule element="MailSubject" regex=".+" type="warning" message="%(key.alkacon-webform.warn.xmlcontent.field.empty)"/>
 			</validationrules>
 			<layouts>
 				<layout element="MailText" widget="HtmlWidget" configuration="formatselect,source,table" />
@@ -58,9 +73,11 @@
 				<mapping element="OptionalFormConfiguration/PropertyFile" mapto="property:webform.propertyfile" />
 			</mappings>
 			<tabs>				
-				<tab element="MailFrom" name="MailFrom" collapse="false" />
-				<tab element="InputField" name="InputField" collapse="false" />
-				<tab element="FormMiddleText" collapse="true" />			
+				<tab element="DataTarget" name="Tab.Basic" collapse="false" />
+				<tab element="InputField" name="Tab.Fields" collapse="false" />
+				<tab element="OptionalSubField" name="Tab.SubFieldConfig" collapse="false" />
+				<tab element="FormCaptcha" name="Tab.FormConfig" collapse="false" />
+				<tab element="OptionalConfirmationMail" name="Tab.ConfirmationMail" collapse="true" />		
 			</tabs>
 		</xsd:appinfo>
 	</xsd:annotation>  

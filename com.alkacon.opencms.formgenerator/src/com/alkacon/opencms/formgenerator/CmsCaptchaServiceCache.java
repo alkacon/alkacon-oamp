@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaServiceCache.java,v $
- * Date   : $Date: 2010/03/19 15:31:11 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2010/05/21 13:49:16 $
+ * Version: $Revision: 1.6 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -49,7 +49,7 @@ import com.octo.captcha.service.CaptchaService;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * 
  * @since 7.0.4 
  */
@@ -59,10 +59,10 @@ public final class CmsCaptchaServiceCache implements I_CmsEventListener {
     private static CmsCaptchaServiceCache sharedInstance;
 
     /** Stores the captcha services. */
-    private Map m_captchaServices;
+    private Map<String, CmsCaptchaService> m_captchaServices;
 
     /** Stores the maptcha services. */
-    private Map m_maptchaServices;
+    private Map<String, CmsMaptchaService> m_maptchaServices;
 
     /**
      * Default constructor.
@@ -79,8 +79,8 @@ public final class CmsCaptchaServiceCache implements I_CmsEventListener {
             I_CmsEventListener.EVENT_CLEAR_OFFLINE_CACHES,
             I_CmsEventListener.EVENT_PUBLISH_PROJECT});
 
-        m_captchaServices = new HashMap();
-        m_maptchaServices = new HashMap();
+        m_captchaServices = new HashMap<String, CmsCaptchaService>();
+        m_maptchaServices = new HashMap<String, CmsMaptchaService>();
     }
 
     /**
@@ -130,10 +130,10 @@ public final class CmsCaptchaServiceCache implements I_CmsEventListener {
     public synchronized CaptchaService getCaptchaService(CmsCaptchaSettings captchaSettings, CmsObject cms) {
 
         if (m_captchaServices == null) {
-            m_captchaServices = new HashMap();
+            m_captchaServices = new HashMap<String, CmsCaptchaService>();
         }
         if (m_maptchaServices == null) {
-            m_maptchaServices = new HashMap();
+            m_maptchaServices = new HashMap<String, CmsMaptchaService>();
         }
 
         String key = null;
@@ -143,14 +143,14 @@ public final class CmsCaptchaServiceCache implements I_CmsEventListener {
             key = captchaSettings.toRequestParams(cms);
         }
         if (captchaSettings.isMathField()) {
-            CmsMaptchaService maptchaService = (CmsMaptchaService)m_maptchaServices.get(key);
+            CmsMaptchaService maptchaService = m_maptchaServices.get(key);
             if (maptchaService == null) {
                 maptchaService = new CmsMaptchaService(captchaSettings);
                 m_maptchaServices.put(key, maptchaService);
             }
             return maptchaService;
         } else {
-            CmsCaptchaService captchaService = (CmsCaptchaService)m_captchaServices.get(key);
+            CmsCaptchaService captchaService = m_captchaServices.get(key);
             if (captchaService == null) {
                 captchaService = new CmsCaptchaService(captchaSettings);
                 m_captchaServices.put(key, captchaService);

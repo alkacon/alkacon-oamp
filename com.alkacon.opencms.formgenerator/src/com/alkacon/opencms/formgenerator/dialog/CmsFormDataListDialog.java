@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/dialog/CmsFormDataListDialog.java,v $
- * Date   : $Date: 2010/03/19 15:31:12 $
- * Version: $Revision: 1.7 $
+ * Date   : $Date: 2010/05/21 13:49:30 $
+ * Version: $Revision: 1.8 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -78,7 +78,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Anja Roettgers
  * 
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  * 
  * @since 7.0.4
  */
@@ -468,7 +468,7 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
     protected void setMultiActions(CmsListMetadata metadata) {
 
         // add the delete multi action
-        CmsListMultiAction deleteCol = new CmsListMultiAction(LIST_MACTION_DELETE);
+        CmsListMultiAction deleteCol = new CmsFormDeleteCheckedEntriesAction(LIST_MACTION_DELETE);
         deleteCol.setName(Messages.get().container(Messages.GUI_ACTION_FIELDS_DELETE_0));
         deleteCol.setHelpText(Messages.get().container(Messages.GUI_ACTION_FIELDS_DELETE_HELP_0));
         deleteCol.setConfirmationMessage(Messages.get().container(Messages.GUI_ACTION_FIELDS_DELETE_CONF_0));
@@ -503,7 +503,7 @@ public class CmsFormDataListDialog extends A_CmsListDialog {
         deleteCol.setSorteable(false);
 
         // add delete action 
-        CmsListDirectAction deleteAction = new CmsListDirectAction(LIST_ACTION_DELETE);
+        CmsListDirectAction deleteAction = new CmsFormDeleteSingleEntryAction(LIST_ACTION_DELETE);
         deleteAction.setName(Messages.get().container(Messages.GUI_ACTION_FIELDS_DELETE_0));
         deleteAction.setHelpText(Messages.get().container(Messages.GUI_ACTION_FIELDS_DELETE_HELP_0));
         deleteAction.setConfirmationMessage(Messages.get().container(Messages.GUI_ACTION_FIELDS_DELETE_CONF_0));

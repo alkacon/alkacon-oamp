@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/dialog/CmsFormListDialog.java,v $
- * Date   : $Date: 2010/03/19 15:31:12 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2010/05/21 13:49:31 $
+ * Version: $Revision: 1.6 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -33,6 +33,7 @@
 package com.alkacon.opencms.formgenerator.dialog;
 
 import com.alkacon.opencms.formgenerator.database.CmsFormDataAccess;
+import com.alkacon.opencms.formgenerator.database.CmsFormDataBean;
 
 import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.main.CmsLog;
@@ -64,7 +65,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Anja Roettgers
  * 
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * 
  * @since 7.0.4
  */
@@ -77,6 +78,9 @@ public class CmsFormListDialog extends A_CmsListDialog {
     public static final String PARAM_FORM_ID = "formid";
 
     /** List id constant. */
+    private static final String LIST_ACTION_DELETE = "iad";
+
+    /** List id constant. */
     private static final String LIST_ACTION_NAME = "ian";
 
     /** List id constant. */
@@ -84,6 +88,9 @@ public class CmsFormListDialog extends A_CmsListDialog {
 
     /** List column id constant. */
     private static final String LIST_COLUMN_FORM_COUNT = "ctc";
+
+    /** List column id constant. */
+    private static final String LIST_COLUMN_FORM_DELETE = "ctd";
 
     /** List column id constant. */
     private static final String LIST_COLUMN_FORM_NAME = "ctn";
@@ -137,7 +144,19 @@ public class CmsFormListDialog extends A_CmsListDialog {
      */
     public void executeListSingleActions() throws CmsRuntimeException {
 
-        if (LIST_ACTION_SHOW.equals(getParamListAction()) || LIST_ACTION_NAME.equals(getParamListAction())) {
+        if (LIST_ACTION_DELETE.equals(getParamListAction())) {
+            try {
+                List entries = CmsFormDataAccess.getInstance().readForms(getSelectedItem().getId(), 0, Long.MAX_VALUE);
+                for (Iterator i = entries.iterator(); i.hasNext();) {
+                    CmsFormDataBean entry = (CmsFormDataBean)i.next();
+                    CmsFormDataAccess.getInstance().deleteForm(entry.getEntryId());
+                }
+            } catch (Exception e) {
+                throw new CmsRuntimeException(Messages.get().container(
+                    Messages.ERR_DELETE_SELECTED_FORM_1,
+                    getSelectedItem().getId()), e);
+            }
+        } else if (LIST_ACTION_SHOW.equals(getParamListAction()) || LIST_ACTION_NAME.equals(getParamListAction())) {
             // add is clicked
             try {
                 Map params = new HashMap();
@@ -231,6 +250,11 @@ public class CmsFormListDialog extends A_CmsListDialog {
         metadata.addColumn(showCol);
         showCol.setPrintable(false);
 
+        // add the delete action
+        CmsListColumnDefinition delCol = getColumnDelete();
+        metadata.addColumn(delCol);
+        delCol.setPrintable(false);
+
         // add column for the form name
         CmsListColumnDefinition nameCol = new CmsListColumnDefinition(LIST_COLUMN_FORM_NAME);
         nameCol.setName(Messages.get().container(Messages.GUI_COLUMN_FORM_NAME_0));
@@ -247,6 +271,31 @@ public class CmsFormListDialog extends A_CmsListDialog {
         countCol.setWidth("20%");
         metadata.addColumn(countCol);
 
+    }
+
+    /**
+     * Returns the delete column with action to delete a all form entries.<p>
+     * 
+     * @return the column definition with the delete action
+     */
+    private CmsListColumnDefinition getColumnDelete() {
+
+        // create column for deletion
+        CmsListColumnDefinition deleteCol = new CmsListColumnDefinition(LIST_COLUMN_FORM_DELETE);
+        deleteCol.setName(Messages.get().container(Messages.GUI_COLUMN_FORM_DELETE_0));
+        deleteCol.setHelpText(Messages.get().container(Messages.GUI_ACTION_FORM_DELETE_HELP_0));
+        deleteCol.setWidth("20");
+        deleteCol.setAlign(CmsListColumnAlignEnum.ALIGN_CENTER);
+        deleteCol.setSorteable(false);
+
+        // add delete action 
+        CmsListDirectAction deleteAction = new CmsFormDeleteAllEntriesAction(LIST_ACTION_DELETE);
+        deleteAction.setName(Messages.get().container(Messages.GUI_ACTION_FORM_DELETE_0));
+        deleteAction.setHelpText(Messages.get().container(Messages.GUI_ACTION_FORM_DELETE_HELP_0));
+        deleteAction.setConfirmationMessage(Messages.get().container(Messages.GUI_ACTION_FORM_DELETE_CONF_0));
+        deleteAction.setIconPath(ICON_DELETE);
+        deleteCol.addDirectAction(deleteAction);
+        return deleteCol;
     }
 
     /**

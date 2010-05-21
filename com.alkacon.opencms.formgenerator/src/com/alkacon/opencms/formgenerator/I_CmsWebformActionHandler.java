@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/I_CmsWebformActionHandler.java,v $
- * Date   : $Date: 2010/04/23 09:53:16 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2010/05/21 13:49:15 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -38,7 +38,7 @@ import org.opencms.file.CmsObject;
  * 
  * @author Mario Jaeger
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 7.5.2
  */
@@ -46,6 +46,9 @@ public interface I_CmsWebformActionHandler {
 
     /**
      * Runs the action after the web form was sent.<p>
+     * 
+     * @param cmsObject the current users context
+     * @param formHandler the initialized web form handler
      * 
      */
     void afterWebformAction(CmsObject cmsObject, CmsFormHandler formHandler);

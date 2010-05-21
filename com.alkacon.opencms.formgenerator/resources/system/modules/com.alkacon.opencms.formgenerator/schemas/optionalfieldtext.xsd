@@ -1,0 +1,33 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+		
+	<xsd:element name="OptionalAlkaconWebFormFieldTexts" type="OpenCmsOptionalAlkaconWebFormFieldTexts"/>
+	
+	<xsd:complexType name="OpenCmsOptionalAlkaconWebFormFieldTexts">
+		<xsd:sequence>
+			<xsd:element name="OptionalAlkaconWebFormFieldText" type="OpenCmsOptionalAlkaconWebFormFieldText" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsOptionalAlkaconWebFormFieldText">
+		<xsd:sequence>
+			<xsd:element name="InputField" type="OpenCmsString" />
+			<xsd:element name="Column" type="OpenCmsString" />
+			<xsd:element name="Text" type="OpenCmsHtml" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+	</xsd:complexType>
+	
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.formgenerator.workplace"/>
+			<layouts>
+				<layout element="InputField" widget="com.alkacon.opencms.formgenerator.CmsSelectFieldWidget" configuration="referencebylabel=true" />
+				<layout element="Column" widget="SelectorWidget" configuration="0:%(key.form.column.both)|1:%(key.form.column.left)|2:%(key.form.column.right)" />
+				<layout element="Text" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
+			</layouts>
+		</xsd:appinfo>
+	</xsd:annotation>  
+
+</xsd:schema>

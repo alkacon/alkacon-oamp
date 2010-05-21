@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsTableField.java,v $
- * Date   : $Date: 2010/03/19 15:31:10 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2010/05/21 13:49:17 $
+ * Version: $Revision: 1.5 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -53,7 +53,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Anja Roettgers
  * 
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * 
  * @since 7.0.4 
  */
@@ -76,27 +76,28 @@ public class CmsTableField extends A_CmsField {
     }
 
     /** The list of all column frontend labels. */
-    private List m_cols;
+    private List<String> m_cols;
 
     /** The list of all column backend labels. */
-    private List m_dbcols;
+    private List<String> m_dbcols;
 
     /** The items. */
-    private Map m_tableItems;
+    private Map<String, CmsFieldItem> m_tableItems;
 
     /** The list of all row frontend labels. */
-    private List m_rows;
+    private List<String> m_rows;
 
     /** The list of all row backend labels. */
-    private List m_dbrows;
+    private List<String> m_dbrows;
 
     /**
      * 
      * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(com.alkacon.opencms.formgenerator.CmsFormHandler, org.opencms.i18n.CmsMessages, java.lang.String, boolean)
      */
+    @Override
     public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory) {
 
-        StringBuffer buf = new StringBuffer();
+        StringBuffer buf = new StringBuffer(128);
         String errorMessage = "";
 
         if (CmsStringUtil.isNotEmpty(errorKey)) {
@@ -119,10 +120,18 @@ public class CmsTableField extends A_CmsField {
 
         // if its two column design, then show this field alone in one row
         if (!showRowStart(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.end")).append("\n");
+            if (isSubField()) {
+                buf.append(messages.key("form.html.row.subfield.end")).append("\n");
+            } else {
+                buf.append(messages.key("form.html.row.end")).append("\n");
+            }
         }
         // line #1
-        buf.append(messages.key("form.html.row.start")).append("\n");
+        if (isSubField()) {
+            buf.append(messages.key("form.html.row.subfield.start")).append("\n");
+        } else {
+            buf.append(messages.key("form.html.row.start")).append("\n");
+        }
         // line #2
         buf.append(messages.key("form.html.table.label.start"));
         buf.append(buildLabel(messages, (isMandatory() && showMandatory), CmsStringUtil.isNotEmpty(errorKey)));
@@ -134,7 +143,11 @@ public class CmsTableField extends A_CmsField {
         buf.append(errorMessage);
         buf.append(messages.key("form.html.table.field.end")).append("\n");
         // line #4
-        buf.append(messages.key("form.html.row.end")).append("\n");
+        if (isSubField()) {
+            buf.append(messages.key("form.html.row.subfield.end")).append("\n");
+        } else {
+            buf.append(messages.key("form.html.row.end")).append("\n");
+        }
 
         return buf.toString();
     }
@@ -149,12 +162,12 @@ public class CmsTableField extends A_CmsField {
      */
     public String buildHtml(CmsMessages messages, boolean editable) {
 
-        StringBuffer result = new StringBuffer();
+        StringBuffer result = new StringBuffer(128);
         // append the head of the table
         result.append(messages.key("form.html.table.field.head.start"));
         result.append(messages.key("form.html.table.row.start"));
         for (int k = 0; k < m_cols.size(); k++) {
-            String col = (String)m_cols.get(k);
+            String col = m_cols.get(k);
             result.append(messages.key("form.html.table.col.head.start"));
             result.append(CmsStringUtil.escapeHtml(col));
             result.append(messages.key("form.html.table.col.head.end"));
@@ -165,14 +178,14 @@ public class CmsTableField extends A_CmsField {
         // append the body
         result.append(messages.key("form.html.table.field.body.start"));
         for (int i = 0; i < m_dbrows.size(); i++) {
-            String row = (String)m_dbrows.get(i);
+            String row = m_dbrows.get(i);
             result.append(messages.key("form.html.table.row.start"));
             for (int j = 0; j < m_dbcols.size(); j++) {
-                String col = (String)m_dbcols.get(j);
+                String col = m_dbcols.get(j);
                 result.append(messages.key("form.html.table.col.body.start"));
                 String key = getKey(col, row, false);
                 if (m_tableItems.containsKey(key)) {
-                    CmsFieldItem item = (CmsFieldItem)m_tableItems.get(key);
+                    CmsFieldItem item = m_tableItems.get(key);
                     if (editable) {
                         result.append("<input type=\"text\" name=\"").append(getName()).append(key);
                         result.append("\" value=\"").append(CmsStringUtil.escapeHtml(item.getValue()));
@@ -218,7 +231,7 @@ public class CmsTableField extends A_CmsField {
         label.append(messages.key("form.html.table.name.end"));
         label.append(messages.key("form.html.table.row.end"));
         for (int i = 0; i < m_rows.size(); i++) {
-            String row = (String)m_rows.get(i);
+            String row = m_rows.get(i);
             label.append(messages.key("form.html.table.row.start"));
             label.append(messages.key("form.html.table.row.head.start"));
             label.append(CmsStringUtil.escapeHtml(row));
@@ -239,15 +252,15 @@ public class CmsTableField extends A_CmsField {
     public String buildText(boolean frontend) {
 
         StringBuffer result = new StringBuffer();
-        List rows = frontend ? m_rows : m_dbrows;
-        List cols = frontend ? m_cols : m_dbcols;
+        List<String> rows = frontend ? m_rows : m_dbrows;
+        List<String> cols = frontend ? m_cols : m_dbcols;
         for (int i = 0; i < rows.size(); i++) {
-            String row = (String)rows.get(i);
+            String row = rows.get(i);
             for (int j = 0; j < cols.size(); j++) {
-                String col = (String)cols.get(j);
-                String key = getKey((String)m_dbcols.get(j), (String)m_dbrows.get(i), false);
+                String col = cols.get(j);
+                String key = getKey(m_dbcols.get(j), m_dbrows.get(i), false);
                 if (m_tableItems.containsKey(key)) {
-                    CmsFieldItem item = (CmsFieldItem)m_tableItems.get(key);
+                    CmsFieldItem item = m_tableItems.get(key);
                     result.append(getKey(col, row, frontend)).append(":\t");
                     result.append(item.getValue()).append("\n");
                 }
@@ -259,9 +272,10 @@ public class CmsTableField extends A_CmsField {
     /**
      * @see com.alkacon.opencms.formgenerator.A_CmsField#getItems()
      */
-    public List getItems() {
+    @Override
+    public List<CmsFieldItem> getItems() {
 
-        return new ArrayList(m_tableItems.values());
+        return new ArrayList<CmsFieldItem>(m_tableItems.values());
     }
 
     /**
@@ -281,9 +295,9 @@ public class CmsTableField extends A_CmsField {
      * 
      * @throws CmsConfigurationException if no rows or columns are defined
      */
-    public void parseDefault(String defaultValue, Map parameter) throws CmsConfigurationException {
+    public void parseDefault(String defaultValue, Map<String, String[]> parameter) throws CmsConfigurationException {
 
-        m_tableItems = new HashMap();
+        m_tableItems = new HashMap<String, CmsFieldItem>();
         // check if the default value is empty
         if (CmsStringUtil.isEmptyOrWhitespaceOnly(defaultValue)) {
             throw new CmsConfigurationException(Messages.get().container(
@@ -307,16 +321,16 @@ public class CmsTableField extends A_CmsField {
             frontend = backend;
         }
 
-        List cells = CmsStringUtil.splitAsList(frontend, "|");
-        List dbcells = CmsStringUtil.splitAsList(backend, "|");
+        List<String> cells = CmsStringUtil.splitAsList(frontend, "|");
+        List<String> dbcells = CmsStringUtil.splitAsList(backend, "|");
 
         // get the columns and rows from the default value
-        List testRow = new ArrayList();
-        List testCol = new ArrayList();
-        m_cols = CmsStringUtil.splitAsList((String)cells.get(0), ",");
-        m_dbcols = CmsStringUtil.splitAsList((String)dbcells.get(0), ",", true);
-        m_rows = CmsStringUtil.splitAsList((String)cells.get(1), ",");
-        m_dbrows = CmsStringUtil.splitAsList((String)dbcells.get(1), ",", true);
+        List<String> testRow = new ArrayList<String>();
+        List<String> testCol = new ArrayList<String>();
+        m_cols = CmsStringUtil.splitAsList(cells.get(0), ",");
+        m_dbcols = CmsStringUtil.splitAsList(dbcells.get(0), ",", true);
+        m_rows = CmsStringUtil.splitAsList(cells.get(1), ",");
+        m_dbrows = CmsStringUtil.splitAsList(dbcells.get(1), ",", true);
 
         // test if the frontend and backend columns are in the size identical
         if (m_cols.size() != m_dbcols.size()) {
@@ -329,7 +343,7 @@ public class CmsTableField extends A_CmsField {
 
         for (int i = 0; i < m_dbrows.size(); i++) {
             // look if the row not already exists
-            String dbrow = (String)m_dbrows.get(i);
+            String dbrow = m_dbrows.get(i);
             if (testRow.contains(dbrow)) {
                 throw new CmsConfigurationException(Messages.get().container(
                     Messages.ERR_INIT_TABLE_FIELD_UNIQUE_1,
@@ -338,7 +352,7 @@ public class CmsTableField extends A_CmsField {
             // for each column generate the item
             for (int j = 0; j < m_dbcols.size(); j++) {
                 // look if the column not already exists
-                String dbcol = (String)m_dbcols.get(j);
+                String dbcol = m_dbcols.get(j);
                 if ((i == 0) && testCol.contains(dbcol)) {
                     throw new CmsConfigurationException(Messages.get().container(
                         Messages.ERR_INIT_TABLE_FIELD_UNIQUE_1,
@@ -384,6 +398,7 @@ public class CmsTableField extends A_CmsField {
      * 
      * @see com.alkacon.opencms.formgenerator.A_CmsField#validateConstraints()
      */
+    @Override
     protected String validateConstraints() {
 
         if (!isMandatory()) {
@@ -391,14 +406,14 @@ public class CmsTableField extends A_CmsField {
         }
         // check if the field has a value
         for (int i = 0; i < m_dbcols.size(); i++) {
-            String col = (String)m_dbcols.get(i);
+            String col = m_dbcols.get(i);
             for (int j = 0; j < m_dbrows.size(); j++) {
-                String row = (String)m_dbrows.get(j);
+                String row = m_dbrows.get(j);
                 String key = getKey(col, row, false);
                 if (!m_tableItems.containsKey(key)) {
                     return CmsFormHandler.ERROR_MANDATORY;
                 }
-                CmsFieldItem item = (CmsFieldItem)m_tableItems.get(key);
+                CmsFieldItem item = m_tableItems.get(key);
                 // check if the field has been filled out
                 if (CmsStringUtil.isEmpty(item.getValue())) {
                     return CmsFormHandler.ERROR_MANDATORY;
@@ -413,16 +428,17 @@ public class CmsTableField extends A_CmsField {
      * 
      * @see com.alkacon.opencms.formgenerator.A_CmsField#validateValue()
      */
+    @Override
     protected String validateValue() {
 
         if (CmsStringUtil.isEmptyOrWhitespaceOnly(getValidationExpression())) {
             return null;
         }
         Pattern pattern = Pattern.compile(getValidationExpression());
-        List items = getItems();
+        List<CmsFieldItem> items = getItems();
         for (int i = 0; i < items.size(); i++) {
             try {
-                CmsFieldItem item = (CmsFieldItem)items.get(i);
+                CmsFieldItem item = items.get(i);
                 if (CmsStringUtil.isNotEmpty(item.getValue()) && !pattern.matcher(item.getValue()).matches()) {
                     return CmsFormHandler.ERROR_VALIDATION;
                 }

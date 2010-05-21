@@ -16,16 +16,18 @@
 			<xsd:element name="MailType" type="OpenCmsString" />
 			<xsd:element name="MailCC" type="OpenCmsString" />
 			<xsd:element name="MailBCC" type="OpenCmsString" />
+			<xsd:element name="MailCSS" type="OpenCmsString" minOccurs="0" />
 			<xsd:element name="ShowCheck" type="OpenCmsBoolean" />
 			<xsd:element name="CheckText" type="OpenCmsHtml" />
 			<xsd:element name="ShowMandatory" type="OpenCmsBoolean" />
 			<xsd:element name="ShowReset" type="OpenCmsBoolean" />
 			<xsd:element name="FormAttributes" type="OpenCmsString" />
 			<xsd:element name="FormFieldAttributes" type="OpenCmsString" />
-			<xsd:element name="DynamicFieldClass" type="OpenCmsString" minOccurs="1" />
-			<xsd:element name="Style" type="OpenCmsString" minOccurs="0" maxOccurs="1" />
-			<xsd:element name="PropertyFile" type="OpenCmsString" minOccurs="0" maxOccurs="1" />
-			<xsd:element name="ActionClass" type="OpenCmsString" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="DynamicFieldClass" type="OpenCmsString" />
+			<xsd:element name="Style" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="PropertyFile" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="ActionClass" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="KeepSession" type="OpenCmsString" minOccurs="0" />
 		</xsd:sequence>
 		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
 	</xsd:complexType>
@@ -35,6 +37,7 @@
 			<resourcebundle name="com.alkacon.opencms.formgenerator.workplace"/>
 			<layouts>
 				<layout element="MailType" widget="SelectorWidget" configuration="html*:${key.form.email.type.html}|text:${key.form.email.type.text}" />
+				<layout element="MailCSS" widget="TextareaWidget" configuration="6" />
 				<layout element="CheckText" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
 			</layouts>
 		</xsd:appinfo>

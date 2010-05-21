@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsMaptchaFactory.java,v $
- * Date   : $Date: 2010/03/19 15:31:10 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2010/05/21 13:49:14 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -61,6 +61,7 @@ public class CmsMaptchaFactory extends TextCaptchaFactory {
      * 
      * @return the text captcha
      */
+    @Override
     public TextCaptcha getTextCaptcha() {
 
         return getTextCaptcha(Locale.getDefault());
@@ -72,6 +73,7 @@ public class CmsMaptchaFactory extends TextCaptchaFactory {
      * @param locale the current Locale
      * @return a localized text captcha
      */
+    @Override
     public TextCaptcha getTextCaptcha(Locale locale) {
 
         // build the challenge: get 2 random int values

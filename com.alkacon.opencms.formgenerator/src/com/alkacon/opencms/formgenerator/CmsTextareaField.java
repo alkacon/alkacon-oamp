@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsTextareaField.java,v $
- * Date   : $Date: 2010/03/19 15:31:11 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2010/05/21 13:49:15 $
+ * Version: $Revision: 1.7 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -42,7 +42,7 @@ import org.opencms.util.I_CmsMacroResolver;
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  * 
  * @since 7.0.4 
  */
@@ -72,9 +72,10 @@ public class CmsTextareaField extends A_CmsField {
     /**
      * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, org.opencms.i18n.CmsMessages, String, boolean)
      */
+    @Override
     public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory) {
 
-        StringBuffer buf = new StringBuffer();
+        StringBuffer buf = new StringBuffer(128);
         String fieldLabel = getLabel();
         String errorMessage = "";
         String mandatory = "";
@@ -108,7 +109,11 @@ public class CmsTextareaField extends A_CmsField {
 
         // line #1
         if (showRowStart(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.start")).append("\n");
+            if (isSubField()) {
+                buf.append(messages.key("form.html.row.subfield.start")).append("\n");
+            } else {
+                buf.append(messages.key("form.html.row.start")).append("\n");
+            }
         }
 
         // line #2
@@ -123,7 +128,11 @@ public class CmsTextareaField extends A_CmsField {
 
         // line #4
         if (showRowEnd(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.end")).append("\n");
+            if (isSubField()) {
+                buf.append(messages.key("form.html.row.subfield.end")).append("\n");
+            } else {
+                buf.append(messages.key("form.html.row.end")).append("\n");
+            }
         }
 
         incrementPlaceholder(messages.key("form.html.multiline.placeholder"));

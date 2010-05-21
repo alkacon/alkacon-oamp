@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/dialog/Messages.java,v $
- * Date   : $Date: 2010/03/19 15:31:12 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2010/05/21 13:49:30 $
+ * Version: $Revision: 1.6 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -40,26 +40,20 @@ import org.opencms.i18n.I_CmsMessageBundle;
  * 
  * @author Anja Roettgers
  * 
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * 
  * @since 7.0.4 
  */
 public final class Messages extends A_CmsMessageBundle {
 
     /** Message constant for key in the resource bundle. */
-    public static final String ERR_TOOLHANDLER_READGROUP_3 = "ERR_TOOLHANDLER_READGROUP_3";
-
-    /** Message constant for key in the resource bundle. */
-    public static final String ERR_TOOLHANDLER_MISSINGGROUP_2 = "ERR_TOOLHANDLER_MISSINGGROUP_2";
-
-    /** Message constant for key in the resource bundle. */
-    public static final String ERR_TOOLHANDLER_CHECKGROUP_2 = "ERR_TOOLHANDLER_CHECKGROUP_2";
-
-    /** Message constant for key in the resource bundle. */
     public static final String ERR_DELETE_SELECTED_FORM_0 = "ERR_DELETE_SELECTED_FORM_0";
 
     /** Message constant for key in the resource bundle. */
     public static final String ERR_DELETE_SELECTED_FORM_1 = "ERR_DELETE_SELECTED_FORM_1";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String ERR_FILE_ACCESS_0 = "ERR_FILE_ACCESS_0";
 
     /** Message constant for key in the resource bundle. */
     public static final String ERR_READ_FORM_0 = "ERR_READ_FORM_0";
@@ -80,6 +74,15 @@ public final class Messages extends A_CmsMessageBundle {
     public static final String ERR_SHOW_SELECTED_FORM_1 = "ERR_SHOW_SELECTED_FORM_1";
 
     /** Message constant for key in the resource bundle. */
+    public static final String ERR_TOOLHANDLER_CHECKGROUP_2 = "ERR_TOOLHANDLER_CHECKGROUP_2";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String ERR_TOOLHANDLER_MISSINGGROUP_2 = "ERR_TOOLHANDLER_MISSINGGROUP_2";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String ERR_TOOLHANDLER_READGROUP_3 = "ERR_TOOLHANDLER_READGROUP_3";
+
+    /** Message constant for key in the resource bundle. */
     public static final String ERR_WRITE_FORM_FIELDS_3 = "ERR_WRITE_FORM_FIELDS_3";
 
     /** Message constant for key in the resource bundle. */
@@ -92,6 +95,9 @@ public final class Messages extends A_CmsMessageBundle {
     public static final String GUI_ACTION_FIELDS_DELETE_HELP_0 = "GUI_ACTION_FIELDS_DELETE_HELP_0";
 
     /** Message constant for key in the resource bundle. */
+    public static final String GUI_ACTION_FIELDS_DELETE_IN_HELP_0 = "GUI_ACTION_FIELDS_DELETE_IN_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
     public static final String GUI_ACTION_FIELDS_EDIT_0 = "GUI_ACTION_FIELDS_EDIT_0";
 
     /** Message constant for key in the resource bundle. */
@@ -99,6 +105,18 @@ public final class Messages extends A_CmsMessageBundle {
 
     /** Message constant for key in the resource bundle. */
     public static final String GUI_ACTION_FIELDS_SEARCH_HELP_0 = "GUI_ACTION_FIELDS_SEARCH_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ACTION_FORM_DELETE_0 = "GUI_ACTION_FORM_DELETE_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ACTION_FORM_DELETE_CONF_0 = "GUI_ACTION_FORM_DELETE_CONF_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ACTION_FORM_DELETE_IN_HELP_0 = "GUI_ACTION_FORM_DELETE_IN_HELP_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String GUI_ACTION_FORM_DELETE_HELP_0 = "GUI_ACTION_FORM_DELETE_HELP_0";
 
     /** Message constant for key in the resource bundle. */
     public static final String GUI_ACTION_FORM_SHOW_0 = "GUI_ACTION_FORM_SHOW_0";
@@ -128,6 +146,9 @@ public final class Messages extends A_CmsMessageBundle {
     public static final String GUI_COLUMN_FORM_COUNT_0 = "GUI_COLUMN_FORM_COUNT_0";
 
     /** Message constant for key in the resource bundle. */
+    public static final String GUI_COLUMN_FORM_DELETE_0 = "GUI_COLUMN_FORM_DELETE_0";
+
+    /** Message constant for key in the resource bundle. */
     public static final String GUI_COLUMN_FORM_NAME_0 = "GUI_COLUMN_FORM_NAME_0";
 
     /** Message constant for key in the resource bundle. */
@@ -152,6 +173,14 @@ public final class Messages extends A_CmsMessageBundle {
     private static final I_CmsMessageBundle INSTANCE = new Messages();
 
     /**
+     * Hides the public constructor for this utility class.<p>
+     */
+    private Messages() {
+
+        // hide the constructor
+    }
+
+    /**
      * Returns an instance of this localized message accessor.<p>
      * 
      * @return an instance of this localized message accessor
@@ -159,14 +188,6 @@ public final class Messages extends A_CmsMessageBundle {
     public static I_CmsMessageBundle get() {
 
         return INSTANCE;
-    }
-
-    /**
-     * Hides the public constructor for this utility class.<p>
-     */
-    private Messages() {
-
-        // hide the constructor
     }
 
     /**

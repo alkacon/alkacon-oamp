@@ -6,13 +6,15 @@ CmsJspActionElement cms = new CmsJspActionElement(pageContext, request, response
 CmsFormHandler formHandler = (CmsFormHandler)request.getAttribute("formhandler"); 
 
 %><%= formHandler.getFormConfirmationText() %>
-<table border="0" style="margin-top: 14px;">
+<table border="0" class="webform_confirm_table">
 <%
-List resultList = formHandler.getFormConfiguration().getAllFields();
+List resultList = formHandler.getFormConfiguration().getAllFields(true, false, true);
 
 for (int i = 0, n = resultList.size(); i < n; i++) {
 	I_CmsField current = (I_CmsField)resultList.get(i);
-	if (CmsHiddenField.class.isAssignableFrom(current.getClass()) || CmsPrivacyField.class.isAssignableFrom(current.getClass()) || CmsCaptchaField.class.isAssignableFrom(current.getClass()) || CmsEmptyField.class.isAssignableFrom(current.getClass())) {
+	if (CmsHiddenField.class.isAssignableFrom(current.getClass()) || CmsPrivacyField.class.isAssignableFrom(current.getClass())
+			|| CmsCaptchaField.class.isAssignableFrom(current.getClass()) || CmsPagingField.class.isAssignableFrom(current.getClass())
+			|| CmsEmptyField.class.isAssignableFrom(current.getClass())) {
 		continue;
 	}
 	String label = current.getLabel();

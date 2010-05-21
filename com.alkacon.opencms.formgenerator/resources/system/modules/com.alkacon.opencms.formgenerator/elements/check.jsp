@@ -13,29 +13,27 @@ CmsCaptchaField captchaField = formHandler.getFormConfiguration().getCaptchaFiel
 
 if (captchaField != null) {
 %>
-<script type="text/javascript" language="JavaScript">
+<script type="text/javascript">
 <!--
-
 function runConfirmValues() {
-	document.forms.confirmvalues.<%= captchaField.getName() %>.value = "" + document.forms.captcha.<%= captchaField.getName() %>.value;
+	document.getElementById("webformconfirmvalues").<%= captchaField.getName() %>.value = "" + document.getElementById("webformcaptcha").<%= captchaField.getName() %>.value;
 	return true;
 }
-
 //-->
 </script>
-<form name="captcha" method="post" enctype="multipart/form-data">
+<form id="webformcaptcha" action="" method="post" enctype="multipart/form-data">
 <%
 }
 %>
 
-<table border="0" style="margin-top: 14px;">
+<table border="0" class="webform_check_table">
 <%
-List resultList = formHandler.getFormConfiguration().getFields();
+List resultList = formHandler.getFormConfiguration().getAllFields(true, false, false);
 
 for (int i = 0, n = resultList.size(); i < n; i++) {
 	I_CmsField current = (I_CmsField)resultList.get(i);
 	if ((!CmsDynamicField.class.isAssignableFrom(current.getClass()) && !CmsHiddenField.class.isAssignableFrom(current.getClass()) && !CmsCaptchaField.class.isAssignableFrom(current.getClass()) && !CmsHiddenDisplayField.class.isAssignableFrom(current.getClass())) || (CmsDisplayField.class.isAssignableFrom(current.getClass()))) {
-		if (current instanceof CmsEmptyField) {
+		if (current instanceof CmsEmptyField || current instanceof CmsPagingField) {
 	    	continue;
 		}    
 		String label = current.getLabel();
@@ -79,8 +77,8 @@ if (captchaField != null) {
 	
 	out.println("<tr>\n\t<td valign=\"middle\">" + fieldLabel + "</td>");
 	out.println("\t<td valign=\"top\" style=\"font-weight: bold;\">");
-	out.println("\t<img src=\"" + cms.link("/system/modules/com.alkacon.opencms.formgenerator/pages/captcha.jsp") + "?" + captchaSettings.toRequestParams(cms.getCmsObject()) + "\" width=\"" + captchaSettings.getImageWidth() + "\" height=\"" + captchaSettings.getImageHeight() + "\" alt=\"\" border=\"1\"><br>");
-	out.println("\t<input type=\"text\" name=\"" + captchaField.getName() + "\" value=\"\">" + errorMessage);
+	out.println("\t<img src=\"" + cms.link("/system/modules/com.alkacon.opencms.formgenerator/pages/captcha.jsp") + "?" + captchaSettings.toRequestParams(cms.getCmsObject()) + "\" width=\"" + captchaSettings.getImageWidth() + "\" height=\"" + captchaSettings.getImageHeight() + "\" alt=\"\" /><br />");
+	out.println("\t<input type=\"text\" name=\"" + captchaField.getName() + "\" value=\"\" />" + errorMessage);
 	out.println("\t</td>\n</tr>\n");
 }
 
@@ -93,20 +91,24 @@ if (captchaField != null) {
 }
 %>
 
-<table border="0" style="margin-top: 14px;">
-<tr>
-<form name="confirmvalues" method="post" enctype="multipart/form-data" action="<%= cms.link(cms.getRequestContext().getUri()) %>" onSubmit="return runConfirmValues();">
-<input type="hidden" name="<%= CmsFormHandler.PARAM_FORMACTION %>" value="<%= CmsFormHandler.ACTION_CONFIRMED %>">
-<input type="hidden" name="<%= CmsCaptchaField.C_PARAM_CAPTCHA_PHRASE %>" value="">
+<table border="0" class="webform_check_table">
+<tr><td>
+<form id="webformconfirmvalues" method="post" enctype="multipart/form-data" action="<%= cms.link(cms.getRequestContext().getUri()) %>" onsubmit="return runConfirmValues();">
+<div style="display: none;">
+<input type="hidden" name="<%= CmsFormHandler.PARAM_FORMACTION %>" value="<%= CmsFormHandler.ACTION_CONFIRMED %>" />
+<input type="hidden" name="<%= CmsCaptchaField.C_PARAM_CAPTCHA_PHRASE %>" value="" />
 <%= formHandler.createHiddenFields() %>
-<input type="submit" value="<%= messages.key("form.button.checked") %>" class="formbutton">&nbsp;&nbsp;&nbsp;&nbsp;
+</div><div>
+<input type="submit" value="<%= messages.key("form.button.checked") %>" class="formbutton" />&nbsp;&nbsp;&nbsp;&nbsp;</div>
 </form>
-
-
-<form name="displayvalues" method="post" enctype="multipart/form-data" action="<%= cms.link(cms.getRequestContext().getUri()) %>">
-<input type="hidden" name="<%= CmsFormHandler.PARAM_FORMACTION %>" value="<%= CmsFormHandler.ACTION_CORRECT_INPUT %>">
+</td>
+<td>
+<form id="webformdisplayvalues" method="post" enctype="multipart/form-data" action="<%= cms.link(cms.getRequestContext().getUri()) %>">
+<div style="display: none;">
+<input type="hidden" name="<%= CmsFormHandler.PARAM_FORMACTION %>" value="<%= CmsFormHandler.ACTION_CORRECT_INPUT %>" />
 <%= formHandler.createHiddenFields() %>
-<input type="submit" value="<%= messages.key("form.button.correct") %>" class="formbutton">
+</div><div>
+<input type="submit" value="<%= messages.key("form.button.correct") %>" class="formbutton" /></div>
 </form>
-</tr>
+</td></tr>
 </table>

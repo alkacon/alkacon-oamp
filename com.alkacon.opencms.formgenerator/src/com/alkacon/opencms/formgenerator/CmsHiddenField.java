@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsHiddenField.java,v $
- * Date   : $Date: 2010/03/19 15:31:11 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2010/05/21 13:49:16 $
+ * Version: $Revision: 1.5 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -40,7 +40,7 @@ import org.opencms.util.CmsStringUtil;
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * 
  * @since 7.0.4 
  */
@@ -70,11 +70,23 @@ public class CmsHiddenField extends A_CmsField {
     /**
      * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, org.opencms.i18n.CmsMessages, String, boolean)
      */
+    @Override
     public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory) {
 
-        StringBuffer buf = new StringBuffer();
+        StringBuffer buf = new StringBuffer(128);
+        if (isSubField()) {
+            buf.append(messages.key("form.html.row.subfield.hidden.start")).append("\n");
+        } else {
+            buf.append(messages.key("form.html.row.hidden.start"));
+        }
         buf.append("<input type=\"hidden\" name=\"").append(getName());
-        buf.append("\" value=\"").append(CmsStringUtil.escapeHtml(getValue())).append("\"/>\n");
+        buf.append("\" value=\"").append(CmsStringUtil.escapeHtml(getValue())).append("\"/>");
+        if (isSubField()) {
+            buf.append(messages.key("form.html.row.subfield.hidden.end")).append("\n");
+        } else {
+            buf.append(messages.key("form.html.row.hidden.end"));
+        }
+        buf.append("\n");
         return buf.toString();
     }
 

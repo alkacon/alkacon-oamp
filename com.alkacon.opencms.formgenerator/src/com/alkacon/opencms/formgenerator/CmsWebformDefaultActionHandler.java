@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsWebformDefaultActionHandler.java,v $
- * Date   : $Date: 2010/04/23 09:53:17 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2010/05/21 13:49:16 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -41,7 +41,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Mario Jaeger
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 7.5.2
  */
@@ -51,8 +51,7 @@ public class CmsWebformDefaultActionHandler implements I_CmsWebformActionHandler
     private static final Log LOG = CmsLog.getLog(CmsWebformDefaultActionHandler.class);
 
     /**
-     * Runs the action after the web form was sent.<p>
-     * 
+     * @see com.alkacon.opencms.formgenerator.I_CmsWebformActionHandler#afterWebformAction(org.opencms.file.CmsObject, com.alkacon.opencms.formgenerator.CmsFormHandler)
      */
     public void afterWebformAction(CmsObject cmsObject, CmsFormHandler formHandler) {
 

@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsMaptchaEngine.java,v $
- * Date   : $Date: 2010/03/19 15:31:10 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2010/05/21 13:49:15 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -81,6 +81,7 @@ public class CmsMaptchaEngine extends GenericCaptchaEngine {
      * 
      * @see com.octo.captcha.engine.CaptchaEngine#getFactories()
      */
+    @Override
     public CaptchaFactory[] getFactories() {
 
         return new CaptchaFactory[] {m_factory};
@@ -93,6 +94,7 @@ public class CmsMaptchaEngine extends GenericCaptchaEngine {
      * 
      * @see com.octo.captcha.engine.CaptchaEngine#setFactories(com.octo.captcha.CaptchaFactory[])
      */
+    @Override
     public void setFactories(CaptchaFactory[] arg0) throws CaptchaEngineException {
 
         // TODO Auto-generated method stub

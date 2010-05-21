@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsRadioButtonField.java,v $
- * Date   : $Date: 2010/03/19 15:31:11 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2010/05/21 13:49:15 $
+ * Version: $Revision: 1.6 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -43,7 +43,7 @@ import java.util.List;
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * 
  * @since 7.0.4 
  */
@@ -65,9 +65,10 @@ public class CmsRadioButtonField extends A_CmsField {
     /**
      * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, org.opencms.i18n.CmsMessages, String, boolean)
      */
+    @Override
     public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory) {
 
-        StringBuffer buf = new StringBuffer();
+        StringBuffer buf = new StringBuffer(128);
         String fieldLabel = getLabel();
         String errorMessage = "";
         String mandatory = "";
@@ -94,7 +95,11 @@ public class CmsRadioButtonField extends A_CmsField {
 
         // line #1
         if (showRowStart(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.start")).append("\n");
+            if (isSubField()) {
+                buf.append(messages.key("form.html.row.subfield.start")).append("\n");
+            } else {
+                buf.append(messages.key("form.html.row.start")).append("\n");
+            }
         }
 
         // line #2
@@ -104,14 +109,19 @@ public class CmsRadioButtonField extends A_CmsField {
         // line #3
         buf.append(messages.key("form.html.field.start")).append("\n");
 
-        List selected = getSelectedItems();
+        String attrOnChange = "";
+        if (hasSubFields()) {
+            attrOnChange = " onchange=\"toggleWebformSubFields(this);\"";
+        }
+
+        List<CmsFieldItem> selected = getSelectedItems();
 
         boolean showInRow = false;
         // add the items
-        Iterator k = getItems().iterator();
+        Iterator<CmsFieldItem> k = getItems().iterator();
         while (k.hasNext()) {
 
-            CmsFieldItem curOption = (CmsFieldItem)k.next();
+            CmsFieldItem curOption = k.next();
             showInRow = curOption.isShowInRow();
             String checked = "";
             if (selected.contains(curOption)) {
@@ -122,7 +132,7 @@ public class CmsRadioButtonField extends A_CmsField {
                 // create different HTML for row output
                 buf.append(messages.key("form.html.radio.row.input.start"));
                 buf.append("<input type=\"radio\" name=\"").append(getName()).append("\" value=\"").append(
-                    curOption.getValue()).append("\"").append(checked).append(" class=\"radio\"/>");
+                    curOption.getValue()).append("\"").append(checked).append(attrOnChange).append(" class=\"radio\"/>");
                 buf.append(messages.key("form.html.radio.row.input.end"));
                 buf.append(messages.key("form.html.radio.row.label.start"));
                 buf.append(curOption.getLabel());
@@ -133,7 +143,7 @@ public class CmsRadioButtonField extends A_CmsField {
             } else {
                 buf.append(messages.key("form.html.radio.input.start"));
                 buf.append("<input type=\"radio\" name=\"").append(getName()).append("\" value=\"").append(
-                    curOption.getValue()).append("\"").append(checked).append(" class=\"radio\"/>");
+                    curOption.getValue()).append("\"").append(checked).append(attrOnChange).append(" class=\"radio\"/>");
                 buf.append(messages.key("form.html.radio.input.end"));
                 buf.append(messages.key("form.html.radio.label.start"));
                 buf.append(curOption.getLabel());
@@ -151,7 +161,11 @@ public class CmsRadioButtonField extends A_CmsField {
         buf.append(messages.key("form.html.field.end")).append("\n");
 
         if (showRowEnd(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.end")).append("\n");
+            if (isSubField()) {
+                buf.append(messages.key("form.html.row.subfield.end")).append("\n");
+            } else {
+                buf.append(messages.key("form.html.row.end")).append("\n");
+            }
         }
 
         return buf.toString();
@@ -168,6 +182,7 @@ public class CmsRadioButtonField extends A_CmsField {
     /**
      * @see com.alkacon.opencms.formgenerator.A_CmsField#needsItems()
      */
+    @Override
     public boolean needsItems() {
 
         return true;

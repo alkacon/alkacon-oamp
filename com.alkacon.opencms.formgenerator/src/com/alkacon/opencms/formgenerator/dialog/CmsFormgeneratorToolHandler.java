@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/dialog/CmsFormgeneratorToolHandler.java,v $
- * Date   : $Date: 2010/03/19 15:31:12 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2010/05/21 13:49:30 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -86,7 +86,10 @@ public class CmsFormgeneratorToolHandler extends A_CmsToolHandler {
 
         boolean result = false;
         CmsUser user = cms.getRequestContext().currentUser();
-        if (OpenCms.getRoleManager().hasRole(cms, CmsRole.ADMINISTRATOR)) {
+        if (OpenCms.getRoleManager().hasRole(cms, CmsRole.DATABASE_MANAGER)) {
+            // the database managers see the tool inside the "Database Management", hide this for them
+            result = false;
+        } else if (OpenCms.getRoleManager().hasRole(cms, CmsRole.ADMINISTRATOR)) {
             result = true;
         } else if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(m_group)) {
             String userStr = user.getName();

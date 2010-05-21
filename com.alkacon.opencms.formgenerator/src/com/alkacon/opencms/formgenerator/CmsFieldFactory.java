@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFieldFactory.java,v $
- * Date   : $Date: 2010/04/23 09:53:17 $
- * Version: $Revision: 1.8 $
+ * Date   : $Date: 2010/05/21 13:49:19 $
+ * Version: $Revision: 1.9 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -63,7 +63,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  * 
  * @since 7.0.4 
  */
@@ -80,7 +80,7 @@ public final class CmsFieldFactory {
     private static CmsFieldFactory sharedInstance;
 
     /** The registered field types keyed by their type name. */
-    private Map m_registeredFieldTypes;
+    private Map<String, String> m_registeredFieldTypes;
 
     /**
      * Default constructor.<p>
@@ -89,7 +89,7 @@ public final class CmsFieldFactory {
 
         super();
 
-        m_registeredFieldTypes = new HashMap();
+        m_registeredFieldTypes = new HashMap<String, String>(20);
 
         // register all the standard OpenCms field types
         registerFieldType(CmsCheckboxField.getStaticType(), CmsCheckboxField.class.getName());
@@ -123,10 +123,10 @@ public final class CmsFieldFactory {
                 ExtendedProperties fieldProperties = new ExtendedProperties();
                 fieldProperties.load(new FileInputStream(propertyFile));
 
-                Iterator i = fieldProperties.keySet().iterator();
+                Iterator<String> i = fieldProperties.keySet().iterator();
                 while (i.hasNext()) {
 
-                    String key = (String)i.next();
+                    String key = i.next();
                     if (!"FIELDS".equalsIgnoreCase(key)) {
                         continue;
                     }
@@ -183,7 +183,7 @@ public final class CmsFieldFactory {
     public I_CmsField getField(String type) {
 
         try {
-            String className = (String)m_registeredFieldTypes.get(type);
+            String className = m_registeredFieldTypes.get(type);
             return (I_CmsField)Class.forName(className).newInstance();
         } catch (Throwable t) {
             if (LOG.isWarnEnabled()) {
@@ -196,6 +196,7 @@ public final class CmsFieldFactory {
     /**
      * @see java.lang.Object#finalize()
      */
+    @Override
     protected void finalize() throws Throwable {
 
         try {
