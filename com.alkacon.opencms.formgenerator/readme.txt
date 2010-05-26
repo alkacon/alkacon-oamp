@@ -1,6 +1,6 @@
 
                 Alkacon OpenCms Add-On Module Package: Webform
-                       Version 1.1.0; December 21, 2007
+                       Version 1.4.0; May 26, 2010
 
 
                                     WARNING:
@@ -69,7 +69,7 @@ Legend:
 ! The detail view of forms stored in the database allows to view the uploaded files
 ! Only users with the role "Database Manager" or with write permissions on the corresponding form file
   can edit the stored database entries
-* Unconfigured new form does not throw an error anymore when previewing it
+* Unconfigured new form does not throw an error anymore when trying to preview it
 - Improved formatting of generated text emails
 - Improved editor layout for forms by adding tabs
 
