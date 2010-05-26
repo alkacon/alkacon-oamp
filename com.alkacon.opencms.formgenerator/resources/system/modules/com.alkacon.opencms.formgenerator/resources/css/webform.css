@@ -69,6 +69,7 @@
 	table.webform_checkbox, table.webform_checkbox_row {
 		margin-top: 0;
 		border: none;
+		background-color: #FFF;
 	}
 	
 	table.webform_checkbox {
@@ -78,7 +79,6 @@
 	table.webform_checkbox_row {
 		float: left; 
 		padding: 0px 8px 0px 0px;
-		background-color: #FFF;
 	}
 
 	td.webform_field_checkbox, td.webform_field_checkbox_row {
@@ -98,12 +98,12 @@
 	table.webform_radio, table.webform_radio_row {
 		margin-top: 0;
 		border: none;
+		background-color: #FFF;
 	}
 
 	table.webform_radio_row {
 		float: left; 
 		padding: 0px 8px 0px 0px;
-		background-color: #FFF;
 	}
 
 	td.webform_field_radio, td.webform_field_radio_row {

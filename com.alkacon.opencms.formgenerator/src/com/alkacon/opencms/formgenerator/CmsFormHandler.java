@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormHandler.java,v $
- * Date   : $Date: 2010/05/21 13:49:18 $
- * Version: $Revision: 1.15 $
+ * Date   : $Date: 2010/05/26 09:59:39 $
+ * Version: $Revision: 1.16 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -84,7 +84,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  * 
  * @since 7.0.4 
  */
@@ -1025,7 +1025,13 @@ public class CmsFormHandler extends CmsJspActionElement {
                 CmsHtmlMail theMail = new CmsHtmlMail();
                 theMail.setCharset(getCmsObject().getRequestContext().getEncoding());
                 if (CmsStringUtil.isNotEmpty(getFormConfiguration().getMailFrom())) {
-                    theMail.setFrom(m_macroResolver.resolveMacros(getFormConfiguration().getMailFrom()));
+                    if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(getFormConfiguration().getMailFromName())) {
+                        theMail.setFrom(
+                            m_macroResolver.resolveMacros(getFormConfiguration().getMailFrom()),
+                            m_macroResolver.resolveMacros(getFormConfiguration().getMailFromName()));
+                    } else {
+                        theMail.setFrom(m_macroResolver.resolveMacros(getFormConfiguration().getMailFrom()));
+                    }
                 }
                 theMail.setTo(createInternetAddresses(mailTo));
                 theMail.setSubject(m_macroResolver.resolveMacros(getFormConfiguration().getMailSubjectPrefix()
@@ -1039,7 +1045,13 @@ public class CmsFormHandler extends CmsJspActionElement {
                 CmsSimpleMail theMail = new CmsSimpleMail();
                 theMail.setCharset(getCmsObject().getRequestContext().getEncoding());
                 if (CmsStringUtil.isNotEmpty(getFormConfiguration().getMailFrom())) {
-                    theMail.setFrom(getFormConfiguration().getMailFrom());
+                    if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(getFormConfiguration().getMailFromName())) {
+                        theMail.setFrom(
+                            m_macroResolver.resolveMacros(getFormConfiguration().getMailFrom()),
+                            m_macroResolver.resolveMacros(getFormConfiguration().getMailFromName()));
+                    } else {
+                        theMail.setFrom(m_macroResolver.resolveMacros(getFormConfiguration().getMailFrom()));
+                    }
                 }
                 theMail.setTo(createInternetAddresses(mailTo));
                 theMail.setSubject(m_macroResolver.resolveMacros(getFormConfiguration().getMailSubjectPrefix()
@@ -1419,7 +1431,13 @@ public class CmsFormHandler extends CmsJspActionElement {
                 CmsHtmlMail theMail = new CmsHtmlMail();
                 theMail.setCharset(getCmsObject().getRequestContext().getEncoding());
                 if (CmsStringUtil.isNotEmpty(getFormConfiguration().getMailFrom())) {
-                    theMail.setFrom(m_macroResolver.resolveMacros(getFormConfiguration().getMailFrom()));
+                    if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(getFormConfiguration().getMailFromName())) {
+                        theMail.setFrom(
+                            m_macroResolver.resolveMacros(getFormConfiguration().getMailFrom()),
+                            m_macroResolver.resolveMacros(getFormConfiguration().getMailFromName()));
+                    } else {
+                        theMail.setFrom(m_macroResolver.resolveMacros(getFormConfiguration().getMailFrom()));
+                    }
                 }
                 theMail.setTo(createInternetAddresses(getFormConfiguration().getMailTo()));
                 List<InternetAddress> ccRec = createInternetAddresses(m_macroResolver.resolveMacros(getFormConfiguration().getMailCC()));
@@ -1462,7 +1480,13 @@ public class CmsFormHandler extends CmsJspActionElement {
                 CmsSimpleMail theMail = new CmsSimpleMail();
                 theMail.setCharset(getCmsObject().getRequestContext().getEncoding());
                 if (CmsStringUtil.isNotEmpty(getFormConfiguration().getMailFrom())) {
-                    theMail.setFrom(m_macroResolver.resolveMacros(getFormConfiguration().getMailFrom()));
+                    if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(getFormConfiguration().getMailFromName())) {
+                        theMail.setFrom(
+                            m_macroResolver.resolveMacros(getFormConfiguration().getMailFrom()),
+                            m_macroResolver.resolveMacros(getFormConfiguration().getMailFromName()));
+                    } else {
+                        theMail.setFrom(m_macroResolver.resolveMacros(getFormConfiguration().getMailFrom()));
+                    }
                 }
                 theMail.setTo(createInternetAddresses(getFormConfiguration().getMailTo()));
                 List<InternetAddress> ccRec = createInternetAddresses(m_macroResolver.resolveMacros(getFormConfiguration().getMailCC()));

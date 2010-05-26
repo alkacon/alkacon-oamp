@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
- * Date   : $Date: 2010/05/21 13:49:17 $
- * Version: $Revision: 1.21 $
+ * Date   : $Date: 2010/05/26 09:59:39 $
+ * Version: $Revision: 1.22 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -69,7 +69,7 @@ import org.apache.commons.fileupload.FileItem;
  * @author Thomas Weckert 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  * 
  * @since 7.0.4 
  */
@@ -277,6 +277,9 @@ public class CmsForm {
     /** Configuration node name for the email sender address node. */
     public static final String NODE_MAILFROM = "MailFrom";
 
+    /** Configuration node name for the email sender name node. */
+    public static final String NODE_MAILFROMNAME = "MailFromName";
+
     /** Configuration node name for the email subject node. */
     public static final String NODE_MAILSUBJECT = "MailSubject";
 
@@ -435,6 +438,9 @@ public class CmsForm {
 
     /** The mail sender address. */
     protected String m_mailFrom;
+
+    /** The mail sender name. */
+    protected String m_mailFromName;
 
     /** configuration value. */
     protected String m_mailSubject;
@@ -963,6 +969,16 @@ public class CmsForm {
     public String getMailFrom() {
 
         return m_mailFrom;
+    }
+
+    /**
+     * Returns the mail sender name.<p>
+     * 
+     * @return the mail sender name
+     */
+    public String getMailFromName() {
+
+        return m_mailFromName;
     }
 
     /**
@@ -1503,6 +1519,9 @@ public class CmsForm {
         // get the mail from address
         stringValue = getContentStringValue(content, cms, NODE_MAILFROM, locale);
         setMailFrom(getConfigurationValue(stringValue, ""));
+        // get the mail from name
+        stringValue = getContentStringValue(content, cms, NODE_MAILFROMNAME, locale);
+        setMailFromName(getConfigurationValue(stringValue, ""));
         // get the mail to address(es)
         stringValue = getContentStringValue(content, cms, NODE_MAILTO, locale);
         setMailTo(getConfigurationValue(stringValue, ""));
@@ -2093,6 +2112,16 @@ public class CmsForm {
     protected void setMailFrom(String mailFrom) {
 
         m_mailFrom = mailFrom;
+    }
+
+    /**
+     * Sets the mail sender name.<p>
+     * 
+     * @param mailFromName the mail sender name
+     */
+    protected void setMailFromName(String mailFromName) {
+
+        m_mailFromName = mailFromName;
     }
 
     /**

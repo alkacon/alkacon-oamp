@@ -22,6 +22,7 @@
 		<xsd:sequence>
 			<xsd:element name="DataTarget" type="OpenCmsDataTarget" minOccurs="0" />
 			<xsd:element name="MailFrom" type="OpenCmsString" />
+			<xsd:element name="MailFromName" type="OpenCmsString" minOccurs="0" />
 			<xsd:element name="MailTo" type="OpenCmsString" />
 			<xsd:element name="MailSubject" type="OpenCmsString" />
 			<xsd:element name="MailText" type="OpenCmsHtml" />				
