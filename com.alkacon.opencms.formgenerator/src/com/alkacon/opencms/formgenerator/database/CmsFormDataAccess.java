@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/CmsFormDataAccess.java,v $
- * Date   : $Date: 2010/05/21 13:49:27 $
- * Version: $Revision: 1.14 $
+ * Date   : $Date: 2010/05/27 10:08:30 $
+ * Version: $Revision: 1.15 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -84,7 +84,7 @@ import org.apache.commons.logging.Log;
  * @author Achim Westermann
  * @author Michael Moossen
  * 
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  * 
  * @since 7.0.4
  */
@@ -1043,6 +1043,10 @@ public final class CmsFormDataAccess {
         }
         // get the sub folder to store the files
         String formName = formHandler.getFormConfiguration().getFormId();
+        if ((formName != null) && formName.startsWith(formHandler.getRequestContext().getSiteRoot())) {
+            // the configuration root path is used as (default) form ID, do NOT use this as sub folder
+            formName = null;
+        }
         formName = m_cms.getRequestContext().getFileTranslator().translateResource(formName);
 
         // generate file name
@@ -1070,21 +1074,23 @@ public final class CmsFormDataAccess {
                 // switch to an offline project
                 String projectName = module.getParameter(CmsForm.MODULE_PARAM_UPLOADPROJECT, "Offline");
                 m_cms.getRequestContext().setCurrentProject(m_cms.readProject(projectName));
-                // check if the sub folder exists and create it if necessary
-                String subFolder = filePath + formName;
-                if (!m_cms.existsResource(subFolder)) {
-                    try {
-                        m_cms.createResource(subFolder, CmsResourceTypeFolder.getStaticTypeId(), null, null);
-                        m_cms.unlockResource(subFolder);
-                        // publish the folder
-                        OpenCms.getPublishManager().publishResource(m_cms, subFolder);
-                        // wait a little bit to avoid problems when publishing the uploaded file afterwards
-                        OpenCms.getPublishManager().waitWhileRunning(3000);
-                        // set the file path to sub folder
-                        filePath = subFolder + "/";
-                    } catch (Exception e) {
-                        // error creating the folder in VFS
-                        LOG.error(e);
+                if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(formName)) {
+                    // check if the sub folder exists and create it if necessary
+                    String subFolder = filePath + formName;
+                    if (!m_cms.existsResource(subFolder)) {
+                        try {
+                            m_cms.createResource(subFolder, CmsResourceTypeFolder.getStaticTypeId(), null, null);
+                            m_cms.unlockResource(subFolder);
+                            // publish the folder
+                            OpenCms.getPublishManager().publishResource(m_cms, subFolder);
+                            // wait a little bit to avoid problems when publishing the uploaded file afterwards
+                            OpenCms.getPublishManager().waitWhileRunning(3000);
+                            // set the file path to sub folder
+                            filePath = subFolder + "/";
+                        } catch (Exception e) {
+                            // error creating the folder in VFS
+                            LOG.error(e);
+                        }
                     }
                 }
                 // create full resource name
@@ -1115,9 +1121,12 @@ public final class CmsFormDataAccess {
             try {
                 File folder = new File(filePath);
                 CmsFileUtil.assertFolder(folder, CmsFileUtil.MODE_READ, true);
-                File subFolder = new File(folder, formName);
-                CmsFileUtil.assertFolder(subFolder, CmsFileUtil.MODE_READ, true);
-                File storeFile = new File(subFolder, itemName);
+                if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(formName)) {
+                    File subFolder = new File(folder, formName);
+                    CmsFileUtil.assertFolder(subFolder, CmsFileUtil.MODE_READ, true);
+                    folder = subFolder;
+                }
+                File storeFile = new File(folder, itemName);
                 fullResourceName = storeFile.getAbsolutePath();
                 byte[] contents = item.get();
                 try {

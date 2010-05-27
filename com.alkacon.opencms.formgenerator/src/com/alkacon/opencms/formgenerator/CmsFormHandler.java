@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormHandler.java,v $
- * Date   : $Date: 2010/05/26 09:59:39 $
- * Version: $Revision: 1.16 $
+ * Date   : $Date: 2010/05/27 10:08:30 $
+ * Version: $Revision: 1.17 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -84,7 +84,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  * 
  * @since 7.0.4 
  */
@@ -1120,6 +1120,7 @@ public class CmsFormHandler extends CmsJspActionElement {
                 }
             }
             if (data.isTransportDatabase()) {
+                // save submitted form to database and store the uploaded files
                 result &= sendDatabase();
             }
             if (data.isTransportEmail()) {
