@@ -18,7 +18,7 @@ if (CmsStringUtil.isNotEmpty(template)) {
 
 <%-- show optional text element above calendar entries --%>
 <c:if test="${content.value.Text.exists}">
-	${content.value.Text.exists}
+	${content.value.Text}
 </c:if>
 <c:set var="defaultView">${content.value.DefaultView}</c:set>
 
@@ -35,6 +35,7 @@ if (calendarBean.getViewPeriod() == -1) {
 	try {
 		calendarBean.setViewPeriod(Integer.parseInt(view));
 		params.put(CmsCalendarDisplay.PARAM_VIEWTYPE, view);
+		params.put(CmsCalendarDisplay.PARAM_MONTH, request.getParameter(CmsCalendarDisplay.PARAM_MONTH));
 	} catch (Exception e) {}
 }
 
