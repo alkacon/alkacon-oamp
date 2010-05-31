@@ -15,7 +15,7 @@
 	%>
 	
 <div class="searchSelection">
-	<form name="newdocuments" action="<%= cms.link(cms.property("link_newdocuments", "search", folderUri  + "newdocuments.jsp")) %>" method="get" title="<%= messages.key("form.head.title") %>" >
+	<form name="newdocuments" action="<%= cms.link(cms.property("link_newdocuments", "search", folderUri  + "newdocuments.html")) %>" method="get" title="<%= messages.key("form.head.title") %>" >
 		<input type="hidden" name="uri" value="<%= cms.getRequestContext().getFolderUri() %>" />
 		<div>
 			<label for="searchselect" class="hidden"><%= messages.key("form.head.newdocuments.newsince") %></label>
