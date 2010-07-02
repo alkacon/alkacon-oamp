@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormReport.java,v $
- * Date   : $Date: 2010/05/21 13:49:16 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2010/07/02 10:45:52 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -196,20 +196,17 @@ public class CmsFormReport extends CmsJspActionElement {
         + CmsForm.MODULE_NAME
         + "/resources/grid/grid/";
 
+    /** The displayed form report columns generated from the form fields, with the column ID as key. */
+    private Map<String, CmsFormReportColumn> m_columnMappings;
+
+    /** The displayed columns generated from the form fields, including sub fields. */
+    private List<CmsFormReportColumn> m_columns;
+
     /** The initial width of a report column. */
     private int m_columnWidth;
 
     /** The XML content that configures the report output. */
     private CmsXmlContent m_content;
-
-    /** The database labels of the displayed fields, including sub fields. */
-    private List<String> m_fieldDbLabels;
-
-    /** The labels of the displayed fields, including sub fields. */
-    private List<String> m_fieldLabels;
-
-    /** The displayed fields, including sub fields. */
-    private List<I_CmsField> m_fields;
 
     /** The form configuration object. */
     private CmsFormHandler m_formHandler;
@@ -335,7 +332,7 @@ public class CmsFormReport extends CmsJspActionElement {
             if (endRow < 0) {
                 endRow = startRow + pageSize - 1;
             }
-            // determine the sort column
+            // determine the sort column ID
             String sortColumn = "";
             if (sortInfo.has("columnId")) {
                 sortColumn = sortInfo.getString("columnId");
@@ -355,9 +352,17 @@ public class CmsFormReport extends CmsJspActionElement {
             }
             if (CmsStringUtil.isNotEmpty(sortColumn)) {
                 // sort the data according to column and order
-                Collections.sort(forms, new FieldComparator(sortColumn, sortOrder, getRequestContext().getLocale()));
+                String fieldName = sortColumn;
+                if (!COLUMN_ID_DATE.equals(sortColumn)) {
+                    // determine the matching field DB label to the given column ID
+                    CmsFormReportColumn col = getShownColumnMappings().get(sortColumn);
+                    if (col != null) {
+                        fieldName = col.getColumnDbLabel();
+                    }
+                }
+                Collections.sort(forms, new FieldComparator(fieldName, sortOrder, getRequestContext().getLocale()));
             }
-            // fill the returned object
+            // fill the returned object with data
             data.put("data", getDataRows(forms.subList(startIndex, endIndex + 1)));
             JSONObject pageInfo = new JSONObject();
             pageInfo.put("totalRowNum", forms.size());
@@ -370,47 +375,30 @@ public class CmsFormReport extends CmsJspActionElement {
     }
 
     /**
-     * Returns the database labels of the displayed fields, including sub fields.<p>
+     * Returns the displayed form report columns generated from the form fields, with the column ID as key.<p>
      * 
-     * @return the database labels of the displayed fields, including sub fields
+     * @return the displayed form report columns
      */
-    public List<String> getShownFieldDbLabels() {
+    public Map<String, CmsFormReportColumn> getShownColumnMappings() {
 
-        if (m_fieldDbLabels == null) {
-            m_fieldDbLabels = new ArrayList<String>(m_fields.size());
-            for (Iterator<I_CmsField> i = getShownFields().iterator(); i.hasNext();) {
-                I_CmsField field = i.next();
-                m_fieldDbLabels.add(field.getDbLabel());
+        if (m_columnMappings == null) {
+            m_columnMappings = new HashMap<String, CmsFormReportColumn>(getShownColumns().size());
+            for (Iterator<CmsFormReportColumn> i = getShownColumns().iterator(); i.hasNext();) {
+                CmsFormReportColumn col = i.next();
+                m_columnMappings.put(col.getColumnId(), col);
             }
         }
-        return m_fieldDbLabels;
+        return m_columnMappings;
     }
 
     /**
-     * Returns the labels of the displayed fields, including sub fields.<p>
+     * Returns the displayed columns generated from the form fields, including sub fields.<p>
      * 
-     * @return the labels of the displayed fields, including sub fields
+     * @return the displayed columns
      */
-    public List<String> getShownFieldLabels() {
+    public List<CmsFormReportColumn> getShownColumns() {
 
-        if (m_fieldLabels == null) {
-            m_fieldLabels = new ArrayList<String>(m_fields.size());
-            for (Iterator<I_CmsField> i = getShownFields().iterator(); i.hasNext();) {
-                I_CmsField field = i.next();
-                m_fieldLabels.add(field.getLabel());
-            }
-        }
-        return m_fieldLabels;
-    }
-
-    /**
-     * Returns the displayed fields, including sub fields.<p>
-     * 
-     * @return the displayed fields, including sub fields
-     */
-    public List<I_CmsField> getShownFields() {
-
-        return m_fields;
+        return m_columns;
     }
 
     /**
@@ -452,7 +440,7 @@ public class CmsFormReport extends CmsJspActionElement {
 
         // call super initialization
         super.init(context, req, res);
-        m_fields = new ArrayList<I_CmsField>();
+        m_columns = new ArrayList<CmsFormReportColumn>();
         try {
             CmsFile file = getCmsObject().readFile(getRequestContext().getUri());
             CmsXmlContent content = CmsXmlContentFactory.unmarshal(getCmsObject(), file);
@@ -477,12 +465,12 @@ public class CmsFormReport extends CmsJspActionElement {
                 }
                 if (showAllFields || checkedFields.contains(field.getDbLabel())) {
                     // this field has to be shown, add it to the columns and check sub fields
-                    m_fields.add(field);
+                    m_columns.add(new CmsFormReportColumn(field));
                     if (field.hasSubFields()) {
                         Iterator<Entry<String, List<I_CmsField>>> k = field.getSubFields().entrySet().iterator();
                         while (k.hasNext()) {
                             Map.Entry<String, List<I_CmsField>> entry = k.next();
-                            m_fields.addAll(entry.getValue());
+                            m_columns.addAll(CmsFormReportColumn.getColumnsFromFields(entry.getValue()));
                         }
                     }
                 }
@@ -600,8 +588,8 @@ public class CmsFormReport extends CmsJspActionElement {
                 // add submission date to row data
                 row.put(dataBean.getDateCreated());
             }
-            for (Iterator<String> k = getShownFieldDbLabels().iterator(); k.hasNext();) {
-                String val = dataBean.getFieldValue(k.next());
+            for (Iterator<CmsFormReportColumn> k = getShownColumns().iterator(); k.hasNext();) {
+                String val = dataBean.getFieldValue(k.next().getColumnDbLabel());
                 if (CmsStringUtil.isEmpty(val)) {
                     // also store empty values
                     row.put("");

@@ -29,8 +29,8 @@
 var dsOption= {
 	fields :[
 		<c:if test="${cms.showDate}">{name: "creationdate", type: "float"},</c:if>
-		<c:forEach var="field" items="${cms.shownFields}" varStatus="status">
-		{name: "${field.dbLabel}"}
+		<c:forEach var="col" items="${cms.shownColumns}" varStatus="status">
+		{name: "${col.columnId}"}
 		<c:if test="${not status.last}">
 		,
 		</c:if>
@@ -50,8 +50,8 @@ var colsOption = [
 			} 
 		},
 	</c:if>
-	<c:forEach var="field" items="${cms.shownFields}" varStatus="status">
-	{id: "${field.dbLabel}" , header: "<c:choose><c:when test="${cms.showLabels}">${field.label}</c:when><c:otherwise>${field.dbLabel}</c:otherwise></c:choose>" , width: "${cms.columnWidth}"}
+	<c:forEach var="col" items="${cms.shownColumns}" varStatus="status">
+	{id: "${col.columnId}" , header: "<c:choose><c:when test="${cms.showLabels}">${col.columnLabel}</c:when><c:otherwise>${col.columnDbLabel}</c:otherwise></c:choose>" , width: "${cms.columnWidth}"}
 	<c:if test="${not status.last}">
 	,
 	</c:if>
