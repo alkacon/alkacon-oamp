@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/CmsFormDataAccess.java,v $
- * Date   : $Date: 2010/05/27 10:08:30 $
- * Version: $Revision: 1.15 $
+ * Date   : $Date: 2010/07/08 14:37:11 $
+ * Version: $Revision: 1.16 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -84,7 +84,7 @@ import org.apache.commons.logging.Log;
  * @author Achim Westermann
  * @author Michael Moossen
  * 
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  * 
  * @since 7.0.4
  */
@@ -960,7 +960,7 @@ public final class CmsFormDataAccess {
                 params.add(field.getKey());
                 params.add(field.getValue());
                 if (it.hasNext()) {
-                    where.append(", ");
+                    where.append(" ").append(getQuery("COND_AND")).append(" ");
                 }
                 i++;
             }
