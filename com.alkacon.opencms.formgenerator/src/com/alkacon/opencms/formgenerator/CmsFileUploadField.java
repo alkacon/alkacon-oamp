@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFileUploadField.java,v $
- * Date   : $Date: 2010/05/21 13:49:18 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2010/08/11 13:37:59 $
+ * Version: $Revision: 1.7 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -46,7 +46,7 @@ import java.util.Map;
  * 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  * 
  * @since 7.0.4 
  */
@@ -250,9 +250,8 @@ public class CmsFileUploadField extends A_CmsField {
                 Map<String, String> substitutions = new HashMap<String, String>();
                 substitutions.put("<", "");
                 substitutions.put("kb", "");
-
-                int maxSize = Integer.parseInt(CmsStringUtil.substitute(valExpFileSize, substitutions)) * 1024;
                 try {
+                    int maxSize = Integer.parseInt(CmsStringUtil.substitute(valExpFileSize.toLowerCase(), substitutions)) * 1024;
                     if (m_fileSize > maxSize) {
                         return CmsFormHandler.ERROR_VALIDATION;
                     }
