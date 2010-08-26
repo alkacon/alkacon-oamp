@@ -55,6 +55,11 @@
 		</fmt:message>
 	</div>
 	<div class="cmtCommentBody" >
-		<c:out value="${comment.field['comment']}"  escapeXml="true" />
+		<c:set var="commentcontent" value="${comment.field['comment']}" />
+		<c:set var="testcontent" value="${fn:toLowerCase(fn:replace(comment.field['comment'], ' ', ''))}" />
+		<c:if test="${fn:indexOf(testcontent, '<script') != - 1 || fn:indexOf(testcontent, '<form') != - 1 || fn:indexOf(testcontent, '<input') != - 1}">
+			<c:set var="commentcontent">${cms:stripHtml(commentcontent)}</c:set>
+		</c:if>
+		<c:out value="${commentcontent}" escapeXml="false" />
 	</div>
 </div>
