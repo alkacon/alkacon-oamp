@@ -53,5 +53,5 @@ Legend:
 * Bug fixed
 - General comment
 
-1.0.0 - June , 2009
+1.0.0 - September, 2010
 - First public release

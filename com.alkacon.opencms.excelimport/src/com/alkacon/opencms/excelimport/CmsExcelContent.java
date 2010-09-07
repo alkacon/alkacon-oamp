@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.excelimport/src/com/alkacon/opencms/excelimport/CmsExcelContent.java,v $
- * Date   : $Date: 2009/04/30 10:52:07 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2010/09/07 11:03:14 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -61,20 +61,20 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
  * 
  * @author Mario Jaeger
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 7.5.0
  */
 public class CmsExcelContent {
 
+    /** Key to access the category property. */
+    public static String PROPERTY_CATEGORY = "category";
+
+    /** Key to access the keywords property. */
+    public static String PROPERTY_KEYWORDS = "keywords";
+
     /** The log object for this class. */
     private static final Log LOG = CmsLog.getLog(CmsExcelContent.class);
-
-    /** The extracted individual content items. */
-    private Map m_contentItems;
-
-    /** The name from excel file. */
-    private String m_excelName;
 
     /** The column contents. */
     private Map m_colContents = new HashMap();
@@ -82,8 +82,28 @@ public class CmsExcelContent {
     /** The column names. */
     private Map m_colNames = new HashMap();
 
+    /** The extracted individual content items. */
+    private Map m_contentItems;
+
+    /** The name from excel file. */
+    private String m_excelName;
+
     /** The number of rows without headline. */
     private int m_rowNumber;
+
+    /**
+     * Gets the category property value from excel file.<p>
+     * 
+     * @return the folder property value from excel file
+     */
+    public String getCategoryProperty() {
+
+        String categoryProperty = "";
+        if (m_contentItems != null) {
+            categoryProperty = (String)m_contentItems.get(CmsExcelContent.PROPERTY_CATEGORY);
+        }
+        return categoryProperty;
+    }
 
     /**
      * Get cell content from given column and row.<p>
@@ -106,6 +126,16 @@ public class CmsExcelContent {
             }
         }
         return cellContent;
+    }
+
+    /**
+     * Gets map with column names with key as column name set by user and value as column name by excel internal.<p>
+     * 
+     * @return map with column names with key as column name set by user and value as column name by excel internal
+     */
+    public Map getColumnNames() {
+
+        return m_colNames;
     }
 
     /**
@@ -137,6 +167,20 @@ public class CmsExcelContent {
     }
 
     /**
+     * Gets the folder property value from excel file.<p>
+     * 
+     * @return the folder property value from excel file
+     */
+    public String getFolderProperty() {
+
+        String folderProperty = "";
+        if (m_contentItems != null) {
+            folderProperty = (String)m_contentItems.get(CmsExcelContent.PROPERTY_KEYWORDS);
+        }
+        return folderProperty;
+    }
+
+    /**
      * Get number of rows in excel file.<p>
      * 
      * @return number of rows in excel file
@@ -144,20 +188,6 @@ public class CmsExcelContent {
     public int getNumberOfRecords() {
 
         return m_rowNumber;
-    }
-
-    /**
-     * Gets category property value from excel file.<p>
-     * 
-     * @return category property value from excel file
-     */
-    public String getProperty() {
-
-        String categoryProperty = "";
-        if (m_contentItems != null) {
-            categoryProperty = (String)m_contentItems.get(I_CmsExtractionResult.ITEM_CATEGORY);
-        }
-        return categoryProperty;
     }
 
     /**
@@ -180,13 +210,24 @@ public class CmsExcelContent {
     }
 
     /**
-     * Gets map with column names with key as column name set by user and value as column name by excel internal.<p>
+     * Checks if excel record is empty.<p>
      * 
-     * @return map with column names with key as column name set by user and value as column name by excel internal
+     * @param row Number of current row
+     * 
+     * @return True, if excel current is empty, otherwise false 
      */
-    public Map getColumnNames() {
+    public boolean isEmptyRecord(int row) {
 
-        return m_colNames;
+        boolean isEmpty = true;
+        Map contents = getRecord(row);
+        Iterator iter = contents.values().iterator();
+        while (iter.hasNext()) {
+            String content = (String)iter.next();
+            if (CmsStringUtil.isNotEmpty(content)) {
+                isEmpty = false;
+            }
+        }
+        return isEmpty;
     }
 
     /**
@@ -351,26 +392,5 @@ public class CmsExcelContent {
 
         readExcelColumnMappings(new ByteArrayInputStream(fileBytes));
         readExcelColumnContents(new ByteArrayInputStream(fileBytes));
-    }
-
-    /**
-     * Checks if excel record is empty.<p>
-     * 
-     * @param row Number of current row
-     * 
-     * @return True, if excel current is empty, otherwise false 
-     */
-    public boolean isEmptyRecord(int row) {
-
-        boolean isEmpty = true;
-        Map contents = getRecord(row);
-        Iterator iter = contents.values().iterator();
-        while (iter.hasNext()) {
-            String content = (String)iter.next();
-            if (CmsStringUtil.isNotEmpty(content)) {
-                isEmpty = false;
-            }
-        }
-        return isEmpty;
     }
 }

@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.excelimport/src/com/alkacon/opencms/excelimport/I_CmsVfsSettings.java,v $
- * Date   : $Date: 2009/04/30 10:52:08 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2010/09/07 11:03:14 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -43,7 +43,7 @@ import org.opencms.file.CmsObject;
  * 
  * @author Mario Jaeger
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 7.5.0
  */
@@ -55,10 +55,15 @@ public interface I_CmsVfsSettings {
      * @param cmsObject current CmsObject
      * @param workplacePath current path in workplace
      * @param resourceType selected resource type
+     * @param cmsExcelContent the excel content
      * 
      * @return file name for a new XML content
      */
-    String getNewFileName(CmsObject cmsObject, String workplacePath, String resourceType);
+    String getNewFileName(
+        CmsObject cmsObject,
+        String workplacePath,
+        String resourceType,
+        CmsExcelContent cmsExcelContent);
 
     /**
      * Returns the path to this location where XML contents shall become new created and updated.<p>
@@ -66,8 +71,13 @@ public interface I_CmsVfsSettings {
      * @param cmsObject current CmsObject
      * @param workplacePath current path in workplace
      * @param resourceType selected resource type
+     * @param cmsExcelContent the excel content
      * 
      * @return path to XML contents
      */
-    String getPathToXmlContents(CmsObject cmsObject, String workplacePath, String resourceType);
+    String getPathToXmlContents(
+        CmsObject cmsObject,
+        String workplacePath,
+        String resourceType,
+        CmsExcelContent cmsExcelContent);
 }

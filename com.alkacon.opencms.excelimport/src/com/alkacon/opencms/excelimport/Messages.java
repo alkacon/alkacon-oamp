@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.excelimport/src/com/alkacon/opencms/excelimport/Messages.java,v $
- * Date   : $Date: 2009/04/30 10:52:08 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2010/09/07 11:03:14 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -39,7 +39,7 @@ import org.opencms.i18n.I_CmsMessageBundle;
  * 
  * @author Mario Jaeger
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 7.0.3 
  */
@@ -74,6 +74,12 @@ public final class Messages extends A_CmsMessageBundle {
     /** Message constant for key in the resource bundle. */
     public static final String GUI_UPLOAD_EXCELFILE_TITLE_0 = "title.excelimport";
 
+    /** Static instance member. */
+    public static final String LOG_CONFIG_NAME_1 = "LOG_CONFIG_NAME_1";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String LOG_CONFIG_PATH_1 = "LOG_CONFIG_PATH_1";
+
     /** Message constant for key in the resource bundle. */
     public static final String LOG_CONFIGFILE_NAME_1 = "LOG_CONFIGFILE_NAME_1";
 
@@ -92,6 +98,9 @@ public final class Messages extends A_CmsMessageBundle {
     /** Message constant for key in the resource bundle. */
     public static final String LOG_ERR_FAILED_0 = "LOG_ERR_FAILED_0";
 
+    /** Static instance member. */
+    public static final String LOG_ERR_INVALID_CONFIGPATH_0 = "LOG_ERR_INVALID_CONFIGPATH_0";
+
     /** Message constant for key in the resource bundle. */
     public static final String LOG_ERR_INVALID_XMLTAG_1 = "LOG_ERR_INVALID_XMLTAG_1";
 
@@ -101,8 +110,20 @@ public final class Messages extends A_CmsMessageBundle {
     /** Message constant for key in the resource bundle. */
     public static final String LOG_ERR_NO_LOCK_0 = "LOG_ERR_NO_LOCK_0";
 
+    /** Static instance member. */
+    public static final String LOG_ERR_UPLOAD_PROJECT_1 = "LOG_ERR_UPLOAD_PROJECT_1";
+
     /** Message constant for key in the resource bundle. */
     public static final String LOG_EVALUATE_XML_FAILED_1 = "LOG_CREATE_XML_FAILED_1";
+
+    /** Static instance member. */
+    public static final String LOG_EXCEL_CATEGORY_PROPERTY_1 = "LOG_EXCEL_CATEGORY_PROPERTY_1";
+
+    /** Static instance member. */
+    public static final String LOG_EXCEL_FOLDER_PROPERTY_1 = "LOG_EXCEL_FOLDER_PROPERTY_1";
+
+    /** Static instance member. */
+    public static final String LOG_EXCEL_IMPORT_PATH_NOT_FOUND_1 = "LOG_EXCEL_IMPORT_PATH_NOT_FOUND_1";
 
     /** Message constant for key in the resource bundle. */
     public static final String LOG_EXCEL_NAME_1 = "LOG_EXCEL_NAME_1";
@@ -125,8 +146,14 @@ public final class Messages extends A_CmsMessageBundle {
     /** Message constant for key in the resource bundle. */
     public static final String LOG_INVALID_RECORDS_1 = "LOG_INVALID_RECORDS_1";
 
+    /** Static instance member. */
+    public static final String LOG_LOOKFOR_CONFIGFILE_0 = "LOG_LOOKFOR_CONFIGFILE_0";
+
     /** Message constant for key in the resource bundle. */
     public static final String LOG_NO_INTERFACE_1 = "LOG_NO_INTERFACE_1";
+
+    /** Static instance member. */
+    public static final String LOG_NO_UPLOAD_PROJECT_1 = "LOG_NO_UPLOAD_PROJECT_1";
 
     /** Message constant for key in the resource bundle. */
     public static final String LOG_NOT_PUBLISH_0 = "LOG_NOT_PUBLISH_0";
@@ -167,32 +194,11 @@ public final class Messages extends A_CmsMessageBundle {
     /** Message constant for key in the resource bundle. */
     public static final String LOG_UPLOAD_FAILED_0 = "LOG_UPLOAD_FAILED_0";
 
-    /** Name of the used resource bundle. */
-    private static final String BUNDLE_NAME = "com.alkacon.opencms.excelimport.messages";
-
-    /** Message constant for key in the resource bundle. */
-    public static final String LOG_CONFIG_PATH_1 = "LOG_CONFIG_PATH_1";
-
-    /** Static instance member. */
-    public static final String LOG_EXCEL_PROPERTY_1 = "LOG_EXCEL_PROPERTY_1";
-
-    /** Static instance member. */
-    public static final String LOG_LOOKFOR_CONFIGFILE_0 = "LOG_LOOKFOR_CONFIGFILE_0";
-
-    /** Static instance member. */
-    public static final String LOG_ERR_INVALID_CONFIGPATH_0 = "LOG_ERR_INVALID_CONFIGPATH_0";
-
-    /** Static instance member. */
-    public static final String LOG_CONFIG_NAME_1 = "LOG_CONFIG_NAME_1";
-
     /** Static instance member. */
     public static final String LOG_UPLOAD_PROJECT_1 = "LOG_UPLOAD_PROJECT_1";
 
-    /** Static instance member. */
-    public static final String LOG_ERR_UPLOAD_PROJECT_1 = "LOG_ERR_UPLOAD_PROJECT_1";
-
-    /** Static instance member. */
-    public static final String LOG_NO_UPLOAD_PROJECT_1 = "LOG_NO_UPLOAD_PROJECT_1";
+    /** Name of the used resource bundle. */
+    private static final String BUNDLE_NAME = "com.alkacon.opencms.excelimport.messages";
 
     /** Static instance member. */
     private static final I_CmsMessageBundle INSTANCE = new Messages();

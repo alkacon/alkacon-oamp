@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.excelimport/src/com/alkacon/opencms/excelimport/CmsExcelImport.java,v $
- * Date   : $Date: 2009/04/30 10:52:08 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2010/09/07 11:03:14 $
+ * Version: $Revision: 1.2 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -70,7 +70,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Mario Jaeger
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 7.5.0
  */
@@ -87,6 +87,9 @@ public class CmsExcelImport extends A_CmsReportThread {
 
     /** The interface to get additional configuration values. */
     private I_CmsVfsSettings m_configParas;
+
+    /** The number of empty records. */
+    private int m_emptyRecords;
 
     /** The number of not successful imported records. */
     private int m_errImportedRecords;
@@ -118,9 +121,6 @@ public class CmsExcelImport extends A_CmsReportThread {
     /** The number of successful updated records. */
     private int m_updatedRecords;
 
-    /** The number of empty records. */
-    private int m_emptyRecords;
-
     /**
      * Constructor: Creates an import excel file thread.<p>
      * 
@@ -135,7 +135,7 @@ public class CmsExcelImport extends A_CmsReportThread {
     }
 
     /**
-     * Gets dialog text for security dialog. This dialop can become made on/off with module parameter.
+     * Gets dialog text for security dialog. This dialog can become made on/off with module parameter.
      * It includes informations about errors in configurations and actions which will become executed.<p>
      * 
      * @return dialog text content for security dialog
@@ -161,10 +161,16 @@ public class CmsExcelImport extends A_CmsReportThread {
         // read excel file
         CmsExcelContent cmsExcelContent = new CmsExcelContent();
         cmsExcelContent.readExcelFile(getCms(), m_cmsImport.getExcelName(), m_cmsImport.getParamExcelContent());
-        if ((cmsExcelContent.getNumberOfRecords() > 0) && (CmsStringUtil.isNotEmpty(cmsExcelContent.getProperty()))) {
-            // excel property
-            buffer.append(Messages.get().container(Messages.LOG_EXCEL_PROPERTY_1, cmsExcelContent.getProperty()).key(
-                locale)
+        if ((cmsExcelContent.getNumberOfRecords() > 0)
+            && (CmsStringUtil.isNotEmpty(cmsExcelContent.getCategoryProperty()))) {
+            // excel properties
+            buffer.append(Messages.get().container(
+                Messages.LOG_EXCEL_CATEGORY_PROPERTY_1,
+                cmsExcelContent.getCategoryProperty()).key(locale)
+                + "<br>");
+            buffer.append(Messages.get().container(
+                Messages.LOG_EXCEL_FOLDER_PROPERTY_1,
+                cmsExcelContent.getFolderProperty()).key(locale)
                 + "<br>");
         } else {
             // empty excel file
@@ -225,7 +231,8 @@ public class CmsExcelImport extends A_CmsReportThread {
             m_cmsImport.getFolder(),
             m_cmsImport.getExcelName(),
             cmsExcelXmlConfiguration.getResourceType(),
-            m_cmsImport.getPublish()));
+            m_cmsImport.getPublish(),
+            cmsExcelContent));
 
         return buffer.toString();
     }
@@ -256,7 +263,7 @@ public class CmsExcelImport extends A_CmsReportThread {
         // read excel file
         CmsExcelContent cmsExcelContent = new CmsExcelContent();
         cmsExcelContent.readExcelFile(getCms(), m_cmsImport.getExcelName(), m_cmsImport.getParamExcelContent());
-        if (!((cmsExcelContent.getNumberOfRecords() > 0) && (CmsStringUtil.isNotEmpty(cmsExcelContent.getProperty())))) {
+        if (!((cmsExcelContent.getNumberOfRecords() > 0) && (CmsStringUtil.isNotEmpty(cmsExcelContent.getCategoryProperty())))) {
             // empty excel file
             return false;
         }
@@ -749,7 +756,8 @@ public class CmsExcelImport extends A_CmsReportThread {
                         String newFileName = m_configParas.getNewFileName(
                             getCms(),
                             m_cmsImport.getFolder(),
-                            cmsExcelXmlConfiguration.getResourceType());
+                            cmsExcelXmlConfiguration.getResourceType(),
+                            cmsExcelContent);
                         // output to the report
                         report.print(Messages.get().container(
                             Messages.LOG_CREATE_XML_2,
@@ -801,7 +809,7 @@ public class CmsExcelImport extends A_CmsReportThread {
 
         CmsExcelXmlConfiguration cmsExcelXmlConfiguration = null;
         // get property content for resource type
-        String excelProperty = cmsExcelContent.getProperty();
+        String excelProperty = cmsExcelContent.getCategoryProperty();
         if (CmsStringUtil.isNotEmpty(excelProperty)) {
             // get path to configuration files
             String configFilesPath = getPathFromConfigurationFiles();
@@ -846,7 +854,8 @@ public class CmsExcelImport extends A_CmsReportThread {
      * @param workplacePath current path in workplace
      * @param excelName name from excel file
      * @param resourceType selected resource type
-     * @param publish true, if resources shall become published, otherwise false
+     * @param publish true, if resources shall become published, otherwise false 
+     * @param cmsExcelContent the excel content
      * 
      * @return the dialog text for security dialog
      */
@@ -855,7 +864,8 @@ public class CmsExcelImport extends A_CmsReportThread {
         String workplacePath,
         String excelName,
         String resourceType,
-        boolean publish) {
+        boolean publish,
+        CmsExcelContent cmsExcelContent) {
 
         StringBuffer buffer = new StringBuffer(4096);
         // here choose user locale and not workplace directory locale
@@ -866,7 +876,7 @@ public class CmsExcelImport extends A_CmsReportThread {
         buffer.append(Messages.get().container(
             Messages.GUI_DIALOG_ACTION_2,
             resourceType,
-            m_configParas.getPathToXmlContents(cmsObject, workplacePath, resourceType)).key(locale)
+            m_configParas.getPathToXmlContents(cmsObject, workplacePath, resourceType, cmsExcelContent)).key(locale)
             + "<br>");
         // publish info
         if (publish) {
@@ -994,11 +1004,15 @@ public class CmsExcelImport extends A_CmsReportThread {
             I_CmsReport.FORMAT_NOTE);
         CmsExcelContent cmsExcelContent = new CmsExcelContent();
         cmsExcelContent.readExcelFile(getCms(), m_cmsImport.getExcelName(), m_cmsImport.getParamExcelContent());
-        if ((cmsExcelContent.getNumberOfRecords() > 0) && (CmsStringUtil.isNotEmpty(cmsExcelContent.getProperty()))) {
-            // excel property
-            report.println(
-                Messages.get().container(Messages.LOG_EXCEL_PROPERTY_1, cmsExcelContent.getProperty()),
-                I_CmsReport.FORMAT_NOTE);
+        if ((cmsExcelContent.getNumberOfRecords() > 0)
+            && (CmsStringUtil.isNotEmpty(cmsExcelContent.getCategoryProperty()))) {
+            // excel properties
+            report.println(Messages.get().container(
+                Messages.LOG_EXCEL_CATEGORY_PROPERTY_1,
+                cmsExcelContent.getCategoryProperty()), I_CmsReport.FORMAT_NOTE);
+            report.println(Messages.get().container(
+                Messages.LOG_EXCEL_FOLDER_PROPERTY_1,
+                cmsExcelContent.getFolderProperty()), I_CmsReport.FORMAT_NOTE);
         } else {
             // empty excel file
             report.print(
@@ -1066,8 +1080,18 @@ public class CmsExcelImport extends A_CmsReportThread {
         String pathXmlContents = m_configParas.getPathToXmlContents(
             getCms(),
             m_cmsImport.getFolder(),
-            cmsExcelXmlConfiguration.getResourceType());
+            cmsExcelXmlConfiguration.getResourceType(),
+            cmsExcelContent);
         m_locale = OpenCms.getLocaleManager().getDefaultLocale(getCms(), pathXmlContents);
+
+        // check path to import the xml contents in
+        if (!getCms().existsResource(pathXmlContents)) {
+            // could not read the path
+            report.println(
+                Messages.get().container(Messages.LOG_EXCEL_IMPORT_PATH_NOT_FOUND_1, pathXmlContents),
+                I_CmsReport.FORMAT_ERROR);
+            return;
+        }
 
         // evaluate excel contents
         report.println();
@@ -1162,45 +1186,53 @@ public class CmsExcelImport extends A_CmsReportThread {
     }
 
     /**
-     * Lockes current XML content resource. A XML content resource is locked if belonging excel record
-     * has changed.<p>
+     * Locks the current resource.<p>
      * 
-     * @param cmsFile Current CmsFile to lock
+     * @param cms the current CmsObject
+     * @param cmsFile the file to lock
+     * @param report the report
      * 
-     * @return true, if resource could become locked, otherwise false
-     *  
-     * @throws CmsException
+     * @throws CmsException if some goes wrong
      */
     private boolean lockResource(CmsFile cmsFile) throws CmsException {
 
-        // get current lock from file
         CmsLock lock = getCms().getLock(getCms().getSitePath(cmsFile));
-        // prove is current lock from current but not in current project
+        // check the lock
+        if ((lock != null)
+            && lock.isOwnedBy(getCms().getRequestContext().currentUser())
+            && lock.isOwnedInProjectBy(
+                getCms().getRequestContext().currentUser(),
+                getCms().getRequestContext().currentProject())) {
+            // prove is current lock from current user in current project
+            return true;
+        } else if ((lock != null) && !lock.isUnlocked() && !lock.isOwnedBy(getCms().getRequestContext().currentUser())) {
+            // the resource is not locked by the current user, so can not lock it
+            return false;
+        } else if ((lock != null)
+            && !lock.isUnlocked()
+            && lock.isOwnedBy(getCms().getRequestContext().currentUser())
+            && !lock.isOwnedInProjectBy(
+                getCms().getRequestContext().currentUser(),
+                getCms().getRequestContext().currentProject())) {
+            // prove is current lock from current user but not in current project
+            // file is locked by current user but not in current project
+            // change the lock 
+            getCms().changeLock(getCms().getSitePath(cmsFile));
+        } else if ((lock != null) && lock.isUnlocked()) {
+            // lock resource from current user in current project
+            getCms().lockResource(getCms().getSitePath(cmsFile));
+        }
+        lock = getCms().getLock(getCms().getSitePath(cmsFile));
         if ((lock != null)
             && lock.isOwnedBy(getCms().getRequestContext().currentUser())
             && !lock.isOwnedInProjectBy(
                 getCms().getRequestContext().currentUser(),
                 getCms().getRequestContext().currentProject())) {
-            try {
-                // file is locked by current user but not in current project
-                // unlock this file
-                getCms().changeLock(getCms().getSitePath(cmsFile));
-            } catch (CmsException e) {
-                if (LOG.isErrorEnabled()) {
-                    LOG.error(e);
-                }
-            }
+            // resource could not be locked
+            return false;
         }
-        // lock resource from current user in current project
-        getCms().lockResource(getCms().getSitePath(cmsFile));
-        // get current lock
-        lock = getCms().getLock(getCms().getSitePath(cmsFile));
-        // lock is okay if it belongs to current user and current project
-        boolean locked = (lock != null)
-            && lock.isOwnedInProjectBy(
-                getCms().getRequestContext().currentUser(),
-                getCms().getRequestContext().currentProject());
-        return locked;
+        // resource is locked successfully
+        return true;
     }
 
     /**
@@ -1472,7 +1504,10 @@ public class CmsExcelImport extends A_CmsReportThread {
             // write file
             getCms().writeFile(cmsFile);
             // unlock file
-            getCms().unlockResource(getCms().getSitePath(cmsFile));
+            CmsLock lock = getCms().getLock(getCms().getSitePath(cmsFile));
+            if (!lock.getType().isInherited()) {
+                getCms().unlockResource(getCms().getSitePath(cmsFile));
+            }
         } catch (CmsException e) {
             if (LOG.isErrorEnabled()) {
                 LOG.error(e);
