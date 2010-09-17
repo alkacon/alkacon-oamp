@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaField.java,v $
- * Date   : $Date: 2010/05/21 13:49:16 $
- * Version: $Revision: 1.7 $
+ * Date   : $Date: 2010/09/17 11:01:41 $
+ * Version: $Revision: 1.8 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -63,7 +63,7 @@ import com.octo.captcha.service.text.TextCaptchaService;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  * 
  * @since 7.0.4 
  */
@@ -239,8 +239,6 @@ public class CmsCaptchaField extends A_CmsField {
                 // most often this will be
                 // "com.octo.captcha.service.CaptchaServiceException: Invalid ID, could not validate unexisting or already validated captcha"
                 // in case someone hits the back button and submits again
-                String error = cse.getLocalizedMessage();
-                String test = error;
             }
         }
 
