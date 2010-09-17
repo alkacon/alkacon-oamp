@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/dialog/CmsFormDeleteSingleEntryAction.java,v $
- * Date   : $Date: 2010/05/21 13:49:30 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2010/09/17 12:49:30 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -72,6 +72,8 @@ public class CmsFormDeleteSingleEntryAction extends CmsListDirectAction {
 
     /**
      * Returns if the form entry can be deleted depending on the current users permissions and roles.<p>
+     * 
+     * @param wp the current workplace list dialog instance
      * 
      * @return <code>true</code> if the entry can be deleted by the current user, otherwise <code>false</code>
      */

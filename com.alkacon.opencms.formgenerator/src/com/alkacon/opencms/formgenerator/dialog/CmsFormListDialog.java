@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/dialog/CmsFormListDialog.java,v $
- * Date   : $Date: 2010/05/21 13:49:31 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2010/09/17 12:49:30 $
+ * Version: $Revision: 1.7 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -65,7 +65,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Anja Roettgers
  * 
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  * 
  * @since 7.0.4
  */
@@ -133,6 +133,7 @@ public class CmsFormListDialog extends A_CmsListDialog {
      * 
      * @see org.opencms.workplace.list.A_CmsListDialog#executeListMultiActions()
      */
+    @Override
     public void executeListMultiActions() throws CmsRuntimeException {
 
         // NOOP
@@ -183,6 +184,7 @@ public class CmsFormListDialog extends A_CmsListDialog {
      * 
      * @see org.opencms.workplace.list.A_CmsListDialog#fillDetails(java.lang.String)
      */
+    @Override
     protected void fillDetails(String detailId) {
 
         // NOOP
@@ -192,9 +194,10 @@ public class CmsFormListDialog extends A_CmsListDialog {
      * 
      * @see org.opencms.workplace.list.A_CmsListDialog#getListItems()
      */
+    @Override
     protected List getListItems() {
 
-        List result = new ArrayList();
+        List<CmsListItem> result = new ArrayList<CmsListItem>();
         try {
             // read all form names
             CmsListMetadata meta = getList().getMetadata();
@@ -220,6 +223,7 @@ public class CmsFormListDialog extends A_CmsListDialog {
      * 
      * @see org.opencms.workplace.CmsWorkplace#initMessages()
      */
+    @Override
     protected void initMessages() {
 
         // add specific dialog resource bundle
@@ -231,6 +235,7 @@ public class CmsFormListDialog extends A_CmsListDialog {
      * 
      * @see org.opencms.workplace.list.A_CmsListDialog#setColumns(org.opencms.workplace.list.CmsListMetadata)
      */
+    @Override
     protected void setColumns(CmsListMetadata metadata) {
 
         // create column for show
@@ -302,6 +307,7 @@ public class CmsFormListDialog extends A_CmsListDialog {
      * 
      * @see org.opencms.workplace.list.A_CmsListDialog#setIndependentActions(org.opencms.workplace.list.CmsListMetadata)
      */
+    @Override
     protected void setIndependentActions(CmsListMetadata metadata) {
 
         //NOOP
@@ -311,6 +317,7 @@ public class CmsFormListDialog extends A_CmsListDialog {
      * 
      * @see org.opencms.workplace.list.A_CmsListDialog#setMultiActions(org.opencms.workplace.list.CmsListMetadata)
      */
+    @Override
     protected void setMultiActions(CmsListMetadata metadata) {
 
         // NOOP
