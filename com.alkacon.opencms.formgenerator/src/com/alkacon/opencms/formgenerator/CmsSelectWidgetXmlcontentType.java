@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsSelectWidgetXmlcontentType.java,v $
- * Date   : $Date: 2010/09/17 10:48:37 $
- * Version: $Revision: 1.11 $
+ * Date   : $Date: 2010/09/17 13:50:44 $
+ * Version: $Revision: 1.12 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -168,7 +168,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  * 
  * @since 7.0.4
  * 
@@ -181,7 +181,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
      * 
      * @author Achim Westermann
      * 
-     * @version $Revision: 1.11 $
+     * @version $Revision: 1.12 $
      * 
      * @since 6.1.6
      * 
@@ -306,7 +306,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
      * 
      * @author Achim Westermann
      * 
-     * @version $Revision: 1.11 $
+     * @version $Revision: 1.12 $
      * 
      * @since 6.1.6
      * 
@@ -713,19 +713,19 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
             }
 
             if ((selectOptions == null) || (selectOptions == Collections.EMPTY_LIST)) {
-                selectOptions = new ArrayList();
+                selectOptions = new ArrayList<CmsResourceSelectWidgetOption>();
             }
 
             // no method to add the parsed option list....
             // Caution: if it is decided to return a copy of the list we are doomed unless
             // setSelectOptions is set to protected!
-            List pOptions = getSelectOptions();
+            List<CmsResourceSelectWidgetOption> pOptions = getSelectOptions();
             if (pOptions != null) {
                 pOptions.clear();
             }
-            Iterator it = selectOptions.iterator();
+            Iterator<CmsResourceSelectWidgetOption> it = selectOptions.iterator();
             while (it.hasNext()) {
-                addSelectOption((CmsSelectWidgetOption)it.next());
+                addSelectOption(it.next());
             }
         }
 
