@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsSelectWidgetXmlcontentType.java,v $
- * Date   : $Date: 2010/05/21 13:49:14 $
- * Version: $Revision: 1.10 $
+ * Date   : $Date: 2010/09/17 10:48:37 $
+ * Version: $Revision: 1.11 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -67,8 +67,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
 
@@ -170,7 +168,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  * 
  * @since 7.0.4
  * 
@@ -183,7 +181,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
      * 
      * @author Achim Westermann
      * 
-     * @version $Revision: 1.10 $
+     * @version $Revision: 1.11 $
      * 
      * @since 6.1.6
      * 
@@ -308,7 +306,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
      * 
      * @author Achim Westermann
      * 
-     * @version $Revision: 1.10 $
+     * @version $Revision: 1.11 $
      * 
      * @since 6.1.6
      * 
@@ -379,7 +377,8 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
             requestContext.setUri(resource2.getRootPath());
             m_macroResolverInner.setResourceName(resource2.getName());
             sort2 = m_macroResolverInner.resolveMacros(m_comparatorMacro);
-            return sort1.compareTo(sort2);
+            int result = sort1.compareTo(sort2);
+            return result;
         }
 
     }
@@ -432,7 +431,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
     private String m_displayOptionMacro;
 
     /** A map filled with properties and their values that have to exist on values to display. */
-    private Map m_filterProperties;
+    private Map<String, String> m_filterProperties;
 
     /**
      * If true it is not tried to match the editor locale with the existence of the locale in the XML content or as
@@ -444,7 +443,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
     private CmsResource m_resourceFolder;
 
     /** The List of type id of xmlcontent resources to use. */
-    private List m_resourceTypeIDs;
+    private List<Integer> m_resourceTypeIDs;
 
     /**
      * The macro that describes the {@link CmsResource} - related value to use for sorting of the select widget options.
@@ -472,7 +471,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
     public CmsSelectWidgetXmlcontentType(String configuration) {
 
         super(configuration);
-        m_filterProperties = new HashMap();
+        m_filterProperties = new HashMap<String, String>();
 
     }
 
@@ -504,7 +503,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
      * 
      * @return the List of resource type ids
      */
-    public List getResourceTypeIDs() {
+    public List<Integer> getResourceTypeIDs() {
 
         return m_resourceTypeIDs;
     }
@@ -589,7 +588,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
             m_macroResolver.setKeepEmptyMacros(true);
         }
 
-        List selectOptions = getSelectOptions();
+        List<CmsResourceSelectWidgetOption> selectOptions = getSelectOptions();
         if (selectOptions == null) {
             String configuration = getConfiguration();
             if (configuration == null) {
@@ -601,19 +600,17 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
                 parseConfigurationInternal(configuration, cms, param);
 
                 // build the set of sorted options
-                SortedSet sortOptions = new TreeSet(new CmsResourceSelectWidgetOptionComparator(
-                    m_macroCmsObject,
-                    m_sortMacro));
+                List<CmsResourceSelectWidgetOption> sortOptions = new ArrayList<CmsResourceSelectWidgetOption>();
                 CmsResourceSelectWidgetOption option;
-                List resources;
-                List allResources = new LinkedList();
+                List<CmsResource> resources;
+                List<CmsResource> allResources = new LinkedList<CmsResource>();
                 // collect all subresources of resource folder.
                 // As a CmsResourceFilter is somewhat limited we have to do several reads
                 // for each resourceType we allow:
                 int resType;
-                Iterator itResTypes = this.m_resourceTypeIDs.iterator();
+                Iterator<Integer> itResTypes = this.m_resourceTypeIDs.iterator();
                 while (itResTypes.hasNext()) {
-                    resType = ((Integer)itResTypes.next()).intValue();
+                    resType = (itResTypes.next()).intValue();
                     CmsResourceFilter filter = CmsResourceFilter.ALL.addRequireType(resType);
                     CmsRequestContext context = cms.getRequestContext();
                     String oldSiteroot = context.getSiteRoot();
@@ -634,14 +631,14 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
 
                 }
 
-                Iterator itResources = allResources.iterator();
+                Iterator<CmsResource> itResources = allResources.iterator();
                 CmsResource resource;
 
                 String displayName;
                 // inner loop vars :
                 while (itResources.hasNext()) {
 
-                    resource = (CmsResource)itResources.next();
+                    resource = itResources.next();
                     // don't make resources selectable that have a different locale than the
                     // we read the locale node of the xmlcontent instance matching the resources
                     // locale property (or top level locale).
@@ -649,7 +646,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
                         resource,
                         CmsPropertyDefinition.PROPERTY_LOCALE,
                         true);
-                    resourceLocale = CmsLocaleManager.getLocale(resourceLocaleProperty.getValue());
+                    resourceLocale = OpenCms.getLocaleManager().getDefaultLocale(cms, cms.getSitePath(resource));
 
                     // We allow all resources without locale property and only the
                     // resources with locale property that match the current XML content editor locale.
@@ -700,7 +697,11 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
                         }
                     }
                 }
-                selectOptions = new LinkedList(sortOptions);
+                selectOptions = new LinkedList<CmsResourceSelectWidgetOption>(sortOptions);
+                // sort the found resources according to their file name (without path information)
+                Collections.sort(selectOptions, new CmsResourceSelectWidgetOptionComparator(
+                    m_macroCmsObject,
+                    m_sortMacro));
 
             } catch (Exception e) {
                 if (LOG.isErrorEnabled()) {
@@ -763,16 +764,16 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
     private boolean hasFilterProperty(CmsResource resource, CmsObject cms) throws CmsException {
 
         boolean result = false;
-        Iterator itFilterProperties;
-        Map.Entry entry;
+        Iterator<Map.Entry<String, String>> itFilterProperties;
+        Map.Entry<String, String> entry;
         CmsProperty property;
         // filter out unwanted resources - if no filter properties are defined, every
         // resource collected here is ok:
         if (m_filterProperties.size() > 0) {
             itFilterProperties = m_filterProperties.entrySet().iterator();
             while (itFilterProperties.hasNext()) {
-                entry = (Map.Entry)itFilterProperties.next();
-                property = cms.readPropertyObject(resource, (String)entry.getKey(), true);
+                entry = itFilterProperties.next();
+                property = cms.readPropertyObject(resource, entry.getKey(), true);
                 if (property == CmsProperty.getNullProperty()) {
                     continue;
                 } else {
@@ -823,8 +824,8 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
               *  implant the uri to the special cms object for resolving macros from the collected xml contents:
               */CmsFile file = ((I_CmsXmlContentValue)param).getDocument().getFile();
         m_macroCmsObject.getRequestContext().setUri(file.getRootPath());
-        List mappings = CmsStringUtil.splitAsList(configuration, '|');
-        Iterator itMappings = mappings.iterator();
+        List<String> mappings = CmsStringUtil.splitAsList(configuration, '|');
+        Iterator<String> itMappings = mappings.iterator();
         String mapping;
         String[] keyValue;
         String key;
@@ -833,7 +834,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
         //   LOG.info("Setting macro %(currentsite) to: " + cms.getRequestContext().getSiteRoot());
         m_macroResolver.addMacro(MACROKEY_CURRENT_SITE, cms.getRequestContext().getSiteRoot());
         while (itMappings.hasNext()) {
-            mapping = (String)itMappings.next();
+            mapping = itMappings.next();
             keyValue = CmsStringUtil.splitAsArray(mapping, '=');
             if (keyValue.length != 2) {
                 throw new CmsIllegalArgumentException(Messages.get().container(
@@ -877,11 +878,11 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
                 // if setResourceType will be implemented copy here and invoke that one
                 String resType = "n/a";
                 try {
-                    this.m_resourceTypeIDs = new LinkedList();
-                    List types = CmsStringUtil.splitAsList(value, ',');
-                    Iterator itTypes = types.iterator();
+                    this.m_resourceTypeIDs = new LinkedList<Integer>();
+                    List<String> types = CmsStringUtil.splitAsList(value, ',');
+                    Iterator<String> itTypes = types.iterator();
                     while (itTypes.hasNext()) {
-                        resType = (String)itTypes.next();
+                        resType = itTypes.next();
                         this.m_resourceTypeIDs.add(new Integer(
                             OpenCms.getResourceManager().getResourceType(resType).getTypeId()));
                     }
