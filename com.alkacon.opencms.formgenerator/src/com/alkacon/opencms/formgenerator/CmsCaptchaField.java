@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaField.java,v $
- * Date   : $Date: 2010/09/17 11:01:41 $
- * Version: $Revision: 1.8 $
+ * Date   : $Date: 2010/09/24 14:42:07 $
+ * Version: $Revision: 1.9 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -63,7 +63,7 @@ import com.octo.captcha.service.text.TextCaptchaService;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  * 
  * @since 7.0.4 
  */
@@ -266,9 +266,9 @@ public class CmsCaptchaField extends A_CmsField {
                     m_captchaSettings,
                     cms.getCmsObject())).getImageChallengeForID(sessionId, locale);
             } catch (CaptchaException cex) {
-                if (LOG.isErrorEnabled()) {
-                    LOG.error(cex);
-                    LOG.error(Messages.get().getBundle().key(
+                if (LOG.isInfoEnabled()) {
+                    LOG.info(cex);
+                    LOG.info(Messages.get().getBundle().key(
                         Messages.LOG_ERR_CAPTCHA_CONFIG_IMAGE_SIZE_2,
                         new Object[] {m_captchaSettings.getPresetPath(), new Integer(maxTries)}));
                 }
