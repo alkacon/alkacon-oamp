@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaSettings.java,v $
- * Date   : $Date: 2010/05/21 13:49:16 $
- * Version: $Revision: 1.7 $
+ * Date   : $Date: 2010/09/24 11:01:58 $
+ * Version: $Revision: 1.8 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -43,11 +43,20 @@ import org.opencms.xml.content.CmsXmlContent;
 import org.opencms.xml.content.CmsXmlContentFactory;
 
 import java.awt.Color;
+import java.security.Key;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.logging.Log;
 
@@ -57,7 +66,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Achim Westermann
  * 
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  * 
  * @since 7.0.4 
  */
@@ -68,6 +77,9 @@ public final class CmsCaptchaSettings implements Cloneable {
 
     /** Request parameter for the characters to use for generation. */
     public static final String C_PARAM_CHARACTERS = "crs";
+
+    /** Request parameter for the encoded captcha data. */
+    public static final String C_PARAM_DATA = "data";
 
     /** Request parameter for the dictionary file to use for generation. */
     public static final String C_PARAM_DICTIONARY = "dict";
@@ -153,8 +165,23 @@ public final class CmsCaptchaSettings implements Cloneable {
     /** Configuration node name for the optional captcha min. phrase length. */
     public static final String NODE_CAPTCHAPRESET_MIN_PHRASE_LENGTH = "MinPhraseLength";
 
+    /** The encryption to be used. */
+    private static final String ENCRYPTION = "DES";
+
+    /** The format of the key and the values to be crypted. */
+    private static final String FORMAT = "UTF8";
+
     /** The log object for this class. */
     private static final Log LOG = CmsLog.getLog(CmsCaptchaSettings.class);
+
+    /** The delimiter for the encrypted parameters. */
+    private static final String PARAM_DELIM = "&";
+
+    /** The key-value separator for the encrypted parameters. */
+    private static final String PARAM_KV_SEPARATOR = "=";
+
+    /** The password to be used for encryption and decryption. */
+    private static final String PASSWORD = "oamp-9aX";
 
     /** The the background color. */
     private Color m_backgroundColor = Color.WHITE;
@@ -418,12 +445,27 @@ public final class CmsCaptchaSettings implements Cloneable {
 
         List<FileItem> multipartFileItems = CmsRequestUtil.readMultipartFileItems(jsp.getRequest());
         m_parameterMap = new HashMap<String, String[]>();
+        Map<String, String[]> parameters = new HashMap<String, String[]>();
         if (multipartFileItems != null) {
-            m_parameterMap = CmsRequestUtil.readParameterMapFromMultiPart(
+            parameters = CmsRequestUtil.readParameterMapFromMultiPart(
                 jsp.getRequestContext().getEncoding(),
                 multipartFileItems);
         } else {
-            m_parameterMap = jsp.getRequest().getParameterMap();
+            parameters = jsp.getRequest().getParameterMap();
+        }
+        if (parameters.containsKey(C_PARAM_DATA)) {
+            // found encrypted data parameter, decrypt it
+            String data = decrypt((parameters.get(C_PARAM_DATA))[0]);
+            if (data != null) {
+                // split the data into parameters
+                Map<String, String> dataParameters = CmsStringUtil.splitAsMap(data, PARAM_DELIM, PARAM_KV_SEPARATOR);
+                m_parameterMap = new HashMap<String, String[]>(dataParameters.size());
+                for (Iterator<Entry<String, String>> i = dataParameters.entrySet().iterator(); i.hasNext();) {
+                    // store values as String array
+                    Map.Entry<String, String> entry = i.next();
+                    m_parameterMap.put(entry.getKey(), new String[] {entry.getValue()});
+                }
+            }
         }
 
         // image width
@@ -904,28 +946,35 @@ public final class CmsCaptchaSettings implements Cloneable {
 
         StringBuffer buf = new StringBuffer();
 
-        buf.append(C_PARAM_IMAGE_WIDTH).append("=").append(m_imageWidth);
-        buf.append("&amp;").append(C_PARAM_IMAGE_HEIGHT).append("=").append(m_imageHeight);
-        buf.append("&amp;").append(C_PARAM_MIN_FONT_SIZE).append("=").append(m_minFontSize);
-        buf.append("&amp;").append(C_PARAM_MAX_FONT_SIZE).append("=").append(m_maxFontSize);
-        buf.append("&amp;").append(C_PARAM_MIN_PHRASE_LENGTH).append("=").append(m_minPhraseLength);
-        buf.append("&amp;").append(C_PARAM_MAX_PHRASE_LENGTH).append("=").append(m_maxPhraseLength);
-        buf.append("&amp;").append(C_PARAM_FONT_COLOR).append("=").append(
+        buf.append(C_PARAM_IMAGE_WIDTH).append(PARAM_KV_SEPARATOR).append(m_imageWidth);
+        buf.append(PARAM_DELIM).append(C_PARAM_IMAGE_HEIGHT).append(PARAM_KV_SEPARATOR).append(m_imageHeight);
+        buf.append(PARAM_DELIM).append(C_PARAM_MIN_FONT_SIZE).append(PARAM_KV_SEPARATOR).append(m_minFontSize);
+        buf.append(PARAM_DELIM).append(C_PARAM_MAX_FONT_SIZE).append(PARAM_KV_SEPARATOR).append(m_maxFontSize);
+        buf.append(PARAM_DELIM).append(C_PARAM_MIN_PHRASE_LENGTH).append(PARAM_KV_SEPARATOR).append(m_minPhraseLength);
+        buf.append(PARAM_DELIM).append(C_PARAM_MAX_PHRASE_LENGTH).append(PARAM_KV_SEPARATOR).append(m_maxPhraseLength);
+        buf.append(PARAM_DELIM).append(C_PARAM_FONT_COLOR).append(PARAM_KV_SEPARATOR).append(
             CmsEncoder.escape(getFontColorString(), cms.getRequestContext().getEncoding()));
-        buf.append("&amp;").append(C_PARAM_BACKGROUND_COLOR).append("=").append(
+        buf.append(PARAM_DELIM).append(C_PARAM_BACKGROUND_COLOR).append(PARAM_KV_SEPARATOR).append(
             CmsEncoder.escape(getBackgroundColorString(), cms.getRequestContext().getEncoding()));
-        buf.append("&amp;").append(C_PARAM_HOLES_PER_GLYPH).append("=").append(m_holesPerGlyph);
-        buf.append("&amp;").append(C_PARAM_FILTER_AMPLITUDE).append("=").append(m_filterAmplitude);
-        buf.append("&amp;").append(C_PARAM_FILTER_WAVE_LENGTH).append("=").append(m_filterWaveLength);
+        buf.append(PARAM_DELIM).append(C_PARAM_HOLES_PER_GLYPH).append(PARAM_KV_SEPARATOR).append(m_holesPerGlyph);
+        buf.append(PARAM_DELIM).append(C_PARAM_FILTER_AMPLITUDE).append(PARAM_KV_SEPARATOR).append(m_filterAmplitude);
+        buf.append(PARAM_DELIM).append(C_PARAM_FILTER_WAVE_LENGTH).append(PARAM_KV_SEPARATOR).append(m_filterWaveLength);
         if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(getCharacterPool())) {
-            buf.append("&amp;").append(C_PARAM_CHARACTERS).append("=").append(getCharacterPool());
+            buf.append(PARAM_DELIM).append(C_PARAM_CHARACTERS).append(PARAM_KV_SEPARATOR).append(getCharacterPool());
         } else {
-            buf.append("&amp;").append(C_PARAM_DICTIONARY).append("=").append(m_dictionary);
+            buf.append(PARAM_DELIM).append(C_PARAM_DICTIONARY).append(PARAM_KV_SEPARATOR).append(m_dictionary);
         }
-        buf.append("&amp;").append(C_PARAM_PRESET).append("=").append(m_presetPath);
-        buf.append("&amp;").append(C_PARAM_USE_BACKGROUND_IMAGE).append("=").append(
+        buf.append(PARAM_DELIM).append(C_PARAM_PRESET).append(PARAM_KV_SEPARATOR).append(m_presetPath);
+        buf.append(PARAM_DELIM).append(C_PARAM_USE_BACKGROUND_IMAGE).append(PARAM_KV_SEPARATOR).append(
             Boolean.toString(m_useBackgroundImage));
-        return buf.toString();
+
+        String result = "";
+        // encrypt the parameters
+        String encValues = encrypt(buf.toString());
+        if (encValues != null) {
+            result = C_PARAM_DATA + PARAM_KV_SEPARATOR + encValues;
+        }
+        return result;
     }
 
     /**
@@ -993,6 +1042,96 @@ public final class CmsCaptchaSettings implements Cloneable {
     void setCharacterPool(String characterPool) {
 
         m_characterPool = characterPool;
+    }
+
+    /**
+     * Decrypts the given value which was encrypted with the encrypt method.<p>
+     * 
+     * @param value the value to be decrypted
+     * @return the decrypted string of the value or null if something went wrong
+     */
+    private String decrypt(String value) {
+
+        // check if given value is valid
+        if (CmsStringUtil.isEmptyOrWhitespaceOnly(value)) {
+            // no input available
+            return null;
+        }
+
+        try {
+            // create key
+            Key key = new SecretKeySpec(getKey(), ENCRYPTION);
+            Cipher cipher = Cipher.getInstance(ENCRYPTION);
+            cipher.init(Cipher.DECRYPT_MODE, key);
+
+            // decode from base64
+            byte[] cleartext = Base64.decodeBase64(value.getBytes());
+
+            // decrypt text
+            byte[] ciphertext = cipher.doFinal(cleartext);
+            return CmsEncoder.decode(new String(ciphertext));
+        } catch (Exception ex) {
+            // error while decrypting
+        }
+
+        return null;
+    }
+
+    /**
+     * Encrypts the given value.<p>
+     * 
+     * @param value the string which should be encrypted
+     * @return the encrypted string of the value or null if something went wrong
+     */
+    private String encrypt(String value) {
+
+        // check if given value is valid
+        if (CmsStringUtil.isEmptyOrWhitespaceOnly(value)) {
+            // no input available
+            return null;
+        }
+
+        try {
+            // create key
+            byte[] k = getKey();
+            Key key = new SecretKeySpec(k, ENCRYPTION);
+            Cipher cipher = Cipher.getInstance(ENCRYPTION);
+            cipher.init(Cipher.ENCRYPT_MODE, key);
+
+            // encrypt text
+            byte[] cleartext = value.getBytes(FORMAT);
+            byte[] ciphertext = cipher.doFinal(cleartext);
+
+            // encode with base64 to be used as a url parameter
+            return CmsEncoder.encode(new String(Base64.encodeBase64(ciphertext)));
+        } catch (Exception ex) {
+            // error while encrypting
+        }
+
+        return null;
+    }
+
+    /**
+     * Converts the password to machine readable form.<p>
+     * 
+     * @return the password in machine readable form
+     */
+    private byte[] getKey() {
+
+        try {
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            md5.update(PASSWORD.toString().getBytes());
+            byte[] key = md5.digest();
+            // now get the first 8 bytes
+            byte[] finalKey = new byte[8];
+            for (int i = 0; i <= 7; i++) {
+                finalKey[i] = key[i];
+            }
+            return finalKey;
+        } catch (NoSuchAlgorithmException ex) {
+            // found no matching algorithm
+        }
+        return null;
     }
 
     /**
