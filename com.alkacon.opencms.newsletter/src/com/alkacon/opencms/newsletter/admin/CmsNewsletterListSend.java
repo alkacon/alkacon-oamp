@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/admin/CmsNewsletterListSend.java,v $
- * Date   : $Date: 2008/12/09 14:29:28 $
- * Version: $Revision: 1.10 $
+ * Date   : $Date: 2010/10/14 13:17:50 $
+ * Version: $Revision: 1.11 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -127,6 +127,7 @@ public class CmsNewsletterListSend extends A_CmsListExplorerDialog {
     /**
      * @see org.opencms.workplace.list.A_CmsListDialog#executeListMultiActions()
      */
+    @Override
     public void executeListMultiActions() {
 
         throwListUnsupportedActionException();
@@ -138,6 +139,7 @@ public class CmsNewsletterListSend extends A_CmsListExplorerDialog {
     /**
      * @see org.opencms.workplace.list.A_CmsListDialog#executeListSingleActions()
      */
+    @Override
     public void executeListSingleActions() {
 
         if (getParamListAction().equals(LIST_ACTION_SEND)) {
@@ -153,10 +155,11 @@ public class CmsNewsletterListSend extends A_CmsListExplorerDialog {
                     rootPath = mailData.getContent().getFile().getRootPath();
                 }
                 if (mailData.isSendable()) {
-                    //send the emails to the mailing list group
+                    // send the emails to the mailing list group
                     CmsNewsletterMail nlMail = new CmsNewsletterMail(
                         mailData,
                         mailData.getRecipients(),
+                        getCms().getRequestContext().currentUser().getEmail(),
                         rootPath);
                     nlMail.start();
                     getList().clear();
@@ -176,6 +179,7 @@ public class CmsNewsletterListSend extends A_CmsListExplorerDialog {
     /**
      * @see org.opencms.workplace.list.A_CmsListExplorerDialog#getCollector()
      */
+    @Override
     public I_CmsListResourceCollector getCollector() {
 
         if (m_collector == null) {
@@ -234,6 +238,7 @@ public class CmsNewsletterListSend extends A_CmsListExplorerDialog {
     /**
      * @see org.opencms.workplace.list.A_CmsListDialog#fillDetails(java.lang.String)
      */
+    @Override
     protected void fillDetails(String detailId) {
 
         // no details
@@ -242,6 +247,7 @@ public class CmsNewsletterListSend extends A_CmsListExplorerDialog {
     /**
      * @see org.opencms.workplace.CmsWorkplace#initMessages()
      */
+    @Override
     protected void initMessages() {
 
         // add specific dialog resource bundle
@@ -253,6 +259,7 @@ public class CmsNewsletterListSend extends A_CmsListExplorerDialog {
     /**
      * @see org.opencms.workplace.list.A_CmsListDialog#setColumns(org.opencms.workplace.list.CmsListMetadata)
      */
+    @Override
     protected void setColumns(CmsListMetadata metadata) {
 
         super.setColumns(metadata);
@@ -273,7 +280,9 @@ public class CmsNewsletterListSend extends A_CmsListExplorerDialog {
         sendAction.setConfirmationMessage(Messages.get().container(Messages.GUI_NEWSLETTER_LIST_ACTION_SEND_CONF_0));
         sendIconCol.addDirectAction(sendAction);
 
-        CmsListDirectAction nosendAction = new CmsListSendNewsletterAction(LIST_ACTION_SEND + "d", LIST_COLUMN_ROOT_PATH);
+        CmsListDirectAction nosendAction = new CmsListSendNewsletterAction(
+            LIST_ACTION_SEND + "d",
+            LIST_COLUMN_ROOT_PATH);
         nosendAction.setEnabled(false);
         sendIconCol.addDirectAction(nosendAction);
 
@@ -291,6 +300,7 @@ public class CmsNewsletterListSend extends A_CmsListExplorerDialog {
     /**
      * @see org.opencms.workplace.list.A_CmsListExplorerDialog#setColumnVisibilities()
      */
+    @Override
     protected void setColumnVisibilities() {
 
         super.setColumnVisibilities();
@@ -319,6 +329,7 @@ public class CmsNewsletterListSend extends A_CmsListExplorerDialog {
     /**
      * @see org.opencms.workplace.list.A_CmsListExplorerDialog#setIndependentActions(org.opencms.workplace.list.CmsListMetadata)
      */
+    @Override
     protected void setIndependentActions(CmsListMetadata metadata) {
 
         // no LIAs
@@ -327,6 +338,7 @@ public class CmsNewsletterListSend extends A_CmsListExplorerDialog {
     /**
      * @see org.opencms.workplace.list.A_CmsListDialog#setMultiActions(org.opencms.workplace.list.CmsListMetadata)
      */
+    @Override
     protected void setMultiActions(CmsListMetadata metadata) {
 
         // no LMAs
@@ -335,6 +347,7 @@ public class CmsNewsletterListSend extends A_CmsListExplorerDialog {
     /**
      * @see org.opencms.workplace.list.A_CmsListDialog#validateParamaters()
      */
+    @Override
     protected void validateParamaters() throws Exception {
 
         if (CmsStringUtil.isEmptyOrWhitespaceOnly(getParamOufqn())) {

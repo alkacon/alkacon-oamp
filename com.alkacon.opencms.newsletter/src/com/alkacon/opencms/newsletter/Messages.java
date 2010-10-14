@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/Messages.java,v $
- * Date   : $Date: 2009/04/28 15:20:43 $
- * Version: $Revision: 1.10 $
+ * Date   : $Date: 2010/10/14 13:17:50 $
+ * Version: $Revision: 1.11 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -40,7 +40,7 @@ import org.opencms.i18n.I_CmsMessageBundle;
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.10 $ 
+ * @version $Revision: 1.11 $ 
  * 
  * @since 7.0.3 
  */
@@ -305,6 +305,9 @@ public final class Messages extends A_CmsMessageBundle {
     public static final String LOG_ERROR_MAIL_CONFIRMATION_1 = "LOG_ERROR_MAIL_CONFIRMATION_1";
 
     /** Message constant for key in the resource bundle. */
+    public static final String LOG_ERROR_MAIL_REPORT_FAILED_1 = "LOG_ERROR_MAIL_REPORT_FAILED_1";
+
+    /** Message constant for key in the resource bundle. */
     public static final String LOG_ERROR_NEWSLETTER_EMAIL_3 = "LOG_ERROR_NEWSLETTER_EMAIL_3";
 
     /** Message constant for key in the resource bundle. */
@@ -327,6 +330,21 @@ public final class Messages extends A_CmsMessageBundle {
 
     /** Message constant for key in the resource bundle. */
     public static final String LOG_NEWSLETTER_CLEANUP_FINISHED_COUNT_1 = "LOG_NEWSLETTER_CLEANUP_FINISHED_COUNT_1";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String MAIL_ERROR_BODY_1 = "MAIL_ERROR_BODY_1";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String MAIL_ERROR_EMAIL_ADDRESS_1 = "MAIL_ERROR_EMAIL_ADDRESS_1";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String MAIL_ERROR_EMAIL_FROM_ADDRESS_1 = "MAIL_ERROR_EMAIL_FROM_ADDRESS_1";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String MAIL_ERROR_NEWSLETTER_SEND_FAILED_2 = "MAIL_ERROR_NEWSLETTER_SEND_FAILED_2";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String MAIL_ERROR_SUBJECT_1 = "MAIL_ERROR_SUBJECT_1";
 
     /** Name of the used resource bundle. */
     private static final String BUNDLE_NAME = "com.alkacon.opencms.newsletter.messages";

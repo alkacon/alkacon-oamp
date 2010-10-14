@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/A_CmsNewsletterMailData.java,v $
- * Date   : $Date: 2010/03/18 13:07:26 $
- * Version: $Revision: 1.9 $
+ * Date   : $Date: 2010/10/14 13:17:50 $
+ * Version: $Revision: 1.10 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -65,7 +65,7 @@ import org.apache.commons.mail.Email;
  *  
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.9 $ 
+ * @version $Revision: 1.10 $ 
  * 
  * @since 7.0.3 
  */
@@ -120,7 +120,7 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
     private CmsOrganizationalUnit m_ou;
 
     /** The list of recipients to send the newsletter to. */
-    private List m_recipients;
+    private List<InternetAddress> m_recipients;
 
     /** The email subject. */
     private String m_subject;
@@ -143,20 +143,28 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
     /**
      * @see com.alkacon.opencms.newsletter.I_CmsNewsletterMailData#getEmailContentPreview()
      */
-    public abstract String getEmailContentPreview() throws CmsException;
+    public String getEmailContentPreview() throws CmsException {
+
+        return getEmailContentPreview(false);
+    }
+
+    /**
+     * @see com.alkacon.opencms.newsletter.I_CmsNewsletterMailData#getEmailContentPreview(boolean)
+     */
+    public abstract String getEmailContentPreview(boolean onlyPartialHtml) throws CmsException;
 
     /**
      * @see com.alkacon.opencms.newsletter.I_CmsNewsletterMailData#getRecipients()
      */
-    public List getRecipients() throws CmsException {
+    public List<InternetAddress> getRecipients() throws CmsException {
 
         if (m_recipients != null) {
             // we have explicitly set recipients, use these
             return m_recipients;
         }
         // we have a group or an OU to check for recipients
-        List recipients = new ArrayList();
-        Iterator i = recipients.iterator();
+        List<InternetAddress> recipients = new ArrayList<InternetAddress>();
+        Iterator<CmsUser> i = new ArrayList<CmsUser>().iterator();
         String groupName = "";
         if (getGroup() != null) {
             // iterate over mailing list members (i.e. an OpenCms group)
@@ -166,7 +174,7 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
             i = getOuUsers().iterator();
         }
         while (i.hasNext()) {
-            CmsUser user = (CmsUser)i.next();
+            CmsUser user = i.next();
             if (CmsNewsletterManager.isActiveUser(user, groupName)) {
                 // add active users to the recipients
                 try {
@@ -225,7 +233,8 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
     /**
      * @see com.alkacon.opencms.newsletter.I_CmsNewsletterMailData#initialize(CmsJspActionElement, List, String)
      */
-    public void initialize(CmsJspActionElement jsp, List recipients, String fileName) throws CmsException {
+    public void initialize(CmsJspActionElement jsp, List<InternetAddress> recipients, String fileName)
+    throws CmsException {
 
         initialize(jsp, null, null, recipients, fileName);
     }
@@ -281,7 +290,7 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
     /**
      * @see com.alkacon.opencms.newsletter.I_CmsNewsletterMailData#setRecipients(java.util.List)
      */
-    public void setRecipients(List recipients) {
+    public void setRecipients(List<InternetAddress> recipients) {
 
         m_recipients = recipients;
 
@@ -389,17 +398,17 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
      * 
      * @return the users for the current OU and all sub OUs
      */
-    protected List getOuUsers() {
+    protected List<CmsUser> getOuUsers() {
 
-        List result = new ArrayList(100);
+        List<CmsUser> result = new ArrayList<CmsUser>(128);
         try {
-            List units = OpenCms.getRoleManager().getOrgUnitsForRole(
+            List<CmsOrganizationalUnit> units = OpenCms.getRoleManager().getOrgUnitsForRole(
                 getCms(),
                 CmsRole.ACCOUNT_MANAGER.forOrgUnit(getOu().getName()),
                 true);
 
-            for (Iterator i = units.iterator(); i.hasNext();) {
-                CmsOrganizationalUnit ou = (CmsOrganizationalUnit)i.next();
+            for (Iterator<CmsOrganizationalUnit> i = units.iterator(); i.hasNext();) {
+                CmsOrganizationalUnit ou = i.next();
                 if (!ou.hasFlagWebuser()
                     && !ou.getSimpleName().startsWith(CmsNewsletterManager.NEWSLETTER_OU_NAMEPREFIX)) {
                     result.addAll(OpenCms.getOrgUnitManager().getUsers(getCms(), ou.getName(), false));
@@ -470,7 +479,7 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
         CmsJspActionElement jsp,
         CmsGroup group,
         CmsOrganizationalUnit ou,
-        List recipients,
+        List<InternetAddress> recipients,
         String fileName) throws CmsException {
 
         m_cms = jsp.getCmsObject();

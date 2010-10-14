@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterSubscriptionBean.java,v $
- * Date   : $Date: 2010/03/18 13:07:26 $
- * Version: $Revision: 1.12 $
+ * Date   : $Date: 2010/10/14 13:17:50 $
+ * Version: $Revision: 1.13 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -66,7 +66,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.12 $ 
+ * @version $Revision: 1.13 $ 
  * 
  * @since 7.0.3 
  */
@@ -181,7 +181,7 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
     private String m_email;
 
     /** The list of errors that might occur during un-/subscription. */
-    private List m_errors;
+    private List<String> m_errors;
 
     /** the localized messages. */
     private CmsMessages m_messages;
@@ -268,7 +268,7 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
                 String fileName = getRequestContext().getSitePath(res);
                 if (CmsStringUtil.isNotEmpty(fileName)) {
                     // generate the newsletter mail and list of recipients (with the subscriber email)
-                    List recipients = new ArrayList(1);
+                    List<InternetAddress> recipients = new ArrayList<InternetAddress>(1);
                     recipients.add(new InternetAddress(getEmail()));
                     I_CmsNewsletterMailData mailData = CmsNewsletterManager.getMailData(this, recipients, fileName);
                     String rootPath = res.getRootPath();
@@ -277,7 +277,11 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
                     }
                     if (mailData.isSendable()) {
                         // send the email to the new subscriber
-                        CmsNewsletterMail nlMail = new CmsNewsletterMail(mailData, mailData.getRecipients(), rootPath);
+                        CmsNewsletterMail nlMail = new CmsNewsletterMail(
+                            mailData,
+                            mailData.getRecipients(),
+                            null,
+                            rootPath);
                         nlMail.start();
                     }
                     result = getConfigText(XPATH_2_SENDLAST + NODE_OK);
@@ -398,7 +402,7 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
      * 
      * @return the errors found during validation
      */
-    public List getErrors() {
+    public List<String> getErrors() {
 
         return m_errors;
     }
@@ -429,10 +433,10 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
     public String getValidationErrorsHtml(String element) {
 
         StringBuffer result = new StringBuffer(2048);
-        Iterator i = getErrors().iterator();
+        Iterator<String> i = getErrors().iterator();
         while (i.hasNext()) {
             // loop the error messages
-            String error = (String)i.next();
+            String error = i.next();
             result.append("\t<").append(element).append(">");
             result.append(error);
             result.append("</").append(element).append(">\n");
@@ -445,12 +449,13 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
      * 
      * @see org.opencms.jsp.CmsJspBean#init(javax.servlet.jsp.PageContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
+    @Override
     public void init(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         // call super initialization
         super.init(context, req, res);
         // initialize error map
-        m_errors = new ArrayList();
+        m_errors = new ArrayList<String>();
         // initialize members from request parameters
         m_action = -1;
         String action = req.getParameter(PARAM_ACTION);

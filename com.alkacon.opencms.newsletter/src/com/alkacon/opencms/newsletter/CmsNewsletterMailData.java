@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterMailData.java,v $
- * Date   : $Date: 2010/03/18 13:07:26 $
- * Version: $Revision: 1.9 $
+ * Date   : $Date: 2010/10/14 13:17:49 $
+ * Version: $Revision: 1.10 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -56,7 +56,7 @@ import org.apache.commons.mail.EmailException;
  *  
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.9 $ 
+ * @version $Revision: 1.10 $ 
  * 
  * @since 7.0.3 
  */
@@ -130,6 +130,7 @@ public class CmsNewsletterMailData extends A_CmsNewsletterMailData {
      * @return the mail to send as newsletter
      * @throws CmsException if generating the email content fails
      */
+    @Override
     public Email getEmail() throws CmsException {
 
         // get the email data from the content fields
@@ -203,14 +204,15 @@ public class CmsNewsletterMailData extends A_CmsNewsletterMailData {
     }
 
     /**
-     * @see com.alkacon.opencms.newsletter.I_CmsNewsletterMailData#getEmailContentPreview()
+     * @see com.alkacon.opencms.newsletter.I_CmsNewsletterMailData#getEmailContentPreview(boolean)
      */
-    public String getEmailContentPreview() throws CmsException {
+    @Override
+    public String getEmailContentPreview(boolean onlyPartialHtml) throws CmsException {
 
         boolean isHtmlMail = Boolean.valueOf(
             getContent().getStringValue(getCms(), XPATH_CONFIG + NODE_HTML, getLocale())).booleanValue();
-        String result = getEmailContent(isHtmlMail);
-        if (result.indexOf("</body>") == -1) {
+        String result = getEmailContent(isHtmlMail, onlyPartialHtml);
+        if ((result.indexOf("</body>") == -1) && !onlyPartialHtml) {
             StringBuffer previewHtml = new StringBuffer(result.length() + 256);
             previewHtml.append("<html><head></head><body style=\"background-color: #FFF;\">\n<pre style=\"font-family: Courier New, monospace; font-size: 13px; color: #000;\">");
             previewHtml.append(result);
@@ -223,6 +225,7 @@ public class CmsNewsletterMailData extends A_CmsNewsletterMailData {
     /**
      * @see com.alkacon.opencms.newsletter.I_CmsNewsletterMailData#getResourceTypeName()
      */
+    @Override
     public String getResourceTypeName() {
 
         return RESOURCETYPE_NEWSLETTER_NAME;
@@ -232,10 +235,13 @@ public class CmsNewsletterMailData extends A_CmsNewsletterMailData {
      * Returns the email content from the newsletter VFS file.<p>
      * 
      * @param isHtmlMail flag to determine if HTML or plain text content should be generated
+     * @param onlyPartialHtml sets if only page parts should be returned instead of a complete HTML page
+     * 
      * @return the email content
+     * 
      * @throws CmsException if reading or unmarshalling the file fails
      */
-    protected String getEmailContent(boolean isHtmlMail) throws CmsException {
+    protected String getEmailContent(boolean isHtmlMail, boolean onlyPartialHtml) throws CmsException {
 
         String text = getContent().getStringValue(getCms(), NODE_TEXT, getLocale());
         if (isHtmlMail) {
@@ -243,27 +249,30 @@ public class CmsNewsletterMailData extends A_CmsNewsletterMailData {
             StringBuffer mailHtml = new StringBuffer(4096);
             String mailHead = "";
             String mailFoot = "";
-            boolean foundExternalConfig = false;
-            if (getContent().hasValue(XPATH_CONFIG + NODE_CONFFILE, getLocale())) {
-                // optional external configuration file specified, use this as mail configuration
-                String path = getContent().getStringValue(getCms(), XPATH_CONFIG + NODE_CONFFILE, getLocale());
-                if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(path)
-                    && getCms().existsResource(path)
-                    && !CmsResource.isFolder(path)) {
-                    CmsFile mailConfig = getCms().readFile(path);
-                    CmsXmlContent mailContent = CmsXmlContentFactory.unmarshal(getCms(), mailConfig);
-                    // get the mail head and foot from the external configuration file content
-                    if (mailContent.hasValue(NODE_MAILHEAD, getLocale())) {
-                        mailHead = mailContent.getStringValue(getCms(), NODE_MAILHEAD, getLocale());
-                        mailFoot = mailContent.getStringValue(getCms(), NODE_MAILFOOT, getLocale());
-                        foundExternalConfig = true;
+            if (!onlyPartialHtml) {
+                // get mail head and foot HTML if complete HTML page content should be generated
+                boolean foundExternalConfig = false;
+                if (getContent().hasValue(XPATH_CONFIG + NODE_CONFFILE, getLocale())) {
+                    // optional external configuration file specified, use this as mail configuration
+                    String path = getContent().getStringValue(getCms(), XPATH_CONFIG + NODE_CONFFILE, getLocale());
+                    if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(path)
+                        && getCms().existsResource(path)
+                        && !CmsResource.isFolder(path)) {
+                        CmsFile mailConfig = getCms().readFile(path);
+                        CmsXmlContent mailContent = CmsXmlContentFactory.unmarshal(getCms(), mailConfig);
+                        // get the mail head and foot from the external configuration file content
+                        if (mailContent.hasValue(NODE_MAILHEAD, getLocale())) {
+                            mailHead = mailContent.getStringValue(getCms(), NODE_MAILHEAD, getLocale());
+                            mailFoot = mailContent.getStringValue(getCms(), NODE_MAILFOOT, getLocale());
+                            foundExternalConfig = true;
+                        }
                     }
                 }
-            }
-            if (!foundExternalConfig) {
-                // no external configuration specified, use internal configuration values
-                mailHead = getContent().getStringValue(getCms(), XPATH_CONFIG + NODE_MAILHEAD, getLocale());
-                mailFoot = getContent().getStringValue(getCms(), XPATH_CONFIG + NODE_MAILFOOT, getLocale());
+                if (!foundExternalConfig) {
+                    // no external configuration specified, use internal configuration values
+                    mailHead = getContent().getStringValue(getCms(), XPATH_CONFIG + NODE_MAILHEAD, getLocale());
+                    mailFoot = getContent().getStringValue(getCms(), XPATH_CONFIG + NODE_MAILFOOT, getLocale());
+                }
             }
             mailHtml.append(mailHead);
             mailHtml.append(text);
@@ -284,10 +293,11 @@ public class CmsNewsletterMailData extends A_CmsNewsletterMailData {
     /**
      * @see com.alkacon.opencms.newsletter.A_CmsNewsletterMailData#getHtml()
      */
+    @Override
     protected String getHtml() throws CmsException {
 
         if (m_html == null) {
-            m_html = getEmailContent(true);
+            m_html = getEmailContent(true, false);
         }
         return m_html;
     }
@@ -295,10 +305,11 @@ public class CmsNewsletterMailData extends A_CmsNewsletterMailData {
     /**
      * @see com.alkacon.opencms.newsletter.A_CmsNewsletterMailData#getText()
      */
+    @Override
     protected String getText() throws CmsException {
 
         if (m_text == null) {
-            m_text = getEmailContent(false);
+            m_text = getEmailContent(false, false);
         }
         return m_text;
     }

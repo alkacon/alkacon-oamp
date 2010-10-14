@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterManager.java,v $
- * Date   : $Date: 2010/03/18 13:13:42 $
- * Version: $Revision: 1.19 $
+ * Date   : $Date: 2010/10/14 13:17:49 $
+ * Version: $Revision: 1.20 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -57,6 +57,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.mail.internet.InternetAddress;
+
 import org.apache.commons.logging.Log;
 
 /**
@@ -65,7 +67,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.19 $ 
+ * @version $Revision: 1.20 $ 
  * 
  * @since 7.0.3 
  */
@@ -169,8 +171,10 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
      * @return the initialized mail data class generating the newsletter mail and recipients
      * @throws Exception if instantiating the mail data class fails
      */
-    public static I_CmsNewsletterMailData getMailData(CmsJspActionElement jsp, List recipients, String fileName)
-    throws Exception {
+    public static I_CmsNewsletterMailData getMailData(
+        CmsJspActionElement jsp,
+        List<InternetAddress> recipients,
+        String fileName) throws Exception {
 
         I_CmsNewsletterMailData result = getMailData();
         result.initialize(jsp, recipients, fileName);
@@ -197,12 +201,15 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
      * 
      * @throws CmsException if something goes wrong
      */
-    public static List getOrgUnits(CmsObject cms) throws CmsException {
+    public static List<CmsOrganizationalUnit> getOrgUnits(CmsObject cms) throws CmsException {
 
-        List ous = OpenCms.getRoleManager().getOrgUnitsForRole(cms, CmsRole.ACCOUNT_MANAGER.forOrgUnit(""), true);
-        Iterator it = ous.iterator();
+        List<CmsOrganizationalUnit> ous = OpenCms.getRoleManager().getOrgUnitsForRole(
+            cms,
+            CmsRole.ACCOUNT_MANAGER.forOrgUnit(""),
+            true);
+        Iterator<CmsOrganizationalUnit> it = ous.iterator();
         while (it.hasNext()) {
-            CmsOrganizationalUnit ou = (CmsOrganizationalUnit)it.next();
+            CmsOrganizationalUnit ou = it.next();
             if (!ou.getSimpleName().startsWith(NEWSLETTER_OU_NAMEPREFIX)) {
                 it.remove();
             }
@@ -247,6 +254,7 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
     /**
      * @see org.opencms.module.A_CmsModuleAction#initialize(org.opencms.file.CmsObject, org.opencms.configuration.CmsConfigurationManager, org.opencms.module.CmsModule)
      */
+    @Override
     public void initialize(CmsObject adminCms, CmsConfigurationManager configurationManager, CmsModule module) {
 
         // store the admin CmsObject as member
@@ -351,6 +359,7 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
             // add the user to the given mailing list group
             getAdminCms().addUserToGroup(user.getName(), groupName);
         } catch (CmsException e) {
+            // error creating or modifying the user
             LOG.error("Error while creating user or modifying user: " + email, e);
         }
         return user;
@@ -396,6 +405,7 @@ public class CmsNewsletterManager extends A_CmsModuleAction {
                 return true;
             }
         } catch (CmsException e) {
+            // error reading or deleting user
             LOG.error("Error while deleting the webuser: " + email, e);
         }
         return false;

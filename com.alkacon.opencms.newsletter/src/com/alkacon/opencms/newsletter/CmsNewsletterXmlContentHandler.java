@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/CmsNewsletterXmlContentHandler.java,v $
- * Date   : $Date: 2007/12/20 16:53:45 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2010/10/14 13:17:50 $
+ * Version: $Revision: 1.7 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -29,7 +29,7 @@
  * For further information about OpenCms, please see the
  * project website: http://www.opencms.org.
  */
- 
+
 package com.alkacon.opencms.newsletter;
 
 import org.opencms.file.CmsObject;
@@ -50,15 +50,15 @@ import java.util.Locale;
  * 
  * @author Andreas Zahner  
  * 
- * @version $Revision: 1.6 $ 
+ * @version $Revision: 1.7 $ 
  * 
  * @since 7.0.3 
  */
 public class CmsNewsletterXmlContentHandler extends CmsDefaultXmlContentHandler {
-    
+
     /** The domain macro that can be used in the default value configurations. */
     private static final String MACRO_DOMAIN = "domain";
-    
+
     /**
      * Creates a new instance of the newsletter XML content handler.<p>  
      */
@@ -67,12 +67,12 @@ public class CmsNewsletterXmlContentHandler extends CmsDefaultXmlContentHandler 
         init();
     }
 
-    
     /**
      * Overwrites the default method because the macro resolver should keep empty macros.<p>
      * 
      * @see org.opencms.xml.content.I_CmsXmlContentHandler#getDefault(org.opencms.file.CmsObject, I_CmsXmlContentValue, java.util.Locale)
      */
+    @Override
     public String getDefault(CmsObject cms, I_CmsXmlContentValue value, Locale locale) {
 
         String defaultValue;
@@ -82,13 +82,13 @@ public class CmsNewsletterXmlContentHandler extends CmsDefaultXmlContentHandler 
         } else {
             String xpath = value.getPath();
             // look up the default from the configured mappings
-            defaultValue = (String)m_defaultValues.get(xpath);
+            defaultValue = m_defaultValues.get(xpath);
             if (defaultValue == null) {
                 // no value found, try default xpath
                 xpath = CmsXmlUtils.removeXpath(xpath);
                 xpath = CmsXmlUtils.createXpath(xpath, 1);
                 // look up the default value again with default index of 1 in all path elements
-                defaultValue = (String)m_defaultValues.get(xpath);
+                defaultValue = m_defaultValues.get(xpath);
             }
         }
         if (defaultValue != null) {
@@ -97,10 +97,10 @@ public class CmsNewsletterXmlContentHandler extends CmsDefaultXmlContentHandler 
                 // switch the current URI to the XML document resource so that properties can be read
                 CmsResource file = value.getDocument().getFile();
                 CmsSite site = OpenCms.getSiteManager().getSiteForRootPath(file.getRootPath());
-                if (site != null) { 
-                newCms = OpenCms.initCmsObject(cms);
-                newCms.getRequestContext().setSiteRoot(site.getSiteRoot());
-                newCms.getRequestContext().setUri(newCms.getSitePath(file));
+                if (site != null) {
+                    newCms = OpenCms.initCmsObject(cms);
+                    newCms.getRequestContext().setSiteRoot(site.getSiteRoot());
+                    newCms.getRequestContext().setUri(newCms.getSitePath(file));
                 }
             } catch (Exception e) {
                 // on any error just use the default input OpenCms context

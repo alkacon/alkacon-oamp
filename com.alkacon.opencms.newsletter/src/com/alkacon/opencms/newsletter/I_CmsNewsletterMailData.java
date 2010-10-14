@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.newsletter/src/com/alkacon/opencms/newsletter/I_CmsNewsletterMailData.java,v $
- * Date   : $Date: 2009/07/09 09:30:12 $
- * Version: $Revision: 1.8 $
+ * Date   : $Date: 2010/10/14 13:17:50 $
+ * Version: $Revision: 1.9 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -40,6 +40,8 @@ import org.opencms.xml.content.CmsXmlContent;
 
 import java.util.List;
 
+import javax.mail.internet.InternetAddress;
+
 import org.apache.commons.mail.Email;
 
 /**
@@ -48,7 +50,7 @@ import org.apache.commons.mail.Email;
  * 
  * @author Andreas Zahner
  * 
- * @version $Revision: 1.8 $ 
+ * @version $Revision: 1.9 $ 
  * 
  * @since 7.0.3 
  */
@@ -70,20 +72,30 @@ public interface I_CmsNewsletterMailData {
     Email getEmail() throws CmsException;
 
     /**
-     * Returns the email content to be shown in a preview, generates a valid html page that can be used.<p>
+     * Returns the email content to be shown in a preview, generates a valid HTML page that can be used.<p>
      * 
-     * @return the email content to be shown in a preview as html page
+     * @return the email content to be shown in a preview as HTML page
      * @throws CmsException if generating the email preview fails
      */
     String getEmailContentPreview() throws CmsException;
 
     /**
-     * Returns the recipients of the newsletter mail, items are of type {@link javax.mail.internet.InternetAddress}.<p>
+     * Returns the email content to be shown in a preview, generates a valid HTML page or page parts that can be used.<p>
+     * 
+     * @param onlyPartialHtml sets if only page parts should be returned instead of a complete HTML page
+     * 
+     * @return the email content to be shown in a preview as HTML page or page parts
+     * @throws CmsException if generating the email preview fails
+     */
+    String getEmailContentPreview(boolean onlyPartialHtml) throws CmsException;
+
+    /**
+     * Returns the recipients of the newsletter mail.<p>
      * 
      * @return the recipients of the newsletter mail
      * @throws CmsException if getting the recipients from a mailing list group fails
      */
-    List getRecipients() throws CmsException;
+    List<InternetAddress> getRecipients() throws CmsException;
 
     /**
      * Returns the resource type name of the newsletter XML content to use.<p>
@@ -116,11 +128,11 @@ public interface I_CmsNewsletterMailData {
      * Initializes the necessary members to generate the email and the list of recipients.<p>
      * 
      * @param jsp the current action element
-     * @param recipients the recipients of the newsletter mail, items have to be of type {@link javax.mail.internet.InternetAddress}
+     * @param recipients the recipients of the newsletter mail
      * @param fileName the fileName of a VFS file that can be used to generate the newsletter
      * @throws CmsException if reading the VFS file fails
      */
-    void initialize(CmsJspActionElement jsp, List recipients, String fileName) throws CmsException;
+    void initialize(CmsJspActionElement jsp, List<InternetAddress> recipients, String fileName) throws CmsException;
 
     /**
      * Checks if the newsletter can be sent or not.<p>
@@ -134,10 +146,10 @@ public interface I_CmsNewsletterMailData {
     boolean isSendable() throws CmsException;
 
     /**
-     * Sets the recipients of the newsletter mail, items have to be of type {@link javax.mail.internet.InternetAddress}.<p>
+     * Sets the recipients of the newsletter mail.<p>
      * 
      * @param recipients the recipients of the newsletter mail
      */
-    void setRecipients(List recipients);
+    void setRecipients(List<InternetAddress> recipients);
 
 }
