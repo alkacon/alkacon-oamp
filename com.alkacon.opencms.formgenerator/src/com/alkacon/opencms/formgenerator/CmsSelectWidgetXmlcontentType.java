@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsSelectWidgetXmlcontentType.java,v $
- * Date   : $Date: 2010/09/17 13:50:44 $
- * Version: $Revision: 1.12 $
+ * Date   : $Date: 2010/11/04 08:40:32 $
+ * Version: $Revision: 1.13 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -168,7 +168,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  * 
  * @since 7.0.4
  * 
@@ -181,7 +181,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
      * 
      * @author Achim Westermann
      * 
-     * @version $Revision: 1.12 $
+     * @version $Revision: 1.13 $
      * 
      * @since 6.1.6
      * 
@@ -306,7 +306,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
      * 
      * @author Achim Westermann
      * 
-     * @version $Revision: 1.12 $
+     * @version $Revision: 1.13 $
      * 
      * @since 6.1.6
      * 
@@ -588,7 +588,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
             m_macroResolver.setKeepEmptyMacros(true);
         }
 
-        List<CmsResourceSelectWidgetOption> selectOptions = getSelectOptions();
+        List selectOptions = getSelectOptions();
         if (selectOptions == null) {
             String configuration = getConfiguration();
             if (configuration == null) {
@@ -719,7 +719,7 @@ public class CmsSelectWidgetXmlcontentType extends CmsSelectWidget {
             // no method to add the parsed option list....
             // Caution: if it is decided to return a copy of the list we are doomed unless
             // setSelectOptions is set to protected!
-            List<CmsResourceSelectWidgetOption> pOptions = getSelectOptions();
+            List pOptions = getSelectOptions();
             if (pOptions != null) {
                 pOptions.clear();
             }
