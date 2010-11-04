@@ -1,12 +1,13 @@
 <%@ page session="false" %><%--
 --%><%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms" %><%--
---%><link type="text/css" rel="stylesheet" href="http://jqueryui.com/latest/themes/base/ui.all.css" />
-<link type="text/css" rel="stylesheet" href="<cms:link>../resources/fg.menu.css</cms:link>" />
+--%><%-- already included in editor: <link type="text/css" rel="stylesheet" href="http://jqueryui.com/latest/themes/base/ui.all.css" />
+--%><link type="text/css" rel="stylesheet" href="<cms:link>../resources/fg.menu.css</cms:link>" />
 <link type="text/css" rel="stylesheet" href="<cms:link>../resources/fg.button.css</cms:link>" />
 <link type="text/css" rel="stylesheet" href="<cms:link>../resources/map.css</cms:link>" />
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" ></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/jquery-ui.min.js" ></script>
-<script type="text/javascript" src="http://maps.google.com/maps?file=api&v=2&key=<cms:include file='map.workplace.key' cacheable='true' />" ></script>
+<%-- already included in editor: <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" ></script>
+                                 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/jquery-ui.min.js" ></script>
+--%><%-- V2: <script type="text/javascript" src="http://maps.google.com/maps?file=api&v=2&key=<cms:include file='map.workplace.key' cacheable='true' />" ></script> --%>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&key=<cms:include file='map.workplace.key' cacheable='true' />" ></script>
 <script type="text/javascript" src="<cms:link>../resources/fg.menu.js</cms:link>" ></script>
 <script type="text/javascript" src="<cms:link>../resources/jquery.listenForChange.js</cms:link>" ></script>
 <script type="text/javascript" src="<cms:link>../resources/jquery.forms.js</cms:link>" ></script>

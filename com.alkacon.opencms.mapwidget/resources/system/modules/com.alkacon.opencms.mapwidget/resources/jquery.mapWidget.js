@@ -155,7 +155,7 @@
             lat: 0,
             lng: 0,
             zoom: 10,
-            type: 'm',
+            type: 'roadmap',
             mode: 'dynamic',
             width: 400,
             height: 300
@@ -170,23 +170,24 @@
           * @callee {not well documented by google} not used
           * @param {not well documented by google} response
           */
-         var /**Function*/ setAddress = function(response) {
-         
+         var /**Function*/ setAddress = function(results, status) {
             // check that everything is ok
-            if (response && (response.Status.code == 200) && response.Placemark[0] && response.Placemark[0].address) {
+            if (status == google.maps.GeocoderStatus.OK && results[0] && results[0].formatted_address) {
                // set the new address
-               $address.val(response.Placemark[0].address).change();
+               $address.val(results[0].formatted_address).change();
             } else {
                // reset the address
                $address.val('').change();
             }
          };
          
-         var /**GLatLng*/ center = new GLatLng(vals.lat, vals.lng);
+         var /**GLatLng*/ center = new google.maps.LatLng(vals.lat, vals.lng);
          // set the starting address 
-         var /**GClientGeocoder*/ geocoder = new GClientGeocoder();
-         geocoder.getLocations(center, setAddress);
-         
+         var /**GClientGeocoder*/ geocoder = new google.maps.Geocoder();
+         geocoder.geocode({'latLng': center}, function(results, status) {
+         	setAddress(results, status);
+	 });
+	          
          // disable coords depending on the options
          if ($.inArray('coords', opts.edit) == -1) {
             $lat.add($lng).attr('disabled', 'disabled');
@@ -239,11 +240,13 @@
             }
             if (actAddress && geocoder) {
                // actualize address
-               geocoder.getLocations(point, setAddress);
+               geocoder.geocode({'latLng': point}, function(results, status) {
+         		setAddress(results, status);
+	       });
             }
             if (map && actMarker) {
                // move marker
-               marker.setLatLng(point);
+               marker.setPosition(point);
             }
             $lat.change();
          }
@@ -260,38 +263,28 @@
          
          // bind lat & lng to map
          $lat.bind('keydown', onReturn(function() {
-            setMapCenter(new GLatLng($lat.val(), $lng.val()), false, true, true);
+            setMapCenter(new google.maps.LatLng($lat.val(), $lng.val()), false, true, true);
          })).val(center.lat());
          $lng.bind('keydown', onReturn(function() {
-            setMapCenter(new GLatLng($lat.val(), $lng.val()), false, true, true);
+            setMapCenter(new google.maps.LatLng($lat.val(), $lng.val()), false, true, true);
          })).val(center.lng());
-         
-         var /**GControl*/ mapCtl = null;
-         var /**GControl*/ typeCtl = null;
+
          // bind width & height to map
          $width.bind('keydown', onReturn(function() {
             var /**string*/ width = $(this).val();
             $width.not(this).val(width);
             $map.css('width', width);
             if (map) {
-               map.checkResize();
-               setMapCenter(marker.getLatLng());
+               google.maps.event.trigger(map, 'resize');
+               setMapCenter(marker.getPosition());
             } else {
-               setMapCenter(new GLatLng($lat.val(), $lng.val()));
+               setMapCenter(new google.maps.LatLng($lat.val(), $lng.val()));
             }
-            if (map && (typeCtl != null)) {
+            if (map) {
                if (parseInt($width.val()) < 250) {
-                  if (typeCtl instanceof GMapTypeControl) {
-                     map.removeControl(typeCtl);
-                     typeCtl = new GMenuMapTypeControl();
-                     map.addControl(typeCtl);
-                  }
+                  map.setOptions({mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DEFAULT}}); 
                } else {
-                  if (typeCtl instanceof GMenuMapTypeControl) {
-                     map.removeControl(typeCtl);
-                     typeCtl = new GMapTypeControl();
-                     map.addControl(typeCtl);
-                  }
+                  map.setOptions({mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DROPDOWN_MENU}});
                }
             }
          })).val(vals.width + 'px').trigger('keydown', [13]);
@@ -300,24 +293,16 @@
             $height.not(this).val(height);
             $map.css('height', height);
             if (map) {
-               map.checkResize();
-               setMapCenter(marker.getLatLng());
+               google.maps.event.trigger(map, 'resize');
+               setMapCenter(marker.getPosition());
             } else {
-               setMapCenter(new GLatLng($lat.val(), $lng.val()));
+               setMapCenter(new google.maps.LatLng($lat.val(), $lng.val()));
             }
-            if (map && (mapCtl != null)) {
+            if (map) {
                if (parseInt($height.val()) < 300) {
-                  if (mapCtl instanceof GLargeMapControl) {
-                     map.removeControl(mapCtl);
-                     mapCtl = new GSmallMapControl();
-                     map.addControl(mapCtl);
-                  }
+                     map.setOptions({navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}});
                } else {
-                  if (mapCtl instanceof GSmallMapControl) {
-                     map.removeControl(mapCtl);
-                     mapCtl = new GLargeMapControl();
-                     map.addControl(mapCtl);
-                  }
+                  map.setOptions({navigationControlOptions: {style: google.maps.NavigationControlStyle.DEFAULT}});
                }
             }
          })).val(vals.height + 'px').trigger('keydown', [13]);
@@ -329,12 +314,12 @@
           * @param {GPlacemark} place the selected address
           */
          var /**Function*/ selectAddress = function(/**GPlacemark*/place) {
-         
-            var /**GLatLng*/ point = new GLatLng(place.Point.coordinates[1], place.Point.coordinates[0]);
+
+            var /**GLatLng*/ point = place.geometry.location;
             setMapCenter(point, true, false, true);
             // set the address
-            $address.val(place.address);
-            // trigger value setter
+            $address.val(place.formatted_address);
+                        // trigger value setter
             $lat.change();
          };
          
@@ -342,31 +327,31 @@
          $address.bind('keydown', onReturn(function() {
             var /**jQuery*/ thisAddr = $(this);
             var /**String*/ address = thisAddr.val();
-            geocoder.getLocations(address, function(response) {
+            geocoder.geocode({'address': address}, function(results, status) {
                // check to see if we have at least one valid address
-               if (!response || (response.Status.code != 200) || !response.Placemark.length) {
-                  alert("address not found");
+               if (!results || (status != google.maps.GeocoderStatus.OK) || !results[0].formatted_address) {
+                  alert("Address not found");
                   return;
                }
                // in case of only one place,  just set it
-               if (response.Placemark.length == 1) {
-                  selectAddress(response.Placemark[0]);
+               if (results.length == 1) {
+                  selectAddress(results[0]);
                   return;
                }
                // in case of more, display a selection list
                var /**jQuery*/ $span = thisAddr.parent();
                // prepare the data to display
-               var data = $.map(response.Placemark, function(place, i) {
+               var data = $.map(results, function(place, i) {
                   return {
                      id: i,
-                     value: place.address
+                     value: place.formatted_address
                   };
                });
                // display options
                var opts = {
                   onChange: function(item) {
                      // set the selected adress
-                     selectAddress(response.Placemark[$(item).attr('href').substring(1)]);
+                     selectAddress(results[$(item).attr('href').substring(1)]);
                   },
                   onClose: function() {
                      // style managing
@@ -434,44 +419,43 @@
             
             if ($map.length) {
                // create and center the map
-               map = new GMap2($map.find('div.map').get(0));
-               map.setCenter(center, parseInt(vals.zoom));
+               var mapOptions = {
+		    center: center,
+		    zoom: parseInt(vals.zoom),
+		    mapTypeId: google.maps.MapTypeId.ROADMAP
+	       };
+               map = new google.maps.Map($map.find('div.map').get(0), mapOptions);
             }
             var /**boolean*/ mapEnabled = (map && ($.inArray('map', opts.edit) != -1));
             if ($.inArray('zoom', opts.edit) == -1) {
                // disable zoom depending on the options
                if (map) {
-                  map.disableDoubleClickZoom();
-                  map.disableScrollWheelZoom();
+                  map.setOptions({disableDoubleClickZoom: true, scrollwheel: false});
                }
             } else if (mapEnabled) {
                // choose control depending on the map size
                if (parseInt(vals.height) < 300) {
-                  mapCtl = new GSmallMapControl();
+                  map.setOptions({navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL}});
                } else {
-                  mapCtl = new GLargeMapControl();
+                  map.setOptions({navigationControlOptions: {style: google.maps.NavigationControlStyle.DEFAULT}});
                }
-               map.addControl(mapCtl);
                // enable some additional zoom possibilities
-               map.enableDoubleClickZoom();
-               map.enableScrollWheelZoom();
+               map.setOptions({disableDoubleClickZoom: false, scrollwheel: true});
             }
             if (map && !mapEnabled) {
                // disable map depending on the options
-               map.disableDoubleClickZoom();
-               map.disableScrollWheelZoom();
-               map.disableDragging();
+               map.setOptions({disableDoubleClickZoom: true, scrollwheel: false, draggable: false});
             }
             // enable type depending on the options
             if (mapEnabled && ($.inArray('type', opts.edit) != -1)) {
                // choose control depending on the map size
                if (parseInt(vals.width) < 250) {
-                  typeCtl = new GMenuMapTypeControl();
+                  map.setOptions({mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DROPDOWN_MENU}});
                } else {
-                  typeCtl = new GMapTypeControl();
+                  map.setOptions({mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DEFAULT}});
                }
-               map.addControl(typeCtl);
             }
+
             // enable map size controls
             if (mapEnabled && ($.inArray('size', opts.edit) != -1)) {
                // make the map resizable
@@ -500,54 +484,62 @@
             
             // handle double click
             if (mapEnabled) {
-               GEvent.addListener(map, "dblclick", function(/**GOverlay*/overlay, /**GLatLng*/ point) {
-                  setMapCenter(point, true, true, true);
+               google.maps.event.addListener(map, "dblclick", function(event) {
+                  setMapCenter(event.latLng, true, true, true);
                });
             }
             
             if (map) {
                // create marker in the center
-               marker = new GMarker(map.getCenter(), {
-                  draggable: mapEnabled // enable dnd
-               });
+               marker = new google.maps.Marker({
+		      position: map.getCenter(), 
+		      map: map, 
+		      draggable: mapEnabled // enable dnd
+		  });
+
                
                if (mapEnabled) {
                   // handle marker dnd
-                  GEvent.addListener(marker, "dragend", function() {
-                     setMapCenter(marker.getLatLng(), true, true, false);
+                 google.maps.event.addListener(marker, "dragend", function() {
+                     setMapCenter(marker.getPosition(), true, true, false);
                   });
                }
-               // position marker
-               map.addOverlay(marker);
-               // marker.openInfoWindowHtml('Drag Me!');
             }
             
             // bind zoom to map
             if (mapEnabled) {
-               GEvent.addListener(map, "zoomend", function(oldZoom, newZoom) {
+               google.maps.event.addListener(map, "zoom_changed", function(oldZoom, newZoom) {
                   $zoom.val(map.getZoom());
-                  setMapCenter(marker.getLatLng());
+                  setMapCenter(marker.getPosition());
                });
             }
             
             if (map) {
                // fill the supported map types
+               var typeNames = new Array(google.maps.MapTypeId.ROADMAP, 
+               	google.maps.MapTypeId.SATELLITE, 
+               	google.maps.MapTypeId.HYBRID,
+               	google.maps.MapTypeId.TERRAIN
+               );
                var types = {};
                $type.empty();
-               $.each(map.getMapTypes(), function(/**int*/i, /**GMapType*/ type) {
-                  var typeName = type.getUrlArg();
-                  // remember the type
-                  types[typeName] = type;
-                  // create a new option for this type
-                  $type.append($("<option />").attr('value', typeName).text(type.getName()));
-               });
+               
+               for (var i = 0; i < typeNames.length; i++) {
+               		var currType = typeNames[i];
+       		        // remember the type
+	                types[currType] = currType;
+	                // create a new option for this type
+	                var showStr = currType.substring(0,1 ).toUpperCase() + currType.substring(1);
+	                $type.append($("<option />").attr('value', currType).text(showStr));
+               }
+               
                // bind type to map
                $type.bind('change', function() {
-                  map.setMapType(types[$type.val()]);
+                  map.setMapTypeId(types[$type.val()]);
                });
                if (mapEnabled) {
-                  GEvent.addListener(map, "maptypechanged", function() {
-                     $type.val(map.getCurrentMapType().getUrlArg());
+                  google.maps.event.addListener(map, "maptypeid_changed", function() {
+                     $type.val(map.getMapTypeId());
                   });
                }
                $type.val(vals.type);
@@ -606,11 +598,6 @@
       }
    };
    
-   // free memory
-   $(window).unload(function() {
-      GUnload();
-   });
-   
    // install the widgets after loading
    $(document).ready(function() {
       $('input[type=hidden].map-widget').each(function() {
@@ -621,4 +608,3 @@
    });
    
 })(jQuery);
-

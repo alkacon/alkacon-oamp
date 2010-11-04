@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.mapwidget/src/com/alkacon/opencms/mapwidget/CmsGoogleMapWidgetValue.java,v $
- * Date   : $Date: 2010/03/04 10:21:38 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2010/11/04 08:39:40 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -60,7 +60,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.3 $ 
  * 
  * @since 7.0.5
  */
@@ -95,7 +95,7 @@ public class CmsGoogleMapWidgetValue {
             if (mode.equalsIgnoreCase(CmsGoogleMapMode.MODE_STATIC.getMode())) {
                 return CmsGoogleMapMode.MODE_STATIC;
             }
-            if (mode.equalsIgnoreCase(CmsGoogleMapMode.MODE_DYNAMIC.getMode())) {
+            if (mode.equalsIgnoreCase(CmsGoogleMapMode.MODE_DYNAMIC.getMode()) || "undefined".equalsIgnoreCase(mode)) {
                 return CmsGoogleMapMode.MODE_DYNAMIC;
             }
             throw new CmsIllegalArgumentException(Messages.get().container(Messages.ERR_UNKNOWN_MAP_MODE_1, mode));
@@ -138,13 +138,16 @@ public class CmsGoogleMapWidgetValue {
     public static final class CmsGoogleMapType extends A_CmsModeStringEnumeration {
 
         /** Constant for the hybrid property. */
-        protected static final CmsGoogleMapType TYPE_HYBRID = new CmsGoogleMapType("h");
+        protected static final CmsGoogleMapType TYPE_HYBRID = new CmsGoogleMapType("hybrid");
 
         /** Constant for the normal type. */
-        protected static final CmsGoogleMapType TYPE_MAP = new CmsGoogleMapType("m");
+        protected static final CmsGoogleMapType TYPE_MAP = new CmsGoogleMapType("roadmap");
 
         /** Constant for the satellite property. */
-        protected static final CmsGoogleMapType TYPE_SATELLITE = new CmsGoogleMapType("k");
+        protected static final CmsGoogleMapType TYPE_SATELLITE = new CmsGoogleMapType("satellite");
+
+        /** Constant for the terrain property. */
+        protected static final CmsGoogleMapType TYPE_TERRAIN = new CmsGoogleMapType("terrain");
 
         /** The serial version id. */
         private static final long serialVersionUID = 4648592639170665274L;
@@ -169,6 +172,9 @@ public class CmsGoogleMapWidgetValue {
             }
             if (mapType.equalsIgnoreCase(CmsGoogleMapType.TYPE_SATELLITE.getMode())) {
                 return CmsGoogleMapType.TYPE_SATELLITE;
+            }
+            if (mapType.equalsIgnoreCase(CmsGoogleMapType.TYPE_TERRAIN.getMode())) {
+                return CmsGoogleMapType.TYPE_TERRAIN;
             }
             throw new CmsIllegalArgumentException(Messages.get().container(Messages.ERR_UNKNOWN_MAP_TYPE_1, mapType));
         }
@@ -211,6 +217,16 @@ public class CmsGoogleMapWidgetValue {
         public boolean isSatellite() {
 
             return this == CmsGoogleMapType.TYPE_SATELLITE;
+        }
+
+        /**
+         * Checks if <code>this</code> is {@link #TYPE_TERRAIN}.<p>
+         * 
+         * @return <code>true</code>, if <code>this</code> is {@link #TYPE_TERRAIN}
+         */
+        public boolean isTerrain() {
+
+            return this == CmsGoogleMapType.TYPE_TERRAIN;
         }
     }
 

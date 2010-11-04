@@ -8,11 +8,9 @@
     %(inline.properties) %(button)
   </fieldset>
   <div class="map-options">
-    <form action='#'>
       <fieldset class="map-options ui-corner-all">
         %(popup.properties)
       </fieldset>
-    </form>
   </div>
  <div>
 ]]></Main>
