@@ -1,6 +1,6 @@
 
                 Alkacon OpenCms Add-On Module Package: Webform
-                       Version 1.4.0; May 26, 2010
+                       Version 1.4.1; Nov 08, 2010
 
 
                                     WARNING:
@@ -55,6 +55,9 @@ Legend:
 ! New Feature
 * Bug fixed
 - General comment
+
+1.4.1 - Nov, 2010
+- Moved Captcha presets into module folder
 
 1.4.0 - May, 2010
 ! Added sub fields that are shown for select boxes or radio button fields depending on the chosen value

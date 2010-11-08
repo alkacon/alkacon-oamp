@@ -3,8 +3,8 @@
 <export>
 	<info>
 		<creator>Admin</creator>
-		<opencms_version>7.5.2</opencms_version>
-		<createdate>Fri, 21 May 2010 13:17:36 GMT</createdate>
+		<opencms_version>7.5.3</opencms_version>
+		<createdate>Mon, 08 Nov 2010 09:15:38 GMT</createdate>
 		<infoproject>Offline</infoproject>
 		<export_version>7</export_version>
 	</info>
@@ -16,7 +16,7 @@
 		<description><![CDATA[<p>This module contains online form functionality for OpenCms.</p>
 <p>This module can easily be used to create online input forms.</p>
 <p><i>(c) 2010 by Alkacon Software GmbH (http://www.alkacon.com).</i></p>]]></description>
-		<version>1.4.0</version>
+		<version>1.4.1</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
 		<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
@@ -32,7 +32,6 @@
 			<resource uri="/system/modules/com.alkacon.opencms.formgenerator/"/>
 			<resource uri="/system/workplace/resources/filetypes/alkacon-webform.gif"/>
 			<resource uri="/system/workplace/resources/filetypes/alkacon-webformreport.gif"/>
-			<resource uri="/system/workplace/admin/captcha/"/>
 			<resource uri="/system/workplace/resources/tools/database/icons/big/webform.png"/>
 			<resource uri="/system/workplace/resources/tools/database/buttons/webform_download.png"/>
 			<resource uri="/system/workplace/resources/tools/database/buttons/webform_delete_disabled.png"/>
@@ -90,10 +89,10 @@
 		<file>
 			<destination>system</destination>
 			<type>folder</type>
-			<uuidstructure>b4462175-5107-11df-896e-3d965a9c8d62</uuidstructure>
-			<datelastmodified>Mon, 26 Apr 2010 07:45:37 GMT</datelastmodified>
+			<uuidstructure>53b37cc4-58de-11df-9756-25435b16a776</uuidstructure>
+			<datelastmodified>Thu, 06 May 2010 07:09:35 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Mon, 26 Apr 2010 07:45:37 GMT</datecreated>
+			<datecreated>Thu, 06 May 2010 07:09:35 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -112,10 +111,10 @@
 		<file>
 			<destination>system/modules</destination>
 			<type>folder</type>
-			<uuidstructure>b4f1cafe-5107-11df-896e-3d965a9c8d62</uuidstructure>
-			<datelastmodified>Mon, 26 Apr 2010 07:45:38 GMT</datelastmodified>
+			<uuidstructure>5444e78d-58de-11df-9756-25435b16a776</uuidstructure>
+			<datelastmodified>Thu, 06 May 2010 07:09:36 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Mon, 26 Apr 2010 07:45:38 GMT</datecreated>
+			<datecreated>Thu, 06 May 2010 07:09:36 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -144,6 +143,253 @@
 				<property>
 					<name>export</name>
 					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/captcha</destination>
+			<type>folder</type>
+			<uuidstructure>a43a4168-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 15 Dec 2005 07:57:21 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Configuration for captcha fields of module com.alkacon.opencms.formgenerator]]></value>
+				</property>
+				<property>
+					<name>locale-available</name>
+					<value><![CDATA[en]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>ALL_OTHERS</uuidprincipal>
+					<flags>134</flags>
+					<permissionset>
+						<allowed>1</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/captcha/alkacon-dict-de.captchapreset</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/captcha/alkacon-dict-de.captchapreset</destination>
+			<type>xmlcontent</type>
+			<uuidstructure>71374e57-2d7b-11dd-bc38-111d34530985</uuidstructure>
+			<uuidresource>71374e58-2d7b-11dd-bc38-111d34530985</uuidresource>
+			<datelastmodified>Thu, 29 May 2008 12:47:13 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 29 May 2008 12:33:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Alkacon Dict DE]]></value>
+				</property>
+				<property>
+					<name>collector.priority</name>
+					<value><![CDATA[2]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/captcha/alkacon-dict-en.captchapreset</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/captcha/alkacon-dict-en.captchapreset</destination>
+			<type>xmlcontent</type>
+			<uuidstructure>a431a128-2722-11dd-a4dd-111d34530985</uuidstructure>
+			<uuidresource>a431a129-2722-11dd-a4dd-111d34530985</uuidresource>
+			<datelastmodified>Thu, 29 May 2008 12:47:24 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 21 May 2008 10:42:42 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Alkacon Dict EN]]></value>
+				</property>
+				<property>
+					<name>collector.priority</name>
+					<value><![CDATA[2]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/captcha/alkacon.captchapreset</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/captcha/alkacon.captchapreset</destination>
+			<type>xmlcontent</type>
+			<uuidstructure>65c71d8f-c345-11dc-a2cf-b7a33137a728</uuidstructure>
+			<uuidresource>65c71d90-c345-11dc-a2cf-b7a33137a728</uuidresource>
+			<datelastmodified>Fri, 13 Mar 2009 15:40:48 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 15 Jan 2008 08:39:34 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Alkacon]]></value>
+				</property>
+				<property>
+					<name>collector.priority</name>
+					<value><![CDATA[8]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/captcha/light.captchapreset</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/captcha/light.captchapreset</destination>
+			<type>xmlcontent</type>
+			<uuidstructure>a43efc5b-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<uuidresource>a66111ce-7b8f-11da-9858-5b510a4bd4de</uuidresource>
+			<datelastmodified>Mon, 17 Dec 2007 11:25:25 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 02 Jan 2006 12:59:46 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Light]]></value>
+				</property>
+				<property>
+					<name>collector.priority</name>
+					<value><![CDATA[2]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/captcha/math.captchapreset</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/captcha/math.captchapreset</destination>
+			<type>xmlcontent</type>
+			<uuidstructure>e9d19bd0-0fbc-11de-acd9-8374f46a75af</uuidstructure>
+			<uuidresource>e9d19bd1-0fbc-11de-acd9-8374f46a75af</uuidresource>
+			<datelastmodified>Fri, 13 Mar 2009 15:40:57 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 13 Mar 2009 10:51:31 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Math]]></value>
+				</property>
+				<property>
+					<name>collector.priority</name>
+					<value><![CDATA[9]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/captcha/medium.captchapreset</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/captcha/medium.captchapreset</destination>
+			<type>xmlcontent</type>
+			<uuidstructure>a4416d62-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<uuidresource>0d3c8d5d-7b90-11da-9858-5b510a4bd4de</uuidresource>
+			<datelastmodified>Mon, 17 Dec 2007 11:25:42 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 02 Jan 2006 13:02:38 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Medium]]></value>
+				</property>
+				<property>
+					<name>collector.priority</name>
+					<value><![CDATA[3]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/captcha/strong.captchapreset</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/captcha/strong.captchapreset</destination>
+			<type>xmlcontent</type>
+			<uuidstructure>a443b756-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<uuidresource>e4a16369-7b90-11da-9858-5b510a4bd4de</uuidresource>
+			<datelastmodified>Mon, 17 Dec 2007 11:25:53 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 02 Jan 2006 13:08:40 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Strong]]></value>
+				</property>
+				<property>
+					<name>collector.priority</name>
+					<value><![CDATA[4]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/captcha/ultralight.captchapreset</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/captcha/ultralight.captchapreset</destination>
+			<type>xmlcontent</type>
+			<uuidstructure>a446285a-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<uuidresource>dacd504e-706f-11da-80d4-5b510a4bd4de</uuidresource>
+			<datelastmodified>Mon, 17 Dec 2007 11:25:08 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 19 Dec 2005 09:14:27 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Ultralight]]></value>
+				</property>
+				<property>
+					<name>collector.priority</name>
+					<value><![CDATA[1]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/captcha/ultrastrong.captchapreset</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/captcha/ultrastrong.captchapreset</destination>
+			<type>xmlcontent</type>
+			<uuidstructure>a448724e-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<uuidresource>1658b72b-7b94-11da-bc40-5b510a4bd4de</uuidresource>
+			<datelastmodified>Mon, 17 Dec 2007 11:26:19 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 02 Jan 2006 13:31:32 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Ultra strong]]></value>
+				</property>
+				<property>
+					<name>collector.priority</name>
+					<value><![CDATA[6]]></value>
 				</property>
 			</properties>
 			<relations/>
@@ -3914,7 +4160,7 @@
 			<type>plain</type>
 			<uuidstructure>a437d064-11b7-11db-91cd-fdbae480baca</uuidstructure>
 			<uuidresource>8175f1c2-f851-11d9-9e77-c7beef112ba6</uuidresource>
-			<datelastmodified>Mon, 14 Jan 2008 14:37:31 GMT</datelastmodified>
+			<datelastmodified>Mon, 08 Nov 2010 09:14:28 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -4028,253 +4274,6 @@
 				<property>
 					<name>cache</name>
 					<value><![CDATA[bypass]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol/>
-		</file>
-		<file>
-			<destination>system/workplace/admin/captcha</destination>
-			<type>folder</type>
-			<uuidstructure>a43a4168-11b7-11db-91cd-fdbae480bac9</uuidstructure>
-			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Thu, 15 Dec 2005 07:57:21 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property>
-					<name>Title</name>
-					<value><![CDATA[Configuration for captcha fields of module com.alkacon.opencms.formgenerator]]></value>
-				</property>
-				<property>
-					<name>locale-available</name>
-					<value><![CDATA[en]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol>
-				<accessentry>
-					<uuidprincipal>ALL_OTHERS</uuidprincipal>
-					<flags>134</flags>
-					<permissionset>
-						<allowed>1</allowed>
-						<denied>0</denied>
-					</permissionset>
-				</accessentry>
-			</accesscontrol>
-		</file>
-		<file>
-			<source>system/workplace/admin/captcha/alkacon-dict-de.captchapreset</source>
-			<destination>system/workplace/admin/captcha/alkacon-dict-de.captchapreset</destination>
-			<type>xmlcontent</type>
-			<uuidstructure>71374e57-2d7b-11dd-bc38-111d34530985</uuidstructure>
-			<uuidresource>71374e58-2d7b-11dd-bc38-111d34530985</uuidresource>
-			<datelastmodified>Thu, 29 May 2008 12:47:13 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Thu, 29 May 2008 12:33:29 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property>
-					<name>Title</name>
-					<value><![CDATA[Alkacon Dict DE]]></value>
-				</property>
-				<property>
-					<name>collector.priority</name>
-					<value><![CDATA[2]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol/>
-		</file>
-		<file>
-			<source>system/workplace/admin/captcha/alkacon-dict-en.captchapreset</source>
-			<destination>system/workplace/admin/captcha/alkacon-dict-en.captchapreset</destination>
-			<type>xmlcontent</type>
-			<uuidstructure>a431a128-2722-11dd-a4dd-111d34530985</uuidstructure>
-			<uuidresource>a431a129-2722-11dd-a4dd-111d34530985</uuidresource>
-			<datelastmodified>Thu, 29 May 2008 12:47:24 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Wed, 21 May 2008 10:42:42 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property>
-					<name>Title</name>
-					<value><![CDATA[Alkacon Dict EN]]></value>
-				</property>
-				<property>
-					<name>collector.priority</name>
-					<value><![CDATA[2]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol/>
-		</file>
-		<file>
-			<source>system/workplace/admin/captcha/alkacon.captchapreset</source>
-			<destination>system/workplace/admin/captcha/alkacon.captchapreset</destination>
-			<type>xmlcontent</type>
-			<uuidstructure>65c71d8f-c345-11dc-a2cf-b7a33137a728</uuidstructure>
-			<uuidresource>65c71d90-c345-11dc-a2cf-b7a33137a728</uuidresource>
-			<datelastmodified>Fri, 13 Mar 2009 15:40:48 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Tue, 15 Jan 2008 08:39:34 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property>
-					<name>Title</name>
-					<value><![CDATA[Alkacon]]></value>
-				</property>
-				<property>
-					<name>collector.priority</name>
-					<value><![CDATA[8]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol/>
-		</file>
-		<file>
-			<source>system/workplace/admin/captcha/light.captchapreset</source>
-			<destination>system/workplace/admin/captcha/light.captchapreset</destination>
-			<type>xmlcontent</type>
-			<uuidstructure>a43efc5b-11b7-11db-91cd-fdbae480bac9</uuidstructure>
-			<uuidresource>a66111ce-7b8f-11da-9858-5b510a4bd4de</uuidresource>
-			<datelastmodified>Mon, 17 Dec 2007 11:25:25 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Mon, 02 Jan 2006 12:59:46 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property>
-					<name>Title</name>
-					<value><![CDATA[Light]]></value>
-				</property>
-				<property>
-					<name>collector.priority</name>
-					<value><![CDATA[2]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol/>
-		</file>
-		<file>
-			<source>system/workplace/admin/captcha/math.captchapreset</source>
-			<destination>system/workplace/admin/captcha/math.captchapreset</destination>
-			<type>xmlcontent</type>
-			<uuidstructure>e9d19bd0-0fbc-11de-acd9-8374f46a75af</uuidstructure>
-			<uuidresource>e9d19bd1-0fbc-11de-acd9-8374f46a75af</uuidresource>
-			<datelastmodified>Fri, 13 Mar 2009 15:40:57 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Fri, 13 Mar 2009 10:51:31 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property>
-					<name>Title</name>
-					<value><![CDATA[Math]]></value>
-				</property>
-				<property>
-					<name>collector.priority</name>
-					<value><![CDATA[9]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol/>
-		</file>
-		<file>
-			<source>system/workplace/admin/captcha/medium.captchapreset</source>
-			<destination>system/workplace/admin/captcha/medium.captchapreset</destination>
-			<type>xmlcontent</type>
-			<uuidstructure>a4416d62-11b7-11db-91cd-fdbae480bac9</uuidstructure>
-			<uuidresource>0d3c8d5d-7b90-11da-9858-5b510a4bd4de</uuidresource>
-			<datelastmodified>Mon, 17 Dec 2007 11:25:42 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Mon, 02 Jan 2006 13:02:38 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property>
-					<name>Title</name>
-					<value><![CDATA[Medium]]></value>
-				</property>
-				<property>
-					<name>collector.priority</name>
-					<value><![CDATA[3]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol/>
-		</file>
-		<file>
-			<source>system/workplace/admin/captcha/strong.captchapreset</source>
-			<destination>system/workplace/admin/captcha/strong.captchapreset</destination>
-			<type>xmlcontent</type>
-			<uuidstructure>a443b756-11b7-11db-91cd-fdbae480bac9</uuidstructure>
-			<uuidresource>e4a16369-7b90-11da-9858-5b510a4bd4de</uuidresource>
-			<datelastmodified>Mon, 17 Dec 2007 11:25:53 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Mon, 02 Jan 2006 13:08:40 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property>
-					<name>Title</name>
-					<value><![CDATA[Strong]]></value>
-				</property>
-				<property>
-					<name>collector.priority</name>
-					<value><![CDATA[4]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol/>
-		</file>
-		<file>
-			<source>system/workplace/admin/captcha/ultralight.captchapreset</source>
-			<destination>system/workplace/admin/captcha/ultralight.captchapreset</destination>
-			<type>xmlcontent</type>
-			<uuidstructure>a446285a-11b7-11db-91cd-fdbae480bac9</uuidstructure>
-			<uuidresource>dacd504e-706f-11da-80d4-5b510a4bd4de</uuidresource>
-			<datelastmodified>Mon, 17 Dec 2007 11:25:08 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Mon, 19 Dec 2005 09:14:27 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property>
-					<name>Title</name>
-					<value><![CDATA[Ultralight]]></value>
-				</property>
-				<property>
-					<name>collector.priority</name>
-					<value><![CDATA[1]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol/>
-		</file>
-		<file>
-			<source>system/workplace/admin/captcha/ultrastrong.captchapreset</source>
-			<destination>system/workplace/admin/captcha/ultrastrong.captchapreset</destination>
-			<type>xmlcontent</type>
-			<uuidstructure>a448724e-11b7-11db-91cd-fdbae480bac9</uuidstructure>
-			<uuidresource>1658b72b-7b94-11da-bc40-5b510a4bd4de</uuidresource>
-			<datelastmodified>Mon, 17 Dec 2007 11:26:19 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Mon, 02 Jan 2006 13:31:32 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property>
-					<name>Title</name>
-					<value><![CDATA[Ultra strong]]></value>
-				</property>
-				<property>
-					<name>collector.priority</name>
-					<value><![CDATA[6]]></value>
 				</property>
 			</properties>
 			<relations/>
