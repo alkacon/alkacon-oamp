@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormHandler.java,v $
- * Date   : $Date: 2010/05/27 10:08:30 $
- * Version: $Revision: 1.17 $
+ * Date   : $Date: 2010/11/11 08:59:26 $
+ * Version: $Revision: 1.18 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -84,7 +84,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  * 
  * @since 7.0.4 
  */
@@ -569,12 +569,18 @@ public class CmsFormHandler extends CmsJspActionElement {
                 }
                 // compute the value for the dynamic field
                 value = getFormConfiguration().getFieldStringValueByName(current.getName());
-            } else if ((current instanceof CmsHiddenDisplayField) || (current instanceof CmsEmptyField)) {
+            } else if (current instanceof CmsHiddenDisplayField) {
                 // do not show hidden display fields and empty fields
                 continue;
             } else if (current instanceof CmsFileUploadField) {
                 value = current.getValue();
                 value = CmsFormHandler.getTruncatedFileItemName(value);
+            } else if (current instanceof CmsEmptyField) {
+                try {
+                    value = CmsExtractorHtml.getExtractor().extractText(value.getBytes()).getContent();
+                } catch (Exception e) {
+                    LOG.error("Error while extracting text from exmpty field: " + e);
+                }
             }
             if (isHtmlMail) {
                 // format output as HTML
@@ -593,12 +599,10 @@ public class CmsFormHandler extends CmsJspActionElement {
                 }
                 if (current instanceof CmsTableField) {
                     fieldsResult.append(((CmsTableField)current).buildLabel(m_messages, false, false));
+                } else if (current instanceof CmsEmptyField) {
+                    fieldsResult.append("");
                 } else {
-                    if (isConfirmationMail) {
                         fieldsResult.append(current.getLabel());
-                    } else {
-                        fieldsResult.append(current.getDbLabel() + ":");
-                    }
                 }
                 if (useOwnStyle) {
                     fieldsResult.append("</td><td class=\"data");
@@ -625,27 +629,14 @@ public class CmsFormHandler extends CmsJspActionElement {
             } else {
                 // format output as plain text
                 String label;
-                if (isConfirmationMail) {
-                    try {
-                        label = CmsHtmlToTextConverter.htmlToText(
-                            current.getLabel(),
-                            getCmsObject().getRequestContext().getEncoding(),
-                            true).trim();
-                    } catch (Exception e) {
-                        // error parsing the String, provide it as is
-                        label = current.getLabel();
-                    }
-                } else {
-                    try {
-                        label = CmsHtmlToTextConverter.htmlToText(
-                            current.getDbLabel(),
-                            getCmsObject().getRequestContext().getEncoding(),
-                            true).trim()
-                            + ":";
-                    } catch (Exception e) {
-                        // error parsing the String, provide it as is
-                        label = current.getDbLabel() + ":";
-                    }
+                try {
+                    label = CmsHtmlToTextConverter.htmlToText(
+                    current.getLabel(),
+                    getCmsObject().getRequestContext().getEncoding(),
+                    true).trim();
+                } catch (Exception e) {
+                    // error parsing the String, provide it as is
+                    label = current.getLabel();
                 }
                 fieldsResult.append(label);
 

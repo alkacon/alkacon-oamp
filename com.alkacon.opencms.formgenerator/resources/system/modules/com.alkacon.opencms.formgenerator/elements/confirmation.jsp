@@ -1,4 +1,4 @@
-<%@page buffer="none" session="false" import="org.opencms.jsp.*, com.alkacon.opencms.formgenerator.*, java.util.*" %><%
+<%@page buffer="none" session="false" import="org.opencms.jsp.*, com.alkacon.opencms.formgenerator.*, java.util.*, org.opencms.search.extractors.*" %><%
 
 // Initialize JSP action element
 CmsJspActionElement cms = new CmsJspActionElement(pageContext, request, response);
@@ -13,14 +13,15 @@ List resultList = formHandler.getFormConfiguration().getAllFields(true, false, t
 for (int i = 0, n = resultList.size(); i < n; i++) {
 	I_CmsField current = (I_CmsField)resultList.get(i);
 	if (CmsHiddenField.class.isAssignableFrom(current.getClass()) || CmsPrivacyField.class.isAssignableFrom(current.getClass())
-			|| CmsCaptchaField.class.isAssignableFrom(current.getClass()) || CmsPagingField.class.isAssignableFrom(current.getClass())
-			|| CmsEmptyField.class.isAssignableFrom(current.getClass())) {
+			|| CmsCaptchaField.class.isAssignableFrom(current.getClass()) || CmsPagingField.class.isAssignableFrom(current.getClass())) {
 		continue;
 	}
 	String label = current.getLabel();
 	if (current instanceof CmsTableField) {
 	    label = ((CmsTableField)current).buildLabel(formHandler.getMessages(),false,false);
-	}
+	} else if (current instanceof CmsEmptyField) {
+    	    label = "";
+    }
 	String value = current.toString();
     if ((current instanceof CmsDisplayField)) {
     	value = formHandler.convertToHtmlValue(value);
@@ -41,6 +42,11 @@ for (int i = 0, n = resultList.size(); i < n; i++) {
     }else if (current instanceof CmsFileUploadField) {
 	value = CmsFormHandler.getTruncatedFileItemName(value);
 	value = formHandler.convertToHtmlValue(value);
+    }else if (current instanceof CmsEmptyField) {
+        try {
+            value = CmsExtractorHtml.getExtractor().extractText(value.getBytes()).getContent();
+        } catch (Exception e) {
+        }
     }else {
         value = formHandler.convertToHtmlValue(value);
     }
