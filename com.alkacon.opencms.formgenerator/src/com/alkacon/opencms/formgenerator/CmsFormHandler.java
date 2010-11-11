@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormHandler.java,v $
- * Date   : $Date: 2010/11/11 08:59:26 $
- * Version: $Revision: 1.18 $
+ * Date   : $Date: 2010/11/11 09:45:26 $
+ * Version: $Revision: 1.19 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -48,6 +48,7 @@ import org.opencms.main.OpenCms;
 import org.opencms.module.CmsModule;
 import org.opencms.util.CmsByteArrayDataSource;
 import org.opencms.util.CmsDateUtil;
+import org.opencms.util.CmsHtmlExtractor;
 import org.opencms.util.CmsMacroResolver;
 import org.opencms.util.CmsRequestUtil;
 import org.opencms.util.CmsStringUtil;
@@ -84,7 +85,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  * 
  * @since 7.0.4 
  */
@@ -575,13 +576,7 @@ public class CmsFormHandler extends CmsJspActionElement {
             } else if (current instanceof CmsFileUploadField) {
                 value = current.getValue();
                 value = CmsFormHandler.getTruncatedFileItemName(value);
-            } else if (current instanceof CmsEmptyField) {
-                try {
-                    value = CmsExtractorHtml.getExtractor().extractText(value.getBytes()).getContent();
-                } catch (Exception e) {
-                    LOG.error("Error while extracting text from exmpty field: " + e);
-                }
-            }
+            } 
             if (isHtmlMail) {
                 // format output as HTML
                 if (useOwnStyle) {
@@ -621,6 +616,8 @@ public class CmsFormHandler extends CmsJspActionElement {
                 // special case by table fields
                 if (current instanceof CmsTableField) {
                     fieldsResult.append(((CmsTableField)current).buildHtml(m_messages, false));
+                } else if (current instanceof CmsEmptyField) {
+                    fieldsResult.append(value);
                 } else {
                     fieldsResult.append(convertToHtmlValue(value));
                 }
@@ -1559,7 +1556,7 @@ public class CmsFormHandler extends CmsJspActionElement {
     private I_CmsWebformActionHandler getObject(String className) throws Exception {
 
         I_CmsWebformActionHandler object = null;
-        Class<I_CmsWebformActionHandler> c = (Class<I_CmsWebformActionHandler>)Class.forName(className);
+        Class<I_CmsWebformActionHandler> c = Class.forName(className);
         object = c.newInstance();
 
         return object;

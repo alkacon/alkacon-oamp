@@ -1,4 +1,4 @@
-<%@page buffer="none" session="false" import="org.opencms.jsp.*, com.alkacon.opencms.formgenerator.*, java.util.*, org.opencms.search.extractors.*" %><%
+<%@page buffer="none" session="false" import="org.opencms.jsp.*, com.alkacon.opencms.formgenerator.*, java.util.*" %><%
 
 // Initialize JSP action element
 CmsJspActionElement cms = new CmsJspActionElement(pageContext, request, response);
@@ -43,10 +43,7 @@ for (int i = 0, n = resultList.size(); i < n; i++) {
 	value = CmsFormHandler.getTruncatedFileItemName(value);
 	value = formHandler.convertToHtmlValue(value);
     }else if (current instanceof CmsEmptyField) {
-        try {
-            value = CmsExtractorHtml.getExtractor().extractText(value.getBytes()).getContent();
-        } catch (Exception e) {
-        }
+        // do nothing
     }else {
         value = formHandler.convertToHtmlValue(value);
     }
