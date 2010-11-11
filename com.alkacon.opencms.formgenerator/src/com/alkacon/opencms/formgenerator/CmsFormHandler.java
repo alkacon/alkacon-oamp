@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormHandler.java,v $
- * Date   : $Date: 2010/11/11 09:45:26 $
- * Version: $Revision: 1.19 $
+ * Date   : $Date: 2010/11/11 10:25:22 $
+ * Version: $Revision: 1.20 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -48,7 +48,6 @@ import org.opencms.main.OpenCms;
 import org.opencms.module.CmsModule;
 import org.opencms.util.CmsByteArrayDataSource;
 import org.opencms.util.CmsDateUtil;
-import org.opencms.util.CmsHtmlExtractor;
 import org.opencms.util.CmsMacroResolver;
 import org.opencms.util.CmsRequestUtil;
 import org.opencms.util.CmsStringUtil;
@@ -85,7 +84,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  * 
  * @since 7.0.4 
  */
@@ -562,6 +561,9 @@ public class CmsFormHandler extends CmsJspActionElement {
             if (!useInFormDataMacro(current)) {
                 continue;
             }
+            if ((current instanceof CmsEmptyField) && !current.isMandatory()) {
+                continue;
+            }
             String value = current.toString();
             if (((current instanceof CmsDynamicField) && !((current instanceof CmsDisplayField) || (current instanceof CmsHiddenDisplayField)))) {
                 if (!current.isMandatory()) {
@@ -576,7 +578,7 @@ public class CmsFormHandler extends CmsJspActionElement {
             } else if (current instanceof CmsFileUploadField) {
                 value = current.getValue();
                 value = CmsFormHandler.getTruncatedFileItemName(value);
-            } 
+            }
             if (isHtmlMail) {
                 // format output as HTML
                 if (useOwnStyle) {
@@ -597,7 +599,7 @@ public class CmsFormHandler extends CmsJspActionElement {
                 } else if (current instanceof CmsEmptyField) {
                     fieldsResult.append("");
                 } else {
-                        fieldsResult.append(current.getLabel());
+                    fieldsResult.append(current.getLabel());
                 }
                 if (useOwnStyle) {
                     fieldsResult.append("</td><td class=\"data");
@@ -628,9 +630,9 @@ public class CmsFormHandler extends CmsJspActionElement {
                 String label;
                 try {
                     label = CmsHtmlToTextConverter.htmlToText(
-                    current.getLabel(),
-                    getCmsObject().getRequestContext().getEncoding(),
-                    true).trim();
+                        current.getLabel(),
+                        getCmsObject().getRequestContext().getEncoding(),
+                        true).trim();
                 } catch (Exception e) {
                     // error parsing the String, provide it as is
                     label = current.getLabel();
@@ -1556,7 +1558,7 @@ public class CmsFormHandler extends CmsJspActionElement {
     private I_CmsWebformActionHandler getObject(String className) throws Exception {
 
         I_CmsWebformActionHandler object = null;
-        Class<I_CmsWebformActionHandler> c = Class.forName(className);
+        Class<I_CmsWebformActionHandler> c = (Class<I_CmsWebformActionHandler>)Class.forName(className);
         object = c.newInstance();
 
         return object;
