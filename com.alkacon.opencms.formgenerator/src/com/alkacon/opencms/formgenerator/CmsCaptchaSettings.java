@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaSettings.java,v $
- * Date   : $Date: 2010/11/12 08:49:09 $
- * Version: $Revision: 1.9 $
+ * Date   : $Date: 2010/11/12 11:41:53 $
+ * Version: $Revision: 1.10 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -66,7 +66,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Achim Westermann
  * 
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  * 
  * @since 7.0.4 
  */
@@ -1000,6 +1000,7 @@ public final class CmsCaptchaSettings implements Cloneable {
         result.m_characterPool = m_characterPool;
         result.m_presetPath = m_presetPath;
         result.m_dictionary = m_dictionary;
+        result.m_mathField = m_mathField;
         return result;
     }
 

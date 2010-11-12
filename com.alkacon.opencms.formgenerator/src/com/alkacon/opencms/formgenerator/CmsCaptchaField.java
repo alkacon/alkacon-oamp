@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaField.java,v $
- * Date   : $Date: 2010/09/24 14:42:07 $
- * Version: $Revision: 1.9 $
+ * Date   : $Date: 2010/11/12 11:41:53 $
+ * Version: $Revision: 1.10 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -63,7 +63,7 @@ import com.octo.captcha.service.text.TextCaptchaService;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  * 
  * @since 7.0.4 
  */
@@ -71,6 +71,9 @@ public class CmsCaptchaField extends A_CmsField {
 
     /** Request parameter name of the captcha phrase. */
     public static final String C_PARAM_CAPTCHA_PHRASE = "captchaphrase";
+
+    /** Session parameter name to store the webform captcha settings. */
+    protected static final String SESSION_PARAM_CAPTCHASETTINGS = "__oamp_webform_captchasettings";
 
     /** The log object for this class. */
     private static final Log LOG = CmsLog.getLog(CmsCaptchaField.class);
@@ -224,13 +227,22 @@ public class CmsCaptchaField extends A_CmsField {
     public boolean validateCaptchaPhrase(CmsJspActionElement jsp, String captchaPhrase) {
 
         boolean result = false;
+        CmsCaptchaSettings settings = m_captchaSettings;
+        // check if there are changed captcha settings stored in the session (true if first image generation failed)
+        CmsCaptchaSettings sessionSettings = (CmsCaptchaSettings)jsp.getRequest().getSession().getAttribute(
+            SESSION_PARAM_CAPTCHASETTINGS);
+        if (sessionSettings != null) {
+            // use captcha settings from session to validate the response
+            settings = sessionSettings;
+            jsp.getRequest().getSession().removeAttribute(SESSION_PARAM_CAPTCHASETTINGS);
+        }
         String sessionId = jsp.getRequest().getSession().getId();
 
         if (CmsStringUtil.isNotEmpty(captchaPhrase)) {
-
+            // try to validate the phrase
             try {
                 CaptchaService captchaService = CmsCaptchaServiceCache.getSharedInstance().getCaptchaService(
-                    m_captchaSettings,
+                    settings,
                     jsp.getCmsObject());
                 if (captchaService != null) {
                     result = captchaService.validateResponseForID(sessionId, captchaPhrase).booleanValue();
@@ -254,18 +266,20 @@ public class CmsCaptchaField extends A_CmsField {
      */
     public void writeCaptchaImage(CmsJspActionElement cms) throws IOException {
 
+        // remove eventual session attribute containing captcha settings
+        cms.getRequest().getSession().removeAttribute(SESSION_PARAM_CAPTCHASETTINGS);
+        String sessionId = cms.getRequest().getSession().getId();
+        Locale locale = cms.getRequestContext().getLocale();
         BufferedImage captchaImage = null;
         int maxTries = 10;
         do {
             try {
                 maxTries--;
-                String sessionId = cms.getRequest().getSession().getId();
-                Locale locale = cms.getRequestContext().getLocale();
-
                 captchaImage = ((ImageCaptchaService)CmsCaptchaServiceCache.getSharedInstance().getCaptchaService(
                     m_captchaSettings,
                     cms.getCmsObject())).getImageChallengeForID(sessionId, locale);
             } catch (CaptchaException cex) {
+                // image size is too small, increase dimensions and try it again
                 if (LOG.isInfoEnabled()) {
                     LOG.info(cex);
                     LOG.info(Messages.get().getBundle().key(
@@ -274,6 +288,8 @@ public class CmsCaptchaField extends A_CmsField {
                 }
                 m_captchaSettings.setImageHeight((int)(m_captchaSettings.getImageHeight() * 1.1));
                 m_captchaSettings.setImageWidth((int)(m_captchaSettings.getImageWidth() * 1.1));
+                // IMPORTANT: store changed captcha settings in session, they have to be used when validating the phrase
+                cms.getRequest().getSession().setAttribute(SESSION_PARAM_CAPTCHASETTINGS, m_captchaSettings.clone());
             }
         } while ((captchaImage == null) && (maxTries > 0));
 
