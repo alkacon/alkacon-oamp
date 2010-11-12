@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaEngine.java,v $
- * Date   : $Date: 2010/11/12 10:32:00 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2010/11/12 15:41:44 $
+ * Version: $Revision: 1.7 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -79,7 +79,7 @@ import com.octo.captcha.image.gimpy.GimpyFactory;
  * @author Thomas Weckert
  * @author Achim Westermann
  * 
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  * 
  * @since 7.0.4 
  */
@@ -210,21 +210,33 @@ public class CmsCaptchaEngine extends ImageCaptchaEngine {
 
         // get the list of prefix for default fonts
         List<String> fontPrefix = new ArrayList<String>();
+        String param = "";
         CmsModule module = OpenCms.getModuleManager().getModule(CmsForm.MODULE_NAME);
         if (module == null) {
             fontPrefix = DEFAULT_FONTS_PREFIX_LIST;
         } else {
-            String param = module.getParameter(CmsForm.MODULE_PARAM_FONT_PREFIX, DEFAULT_FONTS_PREFIX);
-            fontPrefix = CmsStringUtil.splitAsList(param, "|");
+            param = module.getParameter(CmsForm.MODULE_PARAM_FONT_PREFIX, DEFAULT_FONTS_PREFIX);
+            if (!CmsStringUtil.FALSE.equalsIgnoreCase(param.trim())) {
+                fontPrefix = CmsStringUtil.splitAsList(param, "|", true);
+            }
         }
         FontGenerator font;
-        Font[] fonts = getFilteredFonts(fontPrefix);
-        if (fonts.length > 0) {
-            font = new RandomFontGenerator(new Integer(m_settings.getMinFontSize()), new Integer(
-                m_settings.getMaxFontSize()), fonts);
-        } else {
+        if (CmsStringUtil.FALSE.equalsIgnoreCase(param)) {
+
             font = new RandomFontGenerator(new Integer(m_settings.getMinFontSize()), new Integer(
                 m_settings.getMaxFontSize()));
+        } else {
+            Font[] fonts = getFilteredFonts(fontPrefix);
+            if (fonts.length > 0) {
+
+                LOG.debug(Messages.get().getBundle().key(Messages.DEBUG_CAPTCHA_USE_FONT_0));
+
+                font = new RandomFontGenerator(new Integer(m_settings.getMinFontSize()), new Integer(
+                    m_settings.getMaxFontSize()), fonts);
+            } else {
+                font = new RandomFontGenerator(new Integer(m_settings.getMinFontSize()), new Integer(
+                    m_settings.getMaxFontSize()));
+            }
         }
 
         WordToImage wordToImage = new DeformedComposedWordToImage(
@@ -250,7 +262,7 @@ public class CmsCaptchaEngine extends ImageCaptchaEngine {
      */
     private Font[] getFilteredFonts(List<String> prefixList) {
 
-        LOG.debug(Messages.get().getBundle().key(Messages.DEBUG_CAPTURE_FONT_FILTERING_START_0));
+        LOG.debug(Messages.get().getBundle().key(Messages.DEBUG_CAPTCHA_FONT_FILTERING_START_0));
         List<Font> filteredFontsList = new LinkedList<Font>();
 
         // Get all system fonts
@@ -259,9 +271,9 @@ public class CmsCaptchaEngine extends ImageCaptchaEngine {
 
         for (Font f : systemFonts) {
             for (String prefix : prefixList) {
-                if (f.getFontName().startsWith(prefix)) {
+                if (f.getFontName().toLowerCase().startsWith(prefix.toLowerCase())) {
                     filteredFontsList.add(f);
-                    LOG.debug(Messages.get().getBundle().key(Messages.DEBUG_CAPTURE_ADD_FONT_1, f.getFontName()));
+                    LOG.debug(Messages.get().getBundle().key(Messages.DEBUG_CAPTCHA_ADD_FONT_1, f.getFontName()));
                 }
             }
         }
@@ -272,7 +284,7 @@ public class CmsCaptchaEngine extends ImageCaptchaEngine {
             i++;
         }
         LOG.debug(Messages.get().getBundle().key(
-            Messages.DEBUG_CAPTURE_FONT_FILTERING_FINISH_1,
+            Messages.DEBUG_CAPTCHA_FONT_FILTERING_FINISH_1,
             Integer.valueOf(filteredFonts.length)));
         return filteredFonts;
     }
