@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaSettings.java,v $
- * Date   : $Date: 2010/09/24 11:01:58 $
- * Version: $Revision: 1.8 $
+ * Date   : $Date: 2010/11/12 08:49:09 $
+ * Version: $Revision: 1.9 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -66,7 +66,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Achim Westermann
  * 
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  * 
  * @since 7.0.4 
  */
@@ -205,10 +205,10 @@ public final class CmsCaptchaSettings implements Cloneable {
     private Integer m_holesPerGlyph = new Integer(0);
 
     /** The image height in pixels. */
-    private int m_imageHeight = 50;
+    private int m_imageHeight = 55;
 
     /** The image width in pixels. */
-    private int m_imageWidth = 150;
+    private int m_imageWidth = 220;
 
     /** The math field flag. */
     private boolean m_mathField;
