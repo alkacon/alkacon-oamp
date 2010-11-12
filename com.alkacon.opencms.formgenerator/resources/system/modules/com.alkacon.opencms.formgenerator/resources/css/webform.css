@@ -133,6 +133,35 @@
 
 	.webform_field_table input {
 		border: 1px solid #888;
+		padding: 2px 0;
+	}
+	
+	table.webform_field_table thead, table.webform_field_table tbody, table.webform_label_table thead {
+		margin: 0;
+		padding: 0;
+	}
+	
+	table.webform_label_table tr th, table.webform_field_table tr td, table.webform_field_table tr th {
+		height: 25px;
+	}
+	
+	table.webform_field_table tr td {
+		padding-top: 0 !important;
+		padding-bottom: 0 !important;
+		padding-left: 4px;
+	}
+	
+	table.webform_field_table tr td:first-child {
+		padding-left: 0;
+	}
+	
+	table.webform_label_table tr th:first-child {
+		vertical-align: middle;
+	}
+	
+	
+	table.webform_field_table input {
+		width: 100%;
 	}
 
 	/* sub field sets */
@@ -205,4 +234,8 @@
 	td.webform_error_start_orange {
 		color: orange;
 	}
+	td.webform_label_table {
+	vertical-align: top;
+	}
+
 }    

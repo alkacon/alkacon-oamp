@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaEngine.java,v $
- * Date   : $Date: 2010/05/21 13:49:14 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2010/11/12 10:32:00 $
+ * Version: $Revision: 1.6 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -32,10 +32,19 @@
 
 package com.alkacon.opencms.formgenerator;
 
+import org.opencms.main.CmsLog;
 import org.opencms.main.OpenCms;
+import org.opencms.module.CmsModule;
 import org.opencms.util.CmsStringUtil;
 
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 import java.awt.image.ImageFilter;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.apache.commons.logging.Log;
 
 import com.jhlabs.image.WaterFilter;
 import com.octo.captcha.CaptchaFactory;
@@ -70,17 +79,26 @@ import com.octo.captcha.image.gimpy.GimpyFactory;
  * @author Thomas Weckert
  * @author Achim Westermann
  * 
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * 
  * @since 7.0.4 
  */
 public class CmsCaptchaEngine extends ImageCaptchaEngine {
+
+    /** The log object for this class. */
+    private static final Log LOG = CmsLog.getLog(CmsCaptchaEngine.class);
 
     /** The configured image captcha factory. */
     private ImageCaptchaFactory m_factory;
 
     /** The settings for this captcha engine. */
     private CmsCaptchaSettings m_settings;
+
+    /** The string with default font prefix. */
+    private final static String DEFAULT_FONTS_PREFIX = "Arial|Courier|Monospaced|SansSerif|Serif";
+
+    /** The list with default font prefix. */
+    private final static List<String> DEFAULT_FONTS_PREFIX_LIST = CmsStringUtil.splitAsList(DEFAULT_FONTS_PREFIX, "|");
 
     /**
      * Creates a new Captcha engine.
@@ -96,6 +114,20 @@ public class CmsCaptchaEngine extends ImageCaptchaEngine {
         initGimpyFactory();
     }
 
+    /**
+     * Returns the hardcoded factory (array of length 1) that is used.
+     * <p>
+     * 
+     * @return the hardcoded factory (array of length 1) that is used
+     * 
+     * @see com.octo.captcha.engine.CaptchaEngine#getFactories()
+     */
+    @Override
+    public CaptchaFactory[] getFactories() {
+
+        return new CaptchaFactory[] {m_factory};
+    }
+
     /** This method build a ImageCaptchaFactory.
      *
      * @return a CaptchaFactory
@@ -104,6 +136,21 @@ public class CmsCaptchaEngine extends ImageCaptchaEngine {
     public com.octo.captcha.image.ImageCaptchaFactory getImageCaptchaFactory() {
 
         return m_factory;
+    }
+
+    /**
+     * This does nothing. <p>
+     * 
+     * A hardcoded factory for deformation is used. 
+     * <p>
+     * 
+     * @see com.octo.captcha.engine.CaptchaEngine#setFactories(com.octo.captcha.CaptchaFactory[])
+     */
+    @Override
+    public void setFactories(CaptchaFactory[] arg0) throws CaptchaEngineException {
+
+        // TODO Auto-generated method stub
+
     }
 
     /**
@@ -161,8 +208,24 @@ public class CmsCaptchaEngine extends ImageCaptchaEngine {
                 m_settings.getImageHeight()), m_settings.getBackgroundColor());
         }
 
-        FontGenerator font = new RandomFontGenerator(new Integer(m_settings.getMinFontSize()), new Integer(
-            m_settings.getMaxFontSize()));
+        // get the list of prefix for default fonts
+        List<String> fontPrefix = new ArrayList<String>();
+        CmsModule module = OpenCms.getModuleManager().getModule(CmsForm.MODULE_NAME);
+        if (module == null) {
+            fontPrefix = DEFAULT_FONTS_PREFIX_LIST;
+        } else {
+            String param = module.getParameter(CmsForm.MODULE_PARAM_FONT_PREFIX, DEFAULT_FONTS_PREFIX);
+            fontPrefix = CmsStringUtil.splitAsList(param, "|");
+        }
+        FontGenerator font;
+        Font[] fonts = getFilteredFonts(fontPrefix);
+        if (fonts.length > 0) {
+            font = new RandomFontGenerator(new Integer(m_settings.getMinFontSize()), new Integer(
+                m_settings.getMaxFontSize()), fonts);
+        } else {
+            font = new RandomFontGenerator(new Integer(m_settings.getMinFontSize()), new Integer(
+                m_settings.getMaxFontSize()));
+        }
 
         WordToImage wordToImage = new DeformedComposedWordToImage(
             font,
@@ -176,32 +239,42 @@ public class CmsCaptchaEngine extends ImageCaptchaEngine {
     }
 
     /**
-     * Returns the hardcoded factory (array of length 1) that is used.
-     * <p>
+     * Filters the fonts available on the system. <p>
      * 
-     * @return the hardcoded factory (array of length 1) that is used
+     * Only fonts, which start with one of the provided prefix are returned. 
+     * These prefix list ensures, that font do not contain unreadable characters.
      * 
-     * @see com.octo.captcha.engine.CaptchaEngine#getFactories()
+     * @param prefixList the list of prefix to filter the system fonts
+     * 
+     * @return an array of standard fonts
      */
-    @Override
-    public CaptchaFactory[] getFactories() {
+    private Font[] getFilteredFonts(List<String> prefixList) {
 
-        return new CaptchaFactory[] {m_factory};
-    }
+        LOG.debug(Messages.get().getBundle().key(Messages.DEBUG_CAPTURE_FONT_FILTERING_START_0));
+        List<Font> filteredFontsList = new LinkedList<Font>();
 
-    /**
-     * This does nothing. <p>
-     * 
-     * A hardcoded factory for deformation is used. 
-     * <p>
-     * 
-     * @see com.octo.captcha.engine.CaptchaEngine#setFactories(com.octo.captcha.CaptchaFactory[])
-     */
-    @Override
-    public void setFactories(CaptchaFactory[] arg0) throws CaptchaEngineException {
+        // Get all system fonts
+        GraphicsEnvironment e = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        Font[] systemFonts = e.getAllFonts();
 
-        // TODO Auto-generated method stub
-
+        for (Font f : systemFonts) {
+            for (String prefix : prefixList) {
+                if (f.getFontName().startsWith(prefix)) {
+                    filteredFontsList.add(f);
+                    LOG.debug(Messages.get().getBundle().key(Messages.DEBUG_CAPTURE_ADD_FONT_1, f.getFontName()));
+                }
+            }
+        }
+        Font[] filteredFonts = new Font[filteredFontsList.size()];
+        int i = 0;
+        for (Font f : filteredFontsList) {
+            filteredFonts[i] = f;
+            i++;
+        }
+        LOG.debug(Messages.get().getBundle().key(
+            Messages.DEBUG_CAPTURE_FONT_FILTERING_FINISH_1,
+            Integer.valueOf(filteredFonts.length)));
+        return filteredFonts;
     }
 
 }

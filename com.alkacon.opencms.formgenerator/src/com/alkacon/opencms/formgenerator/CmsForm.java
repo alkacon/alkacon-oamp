@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
- * Date   : $Date: 2010/05/26 09:59:39 $
- * Version: $Revision: 1.22 $
+ * Date   : $Date: 2010/11/12 10:32:00 $
+ * Version: $Revision: 1.23 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -69,7 +69,7 @@ import org.apache.commons.fileupload.FileItem;
  * @author Thomas Weckert 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  * 
  * @since 7.0.4 
  */
@@ -110,6 +110,9 @@ public class CmsForm {
 
     /** Name of the module parameter for the configuration of the time format of the export data. */
     public static final String MODULE_PARAM_EXPORT_TIMEFORMATE = "export.timeformat";
+
+    /** Name of the module parameter for the configuration of the prefix list of system readable fonts like 'arial|serif'. */
+    public static final String MODULE_PARAM_FONT_PREFIX = "font-prefix";
 
     /** 
      * Module parameter for the content encoding (text encoding) of the exported csv data. This encoding may vary 

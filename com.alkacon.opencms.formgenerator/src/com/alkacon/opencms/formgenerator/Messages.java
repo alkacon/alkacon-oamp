@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/Messages.java,v $
- * Date   : $Date: 2010/05/21 13:49:14 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2010/11/12 10:32:00 $
+ * Version: $Revision: 1.5 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -40,13 +40,25 @@ import org.opencms.i18n.I_CmsMessageBundle;
  * 
  * @author Achim Westermann 
  * 
- * @version $Revision: 1.4 $ 
+ * @version $Revision: 1.5 $ 
  * 
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * 
  * @since 7.0.4 
  */
 public final class Messages extends A_CmsMessageBundle {
+
+    /** Message constant for key in the resource bundle. */
+    public static final String DEBUG_CAPTURE_ADD_FONT_1 = "DEBUG_CAPTURE_ADD_FONT_1";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String DEBUG_CAPTURE_FONT_FILTERING_FINISH_1 = "DEBUG_CAPTURE_FONT_FILTERING_FINISH_1";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String DEBUG_CAPTURE_FONT_FILTERING_START_0 = "DEBUG_CAPTURE_FONT_FILTERING_START_0";
+
+    /** Message constant for key in the resource bundle. */
+    public static final String DEBUG_CAPTURE_USE_FONTS_0 = "DEBUG_CAPTURE_USE_FONTS_0";
 
     /** Message constant for key in the resource bundle. */
     public static final String ERR_INIT_INPUT_FIELD_MISSING_ITEM_2 = "ERR_INIT_INPUT_FIELD_MISSING_ITEM_2";
