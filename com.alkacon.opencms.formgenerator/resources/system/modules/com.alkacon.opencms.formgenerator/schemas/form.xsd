@@ -62,6 +62,7 @@
 				<rule element="MailFrom" regex=".+" type="warning" message="%(key.alkacon-webform.warn.xmlcontent.field.empty)"/>
 				<rule element="MailTo" regex=".+" type="warning" message="%(key.alkacon-webform.warn.xmlcontent.field.empty)"/>
 				<rule element="MailSubject" regex=".+" type="warning" message="%(key.alkacon-webform.warn.xmlcontent.field.empty)"/>
+				<rule element="OptionalConfirmationMail/ConfirmationMailFrom" regex=".+" type="warning" message="%(key.alkacon-webform.warn.xmlcontent.field.empty)"/>
 			</validationrules>
 			<layouts>
 				<layout element="MailText" widget="HtmlWidget" configuration="formatselect,source,table" />

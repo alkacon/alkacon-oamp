@@ -60,6 +60,7 @@ Legend:
 - Moved Captcha presets into module folder
 - Some TableField layout enhancements
 ! Add module parameter 'font-prefix' to configure fonts to be used for capture generation
+! Added optional confirmation mail sender address
 
 1.4.0 - May, 2010
 ! Added sub fields that are shown for select boxes or radio button fields depending on the chosen value

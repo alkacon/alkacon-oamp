@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
- * Date   : $Date: 2010/11/12 10:32:00 $
- * Version: $Revision: 1.23 $
+ * Date   : $Date: 2010/11/12 13:51:39 $
+ * Version: $Revision: 1.24 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -69,7 +69,7 @@ import org.apache.commons.fileupload.FileItem;
  * @author Thomas Weckert 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  * 
  * @since 7.0.4 
  */
@@ -174,6 +174,12 @@ public class CmsForm {
 
     /** Configuration node name for the confirmation mail enabled node. */
     public static final String NODE_CONFIRMATIONMAILENABLED = "ConfirmationMailEnabled";
+
+    /** Configuration node name for the option confirmation mail from node. */
+    public static final String NODE_CONFIRMATIONMAILFROM = "ConfirmationMailFrom";
+
+    /** Configuration node name for the option confirmation mail from name node. */
+    public static final String NODE_CONFIRMATIONMAILFROMNAME = "ConfirmationMailFromName";
 
     /** Configuration node name for the confirmation mail input field node. */
     public static final String NODE_CONFIRMATIONMAILFIELD = "ConfirmationField";
@@ -363,6 +369,12 @@ public class CmsForm {
 
     /** configuration value. */
     protected boolean m_confirmationMailEnabled;
+
+    /** configuration value. */
+    protected String m_confirmationMailFrom;
+
+    /** configuration value. */
+    protected String m_confirmationMailFromName;
 
     /** configuration value. */
     protected int m_confirmationMailField;
@@ -1232,6 +1244,26 @@ public class CmsForm {
     }
 
     /**
+     * Returns the optional confirmation mail from.<p>
+     *
+     * @return the optional confirmation mail from
+     */
+    public String getConfirmationMailFrom() {
+
+        return m_confirmationMailFrom;
+    }
+
+    /**
+     * Returns the optional confirmation mail from name.<p>
+     *
+     * @return the optional confirmation mail from name
+     */
+    public String getConfirmationMailFromName() {
+
+        return m_confirmationMailFromName;
+    }
+
+    /**
      * Returns if the confirmation mail if optional, i.e. selectable by the form submitter.<p>
      *
      * @return true if the confirmation mail if optional, i.e. selectable by the form submitter, otherwise false
@@ -1660,6 +1692,22 @@ public class CmsForm {
         setConfirmationMailEnabled(Boolean.valueOf(stringValue).booleanValue());
         // get other confirmation mail nodes only if confirmation mail is enabled
         if (isConfirmationMailEnabled()) {
+            // get the optional confirmation mail from
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_CONFIRMATIONMAILFROM, locale);
+            if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(stringValue)) {
+                setConfirmationMailFrom(stringValue);
+            } else {
+                setConfirmationMailFrom("");
+            }
+
+            // get the optional confirmation mail from name
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_CONFIRMATIONMAILFROMNAME, locale);
+            if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(stringValue)) {
+                setConfirmationMailFromName(stringValue);
+            } else {
+                setConfirmationMailFromName("");
+            }
+
             // get the confirmation mail subject
             stringValue = getContentStringValue(content, cms, pathPrefix + NODE_CONFIRMATIONMAILSUBJECT, locale);
             setConfirmationMailSubject(getConfigurationValue(stringValue, ""));
@@ -1892,6 +1940,26 @@ public class CmsForm {
     protected void setConfirmationMailEnabled(boolean confirmationMailEnabled) {
 
         m_confirmationMailEnabled = confirmationMailEnabled;
+    }
+
+    /**
+     * Sets the optional confirmation mail from.<p>
+     *
+     * @param confirmationMailFrom the optional confirmation mail from
+     */
+    protected void setConfirmationMailFrom(String confirmationMailFrom) {
+
+        m_confirmationMailFrom = confirmationMailFrom;
+    }
+
+    /**
+     * Sets the optional confirmation mail from name.<p>
+     *
+     * @param confirmationMailFromName the optional confirmation mail from
+     */
+    protected void setConfirmationMailFromName(String confirmationMailFromName) {
+
+        m_confirmationMailFromName = confirmationMailFromName;
     }
 
     /**

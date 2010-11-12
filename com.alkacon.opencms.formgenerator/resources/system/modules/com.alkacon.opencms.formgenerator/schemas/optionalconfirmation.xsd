@@ -16,6 +16,8 @@
 			<xsd:element name="ConfirmationMailOptional" type="OpenCmsBoolean" />
 			<xsd:element name="ConfirmationCheckboxLabel" type="OpenCmsString" />
 			<xsd:element name="ConfirmationField" type="OpenCmsString" />
+			<xsd:element name="ConfirmationMailFrom" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="ConfirmationMailFromName" type="OpenCmsString" minOccurs="0" />
 			<xsd:element name="ConfirmationMailSubject" type="OpenCmsString" />
 			<xsd:element name="ConfirmationMailText" type="OpenCmsHtml" />
 		</xsd:sequence>

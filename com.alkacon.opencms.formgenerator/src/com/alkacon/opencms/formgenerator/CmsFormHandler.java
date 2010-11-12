@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormHandler.java,v $
- * Date   : $Date: 2010/11/11 10:25:22 $
- * Version: $Revision: 1.20 $
+ * Date   : $Date: 2010/11/12 13:51:39 $
+ * Version: $Revision: 1.21 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -84,7 +84,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  * 
  * @since 7.0.4 
  */
@@ -1014,7 +1014,15 @@ public class CmsFormHandler extends CmsJspActionElement {
                 // create a HTML email
                 CmsHtmlMail theMail = new CmsHtmlMail();
                 theMail.setCharset(getCmsObject().getRequestContext().getEncoding());
-                if (CmsStringUtil.isNotEmpty(getFormConfiguration().getMailFrom())) {
+                if (CmsStringUtil.isNotEmpty(getFormConfiguration().getConfirmationMailFrom())) {
+                    if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(getFormConfiguration().getConfirmationMailFromName())) {
+                        theMail.setFrom(
+                            m_macroResolver.resolveMacros(getFormConfiguration().getConfirmationMailFrom()),
+                            m_macroResolver.resolveMacros(getFormConfiguration().getConfirmationMailFromName()));
+                    } else {
+                        theMail.setFrom(m_macroResolver.resolveMacros(getFormConfiguration().getConfirmationMailFrom()));
+                    }
+                } else if (CmsStringUtil.isNotEmpty(getFormConfiguration().getMailFrom())) {
                     if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(getFormConfiguration().getMailFromName())) {
                         theMail.setFrom(
                             m_macroResolver.resolveMacros(getFormConfiguration().getMailFrom()),
