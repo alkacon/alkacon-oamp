@@ -31,6 +31,9 @@
 				<layout element="ConfirmationField" widget="com.alkacon.opencms.formgenerator.CmsSelectFieldWidget" configuration="referencebylabel=true|convertfieldindex=true|fieldtype=email" />
 				<layout element="ConfirmationMailText" widget="HtmlWidget" configuration="formatselect,source,table" />
 			</layouts>
+			<validationrules>
+				<rule element="ConfirmationMailFrom" regex=".+" type="warning" message="%(key.alkacon-webform.warn.xmlcontent.field.empty)"/>
+			</validationrules>
 		</xsd:appinfo>
 	</xsd:annotation>  
 
