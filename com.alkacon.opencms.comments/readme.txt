@@ -56,6 +56,9 @@ Legend:
 * Bug fixed
 - General comment
 
+1.0.3 - Nov, 2010
+-  Captcha presets used from formgenerator module
+
 1.0.2 - February 19th, 2009
 * Fixed issue with the not opening comments box
 * Implemented security enhancements
