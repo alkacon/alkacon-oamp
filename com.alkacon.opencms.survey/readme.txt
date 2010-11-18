@@ -55,6 +55,9 @@ Legend:
 * Bug fixed
 - General comment
 
+1.0.3 Nov, 2010
+- Extended module documentation.
+
 1.0.2 - February 19th, 2010
 * Avoid NullPointerException when advanced form configuration node in survey XML content is missing. 
 * Fixed issue with empty report in case of commas in labels. 
