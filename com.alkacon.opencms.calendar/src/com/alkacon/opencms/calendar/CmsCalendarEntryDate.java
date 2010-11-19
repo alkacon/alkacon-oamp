@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.calendar/src/com/alkacon/opencms/calendar/CmsCalendarEntryDate.java,v $
- * Date   : $Date: 2008/04/25 14:50:41 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2010/11/19 14:53:04 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -46,7 +46,7 @@ import java.util.List;
  * 
  * @author Andreas Zahner
  * 
- * @version $Revision: 1.1 $ 
+ * @version $Revision: 1.2 $ 
  * 
  * @since 6.0.1 
  */
@@ -71,7 +71,7 @@ public class CmsCalendarEntryDate {
     private Calendar m_endDate;
 
     /** The end time of the entry. */
-    private long m_endTime;
+    private Calendar m_endTime;
 
     /** The start date of the entry. */
     private Calendar m_startDate;
@@ -80,7 +80,7 @@ public class CmsCalendarEntryDate {
     private long m_startDay;
 
     /** The start time of the entry. */
-    private long m_startTime;
+    private Calendar m_startTime;
 
     /**
      * Constructor that initializes the members using the given start and end date.<p>
@@ -92,6 +92,8 @@ public class CmsCalendarEntryDate {
 
         m_startDate = startDate;
         m_endDate = endDate;
+        m_startTime = new GregorianCalendar(2010, 0, 10, 0, 0, 0);
+        m_endTime = new GregorianCalendar(2010, 0, 10, 0, 0, 0);
         // calculate the time information for the other members
         calculateEntryTimes();
     }
@@ -107,11 +109,20 @@ public class CmsCalendarEntryDate {
     public CmsCalendarEntryDate(long startDay, long startTime, long endTime, int duration) {
 
         m_startDay = startDay;
-        m_startTime = startTime;
-        m_endTime = endTime;
+        m_startTime = getTimeCalendar(startTime);
+        m_endTime = getTimeCalendar(endTime);
         m_duration = duration;
         // calculate start and end date
         calculateEntryDates();
+    }
+
+    private Calendar getTimeCalendar(long time) {
+
+        long h = time % MILLIS_01_PER_HOUR;
+        time = time - h;
+        long m = time % MILLIS_00_PER_MINUTE;
+        Calendar cal = new GregorianCalendar(2010, 0, 10, (int)h, (int)m, 0);
+        return cal;
     }
 
     /**
@@ -149,7 +160,10 @@ public class CmsCalendarEntryDate {
      */
     public long getEndTime() {
 
-        return m_endTime;
+        return m_endDate.get(Calendar.HOUR_OF_DAY)
+            * MILLIS_01_PER_HOUR
+            + m_endDate.get(Calendar.MINUTE)
+            * MILLIS_00_PER_MINUTE;
     }
 
     /**
@@ -179,7 +193,10 @@ public class CmsCalendarEntryDate {
      */
     public long getStartTime() {
 
-        return m_startTime;
+        return m_startDate.get(Calendar.HOUR_OF_DAY)
+            * MILLIS_01_PER_HOUR
+            + m_startDate.get(Calendar.MINUTE)
+            * MILLIS_00_PER_MINUTE;
     }
 
     /**
@@ -245,7 +262,7 @@ public class CmsCalendarEntryDate {
      */
     public void setEndTime(long endTime) {
 
-        m_endTime = endTime;
+        m_endTime = getTimeCalendar(endTime);
         calculateEntryDates();
     }
 
@@ -300,7 +317,7 @@ public class CmsCalendarEntryDate {
      */
     public void setStartTime(long startTime) {
 
-        m_startTime = startTime;
+        m_startTime = getTimeCalendar(startTime);
         calculateEntryDates();
     }
 
@@ -311,12 +328,15 @@ public class CmsCalendarEntryDate {
 
         // create the start date
         m_startDate = new GregorianCalendar();
-        m_startDate.setTimeInMillis(m_startDay + m_startTime);
+        m_startDate.setTimeInMillis(m_startDay);
+        m_startDate.set(Calendar.HOUR_OF_DAY, m_startTime.get(Calendar.HOUR_OF_DAY));
+        m_startDate.set(Calendar.MINUTE, m_startTime.get(Calendar.MINUTE));
         // create the end date
-        long endDate = m_startDay + m_endTime;
-        endDate += m_duration * MILLIS_02_PER_DAY;
         m_endDate = new GregorianCalendar();
-        m_endDate.setTimeInMillis(endDate);
+        m_endDate.setTimeInMillis(m_startDay);
+        m_endDate.set(Calendar.HOUR_OF_DAY, m_endTime.get(Calendar.HOUR_OF_DAY));
+        m_endDate.set(Calendar.MINUTE, m_endTime.get(Calendar.MINUTE));
+        m_endDate.roll(Calendar.DAY_OF_MONTH, m_duration);
     }
 
     /**
@@ -330,10 +350,10 @@ public class CmsCalendarEntryDate {
             m_startDate.get(Calendar.MONTH),
             m_startDate.get(Calendar.DATE));
         m_startDay = startDay.getTimeInMillis();
-        m_startTime = (m_startDate.get(Calendar.HOUR_OF_DAY) * MILLIS_01_PER_HOUR)
-            + (m_startDate.get(Calendar.MINUTE) * MILLIS_00_PER_MINUTE);
-        m_endTime = (m_endDate.get(Calendar.HOUR_OF_DAY) * MILLIS_01_PER_HOUR)
-            + (m_endDate.get(Calendar.MINUTE) * MILLIS_00_PER_MINUTE);
+        m_startTime.set(Calendar.HOUR_OF_DAY, m_startDate.get(Calendar.HOUR_OF_DAY));
+        m_startTime.set(Calendar.MINUTE, m_startDate.get(Calendar.MINUTE));
+        m_endTime.set(Calendar.HOUR_OF_DAY, m_endDate.get(Calendar.HOUR_OF_DAY));
+        m_endTime.set(Calendar.MINUTE, m_endDate.get(Calendar.MINUTE));
         m_duration = 0;
         // calculate the duration of the entry
         Calendar endDay = new GregorianCalendar(
