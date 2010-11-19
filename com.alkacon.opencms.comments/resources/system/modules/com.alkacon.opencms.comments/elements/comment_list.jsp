@@ -33,7 +33,7 @@
 <c:when test="${alkaconCmt.userCanPost}">
 	    <a 
 	       title="<fmt:message key="form.message.post" />" 
-	       href="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_form.jsp:dfbece22-1112-11dd-ba60-111d34530985)?cmturi=${param.cmturi}&__locale=${cms:vfs(pageContext).requestContext.locale}&width=800&height=520</cms:link>" 
+	       href="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_form.jsp:dfbece22-1112-11dd-ba60-111d34530985)?cmturi=${param.cmturi}&__locale=${cms:vfs(pageContext).requestContext.locale}&width=800&height=530</cms:link>" 
 	       class="cmt_thickbox" >
 			<fmt:message key="post.0" />
 		</a>
