@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaField.java,v $
- * Date   : $Date: 2010/11/12 11:41:53 $
- * Version: $Revision: 1.10 $
+ * Date   : $Date: 2010/12/07 13:53:10 $
+ * Version: $Revision: 1.11 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -33,6 +33,7 @@
 package com.alkacon.opencms.formgenerator;
 
 import org.opencms.flex.CmsFlexController;
+import org.opencms.i18n.CmsEncoder;
 import org.opencms.i18n.CmsMessages;
 import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.main.CmsLog;
@@ -63,7 +64,7 @@ import com.octo.captcha.service.text.TextCaptchaService;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  * 
  * @since 7.0.4 
  */
@@ -185,8 +186,9 @@ public class CmsCaptchaField extends A_CmsField {
         }
 
         // line #6
-        buf.append("<input type=\"text\" name=\"").append(getName()).append("\" value=\"").append(getValue()).append(
-            "\"").append(formHandler.getFormConfiguration().getFormFieldAttributes()).append("/>").append(errorMessage).append(
+        buf.append("<input type=\"text\" name=\"").append(getName()).append("\" value=\"").append(
+            CmsEncoder.escapeXml(getValue())).append("\"").append(
+            formHandler.getFormConfiguration().getFormFieldAttributes()).append("/>").append(errorMessage).append(
             messages.key("form.html.field.end")).append("\n");
 
         // line #7
