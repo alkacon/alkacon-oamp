@@ -22,6 +22,30 @@
          }
       };
    };
+
+   /**
+    * Helper to create 'on return' and 'on blur' event handlers.<p>
+    *
+    * @callee {Element} The element that generated the event
+    * @param {Function} handler the actual event handler
+    *
+    * @returns a new 'on return' and 'on blur' event handler
+    */
+   var onReturnOrBlur = function(handler) {
+   
+      // return a new handler
+      return function(/**jQuery.Event*/event, /**int*/ kc) {
+      
+         // check the key code depending on different browser implementations
+         var /*int*/ key = (kc || event.keyCode || event.which || event.charCode);
+         // all browsers use the same code for the return key
+         if (event.type == "blur" || key == 13) {
+            // call the actual event handler
+            handler.call(this, event);
+         }
+      };
+   };
+
    
    /** 
     * Converts a string into an associative array or map.
@@ -324,7 +348,7 @@
          };
          
          // bind the address to the map
-         $address.bind('keydown', onReturn(function() {
+         $address.bind('blur keydown', onReturnOrBlur(function() {
             var /**jQuery*/ thisAddr = $(this);
             var /**String*/ address = thisAddr.val();
             geocoder.geocode({'address': address}, function(results, status) {
