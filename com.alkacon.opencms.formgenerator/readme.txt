@@ -57,6 +57,7 @@ Legend:
 - General comment
 
 1.4.1 - Nov, 2010
+* Bug fix in the countForms sql query
 - Moved Captcha presets into module folder
 - Some TableField layout enhancements
 ! Add module parameter 'font-prefix' to configure fonts to be used for capture generation
