@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.documentcenter/src/com/alkacon/opencms/documentcenter/CmsDocument.java,v $
- * Date   : $Date: 2010/03/19 15:31:13 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2010/12/15 09:37:44 $
+ * Version: $Revision: 1.5 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -32,8 +32,10 @@
 
 package com.alkacon.opencms.documentcenter;
 
+import org.opencms.file.CmsObject;
 import org.opencms.file.CmsResource;
 import org.opencms.i18n.CmsLocaleManager;
+import org.opencms.main.CmsException;
 import org.opencms.main.OpenCms;
 import org.opencms.module.CmsModule;
 import org.opencms.util.CmsStringUtil;
@@ -58,8 +60,9 @@ import java.util.regex.Pattern;
  *
  * @author Andreas Zahner 
  * @author Peter Bonrad
+ * @author Peter Sreckovic
  * 
- * @version $Revision: 1.4 $ 
+ * @version $Revision: 1.5 $ 
  * 
  * @since 6.0.0 
  */
@@ -842,6 +845,34 @@ public class CmsDocument extends Object {
     }
 
     /**
+     * Returns the count of sub documents, if this document is a folder.<p>
+     * If this document is a file, 0 is returned.
+     * @param cms the CmsObject to be passed
+     * @return count of sub documents, if this "document" is a folder
+     * @throws CmsException 
+     * 
+     *
+     */
+    public int getSubDocuments(CmsObject cms) throws CmsException {
+
+        //        return m_cmsResource.isFolder();
+        if (m_cmsResource.isFolder()) {
+            List list = cms.getFilesInFolder(m_path);
+
+            for (int i = 0; i < list.size(); i++) {
+                if ((((CmsResource)list.get(i)).getName()).startsWith("$")) {
+                    list.remove(i);
+                }
+            }
+
+            return list.size();
+        } else {
+            return 0;
+        }
+
+    }
+
+    /**
      * Returns the title of the document.<p>
      * 
      * @return the title of the document
@@ -1250,19 +1281,23 @@ public class CmsDocument extends Object {
 
         String docName = getCmsResource().getName();
 
+        // First part deprecated. Integer.parseInt() caused exception if filenames contained "_" followed by
+        // a number part with a number too large to fit in 32-bit. (+- 2.147.483.647). This method, splitting 
+        // filenames into a root-doc (string) and attached parts (indicated by number) no longer supported. 
+
         // check if an attachment number is present
-        Matcher matcher = PATTERN_ATT_NUMBER.matcher(docName);
-        if (matcher.matches()) {
-            // this is an attachment, set attachment number
-            Integer partNumber = new Integer(Integer.parseInt(matcher.group(2)));
-            setAttachmentNumber(partNumber);
-            int startIndex = matcher.start(1);
-            int endIndex = matcher.end(2);
-            docName = docName.substring(0, startIndex) + docName.substring(endIndex);
-        }
+        //        Matcher matcher = PATTERN_ATT_NUMBER.matcher(docName);
+        //        if (matcher.matches()) {
+        //            // this is an attachment, set attachment number
+        //            Integer partNumber = new Integer(Integer.parseInt(matcher.group(2)));
+        //            setAttachmentNumber(partNumber);
+        //            int startIndex = matcher.start(1);
+        //            int endIndex = matcher.end(2);
+        //            docName = docName.substring(0, startIndex) + docName.substring(endIndex);
+        //        }
 
         // check if a locale information is present
-        matcher = PATTERN_DOC_LOCALE.matcher(docName);
+        Matcher matcher = PATTERN_DOC_LOCALE.matcher(docName);
         if (matcher.matches()) {
             Locale testLocale = new Locale(matcher.group(2));
             if (OpenCms.getLocaleManager().getDefaultLocales().contains(testLocale)) {
