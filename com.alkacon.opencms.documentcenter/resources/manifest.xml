@@ -16,7 +16,7 @@
 		<description><![CDATA[<p>This module provides document management functionality: Documents may be stored in document center areas where they can be browsed and downloaded.</p>
             <p>DocCenters are highly configurable and do not require coding to set them up.</p>
 			<p><i>(c) 2010 by Alkacon Software GmbH (http://www.alkacon.com).</i></p>]]></description>
-		<version>1.0.1</version>
+		<version>1.0.2</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
 		<datecreated/>
