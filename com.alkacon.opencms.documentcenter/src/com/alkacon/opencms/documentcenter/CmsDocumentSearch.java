@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.documentcenter/src/com/alkacon/opencms/documentcenter/CmsDocumentSearch.java,v $
- * Date   : $Date: 2010/03/19 15:31:14 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2010/12/15 09:40:01 $
+ * Version: $Revision: 1.4 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -130,11 +130,8 @@ public class CmsDocumentSearch {
                     return result;
                 }
             }
-            System.out.println("###Prepare search: " + (System.currentTimeMillis() - t));
             CmsRequestContext context = m_cms.getRequestContext();
             Iterator iter = search.getSearchResult().iterator();
-
-            System.out.println("###Excecute search: " + (System.currentTimeMillis() - t));
 
             while (iter.hasNext()) {
                 CmsSearchResult searchResult = (CmsSearchResult)iter.next();
@@ -153,8 +150,6 @@ public class CmsDocumentSearch {
                 }
             }
         }
-
-        System.out.println("###get files: " + (System.currentTimeMillis() - t));
 
         return result;
     }
