@@ -1,6 +1,6 @@
 
                 Alkacon OpenCms Add-On Module Package: DocCenter
-                       Version 1.0.0; June 15th, 2009
+                       Version 1.0.2; December 15th, 2010
 
 
                                     WARNING:
@@ -43,11 +43,10 @@ http://www.alkacon.com
 3. Installation
 
 A detailed description of the installation is described in the provided
-PDF file "Alkacon_OpenCms_DocCenter_1.0.0.pdf".
+PDF file "Alkacon_OAMP_DocCenter.pdf".
 
 
 4. History of changes
-! Croatian language added to the language-bundle 
 
 Changes are chronologically ordered from top (most recent)
 to bottom (least recent).
@@ -57,7 +56,12 @@ Legend:
 * Bug fixed
 - General comment
 
-1.0.1 - March 19th, 2009
+1.0.2 - December 15th, 2010
+- Column "size" shows number of contained documents in a folder
+* Filenames containing "_" followed by a large number work properly 
+
+1.0.1 - March 19th, 2010
+! Croatian language added to the language-bundle 
 - Get the locale only from the request context
 * Adjusted some keys in the german properties files
 * Open document history in the same/another window
