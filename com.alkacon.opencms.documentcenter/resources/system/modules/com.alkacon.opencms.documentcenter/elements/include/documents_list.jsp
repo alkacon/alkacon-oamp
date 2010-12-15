@@ -16,7 +16,8 @@
 // some documents are present, show list
 if (documentList.size() > 0) { 
 %>
- <table class="downloadcenter" border="0" cellspacing="0" summary="<%= messages.key("documentlist.table.summary") %>" >
+ 
+<%@page import="java.util.ArrayList"%><table class="downloadcenter" border="0" cellspacing="0" summary="<%= messages.key("documentlist.table.summary") %>" >
  <thead>
   <tr>
  	<%-- ID --%>
@@ -56,8 +57,10 @@ if (documentList.size() > 0) {
 	if(!cms.getCmsObject().existsResource(imgsrc))
 	    imgsrc=resPath+"ic_doc_new.gif";
 	
+	
     String docNew =      "<img src=\""+imgsrc +"\" border=\"0\" "
-                             +"alt=\""+messages.key("documentlist.icon.new","")+"\" title=\""+messages.key("documentlist.icon.new","")+"\" />";
+                             +"alt=\""+messages.key("documentlist.icon.newsimple","")+"\" title=\""+messages.key("documentlist.icon.newsimple","")+"\" />";
+
     imgsrc=resPath+"ic_doc_modified_"      +locale +".gif";
 	if(!cms.getCmsObject().existsResource(imgsrc))
 	    imgsrc=resPath+"ic_doc_modified.gif";
@@ -206,7 +209,7 @@ if (documentList.size() > 0) {
 <%-- SIZE --%>	  
     <td class="litte_font"><% 	if( currentDocument.isFolder()
  		 || "eLink".equals(currentDocument.getPostfixType()) ) {
-			out.print("&nbsp;");
+            out.print(currentDocument.getSubDocuments(cms.getCmsObject())); 
 		} else {
 			out.print(Math.round(Math.ceil(currentDocument.getSize() / 1024.0)) +messages.key("documentlist.size.kb"));
 		} %></td>
