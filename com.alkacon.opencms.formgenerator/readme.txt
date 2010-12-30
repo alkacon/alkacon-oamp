@@ -66,7 +66,7 @@ Legend:
 1.4.0 - May, 2010
 ! Added sub fields that are shown for select boxes or radio button fields depending on the chosen value
 ! Configurable front end report output of form entries stored in the database
-! Uploaded files can now be stored in the OpenCms VFS instead of the servers real file system
+! Uploaded files can now be stored in the OpenCms VFS in addition to the servers real file system
 ! Static text can be shown between single input fields
 ! Option to keep the user session when viewing forms by sending a server request in a configurable time interval
 ! Option to generate valid XHTML output
