@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.documentcenter/src/com/alkacon/opencms/documentcenter/CmsDocumentFactory.java,v $
- * Date   : $Date: 2010/03/19 15:31:14 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2010/12/30 12:52:48 $
+ * Version: $Revision: 1.5 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -55,7 +55,7 @@ import java.util.Map;
  * 
  * @author  Andreas Zahner 
  * 
- * @version $Revision: 1.4 $ 
+ * @version $Revision: 1.5 $ 
  * 
  * @since 6.2.0 
  */
@@ -601,7 +601,6 @@ public final class CmsDocumentFactory {
             List files = cms.getFilesInFolder(folder);
 
             List documentList = new ArrayList(files.size() + subfolders.size());
-
             // sort files and folders together
             if (sortIncludeFolders) {
                 files.addAll(subfolders);
