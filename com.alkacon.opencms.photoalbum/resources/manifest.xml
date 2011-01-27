@@ -33,7 +33,7 @@
 		</resources>
 		<parameters/>
 		<resourcetypes>
-			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="alkacon-photoalbum" id="260">
+			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="alkacon-photoalbum" id="262">
 				<properties>
 					<property>
 						<name>template-elements</name>
