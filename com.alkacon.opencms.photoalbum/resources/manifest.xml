@@ -3,8 +3,8 @@
 <export>
 	<info>
 		<creator>Admin</creator>
-		<opencms_version>7.0.5 alpha</opencms_version>
-		<createdate>Wed, 14 May 2008 13:34:51 GMT</createdate>
+		<opencms_version>7.5.3</opencms_version>
+		<createdate>Thu, 27 Jan 2011 16:55:49 GMT</createdate>
 		<infoproject>Offline</infoproject>
 		<export_version>7</export_version>
 	</info>
@@ -14,8 +14,8 @@
 		<group>Alkacon OAMP</group>
 		<class/>
 		<description><![CDATA[<p>This module provides a photo album for displaying pictures with the help of ThickBox.</p>
-<p><i>(c) 2008 by Alkacon Software GmbH (http://www.alkacon.com).</i></p>]]></description>
-		<version>1.0.1</version>
+<p><i>(c) 2011 by Alkacon Software GmbH (http://www.alkacon.com).</i></p>]]></description>
+		<version>1.0.0</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
 		<datecreated/>
@@ -30,6 +30,7 @@
 		</exportpoints>
 		<resources>
 			<resource uri="/system/modules/com.alkacon.opencms.photoalbum/"/>
+			<resource uri="/system/workplace/resources/filetypes/alkacon-photoalbum.png"/>
 		</resources>
 		<parameters/>
 		<resourcetypes>
@@ -44,7 +45,7 @@
 			</type>
 		</resourcetypes>
 		<explorertypes>
-			<explorertype name="alkacon-photoalbum" key="fileicon.alkacon-photoalbum" icon="photoalbum.gif" reference="xmlcontent">
+			<explorertype name="alkacon-photoalbum" key="fileicon.alkacon-photoalbum" icon="alkacon-photoalbum.png" reference="xmlcontent">
 				<newresource page="structurecontent" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-photoalbum" order="61" autosetnavigation="false" autosettitle="false" info="desc.alkacon-photoalbum"/>
 				<accesscontrol>
 					<accessentry principal="ROLE.WORKPLACE_USER" permissions="+r+v+w+c"/>
@@ -56,10 +57,10 @@
 		<file>
 			<destination>system</destination>
 			<type>folder</type>
-			<uuidstructure>6f0db124-0098-11dd-a08b-111d34530985</uuidstructure>
-			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<uuidstructure>38f5718f-2940-11e0-9266-e7337bad2700</uuidstructure>
+			<datelastmodified>Wed, 26 Jan 2011 11:34:23 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Wed, 02 Apr 2008 09:37:38 GMT</datecreated>
+			<datecreated>Wed, 26 Jan 2011 11:34:23 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -78,10 +79,10 @@
 		<file>
 			<destination>system/modules</destination>
 			<type>folder</type>
-			<uuidstructure>6f3d4cdd-0098-11dd-a08b-111d34530985</uuidstructure>
-			<datelastmodified>Wed, 02 Apr 2008 09:37:39 GMT</datelastmodified>
+			<uuidstructure>39b8e8d8-2940-11e0-9266-e7337bad2700</uuidstructure>
+			<datelastmodified>Wed, 26 Jan 2011 11:34:24 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Wed, 02 Apr 2008 09:37:39 GMT</datecreated>
+			<datecreated>Wed, 26 Jan 2011 11:34:24 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -463,6 +464,95 @@
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace</destination>
+			<type>folder</type>
+			<uuidstructure>825afce2-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>content-encoding</name>
+					<value><![CDATA[UTF-8]]></value>
+				</property>
+				<property>
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+				<property>
+					<name>login-form</name>
+					<value><![CDATA[/system/login/index.html]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>ALL_OTHERS</uuidprincipal>
+					<flags>134</flags>
+					<permissionset>
+						<allowed>0</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+				<accessentry>
+					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
+					<flags>518</flags>
+					<permissionset>
+						<allowed>5</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<destination>system/workplace/resources</destination>
+			<type>folder</type>
+			<uuidstructure>82c16052-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace/resources/filetypes</destination>
+			<type>folder</type>
+			<uuidstructure>83ca1dcc-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/filetypes/alkacon-photoalbum.png</source>
+			<destination>system/workplace/resources/filetypes/alkacon-photoalbum.png</destination>
+			<type>image</type>
+			<uuidstructure>1e1d6c0e-2a36-11e0-8a34-e7337bad2700</uuidstructure>
+			<uuidresource>1e1d6c0f-2a36-11e0-8a34-e7337bad2700</uuidresource>
+			<datelastmodified>Thu, 27 Jan 2011 16:54:41 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 27 Jan 2011 16:54:34 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
 			<relations/>
 			<accesscontrol/>
 		</file>
