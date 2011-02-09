@@ -64,8 +64,9 @@ var gridOption={
 	<c:if test="${cms.loadDynamic}">loadURL : "<cms:link>${cms.requestContext.uri}</cms:link>",</c:if>
 	container : "grid1_container",
 	// nav | goto | pagesize | reload | add del save | print | filter chart | state
-	toolbarContent : "nav | goto | pagesize | reload | print",
-	pageSizeList : [5,10,20,50,100],
+	toolbarContent : "<c:if test="${!cms.heightAuto}">goto | nav | pagesize | reload | </c:if>print",
+	pageSize : ${cms.entriesPerPage},
+	<c:if test="${!cms.heightAuto}">pageSizeList : [5,10,20,50,100,150],</c:if>
 	skin : "${cms.skin}",
 	showGridMenu : <c:choose><c:when test="${cms.showMenu}">true</c:when><c:otherwise>false</c:otherwise></c:choose>,
 	allowCustomSkin	: true,

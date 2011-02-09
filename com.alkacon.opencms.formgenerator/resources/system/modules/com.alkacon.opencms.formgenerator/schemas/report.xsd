@@ -21,6 +21,7 @@
 			<xsd:element name="ShowMenu" type="OpenCmsBoolean" />
 			<xsd:element name="ShowLabels" type="OpenCmsBoolean" />
 			<xsd:element name="GridHeight" type="OpenCmsString" />
+			<xsd:element name="Entries" type="OpenCmsString" />
 			<xsd:element name="Skin" type="OpenCmsString" />
 			<xsd:element name="ColWidth" type="OpenCmsString" />
 		</xsd:sequence>
@@ -43,7 +44,8 @@
 				<layout element="URI" widget="com.alkacon.opencms.formgenerator.CmsSelectWidgetXmlcontentType" configuration="resourcetypeName=alkacon-webform|folder=%(currentsite)|displayOptionMacro=%(property.Title) (%(opencms.filename))" />
 				<layout element="Text" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
 				<layout element="Fields" widget="com.alkacon.opencms.formgenerator.CmsReportCheckFieldsWidget" />
-				<layout element="GridHeight" widget="ComboWidget" configuration="100|150|200|250|300|350|400|450|500" />
+				<layout element="GridHeight" widget="ComboWidget" configuration="100|150|200|250|300|350|400|450|500|auto" />
+				<layout element="Entries" widget="SelectorWidget" configuration="5|10|20|50|100*|150" />
 				<layout element="Skin" widget="SelectorWidget" configuration="default:Default|mac*:Mac|vista:Vista|pink:Pink" />
 				<layout element="ColWidth" widget="ComboWidget" configuration="40|50|60|70|80|90|100|120|150|200|250" />
 			</layouts>

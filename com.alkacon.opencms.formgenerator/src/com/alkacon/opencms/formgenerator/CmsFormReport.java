@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormReport.java,v $
- * Date   : $Date: 2010/07/02 10:45:52 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2011/02/09 09:42:08 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -164,6 +164,9 @@ public class CmsFormReport extends CmsJspActionElement {
     /** The node name for the node: show menu. */
     public static final String NODE_COLWIDTH = "ColWidth";
 
+    /** The node name for the node: entries. */
+    public static final String NODE_ENTRIES = "Entries";
+
     /** The node name for the node: fields. */
     public static final String NODE_FIELDS = "Fields";
 
@@ -191,6 +194,9 @@ public class CmsFormReport extends CmsJspActionElement {
     /** Request parameter name for the action to get report data. */
     public static final String PARAM_ACTION = "_gt_json";
 
+    /** Value for automatic height calculation of the report data grid. */
+    public static final String VALUE_HEIGHT_AUTO = "auto";
+
     /** The VFS path to the folder containing the static resources to generate the report grid. */
     public static final String VFS_PATH_GRIDRESOURCES = CmsWorkplace.VFS_PATH_MODULES
         + CmsForm.MODULE_NAME
@@ -208,8 +214,17 @@ public class CmsFormReport extends CmsJspActionElement {
     /** The XML content that configures the report output. */
     private CmsXmlContent m_content;
 
+    /** The number of entries per page that is preselected. */
+    private int m_entriesPerPage;
+
     /** The form configuration object. */
     private CmsFormHandler m_formHandler;
+
+    /** The submitted form data. */
+    private List<CmsFormDataBean> m_forms;
+
+    /** Indicates if the report output height should be calculated automatically. */
+    private Boolean m_heightAuto;
 
     /** Indicates if the report data should be loaded dynamically. */
     private Boolean m_loadDynamic;
@@ -255,6 +270,32 @@ public class CmsFormReport extends CmsJspActionElement {
     }
 
     /**
+     * Returns the preselected number of entries per page of the report.<p>
+     * 
+     * @return the preselected number of entries per page of the report
+     */
+    public int getEntriesPerPage() {
+
+        if (m_entriesPerPage < 1) {
+            m_entriesPerPage = 100;
+            if (isHeightAuto()) {
+                m_entriesPerPage = getForms().size();
+            } else {
+                String entriesStr = getReportContent().getStringValue(
+                    getCmsObject(),
+                    NODE_ENTRIES,
+                    getRequestContext().getLocale());
+                try {
+                    m_entriesPerPage = Integer.parseInt(entriesStr);
+                } catch (Exception e) {
+                    // no number specified, fall back to default value
+                }
+            }
+        }
+        return m_entriesPerPage;
+    }
+
+    /**
      * Returns the form configuration.<p>
      * 
      * @return the form configuration
@@ -267,6 +308,9 @@ public class CmsFormReport extends CmsJspActionElement {
     /**
      * Returns the height of the report grid.<p>
      * 
+     * If the height is set to {@link #VALUE_HEIGHT_AUTO} in the report configuration, the height is calculated
+     * for the current number of form items.<p>
+     * 
      * @return the height of the report grid
      */
     public int getGridHeight() {
@@ -276,10 +320,18 @@ public class CmsFormReport extends CmsJspActionElement {
             NODE_GRIDHEIGHT,
             getRequestContext().getLocale());
         int height = 350;
-        try {
-            height = Integer.parseInt(heightStr);
-        } catch (Exception e) {
-            // no number specified, fall back to default value
+        if (VALUE_HEIGHT_AUTO.equalsIgnoreCase(heightStr)) {
+            // automatic height calculation
+            m_heightAuto = Boolean.TRUE;
+            // height: header + footer + eventual scroll bar + height of items (each item: 22px)
+            height = 57 + 28 + 15 + (getForms().size() * 22);
+        } else {
+            // fixed height
+            try {
+                height = Integer.parseInt(heightStr);
+            } catch (Exception e) {
+                // no number specified, fall back to default value
+            }
         }
         return height;
     }
@@ -482,6 +534,22 @@ public class CmsFormReport extends CmsJspActionElement {
     }
 
     /**
+     * Returns if the report output height should be calculated automatically.<p>
+     * 
+     * @return <code>true</code> if the report output height should be calculated automatically, otherwise <code>false</code>
+     */
+    public boolean isHeightAuto() {
+
+        if (m_heightAuto == null) {
+            m_heightAuto = Boolean.valueOf(VALUE_HEIGHT_AUTO.equalsIgnoreCase(getReportContent().getStringValue(
+                getCmsObject(),
+                NODE_GRIDHEIGHT,
+                getRequestContext().getLocale())));
+        }
+        return m_heightAuto.booleanValue();
+    }
+
+    /**
      * Returns if the CSS style sheets can be included in the form output.<p>
      * 
      * <b>Important</b>: to generate valid XHTML code, specify <code>false</code> as module
@@ -610,14 +678,17 @@ public class CmsFormReport extends CmsJspActionElement {
      */
     protected List<CmsFormDataBean> getForms() {
 
-        try {
-            CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.DEFAULT;
-            filter = filter.filterFormId(getFormConfiguration().getFormId());
-            return CmsFormDataAccess.getInstance().readForms(filter);
-        } catch (Exception e) {
-            // error reading form data
-            return Collections.emptyList();
+        if (m_forms == null) {
+            try {
+                CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.DEFAULT;
+                filter = filter.filterFormId(getFormConfiguration().getFormId());
+                m_forms = CmsFormDataAccess.getInstance().readForms(filter);
+            } catch (Exception e) {
+                // error reading form data
+                m_forms = Collections.emptyList();
+            }
         }
+        return m_forms;
     }
 
     /**
