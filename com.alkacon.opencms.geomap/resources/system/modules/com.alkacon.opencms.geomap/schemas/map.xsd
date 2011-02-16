@@ -1,0 +1,53 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.geomap/schemas/map-coord.xsd"/>
+
+	<xsd:element name="AlkaconGeoMapGoogleMaps" type="OpenCmsAlkaconGeoMapGoogleMaps"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconGeoMapGoogleMaps">
+		<xsd:sequence>
+			<xsd:element name="AlkaconGeoMapGoogleMap" type="OpenCmsAlkaconGeoMapGoogleMap" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconGeoMapGoogleMap">
+		<xsd:sequence>
+			<xsd:element name="Headline" type="OpenCmsString" />
+			<xsd:element name="Text" type="OpenCmsHtml" />
+			<xsd:element name="TextAlign" type="OpenCmsString" />
+			<xsd:element name="MapSize" type="OpenCmsString" />
+			<xsd:element name="MapType" type="OpenCmsString" />
+			<xsd:element name="MapZoom" type="OpenCmsString" />
+			<xsd:element name="Route" type="OpenCmsBoolean" />
+			<xsd:element name="Kml" type="OpenCmsVarLink" minOccurs="0" />
+			<xsd:element name="MapCoord" type="OpenCmsAlkaconGeoMapGoogleMapCoord" minOccurs="1" maxOccurs="20" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="required"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.geomap.workplace"/>
+			<preview uri="${previewtempfile}" />
+			<defaults>
+				<default element="MapSize" value="600x400" />
+				<default element="MapCoord/Coord" value="lat:50.870474,lng:6.997884,zoom:14,type:'roadmap',mode:'dynamic'"/>
+			</defaults>
+			<layouts>
+				<layout element="Text" widget="HtmlWidget" configuration="source,link,anchor,imagegallery,specialchar,formatselect" />
+				<layout element="TextAlign" widget="SelectorWidget" configuration="top:%(key.AlkaconGeoMap.googlemap.align.top)|bottom:%(key.AlkaconGeoMap.googlemap.align.bottom)|left:%(key.AlkaconGeoMap.googlemap.align.left)|right:%(key.AlkaconGeoMap.googlemap.align.right)" />
+				<layout element="MapSize" widget="ComboWidget" configuration="150x150|200x150|300x200|400x300|500x350|600x400|100%x400|100%x500" />
+				<layout element="MapType" widget="SelectorWidget" configuration="ROADMAP:%(key.AlkaconGeoMap.googlemap.type.roadmap)|SATELLITE:%(key.AlkaconGeoMap.googlemap.type.satellite)|HYBRID:%(key.AlkaconGeoMap.googlemap.type.hybrid)" />
+				<layout element="MapZoom" widget="SelectorWidget" configuration="2|3|4|5|6|7|8|9|10|11|12|13|14*|15|16|17|18|19|20" />
+			</layouts>
+			<mappings>
+				<mapping element="Headline" mapto="property:Title" />
+			</mappings>
+			<tabs>
+				<tab element="Headline" name="General" collapse="false" />
+				<tab element="Kml" name="Points" collapse="false" />
+			</tabs>
+		</xsd:appinfo>
+	</xsd:annotation>  
+</xsd:schema>

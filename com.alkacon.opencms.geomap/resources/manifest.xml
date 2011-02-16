@@ -1,0 +1,893 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<export>
+	<info>
+		<creator>Admin</creator>
+		<opencms_version>7.5.3</opencms_version>
+		<createdate>Mon, 14 Feb 2011 16:11:23 GMT</createdate>
+		<infoproject>Offline</infoproject>
+		<export_version>7</export_version>
+	</info>
+	<module>
+		<name>com.alkacon.opencms.geomap</name>
+		<nicename><![CDATA[Alkacon OpenCms Add-On Module Package GeoMap]]></nicename>
+		<group>Alkacon OAMP</group>
+		<class/>
+		<description><![CDATA[A Google Map XML Content Editor Widget]]></description>
+		<version>1.0.0</version>
+		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
+		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
+		<datecreated/>
+		<userinstalled/>
+		<dateinstalled/>
+		<dependencies/>
+		<exportpoints>
+			<exportpoint uri="/system/modules/com.alkacon.opencms.geomap/classes/" destination="WEB-INF/classes/"/>
+			<exportpoint uri="/system/modules/com.alkacon.opencms.geomap/lib/" destination="WEB-INF/lib/"/>
+		</exportpoints>
+		<resources>
+			<resource uri="/system/modules/com.alkacon.opencms.geomap/"/>
+			<resource uri="/system/workplace/resources/filetypes/alkacon-geomap.gif"/>
+		</resources>
+		<parameters>
+			<param name="map.key">&lt;enter-your-google-key-for-the-website&gt;</param>
+			<param name="map.key.workplace">&lt;enter-your-google-key-for-the-workplace-server&gt;</param>
+		</parameters>
+		<resourcetypes>
+			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="alkacon-geomap" id="263">
+				<properties>
+					<property>
+						<name>template-elements</name>
+						<value type="shared"><![CDATA[/system/modules/com.alkacon.opencms.geomap/pages/map.jsp]]></value>
+					</property>
+				</properties>
+				<param name="schema">/system/modules/com.alkacon.opencms.geomap/schemas/map.xsd</param>
+			</type>
+		</resourcetypes>
+		<explorertypes>
+			<explorertype name="alkacon-geomap" key="fileicon.alkacon-geomap" icon="alkacon-geomap.gif" reference="xmlcontent">
+				<newresource page="structurecontent" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-geomap" order="301" autosetnavigation="false" autosettitle="false" info="desc.alkacon-geomap"/>
+				<accesscontrol>
+					<accessentry principal="ROLE.WORKPLACE_USER" permissions="+r+v+w+c"/>
+				</accesscontrol>
+			</explorertype>
+		</explorertypes>
+	</module>
+	<files>
+		<file>
+			<destination>system</destination>
+			<type>folder</type>
+			<uuidstructure>21711c56-0d15-11e0-81ec-07745e72c695</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 21 Dec 2010 15:15:22 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
+					<flags>514</flags>
+					<permissionset>
+						<allowed>1</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<destination>system/modules</destination>
+			<type>folder</type>
+			<uuidstructure>2209b30f-0d15-11e0-81ec-07745e72c695</uuidstructure>
+			<datelastmodified>Tue, 21 Dec 2010 15:15:23 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 21 Dec 2010 15:15:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
+					<flags>514</flags>
+					<permissionset>
+						<allowed>5</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.geomap</destination>
+			<type>folder</type>
+			<uuidstructure>817009ad-2d28-11e0-9bab-07745e72c695</uuidstructure>
+			<datelastmodified>Mon, 31 Jan 2011 10:54:41 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 31 Jan 2011 10:54:41 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.geomap/classes</destination>
+			<type>folder</type>
+			<uuidstructure>b6ea1f95-33a2-11e0-aeed-07745e72c695</uuidstructure>
+			<datelastmodified>Tue, 08 Feb 2011 16:44:36 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 16:44:36 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.geomap/classes/com</destination>
+			<type>folder</type>
+			<uuidstructure>ce2b5707-33a2-11e0-aeed-07745e72c695</uuidstructure>
+			<datelastmodified>Tue, 08 Feb 2011 16:45:15 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 16:45:15 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.geomap/classes/com/alkacon</destination>
+			<type>folder</type>
+			<uuidstructure>dbef3469-33a2-11e0-aeed-07745e72c695</uuidstructure>
+			<datelastmodified>Tue, 08 Feb 2011 16:45:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 16:45:38 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.geomap/classes/com/alkacon/opencms</destination>
+			<type>folder</type>
+			<uuidstructure>e358f0bb-33a2-11e0-aeed-07745e72c695</uuidstructure>
+			<datelastmodified>Tue, 08 Feb 2011 16:45:51 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 16:45:51 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.geomap/classes/com/alkacon/opencms/geomap</destination>
+			<type>folder</type>
+			<uuidstructure>eb32d3fd-33a2-11e0-aeed-07745e72c695</uuidstructure>
+			<datelastmodified>Tue, 08 Feb 2011 16:46:04 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 16:46:04 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/classes/com/alkacon/opencms/geomap/frontend.properties</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/classes/com/alkacon/opencms/geomap/frontend.properties</destination>
+			<type>plain</type>
+			<uuidstructure>7425a54a-345a-11e0-b06d-07745e72c695</uuidstructure>
+			<uuidresource>7425a54b-345a-11e0-b06d-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 09 Feb 2011 15:11:18 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 09 Feb 2011 14:39:52 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/classes/com/alkacon/opencms/geomap/frontend_de.properties</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/classes/com/alkacon/opencms/geomap/frontend_de.properties</destination>
+			<type>plain</type>
+			<uuidstructure>4b3a120c-345b-11e0-b06d-07745e72c695</uuidstructure>
+			<uuidresource>4b3a120d-345b-11e0-b06d-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 09 Feb 2011 17:02:57 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 09 Feb 2011 14:45:52 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.geomap/classes/com/alkacon/opencms/geomap/frontend_en.properties</destination>
+			<type>plain</type>
+			<uuidstructure>31e2d9f3-3460-11e0-b06d-07745e72c695</uuidstructure>
+			<uuidresource>7425a54b-345a-11e0-b06d-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 09 Feb 2011 15:11:18 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 09 Feb 2011 14:39:52 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/classes/com/alkacon/opencms/geomap/workplace.properties</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/classes/com/alkacon/opencms/geomap/workplace.properties</destination>
+			<type>plain</type>
+			<uuidstructure>e794e34a-344f-11e0-aa39-07745e72c695</uuidstructure>
+			<uuidresource>ba6ac354-3428-11e0-8830-07745e72c695</uuidresource>
+			<datelastmodified>Mon, 14 Feb 2011 14:26:24 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 09 Feb 2011 08:43:55 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/classes/com/alkacon/opencms/geomap/workplace_de.properties</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/classes/com/alkacon/opencms/geomap/workplace_de.properties</destination>
+			<type>plain</type>
+			<uuidstructure>ba50aba0-3428-11e0-8830-07745e72c695</uuidstructure>
+			<uuidresource>ba50aba1-3428-11e0-8830-07745e72c695</uuidresource>
+			<datelastmodified>Mon, 14 Feb 2011 14:26:38 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 09 Feb 2011 08:43:55 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.geomap/classes/com/alkacon/opencms/geomap/workplace_en.properties</destination>
+			<type>plain</type>
+			<uuidstructure>ba6ac353-3428-11e0-8830-07745e72c695</uuidstructure>
+			<uuidresource>ba6ac354-3428-11e0-8830-07745e72c695</uuidresource>
+			<datelastmodified>Mon, 14 Feb 2011 14:26:24 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 09 Feb 2011 08:43:55 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.geomap/elements</destination>
+			<type>folder</type>
+			<uuidstructure>2052c6d0-3379-11e0-9b80-07745e72c695</uuidstructure>
+			<datelastmodified>Tue, 08 Feb 2011 15:54:47 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 11:46:54 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>export</name>
+					<value><![CDATA[true]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/elements/header.include.html</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/elements/header.include.html</destination>
+			<type>jsp</type>
+			<uuidstructure>205537d2-3379-11e0-9b80-07745e72c695</uuidstructure>
+			<uuidresource>c16cb807-339b-11e0-821d-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 09 Feb 2011 16:57:09 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 15:54:47 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Default header include file]]></value>
+				</property>
+				<property>
+					<name>export</name>
+					<value><![CDATA[true]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/elements/html-templates.xml</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/elements/html-templates.xml</destination>
+			<type>xmlcontent</type>
+			<uuidstructure>205eadb5-3379-11e0-9b80-07745e72c695</uuidstructure>
+			<uuidresource>c17d59da-339b-11e0-821d-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 09 Feb 2011 16:57:54 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 15:54:48 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Default html template file]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/elements/messages.xml</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/elements/messages.xml</destination>
+			<type>xmlcontent</type>
+			<uuidstructure>206a949b-3379-11e0-9b80-07745e72c695</uuidstructure>
+			<uuidresource>c195279e-339b-11e0-821d-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 09 Feb 2011 16:57:34 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 15:54:48 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Default xml messages file]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.geomap/lib</destination>
+			<type>folder</type>
+			<uuidstructure>c1ad1c6f-339b-11e0-821d-07745e72c695</uuidstructure>
+			<datelastmodified>Tue, 08 Feb 2011 15:54:48 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 15:54:48 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/lib/com.alkacon.opencms.geomap.jar</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/lib/com.alkacon.opencms.geomap.jar</destination>
+			<type>binary</type>
+			<uuidstructure>048dcaaf-3503-11e0-a0d2-07745e72c695</uuidstructure>
+			<uuidresource>048dcab0-3503-11e0-a0d2-07745e72c695</uuidresource>
+			<datelastmodified>Thu, 10 Feb 2011 10:46:29 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 10 Feb 2011 10:46:29 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[com.alkacon.opencms.geomap]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.geomap/pages</destination>
+			<type>folder</type>
+			<uuidstructure>206f4f8e-3379-11e0-9b80-07745e72c695</uuidstructure>
+			<datelastmodified>Tue, 08 Feb 2011 15:54:48 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 11:46:54 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/pages/map.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/pages/map.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>bd53d58c-342f-11e0-8830-07745e72c695</uuidstructure>
+			<uuidresource>bd53d58d-342f-11e0-8830-07745e72c695</uuidresource>
+			<datelastmodified>Mon, 14 Feb 2011 14:34:07 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 09 Feb 2011 09:34:06 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Map detail view]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.geomap/resources</destination>
+			<type>folder</type>
+			<uuidstructure>20898e58-3379-11e0-9b80-07745e72c695</uuidstructure>
+			<datelastmodified>Tue, 08 Feb 2011 15:54:48 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 11:46:55 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>export</name>
+					<value><![CDATA[true]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/resources/displaymap.js</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/resources/displaymap.js</destination>
+			<type>plain</type>
+			<uuidstructure>208e705a-3379-11e0-9b80-07745e72c695</uuidstructure>
+			<uuidresource>c1ed80dc-339b-11e0-821d-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 09 Feb 2011 16:03:11 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 15:54:48 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[JS to display maps]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/resources/fg.button.css</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/resources/fg.button.css</destination>
+			<type>plain</type>
+			<uuidstructure>20932b4d-3379-11e0-9b80-07745e72c695</uuidstructure>
+			<uuidresource>c22dbe2e-339b-11e0-821d-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 09 Feb 2011 16:03:40 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 15:54:49 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[CSS for default button settings]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/resources/fg.menu.css</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/resources/fg.menu.css</destination>
+			<type>plain</type>
+			<uuidstructure>2097e640-3379-11e0-9b80-07745e72c695</uuidstructure>
+			<uuidresource>c2375b20-339b-11e0-821d-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 09 Feb 2011 16:04:06 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 15:54:49 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[CSS for default menu settings]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/resources/fg.menu.js</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/resources/fg.menu.js</destination>
+			<type>plain</type>
+			<uuidstructure>209f1233-3379-11e0-9b80-07745e72c695</uuidstructure>
+			<uuidresource>c240d102-339b-11e0-821d-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 09 Feb 2011 16:04:41 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 15:54:49 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[JS for creating and manipulating custom menus]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/resources/jquery.forms.js</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/resources/jquery.forms.js</destination>
+			<type>plain</type>
+			<uuidstructure>20a3cd26-3379-11e0-9b80-07745e72c695</uuidstructure>
+			<uuidresource>c24f28e4-339b-11e0-821d-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 09 Feb 2011 16:00:32 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 15:54:49 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[JS to create element ids, assigning labels]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/resources/jquery.listenForChange.js</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/resources/jquery.listenForChange.js</destination>
+			<type>plain</type>
+			<uuidstructure>20aaf919-3379-11e0-9b80-07745e72c695</uuidstructure>
+			<uuidresource>c258c5d6-339b-11e0-821d-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 09 Feb 2011 16:00:24 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 15:54:49 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[JS for change listener]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/resources/jquery.mapWidget.js</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/resources/jquery.mapWidget.js</destination>
+			<type>plain</type>
+			<uuidstructure>20afb40c-3379-11e0-9b80-07745e72c695</uuidstructure>
+			<uuidresource>c2623bb8-339b-11e0-821d-07745e72c695</uuidresource>
+			<datelastmodified>Mon, 14 Feb 2011 14:13:32 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 15:54:49 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[JS to create 'on return' event handlers]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/resources/jquery.metadata.js</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/resources/jquery.metadata.js</destination>
+			<type>plain</type>
+			<uuidstructure>20b4960f-3379-11e0-9b80-07745e72c695</uuidstructure>
+			<uuidresource>c26bd8aa-339b-11e0-821d-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 09 Feb 2011 16:01:47 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 15:54:49 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[JS for parsing metadata from elements]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/resources/map.css</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/resources/map.css</destination>
+			<type>plain</type>
+			<uuidstructure>20bb9af2-3379-11e0-9b80-07745e72c695</uuidstructure>
+			<uuidresource>c273049c-339b-11e0-821d-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 09 Feb 2011 16:02:34 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 15:54:49 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Default map CSS]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/resources/spinner_bar.gif</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/resources/spinner_bar.gif</destination>
+			<type>image</type>
+			<uuidstructure>20f9b565-3379-11e0-9b80-07745e72c695</uuidstructure>
+			<uuidresource>c27c7a7e-339b-11e0-821d-07745e72c695</uuidresource>
+			<datelastmodified>Mon, 27 Apr 2009 21:30:55 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 15:54:49 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.geomap/schemas</destination>
+			<type>folder</type>
+			<uuidstructure>2107e639-3379-11e0-9b80-07745e72c695</uuidstructure>
+			<datelastmodified>Tue, 08 Feb 2011 15:54:49 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 11:46:55 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>export</name>
+					<value><![CDATA[true]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/schemas/html-templates.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/schemas/html-templates.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>210f122b-3379-11e0-9b80-07745e72c695</uuidstructure>
+			<uuidresource>c29b7433-339b-11e0-821d-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 09 Feb 2011 15:58:12 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 15:54:49 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[XSD for html templates]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/schemas/map-coord.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/schemas/map-coord.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>21163e1e-3379-11e0-9b80-07745e72c695</uuidstructure>
+			<uuidresource>ec8c7c49-342c-11e0-8830-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 09 Feb 2011 15:57:27 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 09 Feb 2011 09:13:57 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Nested XSD for map coordinates]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/schemas/map.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/schemas/map.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>2ff542b8-342d-11e0-8830-07745e72c695</uuidstructure>
+			<uuidresource>2ff542b9-342d-11e0-8830-07745e72c695</uuidresource>
+			<datelastmodified>Mon, 14 Feb 2011 14:47:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 09 Feb 2011 09:15:50 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[XSD for maps]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/schemas/message-labels.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/schemas/message-labels.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>212950f7-3379-11e0-9b80-07745e72c695</uuidstructure>
+			<uuidresource>c2ae8707-339b-11e0-821d-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 09 Feb 2011 15:55:48 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 15:54:50 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Nested XSD for message labels]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/schemas/message-modes.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/schemas/message-modes.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>212e0bea-3379-11e0-9b80-07745e72c695</uuidstructure>
+			<uuidresource>c2b5b2f9-339b-11e0-821d-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 09 Feb 2011 15:56:07 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 15:54:50 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Nested XSD for message modes]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/schemas/message-types.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/schemas/message-types.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>213537dd-3379-11e0-9b80-07745e72c695</uuidstructure>
+			<uuidresource>c2c199db-339b-11e0-821d-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 09 Feb 2011 15:56:16 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 15:54:50 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Nested XSD for message types]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.geomap/schemas/messages.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.geomap/schemas/messages.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>213a19e0-3379-11e0-9b80-07745e72c695</uuidstructure>
+			<uuidresource>c2cd80bd-339b-11e0-821d-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 09 Feb 2011 15:55:13 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 08 Feb 2011 15:54:50 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[XSD for messages]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace</destination>
+			<type>folder</type>
+			<uuidstructure>825afce2-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>content-encoding</name>
+					<value><![CDATA[UTF-8]]></value>
+				</property>
+				<property>
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+				<property>
+					<name>login-form</name>
+					<value><![CDATA[/system/login/index.html]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>ALL_OTHERS</uuidprincipal>
+					<flags>134</flags>
+					<permissionset>
+						<allowed>0</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+				<accessentry>
+					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
+					<flags>518</flags>
+					<permissionset>
+						<allowed>5</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<destination>system/workplace/resources</destination>
+			<type>folder</type>
+			<uuidstructure>82c16052-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace/resources/filetypes</destination>
+			<type>folder</type>
+			<uuidstructure>83ca1dcc-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/filetypes/alkacon-geomap.gif</source>
+			<destination>system/workplace/resources/filetypes/alkacon-geomap.gif</destination>
+			<type>image</type>
+			<uuidstructure>336bb7e6-3509-11e0-8b83-07745e72c695</uuidstructure>
+			<uuidresource>336bb7e7-3509-11e0-8b83-07745e72c695</uuidresource>
+			<datelastmodified>Thu, 10 Feb 2011 11:30:59 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 10 Feb 2011 11:30:45 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Description</name>
+					<value><![CDATA[Alkacon GeoMap Icon]]></value>
+				</property>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Alkacon GeoMap Icon]]></value>
+				</property>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+	</files>
+</export>

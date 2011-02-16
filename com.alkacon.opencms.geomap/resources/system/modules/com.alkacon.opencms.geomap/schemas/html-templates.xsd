@@ -1,0 +1,43 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+  <xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+
+  <xsd:element name="AlkaconGeoMapHtmlTemplates" type="OpenCmsAlkaconGeoMapHtmlTemplates"/>
+	
+  <xsd:complexType name="OpenCmsAlkaconGeoMapHtmlTemplates">
+    <xsd:sequence>
+      <xsd:element name="AlkaconGeoMapHtmlTemplate" type="OpenCmsAlkaconGeoMapHtmlTemplate" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="OpenCmsAlkaconGeoMapHtmlTemplate">
+    <xsd:sequence>
+      <xsd:element name="Main" type="OpenCmsString" />
+      <xsd:element name="Coords" type="OpenCmsString" />
+      <xsd:element name="Address" type="OpenCmsString" />
+      <xsd:element name="Zoom" type="OpenCmsString" />
+      <xsd:element name="Size" type="OpenCmsString" />
+      <xsd:element name="Type" type="OpenCmsString" />
+      <xsd:element name="Mode" type="OpenCmsString" />
+      <xsd:element name="Map" type="OpenCmsString" />
+      <xsd:element name="Button" type="OpenCmsString" />
+    </xsd:sequence>
+    <xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+  </xsd:complexType>
+
+  <xsd:annotation>
+    <xsd:appinfo>
+      <layouts>
+        <layout element="Main" widget="TextareaWidget" configuration="8" />
+        <layout element="Coords" widget="TextareaWidget" configuration="6" />
+        <layout element="Address" widget="TextareaWidget" configuration="3" />
+        <layout element="Zoom" widget="TextareaWidget" configuration="3" />
+        <layout element="Size" widget="TextareaWidget" configuration="6" />
+        <layout element="Type" widget="TextareaWidget" configuration="3" />
+        <layout element="Mode" widget="TextareaWidget" configuration="6" />
+        <layout element="Map" widget="TextareaWidget" configuration="3" />
+        <layout element="Button" widget="TextareaWidget" configuration="3" />
+      </layouts>
+    </xsd:appinfo>
+  </xsd:annotation>  
+</xsd:schema>

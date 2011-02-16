@@ -1,0 +1,25 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+  <xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+
+  <xsd:element name="AlkaconGeoMapMessageModes" type="OpenCmsAlkaconGeoMapMessageModes"/>
+	
+  <xsd:complexType name="OpenCmsAlkaconGeoMapMessageModes">
+    <xsd:sequence>
+      <xsd:element name="AlkaconGeoMapMessageMode" type="OpenCmsAlkaconGeoMapMessageMode" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="OpenCmsAlkaconGeoMapMessageMode">
+    <xsd:sequence>
+      <xsd:element name="Static" type="OpenCmsString" />
+      <xsd:element name="Dynamic" type="OpenCmsString" />
+    </xsd:sequence>
+    <xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+  </xsd:complexType>
+
+  <xsd:annotation>
+    <xsd:appinfo>
+    </xsd:appinfo>
+  </xsd:annotation>  
+</xsd:schema>

@@ -1,0 +1,30 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+  <xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+
+  <xsd:element name="AlkaconGeoMapMessageLabels" type="OpenCmsAlkaconGeoMapMessageLabels"/>
+	
+  <xsd:complexType name="OpenCmsAlkaconGeoMapMessageLabels">
+    <xsd:sequence>
+      <xsd:element name="AlkaconGeoMapMessageLabel" type="OpenCmsAlkaconGeoMapMessageLabel" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="OpenCmsAlkaconGeoMapMessageLabel">
+    <xsd:sequence>
+      <xsd:element name="Latitude" type="OpenCmsString" />
+      <xsd:element name="Longitude" type="OpenCmsString" />
+      <xsd:element name="Address" type="OpenCmsString" />
+      <xsd:element name="Zoom" type="OpenCmsString" />
+      <xsd:element name="Size" type="OpenCmsString" />
+      <xsd:element name="Type" type="OpenCmsString" />
+      <xsd:element name="Mode" type="OpenCmsString" />
+    </xsd:sequence>
+    <xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+  </xsd:complexType>
+
+  <xsd:annotation>
+    <xsd:appinfo>
+    </xsd:appinfo>
+  </xsd:annotation>  
+</xsd:schema>

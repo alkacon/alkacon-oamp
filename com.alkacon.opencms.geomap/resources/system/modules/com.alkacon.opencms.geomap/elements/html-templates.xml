@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<AlkaconGeoMapHtmlTemplates xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/com.alkacon.opencms.geomap/schemas/html-templates.xsd">
+  <AlkaconGeoMapHtmlTemplate language="en">
+    <Main><![CDATA[<div class='ui-widget ui-widget-content { %(options) }'>
+  <input class="map-widget" type='hidden' id='%(id)' name='%(id)' value='%(value)'/>
+  <fieldset class="map-inline ui-corner-all">
+    %(inline.properties) %(button)
+  </fieldset>
+  <div class="map-options">
+      <fieldset class="map-options ui-corner-all">
+        %(popup.properties)
+      </fieldset>
+  </div>
+ <div>
+]]></Main>
+    <Coords><![CDATA[<span class='AlkaconGeoMap-nowrap'>
+  <label for='map-lat'>%(xml.label.latitude)</label>
+  <input name='lat' class='map-lat' size='10' />
+  <label for='map-lng'>%(xml.label.longitude)</label>
+  <input name='lng' class='map-lng' size='10' />
+</span>
+]]></Coords>
+    <Address><![CDATA[<span class='AlkaconGeoMap-nowrap'>
+  <label for='map-address'>%(xml.label.address)</label>
+  <input name='address' class='map-address' size='40'/>
+</span>
+]]></Address>
+    <Zoom><![CDATA[<span class='AlkaconGeoMap-nowrap'>
+  <label for='map-zoom'>%(xml.label.zoom)</label>
+  <input name='zoom' class='map-zoom' size='3' />
+</span>
+]]></Zoom>
+    <Size><![CDATA[<span class='AlkaconGeoMap-nowrap'>
+  <label for='map-width'>%(xml.label.size)</label>
+  <input name='width' class='map-width' size='6' />
+  <label for='map-height'>&times;</label>
+  <input name='height' class='map-height' size='6' />
+</span>
+]]></Size>
+    <Type><![CDATA[<span class='AlkaconGeoMap-nowrap'>
+  <label for='map-type'>%(xml.label.type)</label>
+  <select name='type' class='map-type' ></select>
+</span>
+]]></Type>
+    <Mode><![CDATA[<span class='AlkaconGeoMap-nowrap'>
+  %(xml.label.mode)
+  <input class="map-mode-static" type="radio" name="mode" value="static" >
+  <label for='map-mode-static'>%(xml.mode.static)</label>
+  <input class="map-mode-dynamic" type="radio" name="mode" value="dynamic" >
+  <label for='map-mode-dynamic'>%(xml.mode.dynamic)</label>
+</span>
+]]></Mode>
+    <Map><![CDATA[<div class="map-container ui-corner-all ui-state-default" style='width: %(width)px; height: %(height)px'>
+  <div class='map'></div>
+</div>
+]]></Map>
+    <Button><![CDATA[<a class="collapsible {popup:true}" href='#map-options'>&nbsp;</a>]]></Button>
+  </AlkaconGeoMapHtmlTemplate>
+</AlkaconGeoMapHtmlTemplates>
