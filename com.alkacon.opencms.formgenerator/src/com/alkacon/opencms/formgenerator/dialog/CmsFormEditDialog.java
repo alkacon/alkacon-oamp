@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/dialog/CmsFormEditDialog.java,v $
- * Date   : $Date: 2010/05/21 13:49:30 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2011/02/18 08:11:52 $
+ * Version: $Revision: 1.7 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -69,7 +69,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Anja Roettgers 
  * 
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  * 
  * @since 7.0.4 
  */
@@ -426,7 +426,7 @@ public class CmsFormEditDialog extends CmsWidgetDialog {
 
         I_CmsWidget widget;
 
-        if (!uploadFolder.equals(WEBFORM_UPLOADFOLDER_NONE) && value.startsWith(uploadFolder)) {
+        if (!uploadFolder.equals(WEBFORM_UPLOADFOLDER_NONE) && (value != null) && value.startsWith(uploadFolder)) {
             widget = new CmsFormFileWidget();
         } else if (!editable) {
             widget = new CmsDisplayWidget();
