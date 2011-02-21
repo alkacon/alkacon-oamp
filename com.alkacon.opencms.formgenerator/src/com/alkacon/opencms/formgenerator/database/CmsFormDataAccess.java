@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/CmsFormDataAccess.java,v $
- * Date   : $Date: 2010/07/08 14:37:11 $
- * Version: $Revision: 1.16 $
+ * Date   : $Date: 2011/02/21 10:36:16 $
+ * Version: $Revision: 1.17 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -84,7 +84,7 @@ import org.apache.commons.logging.Log;
  * @author Achim Westermann
  * @author Michael Moossen
  * 
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  * 
  * @since 7.0.4
  */
@@ -113,6 +113,12 @@ public final class CmsFormDataAccess {
 
     /** The oracle db SQL properties file name. */
     private static final String DB_ORACLE = "oracle";
+
+    /** The postgreSQL db SQL properties file name. */
+    private static final String DB_POSTGRESQL = "postgresql";
+
+    /** The MSSQL db SQL properties file name. */
+    private static final String DB_MSSQL = "mssql";
 
     /** The path to the SQL query properties. */
     private static final String DB_PATH = "com/alkacon/opencms/formgenerator/database/";
@@ -751,6 +757,44 @@ public final class CmsFormDataAccess {
             stmt = con.prepareStatement(getQuery("CREATE_TABLE_CMS_WEBFORM_DATA", indexTablespace));
             stmt.executeUpdate();
             if (m_db.equals(DB_ORACLE)) {
+                closeAll(null, stmt, null);
+                stmt = con.prepareStatement(getQuery("CREATE_INDEX_WFE_FORMID", indexTablespace));
+                stmt.executeUpdate();
+                closeAll(null, stmt, null);
+                stmt = con.prepareStatement(getQuery("CREATE_INDEX_WFE_RESID", indexTablespace));
+                stmt.executeUpdate();
+                closeAll(null, stmt, null);
+                stmt = con.prepareStatement(getQuery("CREATE_INDEX_WFE_RESID_DATE", indexTablespace));
+                stmt.executeUpdate();
+                closeAll(null, stmt, null);
+                stmt = con.prepareStatement(getQuery("CREATE_INDEX_WFE_RESID_STATE", indexTablespace));
+                stmt.executeUpdate();
+                closeAll(null, stmt, null);
+                stmt = con.prepareStatement(getQuery("CREATE_INDEX_WFE_DATE", indexTablespace));
+                stmt.executeUpdate();
+                closeAll(null, stmt, null);
+                stmt = con.prepareStatement(getQuery("CREATE_INDEX_WFD_VALUE", indexTablespace));
+                stmt.executeUpdate();
+            } else if (m_db.equals(DB_POSTGRESQL)) {
+                closeAll(null, stmt, null);
+                stmt = con.prepareStatement(getQuery("CREATE_INDEX_WFE_FORMID", indexTablespace));
+                stmt.executeUpdate();
+                closeAll(null, stmt, null);
+                stmt = con.prepareStatement(getQuery("CREATE_INDEX_WFE_RESID", indexTablespace));
+                stmt.executeUpdate();
+                closeAll(null, stmt, null);
+                stmt = con.prepareStatement(getQuery("CREATE_INDEX_WFE_RESID_DATE", indexTablespace));
+                stmt.executeUpdate();
+                closeAll(null, stmt, null);
+                stmt = con.prepareStatement(getQuery("CREATE_INDEX_WFE_RESID_STATE", indexTablespace));
+                stmt.executeUpdate();
+                closeAll(null, stmt, null);
+                stmt = con.prepareStatement(getQuery("CREATE_INDEX_WFE_DATE", indexTablespace));
+                stmt.executeUpdate();
+                closeAll(null, stmt, null);
+                stmt = con.prepareStatement(getQuery("CREATE_INDEX_WFD_VALUE", indexTablespace));
+                stmt.executeUpdate();
+            } else if (m_db.equals(DB_MSSQL)) {
                 closeAll(null, stmt, null);
                 stmt = con.prepareStatement(getQuery("CREATE_INDEX_WFE_FORMID", indexTablespace));
                 stmt.executeUpdate();
