@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.excelimport/src/com/alkacon/opencms/excelimport/CmsExcelImport.java,v $
- * Date   : $Date: 2010/09/07 11:03:14 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2011/02/24 15:33:36 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Management System
@@ -70,7 +70,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Mario Jaeger
  * 
- * @version $Revision: 1.2 $ 
+ * @version $Revision: 1.3 $ 
  * 
  * @since 7.5.0
  */
@@ -1502,7 +1502,7 @@ public class CmsExcelImport extends A_CmsReportThread {
             // set XML content to file
             cmsFile.setContents(xmlContent.marshal());
             // write file
-            getCms().writeFile(cmsFile);
+            cmsFile = getCms().writeFile(cmsFile);
             // unlock file
             CmsLock lock = getCms().getLock(getCms().getSitePath(cmsFile));
             if (!lock.getType().isInherited()) {
@@ -1529,7 +1529,7 @@ public class CmsExcelImport extends A_CmsReportThread {
                 }
             }
             // read resource again to have correct status
-            m_publishList.add(cmsResource);
+            m_publishList.add(cmsFile);
         }
         return true;
     }
