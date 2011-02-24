@@ -56,7 +56,7 @@
 		}
 	}
 	
-	if ((myCookie != null) &&  (myCookie.getValue().equals(value)) && !inDetailGroup) {
+	if ((myCookie != null) &&  (myCookie.getValue().equals(value))) {
 		String template = "";
 		template = cmsF.property("template", "search");
 		cmsF.include(template, "head");
