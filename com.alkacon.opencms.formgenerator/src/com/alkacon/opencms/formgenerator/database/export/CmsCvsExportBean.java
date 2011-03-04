@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/export/CmsCvsExportBean.java,v $
- * Date   : $Date: 2010/05/21 13:49:19 $
- * Version: $Revision: 1.9 $
+ * Date   : $Date: 2011/03/04 13:46:48 $
+ * Version: $Revision: 1.10 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -53,7 +53,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Scanner;
 
 import org.apache.commons.logging.Log;
 
@@ -65,7 +64,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  * 
  * @since 7.0.4
  *
@@ -152,10 +151,21 @@ public class CmsCvsExportBean {
 
         StringBuffer result = new StringBuffer();
         CmsModule module = OpenCms.getModuleManager().getModule(CmsForm.MODULE_NAME);
-        // Time format: 
+
+        // time format: 
         DateFormat df = null;
-        String formatString = module.getParameter(CmsForm.MODULE_PARAM_EXPORT_TIMEFORMATE);
-        // Line separator: 
+        String formatString = module.getParameter(CmsForm.MODULE_PARAM_EXPORT_TIMEFORMAT);
+        if (CmsStringUtil.isNotEmpty(formatString)) {
+            try {
+                df = new SimpleDateFormat(formatString);
+            } catch (IllegalArgumentException iae) {
+                LOG.warn(Messages.get().getBundle().key(
+                    Messages.LOG_WARN_EXPORT_DATEFORMAT_ILLEGAL_2,
+                    new Object[] {CmsForm.MODULE_PARAM_EXPORT_TIMEFORMAT, formatString}));
+            }
+        }
+
+        // line separator: 
         boolean isWindowsLineSeparator = false;
         boolean isUnixLineSeparator = false;
 
@@ -168,39 +178,37 @@ public class CmsCvsExportBean {
                 isUnixLineSeparator = true;
             }
         }
-        if (CmsStringUtil.isNotEmpty(formatString)) {
-            try {
-                df = new SimpleDateFormat(formatString);
-            } catch (IllegalArgumentException iae) {
-                LOG.warn(Messages.get().getBundle().key(
-                    Messages.LOG_WARN_EXPORT_DATEFORMAT_ILLEGAL_2,
-                    new Object[] {CmsForm.MODULE_PARAM_EXPORT_TIMEFORMATE, formatString}));
-            }
-        }
+
+        // export numbers as string:
+        String nasParam = module.getParameter(CmsForm.MODULE_PARAM_EXPORT_NUMBERASSTRING, CmsStringUtil.FALSE);
+        boolean numberAsString = Boolean.valueOf(nasParam).booleanValue();
+
+        // get the column names
         List<String> columnNames = CmsFormDataAccess.getInstance().readFormFieldNames(
             formId,
             getStartTime().getTime(),
             getEndTime().getTime());
         Collections.sort(columnNames, Collator.getInstance(locale));
 
+        // get the entries
         List<CmsFormDataBean> dataEntries = CmsFormDataAccess.getInstance().readForms(
             formId,
             getStartTime().getTime(),
             getEndTime().getTime());
 
         // loop 1 - write the headers:
-        result.append(escapeExcelCsv("Creation date"));
+        result.append(escapeExcelCsv("Creation date", numberAsString));
         result.append(EXCEL_DEFAULT_CSV_DELMITER);
-        result.append(escapeExcelCsv("Resource path"));
+        result.append(escapeExcelCsv("Resource path", numberAsString));
         result.append(EXCEL_DEFAULT_CSV_DELMITER);
-        result.append(escapeExcelCsv("Resource UUID"));
+        result.append(escapeExcelCsv("Resource UUID", numberAsString));
         result.append(EXCEL_DEFAULT_CSV_DELMITER);
         Iterator<String> itColumns = columnNames.iterator();
         while (itColumns.hasNext()) {
             String columnName = itColumns.next();
             // skip empty columns (previous versions saved CmsEmptyField with empty values which will not be deleted):
             if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(columnName)) {
-                columnName = escapeExcelCsv(columnName);
+                columnName = escapeExcelCsv(columnName, numberAsString);
                 result.append(columnName);
                 if (itColumns.hasNext()) {
                     result.append(EXCEL_DEFAULT_CSV_DELMITER);
@@ -250,7 +258,7 @@ public class CmsCvsExportBean {
                         } else if (isUnixLineSeparator) {
                             value = transformUnixLineseparator(value);
                         }
-                        value = escapeExcelCsv(value);
+                        value = escapeExcelCsv(value, numberAsString);
                         result.append(value);
                     }
                     if (itColumns.hasNext()) {
@@ -314,26 +322,39 @@ public class CmsCvsExportBean {
     }
 
     /** 
-     * Escapes CSV values for excel.<p> 
+     * Escapes CSV values for Excel.<p> 
      * 
      * @param value the value to escape 
+     * @param numberAsString flag to determine if numbers should be marked as Strings by prepending a <code>=</code>
      * 
-     * @return the escaped excel value. 
+     * @return the escaped Excel value
      */
-    private String escapeExcelCsv(final String value) {
+    private String escapeExcelCsv(final String value, boolean numberAsString) {
 
         String result = value;
+        StringBuffer buffer = new StringBuffer(value.length() + 8);
+        // support for Microsoft Excel: If Excel detects numbers, it reformats the numbers 
+        // (stealing leading zeros or displaying large numbers in +E syntax:
+        if (numberAsString) {
+            boolean isNumber = false;
+            try {
+                Double.valueOf(result);
+                isNumber = true;
+            } catch (Exception e) {
+                // this is no double value
+            }
+            if (!isNumber) {
+                try {
+                    Long.valueOf(result);
+                    isNumber = true;
+                } catch (Exception e) {
+                    // this is no long value
+                }
+            }
 
-        /*
-         * support for Microsoft Excel: If Excel detects numbers, it reformats the numbers 
-         * (stealing leading zeros or displaying large numbers in +E syntax:
-         */
-        boolean isNumber = false;
-        Scanner scanner = new Scanner(value);
-        isNumber = scanner.hasNextDouble() || scanner.hasNextLong();
-        StringBuffer buffer = new StringBuffer();
-        if (isNumber) {
-            buffer.append("=");
+            if (isNumber) {
+                buffer.append("=");
+            }
         }
         buffer.append("\"");
         char[] chars = value.toCharArray();

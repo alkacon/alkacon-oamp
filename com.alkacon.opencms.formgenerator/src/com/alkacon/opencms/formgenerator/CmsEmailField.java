@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsEmailField.java,v $
- * Date   : $Date: 2010/05/21 13:49:17 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2011/03/04 13:46:46 $
+ * Version: $Revision: 1.4 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -37,7 +37,7 @@ package com.alkacon.opencms.formgenerator;
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * 
  * @since 7.0.4 
  */
@@ -47,7 +47,7 @@ public class CmsEmailField extends CmsTextField {
     private static final String TYPE = "email";
 
     /** Regular expression to validate email addresses. */
-    public static final String VALIDATION_REGEX = "(\\w[-._\\w]*\\w@\\w[-._\\w]*\\w\\.\\w{2,4})";
+    public static final String VALIDATION_REGEX = "^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$";
 
     /**
      * @see com.alkacon.opencms.formgenerator.I_CmsField#getType()

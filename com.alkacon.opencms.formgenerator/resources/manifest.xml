@@ -16,7 +16,7 @@
 		<description><![CDATA[<p>This module contains online form functionality for OpenCms.</p>
 <p>This module can easily be used to create online input forms.</p>
 <p><i>(c) 2011 by Alkacon Software GmbH (http://www.alkacon.com).</i></p>]]></description>
-		<version>1.4.2</version>
+		<version>1.4.3</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
 		<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
@@ -44,6 +44,7 @@
 			<param name="db-pool">default</param>
 			<param name="export.encoding">windows-1252</param>
 			<param name="export.lineseparator">unix</param>
+			<param name="export.numberasstring">false</param>
 			<param name="export.timeformat">EEE MMM dd HH:mm:ss z yyyy</param>
 			<param name="uploadfolder">/system/shared/webform</param>
 			<param name="uploadproject">Offline</param>

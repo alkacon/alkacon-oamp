@@ -1,6 +1,6 @@
 
                 Alkacon OpenCms Add-On Module Package: Webform
-                       Version 1.4.1; Nov 08, 2010
+                       Version 1.4.3; Mar 04, 2011
 
 
                                     WARNING:
@@ -55,6 +55,15 @@ Legend:
 ! New Feature
 * Bug fixed
 - General comment
+
+1.4.3 - Mar, 2011
+* Fixed issue #1947: Fixed NullPointerException when editing entries with Webform module
+* Fixed issue #1948: Fixed field entries starting with an integer were treated as numbers
+* Fixed issue #1952: Email validation error
+! Optional automatic height calculation of the front end report
+! Added option to format numbers as string in a CSV export file
+! Added MS SQL support
+! Added PostgreSQL support
 
 1.4.1 - Nov, 2010
 * Bug fix in the countForms sql query
