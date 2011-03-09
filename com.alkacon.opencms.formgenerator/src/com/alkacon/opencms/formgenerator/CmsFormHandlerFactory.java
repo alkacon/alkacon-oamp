@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormHandlerFactory.java,v $
- * Date   : $Date: 2011/03/09 15:14:34 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2011/03/09 15:57:43 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -39,20 +39,60 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 
-public class CmsFormHandlerFactory {
-
-    /** Context attribute name for the form handler attribute. */
-    public static final String ATTRIBUTE_FORMHANDLER = "cmsF";
+/**
+ * Provides methods to create initialized form handler objects.<p>
+ * 
+ * @author Andreas Zahner
+ */
+public final class CmsFormHandlerFactory {
 
     /** Context attribute name for the add message attribute. */
     public static final String ATTRIBUTE_ADDMESSAGE = "addMessage";
 
+    /** Context attribute name for the form handler attribute. */
+    public static final String ATTRIBUTE_FORMHANDLER = "cmsF";
+
+    /**
+     * Returns a form handler instance.<p>
+     * 
+     * If one of the parameters context, req or res is null, the form handler has to be
+     * initialized manually by calling one of the following methods:<p>
+     * <ul>
+     * <li>{@link CmsFormHandler#init(PageContext, HttpServletRequest, HttpServletResponse)}</li>
+     * <li>{@link CmsFormHandler#init(PageContext, HttpServletRequest, HttpServletResponse, String)}</li>
+     * </ul>
+     * 
+     * @param context the JSP page context object
+     * @param req the JSP request 
+     * @param res the JSP response 
+     * @return a form handler instance
+     * 
+     * @throws Exception if initializing the form message objects fails
+     */
     public static CmsFormHandler create(PageContext context, HttpServletRequest req, HttpServletResponse res)
     throws Exception {
 
         return create(context, req, res, null, null);
     }
 
+    /**
+     * Returns a form handler instance.<p>
+     * 
+     * If one of the parameters context, req or res is null, the form handler has to be
+     * initialized manually by calling one of the following methods:<p>
+     * <ul>
+     * <li>{@link CmsFormHandler#init(PageContext, HttpServletRequest, HttpServletResponse)}</li>
+     * <li>{@link CmsFormHandler#init(PageContext, HttpServletRequest, HttpServletResponse, String)}</li>
+     * </ul>
+     * 
+     * @param context the JSP page context object
+     * @param req the JSP request 
+     * @param res the JSP response 
+     * @return a form handler instance
+     * @param formConfigUri URI of the form configuration file, if not provided, current URI is used for configuration
+     * 
+     * @throws Exception if initializing the form message objects fails
+     */
     public static CmsFormHandler create(
         PageContext context,
         HttpServletRequest req,
@@ -62,6 +102,25 @@ public class CmsFormHandlerFactory {
         return create(context, req, res, null, formConfigUri);
     }
 
+    /**
+     * Returns a form handler instance.<p>
+     * 
+     * If one of the parameters context, req or res is null, the form handler has to be
+     * initialized manually by calling one of the following methods:<p>
+     * <ul>
+     * <li>{@link CmsFormHandler#init(PageContext, HttpServletRequest, HttpServletResponse)}</li>
+     * <li>{@link CmsFormHandler#init(PageContext, HttpServletRequest, HttpServletResponse, String)}</li>
+     * </ul>
+     * 
+     * @param context the JSP page context object
+     * @param req the JSP request 
+     * @param res the JSP response 
+     * @return a form handler instance
+     * @param clazz the name of the form 
+     * @param formConfigUri URI of the form configuration file, if not provided, current URI is used for configuration
+     * 
+     * @throws Exception if initializing the form message objects fails
+     */
     public static CmsFormHandler create(
         PageContext context,
         HttpServletRequest req,
@@ -102,6 +161,14 @@ public class CmsFormHandlerFactory {
         }
 
         return formHandler;
+    }
+
+    /**
+     * Hidden constructor, this is a utility class.<p>
+     */
+    private CmsFormHandlerFactory() {
+
+        // nothing to initialize
     }
 
 }
