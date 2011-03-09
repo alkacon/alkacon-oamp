@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFileUploadField.java,v $
- * Date   : $Date: 2010/08/11 13:37:59 $
- * Version: $Revision: 1.7 $
+ * Date   : $Date: 2011/03/09 15:14:35 $
+ * Version: $Revision: 1.8 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -46,7 +46,7 @@ import java.util.Map;
  * 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  * 
  * @since 7.0.4 
  */
@@ -69,7 +69,7 @@ public class CmsFileUploadField extends A_CmsField {
     }
 
     /**
-     * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, org.opencms.i18n.CmsMessages, String, boolean)
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, CmsMessages, String, boolean, String)
      */
     @Override
     public String buildHtml(
@@ -80,14 +80,11 @@ public class CmsFileUploadField extends A_CmsField {
         String infoKey) {
 
         StringBuffer buf = new StringBuffer(256);
-        String fieldLabel = getLabel();
-        String message = "";
-        String mandatory = "";
+        String infoMessage = null;
+        String errorMessage = createStandardErrorMessage(errorKey, messages);
 
         // info message
         if (CmsStringUtil.isNotEmpty(infoKey)) {
-
-            String infoMessage = "";
             if (CmsFormHandler.INFO_UPLOAD_FIELD_MANDATORY_FILLED_OUT.equals(infoKey)) {
                 String value = getValue();
                 value = CmsFormHandler.getTruncatedFileItemName(value);
@@ -95,58 +92,13 @@ public class CmsFileUploadField extends A_CmsField {
             } else if (CmsStringUtil.isNotEmpty(getErrorMessage())) {
                 infoMessage = getInfoMessage();
             }
-            infoMessage = messages.key("form.html.info.start") + infoMessage + messages.key("form.html.info.end");
-            fieldLabel = messages.key("form.html.label.info.start")
-                + fieldLabel
-                + messages.key("form.html.label.info.end");
-            message = message + infoMessage;
-        }
-        // error message
-        if (CmsStringUtil.isNotEmpty(errorKey)) {
-            String errorMessage = "";
-            if (CmsFormHandler.ERROR_MANDATORY.equals(errorKey)) {
-                errorMessage = messages.key("form.error.mandatory");
-            } else if (CmsStringUtil.isNotEmpty(getErrorMessage())) {
-                errorMessage = getErrorMessage();
-            } else {
-                errorMessage = messages.key("form.error.validation");
-            }
-
-            errorMessage = messages.key("form.html.error.start") + errorMessage + messages.key("form.html.error.end");
-            fieldLabel = messages.key("form.html.label.error.start")
-                + fieldLabel
-                + messages.key("form.html.label.error.end");
-            message = message + errorMessage;
         }
 
-        if (isMandatory() && showMandatory) {
-            mandatory = messages.key("form.html.mandatory");
-        }
+        Map<String, Object> stAttributes = new HashMap<String, Object>();
+        // set info message as additional attribute
+        stAttributes.put("infomessage", infoMessage);
 
-        // line #1
-        if (showRowStart(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.start")).append("\n");
-        }
-
-        // line #2
-        buf.append(messages.key("form.html.label.start")).append(fieldLabel).append(mandatory).append(
-            messages.key("form.html.label.end")).append("\n");
-
-        // line #3
-        buf.append(messages.key("form.html.field.start")).append("<input type=\"file\" name=\"").append(getName()).append(
-            "\" value=\"").append(CmsStringUtil.escapeHtml(getValue())).append("\"").append(
-            formHandler.getFormConfiguration().getFormFieldAttributes()).append("/>").append(message).append(
-            messages.key("form.html.field.end")).append("\n");
-
-        // line #4
-        if (showRowEnd(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.end")).append("\n");
-        }
-
-        if (hasText()) {
-            buf.append(buildText(messages));
-        }
-
+        buf.append(createHtml(formHandler, messages, stAttributes, getType(), null, errorMessage, showMandatory));
         return buf.toString();
     }
 

@@ -1,12 +1,12 @@
 <%--  
 WARNING: Do not auto - reformat! In case of data download a linebreak will cause: 
 "java.lang.IllegalStateException: getOutputStream() has already been called for this response".
---%><%@page buffer="none" session="false" import="org.apache.commons.logging.*,java.io.OutputStreamWriter,org.opencms.module.CmsModule,org.opencms.i18n.*,com.alkacon.opencms.formgenerator.database.export.*,org.opencms.flex.CmsFlexController,com.alkacon.opencms.formgenerator.*,java.util.*,org.opencms.util.*,org.opencms.widgets.*,org.opencms.main.*"%><%--
+--%><%@page buffer="none" session="false" import="org.apache.commons.logging.*,java.io.OutputStreamWriter,org.opencms.module.CmsModule,org.opencms.i18n.*,com.alkacon.opencms.formgenerator.database.export.*,org.opencms.flex.CmsFlexController,com.alkacon.opencms.formgenerator.*,java.util.*,org.opencms.util.*,org.opencms.widgets.*,org.opencms.main.*,org.antlr.stringtemplate.*"%><%--
 --%><%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms"%><%! 
 private static final Log LOG = CmsLog.getLog(CmsCvsExportBean.class);
 %><%
     // initialize the form handler
-    CmsFormHandler cms = new CmsFormHandler(pageContext, request, response);
+    CmsFormHandler cms = CmsFormHandlerFactory.create(pageContext, request, response);
     boolean isOffline = !cms.getRequestContext().currentProject().isOnlineProject();
     pageContext.setAttribute("offline", new Boolean(isOffline));
 
@@ -20,43 +20,8 @@ private static final Log LOG = CmsLog.getLog(CmsCvsExportBean.class);
     // get the configured form elements
     CmsForm form = cms.getFormConfiguration();
 
-    if (!cms.downloadData()) {
-        // create the form head
-%><%=org.opencms.widgets.CmsCalendarWidget.calendarIncludes(locale)%>
-<style type="text/css">
-.calendarinput {
-<%=messages.key("form.html.calendar.style.inputfield")%>
-}
-
-span.norm{
-<%=messages.key("form.html.calendar.style.norm")%>
-}
-
-span.push {
-<%=messages.key("form.html.calendar.style.push")%>
-}
-span.over {
-<%=messages.key("form.html.calendar.style.over")%>
-}
-
-.calendarbutton {
-<%=messages.key("form.html.calendar.style.image")%>
-}
-a.button {
- color: ButtonText;
- text-decoration: none;
- cursor: pointer;
-}
-
-
-/* - internet explorer 6 specific definitions (hacks) - */
-* html .ip_text {
-	padding: 2px;
-}
-</style>
-<%
-    } else {
-    CmsCvsExportBean exportBean = new CmsCvsExportBean(cms);
+    if (cms.downloadData()) {
+    	CmsCvsExportBean exportBean = new CmsCvsExportBean(cms);
 
         // Preparing the date values for the export bean: 
         Date startDate;
@@ -103,52 +68,21 @@ a.button {
     }
 
     if (!cms.downloadData()) {
-      String dateStartValue = CmsCalendarWidget.getCalendarLocalizedTime(locale, calendarMessages, 0);
-      String dateEndValue = CmsCalendarWidget.getCalendarLocalizedTime(locale, calendarMessages, System.currentTimeMillis());
-%><form name="emailform" action="<%= cms.link(cms.getRequestContext().getUri()) %>" method="post" class="formarea">
-<%= messages.key("form.html.start") %>
-<%=messages.key("form.html.row.start")%>
- <%=messages.key("form.html.label.start")%>
-   <label for="<%= CmsCvsExportBean.PARAM_EXPORT_DATA_TIME_START %>"><%=messages.key("form.label.dataexport.from")%></label>
- <%=messages.key("form.html.label.end")%>
- <%=messages.key("form.html.field.start")%>
-  <table border="0">
-   <tr>
-    <td>
-     <input id="<%= CmsCvsExportBean.PARAM_EXPORT_DATA_TIME_START %>" type="text" value="<%=dateStartValue%>" name="<%= CmsCvsExportBean.PARAM_EXPORT_DATA_TIME_START %>" class="calendarinput" /> 
-    </td>
-    <td>  
-     <a href="#" class="button" title="<%=messages.key("form.html.calendar.alttext")%>" id="<%= CmsCvsExportBean.PARAM_EXPORT_DATA_TIME_START %>.calendar"><span unselectable="on" class="norm" onmouseover="className='over'" onmouseout="className='norm'" onmousedown="className='push'" onmouseup="className='over'"><img class="calendarbutton" src="<%= org.opencms.workplace.CmsWorkplace.getSkinUri() %>buttons/calendar.png" alt="<%=messages.key("form.html.calendar.alttext")%>"></span></a>
-    </td>
-   </tr>
-  </table>
- <%=messages.key("form.html.field.end")%>
-<%=messages.key("form.html.row.end")%>
-<%=messages.key("form.html.row.start")%>
- <%=messages.key("form.html.label.start")%>
-  <label for="<%= CmsCvsExportBean.PARAM_EXPORT_DATA_TIME_END %>"><%=messages.key("form.label.dataexport.to")%></label>
- <%=messages.key("form.html.label.end")%>
- <%=messages.key("form.html.field.start")%>
-  <table border="0">
-   <tr>
-    <td>
-     <input id="<%= CmsCvsExportBean.PARAM_EXPORT_DATA_TIME_END %>" type="text" value="<%=dateEndValue%>" name="<%= CmsCvsExportBean.PARAM_EXPORT_DATA_TIME_END %>" class="calendarinput" /> 
-    </td>
-    <td>  
-     <a href="#" class="button" title="<%=messages.key("form.html.calendar.alttext")%>" id="<%= CmsCvsExportBean.PARAM_EXPORT_DATA_TIME_END %>.calendar"><span unselectable="on" class="norm" onmouseover="className='over'" onmouseout="className='norm'" onmousedown="className='push'" onmouseup="className='over'"><img class="calendarbutton" src="<%= org.opencms.workplace.CmsWorkplace.getSkinUri() %>buttons/calendar.png" alt="<%=messages.key("form.html.calendar.alttext")%>"></span></a>
-    </td>
-   </tr>
-  </table>
- <%=messages.key("form.html.field.end")%>
-<%=messages.key("form.html.row.end")%>
-<%=messages.key("form.html.row.start")%>
- <%=messages.key("form.html.button.start")%>
-  <input type="submit" value="<%= messages.key("form.button.submit") %>" class="formbutton" /> <input type="reset" value="<%= messages.key("form.button.reset") %>" class="formbutton"/>
- <%=messages.key("form.html.button.end")%>
-<%=messages.key("form.html.row.end")%>
-<%= messages.key("form.html.end") %>
- <input type="hidden" name="<%= CmsFormHandler.PARAM_FORMACTION %>" value="<%= CmsFormHandler.ACTION_DOWNLOAD_DATA_2 %>" />
-</form>
+	// get output HTML template
+	StringTemplate sTemplate = cms.getOutputTemplate("datadownloadpage");
+	// set the necessary attributes to use in the string template
+	sTemplate.setAttribute("formuri", cms.link(cms.getRequestContext().getUri()));
+	sTemplate.setAttribute("formconfig", form);
+	sTemplate.setAttribute("skinuri", org.opencms.workplace.CmsWorkplace.getSkinUri());
+	sTemplate.setAttribute("labelfrom", messages.key("form.label.dataexport.from"));
+	sTemplate.setAttribute("labelto", messages.key("form.label.dataexport.to"));
+	sTemplate.setAttribute("datefrom", CmsCalendarWidget.getCalendarLocalizedTime(locale, calendarMessages, 0));
+	sTemplate.setAttribute("dateto", CmsCalendarWidget.getCalendarLocalizedTime(locale, calendarMessages, System.currentTimeMillis()));
+	sTemplate.setAttribute("calendaralttext", messages.key("form.html.calendar.alttext"));
+	sTemplate.setAttribute("submitbutton", messages.key("form.button.submit"));
+	sTemplate.setAttribute("resetbutton", messages.key("form.button.reset"));
+	%><%=org.opencms.widgets.CmsCalendarWidget.calendarIncludes(locale)%><%= sTemplate.toString() %>
+
  <script type="text/javascript">
   <!--	
 	Calendar.setup({

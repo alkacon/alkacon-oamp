@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaField.java,v $
- * Date   : $Date: 2010/12/07 13:53:10 $
- * Version: $Revision: 1.11 $
+ * Date   : $Date: 2011/03/09 15:14:35 $
+ * Version: $Revision: 1.12 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -33,7 +33,6 @@
 package com.alkacon.opencms.formgenerator;
 
 import org.opencms.flex.CmsFlexController;
-import org.opencms.i18n.CmsEncoder;
 import org.opencms.i18n.CmsMessages;
 import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.main.CmsLog;
@@ -42,7 +41,9 @@ import org.opencms.util.CmsStringUtil;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -64,7 +65,7 @@ import com.octo.captcha.service.text.TextCaptchaService;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  * 
  * @since 7.0.4 
  */
@@ -117,86 +118,48 @@ public class CmsCaptchaField extends A_CmsField {
     }
 
     /**
-     * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler,
-     *      org.opencms.i18n.CmsMessages, String, boolean)
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, CmsMessages, String, boolean, String)
      */
     @Override
-    public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory) {
+    public String buildHtml(
+        CmsFormHandler formHandler,
+        CmsMessages messages,
+        String errorKey,
+        boolean showMandatory,
+        String infoKey) {
 
-        StringBuffer buf = new StringBuffer(128);
-        String fieldLabel = getLabel();
-        String errorMessage = "";
-        String mandatory = "";
+        StringBuffer captchaHtml = new StringBuffer(256);
+        String errorMessage = createStandardErrorMessage(errorKey, messages);
 
         CmsCaptchaSettings captchaSettings = getCaptchaSettings();
 
-        if (CmsStringUtil.isNotEmpty(errorKey)) {
-
-            if (CmsFormHandler.ERROR_MANDATORY.equals(errorKey)) {
-                errorMessage = messages.key("form.error.mandatory");
-            } else if (CmsStringUtil.isNotEmpty(getErrorMessage())) {
-                errorMessage = getErrorMessage();
-            } else {
-                errorMessage = messages.key("form.error.validation");
-            }
-
-            errorMessage = messages.key("form.html.error.start") + errorMessage + messages.key("form.html.error.end");
-            fieldLabel = messages.key("form.html.label.error.start")
-                + fieldLabel
-                + messages.key("form.html.label.error.end");
-        }
-
-        if (isMandatory() && showMandatory) {
-            mandatory = messages.key("form.html.mandatory");
-        }
-
-        // line #1
-        if (showRowStart(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.start")).append("\n");
-        }
-
-        // line #2
-        buf.append(messages.key("form.html.label.start")).append(fieldLabel).append(mandatory).append(
-            messages.key("form.html.label.end")).append("\n");
-
-        // line #3
-        buf.append(messages.key("form.html.field.start")).append("\n");
-
-        // line #4
         if (m_captchaSettings.isMathField()) {
             // this is a math captcha, print the challenge directly
             String sessionId = formHandler.getRequest().getSession(true).getId();
             TextCaptchaService service = (TextCaptchaService)CmsCaptchaServiceCache.getSharedInstance().getCaptchaService(
                 m_captchaSettings,
                 formHandler.getCmsObject());
-            buf.append("<div style=\"margin: 0 0 2px 0;\">");
-            buf.append(service.getTextChallengeForID(
+            captchaHtml.append("<div style=\"margin: 0 0 2px 0;\">");
+            captchaHtml.append(service.getTextChallengeForID(
                 sessionId,
                 formHandler.getCmsObject().getRequestContext().getLocale()));
-            buf.append("</div>\n");
+            captchaHtml.append("</div>\n");
         } else {
             // image captcha, insert image
-            buf.append("<img id=\"form_captcha_id\" src=\"").append(
+            captchaHtml.append("<img id=\"form_captcha_id\" src=\"").append(
                 formHandler.link("/system/modules/com.alkacon.opencms.formgenerator/pages/captcha.jsp?"
                     + captchaSettings.toRequestParams(formHandler.getCmsObject())
                     + "#"
                     + System.currentTimeMillis())).append("\" width=\"").append(captchaSettings.getImageWidth()).append(
                 "\" height=\"").append(captchaSettings.getImageHeight()).append("\" alt=\"\"/>").append("\n");
-            buf.append("<br/>\n");
+            captchaHtml.append("<br/>\n");
         }
 
-        // line #6
-        buf.append("<input type=\"text\" name=\"").append(getName()).append("\" value=\"").append(
-            CmsEncoder.escapeXml(getValue())).append("\"").append(
-            formHandler.getFormConfiguration().getFormFieldAttributes()).append("/>").append(errorMessage).append(
-            messages.key("form.html.field.end")).append("\n");
+        Map<String, Object> stAttributes = new HashMap<String, Object>();
+        // set captcha HTML code as additional attribute
+        stAttributes.put("captcha", captchaHtml.toString());
 
-        // line #7
-        if (showRowEnd(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.end")).append("\n");
-        }
-
-        return buf.toString();
+        return createHtml(formHandler, messages, stAttributes, getType(), null, errorMessage, showMandatory);
     }
 
     /**

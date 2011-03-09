@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsCaptchaEngine.java,v $
- * Date   : $Date: 2010/11/12 15:41:44 $
- * Version: $Revision: 1.7 $
+ * Date   : $Date: 2011/03/09 15:14:35 $
+ * Version: $Revision: 1.8 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -79,7 +79,7 @@ import com.octo.captcha.image.gimpy.GimpyFactory;
  * @author Thomas Weckert
  * @author Achim Westermann
  * 
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  * 
  * @since 7.0.4 
  */
@@ -95,10 +95,10 @@ public class CmsCaptchaEngine extends ImageCaptchaEngine {
     private CmsCaptchaSettings m_settings;
 
     /** The string with default font prefix. */
-    private final static String DEFAULT_FONTS_PREFIX = "Arial|Courier|Monospaced|SansSerif|Serif";
+    private static final String DEFAULT_FONTS_PREFIX = "Arial|Courier|Monospaced|SansSerif|Serif";
 
     /** The list with default font prefix. */
-    private final static List<String> DEFAULT_FONTS_PREFIX_LIST = CmsStringUtil.splitAsList(DEFAULT_FONTS_PREFIX, "|");
+    private static final List<String> DEFAULT_FONTS_PREFIX_LIST = CmsStringUtil.splitAsList(DEFAULT_FONTS_PREFIX, "|");
 
     /**
      * Creates a new Captcha engine.

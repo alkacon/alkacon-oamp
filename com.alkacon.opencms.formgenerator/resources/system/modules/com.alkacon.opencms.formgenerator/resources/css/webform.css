@@ -9,6 +9,157 @@
  */
 @media all
 {
+	/****************************
+	 * Default DIV based styles *
+	 ****************************
+	 */
+
+	/* webform wrapper */
+	div.webform_wrapper {
+		background-color: #FFF;
+	}
+	
+	/* row wrapper */
+	div.webform_row{
+	}
+	
+	div.webform_middletext, div.webform_mandatory, div.webform_button{
+	}
+	
+	/* labels */
+	div.webform_label, div.webform_label_multi, div.webform_label_table, div.webform_text_left {
+		width: 30%;
+		display: inline-block;
+		vertical-align: top;
+		font-weight: bold;
+		padding: 4px 0;
+	}
+	
+	/* fields */
+	div.webform_field, div.webform_field_multi, div.webform_field_table, div.webform_text_right {
+		width: 69%;
+		display: inline-block;
+		vertical-align: top;
+		padding: 4px 0;
+	}
+	
+	/* additional fields */
+	div.webform_wrapper input[type=text], div.webform_wrapper input[type=password] {
+		width: 99%;
+		padding: 2px 0;
+		border: 1px solid #888;
+	}
+
+	div.webform_wrapper select {
+		width: 99%;
+		padding: 2px 0;
+		border: 1px solid #888;
+		height: 22px;
+	}
+
+	div.webform_wrapper textarea {
+		width: 99%;
+		padding: 2px 0;
+		border: 1px solid #888;
+		height: 60px;
+	}
+
+	div.webform_wrapper div.webform_button {
+		clear: both;
+		text-align: center;
+	}
+	
+	/* checkbox */
+	div.webform_checkbox_wrapper {
+		display: block;
+		padding-bottom: 2px;
+	}
+	
+	div.webform_checkbox_row_wrapper {
+		display: inline;
+		padding-right: 8px;
+	}
+
+	div.webform_field_checkbox, div.webform_field_checkbox_row {
+		vertical-align: top;
+		padding: 2px 0 0 0;
+		display: inline;
+	}
+
+	div.webform_label_checkbox, div.webform_label_checkbox_row {
+		padding: 0 0 0 2px;
+		display: inline;
+	}
+
+	/* radio */
+	div.webform_radio_wrapper {
+		display: block;
+		padding-bottom: 2px;
+	}
+	
+	div.webform_radio_row_wrapper {
+		display: inline;
+		padding-right: 8px;
+	}
+	
+	div.webform_field_radio, div.webform_field_radio_row {
+		vertical-align: middle;
+		padding: 2px 0 0 0;
+		display: inline;
+	}
+	
+	div.webform_label_radio, div.webform_label_radio_row {
+		padding: 0 0 0 2px;
+		display: inline;
+	}
+	
+	/* sub field sets */
+	div.webform_wrapper div.webform_subfields div.webform_label,
+	div.webform_wrapper div.webform_subfields div.webform_label_multi,
+	div.webform_wrapper v.webform_subfields div.webform_field {
+	}
+	
+	div.webform_wrapper div.webform_subfields div.webform_label,
+	div.webform_wrapper div.webform_subfields div.webform_label_multi {
+	}
+
+	div.webform_wrapper div.webform_subfields div.webform_field {
+		background-color: #EEE;
+	}
+
+	/* submit and other buttons */
+	div.webform_wrapper input.formbutton {
+		margin-top: 10px;
+	}
+	
+	/* check page */
+	div.webform_check_wrapper div.webform_label {
+		font-weight: normal;
+	}
+	
+	div.webform_check_wrapper div.webform_field {
+		font-weight: bold;
+	}
+	
+	div.webform_check_button {
+		margin-top: 10px;
+		float: left;
+	}
+	
+	/* confirmation page */
+	div.webform_confirm_wrapper div.webform_label {
+		font-weight: normal;
+	}
+	
+	div.webform_confirm_wrapper div.webform_field {
+		font-weight: bold;
+	}
+
+	/**********************
+	 * Table based styles *
+	 **********************
+	 */
+	
 	/* webform table */
 	table.webform_table {
 		width: 100%;
@@ -31,7 +182,7 @@
 	}
 	
 	/* additional fields */
-	table.webform_table input.onlineform {
+	table.webform_table input[type=text], table.webform_table input[type=password] {
 		width: 99%;
 		padding: 2px 0;
 		border: 1px solid #888;
@@ -120,6 +271,7 @@
 		margin-top: 0;
 		vertical-align: top;
 		border: none;
+		background-color: #FFF;
 	}
 
 	.webform_label_table tr th, .webform_label_table tr td, 
@@ -196,10 +348,11 @@
 		border: none;
 	}
 
-	/************************************************************************************************ 
-	 * Orange style: In the optional form configuration field "Style" "orange" has been entered. 
-	 * So the following styles are special for that webform:
-	************************************************************************************************/
+	/********************************************************************************************* 
+	 * Orange style: In the optional form configuration field "Style" "orange" has been entered. * 
+	 * So the following styles are special for that webform:                                     *
+	 *********************************************************************************************
+	 */
 	td.webform_label_orange {
 		color: orange;
 	}
@@ -236,6 +389,6 @@
 	}
 	td.webform_label_table {
 	vertical-align: top;
-	}
+	}	
 
 }    

@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
- * Date   : $Date: 2011/03/04 13:46:46 $
- * Version: $Revision: 1.25 $
+ * Date   : $Date: 2011/03/09 15:14:34 $
+ * Version: $Revision: 1.26 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -44,6 +44,7 @@ import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.main.OpenCms;
 import org.opencms.util.CmsMacroResolver;
 import org.opencms.util.CmsStringUtil;
+import org.opencms.workplace.CmsWorkplace;
 import org.opencms.xml.content.CmsXmlContent;
 import org.opencms.xml.content.CmsXmlContentFactory;
 import org.opencms.xml.types.CmsXmlHtmlValue;
@@ -69,7 +70,7 @@ import org.apache.commons.fileupload.FileItem;
  * @author Thomas Weckert 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  * 
  * @since 7.0.4 
  */
@@ -114,9 +115,6 @@ public class CmsForm {
     /** Name of the module parameter for the configuration of the time format of the export data. */
     public static final String MODULE_PARAM_EXPORT_TIMEFORMAT = "export.timeformat";
 
-    /** Name of the module parameter for the configuration of the prefix list of system readable fonts like 'arial|serif'. */
-    public static final String MODULE_PARAM_FONT_PREFIX = "font-prefix";
-
     /** 
      * Module parameter for the content encoding (text encoding) of the exported csv data. This encoding may vary 
      * from the value of the content-encoding property of the webform XML content because e.g. Microsoft Excel seems 
@@ -129,6 +127,12 @@ public class CmsForm {
      * {@link #MODULE_PARAMVALUE_EXPORTLINESEPARATOR_WINDOWS} exported "\n" will be transformed to "\r\n".
      */
     public static final String MODULE_PARAM_EXPORTLINESEPARATOR = "export.lineseparator";
+
+    /** Name of the module parameter for the configuration of the prefix list of system readable fonts like 'arial|serif'. */
+    public static final String MODULE_PARAM_FONT_PREFIX = "font-prefix";
+
+    /** Name of the template file parameter that is used as default HTML template for the form. */
+    public static final String MODULE_PARAM_TEMPLATE_FILE = "templatefile";
 
     /** Name of the group module parameter that is used to grant access to the workplace tool. */
     public static final String MODULE_PARAM_TOOL_GROUP = "usergroup";
@@ -178,14 +182,14 @@ public class CmsForm {
     /** Configuration node name for the confirmation mail enabled node. */
     public static final String NODE_CONFIRMATIONMAILENABLED = "ConfirmationMailEnabled";
 
+    /** Configuration node name for the confirmation mail input field node. */
+    public static final String NODE_CONFIRMATIONMAILFIELD = "ConfirmationField";
+
     /** Configuration node name for the option confirmation mail from node. */
     public static final String NODE_CONFIRMATIONMAILFROM = "ConfirmationMailFrom";
 
     /** Configuration node name for the option confirmation mail from name node. */
     public static final String NODE_CONFIRMATIONMAILFROMNAME = "ConfirmationMailFromName";
-
-    /** Configuration node name for the confirmation mail input field node. */
-    public static final String NODE_CONFIRMATIONMAILFIELD = "ConfirmationField";
 
     /** Configuration node name for the confirmation mail optional flag node. */
     public static final String NODE_CONFIRMATIONMAILOPTIONAL = "ConfirmationMailOptional";
@@ -195,6 +199,9 @@ public class CmsForm {
 
     /** Configuration node name for the confirmation mail text node. */
     public static final String NODE_CONFIRMATIONMAILTEXT = "ConfirmationMailText";
+
+    /** Configuration node name for the optional CSS file node. */
+    public static final String NODE_CSS_FILE = "CSS";
 
     /** Configuration node name for the optional nested data target. */
     public static final String NODE_DATATARGET = "DataTarget";
@@ -337,11 +344,11 @@ public class CmsForm {
     /** Configuration node name for the Show reset button node. */
     public static final String NODE_SHOWRESET = "ShowReset";
 
-    /** Configuration node name for the CSS suffix node. */
-    public static final String NODE_STYLE = "Style";
-
     /** Configuration node name for the optional target URI. */
     public static final String NODE_TARGET_URI = "TargetUri";
+
+    /** Configuration node name for the optional HTML template file. */
+    public static final String NODE_TEMPLATE_FILE = "TemplateFile";
 
     /** Configuration node name for the text node. */
     public static final String NODE_TEXT = "Text";
@@ -351,6 +358,16 @@ public class CmsForm {
 
     /** Request parameter name for the optional send confirmation email checkbox. */
     public static final String PARAM_SENDCONFIRMATION = "sendconfirmation";
+
+    /** The path to the default HTML templates for the form. */
+    public static final String VFS_PATH_DEFAULT_TEMPLATEFILE = CmsWorkplace.VFS_PATH_MODULES
+        + MODULE_NAME
+        + "/resources/formtemplates/default.st";
+
+    /** The path to the error HTML templates for the form. */
+    public static final String VFS_PATH_ERROR_TEMPLATEFILE = CmsWorkplace.VFS_PATH_MODULES
+        + CmsForm.MODULE_NAME
+        + "/resources/formtemplates/error.st";
 
     /** Resource type ID of XML content forms. */
     private static final String TYPE_NAME = "alkacon-webform";
@@ -374,16 +391,16 @@ public class CmsForm {
     protected boolean m_confirmationMailEnabled;
 
     /** configuration value. */
-    protected String m_confirmationMailFrom;
-
-    /** configuration value. */
-    protected String m_confirmationMailFromName;
-
-    /** configuration value. */
     protected int m_confirmationMailField;
 
     /** configuration value. */
     protected String m_confirmationMailFieldDbLabel;
+
+    /** configuration value. */
+    protected String m_confirmationMailFrom;
+
+    /** configuration value. */
+    protected String m_confirmationMailFromName;
 
     /** configuration value. */
     protected boolean m_confirmationMailOptional;
@@ -396,6 +413,9 @@ public class CmsForm {
 
     /** configuration value. */
     protected String m_confirmationMailTextPlain;
+
+    /** The name of the CSS file to use for the form. */
+    protected String m_cssFile;
 
     /** Stores the form dynamic input fields. */
     protected List<I_CmsField> m_dynaFields;
@@ -496,11 +516,11 @@ public class CmsForm {
     /** Flag if the reset button has to be shown. */
     protected boolean m_showReset;
 
-    /** The optional css suffix for css class atributes set on the generated HTML. */
-    protected String m_styleSuffix;
-
     /** The form target URI. */
     protected String m_targetUri;
+
+    /** The optional HTML template file URI. */
+    protected String m_templateFile;
 
     /** Flag to signal that data should be stored in the database - defaults to false. */
     protected boolean m_transportDatabase;
@@ -643,7 +663,7 @@ public class CmsForm {
             while (i.hasNext()) {
                 I_CmsField field = i.next();
                 result.add(field);
-                if (field.hasSubFields()) {
+                if (field.isHasSubFields()) {
                     Iterator<Entry<String, List<I_CmsField>>> k = field.getSubFields().entrySet().iterator();
                     while (k.hasNext()) {
                         Map.Entry<String, List<I_CmsField>> entry = k.next();
@@ -760,6 +780,26 @@ public class CmsForm {
     }
 
     /**
+     * Returns the optional confirmation mail from.<p>
+     *
+     * @return the optional confirmation mail from
+     */
+    public String getConfirmationMailFrom() {
+
+        return m_confirmationMailFrom;
+    }
+
+    /**
+     * Returns the optional confirmation mail from name.<p>
+     *
+     * @return the optional confirmation mail from name
+     */
+    public String getConfirmationMailFromName() {
+
+        return m_confirmationMailFromName;
+    }
+
+    /**
      * Returns the subject of the optional confirmation mail.<p>
      *
      * @return the subject of the optional confirmation mail
@@ -787,6 +827,16 @@ public class CmsForm {
     public String getConfirmationMailTextPlain() {
 
         return m_confirmationMailTextPlain;
+    }
+
+    /**
+     * Returns the name of the CSS file to use for the form.<p>
+     * 
+     * @return the name of the CSS file to use for the form
+     */
+    public String getCssFile() {
+
+        return m_cssFile;
     }
 
     /**
@@ -1091,17 +1141,6 @@ public class CmsForm {
     }
 
     /**
-     * Returns the optional CSS suffix for CSS class attributes set on the generated HTML or null. 
-     * <p> 
-     * 
-     * @return the optional CSS suffix for CSS class attributes set on the generated HTML or null.
-     */
-    public String getStyleSuffix() {
-
-        return m_styleSuffix;
-    }
-
-    /**
      * Returns the target URI of this form.<p>
      * 
      * This optional target URI can be used to redirect the user to an OpenCms page instead of displaying a confirmation
@@ -1112,6 +1151,16 @@ public class CmsForm {
     public String getTargetUri() {
 
         return m_targetUri;
+    }
+
+    /**
+     * Returns the optional HTML template file.<p> 
+     * 
+     * @return the optional HTML template file
+     */
+    public String getTemplateFile() {
+
+        return m_templateFile;
     }
 
     /**
@@ -1247,26 +1296,6 @@ public class CmsForm {
     }
 
     /**
-     * Returns the optional confirmation mail from.<p>
-     *
-     * @return the optional confirmation mail from
-     */
-    public String getConfirmationMailFrom() {
-
-        return m_confirmationMailFrom;
-    }
-
-    /**
-     * Returns the optional confirmation mail from name.<p>
-     *
-     * @return the optional confirmation mail from name
-     */
-    public String getConfirmationMailFromName() {
-
-        return m_confirmationMailFromName;
-    }
-
-    /**
      * Returns if the confirmation mail if optional, i.e. selectable by the form submitter.<p>
      *
      * @return true if the confirmation mail if optional, i.e. selectable by the form submitter, otherwise false
@@ -1314,17 +1343,6 @@ public class CmsForm {
     public boolean isShowReset() {
 
         return m_showReset;
-    }
-
-    /**
-     * Returns true if a CSS - suffix is configured for this form. 
-     * <p> 
-     * 
-     * @return true if a CSS - suffix is configured for this form.
-     */
-    public boolean isStyleSuffix() {
-
-        return CmsStringUtil.isNotEmptyOrWhitespaceOnly(m_styleSuffix);
     }
 
     /**
@@ -1638,9 +1656,15 @@ public class CmsForm {
             // get the dynamic fields class
             stringValue = getContentStringValue(content, cms, pathPrefix + NODE_DYNAMICFIELDCLASS, locale);
             setDynamicFieldClass(getConfigurationValue(stringValue, ""));
-            // get the css style suffix fields class
-            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_STYLE, locale);
-            setStyleSuffix(getConfigurationValue(stringValue, ""));
+            // get the CSS file
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_CSS_FILE, locale);
+            setCssFile(getConfigurationValue(stringValue, ""));
+            // get the optional HTML template file
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_TEMPLATE_FILE, locale);
+            String defaultTemplateFile = OpenCms.getModuleManager().getModule(MODULE_NAME).getParameter(
+                MODULE_PARAM_TEMPLATE_FILE,
+                VFS_PATH_DEFAULT_TEMPLATEFILE);
+            setTemplateFile(getConfigurationValue(stringValue, defaultTemplateFile));
             // get the optional property file
             stringValue = getContentStringValue(content, cms, pathPrefix + NODE_PROPERTY_FILE, locale);
             setPropertyFile(getConfigurationValue(stringValue, ""));
@@ -1870,6 +1894,7 @@ public class CmsForm {
         setRefreshSessionInterval(-1);
         setShowMandatory(true);
         setShowReset(true);
+        setTemplateFile(VFS_PATH_DEFAULT_TEMPLATEFILE);
     }
 
     /**
@@ -1946,26 +1971,6 @@ public class CmsForm {
     }
 
     /**
-     * Sets the optional confirmation mail from.<p>
-     *
-     * @param confirmationMailFrom the optional confirmation mail from
-     */
-    protected void setConfirmationMailFrom(String confirmationMailFrom) {
-
-        m_confirmationMailFrom = confirmationMailFrom;
-    }
-
-    /**
-     * Sets the optional confirmation mail from name.<p>
-     *
-     * @param confirmationMailFromName the optional confirmation mail from
-     */
-    protected void setConfirmationMailFromName(String confirmationMailFromName) {
-
-        m_confirmationMailFromName = confirmationMailFromName;
-    }
-
-    /**
      * Sets the index number of the input field containing the email address for the optional confirmation mail.<p>
      *
      * @param confirmationMailFieldName the name of the input field containing the email address for the optional confirmation mail
@@ -1986,6 +1991,26 @@ public class CmsForm {
     protected void setConfirmationMailFieldDbLabel(String confirmationMailFieldDbLabel) {
 
         m_confirmationMailFieldDbLabel = confirmationMailFieldDbLabel;
+    }
+
+    /**
+     * Sets the optional confirmation mail from.<p>
+     *
+     * @param confirmationMailFrom the optional confirmation mail from
+     */
+    protected void setConfirmationMailFrom(String confirmationMailFrom) {
+
+        m_confirmationMailFrom = confirmationMailFrom;
+    }
+
+    /**
+     * Sets the optional confirmation mail from name.<p>
+     *
+     * @param confirmationMailFromName the optional confirmation mail from
+     */
+    protected void setConfirmationMailFromName(String confirmationMailFromName) {
+
+        m_confirmationMailFromName = confirmationMailFromName;
     }
 
     /**
@@ -2026,6 +2051,16 @@ public class CmsForm {
     protected void setConfirmationMailTextPlain(String confirmationMailTextPlain) {
 
         m_confirmationMailTextPlain = confirmationMailTextPlain;
+    }
+
+    /**
+     * Sets the name of the CSS file to use for the form.<p>
+     * 
+     * @param cssFile the name of the CSS file to use for the form
+     */
+    protected void setCssFile(String cssFile) {
+
+        m_cssFile = cssFile;
     }
 
     /**
@@ -2290,17 +2325,6 @@ public class CmsForm {
     }
 
     /**
-     * Sets the optional css suffix for css class atributes set on the generated HTML. 
-     * <p> 
-     * 
-     * @param styleSuffix the optional css suffix for css class atributes set on the generated HTML.
-     */
-    protected void setStyleSuffix(final String styleSuffix) {
-
-        m_styleSuffix = styleSuffix;
-    }
-
-    /**
      * Sets the target URI of this form.<p>
      * 
      * This optional target URI can be used to redirect the user to an OpenCms page instead of displaying a confirmation
@@ -2311,6 +2335,16 @@ public class CmsForm {
     protected void setTargetUri(String targetUri) {
 
         m_targetUri = targetUri;
+    }
+
+    /**
+     * Sets the HTML template file.<p> 
+     * 
+     * @param templateFile the HTML template file
+     */
+    protected void setTemplateFile(final String templateFile) {
+
+        m_templateFile = templateFile;
     }
 
     /**

@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/I_CmsField.java,v $
- * Date   : $Date: 2010/05/21 13:49:17 $
- * Version: $Revision: 1.7 $
+ * Date   : $Date: 2011/03/09 15:14:36 $
+ * Version: $Revision: 1.8 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -42,7 +42,7 @@ import java.util.Map;
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  * 
  * @since 7.0.4 
  */
@@ -63,20 +63,7 @@ public interface I_CmsField {
      * @param messages a resource bundle containing HTML snippets to build the HTML element
      * @param errorKey the key of the current error message
      * @param showMandatory flag to determine if the mandatory mark should be shown or not
-     * 
-     * @return the HTML input element for this element to be used in a frontend JSP
-     */
-    String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory);
-
-    /**
-     * Builds the HTML input element for this element to be used in a frontend JSP.<p>
-     * 
-     * @param formHandler the handler of the current form
-     * @param messages a resource bundle containing HTML snippets to build the HTML element
-     * @param errorKey the key of the current error message
-     * @param showMandatory flag to determine if the mandatory mark should be shown or not
      * @param infoKey the key of the current info message
-     * 
      * @return the HTML input element for this element to be used in a frontend JSP
      */
     String buildHtml(
@@ -85,15 +72,6 @@ public interface I_CmsField {
         String errorKey,
         boolean showMandatory,
         String infoKey);
-
-    /**
-     * Builds the HTML for the text below the input field to be used in a frontend JSP.<p>
-     * 
-     * @param messages a resource bundle containing HTML snippets to build the HTML element
-     * 
-     * @return the HTML for the text below the input field
-     */
-    String buildText(CmsMessages messages);
 
     /**
      * Returns the sub fields for the field depending on the current field value.<p>
@@ -226,6 +204,15 @@ public interface I_CmsField {
     String getValue();
 
     /**
+     * Returns the escaped value of the field, or <code>null</code> if the value is empty.<p>
+     * 
+     * This is necessary to avoid XSS or other exploits on the webform output pages.<p>
+     * 
+     * @return the escaped value of the field
+     */
+    String getValueEscaped();
+
+    /**
      * Returns if the field has sub fields for the current field value.<p>
      * 
      * @return <code>true</code> if the field has sub fields for the current field value, otherwise <code>false</code>
@@ -237,14 +224,14 @@ public interface I_CmsField {
      * 
      * @return <code>true</code> if the field has sub fields defined, otherwise <code>false</code>
      */
-    boolean hasSubFields();
+    boolean isHasSubFields();
 
     /**
      * Returns if text should be displayed below the input field.<p>
      * 
      * @return <code>true</code> if text should be displayed below the input field, otherwise <code>false</code>
      */
-    boolean hasText();
+    boolean isHasText();
 
     /**
      * Returns if this input field is mandatory.<p>

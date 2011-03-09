@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/A_CmsField.java,v $
- * Date   : $Date: 2010/05/21 13:49:15 $
- * Version: $Revision: 1.6 $
+ * Date   : $Date: 2011/03/09 15:14:36 $
+ * Version: $Revision: 1.7 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -50,6 +50,8 @@ import java.util.regex.PatternSyntaxException;
 
 import org.apache.commons.logging.Log;
 
+import org.antlr.stringtemplate.StringTemplate;
+
 /**
  * Abstract base class for all input fields.<p>
  * 
@@ -57,7 +59,7 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.6 $ 
+ * @version $Revision: 1.7 $ 
  * 
  * @since 7.0.4 
  */
@@ -88,6 +90,7 @@ public abstract class A_CmsField implements I_CmsField {
     private Map<String, List<I_CmsField>> m_subFields;
     private String m_subFieldScript;
     private CmsFieldText m_text;
+    private Boolean m_twoCols;
     private String m_validationExpression;
     private String m_value;
 
@@ -128,26 +131,7 @@ public abstract class A_CmsField implements I_CmsField {
      * Builds the HTML input element for this element to be used in a frontend JSP.<p>
      * 
      * @param formHandler the handler of the current form
-     * @param messages a resource bundle containing HTML snippets to build the HTML element
-     * @param errorKey the key of the current error message
-     * @param showMandatory flag to determine if the mandatory mark should be shown or not
-     * 
-     * @return the HTML input element for this element to be used in a frontend JSP
-     */
-    public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory) {
-
-        return "";
-    }
-
-    /**
-     * Builds the HTML input element for this element to be used in a frontend JSP.<p>
-     * 
-     * <i>Note</i>: currently overwritten in {@link CmsFileUploadField}, be sure to add the {@link #buildText(CmsMessages)}
-     * method when overwriting this method, also check if you need to add
-     * {@link A_CmsField#buildSubFields(CmsFormHandler, CmsMessages, boolean)} as well.<p>
-     * 
-     * @param formHandler the handler of the current form
-     * @param messages a resource bundle containing HTML snippets to build the HTML element
+     * @param messages a resource bundle containing localized messages to build the HTML element
      * @param errorKey the key of the current error message
      * @param showMandatory flag to determine if the mandatory mark should be shown or not
      * @param infoKey the key of the current info message
@@ -161,14 +145,8 @@ public abstract class A_CmsField implements I_CmsField {
         boolean showMandatory,
         String infoKey) {
 
-        StringBuffer result = new StringBuffer(buildHtml(formHandler, messages, errorKey, showMandatory));
-        if (hasText()) {
-            result.append(buildText(messages));
-        }
-        if (hasSubFields()) {
-            result.append(buildSubFields(formHandler, messages, showMandatory));
-        }
-        return result.toString();
+        String errorMessage = createStandardErrorMessage(errorKey, messages);
+        return createHtml(formHandler, messages, null, getType(), null, errorMessage, showMandatory);
     }
 
     /**
@@ -182,8 +160,9 @@ public abstract class A_CmsField implements I_CmsField {
      */
     public String buildSubFields(CmsFormHandler formHandler, CmsMessages messages, boolean showMandatory) {
 
-        StringBuffer result = new StringBuffer(2048);
-        StringBuffer js = new StringBuffer(128);
+        StringBuffer result = new StringBuffer(4096);
+        StringBuffer js = new StringBuffer(256);
+        // loop the defined sub field sets
         Iterator<Entry<String, List<I_CmsField>>> i = getSubFields().entrySet().iterator();
         while (i.hasNext()) {
             Map.Entry<String, List<I_CmsField>> subSet = i.next();
@@ -194,21 +173,19 @@ public abstract class A_CmsField implements I_CmsField {
             js.append("\taddWebFormSubFieldMapping(\"");
             js.append(getName()).append("\", \"").append(fieldValue).append("\", \"").append(subID);
             js.append("\");\n");
-            String displayStyle = " style=\"display: none;\"";
+            String displayStyle = "display: none;";
 
             if (isActiveSubFieldList(fieldValue)) {
                 // this is the currently active set of sub fields, set it in JS variable
-                displayStyle = "";
+                displayStyle = null;
                 js.append("\tsetActiveWebformSubField(\"");
                 js.append(getName()).append("\", \"").append(subID);
                 js.append("\");\n");
             }
-            // open the sub field set
-            StringBuffer attributes = new StringBuffer("id=\"").append(subID).append("\"").append(displayStyle);
-            result.append(messages.key("form.html.set.subfield.start", attributes));
 
             // iterate the sub fields to show
             Iterator<I_CmsField> k = subSet.getValue().iterator();
+            StringBuffer subFieldHtml = new StringBuffer(2048);
             while (k.hasNext()) {
                 I_CmsField field = k.next();
                 String errorMessage = formHandler.getErrors().get(field.getName());
@@ -217,85 +194,21 @@ public abstract class A_CmsField implements I_CmsField {
                 if (field instanceof CmsFileUploadField) {
                     infoMessage = field.validateForInfo(formHandler);
                 }
-                result.append(field.buildHtml(formHandler, messages, errorMessage, showMandatory, infoMessage));
+                subFieldHtml.append(field.buildHtml(formHandler, messages, errorMessage, showMandatory, infoMessage));
             }
-            // close the sub field set
-            result.append(messages.key("form.html.set.subfield.end"));
+            // get the sub field template
+            StringTemplate sTemplate = formHandler.getOutputTemplate("subfieldwrapper");
+            // set template attributes
+            sTemplate.setAttribute("subfields", subFieldHtml.toString());
+            sTemplate.setAttribute("style", displayStyle);
+            sTemplate.setAttribute("id", subID);
+            result.append(sTemplate.toString());
         }
         // store JS for sub fields
         m_subFieldScript = js.toString();
+
+        // generate the HTML output
         return result.toString();
-    }
-
-    /**
-     * Returns if the list of sub fields for the given sub field value is active.<p>
-     * 
-     * @param subFieldValue the sub field value for a list of sub fields
-     * 
-     * @return <code>true</code> if the list of sub fields for the given sub field value is active, otherwise <code>false</code>
-     */
-    protected boolean isActiveSubFieldList(String subFieldValue) {
-
-        if (needsItems()) {
-            // for check boxes, radio and select box, check the field items
-            Iterator<CmsFieldItem> it = getSelectedItems().iterator();
-            while (it.hasNext()) {
-                CmsFieldItem item = it.next();
-                if (subFieldValue.equals(item.getValue())) {
-                    return true;
-                }
-            }
-        } else {
-            // common field
-            return subFieldValue.equals(getValue());
-        }
-        return false;
-    }
-
-    /**
-     * Builds the HTML for the text below the input field to be used in a frontend JSP.<p>
-     * 
-     * @param messages a resource bundle containing HTML snippets to build the HTML element
-     * 
-     * @return the HTML for the text below the input field
-     */
-    public String buildText(CmsMessages messages) {
-
-        StringBuffer buf = new StringBuffer(128);
-        // line #1
-        if (showRowStart(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.start")).append("\n");
-        }
-
-        // line #2
-        switch (getText().getColumn()) {
-            case CmsFieldText.COL_LEFT:
-                buf.append(messages.key("form.html.text.start"));
-                buf.append(getText().getText());
-                buf.append(messages.key("form.html.text.end")).append("\n");
-                buf.append(messages.key("form.html.field.start"));
-                buf.append(messages.key("form.html.field.end")).append("\n");
-                break;
-            case CmsFieldText.COL_RIGHT:
-                buf.append(messages.key("form.html.label.start"));
-                buf.append(messages.key("form.html.label.end")).append("\n");
-                buf.append(messages.key("form.html.text.start"));
-                buf.append(getText().getText());
-                buf.append(messages.key("form.html.text.end")).append("\n");
-                break;
-            case CmsFieldText.COL_BOTH:
-            default:
-                buf.append(messages.key("form.html.text.both.start"));
-                buf.append(getText().getText());
-                buf.append(messages.key("form.html.text.end")).append("\n");
-                break;
-        }
-
-        // line #3
-        if (showRowEnd(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.end")).append("\n");
-        }
-        return buf.toString();
     }
 
     /**
@@ -450,6 +363,17 @@ public abstract class A_CmsField implements I_CmsField {
     }
 
     /**
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#getValueEscaped()
+     */
+    public String getValueEscaped() {
+
+        if (CmsStringUtil.isEmptyOrWhitespaceOnly(getValue())) {
+            return null;
+        }
+        return CmsStringUtil.escapeHtml(getValue());
+    }
+
+    /**
      * @see com.alkacon.opencms.formgenerator.I_CmsField#hasCurrentSubFields()
      */
     public boolean hasCurrentSubFields() {
@@ -471,17 +395,17 @@ public abstract class A_CmsField implements I_CmsField {
     }
 
     /**
-     * @see com.alkacon.opencms.formgenerator.I_CmsField#hasSubFields()
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#isHasSubFields()
      */
-    public boolean hasSubFields() {
+    public boolean isHasSubFields() {
 
         return !m_subFields.isEmpty();
     }
 
     /**
-     * @see com.alkacon.opencms.formgenerator.I_CmsField#hasText()
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#isHasText()
      */
-    public boolean hasText() {
+    public boolean isHasText() {
 
         return m_text != null;
     }
@@ -495,11 +419,70 @@ public abstract class A_CmsField implements I_CmsField {
     }
 
     /**
+     * This functions looks if the row should be ended. By one colsize, its 
+     * every time ending. By two colsize every second cell its ending.<p>
+     * 
+     * @return true the row end should be shown
+     */
+    public boolean isShowRowEnd() {
+
+        if ((isTwoCols() == null) || !isTwoCols().booleanValue()) {
+            return true;
+        }
+
+        boolean result = false;
+        if (m_position != 0) {
+            result = true;
+        }
+        if (m_position == 0) {
+            m_position = 1;
+        } else {
+            m_position = 0;
+        }
+        //if it needs a place holder
+        if ((m_position == 1) && (m_placeholder >= 1)) {
+            result = true;
+            m_position = 0;
+            m_placeholder--;
+        }
+        return result;
+    }
+
+    /**
+     * This functions looks if the row should be started. By one colsize, its 
+     * every time starting. By two colsize every second cell its starting.<p>
+
+     * @return true if the row should be shown
+     */
+    public boolean isShowRowStart() {
+
+        if ((isTwoCols() == null) || !isTwoCols().booleanValue()) {
+            return true;
+        }
+        if (m_position == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * @see com.alkacon.opencms.formgenerator.I_CmsField#isSubField()
      */
     public boolean isSubField() {
 
         return m_subField;
+    }
+
+    /**
+     * Returns if two columns should be used for webform output.<p>
+     * 
+     * If not initialized, <code>null</code> is returned
+     * 
+     * @return <code>true</code> if the webform should be shown in two columns, otherwise <code>false</code>
+     */
+    public Boolean isTwoCols() {
+
+        return m_twoCols;
     }
 
     /**
@@ -619,6 +602,16 @@ public abstract class A_CmsField implements I_CmsField {
     }
 
     /**
+     * Sets if two columns should be used for webform output.<p>
+     * 
+     * @param twoCols <code>true</code> if the webform should be shown in two columns, otherwise <code>false</code>
+     */
+    public void setTwoCols(boolean twoCols) {
+
+        m_twoCols = new Boolean(twoCols);
+    }
+
+    /**
      * @see com.alkacon.opencms.formgenerator.I_CmsField#setValidationExpression(java.lang.String)
      */
     public void setValidationExpression(String expression) {
@@ -712,6 +705,81 @@ public abstract class A_CmsField implements I_CmsField {
     }
 
     /**
+     * Returns the HTML for the field.<p>
+     * 
+     * @param formHandler the handler of the current form
+     * @param messages a resource bundle containing localized messages to build the HTML element
+     * @param stAttributes optional additional attributes for the output template
+     * @param fieldType the name of the field to create
+     * @param attributes optional input field attributes (has to be <code>null</code> if no attributes are used)
+     * @param errorMessage the localized error message (has to be <code>null</code> if no error should be shown)
+     * @param showMandatory flag to determine if the mandatory mark should be shown or not
+     * @return the HTML for the field
+     */
+    protected String createHtml(
+        CmsFormHandler formHandler,
+        CmsMessages messages,
+        Map<String, Object> stAttributes,
+        String fieldType,
+        String attributes,
+        String errorMessage,
+        boolean showMandatory) {
+
+        if (isTwoCols() == null) {
+            // get the two columns configuration template
+            StringTemplate sTemplate = formHandler.getOutputTemplate("form_twocolumns");
+            m_twoCols = Boolean.valueOf(sTemplate.toString());
+        }
+
+        // get the localized mandatory marker if necessary
+        String mandatory = null;
+        if (isMandatory() && showMandatory) {
+            mandatory = messages.key("form.html.mandatory");
+        }
+
+        // get the form field template
+        StringTemplate sTemplate = formHandler.getOutputTemplate("field_" + fieldType);
+        // first set additional attributes for the field, do this before adding the default attributes
+        if (stAttributes != null) {
+            sTemplate.setAttributes(stAttributes);
+        }
+        // set default template attributes for the field
+        sTemplate.setAttribute("field", this);
+        sTemplate.setAttribute("formconfig", formHandler.getFormConfiguration());
+        sTemplate.setAttribute("attributes", attributes);
+        sTemplate.setAttribute("errormessage", errorMessage);
+        sTemplate.setAttribute("mandatory", mandatory);
+        // generate the HTML output
+        StringBuffer result = new StringBuffer(sTemplate.toString());
+        if (isHasSubFields()) {
+            result.append(buildSubFields(formHandler, messages, showMandatory));
+        }
+        return result.toString();
+    }
+
+    /**
+     * Returns the standard error message for the field, depending on the given error key.<p>
+     * 
+     * @param errorKey the key of the current error message
+     * @param messages the resource bundle containing the localized error messages
+     * @return the standard error message for the field, or <code>null</code> if no error is shown
+     */
+    protected String createStandardErrorMessage(String errorKey, CmsMessages messages) {
+
+        String errorMessage = null;
+        if (CmsStringUtil.isNotEmpty(errorKey)) {
+            if (CmsFormHandler.ERROR_MANDATORY.equals(errorKey)) {
+                errorMessage = messages.key("form.error.mandatory");
+            } else if (CmsStringUtil.isNotEmpty(getErrorMessage())) {
+                errorMessage = getErrorMessage();
+            } else {
+                errorMessage = messages.key("form.error.validation");
+            }
+        }
+        return errorMessage;
+    }
+
+    /**
      * @see java.lang.Object#finalize()
      */
     @Override
@@ -766,51 +834,26 @@ public abstract class A_CmsField implements I_CmsField {
     }
 
     /**
-     * This functions looks if the row should be end. By one colsize, its 
-     * every time ending. By two colsize every second cell its ending.
+     * Returns if the list of sub fields for the given sub field value is active.<p>
      * 
-     * @param colSizeTwo if two columns should be shown
+     * @param subFieldValue the sub field value for a list of sub fields
      * 
-     * @return true the row end must shown
+     * @return <code>true</code> if the list of sub fields for the given sub field value is active, otherwise <code>false</code>
      */
-    protected boolean showRowEnd(String colSizeTwo) {
+    protected boolean isActiveSubFieldList(String subFieldValue) {
 
-        if (CmsStringUtil.isEmptyOrWhitespaceOnly(colSizeTwo) || !colSizeTwo.trim().equalsIgnoreCase("true")) {
-            return true;
-        }
-
-        boolean result = false;
-        if (m_position != 0) {
-            result = true;
-        }
-        if (m_position == 0) {
-            m_position = 1;
+        if (needsItems()) {
+            // for check boxes, radio and select box, check the field items
+            Iterator<CmsFieldItem> it = getSelectedItems().iterator();
+            while (it.hasNext()) {
+                CmsFieldItem item = it.next();
+                if (subFieldValue.equals(item.getValue())) {
+                    return true;
+                }
+            }
         } else {
-            m_position = 0;
-        }
-        //if its need a place holder
-        if ((m_position == 1) && (m_placeholder >= 1)) {
-            result = true;
-            m_position = 0;
-            m_placeholder--;
-        }
-        return result;
-    }
-
-    /**
-     * This functions looks if the row should be start. By one colsize, its 
-     * every time starting. By two colsize every second cell its starting.
-     * 
-     * @param colSizeTwo if two columns should be shown
-     * @return true if the row should shown
-     */
-    protected boolean showRowStart(String colSizeTwo) {
-
-        if (CmsStringUtil.isEmptyOrWhitespaceOnly(colSizeTwo) || !colSizeTwo.trim().equalsIgnoreCase("true")) {
-            return true;
-        }
-        if (m_position == 0) {
-            return true;
+            // common field
+            return subFieldValue.equals(getValue());
         }
         return false;
     }

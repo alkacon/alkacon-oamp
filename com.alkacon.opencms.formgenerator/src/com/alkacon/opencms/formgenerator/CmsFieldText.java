@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFieldText.java,v $
- * Date   : $Date: 2010/05/21 13:49:18 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2011/03/09 15:14:36 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -106,5 +106,35 @@ public class CmsFieldText {
     public String getText() {
 
         return m_text;
+    }
+
+    /**
+     * Returns if the text should be shown in both columns.<p>
+     * 
+     * @return <code>true</code> if the text should be shown in both columns, otherwise <code>false</code>
+     */
+    public boolean isColumnBoth() {
+
+        return m_column == COL_BOTH;
+    }
+
+    /**
+     * Returns if the text should be shown in the left column.<p>
+     * 
+     * @return <code>true</code> if the text should be shown in the left column, otherwise <code>false</code>
+     */
+    public boolean isColumnLeft() {
+
+        return m_column == COL_LEFT;
+    }
+
+    /**
+     * Returns if the text should be shown in the right column.<p>
+     * 
+     * @return <code>true</code> if the text should be shown in the right column, otherwise <code>false</code>
+     */
+    public boolean isColumnRight() {
+
+        return m_column == COL_RIGHT;
     }
 }

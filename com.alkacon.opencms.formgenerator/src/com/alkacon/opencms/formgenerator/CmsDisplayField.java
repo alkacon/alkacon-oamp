@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsDisplayField.java,v $
- * Date   : $Date: 2010/05/21 13:49:18 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2011/03/09 15:14:34 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -33,7 +33,6 @@
 package com.alkacon.opencms.formgenerator;
 
 import org.opencms.i18n.CmsMessages;
-import org.opencms.util.CmsStringUtil;
 
 /**
  * Represents a display field. This field is to fill dynamically using a class implementing
@@ -41,7 +40,7 @@ import org.opencms.util.CmsStringUtil;
  * 
  * @author Mario Jaeger
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.5.2
  */
@@ -61,50 +60,17 @@ public class CmsDisplayField extends CmsDynamicField {
     }
 
     /**
-     * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, org.opencms.i18n.CmsMessages, String, boolean)
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, CmsMessages, String, boolean, String)
      */
     @Override
-    public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory) {
+    public String buildHtml(
+        CmsFormHandler formHandler,
+        CmsMessages messages,
+        String errorKey,
+        boolean showMandatory,
+        String infoKey) {
 
-        StringBuffer buf = new StringBuffer(128);
-        String fieldLabel = getLabel();
-
-        // line #1
-        if (showRowStart(messages.key("form.html.col.two"))) {
-            if (isSubField()) {
-                buf.append(messages.key("form.html.row.subfield.start")).append("\n");
-            } else {
-                buf.append(messages.key("form.html.row.start")).append("\n");
-            }
-        }
-
-        // line #2
-        buf.append(messages.key("form.html.label.start")).append(fieldLabel).append(messages.key("form.html.label.end")).append(
-            "\n");
-
-        // line #3
-        buf.append(messages.key("form.html.field.start"));
-        String value = getValue();
-        // if the default value is set, then the text is shown
-        if (CmsStringUtil.isEmptyOrWhitespaceOnly(value)) {
-            buf.append("&nbsp;");
-        } else {
-            buf.append(value);
-        }
-        // append the value as hidden field
-        buf.append("<input type=\"hidden\" name=\"").append(getName()).append("\" value=\"").append(
-            CmsStringUtil.escapeHtml(getValue())).append("\" />\n");
-        buf.append(messages.key("form.html.field.end")).append("\n");
-
-        // line #4
-        if (showRowEnd(messages.key("form.html.col.two"))) {
-            if (isSubField()) {
-                buf.append(messages.key("form.html.row.subfield.end")).append("\n");
-            } else {
-                buf.append(messages.key("form.html.row.end")).append("\n");
-            }
-        }
-
-        return buf.toString();
+        return createHtml(formHandler, messages, null, TYPE, null, null, showMandatory);
     }
+
 }

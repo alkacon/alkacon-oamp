@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsTextareaField.java,v $
- * Date   : $Date: 2010/05/21 13:49:15 $
- * Version: $Revision: 1.7 $
+ * Date   : $Date: 2011/03/09 15:14:34 $
+ * Version: $Revision: 1.8 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -42,7 +42,7 @@ import org.opencms.util.I_CmsMacroResolver;
  * 
  * @author Thomas Weckert 
  * 
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  * 
  * @since 7.0.4 
  */
@@ -70,74 +70,43 @@ public class CmsTextareaField extends A_CmsField {
     }
 
     /**
-     * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, org.opencms.i18n.CmsMessages, String, boolean)
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, CmsMessages, String, boolean, String)
      */
     @Override
-    public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory) {
+    public String buildHtml(
+        CmsFormHandler formHandler,
+        CmsMessages messages,
+        String errorKey,
+        boolean showMandatory,
+        String infoKey) {
 
-        StringBuffer buf = new StringBuffer(128);
-        String fieldLabel = getLabel();
-        String errorMessage = "";
-        String mandatory = "";
-        String attributes = "";
+        String errorMessage = createStandardErrorMessage(errorKey, messages);
+        String attributes = null;
 
-        if (CmsStringUtil.isNotEmpty(errorKey)) {
-
-            if (CmsFormHandler.ERROR_MANDATORY.equals(errorKey)) {
-                errorMessage = messages.key("form.error.mandatory");
-            } else if (CmsStringUtil.isNotEmpty(getErrorMessage())
-                && (getErrorMessage().indexOf(I_CmsMacroResolver.MACRO_DELIMITER) != 0)) {
-                errorMessage = getErrorMessage();
-            } else {
-                errorMessage = messages.key("form.error.validation");
-            }
-
-            errorMessage = messages.key("form.html.error.start") + errorMessage + messages.key("form.html.error.end");
-            fieldLabel = messages.key("form.html.label.error.start")
-                + fieldLabel
-                + messages.key("form.html.label.error.end");
-        }
-
-        if (CmsStringUtil.isNotEmpty(getErrorMessage())
+        if (CmsStringUtil.isNotEmpty(errorKey)
+            && !CmsFormHandler.ERROR_MANDATORY.equals(errorKey)
+            && CmsStringUtil.isNotEmpty(getErrorMessage())
             && (getErrorMessage().indexOf(I_CmsMacroResolver.MACRO_DELIMITER) == 0)) {
+            // there are additional field attributes defined in the error message of the field
             attributes = " " + getErrorMessage().substring(2, getErrorMessage().length() - 1);
+            errorMessage = null;
         }
 
-        if (isMandatory() && showMandatory) {
-            mandatory = messages.key("form.html.mandatory");
-        }
-
-        // line #1
-        if (showRowStart(messages.key("form.html.col.two"))) {
-            if (isSubField()) {
-                buf.append(messages.key("form.html.row.subfield.start")).append("\n");
-            } else {
-                buf.append(messages.key("form.html.row.start")).append("\n");
-            }
-        }
-
-        // line #2
-        buf.append(messages.key("form.html.multiline.label.start")).append(fieldLabel).append(mandatory).append(
-            messages.key("form.html.multiline.label.end")).append("\n");
-
-        // line #3
-        buf.append(messages.key("form.html.multiline.field.start")).append("<textarea cols=\"5\" rows=\"5\" name=\"").append(
-            getName()).append("\"").append(formHandler.getFormConfiguration().getFormFieldAttributes()).append(
-            attributes).append(">").append(CmsEncoder.escapeXml(getValue())).append("</textarea>").append(errorMessage).append(
-            messages.key("form.html.multiline.field.end")).append("\n");
-
-        // line #4
-        if (showRowEnd(messages.key("form.html.col.two"))) {
-            if (isSubField()) {
-                buf.append(messages.key("form.html.row.subfield.end")).append("\n");
-            } else {
-                buf.append(messages.key("form.html.row.end")).append("\n");
-            }
-        }
-
+        String result = createHtml(formHandler, messages, null, getType(), attributes, errorMessage, showMandatory);
+        // sets the cell numbers for the place holders in two column layout
         incrementPlaceholder(messages.key("form.html.multiline.placeholder"));
+        return result;
+    }
 
-        return buf.toString();
+    /**
+     * Returns the XML escaped value of the field.<p>
+     * 
+     * @see com.alkacon.opencms.formgenerator.A_CmsField#getValueEscaped()
+     */
+    @Override
+    public String getValueEscaped() {
+
+        return CmsEncoder.escapeXml(getValue());
     }
 
 }

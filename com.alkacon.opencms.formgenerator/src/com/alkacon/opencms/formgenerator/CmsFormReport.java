@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormReport.java,v $
- * Date   : $Date: 2011/02/09 09:42:08 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2011/03/09 15:14:36 $
+ * Version: $Revision: 1.4 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -498,7 +498,7 @@ public class CmsFormReport extends CmsJspActionElement {
             CmsXmlContent content = CmsXmlContentFactory.unmarshal(getCmsObject(), file);
             // get the web form URI
             String formUri = content.getStringValue(getCmsObject(), NODE_URI, getRequestContext().getLocale());
-            m_formHandler = new CmsFormHandler(context, req, res, formUri);
+            m_formHandler = CmsFormHandlerFactory.create(context, req, res, formUri);
             String checkedFieldsStr = content.getStringValue(
                 getCmsObject(),
                 NODE_FIELDS,
@@ -518,7 +518,7 @@ public class CmsFormReport extends CmsJspActionElement {
                 if (showAllFields || checkedFields.contains(field.getDbLabel())) {
                     // this field has to be shown, add it to the columns and check sub fields
                     m_columns.add(new CmsFormReportColumn(field));
-                    if (field.hasSubFields()) {
+                    if (field.isHasSubFields()) {
                         Iterator<Entry<String, List<I_CmsField>>> k = field.getSubFields().entrySet().iterator();
                         while (k.hasNext()) {
                             Map.Entry<String, List<I_CmsField>> entry = k.next();

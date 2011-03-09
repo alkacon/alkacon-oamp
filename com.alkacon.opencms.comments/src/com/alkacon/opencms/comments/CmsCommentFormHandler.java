@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.comments/src/com/alkacon/opencms/comments/CmsCommentFormHandler.java,v $
- * Date   : $Date: 2010/03/19 15:31:12 $
- * Version: $Revision: 1.7 $
+ * Date   : $Date: 2011/03/09 15:09:53 $
+ * Version: $Revision: 1.8 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -32,16 +32,26 @@
 
 package com.alkacon.opencms.comments;
 
+import com.alkacon.opencms.formgenerator.CmsFileUploadField;
+import com.alkacon.opencms.formgenerator.CmsForm;
 import com.alkacon.opencms.formgenerator.CmsFormHandler;
 import com.alkacon.opencms.formgenerator.I_CmsField;
 
+import org.opencms.cache.CmsVfsMemoryObjectCache;
+import org.opencms.file.CmsFile;
 import org.opencms.i18n.CmsMessages;
+import org.opencms.main.CmsException;
+import org.opencms.main.CmsLog;
 import org.opencms.main.OpenCms;
 import org.opencms.module.CmsModule;
 import org.opencms.util.CmsHtmlStripper;
 import org.opencms.util.CmsMacroResolver;
 import org.opencms.util.CmsStringUtil;
+import org.opencms.workplace.CmsWorkplace;
 
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +59,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 
+import org.apache.commons.logging.Log;
+
+import org.antlr.stringtemplate.StringTemplate;
+import org.antlr.stringtemplate.StringTemplateGroup;
+import org.antlr.stringtemplate.language.DefaultTemplateLexer;
 import org.htmlparser.util.ParserException;
 
 /**
@@ -59,7 +74,7 @@ import org.htmlparser.util.ParserException;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  * 
  * @since 7.0.5
  */
@@ -86,29 +101,87 @@ public class CmsCommentFormHandler extends CmsFormHandler {
     /** Module parameter name prefix constant. */
     public static final String MODULE_PARAM_CONFIG_PREFIX = "config:";
 
+    /** The path to the default HTML templates for the form. */
+    public static final String VFS_PATH_DEFAULT_TEMPLATEFILE = CmsWorkplace.VFS_PATH_MODULES
+        + MODULE_NAME
+        + "/resources/formtemplates/default.st";
+
+    /** The log object for this class. */
+    private static final Log LOG = CmsLog.getLog(CmsCommentFormHandler.class);
+
     /** Some predefined comment substitutions. */
     private Map m_substitutions;
 
     /**
-     * Constructor, creates the necessary form configuration objects.<p>
+     * Empty constructor, be sure to call one of the available initialization methods afterwards.<p>
      * 
-     * @param context the JSP page context object
-     * @param req the JSP request 
-     * @param res the JSP response 
-     * @param access the comment configuration bean
-     * 
-     * @throws Exception if creating the form configuration objects fails
+     * Possible initialization methods are:<p>
+     * <ul>
+     * <li>{@link #init(PageContext, HttpServletRequest, HttpServletResponse)}</li>
+     * <li>{@link #init(PageContext, HttpServletRequest, HttpServletResponse, String)}</li>
+     * </ul>
      */
-    public CmsCommentFormHandler(
-        PageContext context,
-        HttpServletRequest req,
-        HttpServletResponse res,
-        CmsCommentsAccess access)
-    throws Exception {
+    public CmsCommentFormHandler() {
 
-        super(context, req, res);
-        getCmsObject().getRequestContext().setUri(access.getUri());
-        init(req, access.getConfig().getConfigUri());
+        super();
+    }
+
+    /**
+     * Special form output form the comments.<p>
+     * 
+     * @see com.alkacon.opencms.formgenerator.CmsFormHandler#createForm()
+     */
+    @Override
+    public void createForm() throws IOException {
+
+        // the output writer
+        Writer out = getJspContext().getOut();
+
+        boolean showForm = showForm();
+        if (!showForm) {
+            // form has been submitted with correct values
+            // try to send a notification email with the submitted form field values
+            if (sendData()) {
+                // successfully submitted
+                if (getFormConfirmationText().equals("")) {
+                    // and no confirmation required
+                    out.write("ok");
+                    return;
+                }
+                // confirmation output
+                StringTemplate sTemplate = getOutputTemplate("confirmationoutput");
+                sTemplate.setAttribute("formconfig", getCommentFormConfiguration());
+                sTemplate.setAttribute("closebutton", getMessages().key("form.button.close"));
+                out.write(sTemplate.toString());
+            } else {
+                // problem while submitting
+                StringTemplate sTemplate = getOutputTemplate("emailerror");
+                sTemplate.setAttribute("headline", getMessages().key("form.error.mail.headline"));
+                sTemplate.setAttribute("text", getMessages().key("form.error.mail.text"));
+                sTemplate.setAttribute("error", getErrors().get("sendmail"));
+                out.write(sTemplate.toString());
+            }
+            return;
+        }
+
+        // create the form
+        out.write(buildFormHtml());
+
+        // add additional JS
+        StringTemplate sTemplate = getOutputTemplate("formscript");
+        sTemplate.setAttribute(
+            "formlink",
+            link("/system/modules/com.alkacon.opencms.comments/elements/comment_form.jsp"));
+        sTemplate.setAttribute("isguest", new Boolean(getRequestContext().currentUser().isGuestUser()));
+        sTemplate.setAttribute(
+            "username",
+            ("" + getRequestContext().currentUser().getFirstname() + " " + getRequestContext().currentUser().getLastname()).trim());
+        sTemplate.setAttribute("useremail", getRequestContext().currentUser().getEmail());
+        sTemplate.setAttribute("namefield", getCommentFormConfiguration().getFieldByDbLabel("name"));
+        sTemplate.setAttribute("emailfield", getCommentFormConfiguration().getFieldByDbLabel("email"));
+        sTemplate.setAttribute("commentfield", getCommentFormConfiguration().getFieldByDbLabel("comment"));
+        sTemplate.setAttribute("charleft", getMessages().key("form.comment.char.left"));
+        out.write(sTemplate.toString());
     }
 
     /**
@@ -122,6 +195,192 @@ public class CmsCommentFormHandler extends CmsFormHandler {
     }
 
     /**
+     * Returns the output template group that generates the web form HTML output.<p>
+     * 
+     * @return the output template group that generates the web form HTML output
+     */
+    @Override
+    public StringTemplateGroup getOutputTemplateGroup() {
+
+        if (m_outputTemplates == null) {
+            // first get super template group of web form module
+            StringTemplateGroup superGroup = super.getOutputTemplateGroup();
+
+            // read default output templates from module parameter
+            String vfsPath = OpenCms.getModuleManager().getModule(MODULE_NAME).getParameter(
+                CmsForm.MODULE_PARAM_TEMPLATE_FILE,
+                VFS_PATH_DEFAULT_TEMPLATEFILE);
+            try {
+                // first try to get the initialized template group from VFS cache
+                String rootPath = getRequestContext().addSiteRoot(vfsPath);
+                StringTemplateGroup stGroup = (StringTemplateGroup)CmsVfsMemoryObjectCache.getVfsMemoryObjectCache().getCachedObject(
+                    getCmsObject(),
+                    rootPath);
+                if (stGroup == null) {
+                    // template group is not in cache, read the file and generate template group
+                    CmsFile stFile = getCmsObject().readFile(vfsPath);
+                    String stContent = new String(
+                        stFile.getContents(),
+                        getCmsObject().getRequestContext().getEncoding());
+                    stGroup = new StringTemplateGroup(new StringReader(stContent), DefaultTemplateLexer.class);
+                    stGroup.setSuperGroup(superGroup);
+                    // store the template group in cache
+                    CmsVfsMemoryObjectCache.getVfsMemoryObjectCache().putCachedObject(getCmsObject(), rootPath, stGroup);
+                }
+                m_outputTemplates = stGroup;
+            } catch (Exception e) {
+                // something went wrong, log error
+                LOG.error("Error while creating web form HTML output templates from file \"" + vfsPath + "\".");
+            }
+        }
+        return m_outputTemplates;
+    }
+
+    /**
+     * Initializes the form handler and creates the necessary configuration objects.<p>
+     * 
+     * Internally used by {@link CmsCommentsAccess}.<p>
+     * 
+     * @param context the JSP page context object
+     * @param req the JSP request 
+     * @param res the JSP response 
+     * @param access the comment configuration bean
+     * 
+     * @throws CmsException if creating the form configuration object fails
+     */
+    public void init(PageContext context, HttpServletRequest req, HttpServletResponse res, CmsCommentsAccess access)
+    throws CmsException {
+
+        super.init(context, req, res, access.getConfig().getConfigUri());
+        // set URI to access URI
+        getCmsObject().getRequestContext().setUri(access.getUri());
+    }
+
+    /**
+     * Initializes the form handler and creates the necessary configuration objects.<p>
+     * 
+     * @see com.alkacon.opencms.formgenerator.CmsFormHandler#init(javax.servlet.jsp.PageContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.String)
+     */
+    @Override
+    public void init(PageContext context, HttpServletRequest req, HttpServletResponse res, String formConfigUri)
+    throws CmsException {
+
+        CmsCommentsAccess access = new CmsCommentsAccess(context, req, res);
+        init(context, req, res, access);
+    }
+
+    /**
+     * @see com.alkacon.opencms.formgenerator.CmsFormHandler#sendData()
+     */
+    public boolean sendData() {
+
+        I_CmsField field = getFormConfiguration().getFieldByDbLabel(FIELD_COMMENT);
+        if (field != null) {
+            String value = field.getValue();
+            try {
+                value = new CmsHtmlStripper(false).stripHtml(value);
+            } catch (ParserException e) {
+                // ignore
+            }
+            value = CmsLinkDetector.substituteLinks(value);
+            value = CmsStringUtil.substitute(value, getSubstitutions());
+            field.setValue(value);
+        }
+        return super.sendData();
+    }
+
+    /**
+     * Returns the HTML for the input form, generated by using the given string template file.<p>
+     * 
+     * @return the HTML for the input form, generated by using the given string template file
+     */
+    @Override
+    protected String buildFormHtml() {
+
+        // determine if form type has to be set to "multipart/form-data" in case of upload fields
+        String encType = null;
+
+        // determine error message
+        String errorMessage = null;
+        if (hasValidationErrors()) {
+            errorMessage = getMessages().key("form.error.message");
+        }
+
+        // determine mandatory message
+        String mandatoryMessage = null;
+        if (getFormConfiguration().isShowMandatory() && getFormConfiguration().hasMandatoryFields()) {
+            mandatoryMessage = getMessages().key("form.message.mandatory");
+        }
+
+        // calculate fields to show (e.g. if paging is activated)
+        int pos = 0;
+        int place = 0;
+
+        // generate HTML for the input fields
+        StringBuffer fieldHtml = new StringBuffer(getFormConfiguration().getFields().size() * 256);
+        for (int i = 0, n = getFormConfiguration().getFields().size(); i < n; i++) {
+            // loop through all form input fields 
+            I_CmsField field = getFormConfiguration().getFields().get(i);
+
+            if (i == n - 1) {
+                // the last one has to close the row
+                place = 1;
+            }
+
+            field.setPlaceholder(place);
+            field.setPosition(pos);
+            String infoMessage = getInfos().get(field.getName());
+            // validate the file upload field here already because of the lost values in these fields
+            if (field instanceof CmsFileUploadField) {
+                infoMessage = field.validateForInfo(this);
+            }
+            fieldHtml.append(field.buildHtml(
+                this,
+                getMessages(),
+                getErrors().get(field.getName()),
+                getFormConfiguration().isShowMandatory(),
+                infoMessage));
+            pos = field.getPosition();
+            place = field.getPlaceholder();
+        }
+
+        // determine if subfield JavaScript has to be added
+        String subFieldJS = null;
+
+        // determine if the submit and other buttons are shown
+        String submitButton = getMessages().key("form.button.submit");
+        String resetButton = getMessages().key("form.button.cancel");
+        String prevButton = null;
+        String downloadButton = null;
+
+        // create necessary hidden fields
+        String hiddenFields = null;
+        StringBuffer hFieldsBuf = new StringBuffer(256);
+        hFieldsBuf.append("<input type=\"hidden\" name=\"cmturi\" value=\"").append(getRequest().getParameter("cmturi")).append(
+            "\" />");
+        hFieldsBuf.append("<input type=\"hidden\" name=\"__locale\" value=\"").append(
+            getRequest().getParameter("__locale")).append("\" />");
+        hiddenFields = hFieldsBuf.toString();
+
+        // create the main form and pass the previously generated field HTML as attribute
+        StringTemplate sTemplate = getOutputTemplate("form");
+        // set the necessary attributes to use in the string template
+        sTemplate.setAttribute("formuri", getRequest().getParameter("cmturi"));
+        sTemplate.setAttribute("enctype", encType);
+        sTemplate.setAttribute("errormessage", errorMessage);
+        sTemplate.setAttribute("mandatorymessage", mandatoryMessage);
+        sTemplate.setAttribute("formconfig", getFormConfiguration());
+        sTemplate.setAttribute("fields", fieldHtml.toString());
+        sTemplate.setAttribute("subfieldjs", subFieldJS);
+        sTemplate.setAttribute("downloadbutton", downloadButton);
+        sTemplate.setAttribute("submitbutton", submitButton);
+        sTemplate.setAttribute("resetbutton", resetButton);
+        sTemplate.setAttribute("hiddenfields", hiddenFields);
+        sTemplate.setAttribute("prevbutton", prevButton);
+        return sTemplate.toString();
+    }
+
+    /**
      * Initializes the form handler and creates the necessary configuration objects.<p>
      * 
      * @param req the JSP request 
@@ -129,7 +388,7 @@ public class CmsCommentFormHandler extends CmsFormHandler {
      * 
      * @throws Exception if creating the form configuration objects fails
      */
-    public void init(HttpServletRequest req, String formConfigUri) throws Exception {
+    protected void configureForm(HttpServletRequest req, String formConfigUri) throws Exception {
 
         if (formConfigUri == null) {
             return;
@@ -155,26 +414,6 @@ public class CmsCommentFormHandler extends CmsFormHandler {
         setMessages(new CmsMessages(para, getRequestContext().getLocale()));
         // get the form configuration
         setFormConfiguration(new CmsCommentForm(this, getMessages(), isInitial(), formConfigUri, formAction));
-    }
-
-    /**
-     * @see com.alkacon.opencms.formgenerator.CmsFormHandler#sendData()
-     */
-    public boolean sendData() {
-
-        I_CmsField field = getFormConfiguration().getFieldByDbLabel(FIELD_COMMENT);
-        if (field != null) {
-            String value = field.getValue();
-            try {
-                value = new CmsHtmlStripper(false).stripHtml(value);
-            } catch (ParserException e) {
-                // ignore
-            }
-            value = CmsLinkDetector.substituteLinks(value);
-            value = CmsStringUtil.substitute(value, getSubstitutions());
-            field.setValue(value);
-        }
-        return super.sendData();
     }
 
     /**

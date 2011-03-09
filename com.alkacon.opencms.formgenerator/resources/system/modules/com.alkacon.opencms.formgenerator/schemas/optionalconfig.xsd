@@ -24,7 +24,8 @@
 			<xsd:element name="FormAttributes" type="OpenCmsString" />
 			<xsd:element name="FormFieldAttributes" type="OpenCmsString" />
 			<xsd:element name="DynamicFieldClass" type="OpenCmsString" />
-			<xsd:element name="Style" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="CSS" type="OpenCmsVfsFile" minOccurs="0" />
+			<xsd:element name="TemplateFile" type="OpenCmsVfsFile" minOccurs="0" />
 			<xsd:element name="PropertyFile" type="OpenCmsString" minOccurs="0" />
 			<xsd:element name="ActionClass" type="OpenCmsString" minOccurs="0" />
 			<xsd:element name="KeepSession" type="OpenCmsString" minOccurs="0" />

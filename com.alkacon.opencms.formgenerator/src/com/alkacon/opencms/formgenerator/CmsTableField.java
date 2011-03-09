@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsTableField.java,v $
- * Date   : $Date: 2010/05/21 13:49:17 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2011/03/09 15:14:34 $
+ * Version: $Revision: 1.6 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -46,6 +46,8 @@ import java.util.regex.PatternSyntaxException;
 
 import org.apache.commons.logging.Log;
 
+import org.antlr.stringtemplate.StringTemplate;
+
 /**
  * Represents a table with input fields.<p>
  * 
@@ -53,7 +55,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Anja Roettgers
  * 
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * 
  * @since 7.0.4 
  */
@@ -65,6 +67,21 @@ public class CmsTableField extends A_CmsField {
     /** HTML field type: table field. */
     private static final String TYPE = "table";
 
+    /** The list of all column frontend labels. */
+    private List<String> m_cols;
+
+    /** The list of all column backend labels. */
+    private List<String> m_dbcols;
+
+    /** The list of all row backend labels. */
+    private List<String> m_dbrows;
+
+    /** The list of all row frontend labels. */
+    private List<String> m_rows;
+
+    /** The items. */
+    private Map<String, CmsFieldItem> m_tableItems;
+
     /**
      * Returns the type of the input field, e.g. "text" or "select".<p>
      * 
@@ -75,171 +92,62 @@ public class CmsTableField extends A_CmsField {
         return TYPE;
     }
 
-    /** The list of all column frontend labels. */
-    private List<String> m_cols;
-
-    /** The list of all column backend labels. */
-    private List<String> m_dbcols;
-
-    /** The items. */
-    private Map<String, CmsFieldItem> m_tableItems;
-
-    /** The list of all row frontend labels. */
-    private List<String> m_rows;
-
-    /** The list of all row backend labels. */
-    private List<String> m_dbrows;
-
     /**
      * 
-     * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(com.alkacon.opencms.formgenerator.CmsFormHandler, org.opencms.i18n.CmsMessages, java.lang.String, boolean)
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, CmsMessages, String, boolean, String)
      */
     @Override
-    public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory) {
+    public String buildHtml(
+        CmsFormHandler formHandler,
+        CmsMessages messages,
+        String errorKey,
+        boolean showMandatory,
+        String infoKey) {
 
-        StringBuffer buf = new StringBuffer(128);
-        String errorMessage = "";
+        String errorMessage = createStandardErrorMessage(errorKey, messages);
 
-        if (CmsStringUtil.isNotEmpty(errorKey)) {
-            // get the special error message
-            if (CmsFormHandler.ERROR_MANDATORY.equals(errorKey)) {
-                errorMessage = messages.key("form.error.mandatory");
-            } else if (CmsStringUtil.isNotEmpty(getErrorMessage())) {
-                errorMessage = getErrorMessage();
-            } else {
-                errorMessage = messages.key("form.error.validation");
-            }
+        Map<String, Object> stAttributes = new HashMap<String, Object>();
+        stAttributes.put("rows", getRowsEscaped());
+        stAttributes.put("cols", getColumnsEscaped());
+        stAttributes.put("rowswithitems", getRowsWithItems());
+        stAttributes.put("editable", Boolean.TRUE);
 
-            // generate the error message in a new line
-            StringBuffer tmpErrorMsg = new StringBuffer();
-            tmpErrorMsg.append(messages.key("form.html.error.start"));
-            tmpErrorMsg.append(errorMessage);
-            tmpErrorMsg.append(messages.key("form.html.error.end"));
-            errorMessage = tmpErrorMsg.toString();
-        }
-
-        // if its two column design, then show this field alone in one row
-        if (!showRowStart(messages.key("form.html.col.two"))) {
-            if (isSubField()) {
-                buf.append(messages.key("form.html.row.subfield.end")).append("\n");
-            } else {
-                buf.append(messages.key("form.html.row.end")).append("\n");
-            }
-        }
-        // line #1
-        if (isSubField()) {
-            buf.append(messages.key("form.html.row.subfield.start")).append("\n");
-        } else {
-            buf.append(messages.key("form.html.row.start")).append("\n");
-        }
-        // line #2
-        buf.append(messages.key("form.html.table.label.start"));
-        buf.append(buildLabel(messages, (isMandatory() && showMandatory), CmsStringUtil.isNotEmpty(errorKey)));
-        buf.append(messages.key("form.html.table.label.end")).append("\n");
-        // line #3
-        buf.append(messages.key("form.html.table.field.start"));
-        buf.append(buildHtml(messages, true));
-        // new line for the error message if exists
-        buf.append(errorMessage);
-        buf.append(messages.key("form.html.table.field.end")).append("\n");
-        // line #4
-        if (isSubField()) {
-            buf.append(messages.key("form.html.row.subfield.end")).append("\n");
-        } else {
-            buf.append(messages.key("form.html.row.end")).append("\n");
-        }
-
-        return buf.toString();
+        return createHtml(formHandler, messages, stAttributes, getType(), null, errorMessage, showMandatory);
     }
 
     /**
-     * Returns the HTML with a table where each cell is a input field.<p>
+     * Returns the labels of the table field for usage in email texts.<p>
      * 
-     * @param messages needed to create a user defined label HTML
-     * @param editable if the cells are editable or not
-     * 
-     * @return the HTML with a table where each cell is a input field
-     */
-    public String buildHtml(CmsMessages messages, boolean editable) {
-
-        StringBuffer result = new StringBuffer(128);
-        // append the head of the table
-        result.append(messages.key("form.html.table.field.head.start"));
-        result.append(messages.key("form.html.table.row.start"));
-        for (int k = 0; k < m_cols.size(); k++) {
-            String col = m_cols.get(k);
-            result.append(messages.key("form.html.table.col.head.start"));
-            result.append(CmsStringUtil.escapeHtml(col));
-            result.append(messages.key("form.html.table.col.head.end"));
-        }
-        result.append(messages.key("form.html.table.row.end"));
-        result.append(messages.key("form.html.table.field.head.end"));
-
-        // append the body
-        result.append(messages.key("form.html.table.field.body.start"));
-        for (int i = 0; i < m_dbrows.size(); i++) {
-            String row = m_dbrows.get(i);
-            result.append(messages.key("form.html.table.row.start"));
-            for (int j = 0; j < m_dbcols.size(); j++) {
-                String col = m_dbcols.get(j);
-                result.append(messages.key("form.html.table.col.body.start"));
-                String key = getKey(col, row, false);
-                if (m_tableItems.containsKey(key)) {
-                    CmsFieldItem item = m_tableItems.get(key);
-                    if (editable) {
-                        result.append("<input type=\"text\" name=\"").append(getName()).append(key);
-                        result.append("\" value=\"").append(CmsStringUtil.escapeHtml(item.getValue()));
-                        result.append("\"").append(" class=\"table\"/>");
-                    } else {
-                        result.append("<span class=\"table\">");
-                        result.append(CmsStringUtil.escapeHtml(item.getValue())).append("</span>");
-                    }
-                }
-                result.append(messages.key("form.html.table.col.body.end"));
-            }
-            result.append(messages.key("form.html.table.row.end"));
-        }
-        result.append(messages.key("form.html.table.field.body.end"));
-        return result.toString();
-    }
-
-    /**
-     * This function builds the label with the mandatory text and marks the label if errors exists.<p>
-     * 
-     * @param messages needed to create a user defined label HTML
-     * @param mandatory if an mandatory field or not
-     * @param error if the labels mark as error or not
-     * 
+     * @param formHandler the handler of the current form
      * @return the HTML with the specific label
      */
-    public String buildLabel(CmsMessages messages, boolean mandatory, boolean error) {
+    public String buildLabel(CmsFormHandler formHandler) {
 
-        StringBuffer label = new StringBuffer();
-        label.append(messages.key("form.html.table.label.head.start"));
-        label.append(messages.key("form.html.table.row.start"));
-        label.append(messages.key("form.html.table.name.start"));
-        if (error) {
-            label.append(messages.key("form.html.label.error.start"));
-        }
-        label.append(CmsStringUtil.escapeHtml(getLabel()));
-        if (error) {
-            label.append(messages.key("form.html.label.error.end"));
-        }
-        if (mandatory) {
-            label.append(messages.key("form.html.mandatory"));
-        }
-        label.append(messages.key("form.html.table.name.end"));
-        label.append(messages.key("form.html.table.row.end"));
-        for (int i = 0; i < m_rows.size(); i++) {
-            String row = m_rows.get(i);
-            label.append(messages.key("form.html.table.row.start"));
-            label.append(messages.key("form.html.table.row.head.start"));
-            label.append(CmsStringUtil.escapeHtml(row));
-            label.append(messages.key("form.html.table.row.head.end"));
-            label.append(messages.key("form.html.table.row.end"));
-        }
-        label.append(messages.key("form.html.table.label.head.end"));
-        return label.toString();
+        StringTemplate sTemplate = formHandler.getOutputTemplate("field_table_labels");
+        // set necessary template attributes
+        sTemplate.setAttribute("field", this);
+        sTemplate.setAttribute("formconfig", formHandler.getFormConfiguration());
+        sTemplate.setAttribute("errormessage", null);
+        sTemplate.setAttribute("mandatory", null);
+        sTemplate.setAttribute("rows", getRowsEscaped());
+        return sTemplate.toString();
+    }
+
+    /**
+     * Returns the rows of the table field for usage in email texts.<p>
+     * 
+     * @param formHandler the handler of the current form
+     * @return the HTML with a table where each cell is a input field
+     */
+    public String buildRows(CmsFormHandler formHandler) {
+
+        StringTemplate sTemplate = formHandler.getOutputTemplate("field_table_fields");
+        // set necessary template attributes
+        sTemplate.setAttribute("formconfig", formHandler.getFormConfiguration());
+        sTemplate.setAttribute("cols", getColumnsEscaped());
+        sTemplate.setAttribute("rowswithitems", getRowsWithItems());
+        sTemplate.setAttribute("editable", Boolean.FALSE);
+        return sTemplate.toString();
     }
 
     /**
@@ -380,17 +288,58 @@ public class CmsTableField extends A_CmsField {
     }
 
     /**
-     * Returns the key used to identify a single field, like when accessing the {@link #m_tableItems} map.<p>
+     * Returns the HTML escaped column names.<p>
      * 
-     * @param col the col label
-     * @param row the row label
-     * @param frontend if for frontend purposes
-     * 
-     * @return the key
+     * @return the HTML escaped column names
      */
-    private String getKey(String col, String row, boolean frontend) {
+    protected List<String> getColumnsEscaped() {
 
-        return frontend ? col + " - " + row : col + "_" + row;
+        List<String> result = new ArrayList<String>(m_cols.size());
+        for (int i = 0; i < m_cols.size(); i++) {
+            String col = m_cols.get(i);
+            result.add(CmsStringUtil.escapeHtml(col));
+        }
+        return result;
+    }
+
+    /**
+     * Returns the HTML escaped row names.<p>
+     * 
+     * @return the HTML escaped row names
+     */
+    protected List<String> getRowsEscaped() {
+
+        List<String> result = new ArrayList<String>(m_cols.size());
+        for (int i = 0; i < m_rows.size(); i++) {
+            String row = m_rows.get(i);
+            result.add(CmsStringUtil.escapeHtml(row));
+        }
+        return result;
+    }
+
+    /**
+     * Returns a list of the table field rows, containig a list of field items representing the column.<p>
+     * 
+     * @return a list of the table field rows, containig a list of field items representing the column
+     */
+    protected List<List<CmsFieldItem>> getRowsWithItems() {
+
+        List<List<CmsFieldItem>> result = new ArrayList<List<CmsFieldItem>>();
+        for (int i = 0; i < m_dbrows.size(); i++) {
+            String row = m_dbrows.get(i);
+            List<CmsFieldItem> items = new ArrayList<CmsFieldItem>(m_dbcols.size());
+            for (int j = 0; j < m_dbcols.size(); j++) {
+                String col = m_dbcols.get(j);
+                String key = getKey(col, row, false);
+                if (m_tableItems.containsKey(key)) {
+                    CmsFieldItem item = m_tableItems.get(key);
+                    item.setName(getName() + key);
+                    items.add(item);
+                }
+            }
+            result.add(items);
+        }
+        return result;
     }
 
     /**
@@ -450,5 +399,19 @@ public class CmsTableField extends A_CmsField {
             }
         }
         return null;
+    }
+
+    /**
+     * Returns the key used to identify a single field, like when accessing the {@link #m_tableItems} map.<p>
+     * 
+     * @param col the col label
+     * @param row the row label
+     * @param frontend if for frontend purposes
+     * 
+     * @return the key
+     */
+    private String getKey(String col, String row, boolean frontend) {
+
+        return frontend ? col + " - " + row : col + "_" + row;
     }
 }

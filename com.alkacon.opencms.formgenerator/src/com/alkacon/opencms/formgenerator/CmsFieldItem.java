@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFieldItem.java,v $
- * Date   : $Date: 2010/03/19 15:31:11 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2011/03/09 15:14:36 $
+ * Version: $Revision: 1.5 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -32,15 +32,17 @@
 
 package com.alkacon.opencms.formgenerator;
 
+import org.opencms.util.CmsStringUtil;
+
 /**
  * Represents a single input field item object.<p>
  * 
- * This object is needed to create checkboxes, radio buttons and selectboxes
+ * This object is needed to create checkboxes, radio buttons, selectboxes and table fields
  * and represents an item for these types.<p>
  * 
  * @author Andreas Zahner 
  * 
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * 
  * @since 7.0.4 
  */
@@ -54,6 +56,9 @@ public class CmsFieldItem {
 
     /** The label of the item. */
     private String m_label;
+
+    /** The optional item name. */
+    private String m_name;
 
     /** The flag indicating if the items should be shown in one row. */
     private boolean m_showInRow;
@@ -126,6 +131,18 @@ public class CmsFieldItem {
     }
 
     /**
+     * Returns the optional name of the field item.<p>
+     * 
+     * This is used by the special table field type {@link CmsTableField}.<p>
+     * 
+     * @return the optional name of the field item
+     */
+    public String getName() {
+
+        return m_name;
+    }
+
+    /**
      * Returns the value of the field item.<p>
      * 
      * @return the value of the field item
@@ -133,6 +150,21 @@ public class CmsFieldItem {
     public String getValue() {
 
         return m_value;
+    }
+
+    /**
+     * Returns the escaped value of the field, or <code>null</code> if the value is empty.<p>
+     * 
+     * This is necessary to avoid XSS or other exploits on the webform output pages.<p>
+     * 
+     * @return the escaped value of the field
+     */
+    public String getValueEscaped() {
+
+        if (CmsStringUtil.isEmptyOrWhitespaceOnly(getValue())) {
+            return null;
+        }
+        return CmsStringUtil.escapeHtml(getValue());
     }
 
     /**
@@ -183,6 +215,16 @@ public class CmsFieldItem {
     protected void setLabel(String label) {
 
         m_label = label;
+    }
+
+    /**
+     * Sets the name of the field item.<p>
+     * 
+     * @param name the name of the field item
+     */
+    protected void setName(String name) {
+
+        m_name = name;
     }
 
     /**

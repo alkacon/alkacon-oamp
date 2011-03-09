@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsPagingField.java,v $
- * Date   : $Date: 2010/05/21 13:49:16 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2011/03/09 15:14:35 $
+ * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -37,15 +37,17 @@ import org.opencms.i18n.CmsMessages;
 import org.opencms.util.CmsStringUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a new page field.<p>
  * 
  * @author Mario Jaeger
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * 
  * @since 7.5.2
  * 
@@ -184,7 +186,7 @@ public class CmsPagingField extends A_CmsField {
      */
     private static StringBuffer createHiddenField(I_CmsField field) {
 
-        StringBuffer buf = new StringBuffer(64);
+        StringBuffer buf = new StringBuffer(96);
 
         if (field.needsItems()) {
             // specific handling for check boxes, radio buttons and select boxes: get the items of this field
@@ -263,52 +265,30 @@ public class CmsPagingField extends A_CmsField {
     }
 
     /**
-     * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, org.opencms.i18n.CmsMessages, String, boolean)
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, CmsMessages, String, boolean, String)
      */
     @Override
-    public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory) {
+    public String buildHtml(
+        CmsFormHandler formHandler,
+        CmsMessages messages,
+        String errorKey,
+        boolean showMandatory,
+        String infoKey) {
 
-        StringBuffer buf = new StringBuffer(256);
-
-        // line #1
-        if (showRowStart(messages.key("form.html.col.two"))) {
-            if (isSubField()) {
-                buf.append(messages.key("form.html.row.subfield.start")).append("\n");
-            } else {
-                buf.append(messages.key("form.html.row.start")).append("\n");
-            }
-        }
-
-        // line #2
-        buf.append(messages.key("form.html.label.start")).append(messages.key("form.html.label.end")).append("\n");
-
-        // line #3
-        buf.append(messages.key("form.html.field.start")).append("\n");
-        // append the input field values from last pages as hidden values
-        buf.append(appendHiddenFields(formHandler, messages, getFieldNr()));
-        // append the back button if necessary
+        Map<String, Object> stAttributes = new HashMap<String, Object>();
+        // set hidden fields as additional attribute
+        stAttributes.put("hiddenfields", appendHiddenFields(formHandler, messages, getFieldNr()).toString());
+        String prevButton = null;
         if (isNotFirstPage(CmsPagingField.getPageFromField(formHandler, getFieldNr()))) {
-            buf.append("<input type=\"submit\" value=\"").append(messages.key("form.button.prev")).append(
-                "\" name=\"back\" class=\"formbutton prevbutton\" />\n");
+            prevButton = messages.key("form.button.prev");
         }
-        // append the next button
-        buf.append("<input type=\"submit\" value=\"").append(messages.key("form.button.next")).append(
-            "\" class=\"formbutton nextbutton\" />\n");
-        // append the hidden field with page info
-        buf.append("<input type=\"hidden\" name=\"page\" value=\"").append(
-            CmsPagingField.getPageFromField(formHandler, getFieldNr())).append("\" />\n");
-        buf.append(messages.key("form.html.field.end")).append("\n");
+        // set previous and next button labels (if visible)
+        stAttributes.put("prevbutton", prevButton);
+        stAttributes.put("nextbutton", messages.key("form.button.next"));
+        // set current form page
+        stAttributes.put("page", new Integer(CmsPagingField.getPageFromField(formHandler, getFieldNr())));
 
-        // line #4
-        if (showRowEnd(messages.key("form.html.col.two"))) {
-            if (isSubField()) {
-                buf.append(messages.key("form.html.row.subfield.end")).append("\n");
-            } else {
-                buf.append(messages.key("form.html.row.end")).append("\n");
-            }
-        }
-
-        return buf.toString();
+        return createHtml(formHandler, messages, stAttributes, getType(), null, null, showMandatory);
     }
 
     /**

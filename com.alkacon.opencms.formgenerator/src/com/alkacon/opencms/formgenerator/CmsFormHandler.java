@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormHandler.java,v $
- * Date   : $Date: 2010/11/12 13:51:39 $
- * Version: $Revision: 1.21 $
+ * Date   : $Date: 2011/03/09 15:14:34 $
+ * Version: $Revision: 1.22 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -34,6 +34,8 @@ package com.alkacon.opencms.formgenerator;
 
 import com.alkacon.opencms.formgenerator.database.CmsFormDataAccess;
 
+import org.opencms.cache.CmsVfsMemoryObjectCache;
+import org.opencms.file.CmsFile;
 import org.opencms.file.CmsProperty;
 import org.opencms.file.CmsResource;
 import org.opencms.i18n.CmsEncoder;
@@ -54,6 +56,9 @@ import org.opencms.util.CmsStringUtil;
 import org.opencms.workplace.CmsWorkplace;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.Writer;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,7 +66,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -69,13 +73,19 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.logging.Log;
 
+import org.antlr.stringtemplate.StringTemplate;
+import org.antlr.stringtemplate.StringTemplateErrorListener;
+import org.antlr.stringtemplate.StringTemplateGroup;
+import org.antlr.stringtemplate.language.DefaultTemplateLexer;
+
 /**
- * The form handler controls the html or mail output of a configured email form.<p>
+ * The form handler controls the HTML or mail output of a configured email form.<p>
  * 
  * Provides methods to determine the action that takes place and methods to create different
  * output formats of a submitted form.<p>
@@ -84,77 +94,11 @@ import org.apache.commons.logging.Log;
  * @author Thomas Weckert
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  * 
  * @since 7.0.4 
  */
 public class CmsFormHandler extends CmsJspActionElement {
-
-    /**
-     * Hard - wired very special - and therefore internal class that toggles between parameterless messages for HTML 
-     * formatting depending on the existence of a configured style suffix (see {@link CmsForm#getStyleSuffix()}.<p>
-     * 
-     * @author Achim Westermann 
-     */
-    private class CmsMessagesOptionalStyle extends CmsMultiMessages {
-
-        /**
-         * Constructor for creating a new messages object initialized with the given locale.<p>
-         * 
-         * @param locale the locale to use for localization of the messages
-         */
-        public CmsMessagesOptionalStyle(Locale locale) {
-
-            super(locale);
-
-        }
-
-        /**
-         * Tries to look up the given key by adding the suffix ".1" to it.  If not found the original key is used for a 
-         * lookup. The style suffix (see {@link CmsForm#getStyleSuffix()} is passed as an argument to 
-         * {@link #key(String, Object[])}.
-         * <p>
-         * 
-         * @see org.opencms.i18n.CmsMessages#key(java.lang.String)
-         */
-        @Override
-        public String key(String keyName) {
-
-            String result = null;
-            if (m_formConfiguration != null) {
-                String styleSuffix = m_formConfiguration.getStyleSuffix();
-                if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(styleSuffix)) {
-                    result = key(keyName, new Object[] {styleSuffix});
-                }
-            }
-            // fall back: 
-            if (CmsStringUtil.isEmptyOrWhitespaceOnly(result)) {
-                result = super.key(keyName);
-            }
-            return result;
-        }
-
-        /**
-         * Tries to look up the given key by adding the suffix ".1" to it. If not found the original key is used for a 
-         * lookup.
-         * <p>
-         * 
-         * @see org.opencms.i18n.CmsMessages#key(java.lang.String, java.lang.Object[])
-         */
-        @Override
-        public String key(String key, Object[] args) {
-
-            String result = null;
-            String extendedKey = key.concat(".1");
-            result = super.key(extendedKey, args);
-            // fall - back: 
-            if (CmsStringUtil.isEmptyOrWhitespaceOnly(extendedKey)
-                || result.startsWith(CmsMessages.UNKNOWN_KEY_EXTENSION)) {
-                result = super.key(key, args);
-            }
-            return result;
-        }
-    }
 
     /** Request parameter value for the form action parameter: correct the input. */
     public static final String ACTION_CONFIRMED = "confirmed";
@@ -162,10 +106,10 @@ public class CmsFormHandler extends CmsJspActionElement {
     /** Request parameter value for the form action parameter: correct the input. */
     public static final String ACTION_CORRECT_INPUT = "correct";
 
-    /** Request parameter value for the form action parameter: Jump to the download page of the csv data (allow only for offline project!!!). */
+    /** Request parameter value for the form action parameter: Jump to the download page of the CSV data (allow only for offline project!!!). */
     public static final String ACTION_DOWNLOAD_DATA_1 = "export1";
 
-    /** Request parameter value for the form action parameter: Download the csv data.  */
+    /** Request parameter value for the form action parameter: Download the CSV data.  */
     public static final String ACTION_DOWNLOAD_DATA_2 = "export2";
 
     /** Request parameter value for the form action parameter: form submitted. */
@@ -198,8 +142,14 @@ public class CmsFormHandler extends CmsJspActionElement {
     /** Macro name for the url macro that can be used in mail text fields. */
     public static final String MACRO_URL = "url";
 
+    /** Request parameter name for the back parameter. */
+    public static final String PARAM_BACK = "back";
+
     /** Request parameter name for the hidden form action parameter to determine the action. */
     public static final String PARAM_FORMACTION = "formaction";
+
+    /** Request parameter name for the page parameter. */
+    public static final String PARAM_PAGE = "page";
 
     /** The log object for this class. */
     private static final Log LOG = CmsLog.getLog(CmsFormHandler.class);
@@ -219,6 +169,9 @@ public class CmsFormHandler extends CmsJspActionElement {
     /** Flag indicating if the form is displayed for the first time. */
     protected boolean m_initial;
 
+    /** Flag indicating if the form handler configuration has been initialized successfully. */
+    protected boolean m_initSuccess;
+
     /** Boolean indicating if the form is validated correctly. */
     protected Boolean m_isValidatedCorrect;
 
@@ -231,92 +184,26 @@ public class CmsFormHandler extends CmsJspActionElement {
     /** The multipart file items. */
     protected List<FileItem> m_multipartFileItems;
 
+    /** The templates for the web form output. */
+    protected StringTemplateGroup m_outputTemplates;
+
     /** The map of request parameters. */
     protected Map<String, String[]> m_parameterMap;
 
     /**
-     * Constructor, creates the necessary form configuration objects.<p>
+     * Empty constructor, be sure to call one of the available initialization methods afterwards.<p>
      * 
-     * @param context the JSP page context object
-     * @param req the JSP request 
-     * @param res the JSP response 
-     * 
-     * @throws Exception if creating the form configuration objects fails
+     * Possible initialization methods are:<p>
+     * <ul>
+     * <li>{@link #init(PageContext, HttpServletRequest, HttpServletResponse)}</li>
+     * <li>{@link #init(PageContext, HttpServletRequest, HttpServletResponse, String)}</li>
+     * </ul>
      */
-    public CmsFormHandler(PageContext context, HttpServletRequest req, HttpServletResponse res)
-    throws Exception {
+    public CmsFormHandler() {
 
-        this(context, req, res, null, true);
-    }
-
-    /**
-     * Constructor, creates the necessary form configuration objects if the flag is set to <code>true</code>.<p>
-     * 
-     * Note: do not use this constructor for general purposes, only if you do not want to trigger the configuration.<p>
-     * 
-     * @param context the JSP page context object
-     * @param req the JSP request 
-     * @param res the JSP response
-     * @param initConfiguration indicates if the form configuration should be parsed
-     * 
-     * @throws Exception if creating the form configuration objects fails
-     */
-    public CmsFormHandler(
-        PageContext context,
-        HttpServletRequest req,
-        HttpServletResponse res,
-        boolean initConfiguration)
-    throws Exception {
-
-        this(context, req, res, null, initConfiguration);
-    }
-
-    /**
-     * Constructor, creates the necessary form configuration objects using a given configuration file URI.<p>
-     * 
-     * @param context the JSP page context object
-     * @param req the JSP request 
-     * @param res the JSP response 
-     * @param formConfigUri URI of the form configuration file, if not provided, current URI is used for configuration
-     * 
-     * @throws Exception if creating the form configuration objects fails
-     */
-    public CmsFormHandler(PageContext context, HttpServletRequest req, HttpServletResponse res, String formConfigUri)
-    throws Exception {
-
-        this(context, req, res, formConfigUri, true);
-    }
-
-    /**
-     * Constructor, creates the necessary form configuration objects using a given configuration file URI.<p>
-     * 
-     * @param context the JSP page context object
-     * @param req the JSP request 
-     * @param res the JSP response 
-     * @param formConfigUri URI of the form configuration file, if not provided, current URI is used for configuration
-     * @param initConfiguration indicates if the form configuration should be parsed
-     * 
-     * @throws Exception if creating the form configuration objects fails
-     */
-    public CmsFormHandler(
-        PageContext context,
-        HttpServletRequest req,
-        HttpServletResponse res,
-        String formConfigUri,
-        boolean initConfiguration)
-    throws Exception {
-
-        super(context, req, res);
+        super();
         m_errors = new HashMap<String, String>();
         m_infos = new HashMap<String, String>();
-        if (initConfiguration) {
-            // initialize the form configuration
-            init(req, formConfigUri);
-        } else {
-            // initialize at least the localized messages
-            initMessages(formConfigUri);
-
-        }
     }
 
     /**
@@ -357,7 +244,7 @@ public class CmsFormHandler extends CmsJspActionElement {
     public void addMessages(CmsMessages messages) {
 
         CmsMultiMessages tmpOld = m_messages;
-        m_messages = new CmsMessagesOptionalStyle(messages.getLocale());
+        m_messages = new CmsMultiMessages(messages.getLocale());
         m_messages.addMessages(messages);
         if (tmpOld != null) {
             m_messages.addMessages(tmpOld.getMessages());
@@ -392,7 +279,7 @@ public class CmsFormHandler extends CmsJspActionElement {
      * 
      * The following output formats are possible:
      * <ul>
-     * <li>"html" meaning that &lt;br&gt; tags are added</li>
+     * <li>"HTML" meaning that &lt;br&gt; tags are added</li>
      * <li>"plain"  or any other String value meaning that &lt;br&gt; tags are removed</li>
      * </ul>
      *  
@@ -403,13 +290,90 @@ public class CmsFormHandler extends CmsJspActionElement {
     public String convertValue(String value, String outputType) {
 
         if ("html".equalsIgnoreCase(outputType)) {
-            // output should be html, add line break tags and characters
+            // output should be HTML, add line break tags and characters
             value = CmsStringUtil.escapeHtml(value);
         } else {
-            // output should be plain, remove html line break tags and characters
+            // output should be plain, remove HTML line break tags and characters
             value = CmsStringUtil.substitute(value, "<br>", "\n");
         }
         return value;
+    }
+
+    /**
+     * Creates the main web form output for usage on a JSP.<p>
+     * 
+     * @throws IOException if an I/O error occurs
+     * @throws JspException if redirection fails
+     */
+    public void createForm() throws IOException, JspException {
+
+        // the output writer
+        Writer out = getJspContext().getOut();
+        // the module path containing the resources
+        String modulePath = CmsWorkplace.VFS_PATH_MODULES + CmsForm.MODULE_NAME + "/";
+
+        if (showTemplate()) {
+            // we are not on the download page, include CSS and JavaScript
+            out.write(getStyleSheet());
+            // determine if the user session should be kept
+            String sessionJs = null;
+            if (isInitSuccess() && getFormConfiguration().isRefreshSession()) {
+                sessionJs = link(modulePath + "resources/js/keepsession.js");
+            }
+            // get the JS output template
+            StringTemplate sTemplate = getOutputTemplate("form_js");
+            sTemplate.setAttribute("formconfig", getFormConfiguration());
+            sTemplate.setAttribute("sessionjs", sessionJs);
+            sTemplate.setAttribute("sessionuri", link(modulePath + "elements/keepsession.jsp"));
+            sTemplate.setAttribute("subfieldjs", link(modulePath + "resources/js/subfields.js"));
+            out.write(sTemplate.toString());
+            // check the template group syntax and show eventual errors
+            out.write(buildTemplateGroupCheckHtml());
+        }
+
+        if (!isInitSuccess()) {
+            // form was not configured correctly, show error message
+            StringTemplate sTemplate = getOutputTemplate("initerror");
+            sTemplate.setAttribute("headline", getMessages().key("form.init.error.headline"));
+            sTemplate.setAttribute("text", getMessages().key("form.init.error.description"));
+            out.write(sTemplate.toString());
+        } else if (showExpired()) {
+            // form is expired, show expiration text
+            out.write(getFormConfiguration().getExpirationText());
+        } else if (!showForm()) {
+            // form has been submitted with correct values, decide further actions
+            if (showCheck()) {
+                // show optional check page
+                out.write(buildCheckHtml());
+            } else if (showDownloadData()) {
+                // show the data download page
+                include(modulePath + "elements/datadownload.jsp");
+            } else {
+                // try to send a notification email with the submitted form field values
+                if (sendData()) {
+                    // successfully sent email, decide further actions
+                    if (getFormConfiguration().hasTargetUri()) {
+                        // another target URI is configured, redirect to it
+                        getResponse().sendRedirect(link(getFormConfiguration().getTargetUri()));
+                    } else {
+                        // show confirmation end page
+                        out.write(buildConfirmHtml());
+                    }
+                    // prepare the web form action class if configured
+                    prepareAfterWebformAction();
+                } else {
+                    // failure sending email, show error message
+                    StringTemplate sTemplate = getOutputTemplate("emailerror");
+                    sTemplate.setAttribute("headline", getMessages().key("form.error.mail.headline"));
+                    sTemplate.setAttribute("text", getMessages().key("form.error.mail.text"));
+                    sTemplate.setAttribute("error", getErrors().get("sendmail"));
+                    out.write(sTemplate.toString());
+                }
+            }
+        } else {
+            // create the main input form
+            out.write(buildFormHtml());
+        }
     }
 
     /**
@@ -479,79 +443,19 @@ public class CmsFormHandler extends CmsJspActionElement {
     public String createMailTextFromFields(boolean isHtmlMail, boolean isConfirmationMail) {
 
         List<I_CmsField> fieldValues = getFormConfiguration().getAllFields(true, false, true);
-        StringBuffer result = new StringBuffer(2048 + fieldValues.size() * 16);
         StringBuffer fieldsResult = new StringBuffer(fieldValues.size() * 16);
-        boolean useOwnStyle = false;
+        List<I_CmsField> htmlFields = new ArrayList<I_CmsField>(fieldValues.size());
+        String mailCss = null;
+        // determine CSS to use for HTML email
         if (isHtmlMail) {
-            // create HTML head with style definitions and body
-            result.append("<html><head>\n");
-            result.append("<style type=\"text/css\"><!--\n");
-            String style = getMessages().key("form.email.css");
+            // create HTML email using the template output
             if (CmsStringUtil.isNotEmpty(getFormConfiguration().getMailCSS())) {
                 // use individually configured CSS
-                useOwnStyle = true;
-                result.append(getFormConfiguration().getMailCSS());
-            } else if (CmsStringUtil.isNotEmpty(style)) {
-                // use user defined CSS from properties file
-                useOwnStyle = true;
-                result.append(style);
-            } else {
-                // use common css
-                style = getMessages().key("form.email.style.body");
-                if (CmsStringUtil.isNotEmpty(style)) {
-                    result.append("body,h1,p,td { ");
-                    result.append(style);
-                    result.append(" }\n");
-                }
-                style = getMessages().key("form.email.style.h1");
-                if (CmsStringUtil.isNotEmpty(style)) {
-                    result.append("h1 { ");
-                    result.append(style);
-                    result.append(" }\n");
-                }
-                style = getMessages().key("form.email.style.p");
-                if (CmsStringUtil.isNotEmpty(style)) {
-                    result.append("p { ");
-                    result.append(style);
-                    result.append(" }\n");
-                }
-                style = getMessages().key("form.email.style.fields");
-                if (CmsStringUtil.isNotEmpty(style)) {
-                    result.append("table.fields { ");
-                    result.append(style);
-                    result.append(" }\n");
-                }
-                style = getMessages().key("form.email.style.fieldlabel");
-                if (CmsStringUtil.isNotEmpty(style)) {
-                    result.append("td.fieldlabel { ");
-                    result.append(style);
-                    result.append(" }\n");
-                }
-                style = getMessages().key("form.email.style.fieldvalue");
-                if (CmsStringUtil.isNotEmpty(style)) {
-                    result.append("td.fieldvalue { ");
-                    result.append(style);
-                    result.append(" }\n");
-                }
-                style = getMessages().key("form.email.style.misc");
-                if (CmsStringUtil.isNotEmpty(style)) {
-                    result.append(getMessages().key("form.email.style.misc"));
-                }
+                mailCss = getFormConfiguration().getMailCSS();
             }
-            result.append("\n//--></style>\n");
-            result.append("</head><body>\n");
         }
 
         // generate output for submitted form fields
-        if (isHtmlMail) {
-            fieldsResult.append("<table border=\"0\" class=\"dataform");
-            if (!useOwnStyle) {
-                fieldsResult.append(" fields");
-            }
-            fieldsResult.append("\">\n");
-        }
-        boolean firstField = true;
-        // loop the fields
         Iterator<I_CmsField> i = fieldValues.iterator();
         while (i.hasNext()) {
             I_CmsField current = i.next();
@@ -580,51 +484,26 @@ public class CmsFormHandler extends CmsJspActionElement {
                 value = CmsFormHandler.getTruncatedFileItemName(value);
             }
             if (isHtmlMail) {
-                // format output as HTML
-                if (useOwnStyle) {
-                    fieldsResult.append("<tr><td");
-                    if (firstField) {
-                        fieldsResult.append(" class=\"first\"");
-                    }
-                    fieldsResult.append(">");
-                } else {
-                    fieldsResult.append("<tr><td class=\"fieldlabel");
-                    if (firstField) {
-                        fieldsResult.append(" first");
-                    }
-                    fieldsResult.append("\">");
-                }
+                // format field label as HTML
+                String label = current.getLabel();
+                // special case for table and empty fields
                 if (current instanceof CmsTableField) {
-                    fieldsResult.append(((CmsTableField)current).buildLabel(m_messages, false, false));
+                    label = ((CmsTableField)current).buildLabel(this);
                 } else if (current instanceof CmsEmptyField) {
-                    fieldsResult.append("");
-                } else {
-                    fieldsResult.append(current.getLabel());
+                    label = "";
                 }
-                if (useOwnStyle) {
-                    fieldsResult.append("</td><td class=\"data");
-                    if (firstField) {
-                        fieldsResult.append(" first");
-                    }
-                    fieldsResult.append("\">");
-                } else {
-                    fieldsResult.append("</td><td class=\"fieldvalue");
-                    if (firstField) {
-                        fieldsResult.append(" first");
-                    }
-                    fieldsResult.append("\">");
-                }
-
-                // special case by table fields
+                // format field value as HTML
+                String fieldValue = convertToHtmlValue(value);
+                // special case for table and empty fields
                 if (current instanceof CmsTableField) {
-                    fieldsResult.append(((CmsTableField)current).buildHtml(m_messages, false));
+                    fieldValue = ((CmsTableField)current).buildRows(this);
                 } else if (current instanceof CmsEmptyField) {
-                    fieldsResult.append(value);
-                } else {
-                    fieldsResult.append(convertToHtmlValue(value));
+                    fieldValue = value;
                 }
-                fieldsResult.append("</td></tr>\n");
-                firstField = false;
+                I_CmsField mailField = new CmsTextField();
+                mailField.setLabel(label);
+                mailField.setValue(fieldValue);
+                htmlFields.add(mailField);
             } else {
                 // format output as plain text
                 String label;
@@ -649,32 +528,32 @@ public class CmsFormHandler extends CmsJspActionElement {
                 fieldsResult.append("\n");
             }
         }
-        if (isHtmlMail) {
-            // create html table closing tag
-            fieldsResult.append("</table>\n");
-        }
 
         // generate the main mail text
         String mailText;
         if (isHtmlMail) {
+            // generate HTML email
             if (isConfirmationMail) {
-                // append the confirmation mail text
+                // append the confirmation email text
                 mailText = getFormConfiguration().getConfirmationMailText();
             } else {
                 // append the email text
                 mailText = getFormConfiguration().getMailText();
             }
-
+            // create field output
+            StringTemplate sTemplate = getOutputTemplate("htmlemailfields");
+            sTemplate.setAttribute("mailcss", mailCss);
+            sTemplate.setAttribute("fields", htmlFields);
+            fieldsResult.append(sTemplate.toString());
         } else {
-            // generate simple text mail
+            // generate simple text email
             if (isConfirmationMail) {
-                // append the confirmation mail text
+                // append the confirmation email text
                 mailText = getFormConfiguration().getConfirmationMailTextPlain();
             } else {
                 // append the email text
                 mailText = getFormConfiguration().getMailTextPlain();
             }
-
         }
         // resolve the common macros
         mailText = m_macroResolver.resolveMacros(mailText);
@@ -686,42 +565,41 @@ public class CmsFormHandler extends CmsJspActionElement {
             // form data macro found, resolve it
             macroResolver.addMacro(MACRO_FORMDATA, fieldsResult.toString());
             mailText = macroResolver.resolveMacros(mailText);
-            result.append(mailText);
         } else {
-            // no form data macro found, append the fields below the mail text
-            result.append(mailText);
+            // no form data macro found, add the fields below the mail text
             if (!isHtmlMail) {
-                result.append("\n\n");
+                mailText += "\n\n";
             }
-            result.append(fieldsResult);
+            mailText += fieldsResult;
         }
 
         if (isHtmlMail) {
+            StringTemplate sTemplate = getOutputTemplate("htmlemail");
+            String errorHeadline = null;
             if (!isConfirmationMail && getFormConfiguration().hasConfigurationErrors()) {
                 // write form configuration errors to html mail
-                result.append("<h1>");
+                errorHeadline = getMessages().key("form.configuration.error.headline");
+            }
+            // set necessary attributes
+            sTemplate.setAttribute("mailcss", mailCss);
+            sTemplate.setAttribute("mailtext", mailText);
+            sTemplate.setAttribute("errorheadline", errorHeadline);
+            sTemplate.setAttribute("errors", getFormConfiguration().getConfigurationErrors());
+            return sTemplate.toString();
+        } else {
+            StringBuffer result = new StringBuffer(mailText);
+            if (!isConfirmationMail && getFormConfiguration().hasConfigurationErrors()) {
+                // write form configuration errors to text mail
+                result.append("\n");
                 result.append(getMessages().key("form.configuration.error.headline"));
-                result.append("</h1>\n<p>");
+                result.append("\n");
                 for (int k = 0; k < getFormConfiguration().getConfigurationErrors().size(); k++) {
                     result.append(getFormConfiguration().getConfigurationErrors().get(k));
-                    result.append("<br>");
+                    result.append("\n");
                 }
-                result.append("</p>\n");
             }
-            // create body and html closing tags
-            result.append("</body></html>");
-        } else if (!isConfirmationMail && getFormConfiguration().hasConfigurationErrors()) {
-            // write form configuration errors to text mail
-            result.append("\n");
-            result.append(getMessages().key("form.configuration.error.headline"));
-            result.append("\n");
-            for (int k = 0; k < getFormConfiguration().getConfigurationErrors().size(); k++) {
-                result.append(getFormConfiguration().getConfigurationErrors().get(k));
-                result.append("\n");
-            }
+            return result.toString();
         }
-
-        return result.toString();
     }
 
     /**
@@ -823,6 +701,87 @@ public class CmsFormHandler extends CmsJspActionElement {
         return m_messages;
     }
 
+    /**
+     * Returns the template for the web form HTML output.<p>
+     * 
+     * @param templateName the name of the template to return
+     * 
+     * @return the template for the web form HTML output
+     */
+    public StringTemplate getOutputTemplate(String templateName) {
+
+        StringTemplate result = getOutputTemplateGroup().getInstanceOf(templateName);
+        if (!getRequestContext().currentProject().isOnlineProject() && (result == null)) {
+            // no template with the specified name found, return initialized error template
+            try {
+                CmsFile stFile = getCmsObject().readFile(CmsForm.VFS_PATH_ERROR_TEMPLATEFILE);
+                String stContent = new String(stFile.getContents(), getCmsObject().getRequestContext().getEncoding());
+                result = new StringTemplate(stContent, DefaultTemplateLexer.class);
+                // set the error attributes of the template
+                result.setAttribute("errorheadline", "Error getting output template");
+                result.setAttribute("errortext", "The desired template \"" + templateName + "\" was not found.");
+                result.setAttribute("errortemplatenames", getOutputTemplateGroup().getTemplateNames());
+            } catch (Exception e) {
+                // something went wrong, log error
+                LOG.error("Error while getting error output template from file \""
+                    + CmsForm.VFS_PATH_ERROR_TEMPLATEFILE
+                    + "\".");
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Returns the output template group that generates the web form HTML output.<p>
+     * 
+     * @return the output template group that generates the web form HTML output
+     */
+    public StringTemplateGroup getOutputTemplateGroup() {
+
+        if (m_outputTemplates == null) {
+            String vfsPath = null;
+            if (getFormConfiguration() != null) {
+                // check if an individual output template path is set
+                vfsPath = getFormConfiguration().getTemplateFile();
+                if (!getCmsObject().existsResource(vfsPath)) {
+                    // configured output template path does not exist, log error and use default output templates
+                    LOG.error("Configured web form HTML output template file \"" + vfsPath + "\" does not exist.");
+                    vfsPath = null;
+                }
+            }
+
+            if (vfsPath == null) {
+                // no valid template path configured, use default output templates
+                vfsPath = OpenCms.getModuleManager().getModule(CmsForm.MODULE_NAME).getParameter(
+                    CmsForm.MODULE_PARAM_TEMPLATE_FILE,
+                    CmsForm.VFS_PATH_DEFAULT_TEMPLATEFILE);
+            }
+            try {
+                // first try to get the initialized template group from VFS cache
+                String rootPath = getRequestContext().addSiteRoot(vfsPath);
+                StringTemplateGroup stGroup = (StringTemplateGroup)CmsVfsMemoryObjectCache.getVfsMemoryObjectCache().getCachedObject(
+                    getCmsObject(),
+                    rootPath);
+                if (stGroup == null) {
+                    // template group is not in cache, read the file and generate template group
+                    CmsFile stFile = getCmsObject().readFile(vfsPath);
+                    String stContent = new String(
+                        stFile.getContents(),
+                        getCmsObject().getRequestContext().getEncoding());
+                    StringTemplateErrorListener errors = new CmsStringTemplateErrorListener();
+                    stGroup = new StringTemplateGroup(new StringReader(stContent), DefaultTemplateLexer.class, errors);
+                    // store the template group in cache
+                    CmsVfsMemoryObjectCache.getVfsMemoryObjectCache().putCachedObject(getCmsObject(), rootPath, stGroup);
+                }
+                m_outputTemplates = stGroup;
+            } catch (Exception e) {
+                // something went wrong, log error
+                LOG.error("Error while creating web form HTML output templates from file \"" + vfsPath + "\".");
+            }
+        }
+        return m_outputTemplates;
+    }
+
     /** 
      * Returns the map of request parameters.<p>
      * 
@@ -836,8 +795,8 @@ public class CmsFormHandler extends CmsJspActionElement {
     /**
      * Returns the HTML to include the CSS style sheet for the form.<p>
      * 
-     * The CSS to use can be specified as module parameter {@link CmsForm#MODULE_PARAM_CSS}. If no value is defined,
-     * the default CSS file shipped with the module is used.<p>
+     * The CSS to use can be specified individually for each form and as module parameter {@link CmsForm#MODULE_PARAM_CSS}.
+     * If no value is defined, the default CSS file shipped with the module is used.<p>
      * 
      * <b>Important</b>: to generate valid XHTML code, specify <code>false</code> as module parameter value and include the CSS
      * in your template head manually.<p>
@@ -849,13 +808,25 @@ public class CmsFormHandler extends CmsJspActionElement {
         String cssParam = OpenCms.getModuleManager().getModule(CmsForm.MODULE_NAME).getParameter(
             CmsForm.MODULE_PARAM_CSS);
         if (CmsStringUtil.FALSE.equalsIgnoreCase(cssParam)) {
+            // parameter set to false, this overrides all other individual CSS settings
             return "";
         }
         StringBuffer result = new StringBuffer(64);
-        if (CmsStringUtil.isEmptyOrWhitespaceOnly(cssParam)) {
-            cssParam = CmsWorkplace.VFS_PATH_MODULES + CmsForm.MODULE_NAME + "/resources/css/webform.css";
+        // get the optional individual CSS file for the form
+        String configuredCss = null;
+        if (getFormConfiguration() != null) {
+            configuredCss = getFormConfiguration().getCssFile();
         }
-        result.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"").append(link(cssParam)).append("\" />");
+        if (CmsStringUtil.isEmptyOrWhitespaceOnly(configuredCss)) {
+            // no individual CSS configured, use CSS configured as module parameter
+            configuredCss = cssParam;
+            if (CmsStringUtil.isEmptyOrWhitespaceOnly(configuredCss)) {
+                // no module parameter set, fall back to default CSS
+                configuredCss = CmsWorkplace.VFS_PATH_MODULES + CmsForm.MODULE_NAME + "/resources/css/webform.css";
+            }
+        }
+
+        result.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"").append(link(configuredCss)).append("\" />");
         return result.toString();
     }
 
@@ -893,7 +864,7 @@ public class CmsFormHandler extends CmsJspActionElement {
     /**
      * Returns if the submitted values contain validation errors.<p>
      * 
-     * @return true if the submitted values contain validation errors, otherwise false
+     * @return <code>true</code> if the submitted values contain validation errors, otherwise <code>false</code>
      */
     public boolean hasValidationErrors() {
 
@@ -903,73 +874,42 @@ public class CmsFormHandler extends CmsJspActionElement {
     /**
      * Initializes the form handler and creates the necessary configuration objects.<p>
      * 
-     * @param req the JSP request 
-     * @param formConfigUri URI of the form configuration file, if not provided, current URI is used for configuration
-     * @throws Exception if creating the form configuration objects fails
+     * @see org.opencms.jsp.CmsJspBean#init(javax.servlet.jsp.PageContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
-    public void init(HttpServletRequest req, String formConfigUri) throws Exception {
+    @Override
+    public void init(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
-        // read the form configuration file from VFS
-        if (CmsStringUtil.isEmpty(formConfigUri)) {
-            formConfigUri = getRequestContext().getUri();
+        try {
+            init(context, req, res, null);
+        } catch (CmsException e) {
+            // log initialization error
+            LOG.error(e);
         }
-        m_multipartFileItems = CmsRequestUtil.readMultipartFileItems(req);
-        m_macroResolver = CmsMacroResolver.newInstance();
-        m_macroResolver.setKeepEmptyMacros(true);
-        m_macroResolver.setCmsObject(getCmsObject());
-        m_macroResolver.addMacro(MACRO_URL, OpenCms.getSiteManager().getCurrentSite(getCmsObject()).getServerPrefix(
-            getCmsObject(),
-            getRequestContext().getUri())
-            + link(getRequestContext().getUri()));
-        m_macroResolver.addMacro(MACRO_LOCALE, getRequestContext().getLocale().toString());
+    }
 
-        if (m_multipartFileItems != null) {
-            m_parameterMap = CmsRequestUtil.readParameterMapFromMultiPart(
-                getRequestContext().getEncoding(),
-                m_multipartFileItems);
-        } else {
-            m_parameterMap = new HashMap<String, String[]>();
-            m_parameterMap.putAll(getRequest().getParameterMap());
+    /**
+     * Initializes the form handler and creates the necessary configuration objects.<p>
+     * 
+     * @param context the JSP page context object
+     * @param req the JSP request 
+     * @param res the JSP response 
+     * @param formConfigUri URI of the form configuration file, if not provided, current URI is used for configuration
+     * 
+     * @throws CmsException if initializing the form message objects fails
+     */
+    public void init(PageContext context, HttpServletRequest req, HttpServletResponse res, String formConfigUri)
+    throws CmsException {
+
+        super.init(context, req, res);
+        try {
+            // initialize the form configuration
+            configureForm(req, formConfigUri);
+            m_initSuccess = true;
+        } catch (Exception e) {
+            // error in form initialization, initialize at least the localized messages
+            initMessages(formConfigUri);
         }
 
-        if (m_multipartFileItems != null) {
-            Map<String, FileItem> fileUploads = (Map<String, FileItem>)req.getSession().getAttribute(
-                ATTRIBUTE_FILEITEMS);
-            if (fileUploads == null) {
-                fileUploads = new HashMap<String, FileItem>();
-            }
-            // check, if there are any attachments
-            Iterator<FileItem> i = m_multipartFileItems.iterator();
-            while (i.hasNext()) {
-                FileItem fileItem = i.next();
-                if (CmsStringUtil.isNotEmpty(fileItem.getName())) {
-                    // append file upload to the map of file items
-                    fileUploads.put(fileItem.getFieldName(), fileItem);
-                    m_parameterMap.put(fileItem.getFieldName(), new String[] {fileItem.getName()});
-                }
-            }
-            req.getSession().setAttribute(ATTRIBUTE_FILEITEMS, fileUploads);
-        } else {
-            req.getSession().removeAttribute(ATTRIBUTE_FILEITEMS);
-        }
-        String formAction = getParameter(PARAM_FORMACTION);
-        // security check: some form actions are not allowed for everyone:
-        if (this.getCmsObject().getRequestContext().currentProject().isOnlineProject()) {
-            if (CmsFormHandler.ACTION_DOWNLOAD_DATA_1.equals(formAction)) {
-                LOG.error("Received an illegal request for download data of form "
-                    + formConfigUri
-                    + " (online request)");
-                formAction = ACTION_SUBMIT;
-            }
-        }
-        m_isValidatedCorrect = null;
-        setInitial(CmsStringUtil.isEmpty(formAction));
-
-        // get the localized messages
-        initMessages(formConfigUri);
-
-        // get the form configuration
-        setFormConfiguration(new CmsForm(this, getMessages(), isInitial(), formConfigUri, formAction));
     }
 
     /**
@@ -980,6 +920,16 @@ public class CmsFormHandler extends CmsJspActionElement {
     public boolean isInitial() {
 
         return m_initial;
+    }
+
+    /**
+     * Returns if the form handler configuration has been initialized successfully.<p>
+     * 
+     * @return <code>true</code> if the form handler configuration has been initialized successfully, otherwise <code>false</code>
+     */
+    public boolean isInitSuccess() {
+
+        return m_initSuccess;
     }
 
     /**
@@ -1065,7 +1015,7 @@ public class CmsFormHandler extends CmsJspActionElement {
      * Sends the collected data due to the configuration of the form 
      * (email, database or both).<p>
      * 
-     * @return true if successful 
+     * @return <code>true</code> if successful 
      */
     public boolean sendData() {
 
@@ -1139,7 +1089,7 @@ public class CmsFormHandler extends CmsJspActionElement {
     /**
      * Returns if the optional check page should be displayed.<p>
      * 
-     * @return true if the optional check page should be displayed, otherwise false
+     * @return <code>true</code> if the optional check page should be displayed, otherwise <code>false</code>
      */
     public boolean showCheck() {
 
@@ -1159,7 +1109,7 @@ public class CmsFormHandler extends CmsJspActionElement {
     /**
      * Returns if the data download page should be displayed.<p>
      * 
-     * @return true if the data download page should be displayed, otherwise false
+     * @return <code>true</code> if the data download page should be displayed, otherwise <code>false</code>
      */
     public boolean showDownloadData() {
 
@@ -1177,7 +1127,7 @@ public class CmsFormHandler extends CmsJspActionElement {
     /**
      * Returns if the expiration text should be shown instead of the form.<p>
      * 
-     * @return <code>true</code> if the expiration text should be shown, otherwise false
+     * @return <code>true</code> if the expiration text should be shown, otherwise <code>false</code>
      */
     public boolean showExpired() {
 
@@ -1188,7 +1138,7 @@ public class CmsFormHandler extends CmsJspActionElement {
     /**
      * Returns if the input form should be displayed.<p>
      * 
-     * @return true if the input form should be displayed, otherwise false
+     * @return <code>true</code> if the input form should be displayed, otherwise <code>false</code>
      */
     public boolean showForm() {
 
@@ -1231,16 +1181,15 @@ public class CmsFormHandler extends CmsJspActionElement {
     }
 
     /**
-     * Returns if template head or other HTML should be inclulded (the page does not serve as a download page).<p>
+     * Returns if the template head or other HTML should be included (the page does not serve as a download page).<p>
      * 
-     * @return true if template head or other HTML should be inclulded (the page does not serve as a download page)
+     * @return <code>true</code> if the template head or other HTML should be included (the page does not serve as a download page)
      */
     public boolean showTemplate() {
 
         boolean result = true;
 
-        String paramAction = getParameter(CmsFormHandler.PARAM_FORMACTION);
-        if (CmsFormHandler.ACTION_DOWNLOAD_DATA_2.equals(paramAction)) {
+        if (CmsFormHandler.ACTION_DOWNLOAD_DATA_2.equals(getParameter(CmsFormHandler.PARAM_FORMACTION))) {
             result = false;
         }
         return result;
@@ -1320,6 +1269,398 @@ public class CmsFormHandler extends CmsJspActionElement {
 
         m_isValidatedCorrect = Boolean.valueOf(allOk);
         return allOk;
+    }
+
+    /**
+     * Returns the HTML for the optional form check page, generated by using the given string template file.<p>
+     * 
+     * @return the HTML for the optional form check page, generated by using the given string template file
+     */
+    protected String buildCheckHtml() {
+
+        // create the check page
+        StringTemplate sTemplate = getOutputTemplate("checkpage");
+        // set the necessary attributes to use in the string template
+        sTemplate.setAttribute("formuri", OpenCms.getLinkManager().substituteLink(
+            getCmsObject(),
+            getCmsObject().getRequestContext().getUri()));
+        sTemplate.setAttribute("formconfig", getFormConfiguration());
+        sTemplate.setAttribute("checktext", getFormCheckText());
+        CmsCaptchaField captchaField = getFormConfiguration().getCaptchaField();
+        sTemplate.setAttribute("captchafield", captchaField);
+
+        String errorMessage = getErrors().get(captchaField.getName());
+
+        if (errorMessage != null) {
+            // create the error message for the field
+            if (CmsFormHandler.ERROR_MANDATORY.equals(errorMessage)) {
+                errorMessage = getMessages().key("form.error.mandatory");
+            } else {
+                errorMessage = getMessages().key("form.error.validation");
+            }
+        }
+        sTemplate.setAttribute("captchaerror", errorMessage);
+        sTemplate.setAttribute("captchaimagelink", OpenCms.getLinkManager().substituteLink(
+            getCmsObject(),
+            "/system/modules/com.alkacon.opencms.formgenerator/pages/captcha.jsp?"
+                + captchaField.getCaptchaSettings().toRequestParams(getCmsObject())));
+        List<I_CmsField> fields = getFormConfiguration().getAllFields(true, false, false);
+        List<I_CmsField> checkFields = new ArrayList<I_CmsField>(fields.size());
+        for (int i = 0, n = fields.size(); i < n; i++) {
+            I_CmsField current = fields.get(i);
+            if ((!CmsDynamicField.class.isAssignableFrom(current.getClass())
+                && !CmsHiddenField.class.isAssignableFrom(current.getClass())
+                && !CmsCaptchaField.class.isAssignableFrom(current.getClass()) && !CmsHiddenDisplayField.class.isAssignableFrom(current.getClass()))
+                || (CmsDisplayField.class.isAssignableFrom(current.getClass()))) {
+                if ((current instanceof CmsEmptyField) || (current instanceof CmsPagingField)) {
+                    continue;
+                }
+                String label = current.getLabel();
+                if (current instanceof CmsTableField) {
+                    label = ((CmsTableField)current).buildLabel(this);
+                }
+                String value = current.toString();
+                if (current instanceof CmsTableField) {
+                    value = ((CmsTableField)current).buildRows(this);
+                } else if (current instanceof CmsPasswordField) {
+                    value = value.replaceAll(".", "*");
+                } else if (current instanceof CmsFileUploadField) {
+                    value = CmsFormHandler.getTruncatedFileItemName(value);
+                    value = convertToHtmlValue(value);
+                } else {
+                    value = convertToHtmlValue(value);
+                }
+                I_CmsField checkField = new CmsTextField();
+                checkField.setLabel(label);
+                checkField.setValue(value);
+                checkFields.add(checkField);
+            }
+        }
+        sTemplate.setAttribute("checkfields", checkFields);
+        sTemplate.setAttribute("hiddenfields", createHiddenFields());
+        sTemplate.setAttribute("checkbutton", getMessages().key("form.button.checked"));
+        sTemplate.setAttribute("correctbutton", getMessages().key("form.button.correct"));
+        return sTemplate.toString();
+    }
+
+    /**
+     * Returns the HTML for the form confirmation page, generated by using the given string template file.<p>
+     * 
+     * @return the HTML for the form confirmation page, generated by using the given string template file
+     */
+    protected String buildConfirmHtml() {
+
+        // create the confirmation page
+        StringTemplate sTemplate = getOutputTemplate("confirmationpage");
+        // set the necessary attributes to use in the string template
+        sTemplate.setAttribute("formconfig", getFormConfiguration());
+        sTemplate.setAttribute("confirmtext", getFormConfirmationText());
+        // generate the list of fields to display
+        List<I_CmsField> fields = getFormConfiguration().getAllFields(true, false, true);
+        List<I_CmsField> confirmFields = new ArrayList<I_CmsField>(fields.size());
+
+        for (int i = 0, n = fields.size(); i < n; i++) {
+            I_CmsField current = fields.get(i);
+            if (CmsHiddenField.class.isAssignableFrom(current.getClass())
+                || CmsPrivacyField.class.isAssignableFrom(current.getClass())
+                || CmsCaptchaField.class.isAssignableFrom(current.getClass())
+                || CmsPagingField.class.isAssignableFrom(current.getClass())) {
+                continue;
+            }
+            String label = current.getLabel();
+            if (current instanceof CmsTableField) {
+                label = ((CmsTableField)current).buildLabel(this);
+            } else if (current instanceof CmsEmptyField) {
+                label = "";
+            }
+            String value = current.toString();
+            if ((current instanceof CmsDisplayField)) {
+                value = convertToHtmlValue(value);
+            } else if ((current instanceof CmsHiddenDisplayField)) {
+                continue;
+            } else if ((current instanceof CmsDynamicField)) {
+                if (!current.isMandatory()) {
+                    // show dynamic fields only if they are marked as mandatory
+                    continue;
+                }
+                // compute the value for the dynamic field
+                value = getFormConfiguration().getFieldStringValueByName(current.getName());
+                value = convertToHtmlValue(value);
+            } else if (current instanceof CmsTableField) {
+                value = ((CmsTableField)current).buildRows(this);
+            } else if (current instanceof CmsPasswordField) {
+                value = value.replaceAll(".", "*");
+            } else if (current instanceof CmsFileUploadField) {
+                value = CmsFormHandler.getTruncatedFileItemName(value);
+                value = convertToHtmlValue(value);
+            } else if (current instanceof CmsEmptyField) {
+                // do nothing
+            } else {
+                value = convertToHtmlValue(value);
+            }
+            I_CmsField confirmField = new CmsTextField();
+            confirmField.setLabel(label);
+            confirmField.setValue(value);
+            confirmFields.add(confirmField);
+        }
+        sTemplate.setAttribute("confirmfields", confirmFields);
+        return sTemplate.toString();
+    }
+
+    /**
+     * Returns the HTML for the input form, generated by using the given string template file.<p>
+     * 
+     * @return the HTML for the input form, generated by using the given string template file
+     */
+    protected String buildFormHtml() {
+
+        // determine if form type has to be set to "multipart/form-data" in case of upload fields
+        String encType = null;
+        for (Iterator<I_CmsField> i = getFormConfiguration().getFields().iterator(); i.hasNext();) {
+            I_CmsField field = i.next();
+            if (field.getType().equals(CmsFileUploadField.getStaticType())) {
+                encType = " enctype=\"multipart/form-data\"";
+                break;
+            }
+        }
+
+        // determine error message
+        String errorMessage = null;
+        if (hasValidationErrors()) {
+            errorMessage = getMessages().key("form.error.message");
+        }
+
+        // determine mandatory message
+        String mandatoryMessage = null;
+        if (getFormConfiguration().isShowMandatory() && getFormConfiguration().hasMandatoryFields()) {
+            mandatoryMessage = getMessages().key("form.message.mandatory");
+        }
+
+        // calculate fields to show (e.g. if paging is activated)
+        boolean paging = false;
+        int pos = 0;
+        int fieldNr = 0;
+        int place = 0;
+        int currPage = 1;
+        int pagingPos = 0;
+        if (getParameterMap().containsKey(PARAM_BACK) && getParameterMap().containsKey(PARAM_PAGE)) {
+            String[] pagingString = getParameterMap().get(PARAM_PAGE);
+            currPage = new Integer(pagingString[0]).intValue();
+            currPage = CmsPagingField.getPreviousPage(currPage);
+        } else if (getParameterMap().containsKey("page") && !hasValidationErrors()) {
+            String[] pagingString = getParameterMap().get(PARAM_PAGE);
+            currPage = new Integer(pagingString[0]).intValue();
+            currPage = CmsPagingField.getNextPage(currPage);
+        } else if (getParameterMap().containsKey(PARAM_PAGE) && hasValidationErrors()) {
+            String[] pagingString = getParameterMap().get(PARAM_PAGE);
+            currPage = new Integer(pagingString[0]).intValue();
+        }
+        pagingPos = CmsPagingField.getFirstFieldPosFromPage(this, currPage);
+        fieldNr = pagingPos;
+
+        // generate HTML for the input fields
+        StringBuffer fieldHtml = new StringBuffer(getFormConfiguration().getFields().size() * 256);
+        StringBuffer subFieldJSBuf = new StringBuffer(512);
+        for (int i = pagingPos, n = getFormConfiguration().getFields().size(); i < n; i++) {
+            fieldNr += 1;
+            // loop through all form input fields 
+            I_CmsField field = getFormConfiguration().getFields().get(i);
+
+            if (i == n - 1) {
+                // the last one has to close the row
+                place = 1;
+            }
+            field.setPlaceholder(place);
+            field.setPosition(pos);
+            field.setFieldNr(fieldNr);
+            String infoMessage = getInfos().get(field.getName());
+            // validate the file upload field here already because of the lost values in these fields
+            if (field instanceof CmsFileUploadField) {
+                infoMessage = field.validateForInfo(this);
+            }
+            fieldHtml.append(field.buildHtml(
+                this,
+                getMessages(),
+                getErrors().get(field.getName()),
+                getFormConfiguration().isShowMandatory(),
+                infoMessage));
+            subFieldJSBuf.append(field.getSubFieldScript());
+            pos = field.getPosition();
+            place = field.getPlaceholder();
+            // if there is a paging field do not show the following fields
+            if (field instanceof CmsPagingField) {
+                paging = true;
+                break;
+            }
+        }
+
+        // determine if subfield JavaScript has to be added
+        String subFieldJS = null;
+        if (subFieldJSBuf.length() > 0) {
+            subFieldJS = subFieldJSBuf.toString();
+        }
+
+        // determine if the submit and other buttons are shown
+        String submitButton = null;
+        String resetButton = null;
+        String hiddenFields = null;
+        String prevButton = null;
+
+        if (!paging) {
+            // show submit button on last form page
+            submitButton = getMessages().key("form.button.submit");
+            if (getParameterMap().containsKey(PARAM_PAGE)) {
+                // add hidden fields and previous button on last form page
+                StringBuffer hFieldsBuf = CmsPagingField.appendHiddenFields(
+                    this,
+                    getMessages(),
+                    getFormConfiguration().getFields().size());
+                hFieldsBuf.append("<input type=\"hidden\" name=\"page\" value=\"").append(currPage).append("\" />");
+                hFieldsBuf.append("<input type=\"hidden\" name=\"finalpage\" value=\"true\" />");
+                hiddenFields = hFieldsBuf.toString();
+                prevButton = getMessages().key("form.button.prev");
+            }
+            if (getFormConfiguration().isShowReset()) {
+                // show reset button if configured
+                resetButton = getMessages().key("form.button.reset");
+
+            }
+        }
+
+        // determine if the download button has to be shown
+        String downloadButton = null;
+        if (!getRequestContext().currentProject().isOnlineProject() && getFormConfiguration().isTransportDatabase()) {
+            downloadButton = getMessages().key("form.button.downloaddata");
+        }
+
+        // create the main form and pass the previously generated field HTML as attribute
+        StringTemplate sTemplate = getOutputTemplate("form");
+        // set the necessary attributes to use in the string template
+        sTemplate.setAttribute("formuri", OpenCms.getLinkManager().substituteLink(
+            getCmsObject(),
+            getCmsObject().getRequestContext().getUri()));
+        sTemplate.setAttribute("enctype", encType);
+        sTemplate.setAttribute("errormessage", errorMessage);
+        sTemplate.setAttribute("mandatorymessage", mandatoryMessage);
+        sTemplate.setAttribute("formconfig", getFormConfiguration());
+        sTemplate.setAttribute("fields", fieldHtml.toString());
+        sTemplate.setAttribute("subfieldjs", subFieldJS);
+        sTemplate.setAttribute("downloadbutton", downloadButton);
+        sTemplate.setAttribute("submitbutton", submitButton);
+        sTemplate.setAttribute("resetbutton", resetButton);
+        sTemplate.setAttribute("hiddenfields", hiddenFields);
+        sTemplate.setAttribute("prevbutton", prevButton);
+        return sTemplate.toString();
+    }
+
+    /**
+     * Returns the HTML for errors in the used string template group file.<p>
+     * 
+     * <b>Note</b>: Only generates output in an offline project
+     * 
+     * @return the HTML for errors in the used string template group file
+     */
+    protected String buildTemplateGroupCheckHtml() {
+
+        String result = "";
+        if (!getRequestContext().currentProject().isOnlineProject()) {
+            // check template group errors
+            StringTemplateErrorListener el = getOutputTemplateGroup().getErrorListener();
+            if ((el != null) && CmsStringUtil.isNotEmptyOrWhitespaceOnly(el.toString())) {
+                // errors(s) found, show error template
+                try {
+                    CmsFile stFile = getCmsObject().readFile(CmsForm.VFS_PATH_ERROR_TEMPLATEFILE);
+                    String stContent = new String(
+                        stFile.getContents(),
+                        getCmsObject().getRequestContext().getEncoding());
+                    StringTemplate st = new StringTemplate(stContent, DefaultTemplateLexer.class);
+                    // set the error attributes of the template
+                    st.setAttribute("errorheadline", "Error parsing output template group");
+                    st.setAttribute("errortext", "Error output:<br/><pre>" + el.toString() + "</pre>");
+                    st.setAttribute("errortemplatenames", getOutputTemplateGroup().getTemplateNames());
+                    result = st.toString();
+                } catch (Exception e) {
+                    // something went wrong, log error
+                    LOG.error("Error while getting error output template from file \""
+                        + CmsForm.VFS_PATH_ERROR_TEMPLATEFILE
+                        + "\".");
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Parses the form configuration and creates the necessary configuration objects.<p>
+     * 
+     * @param req the JSP request 
+     * @param formConfigUri URI of the form configuration file, if not provided, current URI is used for configuration
+     * 
+     * @throws Exception if creating the form configuration objects fails
+     */
+    protected void configureForm(HttpServletRequest req, String formConfigUri) throws Exception {
+
+        // read the form configuration file from VFS
+        if (CmsStringUtil.isEmpty(formConfigUri)) {
+            formConfigUri = getRequestContext().getUri();
+        }
+        m_multipartFileItems = CmsRequestUtil.readMultipartFileItems(req);
+        m_macroResolver = CmsMacroResolver.newInstance();
+        m_macroResolver.setKeepEmptyMacros(true);
+        m_macroResolver.setCmsObject(getCmsObject());
+        m_macroResolver.addMacro(MACRO_URL, OpenCms.getSiteManager().getCurrentSite(getCmsObject()).getServerPrefix(
+            getCmsObject(),
+            getRequestContext().getUri())
+            + link(getRequestContext().getUri()));
+        m_macroResolver.addMacro(MACRO_LOCALE, getRequestContext().getLocale().toString());
+
+        if (m_multipartFileItems != null) {
+            m_parameterMap = CmsRequestUtil.readParameterMapFromMultiPart(
+                getRequestContext().getEncoding(),
+                m_multipartFileItems);
+        } else {
+            m_parameterMap = new HashMap<String, String[]>();
+            m_parameterMap.putAll(getRequest().getParameterMap());
+        }
+
+        if (m_multipartFileItems != null) {
+            Map<String, FileItem> fileUploads = (Map<String, FileItem>)req.getSession().getAttribute(
+                ATTRIBUTE_FILEITEMS);
+            if (fileUploads == null) {
+                fileUploads = new HashMap<String, FileItem>();
+            }
+            // check, if there are any attachments
+            Iterator<FileItem> i = m_multipartFileItems.iterator();
+            while (i.hasNext()) {
+                FileItem fileItem = i.next();
+                if (CmsStringUtil.isNotEmpty(fileItem.getName())) {
+                    // append file upload to the map of file items
+                    fileUploads.put(fileItem.getFieldName(), fileItem);
+                    m_parameterMap.put(fileItem.getFieldName(), new String[] {fileItem.getName()});
+                }
+            }
+            req.getSession().setAttribute(ATTRIBUTE_FILEITEMS, fileUploads);
+        } else {
+            req.getSession().removeAttribute(ATTRIBUTE_FILEITEMS);
+        }
+        String formAction = getParameter(PARAM_FORMACTION);
+        // security check: some form actions are not allowed for everyone:
+        if (this.getCmsObject().getRequestContext().currentProject().isOnlineProject()) {
+            if (CmsFormHandler.ACTION_DOWNLOAD_DATA_1.equals(formAction)) {
+                LOG.error("Received an illegal request for download data of form "
+                    + formConfigUri
+                    + " (online request)");
+                formAction = ACTION_SUBMIT;
+            }
+        }
+        m_isValidatedCorrect = null;
+        setInitial(CmsStringUtil.isEmpty(formAction));
+
+        // get the localized messages
+        initMessages(formConfigUri);
+
+        // get the form configuration
+        setFormConfiguration(new CmsForm(this, getMessages(), isInitial(), formConfigUri, formAction));
     }
 
     /**

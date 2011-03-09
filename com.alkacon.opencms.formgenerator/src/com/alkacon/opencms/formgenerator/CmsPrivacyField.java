@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsPrivacyField.java,v $
- * Date   : $Date: 2010/05/21 13:49:18 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2011/03/09 15:14:37 $
+ * Version: $Revision: 1.5 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -35,10 +35,13 @@ package com.alkacon.opencms.formgenerator;
 import org.opencms.i18n.CmsMessages;
 import org.opencms.util.CmsStringUtil;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * Represents a check box with a link.<p>
+ * Represents a confirmation check box with a link.<p>
  * 
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * 
  * @since 7.0.4 
  * 
@@ -59,30 +62,22 @@ public class CmsPrivacyField extends CmsCheckboxField {
     }
 
     /**
-     * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, org.opencms.i18n.CmsMessages, String, boolean)
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, CmsMessages, String, boolean, String)
      */
     @Override
-    public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory) {
+    public String buildHtml(
+        CmsFormHandler formHandler,
+        CmsMessages messages,
+        String errorKey,
+        boolean showMandatory,
+        String infoKey) {
 
-        StringBuffer buf = new StringBuffer(128);
         String fieldLabel = getLabel();
-        String errorMessage = "";
+        String errorMessage = null;
         String mandatory = "";
         boolean showMandatoryLabel = false;
 
-        if (isMandatory() && showMandatory) {
-            mandatory = messages.key("form.html.mandatory");
-        }
-        // show the text with the mandatory, if exits
-        if (!CmsStringUtil.isEmptyOrWhitespaceOnly(fieldLabel)) {
-            fieldLabel = fieldLabel + mandatory;
-            showMandatoryLabel = true;
-        } else {
-            fieldLabel = "&nbsp;";
-        }
-
         if (CmsStringUtil.isNotEmpty(errorKey)) {
-
             if (CmsFormHandler.ERROR_MANDATORY.equals(errorKey)) {
                 errorMessage = messages.key("form.error.mandatory");
             } else if (CmsStringUtil.isNotEmpty(getErrorMessage())) {
@@ -90,65 +85,37 @@ public class CmsPrivacyField extends CmsCheckboxField {
             } else {
                 errorMessage = messages.key("form.error.validation");
             }
-
-            errorMessage = messages.key("form.html.error.start") + errorMessage + messages.key("form.html.error.end");
-            fieldLabel = messages.key("form.html.label.error.start")
-                + fieldLabel
-                + messages.key("form.html.label.error.end");
         }
 
-        // line #1
-        if (showRowStart(messages.key("form.html.col.two"))) {
-            if (isSubField()) {
-                buf.append(messages.key("form.html.row.subfield.start")).append("\n");
-            } else {
-                buf.append(messages.key("form.html.row.start")).append("\n");
-            }
+        if (isMandatory() && showMandatory) {
+            mandatory = messages.key("form.html.mandatory");
+        }
+        // show the text with the mandatory marker, if exists
+        if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(fieldLabel)) {
+            fieldLabel = fieldLabel + mandatory;
+            showMandatoryLabel = true;
+        } else {
+            fieldLabel = "&nbsp;";
         }
 
-        // add the item
+        Map<String, Object> stAttributes = new HashMap<String, Object>();
+        // set special label as additional attribute
+        stAttributes.put("label", fieldLabel);
+
+        // set the item values
         if (getItems().size() > 0) {
-
-            // line #2
-            buf.append(messages.key("form.html.label.start")).append(fieldLabel).append(
-                messages.key("form.html.label.end")).append("\n");
-
-            // line #3
-            buf.append(messages.key("form.html.field.start")).append("\n");
-
             CmsFieldItem curOption = getItems().get(0);
-            String checked = "";
-            if (curOption.isSelected()) {
-                checked = " checked=\"checked\"";
-            }
-            //checks if intern link
+            //check if an internal link should be generated
             String link = curOption.getLabel();
             if (link.startsWith("/")) {
                 link = formHandler.link(link);
             }
-
-            buf.append("<input type=\"checkbox\" name=\"").append(getName()).append("\" value=\"").append(
-                curOption.getValue()).append("\"").append(checked).append("/>");
-            //insert a link
-            buf.append("<a href=\"").append(link).append("\" rel=\"_blank\">").append(curOption.getValue()).append(
-                showMandatoryLabel ? "" : mandatory).append("</a>");
-
-            buf.append("\n");
+            // set link and link text as additional attributes
+            stAttributes.put("link", link);
+            stAttributes.put("linktext", curOption.getValue() + (showMandatoryLabel ? "" : mandatory));
         }
 
-        buf.append(errorMessage).append("\n");
-
-        buf.append(messages.key("form.html.field.end")).append("\n");
-
-        if (showRowEnd(messages.key("form.html.col.two"))) {
-            if (isSubField()) {
-                buf.append(messages.key("form.html.row.subfield.end")).append("\n");
-            } else {
-                buf.append(messages.key("form.html.row.end")).append("\n");
-            }
-        }
-
-        return buf.toString();
+        return createHtml(formHandler, messages, stAttributes, getType(), null, errorMessage, showMandatory);
     }
 
     /**
