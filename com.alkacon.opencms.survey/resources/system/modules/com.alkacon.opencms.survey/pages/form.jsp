@@ -35,7 +35,7 @@
 	<%
 	
 	// initialize the form handler
-	CmsFormHandler cmsF = new CmsFormHandler(pageContext, request, response);
+	CmsFormHandler cmsF = CmsFormHandlerFactory.create(pageContext, request, response);
 	boolean showFormF = cmsF.showForm();
 	Object inDetailGroupObj = pageContext.getAttribute("inDetailGroup");
 	Boolean inDetailGroupB = (Boolean)inDetailGroupObj;
