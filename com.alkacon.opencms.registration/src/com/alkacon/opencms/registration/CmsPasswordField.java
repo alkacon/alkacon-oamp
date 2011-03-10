@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.registration/src/com/alkacon/opencms/registration/CmsPasswordField.java,v $
- * Date   : $Date: 2008/02/19 13:22:30 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2011/03/10 11:59:04 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -39,12 +39,14 @@ import org.opencms.i18n.CmsMessages;
 import org.opencms.main.CmsException;
 import org.opencms.util.CmsStringUtil;
 
+import org.antlr.stringtemplate.StringTemplate;
+
 /**
  * Represents a password field.<p>
  * 
  * @author Michael Moossen 
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4 
  */
@@ -76,131 +78,129 @@ public class CmsPasswordField extends A_CmsField {
     }
 
     /**
-     * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, org.opencms.i18n.CmsMessages, String, boolean)
+     * @see com.alkacon.opencms.formgenerator.I_CmsField#buildHtml(CmsFormHandler, CmsMessages, String, boolean, String)
      */
-    public String buildHtml(CmsFormHandler formHandler, CmsMessages messages, String errorKey, boolean showMandatory) {
+    @Override
+    public String buildHtml(
+        CmsFormHandler formHandler,
+        CmsMessages messages,
+        String errorKey,
+        boolean showMandatory,
+        String infoKey) {
 
-        StringBuffer buf = new StringBuffer();
+        StringBuffer buf = new StringBuffer(512);
 
-        String fieldLabel = getLabel();
-        String errorMessage = "";
-        String mandatory = "";
+        int pos = getPosition();
 
+        if (isTwoCols() == null) {
+            // get the two columns configuration template
+            StringTemplate sTemplate = formHandler.getOutputTemplate("form_twocolumns");
+            setTwoCols(Boolean.valueOf(sTemplate.toString()).booleanValue());
+        }
+
+        // get the localized mandatory marker if necessary
+        String mandatory = null;
+        if (isMandatory() && showMandatory) {
+            mandatory = messages.key("form.html.mandatory");
+        }
+
+        // zero row: old password, only if in profile mode
+
+        if (!formHandler.getCmsObject().getRequestContext().currentUser().isGuestUser()) {
+
+            String errorMessage = null;
+            if (ERROR_LOGIN.equals(errorKey)) {
+                errorMessage = messages.key("password.error.login");
+            }
+
+            com.alkacon.opencms.formgenerator.CmsPasswordField pwField = new com.alkacon.opencms.formgenerator.CmsPasswordField();
+            pwField.setLabel(messages.key("password.label.oldpwd"));
+            pwField.setName(PREFIX_PASSWORD + getName());
+            pwField.setValue("");
+            pwField.setPosition(pos);
+            pwField.setTwoCols(isTwoCols().booleanValue());
+
+            // get the form field template
+            StringTemplate sTemplate = formHandler.getOutputTemplate("field_"
+                + com.alkacon.opencms.formgenerator.CmsPasswordField.getStaticType());
+
+            // set default template attributes for the field
+            sTemplate.setAttribute("field", pwField);
+            sTemplate.setAttribute("formconfig", formHandler.getFormConfiguration());
+            sTemplate.setAttribute("attributes", null);
+            sTemplate.setAttribute("errormessage", errorMessage);
+            sTemplate.setAttribute("mandatory", mandatory);
+            buf.append(sTemplate.toString());
+            pos = pwField.getPosition();
+        }
+
+        // first row: password
+
+        String errorMessage;
         if (CmsStringUtil.isNotEmpty(errorKey)) {
             if (CmsFormHandler.ERROR_MANDATORY.equals(errorKey)) {
                 errorMessage = messages.key("form.error.mandatory");
             } else if (ERROR_LOGIN.equals(errorKey)) {
-                errorMessage = ""; // will be show in the old password row
+                errorMessage = null; // will be shown in the old password row
             } else if (ERROR_CONFIRMATION.equals(errorKey)) {
-                errorMessage = ""; // will be show in the confirmation row
+                errorMessage = null; // will be shown in the confirmation row
             } else if (CmsStringUtil.isNotEmpty(getErrorMessage())) {
                 errorMessage = getErrorMessage();
             } else {
                 errorMessage = messages.key("form.error.validation");
             }
-            if (!ERROR_LOGIN.equals(errorKey) && !ERROR_CONFIRMATION.equals(errorKey)) {
-                errorMessage = messages.key("form.html.error.start")
-                    + errorMessage
-                    + messages.key("form.html.error.end");
-                fieldLabel = messages.key("form.html.label.error.start")
-                    + fieldLabel
-                    + messages.key("form.html.label.error.end");
-            }
+        } else {
+            errorMessage = null;
         }
 
-        if (isMandatory() && showMandatory) {
-            mandatory = messages.key("form.html.mandatory");
-        }
+        com.alkacon.opencms.formgenerator.CmsPasswordField pwField = new com.alkacon.opencms.formgenerator.CmsPasswordField();
+        pwField.setLabel(getLabel());
+        pwField.setName(getName());
+        pwField.setValue("");
+        pwField.setPosition(pos);
+        pwField.setTwoCols(isTwoCols().booleanValue());
 
-        // zero row: confirmation, only if in profile mode
+        // get the form field template
+        StringTemplate sTemplate = formHandler.getOutputTemplate("field_"
+            + com.alkacon.opencms.formgenerator.CmsPasswordField.getStaticType());
 
-        if (!formHandler.getCmsObject().getRequestContext().currentUser().isGuestUser()) {
-            // line #1
-            if (showRowStart(messages.key("form.html.col.two"))) {
-                buf.append(messages.key("form.html.row.start")).append("\n");
-            }
-
-            // line #2
-            buf.append(messages.key("form.html.label.start"));
-            if (ERROR_LOGIN.equals(errorKey)) {
-                buf.append(messages.key("form.html.label.error.start"));
-            }
-            buf.append(messages.key("password.label.oldpwd"));
-            if (ERROR_LOGIN.equals(errorKey)) {
-                buf.append(messages.key("form.html.label.error.end"));
-            }
-            buf.append(mandatory).append(messages.key("form.html.label.end")).append("\n");
-
-            // line #3
-            buf.append(messages.key("form.html.field.start")).append("<input type=\"password\" name=\"").append(
-                PREFIX_PASSWORD).append(getName()).append("\" value=\"").append("\"").append(
-                formHandler.getFormConfiguration().getFormFieldAttributes()).append("/>");
-            if (ERROR_LOGIN.equals(errorKey)) {
-                buf.append(messages.key("form.html.error.start")).append(messages.key("password.error.login")).append(
-                    messages.key("form.html.error.end"));
-            }
-            buf.append(messages.key("form.html.field.end")).append("\n");
-
-            // line #4
-            if (showRowEnd(messages.key("form.html.col.two"))) {
-                buf.append(messages.key("form.html.row.end")).append("\n");
-            }
-        }
-
-        // first row: password
-
-        // line #1
-        if (showRowStart(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.start")).append("\n");
-        }
-
-        // line #2
-        buf.append(messages.key("form.html.label.start")).append(fieldLabel).append(mandatory).append(
-            messages.key("form.html.label.end")).append("\n");
-
-        // line #3
-        buf.append(messages.key("form.html.field.start")).append("<input type=\"password\" name=\"").append(getName()).append(
-            "\" value=\"").append("\"").append(formHandler.getFormConfiguration().getFormFieldAttributes()).append("/>").append(
-            messages.key("form.html.field.end")).append("\n");
-
-        // line #4
-        if (showRowEnd(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.end")).append("\n");
-        }
+        // set default template attributes for the field
+        sTemplate.setAttribute("field", pwField);
+        sTemplate.setAttribute("formconfig", formHandler.getFormConfiguration());
+        sTemplate.setAttribute("attributes", null);
+        sTemplate.setAttribute("errormessage", errorMessage);
+        sTemplate.setAttribute("mandatory", mandatory);
+        buf.append(sTemplate.toString());
+        pos = pwField.getPosition();
 
         // second row: confirmation
 
-        // line #1
-        if (showRowStart(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.start")).append("\n");
-        }
-
-        // line #2
-        buf.append(messages.key("form.html.label.start"));
+        errorMessage = null;
         if (ERROR_CONFIRMATION.equals(errorKey)) {
-            buf.append(messages.key("form.html.label.error.start"));
-        }
-        buf.append(messages.key("password.label.confirmation"));
-        if (ERROR_CONFIRMATION.equals(errorKey)) {
-            buf.append(messages.key("form.html.label.error.end"));
-        }
-        buf.append(mandatory).append(messages.key("form.html.label.end")).append("\n");
-
-        // line #3
-        buf.append(messages.key("form.html.field.start")).append("<input type=\"password\" name=\"").append(
-            PREFIX_CONFIRMATION).append(getName()).append("\" value=\"").append("\"").append(
-            formHandler.getFormConfiguration().getFormFieldAttributes()).append("/>");
-        if (ERROR_CONFIRMATION.equals(errorKey)) {
-            buf.append(messages.key("form.html.error.start")).append(messages.key("password.error.login")).append(
-                messages.key("form.html.error.end"));
-        }
-        buf.append(messages.key("form.html.field.end")).append("\n");
-
-        // line #4
-        if (showRowEnd(messages.key("form.html.col.two"))) {
-            buf.append(messages.key("form.html.row.end")).append("\n");
+            errorMessage = messages.key("password.error.login");
         }
 
+        pwField = new com.alkacon.opencms.formgenerator.CmsPasswordField();
+        pwField.setLabel(messages.key("password.label.confirmation"));
+        pwField.setName(PREFIX_CONFIRMATION + getName());
+        pwField.setValue("");
+        pwField.setPosition(pos);
+        pwField.setTwoCols(isTwoCols().booleanValue());
+
+        // get the form field template
+        sTemplate = formHandler.getOutputTemplate("field_"
+            + com.alkacon.opencms.formgenerator.CmsPasswordField.getStaticType());
+
+        // set default template attributes for the field
+        sTemplate.setAttribute("field", pwField);
+        sTemplate.setAttribute("formconfig", formHandler.getFormConfiguration());
+        sTemplate.setAttribute("attributes", null);
+        sTemplate.setAttribute("errormessage", errorMessage);
+        sTemplate.setAttribute("mandatory", mandatory);
+        buf.append(sTemplate.toString());
+        pos = pwField.getPosition();
+
+        setPosition(pos);
         return buf.toString();
     }
 
@@ -215,6 +215,7 @@ public class CmsPasswordField extends A_CmsField {
     /**
      * @see com.alkacon.opencms.formgenerator.A_CmsField#validate(com.alkacon.opencms.formgenerator.CmsFormHandler)
      */
+    @Override
     public String validate(CmsFormHandler formHandler) {
 
         String validationError = super.validate(formHandler);
@@ -222,7 +223,7 @@ public class CmsPasswordField extends A_CmsField {
             // old password, only if in profile mode
             if (!formHandler.getCmsObject().getRequestContext().currentUser().isGuestUser()) {
                 // get old password value from request 
-                String[] parameterValues = (String[])formHandler.getParameterMap().get(PREFIX_PASSWORD + getName());
+                String[] parameterValues = formHandler.getParameterMap().get(PREFIX_PASSWORD + getName());
                 StringBuffer value = new StringBuffer();
                 if (parameterValues != null) {
                     for (int j = 0; j < parameterValues.length; j++) {
@@ -248,7 +249,7 @@ public class CmsPasswordField extends A_CmsField {
                 }
             }
             // get confirmation value from request 
-            String[] parameterValues = (String[])formHandler.getParameterMap().get(PREFIX_CONFIRMATION + getName());
+            String[] parameterValues = formHandler.getParameterMap().get(PREFIX_CONFIRMATION + getName());
             StringBuffer value = new StringBuffer();
             if (parameterValues != null) {
                 for (int j = 0; j < parameterValues.length; j++) {

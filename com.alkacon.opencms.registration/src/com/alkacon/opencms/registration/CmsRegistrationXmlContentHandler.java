@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.registration/src/com/alkacon/opencms/registration/CmsRegistrationXmlContentHandler.java,v $
- * Date   : $Date: 2010/02/19 13:25:46 $
- * Version: $Revision: 1.2 $
+ * Date   : $Date: 2011/03/10 11:59:04 $
+ * Version: $Revision: 1.3 $
  *
  * This library is part of OpenCms -
  * the Open Source Content Mananagement System
@@ -56,7 +56,7 @@ import java.util.Locale;
  *  
  * @author Michael Moossen
  * 
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *  
  * @since 7.0.3
  */
@@ -73,13 +73,14 @@ public class CmsRegistrationXmlContentHandler extends CmsDefaultXmlContentHandle
     /**
      * @see org.opencms.xml.content.CmsDefaultXmlContentHandler#prepareForWrite(org.opencms.file.CmsObject, org.opencms.xml.content.CmsXmlContent, org.opencms.file.CmsFile)
      */
+    @Override
     public CmsFile prepareForWrite(CmsObject cms, CmsXmlContent content, CmsFile file) throws CmsException {
 
         // for each locale
         if (file.getName().indexOf("~") != 0) {
-            Iterator locales = content.getLocales().iterator();
+            Iterator<Locale> locales = content.getLocales().iterator();
             while (locales.hasNext()) {
-                Locale locale = (Locale)locales.next();
+                Locale locale = locales.next();
                 // check the account manager role for the given organizational unit 
                 CmsOrganizationalUnit ou = OpenCms.getOrgUnitManager().readOrganizationalUnit(
                     cms,
@@ -98,16 +99,19 @@ public class CmsRegistrationXmlContentHandler extends CmsDefaultXmlContentHandle
                     }
                 }
                 // check mandatory fields
-                List mandatories = new ArrayList(Arrays.asList(new String[] {"email", "password", "login"}));
+                List<String> mandatories = new ArrayList<String>(Arrays.asList(new String[] {
+                    "email",
+                    "password",
+                    "login"}));
                 if (Boolean.valueOf(
                     content.getStringValue(cms, CmsRegistrationForm.NODE_ACTION
                         + "/"
                         + CmsRegistrationForm.NODE_EMAILASLOGIN, locale)).booleanValue()) {
                     mandatories.remove(2);
                 }
-                Iterator fields = content.getValues(CmsForm.NODE_INPUTFIELD, locale).iterator();
+                Iterator<I_CmsXmlContentValue> fields = content.getValues(CmsForm.NODE_INPUTFIELD, locale).iterator();
                 while (fields.hasNext()) {
-                    I_CmsXmlContentValue inputField = (I_CmsXmlContentValue)fields.next();
+                    I_CmsXmlContentValue inputField = fields.next();
                     String stringValue = content.getStringValue(cms, inputField.getPath()
                         + "/"
                         + CmsForm.NODE_FIELDLABEL, locale);

@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.registration/src/com/alkacon/opencms/registration/CmsRegistrationFormHandler.java,v $
- * Date   : $Date: 2010/05/21 13:50:25 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2011/03/10 11:59:04 $
+ * Version: $Revision: 1.4 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -51,6 +51,8 @@ import org.opencms.util.CmsMacroResolver;
 import org.opencms.util.CmsRequestUtil;
 import org.opencms.util.CmsStringUtil;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.util.Arrays;
@@ -62,11 +64,14 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.logging.Log;
+
+import org.antlr.stringtemplate.StringTemplate;
 
 /**
  * The form handler controls the html or mail output of a configured email form.<p>
@@ -76,7 +81,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * 
  * @since 7.0.4 
  */
@@ -109,39 +114,21 @@ public class CmsRegistrationFormHandler extends CmsFormHandler {
     /** Reflection method prefix constant. */
     private static final String REFLECTION_SETTER_PREFIX = "set";
 
-    /**
-     * Constructor, creates the necessary form configuration objects.<p>
-     * 
-     * @param context the JSP page context object
-     * @param req the JSP request 
-     * @param res the JSP response 
-     * 
-     * @throws Exception if creating the form configuration objects fails
-     */
-    public CmsRegistrationFormHandler(PageContext context, HttpServletRequest req, HttpServletResponse res)
-    throws Exception {
-
-        super(context, req, res);
-    }
+    /** Flag to determine if the registration page or the profile page is shown. */
+    private boolean m_profilePage;
 
     /**
-     * Constructor, creates the necessary form configuration objects using a given configuration file URI.<p>
+     * Empty constructor, be sure to call one of the available initialization methods afterwards.<p>
      * 
-     * @param context the JSP page context object
-     * @param req the JSP request 
-     * @param res the JSP response 
-     * @param formConfigUri URI of the form configuration file, if not provided, current URI is used for configuration
-     * 
-     * @throws Exception if creating the form configuration objects fails
+     * Possible initialization methods are:<p>
+     * <ul>
+     * <li>{@link #init(PageContext, HttpServletRequest, HttpServletResponse)}</li>
+     * <li>{@link #init(PageContext, HttpServletRequest, HttpServletResponse, String)}</li>
+     * </ul>
      */
-    public CmsRegistrationFormHandler(
-        PageContext context,
-        HttpServletRequest req,
-        HttpServletResponse res,
-        String formConfigUri)
-    throws Exception {
+    public CmsRegistrationFormHandler() {
 
-        super(context, req, res, formConfigUri);
+        super();
     }
 
     /**
@@ -246,6 +233,59 @@ public class CmsRegistrationFormHandler extends CmsFormHandler {
     }
 
     /**
+     * Special form output for the registration.<p>
+     * 
+     * @see com.alkacon.opencms.formgenerator.CmsFormHandler#createForm()
+     */
+    @Override
+    public void createForm() throws IOException, JspException {
+
+        // the output writer
+        Writer out = getJspContext().getOut();
+
+        String actcode = getRequest().getParameter(PARAM_ACTCODE);
+        if (isRegistrationPage() && CmsStringUtil.isNotEmptyOrWhitespaceOnly(actcode)) {
+            // show user activation page
+            getRequest().setAttribute("formhandler", this);
+            include("/system/modules/com.alkacon.opencms.registration/elements/activation.jsp");
+        } else {
+            boolean showForm = showForm();
+            if (!showForm) {
+                // form has been submitted with correct values, decide further actions
+                if (showCheck()) {
+                    // show optional check page
+                    out.write(buildCheckHtml());
+                } else {
+                    // try to send a notification email with the submitted form field values
+                    if (sendData()) {
+                        // successfully sent mail, show confirmation end page
+                        out.write(buildConfirmHtml());
+                    } else {
+                        // failure sending mail, show error output
+                        StringTemplate sTemplate = getOutputTemplate("emailerror");
+                        sTemplate.setAttribute("headline", getMessages().key("form.error.mail.headline"));
+                        sTemplate.setAttribute("text", getMessages().key("form.error.mail.text"));
+                        sTemplate.setAttribute("error", getErrors().get("sendmail"));
+                        out.write(sTemplate.toString());
+                    }
+                }
+            } else {
+                // set some variables depending on page and show the form
+                if (isProfilePage()) {
+                    // the profile page has a modified form text to show
+                    getFormConfiguration().setFormText(getEditFormText());
+                    if (isInitial()) {
+                        // fill in the field values on initial profile page
+                        fillFields();
+                    }
+                }
+                // create the form
+                out.write(buildFormHtml());
+            }
+        }
+    }
+
+    /**
      * Checks if the current activation code identifies an existing user.<p>
      * 
      * @return if the user is exists
@@ -264,9 +304,9 @@ public class CmsRegistrationFormHandler extends CmsFormHandler {
             // ignore if guest user
             return;
         }
-        Iterator fields = getRegFormConfiguration().getFields().iterator();
+        Iterator<I_CmsField> fields = getRegFormConfiguration().getFields().iterator();
         while (fields.hasNext()) {
-            I_CmsField field = (I_CmsField)fields.next();
+            I_CmsField field = fields.next();
             if (CmsStringUtil.isEmptyOrWhitespaceOnly(field.getDbLabel())) {
                 continue;
             }
@@ -302,6 +342,21 @@ public class CmsRegistrationFormHandler extends CmsFormHandler {
      * 
      * @return the form configuration
      */
+    @Override
+    public CmsForm getFormConfiguration() {
+
+        if (isProfilePage()) {
+            return getRegFormConfiguration();
+        } else {
+            return m_formConfiguration;
+        }
+    }
+
+    /**
+     * Returns the form configuration.<p>
+     * 
+     * @return the form configuration
+     */
     public CmsRegistrationForm getRegFormConfiguration() {
 
         return (CmsRegistrationForm)super.getFormConfiguration();
@@ -314,7 +369,8 @@ public class CmsRegistrationFormHandler extends CmsFormHandler {
      * @param formConfigUri URI of the form configuration file, if not provided, current URI is used for configuration
      * @throws Exception if creating the form configuration objects fails
      */
-    public void init(HttpServletRequest req, String formConfigUri) throws Exception {
+    @Override
+    protected void configureForm(HttpServletRequest req, String formConfigUri) throws Exception {
 
         m_multipartFileItems = CmsRequestUtil.readMultipartFileItems(req);
         m_macroResolver = CmsMacroResolver.newInstance();
@@ -325,19 +381,19 @@ public class CmsRegistrationFormHandler extends CmsFormHandler {
                 getRequestContext().getEncoding(),
                 m_multipartFileItems);
         } else {
-            m_parameterMap = new HashMap();
+            m_parameterMap = new HashMap<String, String[]>();
             m_parameterMap.putAll(getRequest().getParameterMap());
         }
 
         if (m_multipartFileItems != null) {
-            Map fileUploads = (Map)req.getSession().getAttribute(ATTRIBUTE_FILEITEMS);
+            Map<String, FileItem> fileUploads = (Map)req.getSession().getAttribute(ATTRIBUTE_FILEITEMS);
             if (fileUploads == null) {
-                fileUploads = new HashMap();
+                fileUploads = new HashMap<String, FileItem>();
             }
             // check, if there are any attachments
-            Iterator i = m_multipartFileItems.iterator();
+            Iterator<FileItem> i = m_multipartFileItems.iterator();
             while (i.hasNext()) {
-                FileItem fileItem = (FileItem)i.next();
+                FileItem fileItem = i.next();
                 if (CmsStringUtil.isNotEmpty(fileItem.getName())) {
                     // append file upload to the map of file items
                     fileUploads.put(fileItem.getFieldName(), fileItem);
@@ -361,6 +417,26 @@ public class CmsRegistrationFormHandler extends CmsFormHandler {
     }
 
     /**
+     * Returns if the profile page is shown.<p>
+     * 
+     * @return <code>true</code> if the profile page is shown, otherwise <code>false</code>
+     */
+    public boolean isProfilePage() {
+
+        return m_profilePage;
+    }
+
+    /**
+     * Returns if the registration page is shown.<p>
+     * 
+     * @return <code>true</code> if the registration page is shown, otherwise <code>false</code>
+     */
+    public boolean isRegistrationPage() {
+
+        return !m_profilePage;
+    }
+
+    /**
      * Checks if the current activation code identifies an existing user and if it is already activated.<p>
      * 
      * @return if the user is activated
@@ -380,6 +456,7 @@ public class CmsRegistrationFormHandler extends CmsFormHandler {
      * 
      * @return true if successful 
      */
+    @Override
     public boolean sendData() {
 
         boolean result = true;
@@ -387,11 +464,11 @@ public class CmsRegistrationFormHandler extends CmsFormHandler {
             CmsRegistrationForm data = getRegFormConfiguration();
             data.removeCaptchaField();
             // fill the macro resolver for resolving in subject and content: 
-            List fields = data.getAllFields();
-            Iterator itFields = fields.iterator();
+            List<I_CmsField> fields = data.getAllFields();
+            Iterator<I_CmsField> itFields = fields.iterator();
             // add field values as macros
             while (itFields.hasNext()) {
-                I_CmsField field = (I_CmsField)itFields.next();
+                I_CmsField field = itFields.next();
                 String fValue = field.getValue();
                 if (field instanceof CmsDynamicField) {
                     fValue = data.getFieldStringValueByName(field.getName());
@@ -439,8 +516,19 @@ public class CmsRegistrationFormHandler extends CmsFormHandler {
     }
 
     /**
+     * Sets if the profile page is shown.<p>
+     * 
+     * @param profilePage flag to determine if the registration page or the profile page is shown
+     */
+    public void setProfilePage(boolean profilePage) {
+
+        m_profilePage = profilePage;
+    }
+
+    /**
      * @see com.alkacon.opencms.formgenerator.CmsFormHandler#useInFormDataMacro(com.alkacon.opencms.formgenerator.I_CmsField)
      */
+    @Override
     protected boolean useInFormDataMacro(I_CmsField field) {
 
         boolean ret = super.useInFormDataMacro(field);
@@ -484,10 +572,10 @@ public class CmsRegistrationFormHandler extends CmsFormHandler {
         m_macroResolver.addMacro(MACRO_ACTURI, "<a href=\"" + link + "\">" + link + "</a>");
         // now add additional information
         // iterate all fields except email, login and password
-        List excludes = Arrays.asList(new String[] {FIELD_EMAIL, FIELD_PASSWORD, FIELD_LOGIN});
-        Iterator it = form.getAllFields().iterator();
+        List<String> excludes = Arrays.asList(new String[] {FIELD_EMAIL, FIELD_PASSWORD, FIELD_LOGIN});
+        Iterator<I_CmsField> it = form.getAllFields().iterator();
         while (it.hasNext()) {
-            I_CmsField field = (I_CmsField)it.next();
+            I_CmsField field = it.next();
             if (excludes.contains(field.getDbLabel())) {
                 continue;
             }
@@ -510,9 +598,9 @@ public class CmsRegistrationFormHandler extends CmsFormHandler {
         CmsObject cms = CmsRegistrationModuleAction.getAdminCms();
         CmsUser user = getRequestContext().currentUser();
         CmsRegistrationForm form = getRegFormConfiguration();
-        Iterator it = form.getAllFields().iterator();
+        Iterator<I_CmsField> it = form.getAllFields().iterator();
         while (it.hasNext()) {
-            I_CmsField field = (I_CmsField)it.next();
+            I_CmsField field = it.next();
             setUserValue(user, field);
             if (field.getDbLabel().equals(FIELD_PASSWORD)) {
                 if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(field.getValue())) {

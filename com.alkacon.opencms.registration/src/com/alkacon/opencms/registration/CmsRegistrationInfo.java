@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.registration/src/com/alkacon/opencms/registration/CmsRegistrationInfo.java,v $
- * Date   : $Date: 2008/02/19 13:22:30 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2011/03/10 11:59:04 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -47,7 +47,7 @@ import java.util.List;
  * 
  * @author Michael Moossen 
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4 
  */
@@ -71,12 +71,12 @@ public class CmsRegistrationInfo {
      * 
      * @throws CmsException if something goes wrong
      */
-    public List getActivatedUsers() throws CmsException {
+    public List<CmsUser> getActivatedUsers() throws CmsException {
 
-        List users = new ArrayList(getUsers());
-        Iterator itUsers = users.iterator();
+        List<CmsUser> users = new ArrayList<CmsUser>(getUsers());
+        Iterator<CmsUser> itUsers = users.iterator();
         while (itUsers.hasNext()) {
-            CmsUser user = (CmsUser)itUsers.next();
+            CmsUser user = itUsers.next();
             if (!user.isEnabled()) {
                 itUsers.remove();
             }
@@ -91,12 +91,12 @@ public class CmsRegistrationInfo {
      * 
      * @throws CmsException if something goes wrong
      */
-    public List getNotActivatedUsers() throws CmsException {
+    public List<CmsUser> getNotActivatedUsers() throws CmsException {
 
-        List users = new ArrayList(getUsers());
-        Iterator itUsers = users.iterator();
+        List<CmsUser> users = new ArrayList<CmsUser>(getUsers());
+        Iterator<CmsUser> itUsers = users.iterator();
         while (itUsers.hasNext()) {
-            CmsUser user = (CmsUser)itUsers.next();
+            CmsUser user = itUsers.next();
             if (user.isEnabled()) {
                 itUsers.remove();
             }
@@ -135,12 +135,12 @@ public class CmsRegistrationInfo {
      * 
      * @throws CmsException if something goes wrong
      */
-    public List getOnlineUsers() throws CmsException {
+    public List<CmsUser> getOnlineUsers() throws CmsException {
 
-        List users = new ArrayList(getUsers());
-        Iterator itUsers = users.iterator();
+        List<CmsUser> users = new ArrayList<CmsUser>(getUsers());
+        Iterator<CmsUser> itUsers = users.iterator();
         while (itUsers.hasNext()) {
-            CmsUser user = (CmsUser)itUsers.next();
+            CmsUser user = itUsers.next();
             if (OpenCms.getSessionManager().getSessionInfos(user.getId()).isEmpty()) {
                 itUsers.remove();
             }
@@ -155,7 +155,7 @@ public class CmsRegistrationInfo {
      * 
      * @throws CmsException if something goes wrong
      */
-    public List getUsers() throws CmsException {
+    public List<CmsUser> getUsers() throws CmsException {
 
         return OpenCms.getOrgUnitManager().getUsers(m_cms, m_ou.getName(), false);
     }

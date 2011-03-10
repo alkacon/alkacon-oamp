@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.registration/src/com/alkacon/opencms/registration/CmsRegistrationForm.java,v $
- * Date   : $Date: 2010/02/19 16:07:33 $
- * Version: $Revision: 1.3 $
+ * Date   : $Date: 2011/03/10 11:59:04 $
+ * Version: $Revision: 1.4 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -57,7 +57,7 @@ import java.util.Locale;
  * 
  * @author Michael Moossen 
  * 
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * 
  * @since 7.0.4 
  */
@@ -149,6 +149,7 @@ public class CmsRegistrationForm extends CmsForm {
     /**
      * @see com.alkacon.opencms.formgenerator.CmsForm#getConfirmationMailField()
      */
+    @Override
     public int getConfirmationMailField() {
 
         if (m_fieldsByName.isEmpty() || (m_confirmationMailField >= 0)) {
@@ -203,6 +204,7 @@ public class CmsRegistrationForm extends CmsForm {
      * 
      * @throws Exception if parsing the configuration fails
      */
+    @Override
     public void init(CmsFormHandler jsp, CmsMessages messages, boolean initial, String formConfigUri, String formAction)
     throws Exception {
 
@@ -221,9 +223,9 @@ public class CmsRegistrationForm extends CmsForm {
         initMembers();
 
         m_formAction = formAction;
-        m_fields = new ArrayList();
-        m_dynaFields = new ArrayList();
-        m_fieldsByName = new HashMap();
+        m_fields = new ArrayList<I_CmsField>();
+        m_dynaFields = new ArrayList<I_CmsField>();
+        m_fieldsByName = new HashMap<String, I_CmsField>();
 
         // initialize general form configuration
         setTransportDatabase(false);
@@ -267,6 +269,7 @@ public class CmsRegistrationForm extends CmsForm {
     /**
      * @see com.alkacon.opencms.formgenerator.CmsForm#getField(java.lang.String)
      */
+    @Override
     protected I_CmsField getField(String fieldType) {
 
         if (fieldType.equals(CmsPasswordField.getStaticType())) {
@@ -285,6 +288,7 @@ public class CmsRegistrationForm extends CmsForm {
      * 
      * @throws Exception if initializing the form settings fails
      */
+    @Override
     protected void initFormGlobalConfiguration(CmsXmlContent content, CmsObject cms, Locale locale, CmsMessages messages)
     throws Exception {
 

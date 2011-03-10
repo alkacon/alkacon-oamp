@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.registration/src/com/alkacon/opencms/registration/CmsRegistrationModuleAction.java,v $
- * Date   : $Date: 2008/02/19 13:22:30 $
- * Version: $Revision: 1.1 $
+ * Date   : $Date: 2011/03/10 11:59:04 $
+ * Version: $Revision: 1.2 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -44,7 +44,7 @@ import org.opencms.module.CmsModule;
  * 
  * @author Michael Moossen 
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * 
  * @since 7.0.4 
  */
@@ -66,6 +66,7 @@ public class CmsRegistrationModuleAction extends A_CmsModuleAction {
     /**
      * @see org.opencms.module.A_CmsModuleAction#initialize(org.opencms.file.CmsObject, org.opencms.configuration.CmsConfigurationManager, org.opencms.module.CmsModule)
      */
+    @Override
     public void initialize(CmsObject adminCms, CmsConfigurationManager configurationManager, CmsModule module) {
 
         super.initialize(adminCms, configurationManager, module);
