@@ -56,6 +56,9 @@ Legend:
 * Bug fixed
 - General comment
 
+1.4.4 -xxx, 2011
+! Added new mechanism to generate form output using StringTemplate, providing better control over generated HTML code
+
 1.4.3 - Mar, 2011
 * Fixed issue #1947: Fixed NullPointerException when editing entries with Webform module
 * Fixed issue #1948: Fixed field entries starting with an integer were treated as numbers
