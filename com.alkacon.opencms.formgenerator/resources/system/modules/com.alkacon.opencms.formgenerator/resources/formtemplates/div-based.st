@@ -584,18 +584,16 @@ $confirmfields:{
 datadownloadpage(formuri,formconfig,skinuri,labelfrom,datefrom,labelto,dateto,calendaralttext,submitbutton,resetbutton) ::= <<
 $! ###### DATA DOWNLOAD page of the form ###### !$
 <style type="text/css">
+.webform_row {
+	display: block;
+	margin-bottom: 8px;
+}
+.webform_row label {
+	display: inline-block;
+	width: 160px;
+}
 .calendarinput {
-	padding: 1px 2px 1px 2px; border-top: 1px solid #868686; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc; border-left: 1px solid #868686; background-color: #fff; width: 140px;
-}
-
-span.norm{
-	display: block; border: 1px solid ThreeDFace;
-}
-span.push {
-	display: block; border-top: 1px solid ThreeDShadow; border-left: 1px solid ThreeDShadow; border-bottom: 1px solid ThreeDHighlight; border-right: 1px solid ThreeDHighlight;
-}
-span.over {
-	display: block; border-top: 1px solid ThreeDHighlight; border-left: 1px solid ThreeDHighlight; border-bottom: 1px solid ThreeDShadow; border-right: 1px solid ThreeDShadow;
+	padding: 1px 2px 1px 2px; border-top: 1px solid #868686; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc; border-left: 1px solid #868686; background-color: #fff; width: 150px;
 }
 .calendarbutton {
 	height: 20px; width: 20px; border: 0px none; vertical-align: middle;
@@ -603,57 +601,26 @@ span.over {
 a.button {
 	color: ButtonText; text-decoration: none; cursor: pointer;
 }
-
-
-/* - internet explorer 6 specific definitions (hacks) - */
-* html .ip_text {
-	padding: 2px;
-}
 </style>
-<form name="emailform" action="$formuri$" method="post" class="formarea">
-<table class="webform_table">
-<tbody><tr>
- <td class="webform_label">
-   <label for="starttime">$labelfrom$</label>
- </td>
- <td class="webform_field">
-  <table border="0">
-   <tr>
-    <td>
-     <input id="starttime" type="text" value="$datefrom$" name="starttime" class="calendarinput" /> 
-    </td>
-    <td>  
-     <a href="#" class="button" title="$calendaralttext$" id="starttime.calendar"><span unselectable="on" class="norm" onmouseover="className='over'" onmouseout="className='norm'" onmousedown="className='push'" onmouseup="className='over'"><img class="calendarbutton" src="$skinuri$buttons/calendar.png" alt="$calendaralttext$"></span></a>
-    </td>
-   </tr>
-  </table>
- </td>
-</tr></tbody>
-<tbody><tr>
- <td class="webform_label">
-  <label for="endtime">$labelto$</label>
- </td>
- <td class="webform_field">
-  <table border="0">
-   <tr>
-    <td>
-     <input id="endtime" type="text" value="$dateto$" name="endtime" class="calendarinput" /> 
-    </td>
-    <td>  
-     <a href="#" class="button" title="$calendaralttext$" id="endtime.calendar"><span unselectable="on" class="norm" onmouseover="className='over'" onmouseout="className='norm'" onmousedown="className='push'" onmouseup="className='over'"><img class="calendarbutton" src="$skinuri$buttons/calendar.png" alt="$calendaralttext$"></span></a>
-    </td>
-   </tr>
-  </table>
- </td>
-</tr></tbody>
-<tbody><tr>
- <td>&nbsp;</td><td class="webform_button">
-  <input type="submit" value="$submitbutton$" class="formbutton" /> <input type="reset" value="$resetbutton$" class="formbutton"/>
- </td>
-</tr></tbody>
-</table>
- <input type="hidden" name="formaction" value="export2" />
-</form>
+<div>
+	<form name="emailform" action="$formuri$" method="post">
+		<div class="webform_row">
+			<label for="starttime">$labelfrom$</label>
+			<input id="starttime" type="text" value="$datefrom$" name="starttime" class="calendarinput" />  
+			<a href="#" class="button" title="$calendaralttext$" id="starttime.calendar"><img class="calendarbutton" src="$skinuri$buttons/calendar.png" alt="$calendaralttext$"></a>
+		</div>
+		<div class="webform_row">
+			<label for="endtime">$labelto$</label>
+			<input id="endtime" type="text" value="$dateto$" name="endtime" class="calendarinput" /> 
+			<a href="#" class="button" title="$calendaralttext$" id="endtime.calendar"><img class="calendarbutton" src="$skinuri$buttons/calendar.png" alt="$calendaralttext$"></a>
+		</div>
+		<div class="webform_row">
+			<input type="submit" value="$submitbutton$" class="formbutton" />&nbsp;&nbsp;
+			<input type="reset" value="$resetbutton$" class="formbutton"/>
+		</div>
+		<input type="hidden" name="formaction" value="export2" />
+	</form>
+</div>
 >>
 
 
