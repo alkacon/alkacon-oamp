@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.comments/src/com/alkacon/opencms/comments/CmsCommentFormHandler.java,v $
- * Date   : $Date: 2011/03/09 15:09:53 $
- * Version: $Revision: 1.8 $
+ * Date   : $Date: 2011/03/10 11:56:34 $
+ * Version: $Revision: 1.9 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -35,6 +35,7 @@ package com.alkacon.opencms.comments;
 import com.alkacon.opencms.formgenerator.CmsFileUploadField;
 import com.alkacon.opencms.formgenerator.CmsForm;
 import com.alkacon.opencms.formgenerator.CmsFormHandler;
+import com.alkacon.opencms.formgenerator.CmsStringTemplateErrorListener;
 import com.alkacon.opencms.formgenerator.I_CmsField;
 
 import org.opencms.cache.CmsVfsMemoryObjectCache;
@@ -62,6 +63,7 @@ import javax.servlet.jsp.PageContext;
 import org.apache.commons.logging.Log;
 
 import org.antlr.stringtemplate.StringTemplate;
+import org.antlr.stringtemplate.StringTemplateErrorListener;
 import org.antlr.stringtemplate.StringTemplateGroup;
 import org.antlr.stringtemplate.language.DefaultTemplateLexer;
 import org.htmlparser.util.ParserException;
@@ -74,7 +76,7 @@ import org.htmlparser.util.ParserException;
  * 
  * @author Michael Moossen
  * 
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  * 
  * @since 7.0.5
  */
@@ -127,7 +129,7 @@ public class CmsCommentFormHandler extends CmsFormHandler {
     }
 
     /**
-     * Special form output form the comments.<p>
+     * Special form output for the comments.<p>
      * 
      * @see com.alkacon.opencms.formgenerator.CmsFormHandler#createForm()
      */
@@ -136,6 +138,9 @@ public class CmsCommentFormHandler extends CmsFormHandler {
 
         // the output writer
         Writer out = getJspContext().getOut();
+
+        // check the template group syntax and show eventual errors
+        out.write(buildTemplateGroupCheckHtml());
 
         boolean showForm = showForm();
         if (!showForm) {
@@ -222,7 +227,8 @@ public class CmsCommentFormHandler extends CmsFormHandler {
                     String stContent = new String(
                         stFile.getContents(),
                         getCmsObject().getRequestContext().getEncoding());
-                    stGroup = new StringTemplateGroup(new StringReader(stContent), DefaultTemplateLexer.class);
+                    StringTemplateErrorListener errors = new CmsStringTemplateErrorListener();
+                    stGroup = new StringTemplateGroup(new StringReader(stContent), DefaultTemplateLexer.class, errors);
                     stGroup.setSuperGroup(superGroup);
                     // store the template group in cache
                     CmsVfsMemoryObjectCache.getVfsMemoryObjectCache().putCachedObject(getCmsObject(), rootPath, stGroup);
