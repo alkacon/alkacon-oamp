@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
- * Date   : $Date: 2011/03/09 15:14:34 $
- * Version: $Revision: 1.26 $
+ * Date   : $Date: 2011/03/10 11:56:02 $
+ * Version: $Revision: 1.27 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -70,7 +70,7 @@ import org.apache.commons.fileupload.FileItem;
  * @author Thomas Weckert 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  * 
  * @since 7.0.4 
  */
@@ -1381,6 +1381,16 @@ public class CmsForm {
     }
 
     /**
+     * Sets the form text.<p>
+     * 
+     * @param formText the form text
+     */
+    public void setFormText(String formText) {
+
+        m_formText = formText;
+    }
+
+    /**
      * Sets if the mandatory marks and text should be shown.<p>
      * 
      * @param showMandatory the setting for the mandatory marks
@@ -2161,16 +2171,6 @@ public class CmsForm {
     protected void setFormMiddleText(String formMiddleText) {
 
         m_formMiddleText = formMiddleText;
-    }
-
-    /**
-     * Sets the form text.<p>
-     * 
-     * @param formText the form text
-     */
-    protected void setFormText(String formText) {
-
-        m_formText = formText;
     }
 
     /**
