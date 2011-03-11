@@ -12,26 +12,26 @@ $if(errormessage)$
 	$errormessage$
 	</span></p>
 $endif$
-<form id="emailform"
-	action="$formuri$"
+
+<form id="emailform" action="$formuri$"
 	method="post"$enctype$ $formconfig.formAttributes$>
 <div style="display: none;"><input type="hidden" name="formaction" id="formaction" value="submit" /></div>
-<table class="webform_table">
+<div class="webform_wrapper">
 $fields$
 
 $! --- show form middle text --- !$
-<tbody><tr><td colspan="2" class="webform_middletext"><br/> 
+<div class="webform_middletext"><br/> 
 	$formconfig.formMiddleText$
-</td></tr></tbody>
+</div>
 
 $! --- show mandatory note --- !$
 $if(mandatorymessage)$
-	<tbody><tr><td>&nbsp;</td><td class="webform_mandatory">$mandatorymessage$</td></tr></tbody>
+	<div class="webform_mandatory">$mandatorymessage$</div>
 $endif$
 
 $! --- show submit, reset and previous button --- !$
 $if(submitbutton)$
-	<tbody><tr><td>&nbsp;</td><td class="webform_button">
+	<div class="webform_button">
 		$hiddenfields$
 		$if(prevbutton)$
 			<input type="submit" value="$prevbutton$" name="back" class="formbutton prevbutton" />
@@ -40,19 +40,19 @@ $if(submitbutton)$
 		$if(resetbutton)$
 			&nbsp;<input type="reset" value="$resetbutton$" class="formbutton resetbutton" />
 		$endif$
-	</td></tr></tbody>
+	</div>
 $endif$
 
 $! --- show download button -- !$
 $if(downloadbutton)$
-	<tbody><tr><td>&nbsp;</td><td class="webform_button">
+	<div class="webform_button">
 	<input type="submit"
 		onclick="javascript:document.getElementById('formaction').value='export1';"
 		value="$downloadbutton$"
 		class="formbutton downloadbutton" />
-	</td></tr></tbody>
+	</div>
 $endif$
-</table></form>
+</div></form>
 
 $! --- JavaScript for sub fields --- !$
 $if(subfieldjs)$
@@ -81,13 +81,13 @@ field_captcha(field,formconfig,attributes,errormessage,mandatory,captcha) ::= <<
 $! ###### CAPTCHA field ###### !$
 $row_start(field=field)$
 $label(field=field,formconfig=formconfig,errormessage=errormessage,mandatory=mandatory)$
-<td class="webform_field">
+<div class="webform_field">
 	$captcha$
 	<input type="text" name="$field.name$" value="$field.valueEscaped$" $formconfig.formFieldAttributes$/>
 	$if(errormessage)$
 	<br/><span class="webform_label_error">$errormessage$</span>
 	$endif$
-</td>
+</div>
 $row_end(field=field,formconfig=formconfig)$
 >>
 
@@ -96,28 +96,29 @@ field_checkbox(field,formconfig,attributes,errormessage,mandatory) ::= <<
 $! ###### Checkbox field ###### !$
 $row_start(field=field)$
 $label(field=field,formconfig=formconfig,errormessage=errormessage,mandatory=mandatory)$
-<td class="webform_field">
+<div class="webform_field">
 	$field.items:{
 		$if(it.showInRow)$
-			<table border="0" cellpadding="0" cellspacing="0" class="webform_checkbox_row"><tr><td class="webform_field_checkbox_row">
+			<div class="webform_checkbox_row_wrapper"><div class="webform_field_checkbox_row">
 		$else$
-			<table border="0" cellpadding="0" cellspacing="0" class="webform_checkbox"><tr><td class="webform_field_checkbox">
+			<div class="webform_checkbox_wrapper"><div class="webform_field_checkbox">
 		$endif$
 		<input type="checkbox" name="$field.name$" value="$it.value$" class="check"$if(it.selected)$ checked="checked"$endif$/>
 		$if(it.showInRow)$
-			</td><td class="webform_label_checkbox_row">
+			</div><div class="webform_label_checkbox_row">
 			$it.label$
-			</td></tr></table>
+			</div>
 		$else$
-			</td><td class="webform_label_checkbox">
+			</div><div class="webform_label_checkbox">
 			$it.label$
-			</td></tr></table>
+			</div>
 		$endif$
+		</div>
 	}$
 	$if(errormessage)$
 	<br/><span class="webform_label_error">$errormessage$</span>
 	$endif$
-</td>
+</div>
 $row_end(field=field,formconfig=formconfig)$
 >>
 
@@ -126,7 +127,7 @@ field_display(field,formconfig,attributes,errormessage,mandatory) ::= <<
 $! ###### DISPLAY field ###### !$
 $row_start(field=field)$
 $label(field=field,formconfig=formconfig,errormessage=errormessage,mandatory=mandatory)$
-<td class="webform_field">
+<div class="webform_field">
 	$if(field.valueEscaped)$
 		$field.valueEscaped$
 	$else$
@@ -136,7 +137,7 @@ $label(field=field,formconfig=formconfig,errormessage=errormessage,mandatory=man
 	$if(errormessage)$
 	<br/><span class="webform_label_error">$errormessage$</span>
 	$endif$
-</td>
+</div>
 $row_end(field=field,formconfig=formconfig)$
 >>
 
@@ -150,8 +151,8 @@ $field_text(field=field,formconfig=formconfig,errormessage=errormessage,mandator
 field_empty(field,formconfig,attributes,errormessage,mandatory) ::= <<
 $! ###### EMPTY field ###### !$
 $row_start(field=field)$
-<td class="webform_label">&nbsp;</td>
-<td class="webform_field">
+<div class="webform_label">&nbsp;</div>
+<div class="webform_field">
 	$if(field.valueEscaped)$
 		$field.valueEscaped$
 	$else$
@@ -160,7 +161,7 @@ $row_start(field=field)$
 	$if(errormessage)$
 	<br/><span class="webform_label_error">$errormessage$</span>
 	$endif$
-</td>
+</div>
 $row_end(field=field,formconfig=formconfig)$
 >>
 
@@ -168,7 +169,7 @@ $row_end(field=field,formconfig=formconfig)$
 field_file(field,formconfig,attributes,errormessage,mandatory,infomessage) ::= <<
 $! ###### FILE UPLOAD field ###### !$
 $row_start(field=field)$
-<td class="webform_label">
+<div class="webform_label">
 	$if(errormessage)$
 		<span class="webform_msg_error">
 			$field.label$$mandatory$
@@ -180,8 +181,8 @@ $row_start(field=field)$
 	$else$
 		$field.label$$mandatory$
 	$endif$
-</td>
-<td class="webform_field">
+</div>
+<div class="webform_field">
 	<input type="file" name="$field.name$" value="$field.valueEscaped$" $formconfig.formFieldAttributes$/>
 	$if(errormessage)$
 	<br/><span class="webform_label_error">$errormessage$</span>
@@ -189,24 +190,14 @@ $row_start(field=field)$
 	$if(infomessage)$
 	<br/><span class="webform_label_info">$infomessage$</span>
 	$endif$
-</td>
+</div>
 $row_end(field=field,formconfig=formconfig)$
 >>
 
 
 field_hidden(field,formconfig,attributes,errormessage,mandatory) ::= <<
 $! ###### HIDDEN field ###### !$
-$if(field.subField)$
-	<tr style="display: none;"><td colspan="2">
-$else$
-	<tbody><tr style="display: none;"><td colspan="2">
-$endif$
-	<input type="hidden" name="$field.name$" value="$field.valueEscaped$"/>
-$if(field.subField)$
-	</td></tr>
-$else$
-	</td></tr></tbody>
-$endif$
+<div style="display: none;"><input type="hidden" name="$field.name$" value="$field.valueEscaped$"/></div>
 $subtext(field=field,formconfig=formconfig)$
 >>
 
@@ -214,13 +205,14 @@ $subtext(field=field,formconfig=formconfig)$
 field_hiddendisplay(field,formconfig,attributes,errormessage,mandatory) ::= <<
 $! ###### HIDDEN DISPLAY field ###### !$
 $row_start(field=field)$
-<td class="webform_label">&nbsp;</td>
-<td class="webform_field">
+<div class="webform_label">&nbsp;</div>
+<div class="webform_field">
+
 	<input type="hidden" name="$field.name$" value="$field.valueEscaped$"/>
 	$if(errormessage)$
 	<br/><span class="webform_label_error">$errormessage$</span>
 	$endif$
-</td>
+</div>
 $row_end(field=field,formconfig=formconfig)$
 >>
 
@@ -228,15 +220,15 @@ $row_end(field=field,formconfig=formconfig)$
 field_paging(field,formconfig,attributes,errormessage,mandatory,hiddenfields,prevbutton,nextbutton,page) ::= <<
 $! ###### PAGING field ###### !$
 $row_start(field=field)$
-<td class="webform_label">&nbsp;</td>
-<td class="webform_field">
+<div class="webform_label">&nbsp;</div>
+<div class="webform_field">
 	$hiddenfields$
 	$if(prevbutton)$
 	<input type="submit" value="$prevbutton$" name="back" class="formbutton prevbutton" />&nbsp;
 	$endif$
 	<input type="submit" value="$nextbutton$" class="formbutton nextbutton" />
 	<input type="hidden" name="page" value="$page$" />
-</td>
+</div>
 $row_end(field=field,formconfig=formconfig)$
 >>
 
@@ -245,12 +237,12 @@ field_password(field,formconfig,attributes,errormessage,mandatory) ::= <<
 $! ###### PASSWORD field ###### !$
 $row_start(field=field)$
 $label(field=field,formconfig=formconfig,errormessage=errormessage,mandatory=mandatory)$
-<td class="webform_field">
+<div class="webform_field">
 	<input type="password" name="$field.name$" value="$field.valueEscaped$" $formconfig.formFieldAttributes$/>
 	$if(errormessage)$
 	<br/><span class="webform_label_error">$errormessage$</span>
 	$endif$
-</td>
+</div>
 $row_end(field=field,formconfig=formconfig)$
 >>
 
@@ -258,7 +250,7 @@ $row_end(field=field,formconfig=formconfig)$
 field_privacy(field,formconfig,attributes,errormessage,mandatory,label,link,linktext) ::= <<
 $! ###### PRIVACY field ###### !$
 $row_start(field=field)$
-<td class="webform_label">
+<div class="webform_label">
 	$if(errormessage)$
 		<span class="webform_msg_error">
 			$label$
@@ -266,8 +258,8 @@ $row_start(field=field)$
 	$else$
 		$label$
 	$endif$
-</td>
-<td class="webform_field">
+</div>
+<div class="webform_field">
 	$field.items:{
 		<input type="checkbox" name="$field.name$" value="$it.value$" class="check"$if(it.selected)$ checked="checked"$endif$/>
 	}$
@@ -275,7 +267,7 @@ $row_start(field=field)$
 	$if(errormessage)$
 	<br/><span class="webform_label_error">$errormessage$</span>
 	$endif$
-</td>
+</div>
 $row_end(field=field,formconfig=formconfig)$
 >>
 
@@ -284,28 +276,29 @@ field_radio(field,formconfig,attributes,errormessage,mandatory) ::= <<
 $! ###### RADIO BUTTONS field ###### !$
 $row_start(field=field)$
 $label(field=field,formconfig=formconfig,errormessage=errormessage,mandatory=mandatory)$
-<td class="webform_field">
+<div class="webform_field">
 	$field.items:{
 		$if(it.showInRow)$
-			<table border="0" cellpadding="0" cellspacing="0" class="webform_radio_row"><tr><td class="webform_field_radio_row">
+			<div class="webform_radio_row_wrapper"><div class="webform_field_radio_row">
 		$else$
-			<table border="0" cellpadding="0" cellspacing="0" class="webform_radio"><tr><td class="webform_field_radio">
+			<div class="webform_radio_wrapper"><div class="webform_field_radio">
 		$endif$
 		<input type="radio" name="$field.name$" value="$it.value$" class="radio"$if(it.selected)$ checked="checked"$endif$$if(field.hasSubFields)$ onchange="toggleWebformSubFields(this);"$endif$/>
 		$if(it.showInRow)$
-			</td><td class="webform_label_radio_row">
+			</div><div class="webform_label_radio_row">
 			$it.label$
-			</td></tr></table>
+			</div>
 		$else$
-			</td><td class="webform_label_radio">
+			</div><div class="webform_label_radio">
 			$it.label$
-			</td></tr></table>
+			</div>
 		$endif$
+		</div>
 	}$
 	$if(errormessage)$
 	<br/><span class="webform_label_error">$errormessage$</span>
 	$endif$
-</td>
+</div>
 $row_end(field=field,formconfig=formconfig)$
 >>
 
@@ -314,7 +307,7 @@ field_select(field,formconfig,attributes,errormessage,mandatory) ::= <<
 $! ###### SELECT field ###### !$
 $row_start(field=field)$
 $label(field=field,formconfig=formconfig,errormessage=errormessage,mandatory=mandatory)$
-<td class="webform_field">
+<div class="webform_field">
 	<select name="$field.name$" $if(formconfig.formFieldAttributes)$ $formconfig.formFieldAttributes$$endif$$if(field.hasSubFields)$ onchange="toggleWebformSubFields(this);"$endif$>
 	$field.items:{
 		<option value="$it.value$" $if(it.selected)$ selected="selected"$endif$>$it.label$</option>
@@ -323,7 +316,7 @@ $label(field=field,formconfig=formconfig,errormessage=errormessage,mandatory=man
 	$if(errormessage)$
 	<br/><span class="webform_label_error">$errormessage$</span>
 	$endif$
-</td>
+</div>
 $row_end(field=field,formconfig=formconfig)$
 >>
 
@@ -331,31 +324,19 @@ $row_end(field=field,formconfig=formconfig)$
 field_table(field,formconfig,attributes,errormessage,mandatory,cols,rows,rowswithitems,editable) ::= <<
 $! ###### TABLE field ###### !$
 $if(!field.showRowStart)$
-	$if(field.subField)$
-		</tr>
-	$else$
-		</tr></tbody>
-	$endif$
+	</div>
 $endif$
-$if(field.subField)$
-	<tr>
-$else$
-	<tbody><tr>
-$endif$
-<td class="webform_label_table">
+<div class="webform_row">
+<div class="webform_label_table">
 	$field_table_labels(field=field,formconfig=formconfig,errormessage=errormessage,mandatory=mandatory,rows=rows)$
-</td>
-<td class="webform_field_table">
+</div>
+<div class="webform_field_table">
 	$field_table_fields(formconfig=formconfig,cols=cols,rowswithitems=rowswithitems,editable=editable)$
 	$if(errormessage)$
 	<br/><span class="webform_label_error">$errormessage$</span>
 	$endif$
-</td>
-$if(field.subField)$
-	</tr>
-$else$
-	</tr></tbody>
-$endif$
+</div>
+</div>
 $subtext(field=field,formconfig=formconfig)$
 >>
 
@@ -418,12 +399,12 @@ field_text(field,formconfig,attributes,errormessage,mandatory) ::= <<
 $! ###### TEXT field ###### !$
 $row_start(field=field)$
 $label(field=field,formconfig=formconfig,errormessage=errormessage,mandatory=mandatory)$
-<td class="webform_field">
+<div class="webform_field">
 	<input type="text" name="$field.name$" value="$field.valueEscaped$" $formconfig.formFieldAttributes$/>
 	$if(errormessage)$
 	<br/><span class="webform_label_error">$errormessage$</span>
 	$endif$
-</td>
+</div>
 $row_end(field=field,formconfig=formconfig)$
 >>
 
@@ -431,7 +412,7 @@ $row_end(field=field,formconfig=formconfig)$
 field_textarea(field,formconfig,attributes,errormessage,mandatory) ::= <<
 $! ###### TEXTAREA field ###### !$
 $row_start(field=field)$
-<td class="webform_label_multi">
+<div class="webform_label_multi">
 	$if(errormessage)$
 		<span class="webform_msg_error">
 			$field.label$$mandatory$
@@ -439,20 +420,20 @@ $row_start(field=field)$
 	$else$
 		$field.label$$mandatory$
 	$endif$
-</td>
-<td class="webform_field_multi">
+</div>
+<div class="webform_field_multi">
 	<textarea cols="5" rows="5" name="$field.name$" $formconfig.formFieldAttributes$$attributes$>$field.valueEscaped$</textarea>
 	$if(errormessage)$
 	<br/><span class="webform_label_error">$errormessage$</span>
 	$endif$
-</td>
+</div>
 $row_end(field=field,formconfig=formconfig)$
 >>
 
 
 label(field,formconfig,errormessage,mandatory) ::= <<
 $! ###### Standard LABEL for a field ###### !$
-<td class="webform_label">
+<div class="webform_label">
 	$if(errormessage)$
 		<span class="webform_msg_error">
 			$field.label$$mandatory$
@@ -460,18 +441,14 @@ $! ###### Standard LABEL for a field ###### !$
 	$else$
 		$field.label$$mandatory$
 	$endif$
-</td>
+</div>
 >>
 
 
 row_start(field) ::= <<
 $! ###### Standard start row for a field ###### !$
 $if(field.showRowStart)$
-	$if(field.subField)$
-		<tr>
-	$else$
-		<tbody><tr>
-	$endif$
+	<div class="webform_row">
 $endif$
 >>
 
@@ -479,11 +456,7 @@ $endif$
 row_end(field,formconfig) ::= <<
 $! ###### Standard end row for a field ###### !$
 $if(field.showRowEnd)$
-	$if(field.subField)$
-		</tr>
-	$else$
-		</tr></tbody>
-	$endif$
+	</div>
 $endif$
 $subtext(field=field,formconfig=formconfig)$
 >>
@@ -491,9 +464,9 @@ $subtext(field=field,formconfig=formconfig)$
 
 subfieldwrapper(subfields,style,id) ::= <<
 $! ###### Sub field wrapper ###### !$
-<tbody class="webform_subfields" id="$id$" style="$style$">
+<div class="webform_subfields" id="$id$" style="$style$">
 $subfields$
-</tbody>
+</div>
 >>
 
 
@@ -501,25 +474,25 @@ subtext(field,formconfig) ::= <<
 $! ###### Intermediate texts for the fields ###### !$
 $if(field.hasText)$
 	$if(field.showRowStart)$
-		<tbody><tr>
+		<div class="webform_row">
 	$endif$
 	$if(field.text.columnLeft)$
-		<td class="webform_text">
+		<div class="webform_text_left">
 		$field.text.text$
-		</td>
-		<td class="webform_field"></td>
+		</div>
+		<div class="webform_field"></div>
 	$elseif(field.text.columnRight)$
-		<td class="webform_label"></td>
-		<td class="webform_text">
+		<div class="webform_label"></div>
+		<div class="webform_text_right">
 		$field.text.text$
-		</td>
+		</div>
 	$else$
-		<td colspan="2" class="webform_text">
+		<div class="webform_text">
 		$field.text.text$
-		</td>
+		</div>
 	$endif$
 	$if(field.showRowEnd)$
-		</tr></tbody>
+		</div>
 	$endif$
 $endif$
 >>
@@ -537,86 +510,90 @@ $if(captchafield)$
 	</script>
 	<form id="webformcaptcha" action="" method="post" enctype="multipart/form-data">
 $endif$
-<table border="0" class="webform_check_table">
+<div class="webform_check_wrapper">
 $checkfields:{
-	<tr><td valign="top">$it.label$</td><td valign="top" style="font-weight: bold;">$it.value$</td></tr>
+	<div class="webform_row">
+		<div class="webform_label">$it.label$</div>
+		<div class="webform_field">$it.value$</div>
+	</div>
 }$
 
 $if(captchafield)$
-	<tr><td  valign="middle">
-		$if(captchaerror)$
-			<span class="webform_msg_error">
+	<div class="webform_row">
+		<div class="webform_label">
+			$if(captchaerror)$
+				<span class="webform_msg_error">
+					$captchafield.label$
+				</span>
+			$else$
 				$captchafield.label$
-			</span>
-		$else$
-			$captchafield.label$
-		$endif$
-	</td>
-	<td valign="top" style="font-weight: bold;">
-		<img src="$captchaimagelink$" width="$captchafield.captchaSettings.imageWidth$" height="$captchafield.captchaSettings.imageHeight$" alt="" /><br />
-		<input type="text" name="$captchafield.name$" value="" />
-		$if(captchaerror)$
-			<br/><span class="webform_label_error">
-			$captchaerror$
-			</span>
-		$endif$
-	</td></tr>
+			$endif$
+		</div>
+		<div class="webform_field">
+			<img src="$captchaimagelink$" width="$captchafield.captchaSettings.imageWidth$" height="$captchafield.captchaSettings.imageHeight$" alt="" /><br />
+			<input type="text" name="$captchafield.name$" value="" />
+			$if(captchaerror)$
+				<br/><span class="webform_label_error">
+				$captchaerror$
+				</span>
+			$endif$
+		</div>
+	</div>
 $endif$
-</table>
+</div>
 $if(captchafield)$
 	</form>
 $endif$
 
-<table border="0" class="webform_check_table">
-<tr><td>
-<form id="webformconfirmvalues" method="post" enctype="multipart/form-data" action="$formuri$" onsubmit="return runConfirmValues();">
-<div style="display: none;">
-<input type="hidden" name="formaction" value="confirmed" />
-<input type="hidden" name="captchaphrase" value="" />
-$hiddenfields$
-</div><div>
-<input type="submit" value="$checkbutton$" class="formbutton" />&nbsp;&nbsp;&nbsp;&nbsp;</div>
-</form>
-</td>
-<td>
-<form id="webformdisplayvalues" method="post" enctype="multipart/form-data" action="$formuri$">
-<div style="display: none;">
-<input type="hidden" name="formaction" value="correct" />
-$hiddenfields$
-</div><div>
-<input type="submit" value="$correctbutton$" class="formbutton" /></div>
-</form>
-</td></tr>
-</table>
+<div class="webform_check_wrapper">
+	<div class="webform_row">
+		<form id="webformconfirmvalues" method="post" enctype="multipart/form-data" action="$formuri$" onsubmit="return runConfirmValues();">
+		<div style="display: none;">
+		<input type="hidden" name="formaction" value="confirmed" />
+		<input type="hidden" name="captchaphrase" value="" />
+		$hiddenfields$
+		</div><div class="webform_check_button">
+		<input type="submit" value="$checkbutton$" class="formbutton" />&nbsp;&nbsp;&nbsp;&nbsp;</div>
+		</form>
+		<form id="webformdisplayvalues" method="post" enctype="multipart/form-data" action="$formuri$">
+		<div style="display: none;">
+		<input type="hidden" name="formaction" value="correct" />
+		$hiddenfields$
+		</div><div class="webform_check_button">
+		<input type="submit" value="$correctbutton$" class="formbutton" /></div>
+		</form>
+	</div>
+</div>
 >>
 
 
 confirmationpage(formconfig,confirmtext,confirmfields) ::= <<
 $! ###### CONFIRMATION page of the form ###### !$
 $confirmtext$
-<table border="0" class="webform_confirm_table">
+<div class="webform_confirm_wrapper">
 $confirmfields:{
-	<tr><td valign="top">$it.label$</td><td valign="top" style="font-weight: bold;">$it.value$</td></tr>
+	<div class="webform_row">
+		<div class="webform_label">$it.label$</div>
+		<div class="webform_field">$it.value$</div>
+	</div>
 }$
-</table>
+</div>
 >>
 
 
 datadownloadpage(formuri,formconfig,skinuri,labelfrom,datefrom,labelto,dateto,calendaralttext,submitbutton,resetbutton) ::= <<
 $! ###### DATA DOWNLOAD page of the form ###### !$
 <style type="text/css">
+.webform_row {
+	display: block;
+	margin-bottom: 8px;
+}
+.webform_row label {
+	display: inline-block;
+	width: 160px;
+}
 .calendarinput {
-	padding: 1px 2px 1px 2px; border-top: 1px solid #868686; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc; border-left: 1px solid #868686; background-color: #fff; width: 140px;
-}
-
-span.norm{
-	display: block; border: 1px solid ThreeDFace;
-}
-span.push {
-	display: block; border-top: 1px solid ThreeDShadow; border-left: 1px solid ThreeDShadow; border-bottom: 1px solid ThreeDHighlight; border-right: 1px solid ThreeDHighlight;
-}
-span.over {
-	display: block; border-top: 1px solid ThreeDHighlight; border-left: 1px solid ThreeDHighlight; border-bottom: 1px solid ThreeDShadow; border-right: 1px solid ThreeDShadow;
+	padding: 1px 2px 1px 2px; border-top: 1px solid #868686; border-right: 1px solid #ccc; border-bottom: 1px solid #ccc; border-left: 1px solid #868686; background-color: #fff; width: 150px;
 }
 .calendarbutton {
 	height: 20px; width: 20px; border: 0px none; vertical-align: middle;
@@ -624,57 +601,26 @@ span.over {
 a.button {
 	color: ButtonText; text-decoration: none; cursor: pointer;
 }
-
-
-/* - internet explorer 6 specific definitions (hacks) - */
-* html .ip_text {
-	padding: 2px;
-}
 </style>
-<form name="emailform" action="$formuri$" method="post" class="formarea">
-<table class="webform_table">
-<tbody><tr>
- <td class="webform_label">
-   <label for="starttime">$labelfrom$</label>
- </td>
- <td class="webform_field">
-  <table border="0">
-   <tr>
-    <td>
-     <input id="starttime" type="text" value="$datefrom$" name="starttime" class="calendarinput" /> 
-    </td>
-    <td>  
-     <a href="#" class="button" title="$calendaralttext$" id="starttime.calendar"><span unselectable="on" class="norm" onmouseover="className='over'" onmouseout="className='norm'" onmousedown="className='push'" onmouseup="className='over'"><img class="calendarbutton" src="$skinuri$buttons/calendar.png" alt="$calendaralttext$"></span></a>
-    </td>
-   </tr>
-  </table>
- </td>
-</tr></tbody>
-<tbody><tr>
- <td class="webform_label">
-  <label for="endtime">$labelto$</label>
- </td>
- <td class="webform_field">
-  <table border="0">
-   <tr>
-    <td>
-     <input id="endtime" type="text" value="$dateto$" name="endtime" class="calendarinput" /> 
-    </td>
-    <td>  
-     <a href="#" class="button" title="$calendaralttext$" id="endtime.calendar"><span unselectable="on" class="norm" onmouseover="className='over'" onmouseout="className='norm'" onmousedown="className='push'" onmouseup="className='over'"><img class="calendarbutton" src="$skinuri$buttons/calendar.png" alt="$calendaralttext$"></span></a>
-    </td>
-   </tr>
-  </table>
- </td>
-</tr></tbody>
-<tbody><tr>
- <td>&nbsp;</td><td class="webform_button">
-  <input type="submit" value="$submitbutton$" class="formbutton" /> <input type="reset" value="$resetbutton$" class="formbutton"/>
- </td>
-</tr></tbody>
-</table>
- <input type="hidden" name="formaction" value="export2" />
-</form>
+<div>
+	<form name="emailform" action="$formuri$" method="post">
+		<div class="webform_row">
+			<label for="starttime">$labelfrom$</label>
+			<input id="starttime" type="text" value="$datefrom$" name="starttime" class="calendarinput" />  
+			<a href="#" class="button" title="$calendaralttext$" id="starttime.calendar"><img class="calendarbutton" src="$skinuri$buttons/calendar.png" alt="$calendaralttext$"></a>
+		</div>
+		<div class="webform_row">
+			<label for="endtime">$labelto$</label>
+			<input id="endtime" type="text" value="$dateto$" name="endtime" class="calendarinput" /> 
+			<a href="#" class="button" title="$calendaralttext$" id="endtime.calendar"><img class="calendarbutton" src="$skinuri$buttons/calendar.png" alt="$calendaralttext$"></a>
+		</div>
+		<div class="webform_row">
+			<input type="submit" value="$submitbutton$" class="formbutton" />&nbsp;&nbsp;
+			<input type="reset" value="$resetbutton$" class="formbutton"/>
+		</div>
+		<input type="hidden" name="formaction" value="export2" />
+	</form>
+</div>
 >>
 
 

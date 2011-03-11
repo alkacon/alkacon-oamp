@@ -4,7 +4,7 @@
 	<info>
 		<creator>Admin</creator>
 		<opencms_version>7.5.3</opencms_version>
-		<createdate>Wed, 09 Mar 2011 14:58:15 GMT</createdate>
+		<createdate>Fri, 11 Mar 2011 15:47:00 GMT</createdate>
 		<infoproject>Offline</infoproject>
 		<export_version>7</export_version>
 	</info>
@@ -16,7 +16,7 @@
 		<description><![CDATA[<p>This module contains online form functionality for OpenCms.</p>
 <p>This module can easily be used to create online input forms.</p>
 <p><i>(c) 2011 by Alkacon Software GmbH (http://www.alkacon.com).</i></p>]]></description>
-		<version>1.4.4</version>
+		<version>2.0</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
 		<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
@@ -89,10 +89,10 @@
 		<file>
 			<destination>system</destination>
 			<type>folder</type>
-			<uuidstructure>c6b4f1b7-3367-11e0-87d9-d15f521e3d32</uuidstructure>
-			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<uuidstructure>afa9d7a0-4bf1-11e0-9a44-7b3e4222a901</uuidstructure>
+			<datelastmodified>Fri, 11 Mar 2011 15:10:22 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Tue, 08 Feb 2011 09:42:43 GMT</datecreated>
+			<datecreated>Fri, 11 Mar 2011 15:10:22 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -111,10 +111,10 @@
 		<file>
 			<destination>system/modules</destination>
 			<type>folder</type>
-			<uuidstructure>c7ace680-3367-11e0-87d9-d15f521e3d32</uuidstructure>
-			<datelastmodified>Tue, 08 Feb 2011 09:42:44 GMT</datelastmodified>
+			<uuidstructure>b02d1199-4bf1-11e0-9a44-7b3e4222a901</uuidstructure>
+			<datelastmodified>Fri, 11 Mar 2011 15:10:23 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Tue, 08 Feb 2011 09:42:44 GMT</datecreated>
+			<datecreated>Fri, 11 Mar 2011 15:10:23 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -1238,11 +1238,11 @@
 			<source>system/modules/com.alkacon.opencms.formgenerator/resources/formtemplates/default.st</source>
 			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/formtemplates/default.st</destination>
 			<type>plain</type>
-			<uuidstructure>e454b680-48cc-11e0-9f27-d15f521e3d32</uuidstructure>
-			<uuidresource>e5295b44-3840-11e0-a4ff-d15f521e3d32</uuidresource>
-			<datelastmodified>Wed, 09 Mar 2011 11:54:13 GMT</datelastmodified>
+			<uuidstructure>82155985-4bf6-11e0-b52e-7b3e4222a901</uuidstructure>
+			<uuidresource>c3e49317-48cc-11e0-9f27-d15f521e3d32</uuidresource>
+			<datelastmodified>Fri, 11 Mar 2011 15:45:01 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Mon, 14 Feb 2011 13:46:59 GMT</datecreated>
+			<datecreated>Mon, 07 Mar 2011 15:08:31 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties>
@@ -1255,12 +1255,11 @@
 			<accesscontrol/>
 		</file>
 		<file>
-			<source>system/modules/com.alkacon.opencms.formgenerator/resources/formtemplates/div-based.st</source>
 			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/formtemplates/div-based.st</destination>
 			<type>plain</type>
 			<uuidstructure>c3e49316-48cc-11e0-9f27-d15f521e3d32</uuidstructure>
 			<uuidresource>c3e49317-48cc-11e0-9f27-d15f521e3d32</uuidresource>
-			<datelastmodified>Tue, 08 Mar 2011 15:25:11 GMT</datelastmodified>
+			<datelastmodified>Fri, 11 Mar 2011 15:45:01 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 07 Mar 2011 15:08:31 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -1295,11 +1294,12 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/formtemplates/table-based.st</source>
 			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/formtemplates/table-based.st</destination>
 			<type>plain</type>
 			<uuidstructure>e5295b43-3840-11e0-a4ff-d15f521e3d32</uuidstructure>
 			<uuidresource>e5295b44-3840-11e0-a4ff-d15f521e3d32</uuidresource>
-			<datelastmodified>Wed, 09 Mar 2011 11:54:13 GMT</datelastmodified>
+			<datelastmodified>Fri, 11 Mar 2011 15:24:09 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 14 Feb 2011 13:46:59 GMT</datecreated>
 			<usercreated>Admin</usercreated>

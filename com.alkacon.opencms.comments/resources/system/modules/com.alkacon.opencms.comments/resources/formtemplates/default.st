@@ -13,15 +13,15 @@ $endif$
 <form class="cmtForm" id="fid" name="commentform"
 	action="$formuri$"
 	method="post"$enctype$ $formconfig.formAttributes$>
-<table class="webform_table">
+<div class="webform_wrapper">
 $fields$
 
 $! --- show mandatory note --- !$
 $if(mandatorymessage)$
-	<tbody><tr><td>&nbsp;</td><td class="webform_mandatory">$mandatorymessage$</td></tr></tbody>
+	<div class="webform_mandatory">$mandatorymessage$</div>
 $endif$
 
-</table>
+</div>
 
 <div class="cmtButtonRow">
 	$hiddenfields$
