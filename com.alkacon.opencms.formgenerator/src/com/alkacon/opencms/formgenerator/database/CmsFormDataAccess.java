@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/CmsFormDataAccess.java,v $
- * Date   : $Date: 2011/02/21 10:36:16 $
- * Version: $Revision: 1.17 $
+ * Date   : $Date: 2011/03/21 11:43:46 $
+ * Version: $Revision: 1.18 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -84,7 +84,7 @@ import org.apache.commons.logging.Log;
  * @author Achim Westermann
  * @author Michael Moossen
  * 
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  * 
  * @since 7.0.4
  */
@@ -550,24 +550,25 @@ public final class CmsFormDataAccess {
      * 
      * @param formHandler the form handler containing the form to persist. 
      * 
-     * @return true if successful 
+     * @return the entry id of the submitted form in the database or '-1' if something goes wrong 
      * 
      * @throws SQLException if something goes wrong 
      * 
      * @see com.alkacon.opencms.formgenerator.CmsForm#getAllFields()
      */
-    public boolean writeFormData(CmsFormHandler formHandler) throws SQLException {
+    public int writeFormData(CmsFormHandler formHandler) throws SQLException {
 
         Connection con = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
+
+        int newId = 0;
 
         try {
             con = getConnection();
             // 1) Compute next id
             stmt = con.prepareStatement(getQuery("READ_NEXT_ENTRY_ID"));
             rs = stmt.executeQuery();
-            int newId = 0;
             if (rs.next()) {
                 newId = rs.getInt("MAXID");
             }
@@ -595,7 +596,8 @@ public final class CmsFormDataAccess {
                 LOG.error(Messages.get().getBundle().key(
                     Messages.LOG_ERR_DATAACCESS_SQL_WRITE_SUBMISSION_1,
                     new Object[] {formHandler.createMailTextFromFields(false, false)}));
-                return false;
+                newId = -1;
+                return newId;
             }
 
             // connection is still needed, so only close statement
@@ -672,7 +674,7 @@ public final class CmsFormDataAccess {
         } finally {
             closeAll(con, stmt, rs);
         }
-        return true;
+        return newId;
     }
 
     /**

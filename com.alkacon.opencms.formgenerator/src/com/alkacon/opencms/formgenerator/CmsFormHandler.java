@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormHandler.java,v $
- * Date   : $Date: 2011/03/09 15:14:34 $
- * Version: $Revision: 1.22 $
+ * Date   : $Date: 2011/03/21 11:43:46 $
+ * Version: $Revision: 1.23 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -94,7 +94,7 @@ import org.antlr.stringtemplate.language.DefaultTemplateLexer;
  * @author Thomas Weckert
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  * 
  * @since 7.0.4 
  */
@@ -153,6 +153,9 @@ public class CmsFormHandler extends CmsJspActionElement {
 
     /** The log object for this class. */
     private static final Log LOG = CmsLog.getLog(CmsFormHandler.class);
+
+    /** The entry id of the submitted form in the database. */
+    protected int m_entryId = 0;
 
     /** Contains eventual validation errors. */
     protected Map<String, String> m_errors;
@@ -619,6 +622,19 @@ public class CmsFormHandler extends CmsJspActionElement {
     }
 
     /**
+     * Returns the entry id of the submitted form in the database.<p>
+     * 
+     * Returns a value > 0, if the form was submitted to database successfully,
+     * 0, if the form is not submitted to database yet, 
+     *
+     * @return the entry id of the form
+     */
+    public int getEntryId() {
+
+        return m_entryId;
+    }
+
+    /**
      * Returns the errors found when validating the form.<p>
      * 
      * @return the errors found when validating the form
@@ -1069,7 +1085,14 @@ public class CmsFormHandler extends CmsJspActionElement {
             }
             if (data.isTransportDatabase()) {
                 // save submitted form to database and store the uploaded files
-                result &= sendDatabase();
+                m_entryId = sendDatabase();
+                if (m_entryId > 0) {
+                    // successful submit
+                    result &= true;
+                } else {
+                    // error during submit
+                    result &= false;
+                }
             }
             if (data.isTransportEmail()) {
                 result &= sendMail();
@@ -1746,11 +1769,11 @@ public class CmsFormHandler extends CmsJspActionElement {
     /**
      * Stores the given form data in the database.<p>
      * 
-     * @return true if successful  
+     * @return the entry id of the submitted form in the database or '-1' if something goes wrong 
      * 
      * @throws Exception if something goes wrong
      */
-    protected boolean sendDatabase() throws Exception {
+    protected int sendDatabase() throws Exception {
 
         return CmsFormDataAccess.getInstance().writeFormData(this);
     }

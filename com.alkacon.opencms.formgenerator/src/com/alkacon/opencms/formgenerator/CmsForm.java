@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
- * Date   : $Date: 2011/03/10 11:56:02 $
- * Version: $Revision: 1.27 $
+ * Date   : $Date: 2011/03/21 11:43:46 $
+ * Version: $Revision: 1.28 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -70,7 +70,7 @@ import org.apache.commons.fileupload.FileItem;
  * @author Thomas Weckert 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  * 
  * @since 7.0.4 
  */
@@ -2449,11 +2449,13 @@ public class CmsForm {
 
         String locLabel = getConfigurationValue(stringValue, "");
         String dbLabel = locLabel;
+        boolean useDbLabel = false;
         int pos = locLabel.indexOf('|');
         if (pos > -1) {
             locLabel = locLabel.substring(0, pos);
             if (pos + 1 < dbLabel.length()) {
                 dbLabel = dbLabel.substring(pos + 1);
+                useDbLabel = true;
             }
         }
         field.setLabel(locLabel);
@@ -2461,16 +2463,24 @@ public class CmsForm {
 
         // create the field name
         String fieldName = xPath;
-        // cut off the XML content index ("[number]") and replace by "-number":
+        // cut off the XML content index ("[number]") 
         int indexStart = fieldName.lastIndexOf('[') + 1;
         String index = fieldName.substring(indexStart, fieldName.length() - 1);
-        fieldName = new StringBuffer(fieldName.substring(0, indexStart - 1)).append('-').append(index).toString();
-        // cut off initial path all but the last path segments
-        // (make sure there is a slash in the string first).
-        fieldName = "/" + fieldName;
-        int slashIndex = fieldName.lastIndexOf("/");
-        fieldName = fieldName.substring(slashIndex + 1);
-        field.setName(fieldName + subFieldNameSuffix);
+        if (useDbLabel) {
+            // set field name to db label
+            fieldName = dbLabel;
+            field.setName(fieldName);
+        } else {
+            // set the field name to generic value "InputField-number"
+            // replace the index ("[number]") of the xmlcontent field by "-number":
+            fieldName = new StringBuffer(fieldName.substring(0, indexStart - 1)).append('-').append(index).toString();
+            // cut off initial path all but the last path segments
+            // (make sure there is a slash in the string first).
+            fieldName = "/" + fieldName;
+            int slashIndex = fieldName.lastIndexOf("/");
+            fieldName = fieldName.substring(slashIndex + 1);
+            field.setName(fieldName + subFieldNameSuffix);
+        }
 
         // get the optional text that is shown below the field
         CmsFieldText fieldText = fieldTexts.get(dbLabel);
