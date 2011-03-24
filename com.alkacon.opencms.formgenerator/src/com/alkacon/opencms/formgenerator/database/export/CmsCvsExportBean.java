@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/database/export/CmsCvsExportBean.java,v $
- * Date   : $Date: 2011/03/04 13:46:48 $
- * Version: $Revision: 1.10 $
+ * Date   : $Date: 2011/03/24 16:33:49 $
+ * Version: $Revision: 1.11 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -64,7 +64,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Achim Westermann
  * 
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  * 
  * @since 7.0.4
  *
@@ -72,7 +72,7 @@ import org.apache.commons.logging.Log;
 public class CmsCvsExportBean {
 
     /** The default value delimiter for CSV files in Excel. */
-    public static final char EXCEL_DEFAULT_CSV_DELMITER = ';';
+    public static final String EXCEL_DEFAULT_CSV_DELMITER = ",";
 
     /** Request parameter for the start time of the data to export. */
     public static final String PARAM_EXPORT_DATA_TIME_END = "endtime";
@@ -183,6 +183,14 @@ public class CmsCvsExportBean {
         String nasParam = module.getParameter(CmsForm.MODULE_PARAM_EXPORT_NUMBERASSTRING, CmsStringUtil.FALSE);
         boolean numberAsString = Boolean.valueOf(nasParam).booleanValue();
 
+        // csv delimiter
+        String lineSeparator = EXCEL_DEFAULT_CSV_DELMITER;
+        String configLineSeparator = module.getParameter(CmsForm.MODULE_PARAM_CSV_DELIMITER);
+        if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(configLineSeparator)) {
+
+            lineSeparator = configLineSeparator.trim();
+        }
+
         // get the column names
         List<String> columnNames = CmsFormDataAccess.getInstance().readFormFieldNames(
             formId,
@@ -198,11 +206,11 @@ public class CmsCvsExportBean {
 
         // loop 1 - write the headers:
         result.append(escapeExcelCsv("Creation date", numberAsString));
-        result.append(EXCEL_DEFAULT_CSV_DELMITER);
+        result.append(lineSeparator);
         result.append(escapeExcelCsv("Resource path", numberAsString));
-        result.append(EXCEL_DEFAULT_CSV_DELMITER);
+        result.append(lineSeparator);
         result.append(escapeExcelCsv("Resource UUID", numberAsString));
-        result.append(EXCEL_DEFAULT_CSV_DELMITER);
+        result.append(lineSeparator);
         Iterator<String> itColumns = columnNames.iterator();
         while (itColumns.hasNext()) {
             String columnName = itColumns.next();
@@ -211,7 +219,7 @@ public class CmsCvsExportBean {
                 columnName = escapeExcelCsv(columnName, numberAsString);
                 result.append(columnName);
                 if (itColumns.hasNext()) {
-                    result.append(EXCEL_DEFAULT_CSV_DELMITER);
+                    result.append(lineSeparator);
                 }
             }
         }
@@ -234,7 +242,7 @@ public class CmsCvsExportBean {
                 result.append(df.format(creationDate));
             }
             DateFormat.getDateTimeInstance();
-            result.append(EXCEL_DEFAULT_CSV_DELMITER);
+            result.append(lineSeparator);
             uuid = row.getResourceId();
             try {
                 path = m_cms.readResource(uuid).getRootPath();
@@ -242,9 +250,9 @@ public class CmsCvsExportBean {
                 path = row.getResourceId().toString();
             }
             result.append(path);
-            result.append(EXCEL_DEFAULT_CSV_DELMITER);
+            result.append(lineSeparator);
             result.append(String.valueOf(uuid));
-            result.append(EXCEL_DEFAULT_CSV_DELMITER);
+            result.append(lineSeparator);
             itColumns = columnNames.iterator();
             while (itColumns.hasNext()) {
                 String columnName = itColumns.next();
@@ -262,7 +270,7 @@ public class CmsCvsExportBean {
                         result.append(value);
                     }
                     if (itColumns.hasNext()) {
-                        result.append(EXCEL_DEFAULT_CSV_DELMITER);
+                        result.append(lineSeparator);
                     }
                 }
             }

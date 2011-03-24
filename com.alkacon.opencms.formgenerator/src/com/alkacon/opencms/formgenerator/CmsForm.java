@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
- * Date   : $Date: 2011/03/21 11:43:46 $
- * Version: $Revision: 1.28 $
+ * Date   : $Date: 2011/03/24 16:33:50 $
+ * Version: $Revision: 1.29 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -70,7 +70,7 @@ import org.apache.commons.fileupload.FileItem;
  * @author Thomas Weckert 
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  * 
  * @since 7.0.4 
  */
@@ -114,6 +114,9 @@ public class CmsForm {
 
     /** Name of the module parameter for the configuration of the time format of the export data. */
     public static final String MODULE_PARAM_EXPORT_TIMEFORMAT = "export.timeformat";
+
+    /** Name of the module parameter excel.delimiter defines the column delimiter in excel. */
+    public static final String MODULE_PARAM_CSV_DELIMITER = "export.delimiter";
 
     /** 
      * Module parameter for the content encoding (text encoding) of the exported csv data. This encoding may vary 

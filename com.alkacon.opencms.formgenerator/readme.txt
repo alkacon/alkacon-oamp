@@ -57,6 +57,7 @@ Legend:
 - General comment
 
 1.4.4 -xxx, 2011
+! Added Issue #1958: new parameter export.delimiter to define used delimiter in CSV files
 ! Added new mechanism to generate form output using StringTemplate, providing better control over generated HTML code
 
 1.4.3 - Mar, 2011
