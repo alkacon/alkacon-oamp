@@ -1,0 +1,27 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.htmlcleaner/schemas/removeattributeitem.xsd"/>
+		
+	<xsd:element name="HtmlCleanerRemoveAttributes" type="OpenCmsHtmlCleanerRemoveAttributes"/>
+	
+	<xsd:complexType name="OpenCmsHtmlCleanerRemoveAttributes">
+		<xsd:sequence>
+			<xsd:element name="HtmlCleanerRemoveAttribute" type="OpenCmsHtmlCleanerRemoveAttribute" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsHtmlCleanerRemoveAttribute">
+		<xsd:sequence>
+			<xsd:element name="RemoveAttribute" type="OpenCmsHtmlCleanerRemoveAttributeItem" minOccurs="0" maxOccurs="100" />
+			<xsd:element name="IgnoreTag" type="OpenCmsString" minOccurs="0" maxOccurs="100" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			
+		</xsd:appinfo>
+	</xsd:annotation>  
+</xsd:schema>

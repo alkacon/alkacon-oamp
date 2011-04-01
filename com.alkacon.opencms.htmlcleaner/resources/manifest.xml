@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<export>
+	<info>
+		<creator>Admin</creator>
+		<opencms_version>7.5.3</opencms_version>
+		<createdate>Wed, 02 Mar 2011 09:55:24 GMT</createdate>
+		<infoproject>Offline</infoproject>
+		<export_version>7</export_version>
+	</info>
+	<module>
+		<name>com.alkacon.opencms.htmlcleaner</name>
+		<nicename><![CDATA[Alkacon OpenCms Add-On Module Package HtmlCleaner]]></nicename>
+		<group>Alkacon OAMP</group>
+		<class>com.alkacon.opencms.htmlcleaner.CmsHtmlCleanerModuleAction</class>
+		<description><![CDATA[HTML cleaner plugin for OpenCms using the Jericho HTML parser (http://jericho.htmlparser.net).]]></description>
+		<version>1.0.0</version>
+		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
+		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
+		<datecreated/>
+		<userinstalled/>
+		<dateinstalled/>
+		<dependencies/>
+		<exportpoints>
+			<exportpoint uri="/system/modules/com.alkacon.opencms.htmlcleaner/classes/" destination="WEB-INF/classes/"/>
+			<exportpoint uri="/system/modules/com.alkacon.opencms.htmlcleaner/lib/" destination="WEB-INF/lib/"/>
+		</exportpoints>
+		<resources>
+			<resource uri="/system/modules/com.alkacon.opencms.htmlcleaner/"/>
+		</resources>
+		<parameters/>
+	</module>
+	<files>
+		<file>
+			<destination>system</destination>
+			<type>folder</type>
+			<uuidstructure>21711c56-0d15-11e0-81ec-07745e72c695</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 21 Dec 2010 15:15:22 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
+					<flags>514</flags>
+					<permissionset>
+						<allowed>1</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<destination>system/modules</destination>
+			<type>folder</type>
+			<uuidstructure>2209b30f-0d15-11e0-81ec-07745e72c695</uuidstructure>
+			<datelastmodified>Tue, 21 Dec 2010 15:15:23 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 21 Dec 2010 15:15:23 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol>
+				<accessentry>
+					<uuidprincipal>ROLE.WORKPLACE_USER</uuidprincipal>
+					<flags>514</flags>
+					<permissionset>
+						<allowed>5</allowed>
+						<denied>0</denied>
+					</permissionset>
+				</accessentry>
+			</accesscontrol>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.htmlcleaner</destination>
+			<type>folder</type>
+			<uuidstructure>0f3c2b3b-44ac-11e0-8809-07745e72c695</uuidstructure>
+			<datelastmodified>Wed, 02 Mar 2011 09:04:20 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Mar 2011 09:04:20 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.htmlcleaner/classes</destination>
+			<type>folder</type>
+			<uuidstructure>2c88c782-44ac-11e0-8809-07745e72c695</uuidstructure>
+			<datelastmodified>Wed, 02 Mar 2011 09:05:09 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Mar 2011 09:05:09 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.htmlcleaner/classes/com</destination>
+			<type>folder</type>
+			<uuidstructure>2c9e4b54-44ac-11e0-8809-07745e72c695</uuidstructure>
+			<datelastmodified>Wed, 02 Mar 2011 09:05:09 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Mar 2011 09:05:09 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.htmlcleaner/classes/com/alkacon</destination>
+			<type>folder</type>
+			<uuidstructure>2caa3236-44ac-11e0-8809-07745e72c695</uuidstructure>
+			<datelastmodified>Wed, 02 Mar 2011 09:05:09 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Mar 2011 09:05:09 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.htmlcleaner/classes/com/alkacon/opencms</destination>
+			<type>folder</type>
+			<uuidstructure>2cb15e28-44ac-11e0-8809-07745e72c695</uuidstructure>
+			<datelastmodified>Wed, 02 Mar 2011 09:05:09 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Mar 2011 09:05:09 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.htmlcleaner/classes/com/alkacon/opencms/htmlcleaner</destination>
+			<type>folder</type>
+			<uuidstructure>2cb88a1a-44ac-11e0-8809-07745e72c695</uuidstructure>
+			<datelastmodified>Wed, 02 Mar 2011 09:05:09 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Mar 2011 09:05:09 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.htmlcleaner/classes/com/alkacon/opencms/htmlcleaner/messages.properties</source>
+			<destination>system/modules/com.alkacon.opencms.htmlcleaner/classes/com/alkacon/opencms/htmlcleaner/messages.properties</destination>
+			<type>plain</type>
+			<uuidstructure>2cbd450c-44ac-11e0-8809-07745e72c695</uuidstructure>
+			<uuidresource>9313831a-623d-11de-9ed3-054968d42bd6</uuidresource>
+			<datelastmodified>Thu, 06 Aug 2009 08:50:58 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 26 Jun 2009 10:39:06 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.htmlcleaner/classes/com/alkacon/opencms/htmlcleaner/messages_de.properties</source>
+			<destination>system/modules/com.alkacon.opencms.htmlcleaner/classes/com/alkacon/opencms/htmlcleaner/messages_de.properties</destination>
+			<type>plain</type>
+			<uuidstructure>2cc92bed-44ac-11e0-8809-07745e72c695</uuidstructure>
+			<uuidresource>2cc92bee-44ac-11e0-8809-07745e72c695</uuidresource>
+			<datelastmodified>Thu, 06 Aug 2009 08:52:09 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Mar 2011 09:05:09 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.htmlcleaner/classes/com/alkacon/opencms/htmlcleaner/messages_en.properties</destination>
+			<type>plain</type>
+			<uuidstructure>2cd783cf-44ac-11e0-8809-07745e72c695</uuidstructure>
+			<uuidresource>9313831a-623d-11de-9ed3-054968d42bd6</uuidresource>
+			<datelastmodified>Thu, 06 Aug 2009 08:50:58 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 26 Jun 2009 10:39:06 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.htmlcleaner/configuration</destination>
+			<type>folder</type>
+			<uuidstructure>2ce36ab0-44ac-11e0-8809-07745e72c695</uuidstructure>
+			<datelastmodified>Wed, 02 Mar 2011 09:05:09 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Mar 2011 09:05:09 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.htmlcleaner/configuration/config.xml</source>
+			<destination>system/modules/com.alkacon.opencms.htmlcleaner/configuration/config.xml</destination>
+			<type>xmlcontent</type>
+			<uuidstructure>2cece092-44ac-11e0-8809-07745e72c695</uuidstructure>
+			<uuidresource>2cece093-44ac-11e0-8809-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 02 Mar 2011 09:07:39 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Mar 2011 09:05:09 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[HTML cleaner configuration]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.htmlcleaner/lib</destination>
+			<type>folder</type>
+			<uuidstructure>2d261905-44ac-11e0-8809-07745e72c695</uuidstructure>
+			<datelastmodified>Wed, 02 Mar 2011 09:05:10 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Mar 2011 09:05:10 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.htmlcleaner/lib/com.alkacon.opencms.htmlcleaner.jar</source>
+			<destination>system/modules/com.alkacon.opencms.htmlcleaner/lib/com.alkacon.opencms.htmlcleaner.jar</destination>
+			<type>binary</type>
+			<uuidstructure>d38f5c0e-44b2-11e0-99d9-07745e72c695</uuidstructure>
+			<uuidresource>d38f5c0f-44b2-11e0-99d9-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 02 Mar 2011 09:53:10 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Mar 2011 09:52:46 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.htmlcleaner/lib/jericho-html-3.1.jar</source>
+			<destination>system/modules/com.alkacon.opencms.htmlcleaner/lib/jericho-html-3.1.jar</destination>
+			<type>binary</type>
+			<uuidstructure>2d42c8c9-44ac-11e0-8809-07745e72c695</uuidstructure>
+			<uuidresource>2d42c8ca-44ac-11e0-8809-07745e72c695</uuidresource>
+			<datelastmodified>Thu, 25 Jun 2009 13:29:22 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Mar 2011 09:05:10 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.htmlcleaner/schemas</destination>
+			<type>folder</type>
+			<uuidstructure>2d5120ab-44ac-11e0-8809-07745e72c695</uuidstructure>
+			<datelastmodified>Wed, 02 Mar 2011 09:05:10 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Mar 2011 09:05:10 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.htmlcleaner/schemas/cleanerconfig.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.htmlcleaner/schemas/cleanerconfig.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>2d55db9d-44ac-11e0-8809-07745e72c695</uuidstructure>
+			<uuidresource>2d55db9e-44ac-11e0-8809-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 02 Mar 2011 09:09:04 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Mar 2011 09:05:10 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[XSD for HTML cleaner configuration]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.htmlcleaner/schemas/keeptags.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.htmlcleaner/schemas/keeptags.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>2d667d70-44ac-11e0-8809-07745e72c695</uuidstructure>
+			<uuidresource>2d667d71-44ac-11e0-8809-07745e72c695</uuidresource>
+			<datelastmodified>Fri, 26 Jun 2009 10:23:31 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Mar 2011 09:05:10 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Nested XSD for keep tags configuration]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.htmlcleaner/schemas/removeattributeexcludetag.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.htmlcleaner/schemas/removeattributeexcludetag.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>2d701a63-44ac-11e0-8809-07745e72c695</uuidstructure>
+			<uuidresource>2d701a64-44ac-11e0-8809-07745e72c695</uuidresource>
+			<datelastmodified>Tue, 11 Aug 2009 10:23:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Mar 2011 09:05:10 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Nested XSD for a remove attribute exclude tag configuration]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.htmlcleaner/schemas/removeattributeitem.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.htmlcleaner/schemas/removeattributeitem.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>2d7c0146-44ac-11e0-8809-07745e72c695</uuidstructure>
+			<uuidresource>2d7c0147-44ac-11e0-8809-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 02 Mar 2011 09:09:43 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Mar 2011 09:05:10 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Nested XSD for a remove attribute item configuration]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.htmlcleaner/schemas/removeattributes.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.htmlcleaner/schemas/removeattributes.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>2d832d39-44ac-11e0-8809-07745e72c695</uuidstructure>
+			<uuidresource>2d832d3a-44ac-11e0-8809-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 02 Mar 2011 09:10:19 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Mar 2011 09:05:10 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Nested XSD for remove attributes configuration]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.htmlcleaner/schemas/replacetag.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.htmlcleaner/schemas/replacetag.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>2d8a592c-44ac-11e0-8809-07745e72c695</uuidstructure>
+			<uuidresource>2d8a592d-44ac-11e0-8809-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 02 Mar 2011 09:11:11 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Mar 2011 09:05:11 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Nested XSD for single replace tag configuration]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.htmlcleaner/schemas/replacetags.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.htmlcleaner/schemas/replacetags.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>2d93cf0f-44ac-11e0-8809-07745e72c695</uuidstructure>
+			<uuidresource>2d93cf10-44ac-11e0-8809-07745e72c695</uuidresource>
+			<datelastmodified>Wed, 02 Mar 2011 09:11:29 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Mar 2011 09:05:11 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Nested XSD for replace tags configuration]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+	</files>
+</export>
