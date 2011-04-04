@@ -1,6 +1,6 @@
 
                 Alkacon OpenCms Add-On Module Package: Survey
-                       Version 1.0.3; December 22, 2010
+                       Version 2.0; April 12th, 2011
 
 
                                     WARNING:
@@ -55,8 +55,8 @@ Legend:
 * Bug fixed
 - General comment
 
-2.0.0 April 12th, 2011
-- Necessary adaptations to work with OAMP WebForm Module 2.0.0
+2.0 April 12th, 2011
+- Necessary adaptations to work with OAMP WebForm Module 2.0
 
 1.0.3 Nov, 2010
 - Extended module documentation.
