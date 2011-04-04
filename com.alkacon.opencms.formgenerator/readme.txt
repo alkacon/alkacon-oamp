@@ -1,6 +1,6 @@
 
                 Alkacon OpenCms Add-On Module Package: Webform
-                       Version 1.4.3; Mar 04, 2011
+                       Version 2.0; April 12th, 2011
 
 
                                     WARNING:
@@ -56,7 +56,7 @@ Legend:
 * Bug fixed
 - General comment
 
-1.4.4 -xxx, 2011
+2.0 - April 12th, 2011
 ! Added Issue #1958: new parameter export.delimiter to define used delimiter in CSV files
 ! Added new mechanism to generate form output using StringTemplate, providing better control over generated HTML code
 
