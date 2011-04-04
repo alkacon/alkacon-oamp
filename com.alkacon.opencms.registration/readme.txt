@@ -1,6 +1,6 @@
 
           Alkacon OpenCms Add-On Module Package: Webuser Registration
-                       Version 0.9.0; February, 2008
+                       Version 2.0; April 12th, 2011
 
 
                                     WARNING:
@@ -64,6 +64,9 @@ Legend:
 ! New Feature
 * Bug fixed
 - General comment
+
+2.0 - April 12th, 2011
+- Necessary adaptations to work with OAMP WebForm Module 2.0
 
 0.9.0 - February, 2008
 - First public release
