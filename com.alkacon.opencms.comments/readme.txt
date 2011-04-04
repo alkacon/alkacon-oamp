@@ -56,6 +56,9 @@ Legend:
 * Bug fixed
 - General comment
 
+2.0.0 - April, 12th, 2011
+- Necessary adaptations to work with OAMP WebForm Module 2.0.0 
+
 1.0.3 - Nov, 2010
 -  Captcha presets used from formgenerator module
 
