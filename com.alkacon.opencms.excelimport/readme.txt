@@ -1,6 +1,6 @@
 
                 Alkacon OpenCms Add-On Module Package: ExcelImport
-                       Version 1.0.0; April 13th , 2011
+                       Version 1.0.0; April 13th, 2011
 
 
                                     WARNING:
@@ -53,5 +53,5 @@ Legend:
 * Bug fixed
 - General comment
 
-1.0.0 - September, 2010
+1.0.0 - April 13th, 2011
 - First public release
