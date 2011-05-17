@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsPrivacyField.java,v $
- * Date   : $Date: 2011/03/09 15:14:37 $
- * Version: $Revision: 1.5 $
+ * Date   : $Date: 2011/05/17 12:36:06 $
+ * Version: $Revision: 1.6 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -41,7 +41,7 @@ import java.util.Map;
 /**
  * Represents a confirmation check box with a link.<p>
  * 
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * 
  * @since 7.0.4 
  * 
@@ -125,6 +125,15 @@ public class CmsPrivacyField extends CmsCheckboxField {
     public String getType() {
 
         return TYPE;
+    }
+
+    /**
+     * @see com.alkacon.opencms.formgenerator.A_CmsField#toString()
+     */
+    @Override
+    public String toString() {
+
+        return getValue();
     }
 
 }

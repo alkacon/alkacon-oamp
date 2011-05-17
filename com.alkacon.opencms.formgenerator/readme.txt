@@ -56,8 +56,12 @@ Legend:
 * Bug fixed
 - General comment
 
+2.x - 
+* Fixed issue #1960: Nullpointer Exception on check page if no captcha field is configured
+* Fixed issue #1973: Privacy Field in Web Form Generator provides link instead of value on check details page
+
 2.0 - April 12th, 2011
-! Fixed Issue #1958: new parameter export.delimiter to define used delimiter in CSV files
+* Fixed Issue #1958: new parameter export.delimiter to define used delimiter in CSV files
 ! Added new mechanism to generate form output using StringTemplate, providing better control over generated HTML code
 
 1.4.3 - Mar, 2011

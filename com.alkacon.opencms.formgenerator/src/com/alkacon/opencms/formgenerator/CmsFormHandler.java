@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormHandler.java,v $
- * Date   : $Date: 2011/05/17 07:29:47 $
- * Version: $Revision: 1.24 $
+ * Date   : $Date: 2011/05/17 12:36:06 $
+ * Version: $Revision: 1.25 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -94,7 +94,7 @@ import org.antlr.stringtemplate.language.DefaultTemplateLexer;
  * @author Thomas Weckert
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  * 
  * @since 7.0.4 
  */
@@ -1308,24 +1308,27 @@ public class CmsFormHandler extends CmsJspActionElement {
             getCmsObject().getRequestContext().getUri()));
         sTemplate.setAttribute("formconfig", getFormConfiguration());
         sTemplate.setAttribute("checktext", getFormCheckText());
+
         CmsCaptchaField captchaField = getFormConfiguration().getCaptchaField();
         sTemplate.setAttribute("captchafield", captchaField);
-
-        String errorMessage = getErrors().get(captchaField.getName());
-
-        if (errorMessage != null) {
-            // create the error message for the field
-            if (CmsFormHandler.ERROR_MANDATORY.equals(errorMessage)) {
-                errorMessage = getMessages().key("form.error.mandatory");
-            } else {
-                errorMessage = getMessages().key("form.error.validation");
+        if (captchaField != null) {
+            // do this only if a captcha field is configured
+            String errorMessage = getErrors().get(captchaField.getName());
+            if (errorMessage != null) {
+                // create the error message for the field
+                if (CmsFormHandler.ERROR_MANDATORY.equals(errorMessage)) {
+                    errorMessage = getMessages().key("form.error.mandatory");
+                } else {
+                    errorMessage = getMessages().key("form.error.validation");
+                }
             }
+            sTemplate.setAttribute("captchaerror", errorMessage);
+            sTemplate.setAttribute("captchaimagelink", OpenCms.getLinkManager().substituteLink(
+                getCmsObject(),
+                "/system/modules/com.alkacon.opencms.formgenerator/pages/captcha.jsp?"
+                    + captchaField.getCaptchaSettings().toRequestParams(getCmsObject())));
         }
-        sTemplate.setAttribute("captchaerror", errorMessage);
-        sTemplate.setAttribute("captchaimagelink", OpenCms.getLinkManager().substituteLink(
-            getCmsObject(),
-            "/system/modules/com.alkacon.opencms.formgenerator/pages/captcha.jsp?"
-                + captchaField.getCaptchaSettings().toRequestParams(getCmsObject())));
+
         List<I_CmsField> fields = getFormConfiguration().getAllFields(true, false, false);
         List<I_CmsField> checkFields = new ArrayList<I_CmsField>(fields.size());
         for (int i = 0, n = fields.size(); i < n; i++) {
