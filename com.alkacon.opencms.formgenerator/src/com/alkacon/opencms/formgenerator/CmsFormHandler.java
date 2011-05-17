@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormHandler.java,v $
- * Date   : $Date: 2011/03/21 11:43:46 $
- * Version: $Revision: 1.23 $
+ * Date   : $Date: 2011/05/17 07:29:47 $
+ * Version: $Revision: 1.24 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -94,7 +94,7 @@ import org.antlr.stringtemplate.language.DefaultTemplateLexer;
  * @author Thomas Weckert
  * @author Jan Baudisch
  * 
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  * 
  * @since 7.0.4 
  */
@@ -1001,7 +1001,6 @@ public class CmsFormHandler extends CmsJspActionElement {
                 theMail.setSubject(m_macroResolver.resolveMacros(getFormConfiguration().getMailSubjectPrefix()
                     + getFormConfiguration().getConfirmationMailSubject()));
                 theMail.setHtmlMsg(createMailTextFromFields(true, true));
-                theMail.setTextMsg(createMailTextFromFields(false, true));
                 // send the mail
                 theMail.send();
             } else {
@@ -1814,7 +1813,6 @@ public class CmsFormHandler extends CmsJspActionElement {
                 theMail.setSubject(m_macroResolver.resolveMacros(getFormConfiguration().getMailSubjectPrefix()
                     + getFormConfiguration().getMailSubject()));
                 theMail.setHtmlMsg(createMailTextFromFields(true, false));
-                theMail.setTextMsg(createMailTextFromFields(false, false));
 
                 // attach file uploads
                 Map<String, FileItem> fileUploads = (Map<String, FileItem>)getRequest().getSession().getAttribute(
