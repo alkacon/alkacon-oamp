@@ -38,7 +38,8 @@
 <fmt:setLocale value="${locale}" />
 <fmt:bundle basename="com.alkacon.opencms.survey.frontend">
 
-	<c:catch var="error"> 
+	<c:catch var="error">
+		
 		<cms:contentload collector="singleFile" param="%(opencms.uri)">
 			<cms:contentaccess var="rootContent" />
 
@@ -146,7 +147,7 @@
 								<%-- get the label for the field --%>
 								<c:set var="labeling"
 									value="${cms.labeling[field.value['FieldLabel']]}" />
-								<h3><c:out value="${labeling[0]}" /></h3>
+								<h3><c:out value="${labeling[0]}" escapeXml="false"/></h3>
 								<br />
 
 								<%-- is the detail page --%>
@@ -181,13 +182,10 @@
 									
 										<c:if test="${!empty avg}">
 											<c:set var="displayAvg"><fmt:formatNumber value="${avg}" minFractionDigits="${averageDigits}" maxFractionDigits="${averageDigits}" /></c:set>
-											
-											
-												<c:out value="${fieldOptions.averageText}" />
-											
+											<c:out value="${fieldOptions.averageText}" />											
 											<c:set var="barColor" value="${content.value.Color.stringValue}" />
 											<c:set var="fieldDefault" value="${field.value.FieldDefault.stringValue}" />
-											
+
 											<%
 												String color = (String)pageContext.getAttribute("avgcolor");
 												if (color == null) color = "#000000";
@@ -200,52 +198,119 @@
 												} else {
 													out.println(CmsAverageUtil.getBarHtml(fieldDefault, avg, displayAvg, color));
 												}
-												//out.println(fieldOptions.get("averageText"));
-												
-											%> <br /><br /><br />
+											%> 
+<c:if test="${showCount == 'true'}">	
+<c:set var="answerCounts" value="${workBean.answers[labeling[1]]}" />
+<%
+// just count all the answers for a particular question regardless of what answer was given
+// 13.05.11 - AK
+
+int answerCount = 0;
+Map theAnswers = (Map)pageContext.getAttribute("answerCounts");
+
+Iterator entries = theAnswers.entrySet().iterator();
+while(entries.hasNext()) {
+Map.Entry answer = (Map.Entry)entries.next();
+String key = String.valueOf(answer.getKey());
+if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(key)) {
+	answerCount += ((Integer)(answer.getValue())).intValue();
+}
+}
+
+pageContext.setAttribute("allAnswerCount", String.valueOf(answerCount));
+%>
+</c:if>																						
+											<span class="reportcount">
+											<c:if test="${showCount == 'true'}">(<c:out value="${allAnswerCount}" />)</c:if>
+											</span>
+											<br /><br /><br />
 
 										
 										</c:if>
 										
 									</c:if>
-									<c:if test="${showAverage ne 'only'}">
-										<c:set var="answerCounts"
-											value="${workBean.answers[labeling[1]]}" />
-										<c:set var="answerList"
-											value="${fn:split(field.value['FieldDefault'], '|')}" />
+									<c:if test="${showAverage ne 'only'}">									
+										<c:set var="answerCounts" value="${workBean.answers[labeling[1]]}" />
+										<c:set var="answerList"	value="${fn:split(field.value['FieldDefault'], '|')}" />
 	
+<c:if test="${field.value['FieldType'] eq 'checkbox' }">	
+<%
+// this fixes the problem with the following use case:
+// allowing a multiple choice with checkboxes will create a comma separated value list in case more then one entry is selected
+// the bean internal parser however treats all entries as literals instead of splitting the value along the comma ","
+// 11.05.11 - AK
+
+Map correctAnswers = new HashMap();
+Map theAnswers = (Map)pageContext.getAttribute("answerCounts");
+
+Iterator entries = theAnswers.entrySet().iterator();
+
+while(entries.hasNext()) {
+Map.Entry answer = (Map.Entry)entries.next();
+String key = String.valueOf(answer.getKey());
+int count = ((Integer)(answer.getValue())).intValue();
+
+String[] splitKey = key.split(",");
+for (int i = 0; i < splitKey.length; i++) {
+	String k = splitKey[i];
+	if (k != null) {
+		k = k.trim();
+		if (k.length() > 0) {
+			Integer oldCount = (Integer)correctAnswers.get(k);
+			Integer newCount = Integer.valueOf(count);
+			if (oldCount != null) {
+				newCount = Integer.valueOf(count + oldCount.intValue());
+			}
+			correctAnswers.put(k, newCount);
+		}
+	}
+
+}
+}
+pageContext.setAttribute("answerCounts", correctAnswers);
+%>
+</c:if>
 										<c:set var="colorIndex" value="0" />
 										<c:forEach var="item" items="${answerList}" varStatus="status">
 											
 											<c:set var="itemKey" value="${item}" />
-											<c:if test="${fn:contains(itemKey, ':')}">
-												<c:set var="itemKey"
-													value="${fn:substringBefore(itemKey, ':')}" />
+											<c:if test="${fn:contains(itemKey, '%(row)')}">
+												<c:set var="itemKey" value="${fn:substringAfter(itemKey, '%(row)')}" />
 											</c:if>
-											<c:set var="itemValue" value="${answerCounts[itemKey]}" />
-	
+											<c:if test="${fn:contains(itemKey, ':')}">
+												<c:set var="itemKey" value="${fn:substringBefore(itemKey, ':')}" />
+											</c:if>
+											<c:set var="itemValue" value="${answerCounts[itemKey]}" />	
 											<c:if test="${!empty itemValue}">
-												<div class="reportitem"><c:set var="width"
-													value="${ (itemValue/fn:length(workBean.list)) }" /> <c:set
-													var="defValue" value="${itemKey}" /> <c:forTokens
-													items="${field.value['FieldDefault']}" delims="|" var="def">
+												<div class="reportitem">
+												
+												<c:set var="width" value="${ (itemValue/fn:length(workBean.list)) }" /> 													
+												<c:set var="defValue" value="${itemKey}" /> 
+												
+												<c:forTokens items="${field.value['FieldDefault']}" delims="|" var="def">
 													<c:if
 														test="${fn:contains(def, ':') && fn:substringBefore(def, ':') == itemKey}">
 														<c:set var="defValue"
 															value="${fn:substringAfter(def, ':')}" />
 													</c:if>
 												</c:forTokens>
+												
 												<p class="reportanswer"><c:out value="${defValue}" /></p>
-												<span class="processbar"> <c:set var="curColor"
-													value="${color[(colorIndex%fn:length(color))]}" /> <span
-													class="bar"
-													style="width:${width * 100}%; background-color:${curColor}; color:${cms.textColor[curColor]};">
-												<fmt:formatNumber value="${width}" type="percent" /> </span> </span> <span
-													class="reportcount"><c:if
-													test="${showCount == 'true'}">(<c:out
-														value="${itemValue}" />)</c:if><br />
-												<br />
-												</span></div>
+												
+												<span class="processbar"> 
+												
+												<c:set var="curColor"
+													value="${color[(colorIndex%fn:length(color))]}" />
+													
+												 <span class="bar" style="width:${width * 100}%; background-color:${curColor}; color:${cms.textColor[curColor]};">
+												
+												<fmt:formatNumber value="${width}" type="percent" /> 
+												</span></span></span></span>
+												<span class="reportcount">
+												<c:if test="${showCount == 'true'}">(<c:out value="${itemValue}" />)</c:if>
+												</span>
+												<br /><br />												
+												</div>
 												<c:set var="colorIndex" value="${colorIndex + 1}" />
 											</c:if>
 										</c:forEach>
@@ -260,6 +325,7 @@
 				<c:out value="${content.value['AddText']}" escapeXml="false" />
 			</c:if>
 		</cms:contentload>
+
 	</c:catch> 
 
 	<c:if test="${empty workBean && empty error}">
