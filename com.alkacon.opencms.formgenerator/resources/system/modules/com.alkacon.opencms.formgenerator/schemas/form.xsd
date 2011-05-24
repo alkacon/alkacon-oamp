@@ -58,6 +58,9 @@
 				<default element="OptionalFormConfiguration/KeepSession" value="360" />
 				<default element="OptionalFormExpiration/Date" value="%(currenttime)" />
 			</defaults>
+			<formatters>
+				<formatter minwidth="200" uri="/system/modules/com.alkacon.opencms.formgenerator/elements/form.jsp" />
+			</formatters>
 			<validationrules>
 				<rule element="MailFrom" regex=".+" type="warning" message="%(key.alkacon-webform.warn.xmlcontent.field.empty)"/>
 				<rule element="MailTo" regex=".+" type="warning" message="%(key.alkacon-webform.warn.xmlcontent.field.empty)"/>
@@ -80,6 +83,9 @@
 				<tab element="FormCaptcha" name="Tab.FormConfig" collapse="false" />
 				<tab element="OptionalConfirmationMail" name="Tab.ConfirmationMail" collapse="true" />		
 			</tabs>
+			<settings>
+				<setting name="boxschema" nice-name="Box Schema" type="string" widget="select" widget-config="box_schema1:Schema 1|box_schema2:Schema 2|box_schema3:Schema 3" />
+			</settings>
 		</xsd:appinfo>
 	</xsd:annotation>  
 	

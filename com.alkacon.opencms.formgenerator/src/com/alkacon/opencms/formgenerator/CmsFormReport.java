@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormReport.java,v $
- * Date   : $Date: 2011/03/09 15:14:36 $
- * Version: $Revision: 1.4 $
+ * Date   : $Date: 2011/05/24 13:42:21 $
+ * Version: $Revision: 1.5 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -245,6 +245,22 @@ public class CmsFormReport extends CmsJspActionElement {
     public CmsFormReport(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         super(context, req, res);
+        initReport(context, req, res, getRequestContext().getUri());
+
+    }
+
+    /**
+     * Constructor, creates the necessary form report configuration objects.<p>
+     * 
+     * @param context the JSP page context object
+     * @param req the JSP request 
+     * @param res the JSP response 
+     * @param reportUri URI of the report configuration file
+     */
+    public CmsFormReport(PageContext context, HttpServletRequest req, HttpServletResponse res, String reportUri) {
+
+        super(context, req, res);
+        initReport(context, req, res, reportUri);
     }
 
     /**
@@ -485,55 +501,6 @@ public class CmsFormReport extends CmsJspActionElement {
     }
 
     /**
-     * @see org.opencms.jsp.CmsJspBean#init(javax.servlet.jsp.PageContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-     */
-    @Override
-    public void init(PageContext context, HttpServletRequest req, HttpServletResponse res) {
-
-        // call super initialization
-        super.init(context, req, res);
-        m_columns = new ArrayList<CmsFormReportColumn>();
-        try {
-            CmsFile file = getCmsObject().readFile(getRequestContext().getUri());
-            CmsXmlContent content = CmsXmlContentFactory.unmarshal(getCmsObject(), file);
-            // get the web form URI
-            String formUri = content.getStringValue(getCmsObject(), NODE_URI, getRequestContext().getLocale());
-            m_formHandler = CmsFormHandlerFactory.create(context, req, res, formUri);
-            String checkedFieldsStr = content.getStringValue(
-                getCmsObject(),
-                NODE_FIELDS,
-                getRequestContext().getLocale());
-            List<String> checkedFields = new ArrayList<String>();
-            boolean showAllFields = CmsStringUtil.isEmptyOrWhitespaceOnly(checkedFieldsStr);
-            if (!showAllFields) {
-                checkedFields = CmsStringUtil.splitAsList(checkedFieldsStr, CmsReportCheckFieldsWidget.SEPARATOR_FIELDS);
-            }
-            // loop configured form fields to get the displayed fields
-            for (Iterator<I_CmsField> i = getFormConfiguration().getFields().iterator(); i.hasNext();) {
-                I_CmsField field = i.next();
-                if (field.getType().equals(CmsPagingField.getStaticType())
-                    || field.getType().equals(CmsEmptyField.getStaticType())) {
-                    continue;
-                }
-                if (showAllFields || checkedFields.contains(field.getDbLabel())) {
-                    // this field has to be shown, add it to the columns and check sub fields
-                    m_columns.add(new CmsFormReportColumn(field));
-                    if (field.isHasSubFields()) {
-                        Iterator<Entry<String, List<I_CmsField>>> k = field.getSubFields().entrySet().iterator();
-                        while (k.hasNext()) {
-                            Map.Entry<String, List<I_CmsField>> entry = k.next();
-                            m_columns.addAll(CmsFormReportColumn.getColumnsFromFields(entry.getValue()));
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            // something went wrong, create a new exception
-            throw new CmsRuntimeException(Messages.get().container(Messages.ERR_REPORT_NO_FORM_URI_0), e);
-        }
-    }
-
-    /**
      * Returns if the report output height should be calculated automatically.<p>
      * 
      * @return <code>true</code> if the report output height should be calculated automatically, otherwise <code>false</code>
@@ -707,5 +674,56 @@ public class CmsFormReport extends CmsJspActionElement {
             }
         }
         return m_content;
+    }
+
+    /**
+     * Initializes the report configuration.<p>
+     * 
+     * @param context the JSP page context object
+     * @param req the JSP request 
+     * @param res the JSP response 
+     * @param reportUri URI of the report configuration file
+     */
+    protected void initReport(PageContext context, HttpServletRequest req, HttpServletResponse res, String reportUri) {
+
+        m_columns = new ArrayList<CmsFormReportColumn>();
+        try {
+            CmsFile file = getCmsObject().readFile(reportUri);
+            CmsXmlContent content = CmsXmlContentFactory.unmarshal(getCmsObject(), file);
+            // get the web form URI
+            String formUri = content.getStringValue(getCmsObject(), NODE_URI, getRequestContext().getLocale());
+            m_formHandler = CmsFormHandlerFactory.create(context, req, res, formUri);
+            String checkedFieldsStr = content.getStringValue(
+                getCmsObject(),
+                NODE_FIELDS,
+                getRequestContext().getLocale());
+            List<String> checkedFields = new ArrayList<String>();
+            boolean showAllFields = CmsStringUtil.isEmptyOrWhitespaceOnly(checkedFieldsStr);
+            if (!showAllFields) {
+                checkedFields = CmsStringUtil.splitAsList(checkedFieldsStr, CmsReportCheckFieldsWidget.SEPARATOR_FIELDS);
+            }
+            // loop configured form fields to get the displayed fields
+            for (Iterator<I_CmsField> i = getFormConfiguration().getFields().iterator(); i.hasNext();) {
+                I_CmsField field = i.next();
+                if (field.getType().equals(CmsPagingField.getStaticType())
+                    || field.getType().equals(CmsEmptyField.getStaticType())) {
+                    continue;
+                }
+                if (showAllFields || checkedFields.contains(field.getDbLabel())) {
+                    // this field has to be shown, add it to the columns and check sub fields
+                    m_columns.add(new CmsFormReportColumn(field));
+                    if (field.isHasSubFields()) {
+                        Iterator<Entry<String, List<I_CmsField>>> k = field.getSubFields().entrySet().iterator();
+                        while (k.hasNext()) {
+                            Map.Entry<String, List<I_CmsField>> entry = k.next();
+                            m_columns.addAll(CmsFormReportColumn.getColumnsFromFields(entry.getValue()));
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // something went wrong, create a new exception
+            throw new CmsRuntimeException(Messages.get().container(Messages.ERR_REPORT_NO_FORM_URI_0), e);
+        }
     }
 }

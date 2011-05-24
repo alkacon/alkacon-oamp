@@ -3,8 +3,8 @@
 <export>
 	<info>
 		<creator>Admin</creator>
-		<opencms_version>7.5.3</opencms_version>
-		<createdate>Fri, 11 Mar 2011 15:47:00 GMT</createdate>
+		<opencms_version>8.0.0</opencms_version>
+		<createdate>Mon, 23 May 2011 07:29:23 GMT</createdate>
 		<infoproject>Offline</infoproject>
 		<export_version>7</export_version>
 	</info>
@@ -40,6 +40,8 @@
 			<resource uri="/system/workplace/admin/formgenerator/"/>
 		</resources>
 		<parameters>
+			<param name="config.containerpage">/system/modules/com.alkacon.opencms.formgenerator/config/sitemap.config</param>
+			<param name="config.sitemap">/system/modules/com.alkacon.opencms.formgenerator/config/sitemap.config</param>
 			<param name="css">/system/modules/com.alkacon.opencms.formgenerator/resources/css/webform.css</param>
 			<param name="db-pool">default</param>
 			<param name="export.encoding">windows-1252</param>
@@ -89,10 +91,10 @@
 		<file>
 			<destination>system</destination>
 			<type>folder</type>
-			<uuidstructure>afa9d7a0-4bf1-11e0-9a44-7b3e4222a901</uuidstructure>
-			<datelastmodified>Fri, 11 Mar 2011 15:10:22 GMT</datelastmodified>
+			<uuidstructure>a0b8c034-7958-11e0-ae83-45a5ae8025c8</uuidstructure>
+			<datelastmodified>Sun, 08 May 2011 09:50:38 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Fri, 11 Mar 2011 15:10:22 GMT</datecreated>
+			<datecreated>Sun, 08 May 2011 09:50:38 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -111,10 +113,10 @@
 		<file>
 			<destination>system/modules</destination>
 			<type>folder</type>
-			<uuidstructure>b02d1199-4bf1-11e0-9a44-7b3e4222a901</uuidstructure>
-			<datelastmodified>Fri, 11 Mar 2011 15:10:23 GMT</datelastmodified>
+			<uuidstructure>a0fb6dc0-7958-11e0-ae83-45a5ae8025c8</uuidstructure>
+			<datelastmodified>Sun, 08 May 2011 09:50:38 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Fri, 11 Mar 2011 15:10:23 GMT</datecreated>
+			<datecreated>Sun, 08 May 2011 09:50:38 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -825,6 +827,110 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/config</destination>
+			<type>folder</type>
+			<uuidstructure>a572516a-8203-11e0-ba64-45a5ae8025c8</uuidstructure>
+			<datelastmodified>Fri, 20 May 2011 07:57:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 19 May 2011 10:34:59 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[config]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/config/sitemap.config</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/config/sitemap.config</destination>
+			<type>sitemap_config</type>
+			<uuidstructure>d9dee180-8203-11e0-ba64-45a5ae8025c8</uuidstructure>
+			<uuidresource>d9dee181-8203-11e0-ba64-45a5ae8025c8</uuidresource>
+			<datelastmodified>Thu, 19 May 2011 10:55:58 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 19 May 2011 10:36:27 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Type config for webform]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/config/models</destination>
+			<type>folder</type>
+			<uuidstructure>b831aa3d-8203-11e0-ba64-45a5ae8025c8</uuidstructure>
+			<datelastmodified>Thu, 19 May 2011 10:35:35 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 19 May 2011 10:35:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[models]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/config/models/webform.html</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/config/models/webform.html</destination>
+			<type>alkacon-webform</type>
+			<uuidstructure>03bbbd23-8204-11e0-ba64-45a5ae8025c8</uuidstructure>
+			<uuidresource>03bbbd24-8204-11e0-ba64-45a5ae8025c8</uuidresource>
+			<datelastmodified>Thu, 19 May 2011 10:45:32 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 19 May 2011 10:37:37 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[New Webform]]></value>
+				</property>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.formgenerator/pages/form.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/config/models/webform_report.html</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/config/models/webform_report.html</destination>
+			<type>alkacon-webformreport</type>
+			<uuidstructure>493f4d3f-8204-11e0-ba64-45a5ae8025c8</uuidstructure>
+			<uuidresource>493f4d40-8204-11e0-ba64-45a5ae8025c8</uuidresource>
+			<datelastmodified>Fri, 20 May 2011 10:35:26 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 19 May 2011 10:39:34 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[New Webform Report]]></value>
+				</property>
+				<property type="shared">
+					<name>template-elements</name>
+					<value><![CDATA[/system/modules/com.alkacon.opencms.formgenerator/pages/report.jsp]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
 			<destination>system/modules/com.alkacon.opencms.formgenerator/elements</destination>
 			<type>folder</type>
 			<uuidstructure>a40cefa8-11b7-11db-91cd-fdbae480baca</uuidstructure>
@@ -856,6 +962,34 @@
 				<property>
 					<name>content-encoding</name>
 					<value><![CDATA[utf-8]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/elements/form.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/elements/form.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>a424bd7e-11b7-11db-91cd-fdbae480baca</uuidstructure>
+			<uuidresource>ffb9f73b-63b8-11d9-ab74-f55bb5376c25</uuidresource>
+			<datelastmodified>Thu, 28 Apr 2011 14:59:32 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Input form page]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[never]]></value>
 				</property>
 				<property type="shared">
 					<name>export</name>
@@ -908,6 +1042,34 @@
 				<property>
 					<name>Title</name>
 					<value><![CDATA[Trigger JSP to keep the session (optional)]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/elements/report.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/elements/report.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>d460e01c-5db0-11df-ac93-3d965a9c8d62</uuidstructure>
+			<uuidresource>d460e01d-5db0-11df-ac93-3d965a9c8d62</uuidresource>
+			<datelastmodified>Fri, 20 May 2011 13:28:07 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 12 May 2010 10:26:30 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Report page]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[uri;no-params;timeout=2]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
 				</property>
 			</properties>
 			<relations/>
@@ -1120,62 +1282,6 @@
 			<accesscontrol/>
 		</file>
 		<file>
-			<source>system/modules/com.alkacon.opencms.formgenerator/pages/form.jsp</source>
-			<destination>system/modules/com.alkacon.opencms.formgenerator/pages/form.jsp</destination>
-			<type>jsp</type>
-			<uuidstructure>a424bd7e-11b7-11db-91cd-fdbae480baca</uuidstructure>
-			<uuidresource>ffb9f73b-63b8-11d9-ab74-f55bb5376c25</uuidresource>
-			<datelastmodified>Wed, 09 Mar 2011 13:09:12 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property>
-					<name>Title</name>
-					<value><![CDATA[Input form page]]></value>
-				</property>
-				<property>
-					<name>cache</name>
-					<value><![CDATA[never]]></value>
-				</property>
-				<property type="shared">
-					<name>export</name>
-					<value><![CDATA[false]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol/>
-		</file>
-		<file>
-			<source>system/modules/com.alkacon.opencms.formgenerator/pages/report.jsp</source>
-			<destination>system/modules/com.alkacon.opencms.formgenerator/pages/report.jsp</destination>
-			<type>jsp</type>
-			<uuidstructure>d460e01c-5db0-11df-ac93-3d965a9c8d62</uuidstructure>
-			<uuidresource>d460e01d-5db0-11df-ac93-3d965a9c8d62</uuidresource>
-			<datelastmodified>Tue, 08 Feb 2011 16:41:21 GMT</datelastmodified>
-			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Wed, 12 May 2010 10:26:30 GMT</datecreated>
-			<usercreated>Admin</usercreated>
-			<flags>0</flags>
-			<properties>
-				<property>
-					<name>Title</name>
-					<value><![CDATA[Report page]]></value>
-				</property>
-				<property>
-					<name>cache</name>
-					<value><![CDATA[uri;no-params;timeout=2]]></value>
-				</property>
-				<property type="shared">
-					<name>export</name>
-					<value><![CDATA[false]]></value>
-				</property>
-			</properties>
-			<relations/>
-			<accesscontrol/>
-		</file>
-		<file>
 			<destination>system/modules/com.alkacon.opencms.formgenerator/resources</destination>
 			<type>folder</type>
 			<uuidstructure>fffd258d-fff6-11dc-a6ff-371bb8ed1b84</uuidstructure>
@@ -1216,6 +1322,26 @@
 				<property>
 					<name>Title</name>
 					<value><![CDATA[Default webform CSS]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/css/webform_mod.css</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/css/webform_mod.css</destination>
+			<type>plain</type>
+			<uuidstructure>df345c37-7975-11e0-8748-45a5ae8025c8</uuidstructure>
+			<uuidresource>df345c38-7975-11e0-8748-45a5ae8025c8</uuidresource>
+			<datelastmodified>Sun, 08 May 2011 13:43:27 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Sun, 08 May 2011 13:19:58 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Modified CSS]]></value>
 				</property>
 			</properties>
 			<relations/>
@@ -1288,6 +1414,26 @@
 				<property>
 					<name>Title</name>
 					<value><![CDATA[Error template]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/resources/formtemplates/modified-table-based.st</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/resources/formtemplates/modified-table-based.st</destination>
+			<type>plain</type>
+			<uuidstructure>3a69cd66-797d-11e0-8748-45a5ae8025c8</uuidstructure>
+			<uuidresource>3a69cd67-797d-11e0-8748-45a5ae8025c8</uuidresource>
+			<datelastmodified>Sun, 08 May 2011 18:05:54 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Sun, 08 May 2011 14:12:37 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Table based form templates]]></value>
 				</property>
 			</properties>
 			<relations/>
@@ -4068,7 +4214,7 @@
 			<type>plain</type>
 			<uuidstructure>a42e5a78-11b7-11db-91cd-fdbae480baca</uuidstructure>
 			<uuidresource>a58c4c68-630d-11d9-ba58-f55bb5376c25</uuidresource>
-			<datelastmodified>Wed, 09 Mar 2011 13:18:05 GMT</datelastmodified>
+			<datelastmodified>Fri, 20 May 2011 13:33:08 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -4268,7 +4414,7 @@
 			<type>plain</type>
 			<uuidstructure>383cbbb1-5da7-11df-848d-3d965a9c8d62</uuidstructure>
 			<uuidresource>383cbbb2-5da7-11df-848d-3d965a9c8d62</uuidresource>
-			<datelastmodified>Tue, 08 Feb 2011 13:57:06 GMT</datelastmodified>
+			<datelastmodified>Fri, 20 May 2011 13:33:26 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Wed, 12 May 2010 09:17:42 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -4285,7 +4431,7 @@
 		<file>
 			<destination>system/workplace</destination>
 			<type>folder</type>
-			<uuidstructure>825afce2-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<uuidstructure>a369aecc-7958-11e0-ae83-45a5ae8025c8</uuidstructure>
 			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
@@ -4717,7 +4863,7 @@
 		<file>
 			<destination>system/workplace/resources</destination>
 			<type>folder</type>
-			<uuidstructure>82c16052-11b7-11db-91cd-fdbae480bac9</uuidstructure>
+			<uuidstructure>a36e90d4-7958-11e0-ae83-45a5ae8025c8</uuidstructure>
 			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
@@ -4730,8 +4876,8 @@
 		<file>
 			<destination>system/workplace/resources/filetypes</destination>
 			<type>folder</type>
-			<uuidstructure>83ca1dcc-11b7-11db-91cd-fdbae480bac9</uuidstructure>
-			<datelastmodified>Mon, 27 Jun 2005 08:00:00 GMT</datelastmodified>
+			<uuidstructure>a370dac6-7958-11e0-ae83-45a5ae8025c8</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
 			<usercreated>Admin</usercreated>

@@ -39,6 +39,13 @@
 				<default element="GridHeight" value="350" />
 				<default element="ColWidth" value="90" />
 			</defaults>
+			<formatters>
+				<formatter minwidth="200" uri="/system/modules/com.alkacon.opencms.formgenerator/elements/report.jsp" />
+			</formatters>
+			<headincludes>
+<headinclude type="javascript" uri="/system/modules/com.alkacon.opencms.formgenerator/resources/js/dateformat.js" />
+<headinclude type="javascript" uri="/system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/gt_grid_all.js" />
+			</headincludes>
 			<validationrules />
 			<layouts>
 				<layout element="URI" widget="com.alkacon.opencms.formgenerator.CmsSelectWidgetXmlcontentType" configuration="resourcetypeName=alkacon-webform|folder=%(currentsite)|displayOptionMacro=%(property.Title) (%(opencms.filename))" />
