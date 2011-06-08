@@ -1,7 +1,7 @@
 /*
  * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/dialog/CmsFormEditDialog.java,v $
- * Date   : $Date: 2011/02/18 08:11:52 $
- * Version: $Revision: 1.7 $
+ * Date   : $Date: 2011/06/08 13:35:02 $
+ * Version: $Revision: 1.8 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
  *
@@ -69,7 +69,7 @@ import org.apache.commons.logging.Log;
  * 
  * @author Anja Roettgers 
  * 
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  * 
  * @since 7.0.4 
  */
@@ -337,6 +337,9 @@ public class CmsFormEditDialog extends CmsWidgetDialog {
             // get the entry and fill the columns
             column = columnNames.get(i);
             value = m_formData.getFieldValue(column);
+            if (CmsStringUtil.isEmpty(value)) {
+                value = "";
+            }
             edit = createEditEntry(value, uploadFolder, editable);
             addWidget(new CmsWidgetDialogParameter(edit, "value", column, "", PAGES[0], edit.getWidget(), 0, 1));
             m_fields.put(column, edit);
