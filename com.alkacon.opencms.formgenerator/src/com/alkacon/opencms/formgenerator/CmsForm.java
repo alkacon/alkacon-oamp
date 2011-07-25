@@ -1,6 +1,6 @@
 /*
- * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
- * Date   : $Date: 2011/03/24 16:33:50 $
+ * File   : $Source: /usr/local/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsForm.java,v $
+ * Date   : $Date: 2011-03-24 16:33:50 $
  * Version: $Revision: 1.29 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
@@ -56,8 +56,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.StringTokenizer;
 import java.util.Map.Entry;
+import java.util.StringTokenizer;
 
 import org.apache.commons.fileupload.FileItem;
 
@@ -356,6 +356,9 @@ public class CmsForm {
     /** Configuration node name for the text node. */
     public static final String NODE_TEXT = "Text";
 
+    /** Configuration node name for the title node. */
+    public static final String NODE_TITLE = "Title";
+
     /** Configuration node name for the value. */
     public static final String NODE_VALUE = "Value";
 
@@ -524,6 +527,9 @@ public class CmsForm {
 
     /** The optional HTML template file URI. */
     protected String m_templateFile;
+
+    /** configuration value. */
+    protected String m_title;
 
     /** Flag to signal that data should be stored in the database - defaults to false. */
     protected boolean m_transportDatabase;
@@ -1167,10 +1173,20 @@ public class CmsForm {
     }
 
     /**
-     * Tests if a captcha field is configured for this form.<p>
+     * Returns the form title.<p>
      * 
-     * @return true, if a captcha field is configured for this form
+     * @return the form title
      */
+    public String getTitle() {
+
+        return m_title;
+    }
+
+    /**
+         * Tests if a captcha field is configured for this form.<p>
+         * 
+         * @return true, if a captcha field is configured for this form
+         */
     public boolean hasCaptchaField() {
 
         return m_captchaField != null;
@@ -1394,6 +1410,16 @@ public class CmsForm {
     }
 
     /**
+     * Sets the form title.<p>
+     * 
+     * @param formText the form title
+     */
+    public void setTitle(String title) {
+
+        m_title = title;
+    }
+
+    /**
      * Sets if the mandatory marks and text should be shown.<p>
      * 
      * @param showMandatory the setting for the mandatory marks
@@ -1573,6 +1599,9 @@ public class CmsForm {
         // get the form text
         String stringValue = getContentStringValue(content, cms, NODE_FORMTEXT, locale);
         setFormText(getConfigurationValue(resolver, stringValue, ""));
+        // get the form title
+        stringValue = getContentStringValue(content, cms, NODE_TITLE, locale);
+        setTitle(getConfigurationValue(resolver, stringValue, ""));
         // get the form middle text
         stringValue = getContentStringValue(content, cms, NODE_FORMMIDDLETEXT, locale);
         setFormMiddleText(getConfigurationValue(resolver, stringValue, ""));
@@ -1908,6 +1937,7 @@ public class CmsForm {
         setShowMandatory(true);
         setShowReset(true);
         setTemplateFile(VFS_PATH_DEFAULT_TEMPLATEFILE);
+        setTitle("");
     }
 
     /**
@@ -2505,17 +2535,17 @@ public class CmsForm {
                         List<I_CmsXmlContentValue> fieldValues = content.getValues(subPath + NODE_INPUTFIELD, locale);
                         for (Iterator<I_CmsXmlContentValue> k = fieldValues.iterator(); k.hasNext();) {
                             field.addSubField(fieldValue, createInputField(
-                                k.next().getPath(),
-                                content,
-                                jsp,
-                                locale,
-                                messages,
-                                fieldTexts,
-                                subFieldPaths,
-                                fileUploads,
-                                suffix,
-                                initial,
-                                true));
+                                    k.next().getPath(),
+                                    content,
+                                    jsp,
+                                    locale,
+                                    messages,
+                                    fieldTexts,
+                                    subFieldPaths,
+                                    fileUploads,
+                                    suffix,
+                                    initial,
+                                    true));
                         }
                     }
                 }
