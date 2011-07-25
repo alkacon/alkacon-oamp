@@ -1,12 +1,38 @@
 <%--  
 WARNING: Do not auto - reformat! In case of data download a linebreak will cause: 
 "java.lang.IllegalStateException: getOutputStream() has already been called for this response".
---%><%@page buffer="none" session="false" import="org.apache.commons.logging.*,java.io.OutputStreamWriter,org.opencms.module.CmsModule,org.opencms.i18n.*,com.alkacon.opencms.formgenerator.database.export.*,org.opencms.flex.CmsFlexController,com.alkacon.opencms.formgenerator.*,java.util.*,org.opencms.util.*,org.opencms.widgets.*,org.opencms.main.*,org.antlr.stringtemplate.*"%><%--
+--%><%@page buffer="none" session="false" import="org.apache.commons.logging.*,java.io.OutputStreamWriter,org.opencms.module.CmsModule,org.opencms.i18n.*,com.alkacon.opencms.formgenerator.database.export.*,org.opencms.flex.CmsFlexController,com.alkacon.opencms.formgenerator.*,java.util.*,org.opencms.file.*,org.opencms.util.*,org.opencms.widgets.*,org.opencms.main.*,org.antlr.stringtemplate.*"%><%--
 --%><%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms"%><%! 
 private static final Log LOG = CmsLog.getLog(CmsCvsExportBean.class);
-%><%
+%>
+<%
+    String formUri = null;
+%>
+<%
     // initialize the form handler
     CmsFormHandler cms = CmsFormHandlerFactory.create(pageContext, request, response);
+
+    // Get the path to webform from parameterMap
+
+    Map paramMap = cms.getParameterMap();
+    if(paramMap.isEmpty()){
+        CmsFlexController con = CmsFlexController.getController(request);
+        paramMap = con.getCurrentRequest().getParameterMap();
+    }
+    if(paramMap.containsKey(cms.PARAM_URI)) {
+        String[] paramValue = (String[])paramMap.get(cms.PARAM_URI);
+        if ((paramValue != null) && (paramValue.length > 0)) {
+            formUri = paramValue[0];
+        }
+        else{
+            formUri = cms.getRequestContext().getUri();   
+        }
+        cms.init(pageContext, request, response, formUri);
+    }
+    else{
+        cms.init(pageContext, request, response, cms.getRequestContext().getUri());
+    }
+    
     boolean isOffline = !cms.getRequestContext().currentProject().isOnlineProject();
     pageContext.setAttribute("offline", new Boolean(isOffline));
 
@@ -19,7 +45,6 @@ private static final Log LOG = CmsLog.getLog(CmsCvsExportBean.class);
 
     // get the configured form elements
     CmsForm form = cms.getFormConfiguration();
-
     if (cms.downloadData()) {
     	CmsCvsExportBean exportBean = new CmsCvsExportBean(cms);
 
@@ -71,7 +96,7 @@ private static final Log LOG = CmsLog.getLog(CmsCvsExportBean.class);
 	// get output HTML template
 	StringTemplate sTemplate = cms.getOutputTemplate("datadownloadpage");
 	// set the necessary attributes to use in the string template
-	sTemplate.setAttribute("formuri", cms.link(cms.getRequestContext().getUri()));
+	sTemplate.setAttribute("formuri", cms.link(formUri));
 	sTemplate.setAttribute("formconfig", form);
 	sTemplate.setAttribute("skinuri", org.opencms.workplace.CmsWorkplace.getSkinUri());
 	sTemplate.setAttribute("labelfrom", messages.key("form.label.dataexport.from"));
