@@ -20,6 +20,7 @@
 
 	<xsd:complexType name="OpenCmsAlkaconWebForm">
 		<xsd:sequence>
+			<xsd:element name="Title" type="OpenCmsString" />
 			<xsd:element name="DataTarget" type="OpenCmsDataTarget" minOccurs="0" />
 			<xsd:element name="MailFrom" type="OpenCmsString" />
 			<xsd:element name="MailFromName" type="OpenCmsString" minOccurs="0" />
@@ -75,9 +76,10 @@
 			</layouts>
 			<mappings>
 				<mapping element="OptionalFormConfiguration/PropertyFile" mapto="property:webform.propertyfile" />
+				<mapping element="Title" mapto="property:Title" />
 			</mappings>
 			<tabs>				
-				<tab element="DataTarget" name="Tab.Basic" collapse="false" />
+				<tab element="Title" name="Tab.Basic" collapse="false" />
 				<tab element="InputField" name="Tab.Fields" collapse="false" />
 				<tab element="OptionalSubField" name="Tab.SubFieldConfig" collapse="false" />
 				<tab element="FormCaptcha" name="Tab.FormConfig" collapse="false" />
