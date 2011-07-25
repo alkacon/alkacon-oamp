@@ -44,6 +44,9 @@
 			<mappings>
 				<mapping element="Headline" mapto="property:Title" />
 			</mappings>
+			<formatters>
+				<formatter minwidth="400" uri="/system/modules/com.alkacon.opencms.geomap/pages/map.jsp" />
+			</formatters>
 			<tabs>
 				<tab element="Headline" name="General" collapse="false" />
 				<tab element="Kml" name="Points" collapse="false" />
