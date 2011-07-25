@@ -1,6 +1,6 @@
 
                 Alkacon OpenCms Add-On Module Package: GeoMap
-                       Version 1.0.0; Feb 15th, 2011
+                       Version 2.0.0; July 13th, 2011
 
 
                                     WARNING:
@@ -54,6 +54,10 @@ Legend:
 ! New Feature
 * Bug fixed
 - General comment
+
+2.0.0 - July 13th, 2011
+- Added Module Configuration .config
+- Compatible with OpenCms 8.0.1 or later
 
 1.0.0 - Feb 15th, 2011
 - First public release
