@@ -1,6 +1,6 @@
 /*
- * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormReport.java,v $
- * Date   : $Date: 2011/05/24 13:42:21 $
+ * File   : $Source: /usr/local/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormReport.java,v $
+ * Date   : $Date: 2011-05-24 13:42:21 $
  * Version: $Revision: 1.5 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
@@ -214,6 +214,9 @@ public class CmsFormReport extends CmsJspActionElement {
     /** The XML content that configures the report output. */
     private CmsXmlContent m_content;
 
+    /** The PageContext that calls the report output. */
+    private PageContext m_pageContext;
+
     /** The number of entries per page that is preselected. */
     private int m_entriesPerPage;
 
@@ -234,6 +237,9 @@ public class CmsFormReport extends CmsJspActionElement {
 
     /** Indicates if the labels of the fields should be shown. */
     private Boolean m_showLabels;
+
+    /** Indicates if the main report output should be generated. */
+    private Boolean m_showReport;
 
     /**
      * Constructor, creates the necessary form report configuration objects.<p>
@@ -336,6 +342,7 @@ public class CmsFormReport extends CmsJspActionElement {
             NODE_GRIDHEIGHT,
             getRequestContext().getLocale());
         int height = 350;
+
         if (VALUE_HEIGHT_AUTO.equalsIgnoreCase(heightStr)) {
             // automatic height calculation
             m_heightAuto = Boolean.TRUE;
@@ -398,7 +405,7 @@ public class CmsFormReport extends CmsJspActionElement {
             int startRow = pageInfoReceived.getInt("startRowNum");
             int endRow = pageInfoReceived.getInt("endRowNum");
             if (endRow < 0) {
-                endRow = startRow + pageSize - 1;
+                endRow = (startRow + pageSize) - 1;
             }
             // determine the sort column ID
             String sortColumn = "";
@@ -415,7 +422,7 @@ public class CmsFormReport extends CmsJspActionElement {
             // calculate start and end index
             int startIndex = startRow - 1;
             int endIndex = endRow - 1;
-            if (endIndex > forms.size() - 1) {
+            if (endIndex > (forms.size() - 1)) {
                 endIndex = forms.size() - 1;
             }
             if (CmsStringUtil.isNotEmpty(sortColumn)) {
@@ -602,7 +609,10 @@ public class CmsFormReport extends CmsJspActionElement {
      */
     public boolean isShowReport() {
 
-        return getRequest().getParameter(PARAM_ACTION) == null;
+        //        return getRequest().getParameter(PARAM_ACTION) == null;
+        m_showReport = (getRequest().getParameter(PARAM_ACTION) == null);
+        return m_showReport;
+
     }
 
     /**
@@ -667,7 +677,7 @@ public class CmsFormReport extends CmsJspActionElement {
 
         if (m_content == null) {
             try {
-                CmsFile file = getCmsObject().readFile(getRequestContext().getUri());
+                CmsFile file = getCmsObject().readFile((String)m_pageContext.getAttribute("uri"));
                 m_content = CmsXmlContentFactory.unmarshal(getCmsObject(), file);
             } catch (CmsException e) {
                 // should not happen
@@ -687,13 +697,14 @@ public class CmsFormReport extends CmsJspActionElement {
     protected void initReport(PageContext context, HttpServletRequest req, HttpServletResponse res, String reportUri) {
 
         m_columns = new ArrayList<CmsFormReportColumn>();
+        m_pageContext = context;
         try {
             CmsFile file = getCmsObject().readFile(reportUri);
-            CmsXmlContent content = CmsXmlContentFactory.unmarshal(getCmsObject(), file);
+            m_content = CmsXmlContentFactory.unmarshal(getCmsObject(), file);
             // get the web form URI
-            String formUri = content.getStringValue(getCmsObject(), NODE_URI, getRequestContext().getLocale());
+            String formUri = m_content.getStringValue(getCmsObject(), NODE_URI, getRequestContext().getLocale());
             m_formHandler = CmsFormHandlerFactory.create(context, req, res, formUri);
-            String checkedFieldsStr = content.getStringValue(
+            String checkedFieldsStr = m_content.getStringValue(
                 getCmsObject(),
                 NODE_FIELDS,
                 getRequestContext().getLocale());
