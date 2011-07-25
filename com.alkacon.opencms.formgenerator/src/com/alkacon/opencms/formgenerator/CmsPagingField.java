@@ -1,6 +1,6 @@
 /*
- * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsPagingField.java,v $
- * Date   : $Date: 2011/03/09 15:14:35 $
+ * File   : $Source: /usr/local/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsPagingField.java,v $
+ * Date   : $Date: 2011-03-09 15:14:35 $
  * Version: $Revision: 1.3 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
@@ -82,6 +82,40 @@ public class CmsPagingField extends A_CmsField {
             I_CmsField field = fields.get(i);
             int fieldPage = CmsPagingField.getPageFromField(formHandler, i + 1);
             if ((fieldPage != page) || (field instanceof CmsFileUploadField)) {
+                buf.append(createHiddenField(field));
+                if (field.hasCurrentSubFields()) {
+                    // check the sub fields of the field
+                    Iterator<I_CmsField> it = field.getCurrentSubFields().iterator();
+                    while (it.hasNext()) {
+                        I_CmsField subField = it.next();
+                        buf.append(createHiddenField(subField));
+                    }
+                }
+            }
+        }
+
+        return buf;
+    }
+
+    /**
+    * Appends the input field values from last pages as hidden values.<p>
+    *
+    * @param formHandler the form handler
+    * @param messages the message bundle
+    *
+    * @return the input field values from last pages as hidden values.
+    */
+    public static StringBuffer appendHiddenUploadFields(CmsFormHandler formHandler, CmsMessages messages) {
+
+        StringBuffer buf = new StringBuffer(512);
+
+        // loop through all form input field before that paging field, otherwise there are doubled parameter values
+        // as input fields and hidden fields, for example if there are invalid inputs
+        List<I_CmsField> fields = formHandler.getFormConfiguration().getFields();
+        for (int i = 0, n = fields.size(); i < n; i++) {
+            // loop through all form file upload fields
+            I_CmsField field = fields.get(i);
+            if (field instanceof CmsFileUploadField) {
                 buf.append(createHiddenField(field));
                 if (field.hasCurrentSubFields()) {
                     // check the sub fields of the field
@@ -189,16 +223,36 @@ public class CmsPagingField extends A_CmsField {
         StringBuffer buf = new StringBuffer(96);
 
         if (field.needsItems()) {
-            // specific handling for check boxes, radio buttons and select boxes: get the items of this field
-            List<CmsFieldItem> items = ((A_CmsField)field).getSelectedItems();
-            Iterator<CmsFieldItem> iter = items.iterator();
-            while (iter.hasNext()) {
-                CmsFieldItem currItem = iter.next();
-                // only create hidden fields for not empty values
-                if (CmsStringUtil.isNotEmpty(currItem.getValue())) {
-                    // put the current value in a hidden field
-                    buf.append("<input type=\"hidden\" name=\"").append(field.getName()).append("\" value=\"").append(
-                        CmsEncoder.escapeXml(currItem.getValue())).append("\" />").append("\n");
+            if (field instanceof CmsTableField) {
+                List<List<CmsFieldItem>> rwItems = ((CmsTableField)field).getRowsWithItems();
+                Iterator<List<CmsFieldItem>> iter1 = rwItems.iterator();
+                while (iter1.hasNext()) {
+                    List<CmsFieldItem> items = iter1.next();
+                    Iterator<CmsFieldItem> iter2 = items.iterator();
+                    while (iter2.hasNext()) {
+                        CmsFieldItem currItem = iter2.next();
+                        // only create hidden fields for not empty values
+                        if (CmsStringUtil.isNotEmpty(currItem.getValue())) {
+                            // put the current value in a hidden field
+                            buf.append("<input type=\"hidden\" name=\"").append(currItem.getName()).append(
+                                "\" value=\"").append(CmsEncoder.escapeXml(currItem.getValue())).append("\" />").append(
+                                "\n");
+                        }
+                    }
+                }
+
+            } else {
+                // specific handling for check boxes, radio buttons and select boxes: get the items of this field
+                List<CmsFieldItem> items = ((A_CmsField)field).getSelectedItems();
+                Iterator<CmsFieldItem> iter = items.iterator();
+                while (iter.hasNext()) {
+                    CmsFieldItem currItem = iter.next();
+                    // only create hidden fields for not empty values
+                    if (CmsStringUtil.isNotEmpty(currItem.getValue())) {
+                        // put the current value in a hidden field
+                        buf.append("<input type=\"hidden\" name=\"").append(field.getName()).append("\" value=\"").append(
+                            CmsEncoder.escapeXml(currItem.getValue())).append("\" />").append("\n");
+                    }
                 }
             }
         } else {
