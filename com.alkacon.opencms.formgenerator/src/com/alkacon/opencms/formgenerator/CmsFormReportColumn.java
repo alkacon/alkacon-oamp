@@ -1,6 +1,6 @@
 /*
- * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormReportColumn.java,v $
- * Date   : $Date: 2010/07/02 10:45:52 $
+ * File   : $Source: /usr/local/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormReportColumn.java,v $
+ * Date   : $Date: 2010-07-02 10:45:52 $
  * Version: $Revision: 1.1 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
@@ -52,6 +52,12 @@ public class CmsFormReportColumn {
     /** The field label of the column. */
     private String m_columnLabel;
 
+    /** The field type of the column. */
+    private String m_columnType;
+
+    /** The list of items of the column, if field type is table. */
+    private List m_columnItems;
+
     /**
      * Returns a list of configured form report columns from the given form fields.<p>
      * 
@@ -77,6 +83,8 @@ public class CmsFormReportColumn {
         m_columnDbLabel = field.getDbLabel();
         m_columnLabel = field.getLabel();
         m_columnId = String.valueOf(m_columnDbLabel.hashCode());
+        m_columnType = field.getType();
+        m_columnItems = field.getItems();
     }
 
     /**
@@ -124,6 +132,26 @@ public class CmsFormReportColumn {
     public String getColumnLabel() {
 
         return m_columnLabel;
+    }
+
+    /**
+     * Returns the field type of the column.<p>
+     * 
+     * @return the field type of the column
+     */
+    public String getColumnType() {
+
+        return m_columnType;
+    }
+
+    /**
+     * Returns the list of items of the column, if field type is table.<p>
+     * 
+     * @return the list of items of the column, if field type is table
+     */
+    public List getColumnItems() {
+
+        return m_columnItems;
     }
 
     /**
