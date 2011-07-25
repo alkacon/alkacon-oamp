@@ -13,6 +13,7 @@
 
 	<xsd:complexType name="OpenCmsAlkaconWebFormReport">
 		<xsd:sequence>
+			<xsd:element name="Title" type="OpenCmsString" />
 			<xsd:element name="URI" type="OpenCmsVfsFile" />
 			<xsd:element name="Text" type="OpenCmsHtml" />
 			<xsd:element name="LoadDynamic" type="OpenCmsBoolean" />
@@ -56,9 +57,11 @@
 				<layout element="Skin" widget="SelectorWidget" configuration="default:Default|mac*:Mac|vista:Vista|pink:Pink" />
 				<layout element="ColWidth" widget="ComboWidget" configuration="40|50|60|70|80|90|100|120|150|200|250" />
 			</layouts>
-			<mappings />
+			<mappings>
+				<mapping element="Title" mapto="property:Title" />
+			</mappings>
 			<tabs>
-				<tab element="URI" name="Tab.General" collapse="false" />
+				<tab element="Title" name="Tab.General" collapse="false" />
 				<tab element="ShowMenu" name="Tab.Layout" collapse="false" />
 			</tabs>				
 		</xsd:appinfo>
