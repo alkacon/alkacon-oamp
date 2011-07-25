@@ -1,6 +1,6 @@
 /*
- * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormHandler.java,v $
- * Date   : $Date: 2011/05/17 12:36:06 $
+ * File   : $Source: /usr/local/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsFormHandler.java,v $
+ * Date   : $Date: 2011-05-17 12:36:06 $
  * Version: $Revision: 1.25 $
  *
  * This file is part of the Alkacon OpenCms Add-On Module Package
@@ -150,6 +150,9 @@ public class CmsFormHandler extends CmsJspActionElement {
 
     /** Request parameter name for the page parameter. */
     public static final String PARAM_PAGE = "page";
+
+    /** Request parameter uri for the page parameter. */
+    public static final String PARAM_URI = "uri";
 
     /** The log object for this class. */
     private static final Log LOG = CmsLog.getLog(CmsFormHandler.class);
@@ -350,7 +353,11 @@ public class CmsFormHandler extends CmsJspActionElement {
                 out.write(buildCheckHtml());
             } else if (showDownloadData()) {
                 // show the data download page
-                include(modulePath + "elements/datadownload.jsp");
+                //                include(modulePath + "elements/datadownload.jsp");
+                Map modParameterMap = getParameterMap();
+                modParameterMap.put(PARAM_URI, new String[] {getFormConfiguration().getConfigUri().toString()});
+                include(modulePath + "elements/datadownload.jsp", null, false, modParameterMap);
+
             } else {
                 // try to send a notification email with the submitted form field values
                 if (sendData()) {
@@ -1324,9 +1331,9 @@ public class CmsFormHandler extends CmsJspActionElement {
             }
             sTemplate.setAttribute("captchaerror", errorMessage);
             sTemplate.setAttribute("captchaimagelink", OpenCms.getLinkManager().substituteLink(
-                getCmsObject(),
-                "/system/modules/com.alkacon.opencms.formgenerator/pages/captcha.jsp?"
-                    + captchaField.getCaptchaSettings().toRequestParams(getCmsObject())));
+                    getCmsObject(),
+                    "/system/modules/com.alkacon.opencms.formgenerator/pages/captcha.jsp?"
+                        + captchaField.getCaptchaSettings().toRequestParams(getCmsObject())));
         }
 
         List<I_CmsField> fields = getFormConfiguration().getAllFields(true, false, false);
@@ -1491,7 +1498,7 @@ public class CmsFormHandler extends CmsJspActionElement {
             // loop through all form input fields 
             I_CmsField field = getFormConfiguration().getFields().get(i);
 
-            if (i == n - 1) {
+            if (i == (n - 1)) {
                 // the last one has to close the row
                 place = 1;
             }
@@ -1544,6 +1551,11 @@ public class CmsFormHandler extends CmsJspActionElement {
                 hFieldsBuf.append("<input type=\"hidden\" name=\"finalpage\" value=\"true\" />");
                 hiddenFields = hFieldsBuf.toString();
                 prevButton = getMessages().key("form.button.prev");
+            } else {
+                // there is no paging, but do the file upload values in hidden values
+                // otherwise the contents are forgotten in case of other wrong filled fields
+                StringBuffer hFieldsBuf = CmsPagingField.appendHiddenUploadFields(this, getMessages());
+                hiddenFields = hFieldsBuf.toString();
             }
             if (getFormConfiguration().isShowReset()) {
                 // show reset button if configured
@@ -1634,9 +1646,9 @@ public class CmsFormHandler extends CmsJspActionElement {
         m_macroResolver.setKeepEmptyMacros(true);
         m_macroResolver.setCmsObject(getCmsObject());
         m_macroResolver.addMacro(MACRO_URL, OpenCms.getSiteManager().getCurrentSite(getCmsObject()).getServerPrefix(
-            getCmsObject(),
-            getRequestContext().getUri())
-            + link(getRequestContext().getUri()));
+                getCmsObject(),
+                getRequestContext().getUri())
+                + link(getRequestContext().getUri()));
         m_macroResolver.addMacro(MACRO_LOCALE, getRequestContext().getLocale().toString());
 
         if (m_multipartFileItems != null) {
