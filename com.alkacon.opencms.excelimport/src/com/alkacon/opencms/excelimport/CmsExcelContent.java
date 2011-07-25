@@ -33,7 +33,7 @@ package com.alkacon.opencms.excelimport;
 
 import org.opencms.file.CmsObject;
 import org.opencms.main.CmsLog;
-import org.opencms.search.extractors.CmsExtractorMsExcel;
+import org.opencms.search.extractors.CmsExtractorMsOfficeOLE2;
 import org.opencms.search.extractors.I_CmsExtractionResult;
 import org.opencms.search.extractors.I_CmsTextExtractor;
 import org.opencms.util.CmsStringUtil;
@@ -48,10 +48,11 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DateUtil;
 
 /**
  * Includes contents from an excel file. Here are saved the full content and property values.
@@ -242,7 +243,7 @@ public class CmsExcelContent {
         if ((cmsObject != null) && (excelContent != null)) {
             m_excelName = excelName;
             String encoding = cmsObject.getRequestContext().getEncoding();
-            I_CmsTextExtractor cmsTextExtractorMsExcel = CmsExtractorMsExcel.getExtractor();
+            I_CmsTextExtractor cmsTextExtractorMsExcel = CmsExtractorMsOfficeOLE2.getExtractor();
             try {
                 // read content per rows
                 readExcelRows(excelContent);
@@ -304,26 +305,26 @@ public class CmsExcelContent {
                                 try {
                                     // read cell content from excel
                                     switch (cell.getCellType()) {
-                                        case HSSFCell.CELL_TYPE_BLANK:
-                                        case HSSFCell.CELL_TYPE_ERROR:
+                                        case Cell.CELL_TYPE_BLANK:
+                                        case Cell.CELL_TYPE_ERROR:
                                             // ignore all blank or error cells
                                             break;
-                                        case HSSFCell.CELL_TYPE_NUMERIC:
+                                        case Cell.CELL_TYPE_NUMERIC:
                                             // check for date
-                                            if (HSSFDateUtil.isCellDateFormatted(cell)
-                                                || HSSFDateUtil.isValidExcelDate(cell.getNumericCellValue())) {
+                                            if (DateUtil.isCellDateFormatted(cell)
+                                                || DateUtil.isValidExcelDate(cell.getNumericCellValue())) {
                                                 // valid date
-                                                Date date = HSSFDateUtil.getJavaDate(cell.getNumericCellValue());
+                                                Date date = DateUtil.getJavaDate(cell.getNumericCellValue());
                                                 text = new Long(date.getTime()).toString();
                                             } else {
                                                 // no valid date
                                                 text = Double.toString(cell.getNumericCellValue());
                                             }
                                             break;
-                                        case HSSFCell.CELL_TYPE_BOOLEAN:
+                                        case Cell.CELL_TYPE_BOOLEAN:
                                             text = Boolean.toString(cell.getBooleanCellValue());
                                             break;
-                                        case HSSFCell.CELL_TYPE_STRING:
+                                        case Cell.CELL_TYPE_STRING:
                                         default:
                                             text = cell.getStringCellValue();
                                             break;
