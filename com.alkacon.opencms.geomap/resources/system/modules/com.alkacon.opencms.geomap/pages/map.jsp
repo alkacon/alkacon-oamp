@@ -4,17 +4,16 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<cms:include property="template" element="head" />
 
 <c:set var="locale" value="${cms:vfs(pageContext).context.locale}" />
 
 <fmt:setLocale value="${locale}" />
 <fmt:bundle basename="com.alkacon.opencms.geomap.frontend">
+<cms:formatter var="map">
 
-<div class="element">
-<cms:contentload collector="singleFile" param="%(opencms.uri)">
+<div>
 	
-	<cms:contentaccess var="map" />
+
 	
 	<%-- calculate map size: width and height --%>
 	<c:set var="mapw">600</c:set>
@@ -276,12 +275,12 @@
 		<div style="clear: both;"></div>
 	</c:if>
 
-</cms:contentload>
-</div>
 <script type="text/javascript">
 	// show map after loading
 	showGoogleMap();
 </script>
+</div>
+</cms:formatter>
+
 
 </fmt:bundle>
-<cms:include property="template" element="foot" />
