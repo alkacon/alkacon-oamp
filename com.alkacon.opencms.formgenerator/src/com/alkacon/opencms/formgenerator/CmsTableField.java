@@ -1,6 +1,6 @@
 /*
- * File   : $Source: /alkacon/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsTableField.java,v $
- * Date   : $Date: 2011/03/09 15:14:34 $
+ * File   : $Source: /usr/local/cvs/alkacon/com.alkacon.opencms.formgenerator/src/com/alkacon/opencms/formgenerator/CmsTableField.java,v $
+ * Date   : $Date: 2011-03-09 15:14:34 $
  * Version: $Revision: 1.6 $
  *
  * This library is part of OpenCms -
@@ -195,14 +195,23 @@ public class CmsTableField extends A_CmsField {
     }
 
     /**
-     * Reads from the default value the configuration of the rows and columns and fills 
-     * it with the values from the parameter if its exists.<p>
-     * 
-     * @param defaultValue the default value with the configuration of the rows and columns
-     * @param parameter the map of the requested parameter
-     * 
-     * @throws CmsConfigurationException if no rows or columns are defined
+     * @see com.alkacon.opencms.formgenerator.A_CmsField#needsItems()
      */
+    @Override
+    public boolean needsItems() {
+
+        return true;
+    }
+
+    /**
+         * Reads from the default value the configuration of the rows and columns and fills 
+         * it with the values from the parameter if its exists.<p>
+         * 
+         * @param defaultValue the default value with the configuration of the rows and columns
+         * @param parameter the map of the requested parameter
+         * 
+         * @throws CmsConfigurationException if no rows or columns are defined
+         */
     public void parseDefault(String defaultValue, Map<String, String[]> parameter) throws CmsConfigurationException {
 
         m_tableItems = new HashMap<String, CmsFieldItem>();
