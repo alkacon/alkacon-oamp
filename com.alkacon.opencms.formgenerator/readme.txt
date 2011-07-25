@@ -1,6 +1,6 @@
 
                 Alkacon OpenCms Add-On Module Package: Webform
-                       Version 2.0; April 12th, 2011
+                       Version 2.0; July 21, 2011
 
 
                                     WARNING:
@@ -56,11 +56,13 @@ Legend:
 * Bug fixed
 - General comment
 
-2.x - 
+2.0 - July 21st, 2011
 * Fixed issue #1960: Nullpointer Exception on check page if no captcha field is configured
 * Fixed issue #1973: Privacy Field in Web Form Generator provides link instead of value on check details page
-
-2.0 - April 12th, 2011
+* Fixed issue, that "table field" entries were not passed to next page, when using "new page" field
+* Fixed issue, that "upload field" entries got lost on a page reload or were not passed to next page, when using "new page" field
+- Added Module Configuration .config
+- Compatible with OpenCms 8.0.1 or later
 * Fixed Issue #1958: new parameter export.delimiter to define used delimiter in CSV files
 ! Added new mechanism to generate form output using StringTemplate, providing better control over generated HTML code
 
