@@ -4,33 +4,58 @@
 --%><%@page buffer="none" session="false" import="
 	com.alkacon.opencms.formgenerator.*,
 	java.lang.*,
-	java.util.*"
-%>
-<c:set var="uri" value="${cms.element.sitePath}" />
-<%
+	java.util.*,
+	org.opencms.file.*"
 
-	// initialize the form report bean
-//	CmsFormReport report = new CmsFormReport(pageContext, request, response);
-	CmsFormReport report = new CmsFormReport(pageContext, request, response, (String)pageContext.getAttribute("uri"));
 	
+%>
+<%
+	CmsFormReport report = null;
+%>
+
+<c:choose>
+<c:when test="${cms.element == null}">
+	<c:set var="formUri" value="${cms:vfs(pageContext).context.uri}" />
+	<%
+	// initialize the form report bean
+	report = new CmsFormReport(pageContext, request, response, (String)pageContext.getAttribute("formUri"));
+	%>
+</c:when>
+<c:otherwise>
+	<c:set var="formUri" value="${cms.element.sitePath}" />
+	<c:set var="loc" value="${cms.locale}" />
+	<c:choose>
+		<c:when test="${cms.element.inMemoryOnly}">
+			<div>
+				<h3><c:out value="New Alkacon Webform Report" /></h3>
+				<h4><c:out value="Please edit!" /></h4>
+			</div>
+			<%
+			// initialize the form report bean
+			report = new CmsFormReport(pageContext, request, response);
+			%>
+		</c:when>
+		<c:otherwise>
+			<%
+			// initialize the form report bean
+			report = new CmsFormReport(pageContext, request, response, (String)pageContext.getAttribute("formUri"));
+			%>
+		</c:otherwise>
+	</c:choose>
+</c:otherwise>
+</c:choose>
+
+
+<%
 	if (report.isLoadDynamic() && !report.isShowReport()) {
 		out.print(report.getReportDataDynamic());
 	} else {
 		// show report output
 		pageContext.setAttribute("report", report);
-		
-
 %>
 
-
-<!--
-<script type="text/javascript" src="<cms:link>/system/modules/com.alkacon.opencms.formgenerator/resources/js/dateformat.js</cms:link>"></script>  
-<script type="text/javascript" src="<cms:link>/system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/gt_grid_all.js</cms:link>"></script>
--->
-
-
 <cms:formatter var="content" val="value">
-<div>
+ <div> 
 
 	<c:choose>
 		<c:when test="${cms.edited}" >
@@ -38,9 +63,12 @@
 			</div>
 		</c:when>
 		<c:otherwise>
+
 			<%-- Handle the case the page was recently reloaded, execute the scripts --%>											
 <c:if test="${report.includeStyleSheet}"><cms:include file="/system/modules/com.alkacon.opencms.formgenerator/elements/report_css.jsp" /></c:if>
+<script type="text/javascript" src="<cms:link>/system/modules/com.alkacon.opencms.formgenerator/resources/js/dateformat.js</cms:link>"></script>  
 <script type="text/javascript" src="<cms:link><%= report.getVfsPathGridMessages() %></cms:link>"></script>  
+<script type="text/javascript" src="<cms:link>/system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/gt_grid_all.js</cms:link>"></script>
 <script type="text/javascript">
 
 <c:if test="${!report.loadDynamic}">var data1 = ${report.reportData};</c:if>
@@ -77,10 +105,11 @@ var colsOption = [
 	</c:forEach>
 ];
 
+
 var gridOption={
 	id : "grid1",
 	height: ${report.gridHeight},
-	<c:if test="${report.loadDynamic}">loadURL : "<cms:link>${report.requestContext.uri}</cms:link>",</c:if>
+	<c:if test="${report.loadDynamic}">loadURL : "<cms:link>${formUri}?__locale=${loc}</cms:link>",</c:if>
 	container : "grid1_container",
 	// nav | goto | pagesize | reload | add del save | print | filter chart | state
 	toolbarContent : "<c:if test="${!report.heightAuto}">goto | nav | pagesize | reload | </c:if>print",
@@ -97,19 +126,21 @@ var gridOption={
 }; 
 
 var mygrid = new Sigma.Grid(gridOption);
-Sigma.Util.onLoad(Sigma.Grid.render(mygrid));
+Sigma.Util.onLoad(function(){
+	mygrid.render();
+});
 
 </script>
-		</c:otherwise>		
-	</c:choose>
 
+</c:otherwise>		
+</c:choose>
 
 
 ${content.value.Text}
 
 <div id="grid1_container"></div> 
 
-</div>
+</div> 
 </cms:formatter>
 <%
 	}
