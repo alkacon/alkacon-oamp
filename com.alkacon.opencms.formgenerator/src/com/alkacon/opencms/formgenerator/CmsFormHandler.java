@@ -33,6 +33,7 @@
 package com.alkacon.opencms.formgenerator;
 
 import com.alkacon.opencms.formgenerator.database.CmsFormDataAccess;
+import com.alkacon.opencms.formgenerator.database.CmsFormDatabaseFilter;
 
 import org.opencms.cache.CmsVfsMemoryObjectCache;
 import org.opencms.file.CmsFile;
@@ -59,6 +60,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.Writer;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -343,9 +345,18 @@ public class CmsFormHandler extends CmsJspActionElement {
             sTemplate.setAttribute("headline", getMessages().key("form.init.error.headline"));
             sTemplate.setAttribute("text", getMessages().key("form.init.error.description"));
             out.write(sTemplate.toString());
+        } else if (showRelease()) {
+            // form is still to be released, show release text
+            out.write(getFormConfiguration().getReleaseText());
         } else if (showExpired()) {
             // form is expired, show expiration text
             out.write(getFormConfiguration().getExpirationText());
+        } else if (showMaximumSubmissions()) {
+            // form cannot take any more submissions
+            if (getFormConfiguration().getMaximumSubmissionsText() != null) {
+                out.write(getFormConfiguration().getMaximumSubmissionsText());
+            }
+
         } else if (!showForm()) {
             // form has been submitted with correct values, decide further actions
             if (showCheck()) {
@@ -1078,10 +1089,9 @@ public class CmsFormHandler extends CmsJspActionElement {
                 }
             }
             // add current date as macro
-            m_macroResolver.addMacro(MACRO_DATE, CmsDateUtil.getDateTime(
-                new Date(),
-                DateFormat.LONG,
-                getRequestContext().getLocale()));
+            m_macroResolver.addMacro(
+                MACRO_DATE,
+                CmsDateUtil.getDateTime(new Date(), DateFormat.LONG, getRequestContext().getLocale()));
             // send optional confirmation mail
             if (data.isConfirmationMailEnabled()) {
                 if (!data.isConfirmationMailOptional()
@@ -1162,6 +1172,39 @@ public class CmsFormHandler extends CmsJspActionElement {
 
         return (getFormConfiguration().getExpirationDate() > 0)
             && (System.currentTimeMillis() > getFormConfiguration().getExpirationDate());
+    }
+
+    /**
+     * Returns if the release text should be shown instead of the form.<p>
+     *
+     * @return <code>true</code> if the release text should be shown, otherwise <code>false</code>
+     */
+    public boolean showRelease() {
+
+        return (getFormConfiguration().getReleaseDate() > 0)
+            && (System.currentTimeMillis() < getFormConfiguration().getReleaseDate());
+    }
+
+    /**
+     * Returns if the maximum submissions text should be shown instead of the form.<p>
+     *
+     * @return <code>true</code> if the maximum submissions text should be shown, otherwise <code>false</code>
+     */
+    public boolean showMaximumSubmissions() {
+
+        CmsFormDataAccess formDataInstance = CmsFormDataAccess.getInstance();
+
+        int count = 0;
+        CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.DEFAULT.filterEntryId(m_entryId);
+
+        String formID = getFormConfiguration().getFormId();
+        filter = filter.filterFormId(formID);
+        try {
+            count = formDataInstance.countForms(filter);
+        } catch (SQLException ex) {
+            // problem reading from database
+        }
+        return ((getFormConfiguration().getMaximumSubmissions() > 0) && (getFormConfiguration().getMaximumSubmissions() <= count));
     }
 
     /**
@@ -1310,9 +1353,9 @@ public class CmsFormHandler extends CmsJspActionElement {
         // create the check page
         StringTemplate sTemplate = getOutputTemplate("checkpage");
         // set the necessary attributes to use in the string template
-        sTemplate.setAttribute("formuri", OpenCms.getLinkManager().substituteLink(
-            getCmsObject(),
-            getCmsObject().getRequestContext().getUri()));
+        sTemplate.setAttribute(
+            "formuri",
+            OpenCms.getLinkManager().substituteLink(getCmsObject(), getCmsObject().getRequestContext().getUri()));
         sTemplate.setAttribute("formconfig", getFormConfiguration());
         sTemplate.setAttribute("checktext", getFormCheckText());
 
@@ -1330,7 +1373,9 @@ public class CmsFormHandler extends CmsJspActionElement {
                 }
             }
             sTemplate.setAttribute("captchaerror", errorMessage);
-            sTemplate.setAttribute("captchaimagelink", OpenCms.getLinkManager().substituteLink(
+            sTemplate.setAttribute(
+                "captchaimagelink",
+                OpenCms.getLinkManager().substituteLink(
                     getCmsObject(),
                     "/system/modules/com.alkacon.opencms.formgenerator/pages/captcha.jsp?"
                         + captchaField.getCaptchaSettings().toRequestParams(getCmsObject())));
@@ -1573,9 +1618,9 @@ public class CmsFormHandler extends CmsJspActionElement {
         // create the main form and pass the previously generated field HTML as attribute
         StringTemplate sTemplate = getOutputTemplate("form");
         // set the necessary attributes to use in the string template
-        sTemplate.setAttribute("formuri", OpenCms.getLinkManager().substituteLink(
-            getCmsObject(),
-            getCmsObject().getRequestContext().getUri()));
+        sTemplate.setAttribute(
+            "formuri",
+            OpenCms.getLinkManager().substituteLink(getCmsObject(), getCmsObject().getRequestContext().getUri()));
         sTemplate.setAttribute("enctype", encType);
         sTemplate.setAttribute("errormessage", errorMessage);
         sTemplate.setAttribute("mandatorymessage", mandatoryMessage);
@@ -1645,7 +1690,9 @@ public class CmsFormHandler extends CmsJspActionElement {
         m_macroResolver = CmsMacroResolver.newInstance();
         m_macroResolver.setKeepEmptyMacros(true);
         m_macroResolver.setCmsObject(getCmsObject());
-        m_macroResolver.addMacro(MACRO_URL, OpenCms.getSiteManager().getCurrentSite(getCmsObject()).getServerPrefix(
+        m_macroResolver.addMacro(
+            MACRO_URL,
+            OpenCms.getSiteManager().getCurrentSite(getCmsObject()).getServerPrefix(
                 getCmsObject(),
                 getRequestContext().getUri())
                 + link(getRequestContext().getUri()));

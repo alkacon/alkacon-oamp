@@ -326,6 +326,12 @@ public class CmsForm {
     /** Configuration node name for the optional form expiration configuration. */
     public static final String NODE_OPTIONALEXPIRATION = "OptionalFormExpiration";
 
+    /** Configuration node name for the optional form release configuration. */
+    public static final String NODE_OPTIONALRELEASE = "OptionalFormRelease";
+
+    /** Configuration node name for the optional form max submissions configuration. */
+    public static final String NODE_OPTIONALMAXSUBMISSIONS = "OptionalFormMaxSubmissions";
+
     /** Configuration node name for the optional field text configuration. */
     public static final String NODE_OPTIONALFIELDTEXT = "OptionalFieldText";
 
@@ -434,6 +440,18 @@ public class CmsForm {
 
     /** The form expiration text. */
     protected String m_expirationText;
+
+    /** The optional form release date. */
+    protected long m_releaseDate;
+
+    /** The optional form release text. */
+    protected String m_releaseText;
+
+    /** The optional form max submissions. */
+    protected long m_maxSubmissions;
+
+    /** The optional form max submissions text. */
+    protected String m_maxSubmissionsText;
 
     /** Stores the form input fields. */
     protected List<I_CmsField> m_fields;
@@ -876,6 +894,46 @@ public class CmsForm {
     public String getExpirationText() {
 
         return m_expirationText;
+    }
+
+    /**
+     * Returns the optional form release date.<p>
+     *
+     * @return the optional form release date
+     */
+    public long getReleaseDate() {
+
+        return m_releaseDate;
+    }
+
+    /**
+     * Returns the form release text.<p>
+     *
+     * @return the form release text
+     */
+    public String getReleaseText() {
+
+        return m_releaseText;
+    }
+
+    /**
+     * Returns the optional form maximum submissions number.<p>
+     *
+     * @return the optional form maximum submissions number
+     */
+    public long getMaximumSubmissions() {
+
+        return m_maxSubmissions;
+    }
+
+    /**
+     * Returns the form maximum submissions text.<p>
+     *
+     * @return the form maximum submissions text
+     */
+    public String getMaximumSubmissionsText() {
+
+        return m_maxSubmissionsText;
     }
 
     /**
@@ -1828,6 +1886,33 @@ public class CmsForm {
             stringValue = getContentStringValue(content, cms, pathPrefix + NODE_TEXT, locale);
             setExpirationText(getConfigurationValue(stringValue, ""));
         }
+
+        if (content.hasValue(NODE_OPTIONALRELEASE, locale)) {
+            // optional form release nodes
+            pathPrefix = NODE_OPTIONALRELEASE + "/";
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_DATE, locale);
+            try {
+                setReleaseDate(Long.parseLong(stringValue));
+            } catch (Exception e) {
+                // no valid release date defined, ignore setting
+            }
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_TEXT, locale);
+            setReleaseText(getConfigurationValue(stringValue, ""));
+        }
+
+        if (content.hasValue(NODE_OPTIONALCONFIGURATION + "/" + NODE_OPTIONALMAXSUBMISSIONS, locale)) {
+            // optional form release nodes
+            pathPrefix = NODE_OPTIONALCONFIGURATION + "/" + NODE_OPTIONALMAXSUBMISSIONS + "/";
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_VALUE, locale);
+            try {
+                setMaximumSubmissions(Long.parseLong(stringValue));
+            } catch (Exception e) {
+                // no valid release date defined, ignore setting
+            }
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_TEXT, locale);
+            setMaximumSubmissionsText(getConfigurationValue(stringValue, ""));
+        }
+
     }
 
     /**
@@ -2134,6 +2219,46 @@ public class CmsForm {
     protected void setExpirationText(String expirationText) {
 
         m_expirationText = expirationText;
+    }
+
+    /**
+     * Sets the optional form release date.<p>
+     *
+     * @param releaseDate the optional form release date
+     */
+    protected void setReleaseDate(long releaseDate) {
+
+        m_releaseDate = releaseDate;
+    }
+
+    /**
+     * Sets the form release text.<p>
+     *
+     * @param releaseText the form release text
+     */
+    protected void setReleaseText(String releaseText) {
+
+        m_releaseText = releaseText;
+    }
+
+    /**
+     * Sets the optional form max submissions number.<p>
+     *
+     * @param maxSubmissions the optional form max submissions number
+     */
+    protected void setMaximumSubmissions(long maxSubmissions) {
+
+        m_maxSubmissions = maxSubmissions;
+    }
+
+    /**
+     * Sets the form max submissions text.<p>
+     *
+     * @param maxSubmissionsText the form release text
+     */
+    protected void setMaximumSubmissionsText(String maxSubmissionsText) {
+
+        m_maxSubmissionsText = maxSubmissionsText;
     }
 
     /**
@@ -2486,7 +2611,7 @@ public class CmsForm {
         int pos = locLabel.indexOf('|');
         if (pos > -1) {
             locLabel = locLabel.substring(0, pos);
-            if (pos + 1 < dbLabel.length()) {
+            if ((pos + 1) < dbLabel.length()) {
                 dbLabel = dbLabel.substring(pos + 1);
                 useDbLabel = true;
             }
@@ -2534,7 +2659,9 @@ public class CmsForm {
                         String suffix = new StringBuffer("-").append(index).append("-").append(fieldValue.hashCode()).toString();
                         List<I_CmsXmlContentValue> fieldValues = content.getValues(subPath + NODE_INPUTFIELD, locale);
                         for (Iterator<I_CmsXmlContentValue> k = fieldValues.iterator(); k.hasNext();) {
-                            field.addSubField(fieldValue, createInputField(
+                            field.addSubField(
+                                fieldValue,
+                                createInputField(
                                     k.next().getPath(),
                                     content,
                                     jsp,
