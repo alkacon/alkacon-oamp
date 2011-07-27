@@ -13,13 +13,12 @@
 
 <%
 	// initialize the bean
-	CmsFormReportingBean cms = new CmsFormReportingBean(pageContext, request, response);
-	pageContext.setAttribute("cms", cms);
+	CmsFormReportingBean svReport = new CmsFormReportingBean(pageContext, request, response);
+	pageContext.setAttribute("svReport", svReport);
 %>
 
 
-<%@page import="com.alkacon.opencms.survey.CmsFormWorkBean"%><cms:include
-	property="template" element="head" />
+<%@page import="com.alkacon.opencms.survey.CmsFormWorkBean"%>
 
 <%-- set the parameters --%>
 <c:set var="curPage">
@@ -37,15 +36,14 @@
 <%-- start --%>
 <fmt:setLocale value="${locale}" />
 <fmt:bundle basename="com.alkacon.opencms.survey.frontend">
-
+<cms:formatter var="rootContent">
+<div>
 	<c:catch var="error">
 		
-		<cms:contentload collector="singleFile" param="%(opencms.uri)">
-			<cms:contentaccess var="rootContent" />
 
 			<c:set var="content" value="${rootContent.value.SurveyReport}" />
 			<c:set var="webform" value="${rootContent.value.Form}" />
-			
+			<c:out value="${ content }" />
 
 			<c:set var="color" value="${content.valueList['Color']}" />
 			<c:choose>
@@ -59,12 +57,12 @@
 			<c:if test="${empty avgcolor}"><c:set var="avgcolor" value="#ffff00" /></c:if>
 			<c:set var="group" value="${content.value['DetailGroup'] }" />
 			<c:set var="showCount" value="${content.value['ShowCount']}" />
-			<c:set var="showCount" value="${(showCount == 'true') || cms.showDetail[group]}" />
+			<c:set var="showCount" value="${(showCount == 'true') || svReport.showDetail[group]}" />
 			<c:set var="AddText" value="${content.value['AddText']}" />
 			<c:if test="${surveyIsClosed}">${content.value['SurveyClosedText']}</c:if>
 
 			<c:if
-				test="${!empty content.value['Text'] && (!param.detail || !cms.showDetail[group])}">
+				test="${!empty content.value['Text'] && (!param.detail || !svReport.showDetail[group])}">
 				<c:out value="${content.value['Text']}" escapeXml="false" />
 			</c:if>
 
@@ -83,9 +81,9 @@
 							<c:set var="formid" value="${webform.value['DataTarget/FormId']}" />
 							<c:if test="${!empty formid}">
 						
-								<%--special case if resource filter: <c:set var="itemParam" value="${formid}${cms.separator}${cms.requestContext.siteRoot}${resPath}"/>--%>
+								<%--special case if resource filter: <c:set var="itemParam" value="${formid}${svReport.separator}${svReport.requestContext.siteRoot}${resPath}"/>--%>
 								<%
-					            CmsFormWorkBean workbean = cms.getReporting(String.valueOf(pageContext.getAttribute("formid")), String.valueOf(pageContext.getAttribute("webformpath")));
+					            CmsFormWorkBean workbean = svReport.getReporting(String.valueOf(pageContext.getAttribute("formid")), String.valueOf(pageContext.getAttribute("webformpath")));
 						        pageContext.setAttribute("workBean", workbean);
 						        %>
 							</c:if>
@@ -95,26 +93,26 @@
 					<%-- print the content --%>
 					<c:if test="${!empty workBean}">
 						<div id="webformReport"><%-- special caption for the overview page --%>
-						<c:if test="${!param.detail || !cms.showDetail[group]}">
+						<c:if test="${!param.detail || !svReport.showDetail[group]}">
 							<c:if test="${showCount == 'true'}">
 								<h2><fmt:message key="report.count.headline">
 									<fmt:param value="${fn:length(workBean.list)}" />
 								</fmt:message></h2>
 							</c:if>
-							<c:if test="${cms.showDetail[group] && fn:length(workBean.list) > 0}">
+							<c:if test="${svReport.showDetail[group] && fn:length(workBean.list) > 0}">
 								<a class="linkDetail"
-									href="<cms:link>${cms.requestContext.uri}?report=true&detail=true</cms:link>"
+									href="<cms:link>${svReport.requestContext.uri}?report=true&detail=true</cms:link>"
 									title="<fmt:message key='report.next.detail.title'/>"><fmt:message
 									key="report.next.detail.headline" /></a>
 							</c:if>
 						</c:if> <%-- special caption for the detail page --%> <c:if
-							test="${param.detail && cms.showDetail[group]}">
+							test="${param.detail && svReport.showDetail[group]}">
 							<h2><fmt:message key="report.detail.headline">
 								<fmt:param value="${curPage}" />
 								<fmt:param value="${fn:length(workBean.list)}" />
 							</fmt:message></h2>
 							<a class="linkDetail"
-								href="<cms:link>${cms.requestContext.uri}?report=true</cms:link>"
+								href="<cms:link>${svReport.requestContext.uri}?report=true</cms:link>"
 								title="<fmt:message key='report.back.overview.title'/>"><fmt:message
 								key="report.back.overview.headline" /></a>
 							<%@include
@@ -142,20 +140,20 @@
 							%>
 
 							<c:if
-								test="${(param.detail && cms.showDetail[group]) || cms.fieldTypeCorrect[field.value['FieldType']]}">
+								test="${(param.detail && svReport.showDetail[group]) || svReport.fieldTypeCorrect[field.value['FieldType']]}">
 
 								<%-- get the label for the field --%>
 								<c:set var="labeling"
-									value="${cms.labeling[field.value['FieldLabel']]}" />
+									value="${svReport.labeling[field.value['FieldLabel']]}" />
 								<h3><c:out value="${labeling[0]}" escapeXml="false"/></h3>
 								<br />
 
 								<%-- is the detail page --%>
 								
-								<c:if test="${param.detail && cms.showDetail[group]}">
+								<c:if test="${param.detail && svReport.showDetail[group]}">
 								
 									<c:set var="itemParam"
-										value="${labeling[1]}${cms.separator}${curPage}${cms.separator}${field.value['FieldType']}" />
+										value="${labeling[1]}${svReport.separator}${curPage}${svReport.separator}${field.value['FieldType']}" />
 									<c:forEach var="item"
 										items="${workBean.answerByField[itemParam]}">
 										
@@ -175,7 +173,7 @@
 
 								<%-- is the overview page --%>
 																
-								<c:if test="${(!param.detail || !cms.showDetail[group])}">
+								<c:if test="${(!param.detail || !svReport.showDetail[group])}">
 									
 									<c:if test="${showAverage eq 'true' || showAverage eq 'only'}">
 										<c:set var="avg" value="${workBean.averagesForFields[labeling[1]]}" />
@@ -302,7 +300,7 @@ pageContext.setAttribute("answerCounts", correctAnswers);
 												<c:set var="curColor"
 													value="${color[(colorIndex%fn:length(color))]}" />
 													
-												 <span class="bar" style="width:${width * 100}%; background-color:${curColor}; color:${cms.textColor[curColor]};">
+												 <span class="bar" style="width:${width * 100}%; background-color:${curColor}; color:${svReport.textColor[curColor]};">
 												
 												<fmt:formatNumber value="${width}" type="percent" /> 
 												</span></span></span></span>
@@ -321,10 +319,9 @@ pageContext.setAttribute("answerCounts", correctAnswers);
 					</c:if>
 
 			<c:if
-				test="${!empty content.value['AddText'] && (!param.detail || !cms.showDetail[group])}">
+				test="${!empty content.value['AddText'] && (!param.detail || !svReport.showDetail[group])}">
 				<c:out value="${content.value['AddText']}" escapeXml="false" />
 			</c:if>
-		</cms:contentload>
 
 	</c:catch> 
 
@@ -339,7 +336,7 @@ pageContext.setAttribute("answerCounts", correctAnswers);
 		<p><fmt:message key="report.error.text" /><c:out
 			value="${ error }" /></p>
 	</c:if>
-
+</div>
+</cms:formatter>
 </fmt:bundle>
 
-<cms:include property="template" element="foot" />
