@@ -4,7 +4,7 @@
 	<info>
 		<creator>Admin</creator>
 		<opencms_version>8.0.1</opencms_version>
-		<createdate>Wed, 20 Jul 2011 13:02:04 GMT</createdate>
+		<createdate>Tue, 26 Jul 2011 15:31:25 GMT</createdate>
 		<infoproject>Offline</infoproject>
 		<export_version>7</export_version>
 	</info>
@@ -746,7 +746,7 @@
 			<type>plain</type>
 			<uuidstructure>8f79292a-2d87-11dd-9c25-5fc9fa232cc8</uuidstructure>
 			<uuidresource>8f79292b-2d87-11dd-9c25-5fc9fa232cc8</uuidresource>
-			<datelastmodified>Mon, 18 Jul 2011 07:56:54 GMT</datelastmodified>
+			<datelastmodified>Tue, 26 Jul 2011 14:52:19 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -766,7 +766,7 @@
 			<type>plain</type>
 			<uuidstructure>a40352ac-11b7-11db-91cd-fdbae480baca</uuidstructure>
 			<uuidresource>ef61baa7-695b-11d9-8aac-f55bb5376c25</uuidresource>
-			<datelastmodified>Mon, 18 Jul 2011 07:56:54 GMT</datelastmodified>
+			<datelastmodified>Tue, 26 Jul 2011 14:42:24 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -785,7 +785,7 @@
 			<type>plain</type>
 			<uuidstructure>a93f84e2-2d87-11dd-9c25-5fc9fa232cc8</uuidstructure>
 			<uuidresource>8f79292b-2d87-11dd-9c25-5fc9fa232cc8</uuidresource>
-			<datelastmodified>Mon, 18 Jul 2011 07:56:54 GMT</datelastmodified>
+			<datelastmodified>Tue, 26 Jul 2011 14:52:19 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -886,7 +886,7 @@
 			<type>jsp</type>
 			<uuidstructure>a424bd7e-11b7-11db-91cd-fdbae480baca</uuidstructure>
 			<uuidresource>ffb9f73b-63b8-11d9-ab74-f55bb5376c25</uuidresource>
-			<datelastmodified>Wed, 20 Jul 2011 12:57:07 GMT</datelastmodified>
+			<datelastmodified>Thu, 21 Jul 2011 08:42:35 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -962,7 +962,7 @@
 			<type>jsp</type>
 			<uuidstructure>d460e01c-5db0-11df-ac93-3d965a9c8d62</uuidstructure>
 			<uuidresource>d460e01d-5db0-11df-ac93-3d965a9c8d62</uuidresource>
-			<datelastmodified>Wed, 20 Jul 2011 12:32:49 GMT</datelastmodified>
+			<datelastmodified>Thu, 21 Jul 2011 08:42:57 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Wed, 12 May 2010 10:26:30 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -4088,7 +4088,7 @@
 			<type>plain</type>
 			<uuidstructure>a42e5a78-11b7-11db-91cd-fdbae480baca</uuidstructure>
 			<uuidresource>a58c4c68-630d-11d9-ba58-f55bb5376c25</uuidresource>
-			<datelastmodified>Mon, 18 Jul 2011 07:45:09 GMT</datelastmodified>
+			<datelastmodified>Tue, 26 Jul 2011 14:52:51 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -4168,7 +4168,7 @@
 			<type>plain</type>
 			<uuidstructure>a433156e-11b7-11db-91cd-fdbae480baca</uuidstructure>
 			<uuidresource>03161053-689a-11d9-b9b0-f55bb5376c25</uuidresource>
-			<datelastmodified>Fri, 04 Mar 2011 16:02:20 GMT</datelastmodified>
+			<datelastmodified>Tue, 26 Jul 2011 14:37:53 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 10 Oct 2005 08:10:10 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -4257,6 +4257,46 @@
 				<property>
 					<name>Title</name>
 					<value><![CDATA[Nested XSD for optional captcha images]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/schemas/optionalmaxsubmissions.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/schemas/optionalmaxsubmissions.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>767cff97-b768-11e0-a064-f15c976c2a5c</uuidstructure>
+			<uuidresource>767cff98-b768-11e0-a064-f15c976c2a5c</uuidresource>
+			<datelastmodified>Tue, 26 Jul 2011 09:20:58 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 26 Jul 2011 09:20:11 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>512</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Nested XSD for optional max submissions]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.formgenerator/schemas/optionalrelease.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.formgenerator/schemas/optionalrelease.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>a0012948-b767-11e0-a064-f15c976c2a5c</uuidstructure>
+			<uuidresource>a0012949-b767-11e0-a064-f15c976c2a5c</uuidresource>
+			<datelastmodified>Tue, 26 Jul 2011 09:15:37 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 26 Jul 2011 09:14:11 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>512</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Nested XSD for optional release]]></value>
 				</property>
 			</properties>
 			<relations/>
