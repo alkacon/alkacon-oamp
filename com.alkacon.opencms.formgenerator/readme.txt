@@ -1,6 +1,6 @@
 
                 Alkacon OpenCms Add-On Module Package: Webform
-                       Version 2.0; July 21, 2011
+                       Version 2.0; July 27, 2011
 
 
                                     WARNING:
@@ -56,7 +56,10 @@ Legend:
 * Bug fixed
 - General comment
 
-2.0 - July 21st, 2011
+2.0 - July 27th, 2011
+* Fixed issue #1957: Added option "Release date" to Basic configuration . 
+* Fixed issue #1957: Added option "Max. submissions" to Advanced configuration . 
+* Fixed issue #1959: Remove the setTextMsg() functions when sending HTML emails in Form Generator
 * Fixed issue #1960: Nullpointer Exception on check page if no captcha field is configured
 * Fixed issue #1973: Privacy Field in Web Form Generator provides link instead of value on check details page
 * Fixed issue, that "table field" entries were not passed to next page, when using "new page" field
