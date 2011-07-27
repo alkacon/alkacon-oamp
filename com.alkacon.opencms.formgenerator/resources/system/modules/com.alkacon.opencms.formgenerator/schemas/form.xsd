@@ -5,6 +5,7 @@
 	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/optionalconfig.xsd"/>
 	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/optionalconfirmation.xsd"/>
 	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/optionalexpiration.xsd"/>
+        <xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/optionalrelease.xsd"/>
 	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/optionalfieldtext.xsd"/>
 	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/optionalformcaptcha.xsd"/>
 	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/optionalsubfield.xsd"/>
@@ -32,6 +33,7 @@
 			<xsd:element name="FormFooterText" type="OpenCmsHtml" minOccurs="0" />
 			<xsd:element name="FormConfirmation" type="OpenCmsHtml" />
 			<xsd:element name="TargetUri" type="OpenCmsVfsFile" minOccurs="0" />
+			<xsd:element name="OptionalFormRelease" type="OpenCmsOptionalAlkaconWebFormRelease" minOccurs="0" />
 			<xsd:element name="OptionalFormExpiration" type="OpenCmsOptionalAlkaconWebFormExpiration" minOccurs="0" />
 
 			<xsd:element name="InputField" type="OpenCmsAlkaconWebFormInputField" maxOccurs="unbounded" />
@@ -58,6 +60,7 @@
 				<default element="OptionalFormConfiguration/ActionClass" value="com.alkacon.opencms.formgenerator.DefaultActionHandler" />
 				<default element="OptionalFormConfiguration/KeepSession" value="360" />
 				<default element="OptionalFormExpiration/Date" value="%(currenttime)" />
+				<default element="OptionalFormRelease/Date" value="%(currenttime)" />
 			</defaults>
 			<formatters>
 				<formatter minwidth="200" uri="/system/modules/com.alkacon.opencms.formgenerator/elements/form.jsp" />
