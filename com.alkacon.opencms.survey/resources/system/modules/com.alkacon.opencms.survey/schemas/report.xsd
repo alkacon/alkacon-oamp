@@ -31,6 +31,9 @@
 				<default element="DetailGroup" value="Administrators"/>
 				<default element="AverageColor" value="#ffff00" />
 			</defaults>
+			<formatters>
+				<formatter minwidth="200" uri="/system/modules/com.alkacon.opencms.survey/pages/reporting.jsp" />
+			</formatters>
 			<validationrules>
 				<rule element="Color" regex=".+" type="error" message="${key.err.xmlcontent.field.empty}"/>
 				<rule element="DetailGroup" regex=".+" type="error" message="${key.err.xmlcontent.field.empty}"/>
