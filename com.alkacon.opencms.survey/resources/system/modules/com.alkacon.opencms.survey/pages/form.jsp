@@ -1,7 +1,7 @@
-<%@page buffer="none" session="false" %>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.alkacon.opencms.survey.*" %>
+<%--@ page import="com.alkacon.opencms.formgenerator.*" --%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%! boolean debug=true; %>
 <c:set var="locale">
@@ -10,32 +10,48 @@
 <cms:property name="locale" file="search" default="en" />
 </c:if>
 </c:set>
-		
-<fmt:setLocale value="${locale}" />
+
 <fmt:bundle basename="com.alkacon.opencms.survey.frontend">
+<cms:formatter var="rootContent">
 
 
-<cms:contentload collector="singleFile" param="%(opencms.uri)">
+<c:set var="uri" value="${cms.element.sitePath}" />
+
+
+
 <%
 	// initialize the bean
 	CmsFormReportingBean reporting = new CmsFormReportingBean(pageContext, request, response);
 	request.setAttribute("reporting", reporting);
+
 %>
-<c:set var="reportLink"><br><a href="<cms:link>${reporting.requestContext.uri}?report=true</cms:link>"><fmt:message key="form.reportLinkText" /></a></c:set>
-<cms:contentaccess var="rootContent" scope="page" />
+
+<c:set var="reportLink"><br><a href="<cms:link>${reporting.requestContext.uri}</cms:link>"><fmt:message key="form.reportLinkText" /></a></c:set>
 <c:set var="detailGroup" value="${rootContent.value.SurveyReport.value.DetailGroup}" />
 <c:set var="content" value="${rootContent.value.Form}" />
+<c:set var="inDetailGroup" value="${reporting.showDetail[detailGroup]}" />
+<%	CmsFormHandler cmsF = null; 	%>
 <c:choose>
-	<c:when test="${!content.value.DataTarget.exists}">
-	<fmt:message key="form.noDataTarget" />
+	<c:when test="${cms.element.inMemoryOnly}">
+		<div>
+			<h3><c:out value="New Alkacon Survey" /></h3>
+			<h4><c:out value="Please edit!" /></h4>
+		</div>
+		<%
+		// initialize the form handler
+		cmsF = CmsFormHandlerFactory.create(pageContext, request, response);
+		%>
 	</c:when>
 	<c:otherwise>
+		<%
+		// initialize the form handler
+		cmsF = CmsFormHandlerFactory.create(pageContext, request, response, (String)pageContext.getAttribute("uri"));
+		%>
+	</c:otherwise>
+</c:choose>
 
-	<c:set var="inDetailGroup" value="${reporting.showDetail[detailGroup]}" />
-	<%
-	
-	// initialize the form handler
-	CmsFormHandler cmsF = CmsFormHandlerFactory.create(pageContext, request, response);
+
+<%
 	boolean showFormF = cmsF.showForm();
 	Object inDetailGroupObj = pageContext.getAttribute("inDetailGroup");
 	Boolean inDetailGroupB = (Boolean)inDetailGroupObj;
@@ -45,7 +61,7 @@
 	
 	String cookieName = "Alkacon_OAMP_" + cmsF.getFormConfiguration().getFormId();
 	Cookie cookies [] = request.getCookies();
-	
+
 	Cookie myCookie = null;
 	if (cookies != null) {
 		for (int j = 0; j < cookies.length; j++) {
@@ -55,11 +71,10 @@
 			}
 		}
 	}
-	
+
 	if ((myCookie != null) &&  (myCookie.getValue().equals(value))) {
 		String template = "";
 		template = cmsF.property("template", "search");
-		cmsF.include(template, "head");
 		%>
 	
 		
@@ -78,7 +93,6 @@
 
 		
 		<%
-		cmsF.include(template, "foot");
 	} else {
 		if (!showFormF) {
 			Cookie c = new Cookie(cookieName, value);
@@ -90,12 +104,17 @@
 		%>
 		<c:set var="addMessage"><cms:property name="webformMessage" default="/com/alkacon/opencms/survey/webform" /></c:set>
 		<% pageContext.setAttribute("cmsF", cmsF); %>
-		<%@include file="%(link.strong:/system/modules/com.alkacon.opencms.formgenerator/pages/form.jsp:a424bd7e-11b7-11db-91cd-fdbae480baca)" %>
+		<%@include file="%(link.strong:/system/modules/com.alkacon.opencms.formgenerator/elements/form.jsp:a424bd7e-11b7-11db-91cd-fdbae480baca)" %>
 		
 		<%
 	}
 
-	%>
-</c:otherwise></c:choose>
-</cms:contentload>
+
+
+
+%>
+
+
+
+</cms:formatter>
 </fmt:bundle>
