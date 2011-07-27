@@ -15,8 +15,6 @@
             <xsd:element name="Form" type="OpenCmsAlkaconWebForm" minOccurs="1" maxOccurs="1" />
             <xsd:element name="Expire" type="OpenCmsDateTime" minOccurs="0" maxOccurs="1" />
             <xsd:element name="SurveyReport" type="OpenCmsAlkaconSurveyReport" minOccurs="1" maxOccurs="1" /> 
-
-    
         </xsd:sequence>
         <xsd:attribute name="language" type="OpenCmsLocale" use="required" />
     </xsd:complexType>
@@ -25,15 +23,20 @@
     	<xsd:appinfo>
 		<mappings>
 			<mapping element="Expire" mapto="property:expiry-date" />
+			<mapping element="Form/Title" mapto="property:Title" />
 		</mappings>
-    	<tabs>
-	    	<tab element="Form" collapse="false" name="FormTab"/>
-	    	<tab element="SurveyReport" collapse="true" name="ReportTab" />
-		
-	</tabs>
+		<formatters>
+			<formatter minwidth="200" uri="/system/modules/com.alkacon.opencms.survey/pages/survey.jsp" />
+		</formatters>
+	    	<tabs>
+		    	<tab element="Form" collapse="false" name="FormTab"/>
+	    		<tab element="SurveyReport" collapse="true" name="ReportTab" />
+		</tabs>
+		<headincludes>
+			<headinclude type="css" uri="/system/modules/com.alkacon.opencms.survey/resources/css/webform.css" />
+			<headinclude type="css" uri="/system/modules/com.alkacon.opencms.formgenerator/resources/css/webform.css" />
+		</headincludes>
     	</xsd:appinfo>
     </xsd:annotation>
-    
-    
 
 </xsd:schema>
