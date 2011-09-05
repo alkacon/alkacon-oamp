@@ -139,7 +139,7 @@ public class CmsMailinglistSelectionList extends CmsGroupSelectionList {
         iconAction.setIconPath("buttons/mailinglist.png");
 
         // create column for login
-        CmsListColumnDefinition nameCol = metadata.getColumnDefinition(LIST_COLUMN_NAME);
+        CmsListColumnDefinition nameCol = metadata.getColumnDefinition(LIST_COLUMN_DISPLAY);
         nameCol.setName(Messages.get().container(Messages.GUI_ALK_MAILINGLISTSELECTION_LIST_COLS_NAME_0));
         CmsListDefaultAction selectAction = nameCol.getDefaultAction(LIST_ACTION_SELECT);
         selectAction.setName(Messages.get().container(Messages.GUI_ALK_MAILINGLISTSELECTION_LIST_ACTION_SELECT_NAME_0));
