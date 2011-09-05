@@ -36,6 +36,7 @@ import org.opencms.file.CmsDataAccessException;
 import org.opencms.file.CmsObject;
 import org.opencms.file.CmsResource;
 import org.opencms.file.CmsResourceFilter;
+import org.opencms.file.I_CmsResource;
 import org.opencms.file.collectors.A_CmsResourceCollector;
 import org.opencms.main.CmsException;
 import org.opencms.main.CmsIllegalArgumentException;
@@ -84,15 +85,29 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
     /** The collector configurations to use to collect the resources. */
     private final List m_collectorConfigurations;
 
+    /** The path prefix to use when reading the collector configurations. */
+    private String m_pathPrefix;
+
     /**
      * Constructor that initializes an empty collector configuration list.<p>
      */
     public CmsConfigurableCollector() {
 
+        this("");
+    }
+
+    /**
+     * Constructor that initializes an empty collector configuration list.<p>
+     * 
+     * @param pathPrefix the prefix to use when reading the collector configurations
+     */
+    public CmsConfigurableCollector(String pathPrefix) {
+
         super();
         setDefaultCollectorName(COLLECTOR_NAME);
         setDefaultCollectorParam("");
         m_collectorConfigurations = new ArrayList();
+        m_pathPrefix = pathPrefix;
     }
 
     /**
@@ -228,7 +243,7 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
 
         List result = new ArrayList(collected);
 
-        Collections.sort(result, CmsResource.COMPARE_ROOT_PATH);
+        Collections.sort(result, I_CmsResource.COMPARE_ROOT_PATH);
         Collections.reverse(result);
 
         return result;
@@ -253,7 +268,11 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
         CmsResource res = cms.readResource(resourceName);
         CmsXmlContent xml = CmsXmlContentFactory.unmarshal(cms, cms.readFile(res));
         // get the configuration nodes
-        List configurations = xml.getValues(NODE_RESCONFIG, locale);
+        String prefix = "";
+        if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(m_pathPrefix)) {
+            prefix = m_pathPrefix + "/";
+        }
+        List configurations = xml.getValues(prefix + NODE_RESCONFIG, locale);
         int configurationSize = configurations.size();
         for (int i = 0; i < configurationSize; i++) {
             // loop all configuration nodes

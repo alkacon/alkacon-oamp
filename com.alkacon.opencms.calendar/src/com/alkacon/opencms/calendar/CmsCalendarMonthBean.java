@@ -70,6 +70,16 @@ public class CmsCalendarMonthBean extends CmsCalendarDisplay {
     private String m_viewUri;
 
     /**
+     * Empty constructor.<p>
+     * 
+     * Be sure to call the {@link #init(CmsJspActionElement)} method with an JSP action element.<p>
+     */
+    public CmsCalendarMonthBean() {
+
+        super();
+    }
+
+    /**
      * Constructor with an initialized calendar object and JSP action element.<p>
      * 
      * @param jsp the JSP action element to use
@@ -431,7 +441,7 @@ public class CmsCalendarMonthBean extends CmsCalendarDisplay {
                 navLink.append("&amp;").append(PARAM_MONTH).append("=").append(calendar.get(Calendar.MONTH));
                 result.append(getJsp().link(navLink.toString()));
             }
-            
+
             result.append("\">&laquo;</a></td>\n");
         }
 
@@ -452,7 +462,7 @@ public class CmsCalendarMonthBean extends CmsCalendarDisplay {
             result.append("<a class=\"");
             result.append(getStyle().getStyleNavigation());
             result.append("\" href=\"");
-            
+
             if (isUseAjaxLinks()) {
                 result.append("javascript:void(0);\" onclick=\"calendarSidePagination('current');");
             } else {

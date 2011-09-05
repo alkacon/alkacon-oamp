@@ -166,6 +166,16 @@ public class CmsCalendarDisplay extends CmsCalendar {
     private int m_weekdayMaybeHoliday;
 
     /**
+     * Empty constructor.<p>
+     * 
+     * Be sure to call the {@link #init(CmsJspActionElement)} method with an JSP action element.<p>
+     */
+    public CmsCalendarDisplay() {
+
+        super();
+    }
+
+    /**
      * Constructor with initialized calendar object and JSP action element.<p>
      * 
      * @param jsp the JSP action element to use
@@ -1216,11 +1226,13 @@ public class CmsCalendarDisplay extends CmsCalendar {
                         } catch (Exception e) {
                             // implementing class was not found
                             if (LOG.isErrorEnabled()) {
-                                LOG.error(Messages.get().getBundle().key(
-                                    Messages.LOG_CALENDAR_SERIALDATE_CLASS_3,
-                                    clazzName,
-                                    PROPERTY_CALENDAR_ENDDATE,
-                                    resPath), e);
+                                LOG.error(
+                                    Messages.get().getBundle().key(
+                                        Messages.LOG_CALENDAR_SERIALDATE_CLASS_3,
+                                        clazzName,
+                                        PROPERTY_CALENDAR_ENDDATE,
+                                        resPath),
+                                    e);
                             }
                         }
                     }
