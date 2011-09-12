@@ -1,0 +1,54 @@
+.pagination_container {
+	margin: 5px 0px 5px 0px;
+}
+	
+.album-pagination {
+	font-size: 80%;
+	display: inline;
+}
+
+.album-pagination a {
+    text-decoration: none;
+	color: #666666;
+}
+
+.album-pagination a:hover{
+	color: #000000;
+}
+
+.album-pagination a, .album-pagination span {
+    padding: 0.3em 0.5em;
+    margin-right: 5px;
+	margin-bottom: 5px;
+}
+
+.album-pagination .current {
+    background: #cccccc;
+    color: #fff;
+}
+
+.album-pagination.pagination-border .current, .album-pagination.pagination-border a {
+    border: solid 1px #666666;
+}
+.album-pagination.pagination-border .current.prev, .album-pagination.pagination-border .current.next {
+	border-color:#999;
+}
+.album-pagination .current.prev, .album-pagination .current.next{
+	color:#999;
+	background:#fff;
+}
+
+.album_box {
+	float: left; 
+	padding: 5px; 
+	margin: 5px; 
+}
+
+.gallery_thumb {
+	vertical-align: middle;
+}
+
+.album_clear {
+	clear: left;
+}
+
