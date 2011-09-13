@@ -30,9 +30,7 @@
 .album-pagination.pagination-border .current, .album-pagination.pagination-border a {
     border: solid 1px #666666;
 }
-.album-pagination.pagination-border .current.prev, .album-pagination.pagination-border .current.next {
-	border-color:#999;
-}
+
 .album-pagination .current.prev, .album-pagination .current.next{
 	color:#999;
 	background:#fff;
