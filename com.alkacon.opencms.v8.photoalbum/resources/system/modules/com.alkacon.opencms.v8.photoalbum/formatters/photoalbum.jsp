@@ -14,6 +14,7 @@
 	<c:set var="thumbs" value="${content.value['Thumbs']}" />
 	<c:set var="imageCount" value="${fn:length(album.readImages[content.value['VfsFolder'].stringValue])}" />
 	<c:set var="paginationClass">album-pagination<c:if test="${content.value['ShowNavigationBorder'].exists && content.value['ShowNavigationBorder']=='true' }"> pagination-border</c:if></c:set>
+	<c:set var="hasPagination" value="${!(empty thumbs.value['ItemsPerPage'].stringValue) && thumbs.value['ItemsPerPage'].stringValue > 0}" />
 
 	<%-- Quality --%>
 	<c:set var="quality" value="50" />
@@ -30,7 +31,7 @@
 		</p>
 	</c:if>
 	<%-- Pagination above top text --%>
-	<c:if test="${content.value['NavigationPosition'] == 't_a' && thumbs.value['ItemsPerPage'].stringValue > 0}">
+	<c:if test="${hasPagination && content.value['NavigationPosition'] == 't_a'}">
 		<div class="pagination_container" style="text-align: ${content.value['AlignNavigation']};">
 			<div id="pagination_${albumid}" class="${paginationClass}"></div>
 		</div>
@@ -42,36 +43,41 @@
 	</c:if>	
 
 	<%-- Pagination below top text --%>
-	<c:if test="${content.value['NavigationPosition'] == 't_b' && thumbs.value['ItemsPerPage'].stringValue > 0}">
+	<c:if test="${hasPagination && content.value['NavigationPosition'] == 't_b'}">
 		<div class="pagination_container" style="text-align: ${content.value['AlignNavigation']};">
 			<div id="pagination_${albumid}" class="${paginationClass}"></div>
 		</div>
 	</c:if>
-		
-	<div id="album_pages_${albumid}">
-		<div id="album_page_${albumid}_1">
-			<%-- Show the images in the given vfs path --%>
-			<cms:include file="../elements/albumpage.jsp">
-				<cms:param name="vfsFolder" value="${content.value['VfsFolder'].stringValue}" />
-				<cms:param name="background" value="${thumbs.value['Background']}" />
-				<cms:param name="size" value="${thumbs.value['Size']}" />
-				<cms:param name="quality" value="${quality}" />
-				<cms:param name="filter" value="${thumbs.value['Filter']}" />
-				<cms:param name="alignTitle" value="${thumbs.value['AlignTitle']}" />
-				<cms:param name="showTitle" value="${thumbs.value['ShowTitle']}" />
-				<cms:param name="showResourceNameAsTitle" value="${content.value['ShowResourceNameAsTitle']}" />
-				<cms:param name="page" value="1" />
-				<cms:param name="itemsPerPage" value="${thumbs.value['ItemsPerPage']}" />
-				<cms:param name="maxImageSize" value="${content.value['MaxImageSize']}" />
-				<cms:param name="albumid" value="${albumid}" />
-			</cms:include>
-		</div>
-	</div>
-
+	<c:choose>
+		<c:when test="${empty content.value['VfsFolder'].stringValue}">
+			<fmt:message key="photoalbum.no_gallery_folder" />
+		</c:when>
+		<c:otherwise>
+			<div id="album_pages_${albumid}">
+				<div id="album_page_${albumid}_1">
+					<%-- Show the images in the given vfs path --%>
+					<cms:include file="../elements/albumpage.jsp">
+						<cms:param name="vfsFolder" value="${content.value['VfsFolder'].stringValue}" />
+						<cms:param name="background" value="${thumbs.value['Background']}" />
+						<cms:param name="size" value="${thumbs.value['Size']}" />
+						<cms:param name="quality" value="${quality}" />
+						<cms:param name="filter" value="${thumbs.value['Filter']}" />
+						<cms:param name="alignTitle" value="${thumbs.value['AlignTitle']}" />
+						<cms:param name="showTitle" value="${thumbs.value['ShowTitle']}" />
+						<cms:param name="showResourceNameAsTitle" value="${content.value['ShowResourceNameAsTitle']}" />
+						<cms:param name="page" value="1" />
+						<cms:param name="itemsPerPage" value="${thumbs.value['ItemsPerPage']}" />
+						<cms:param name="maxImageSize" value="${content.value['MaxImageSize']}" />
+						<cms:param name="albumid" value="${albumid}" />
+					</cms:include>
+				</div>
+			</div>
+		</c:otherwise>
+	</c:choose>
 	<div class="album_clear"></div>
 
 	<%-- Pagination above bottom text --%>
-	<c:if test="${content.value['NavigationPosition'] == 'b_a' && thumbs.value['ItemsPerPage'].stringValue > 0}">
+	<c:if test="${hasPagination && content.value['NavigationPosition'] == 'b_a'}">
 		<div class="pagination_container" style="text-align: ${content.value['AlignNavigation']};">
 			<div id="pagination_${albumid}" class="${paginationClass}"></div>
 		</div>
@@ -83,7 +89,7 @@
 	</c:if>
 	
 	<%-- Pagination below bottom text --%>
-	<c:if test="${content.value['NavigationPosition'] == 'b_b' && thumbs.value['ItemsPerPage'].stringValue > 0}">
+	<c:if test="${hasPagination && content.value['NavigationPosition'] == 'b_b'}">
 		<div class="pagination_container" style="text-align: ${content.value['AlignNavigation']};">
 			<div id="pagination_${albumid}" class="${paginationClass}"></div>
 		</div>
