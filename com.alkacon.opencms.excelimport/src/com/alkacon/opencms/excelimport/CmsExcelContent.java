@@ -250,17 +250,17 @@ public class CmsExcelContent {
 
                 // read content
                 // this is necessary because in search input stream is buffered
-                byte[] emptyByte = null;
+                byte[] emptyByte = "".getBytes();
                 I_CmsExtractionResult cmsExtractionsResult = null;
                 try {
-                    cmsExtractionsResult = cmsTextExtractorMsExcel.extractText(emptyByte, encoding);
+                    cmsExtractionsResult = cmsTextExtractorMsExcel.extractText(emptyByte);
                 } catch (Exception e) {
                     if (LOG.isErrorEnabled()) {
                         LOG.error(e.toString());
                     }
                 }
                 ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(excelContent);
-                cmsExtractionsResult = cmsTextExtractorMsExcel.extractText(byteArrayInputStream, encoding);
+                cmsExtractionsResult = cmsTextExtractorMsExcel.extractText(byteArrayInputStream);
                 m_contentItems = cmsExtractionsResult.getContentItems();
             } catch (Exception e) {
                 if (LOG.isErrorEnabled()) {
