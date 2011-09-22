@@ -1,0 +1,13 @@
+<%@ page session="false" buffer="none" import="java.util.*,org.opencms.jsp.*" %><%--
+
+This is the default page displayed when no index.html is present!
+
+--%><%
+
+// initialise Cms Action Element
+CmsJspActionElement cms = new CmsJspActionElement(pageContext, request, response);
+    
+
+cms.include("/system/modules/com.alkacon.opencms.v8.documentcenter/pages/jsp_pages/page_disclaimer_code.jsp");
+
+%> 

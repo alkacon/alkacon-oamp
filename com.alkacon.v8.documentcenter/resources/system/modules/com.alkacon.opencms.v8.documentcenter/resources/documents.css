@@ -1,0 +1,115 @@
+li.nobullet {
+	background-image: none;
+	padding-bottom:4px;
+	list-style-type:none;
+	list-style-image:none;
+}
+
+div.download_onecol {
+	float: left;
+	width: 100%;
+	margin: 0;
+}
+
+div.download_leftcol h3,div.download_rightcol h3 {
+	background-color: #F0F0F0;
+	border: 1px solid #CCCCCC;
+	padding-left: 4px;
+}
+
+div.download_leftcol {
+	float: left;
+	width: 48%;
+	margin: 0 4px 0 0;
+}
+
+div.download_rightcol {
+	float: right;
+	width: 48%;
+	margin: 0;
+}
+
+/* download center navigation*/
+p.downloadcenter,p.downloadcenter img {
+	font-weight: bold;
+	vertical-align: middle;
+}
+
+/* download center detail*/
+table.downloadcenter {
+	width: 100%;
+	color: #666666;
+}
+
+table.downloadcenter thead th {
+	color: #666666;
+	background-color: #FFF;
+	padding: 5px 2px 4px 0;
+	text-align: left;
+	border-top: 1px solid #CCCCCC;
+	border-bottom: 1px solid #CCCCCC;
+}
+
+table.downloadcenter thead th.align_right {
+	color: #666666;
+	background-color: #FFF;
+	padding: 5px 2px 4px 0;
+	text-align: right;
+	border-top: 1px solid #CCCCCC;
+	border-bottom: 1px solid #CCCCCC;
+}
+
+table.downloadcenter tr {
+	background-color: #F0F0F0;
+}
+
+table.downloadcenter tr.alternate,table.downloadcenter tr.alternate table.doclanguages tr
+	{
+	background-color: #FFF;
+}
+
+table.downloadcenter tr td.litte_font {
+	font-size: 10px;
+	text-align: right;
+}
+
+td.doclanguages {
+	padding: 0 5px 0 0;
+}
+
+#contentarea ul li.nobullet {
+	background-image: none;
+	padding-bottom: 4px;
+}
+
+a.link-folder {
+	background: url(ic_folder.gif) no-repeat top left;
+	padding-left: 18px;
+}
+
+/* download center search*/
+div.download_onecol a.button-w {
+	border-top: 1px solid #CCCCCC;
+	border-bottom: 1px solid #CCCCCC;
+	font-weight: bold;
+	padding: 0 12px 0 12px;
+}
+
+div.download_onecol h3 {
+	padding-bottom: 12px;
+}
+
+div.download_onecol table {
+	color: #666666;
+}
+
+div.searchSelection {
+	display: table;
+	margin: 5px 0 20px 0;
+}
+
+div.searchSelection label,div.searchSelection select,div.searchSelection input
+	{
+	color: #666666;
+	margin: 0 5px 0 0;
+}
