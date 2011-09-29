@@ -55,6 +55,9 @@ Legend:
 * Bug fixed
 - General comment
 
+2.0.0 - September 29th, 2011
+- Compatible with OpenCms 8.0.2 or later
+
 1.0.4 - month day, 2010
 ! Added support for using images in the HTML messages
 ! Added optional field for sender name for email

@@ -14,7 +14,7 @@
 		<group>Alkacon OAMP</group>
 		<class>com.alkacon.opencms.newsletter.CmsNewsletterManager</class>
 		<description><![CDATA[This module allows the creation of newsletters sent by email to specific mailing lists.]]></description>
-		<version>1.0.5</version>
+		<version>2.0.0</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
 		<datecreated/>
@@ -22,6 +22,7 @@
 		<dateinstalled/>
 		<dependencies>
 			<dependency name="com.alkacon.opencms.commons" version="1.0.0"/>
+			<dependency name="com.alkacon.opencms.v8.commons" version="1.0.0"/>
 			<dependency name="org.opencms.workplace.tools.accounts" version="1.0.0"/>
 		</dependencies>
 		<exportpoints>
@@ -140,6 +141,30 @@
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.newsletter/.config</source>
+			<destination>system/modules/com.alkacon.opencms.newsletter/.config</destination>
+			<type>module_config</type>
+			<uuidstructure>dd0a2213-e9a1-11e0-9fc8-b3975e8f1fc3</uuidstructure>
+			<uuidresource>dd0a2214-e9a1-11e0-9fc8-b3975e8f1fc3</uuidresource>
+			<datelastmodified>Wed, 28 Sep 2011 13:52:07 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 28 Sep 2011 07:17:02 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>locale</name>
+					<value><![CDATA[en]]></value>
+				</property>
+				<property>
+					<name>locale-available</name>
+					<value><![CDATA[en]]></value>
+				</property>
+			</properties>
 			<relations/>
 			<accesscontrol/>
 		</file>
@@ -333,6 +358,71 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<destination>system/modules/com.alkacon.opencms.newsletter/formatters</destination>
+			<type>folder</type>
+			<uuidstructure>dd1aeaf7-e9a1-11e0-9fc8-b3975e8f1fc3</uuidstructure>
+			<datelastmodified>Wed, 28 Sep 2011 07:17:02 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 28 Sep 2011 07:17:02 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.newsletter/formatters/newsletter-center-detail.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.newsletter/formatters/newsletter-center-detail.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>dd1fa5e9-e9a1-11e0-9fc8-b3975e8f1fc3</uuidstructure>
+			<uuidresource>dd1fa5ea-e9a1-11e0-9fc8-b3975e8f1fc3</uuidresource>
+			<datelastmodified>Tue, 31 Aug 2010 13:57:43 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 28 Sep 2011 07:17:02 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Newsletter mail IFrame]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[site;params=(nluri)]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.newsletter/formatters/newsletter-center.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.newsletter/formatters/newsletter-center.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>dd2460de-e9a1-11e0-9fc8-b3975e8f1fc3</uuidstructure>
+			<uuidresource>dd2460df-e9a1-11e0-9fc8-b3975e8f1fc3</uuidresource>
+			<datelastmodified>Thu, 02 Sep 2010 07:21:58 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 28 Sep 2011 07:17:03 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Newsletter center formatter]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[container-element;params=(uri)]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
 			<destination>system/modules/com.alkacon.opencms.newsletter/lib</destination>
 			<type>folder</type>
 			<uuidstructure>478fe651-9682-11dc-998c-f5a391e6c891</uuidstructure>
@@ -357,6 +447,171 @@
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.newsletter/lists</destination>
+			<type>folder</type>
+			<uuidstructure>dd291bd2-e9a1-11e0-9fc8-b3975e8f1fc3</uuidstructure>
+			<datelastmodified>Wed, 28 Sep 2011 07:17:03 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 28 Sep 2011 07:17:03 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.newsletter/lists/newsletterlist-all.html</source>
+			<destination>system/modules/com.alkacon.opencms.newsletter/lists/newsletterlist-all.html</destination>
+			<type>function</type>
+			<uuidstructure>dd2dfdd4-e9a1-11e0-9fc8-b3975e8f1fc3</uuidstructure>
+			<uuidresource>dd2dfdd5-e9a1-11e0-9fc8-b3975e8f1fc3</uuidresource>
+			<datelastmodified>Mon, 26 Sep 2011 09:30:45 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 28 Sep 2011 07:17:03 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Newsletter Liste mit allen Newslettern]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.newsletter/lists/newsletterlist-center-singlepage.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.newsletter/lists/newsletterlist-center-singlepage.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>dd3773b7-e9a1-11e0-9fc8-b3975e8f1fc3</uuidstructure>
+			<uuidresource>dd3773b8-e9a1-11e0-9fc8-b3975e8f1fc3</uuidresource>
+			<datelastmodified>Fri, 09 Sep 2011 13:40:45 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 28 Sep 2011 07:17:03 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[List center single page]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[locale;params]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.newsletter/lists/newsletterlist-center.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.newsletter/lists/newsletterlist-center.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>dd3c2eac-e9a1-11e0-9fc8-b3975e8f1fc3</uuidstructure>
+			<uuidresource>dd3c2ead-e9a1-11e0-9fc8-b3975e8f1fc3</uuidresource>
+			<datelastmodified>Fri, 09 Sep 2011 13:40:28 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 28 Sep 2011 07:17:03 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[List center main]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[container-element;params=(folder;count;sentonly)]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.newsletter/lists/newsletterlist-onlysent.html</source>
+			<destination>system/modules/com.alkacon.opencms.newsletter/lists/newsletterlist-onlysent.html</destination>
+			<type>function</type>
+			<uuidstructure>dd435aa1-e9a1-11e0-9fc8-b3975e8f1fc3</uuidstructure>
+			<uuidresource>dd435aa2-e9a1-11e0-9fc8-b3975e8f1fc3</uuidresource>
+			<datelastmodified>Mon, 26 Sep 2011 09:31:45 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 28 Sep 2011 07:17:03 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Newsletter Liste mit allen schon versendeten Newslettern]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.newsletter/lists/newsletterlist-side.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.newsletter/lists/newsletterlist-side.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>dd4a8694-e9a1-11e0-9fc8-b3975e8f1fc3</uuidstructure>
+			<uuidresource>dd4a8695-e9a1-11e0-9fc8-b3975e8f1fc3</uuidresource>
+			<datelastmodified>Fri, 09 Sep 2011 13:40:07 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 28 Sep 2011 07:17:03 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Side list]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[container-element;params(folder;count;sentonly)]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.newsletter/lists/newsletterlist.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.newsletter/lists/newsletterlist.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>dd4f4189-e9a1-11e0-9fc8-b3975e8f1fc3</uuidstructure>
+			<uuidresource>dd4f418a-e9a1-11e0-9fc8-b3975e8f1fc3</uuidresource>
+			<datelastmodified>Fri, 09 Sep 2011 13:40:16 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 28 Sep 2011 07:17:03 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[List main]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[container-element]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
 			<relations/>
 			<accesscontrol/>
 		</file>
@@ -532,6 +787,26 @@
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.newsletter/resources/newsletter.css</source>
+			<destination>system/modules/com.alkacon.opencms.newsletter/resources/newsletter.css</destination>
+			<type>plain</type>
+			<uuidstructure>68a08502-e9d9-11e0-b375-b3975e8f1fc3</uuidstructure>
+			<uuidresource>68a08503-e9d9-11e0-b375-b3975e8f1fc3</uuidresource>
+			<datelastmodified>Wed, 28 Sep 2011 13:55:10 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 28 Sep 2011 13:54:39 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[CSS styles for the newsletter detail view]]></value>
+				</property>
+			</properties>
 			<relations/>
 			<accesscontrol/>
 		</file>

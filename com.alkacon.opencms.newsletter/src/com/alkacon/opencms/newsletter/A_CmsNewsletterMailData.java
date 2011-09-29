@@ -489,7 +489,34 @@ public abstract class A_CmsNewsletterMailData implements I_CmsNewsletterMailData
         m_ou = ou;
         m_recipients = recipients;
         m_jsp = jsp;
-        m_locale = OpenCms.getLocaleManager().getDefaultLocale(getCms(), fileName);
+        m_locale = initializeLocale(file);
     }
 
+    /**
+     * Initializes the locale. Either the request locale parameter has to match one of the xmlcontent locales.
+     * Or the default locale for that resource is taken.<p>
+     * 
+     * @param file the file to get the locale for
+     * 
+     * @return the locale
+     */
+    private Locale initializeLocale(CmsFile file) {
+
+        // unmarshal the xmlcontent
+        CmsXmlContent xmlContent = null;
+        try {
+            xmlContent = CmsXmlContentFactory.unmarshal(getCms(), file);
+        } catch (CmsException e) {
+            // could not unmarshal that resource
+        }
+        // get the locales for that xmlcontent
+        if (xmlContent != null) {
+            List<Locale> locales = xmlContent.getLocales();
+            if (locales.contains(getCms().getRequestContext().getLocale())) {
+                return getCms().getRequestContext().getLocale();
+            }
+        }
+        // get the default locale
+        return OpenCms.getLocaleManager().getDefaultLocale(getCms(), file);
+    }
 }

@@ -45,7 +45,19 @@
 			</layouts>
 			<mappings>
 				<mapping element="Subject" mapto="property:Title" />
+				<mapping element="Subject" mapto="urlName" /> 
 			</mappings>
+			<formatters>
+				<formatter minwidth="400" maxwidth="800" uri="/system/modules/com.alkacon.opencms.newsletter/formatters/newsletter-center.jsp" />
+			</formatters>
+			<settings>
+				<setting name="boxschema" nice-name="Box Schema" default="box_schema1" type="string" widget="select" widget-config="box_schema1:Schema 1|box_schema2:Schema 2|box_schema3:Schema 3" />
+				<setting name="imgalign" nice-name="%(key.newsletter.image.align)" type="string" widget="select" widget-config="imageleft:%(key.newsletter.imageleft)|imageright:%(key.newsletter.imageright)" />
+			</settings>
+			<headincludes>
+				<headinclude type="javascript" uri="/system/modules/org.opencms.jquery/resources/packed/jquery.js" />
+				<headinclude type="css" uri="/system/modules/com.alkacon.opencms.newsletter/resources/newsletter.css" />
+			</headincludes>
 		</xsd:appinfo>
 	</xsd:annotation>  
 	
