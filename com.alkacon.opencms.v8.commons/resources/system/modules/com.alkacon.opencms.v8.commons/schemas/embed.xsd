@@ -1,0 +1,31 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+		
+	<xsd:element name="EbkModulePageEmbeds" type="OpenCmsEbkModulePageEmbeds"/>
+	
+	<xsd:complexType name="OpenCmsEbkModulePageEmbeds">
+		<xsd:sequence>
+			<xsd:element name="EbkModulePageEmbed" type="OpenCmsEbkModulePageEmbed" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsEbkModulePageEmbed">
+		<xsd:sequence>
+			<xsd:element name="Headline" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="Text" type="OpenCmsString" />
+			<xsd:element name="Area" type="OpenCmsString" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<mappings/>
+			<layouts>
+				<layout element="Text" widget="TextareaWidget" configuration="8" />
+				<layout element="Area" widget="SelectorWidget" configuration="left:${key.modulepage.embedcode.left}|right:${key.modulepage.embedcode.right}|top*:${key.modulepage.embedcode.top}|bottom:${key.modulepage.embedcode.bottom}" />
+			</layouts>
+		</xsd:appinfo>
+	</xsd:annotation>    
+</xsd:schema>

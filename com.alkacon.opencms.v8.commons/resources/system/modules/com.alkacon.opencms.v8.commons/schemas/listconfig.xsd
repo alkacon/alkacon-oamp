@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+		
+	<xsd:element name="V8ListConfigs" type="OpenCmsV8ListConfigs"/>
+	
+	<xsd:complexType name="OpenCmsV8ListConfigs">
+		<xsd:sequence>
+			<xsd:element name="V8ListConfig" type="OpenCmsV8ListConfig" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsV8ListConfig">
+		<xsd:sequence>
+			<xsd:element name="Title" type="OpenCmsString" />
+			<xsd:element name="Description" type="OpenCmsString" />
+			<xsd:element name="Text" type="OpenCmsHtml" minOccurs="0" />
+			<xsd:element name="Type" type="OpenCmsVfsFile" />
+			<xsd:element name="Count" type="OpenCmsString" />
+			<xsd:element name="Folder" type="OpenCmsVfsFile" minOccurs="0" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="required"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.v8.commons.workplace"/>
+			<mappings>
+				<mapping element="Title" mapto="property:Title" />
+				<mapping element="Description" mapto="property:Description" />
+			</mappings>			
+			<layouts>
+				<layout element="Type" widget="com.alkacon.opencms.v8.commons.CmsSelectListWidget" configuration="" />
+				<layout element="Folder" widget="VfsFileWidget" configuration="excludefiles|hidesiteselector" />
+			</layouts>
+			<defaults>
+				<default element="Title" value="%(key.v8.listconfig.default.Title)" />
+				<default element="Description" value="%(key.v8.listconfig.default.Description)" />
+				<default element="Count" value="5" />
+			</defaults>
+			<formatters>
+				<formatter type="*" uri="/system/modules/com.alkacon.opencms.v8.commons/formatters/list.jsp" searchcontent="false" />
+			</formatters>
+			<headincludes>
+				<headinclude type="javascript" uri="/system/modules/org.opencms.jquery/resources/packed/jquery.js" />
+				<headinclude type="javascript" uri="/system/modules/com.alkacon.opencms.v8.commons/resources/js/jquery.pagination.js" />
+				<headinclude type="javascript" uri="/system/modules/com.alkacon.opencms.v8.commons/resources/js/pagination.js" />
+				<headinclude type="css" uri="/system/modules/com.alkacon.opencms.v8.commons/resources/css/pagination.css" />
+			</headincludes>
+			<settings>
+				<setting name="boxschema" nice-name="Box Schema" default="box_schema1" type="string" widget="select" widget-config="box_schema1:Schema 1|box_schema2:Schema 2|box_schema3:Schema 3" />
+				<setting name="imgalign" nice-name="%(key.list.image.align)" type="string" widget="select" widget-config="imageleft:%(key.list.imageleft)|imageright:%(key.list.imageright)" />
+				<setting name="showtitle" nice-name="%(key.list.showtitle)" type="string" widget="checkbox" default="true" />
+				<setting name="showbox" nice-name="%(key.list.showbox)" type="string" widget="checkbox" default="true" />
+			</settings>
+		</xsd:appinfo>
+	</xsd:annotation>  
+</xsd:schema>
