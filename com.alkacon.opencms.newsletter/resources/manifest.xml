@@ -529,7 +529,7 @@
 				</property>
 				<property>
 					<name>cache</name>
-					<value><![CDATA[container-element;params=(folder;count;sentonly)]]></value>
+					<value><![CDATA[container-element;params]]></value>
 				</property>
 				<property type="shared">
 					<name>export</name>
@@ -577,7 +577,7 @@
 				</property>
 				<property>
 					<name>cache</name>
-					<value><![CDATA[container-element;params(folder;count;sentonly)]]></value>
+					<value><![CDATA[container-element;params]]></value>
 				</property>
 				<property type="shared">
 					<name>export</name>
