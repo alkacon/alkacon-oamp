@@ -12,6 +12,14 @@
 <cms:formatter var="map">
 
 <div>
+<c:choose>
+	<c:when test="${cms.element.inMemoryOnly}">
+		<div>
+			<h3><c:out value="New Alkacon GeoMap" /></h3>
+			<h4><c:out value="Please edit!" /></h4>
+		</div>
+	</c:when>
+	<c:otherwise>
 	
 
 	
@@ -279,6 +287,8 @@
 	// show map after loading
 	showGoogleMap();
 </script>
+	</c:otherwise>
+</c:choose>
 </div>
 </cms:formatter>
 
