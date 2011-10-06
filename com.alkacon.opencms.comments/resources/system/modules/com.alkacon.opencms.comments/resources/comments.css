@@ -129,8 +129,7 @@ form.cmtForm textarea {
 	height: 200px;
 }
 form.cmtForm img {
-	height: auto;
-	width: 99%;
+	max-width: 99%;
 }
 
 /* Overwrite default thickbox styles */
