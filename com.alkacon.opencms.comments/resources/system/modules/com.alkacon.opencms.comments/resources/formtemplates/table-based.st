@@ -27,7 +27,7 @@ $endif$
 	$hiddenfields$
 	<input type="hidden" name="formaction" id="formaction" value="submit" />
 	<input class="cmtButton" type="button" value="$submitbutton$" onclick="cmtPost(); " />
-	<input class="cmtButton" type="button" value="$resetbutton$" onclick="tb_remove();" />
+	<input class="cmtButton" type="button" value="$resetbutton$" onclick="\$.colorbox.close();" />
 </div>
 </form>
 >>
@@ -52,10 +52,10 @@ function cmtPost() {
      		\$("form#fid").serializeArray(),
 	      function(txt) {
 			  if (txt == 'ok') {
-			     tb_remove();
+			     \$.colorbox.close();
 			     reloadComments();
 			  } else {
-			     \$("div#TB_ajaxContent").html(txt);
+			     \$("div#cboxLoadedContent").html(txt);
 			  }
 	      }
 	);
@@ -102,11 +102,10 @@ $if(commentfield)$
 	updateComment();
 $endif$
 
-\$("#TB_title").addClass("cmt_TB_title");
-\$("#TB_title").attr("id","");
-\$("#TB_closeAjaxWindow").addClass("cmt_TB_closeAjaxWindow");
-\$("#TB_ajaxContent").addClass("cmt_TB_ajaxContent");
-\$("#TB_ajaxWindowTitle").addClass("cmt_TB_ajaxWindowTitle");
+\$("#cboxTitle").addClass("cmt_TB_title");
+\$("#cboxClose").addClass("cmt_TB_closeAjaxWindow");
+\$("#cboxLoadedContent").addClass("cmt_TB_ajaxContent");
+\$("#cboxTitle").addClass("cmt_TB_ajaxWindowTitle");
 \$("input[name^='InputField'][type='text']").css("width", "100%");
 \$("textarea[name^='InputField']").css("width", "100%");
 </script>
@@ -119,7 +118,7 @@ $formconfig.formConfirmationText$
 <div class="cmtDialog">
 	<form class="cmtForm" id="fid" name="commentform" $formconfig.formAttributes$>
 		<div class="cmtButtonRow">
-			<input class="cmtButton" type="button" value="$closebutton$" onclick="tb_remove(); reloadComments();"/>
+			<input class="cmtButton" type="button" value="$closebutton$" onclick="\$.colorbox.close(); reloadComments();"/>
 		</div>
 	</form>
 </div>      
@@ -127,7 +126,7 @@ $formconfig.formConfirmationText$
 function submitEnter(e) {
     var key = (window.event) ? window.event.keyCode : (e) ? e.which : 0;
     if (key == 13) {
-       tb_remove(); 
+       \$.colorbox.close(); 
        reloadComments();
        return false;
     } else {
@@ -135,11 +134,10 @@ function submitEnter(e) {
     }
 }
 \$(window).keypress(submitEnter);
-\$("#TB_title").addClass("cmt_TB_title");
-\$("#TB_title").attr("id","");
-\$("#TB_closeAjaxWindow").addClass("cmt_TB_closeAjaxWindow");
-\$("#TB_ajaxContent").addClass("cmt_TB_ajaxContent");
-\$("#TB_ajaxWindowTitle").addClass("cmt_TB_ajaxWindowTitle");
+\$("#cboxTitle").addClass("cmt_TB_title");
+\$("#cboxClose").addClass("cmt_TB_closeAjaxWindow");
+\$("#cboxLoadedContent").addClass("cmt_TB_ajaxContent");
+\$("#cboxTitle").addClass("cmt_TB_ajaxWindowTitle");
 \$("input[name^='InputField'][type='text']").css("width", "100%");
 \$("textarea[name^='InputField']").css("width", "100%");
 </script>

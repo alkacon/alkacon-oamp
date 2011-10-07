@@ -33,10 +33,12 @@
 package com.alkacon.opencms.comments;
 
 import org.opencms.file.CmsFile;
+import org.opencms.file.CmsGroup;
 import org.opencms.file.CmsObject;
 import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.main.CmsIllegalArgumentException;
 import org.opencms.main.OpenCms;
+import org.opencms.security.CmsOrganizationalUnit;
 import org.opencms.util.A_CmsModeStringEnumeration;
 import org.opencms.util.CmsStringUtil;
 import org.opencms.xml.content.CmsXmlContent;
@@ -44,6 +46,7 @@ import org.opencms.xml.content.CmsXmlContentFactory;
 import org.opencms.xml.types.I_CmsXmlContentValue;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -203,7 +206,7 @@ public class CmsCommentConfiguration {
     private String m_configUri;
 
     /** The groups, the users have to be members of. */
-    private List m_groups;
+    private List<CmsGroup> m_groups;
 
     /** The list setting. */
     private int m_list;
@@ -218,7 +221,7 @@ public class CmsCommentConfiguration {
     private boolean m_offerLogin;
 
     /** The organizational units, the users have to be members of. */
-    private List m_orgUnits;
+    private List<CmsOrganizationalUnit> m_orgUnits;
 
     /** The resource bundle. */
     private String m_resourceBundle;
@@ -256,6 +259,46 @@ public class CmsCommentConfiguration {
         init(jsp, configUri);
     }
 
+    private CmsCommentConfiguration(
+        String configUri,
+        List<CmsGroup> groups,
+        boolean minimized,
+        boolean moderated,
+        boolean offerLogin,
+        List<CmsOrganizationalUnit> orgUnits,
+        String resourceBundle,
+        CmsCommentSecurityMode security,
+        String styleSheet) {
+
+        m_configUri = configUri;
+        m_groups = groups;
+        m_minimized = minimized;
+        m_moderated = moderated;
+        m_offerLogin = offerLogin;
+        m_orgUnits = orgUnits;
+        m_resourceBundle = resourceBundle;
+        m_security = security;
+        m_styleSheet = styleSheet;
+    }
+
+    /**
+     * @see java.lang.Object#clone()
+     */
+    @Override
+    public CmsCommentConfiguration clone() {
+
+        return new CmsCommentConfiguration(
+            m_configUri,
+            Collections.unmodifiableList(m_groups),
+            m_minimized,
+            m_moderated,
+            m_offerLogin,
+            Collections.unmodifiableList(m_orgUnits),
+            m_resourceBundle,
+            m_security,
+            m_styleSheet);
+    }
+
     /**
      * Returns the configuration Uri.<p>
      *
@@ -271,9 +314,9 @@ public class CmsCommentConfiguration {
      *
      * @return the groups
      */
-    public List getGroups() {
+    public List<CmsGroup> getGroups() {
 
-        return m_groups;
+        return Collections.unmodifiableList(m_groups);
     }
 
     /**
@@ -291,9 +334,9 @@ public class CmsCommentConfiguration {
      *
      * @return the organizational Units
      */
-    public List getOrgUnits() {
+    public List<CmsOrganizationalUnit> getOrgUnits() {
 
-        return m_orgUnits;
+        return Collections.unmodifiableList(m_orgUnits);
     }
 
     /**
@@ -357,6 +400,40 @@ public class CmsCommentConfiguration {
     }
 
     /**
+     * Sets the list setting.<p>
+     *
+     * @param list the list setting
+     */
+    public void setList(String list) {
+
+        try {
+            m_list = Integer.valueOf(list).intValue();
+        } catch (Throwable e) {
+            m_list = -1;
+        }
+    }
+
+    /**
+     * Sets the minimized flag.<p>
+     *
+     * @param minimized the minimized flag to set
+     */
+    public void setMinimized(boolean minimized) {
+
+        m_minimized = minimized;
+    }
+
+    /**
+     * Sets the security mode.<p>
+     *
+     * @param security the security mode to set
+     */
+    public void setSecurity(CmsCommentSecurityMode security) {
+
+        m_security = security;
+    }
+
+    /**
      * Initializes the configuration.<p>
      * 
      * @param jsp the initialized CmsJspActionElement to access the OpenCms API
@@ -396,19 +473,15 @@ public class CmsCommentConfiguration {
         m_moderated = Boolean.valueOf(stringValue).booleanValue();
 
         stringValue = content.getStringValue(cms, path + NODE_LIST, locale);
-        try {
-            m_list = Integer.valueOf(stringValue).intValue();
-        } catch (Throwable e) {
-            m_list = -1;
-        }
+        setList(stringValue);
 
         stringValue = content.getStringValue(cms, path + NODE_SECURITY, locale);
         m_security = CmsCommentSecurityMode.valueOf(stringValue);
 
-        m_orgUnits = new ArrayList();
-        Iterator itOrgUnits = content.getValues(path + NODE_ORGUNIT, locale).iterator();
+        m_orgUnits = new ArrayList<CmsOrganizationalUnit>();
+        Iterator<I_CmsXmlContentValue> itOrgUnits = content.getValues(path + NODE_ORGUNIT, locale).iterator();
         while (itOrgUnits.hasNext()) {
-            I_CmsXmlContentValue value = (I_CmsXmlContentValue)itOrgUnits.next();
+            I_CmsXmlContentValue value = itOrgUnits.next();
             stringValue = value.getStringValue(cms);
             try {
                 m_orgUnits.add(OpenCms.getOrgUnitManager().readOrganizationalUnit(cms, stringValue));
@@ -419,10 +492,10 @@ public class CmsCommentConfiguration {
             }
         }
 
-        m_groups = new ArrayList();
-        Iterator itGroups = content.getValues(path + NODE_GROUP, locale).iterator();
+        m_groups = new ArrayList<CmsGroup>();
+        Iterator<I_CmsXmlContentValue> itGroups = content.getValues(path + NODE_GROUP, locale).iterator();
         while (itGroups.hasNext()) {
-            I_CmsXmlContentValue value = (I_CmsXmlContentValue)itGroups.next();
+            I_CmsXmlContentValue value = itGroups.next();
             stringValue = value.getStringValue(cms);
             if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(stringValue)) {
                 try {

@@ -31,7 +31,16 @@
                 $("<div></div>").attr("id", "comments_page_" + newPage).css("display", "none").appendTo("#comments");
                	$.post(
 					"<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_page.jsp:34fca4a6-1da3-11dd-be62-111d34530985)</cms:link>",
-					{ cmturi: '${param.cmturi}', cmtpage: newPage, __locale: '<cms:info property="opencms.request.locale" />', cmtstate: '${alkaconCmt.state}' },
+					{ 
+					    cmturi: '${param.cmturi}', 
+					    cmtminimized:"${param.cmtminimized}",
+				        cmtlist:"${param.cmtlist}",
+				        cmtsecurity:"${param.cmtsecurity}",
+					    configUri: '${param.configUri}', 
+					    cmtpage: newPage, 
+					    __locale: '<cms:info property="opencms.request.locale" />', 
+					    cmtstate: '${alkaconCmt.state}' 
+					},
 					function(html) {
 						$("#comments_page_" + newPage).html(html);
 						onPagination();

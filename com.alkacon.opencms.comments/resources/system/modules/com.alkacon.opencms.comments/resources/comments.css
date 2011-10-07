@@ -127,24 +127,31 @@ form.cmtForm div.cmtErrorMessage {
 }
 form.cmtForm textarea {
 	height: 200px;
+	width: 100%;
 }
 form.cmtForm img {
 	max-width: 99%;
 }
 
 /* Overwrite default thickbox styles */
-.cmt_TB_title { 
+#cboxTitle.cmt_TB_title { 
 	background: #AACCFF url(gradient.png) repeat-x scroll center top;
-	height: 27px;
+	height: auto;
 	color: black;
 	padding: 3px 5px;
+	font-weight: bold;
+	top: 0;
+	left: 0;
+	right: 0;
+	line-height:38px;
+	bottom: auto;
+	width: auto;
 }
 .cmt_TB_closeAjaxWindow {
 	display: none;
 }
-.cmt_TB_ajaxContent {
+#cboxContent #cboxLoadedContent{
 	background-color: #EEEEFF;
-}
-.cmt_TB_ajaxWindowTitle {
-	font-weight: bold;
+	margin-bottom: 0;
+	margin-top: 44px;
 }

@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms"%>
 <%
-	CmsCommentsAccess alkaconCmt = new CmsCommentsAccess(pageContext, request, response);
+	CmsCommentsAccess alkaconCmt = new CmsCommentsAccess(pageContext, request, response, request.getParameter("configUri"));
 	pageContext.setAttribute("alkaconCmt", alkaconCmt);
 	if (!alkaconCmt.isUserCanView() && !alkaconCmt.isUserCanManage() && !alkaconCmt.isUserCanPost() && !alkaconCmt.getConfig().isOfferLogin()) {
 		return;
@@ -15,11 +15,8 @@
 <!-- start: header -->
 <div class="cmtHeader">
 <c:choose>
-<c:when test="${alkaconCmt.userCanManage}">
-	<fmt:message key="titel.view.comments" />
-</c:when>
-<c:when test="${alkaconCmt.userCanPost}">
-	<fmt:message key="titel.view.comments" />
+<c:when test="${not empty param.title}">
+	${param.title}
 </c:when>
 <c:otherwise>
 	<fmt:message key="titel.view.comments" />
@@ -33,7 +30,7 @@
 <c:when test="${alkaconCmt.userCanPost}">
 	    <a 
 	       title="<fmt:message key="form.message.post" />" 
-	       href="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_form.jsp:dfbece22-1112-11dd-ba60-111d34530985)?cmturi=${param.cmturi}&__locale=${cms:vfs(pageContext).requestContext.locale}&width=800&height=530</cms:link>" 
+	       href="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_form.jsp:dfbece22-1112-11dd-ba60-111d34530985)?cmturi=${param.cmturi}&cmtminimized=${param.cmtminimized}&cmtlist=${param.cmtlist}&cmtsecurity=${param.cmtsecurity}&configUri=${param.configUri}&__locale=${cms:vfs(pageContext).requestContext.locale}&width=800&height=530</cms:link>" 
 	       class="cmt_thickbox" >
 			<fmt:message key="post.0" />
 		</a>
@@ -43,7 +40,7 @@
 	<c:if test="${alkaconCmt.guestUser && alkaconCmt.config.offerLogin}">
 	        <a 
 	           title="<fmt:message key="login.message.title" />" 
-	           href="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_login.jsp:87972a79-12be-11dd-a2ad-111d34530985)?cmturi=${param.cmturi}&__locale=${cms:vfs(pageContext).requestContext.locale}&width=400&height=200</cms:link>" 
+	           href="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_login.jsp:87972a79-12be-11dd-a2ad-111d34530985)?cmturi=${param.cmturi}&cmtminimized=${param.cmtminimized}&cmtlist=${param.cmtlist}&cmtsecurity=${param.cmtsecurity}&configUri=${param.configUri}&__locale=${cms:vfs(pageContext).requestContext.locale}&width=400&height=200</cms:link>" 
 	           class="cmt_thickbox" >
 			<fmt:message key="post.user.login.0" />
 		</a>
@@ -51,7 +48,7 @@
 </c:otherwise>
 </c:choose>
 <script type="text/javascript">
-  tb_init('a.cmt_thickbox'); //pass where to apply thickbox
+  $('a.cmt_thickbox').colorbox(colorboxConfig_comments); //pass where to apply thickbox
   imgLoader = new Image(); // preload image
   imgLoader.src = '<%=CmsWorkplace.getSkinUri()%>jquery/css/thickbox/loading.gif';
   
@@ -74,6 +71,10 @@
 <div id="comments" style="width: 100%;">
 	<cms:include file="%(link.strong:/system/modules/com.alkacon.opencms.comments/elements/comment_innerlist.jsp:7c811b84-1dcd-11dd-b28b-111d34530985)">
 		<cms:param name="cmturi" value="${param.cmturi}" />
+		<cms:param name="cmtminimized" value="${param.cmtminimized}" />
+	    <cms:param name="cmtlist" value="${param.cmtlist}" />
+	    <cms:param name="cmtsecurity" value="${param.cmtsecurity}" />
+		<cms:param name="configUri" value="${param.configUri}" />
 		<cms:param name="cmtpage" value="0" />
 	</cms:include>
 </div>
@@ -81,11 +82,22 @@
 function reloadComments(state, page) {
 
 	$('body').css("cursor", "wait");
-	var data = { cmturi: '${param.cmturi}', __locale: '<cms:info property="opencms.request.locale" />', cmtstate: '${alkaconCmt.state}', cmtpage: 0 }; 
+	var data = { 
+		        cmturi: '${param.cmturi}',
+		        cmtminimized:"${param.cmtminimized}",
+		        cmtlist:"${param.cmtlist}",
+		        cmtsecurity:"${param.cmtsecurity}",
+		        configUri: '${param.configUri}', 
+		        __locale: '<cms:info property="opencms.request.locale" />', 
+		        cmtstate: '${alkaconCmt.state}', 
+		        cmtpage: 0 
+	        }; 
 	if (state !== "undefined" && page !== "undefined") {
-		data = { cmturi: '${param.cmturi}', __locale: '<cms:info property="opencms.request.locale" />', cmtstate: state, cmtpage: page };
+		data.cmtstate= state; 
+		data.cmtpage= page;
 	} else if (state !== "undefined") {
-		data = { cmturi: '${param.cmturi}', __locale: '<cms:info property="opencms.request.locale" />', cmtstate: state, cmtpage: 0 };
+	    data.cmtstate= state; 
+		data.cmtpage= 0;
 	}
 	$.post(
 		'<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_innerlist.jsp:7c811b84-1dcd-11dd-b28b-111d34530985)</cms:link>',

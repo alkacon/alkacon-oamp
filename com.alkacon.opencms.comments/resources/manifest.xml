@@ -36,6 +36,9 @@
 			<param name="config:sample">/demo_en/_config_/comments</param>
 		</parameters>
 		<resourcetypes>
+			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="alkacon-comment-display" id="81">
+				<param name="schema">/system/modules/com.alkacon.opencms.comments/schemas/comment-display.xsd</param>
+			</type>
 			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="alkacon-comment" id="78">
 				<properties>
 					<property>
@@ -47,6 +50,12 @@
 			</type>
 		</resourcetypes>
 		<explorertypes>
+			<explorertype name="alkacon-comment-display" key="fileicon.alkacon-comment-display" icon="alkacon_comment-display.png" reference="xmlcontent">
+				<newresource page="structurecontent" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-comment-display" order="300" autosetnavigation="false" autosettitle="false" info="desc.alkacon-comment-display"/>
+				<accesscontrol>
+					<accessentry principal="ROLE.WORKPLACE_USER" permissions="+r+v+w+c"/>
+				</accesscontrol>
+			</explorertype>
 			<explorertype name="alkacon-comment" key="fileicon.alkacon-comment" icon="alkacon_comment.png" reference="xmlcontent">
 				<newresource page="structurecontent" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-comment" order="300" autosetnavigation="false" autosettitle="false" info="desc.alkacon-comment"/>
 				<accesscontrol>
@@ -110,6 +119,30 @@
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/.config</source>
+			<destination>system/modules/com.alkacon.opencms.comments/.config</destination>
+			<type>module_config</type>
+			<uuidstructure>08f06abb-ee9b-11e0-8ba4-314422e60e0b</uuidstructure>
+			<uuidresource>08f06abc-ee9b-11e0-8ba4-314422e60e0b</uuidresource>
+			<datelastmodified>Tue, 04 Oct 2011 15:25:01 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 Oct 2011 15:10:45 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>locale</name>
+					<value><![CDATA[en]]></value>
+				</property>
+				<property>
+					<name>locale-available</name>
+					<value><![CDATA[en]]></value>
+				</property>
+			</properties>
 			<relations/>
 			<accesscontrol/>
 		</file>
@@ -658,6 +691,39 @@
 			<relations/>
 			<accesscontrol/>
 		</file>
+			<file>
+			<destination>system/modules/com.alkacon.opencms.comments/formatters</destination>
+			<type>folder</type>
+			<uuidstructure>da8a8486-ee9a-11e0-8ba4-314422e60e0b</uuidstructure>
+			<datelastmodified>Tue, 04 Oct 2011 15:09:28 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 Oct 2011 15:09:28 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/formatters/comment-formatter.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.comments/formatters/comment-formatter.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>e77a21f8-ee9a-11e0-8ba4-314422e60e0b</uuidstructure>
+			<uuidresource>e77a21f9-ee9a-11e0-8ba4-314422e60e0b</uuidresource>
+			<datelastmodified>Wed, 05 Oct 2011 09:56:15 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 Oct 2011 15:09:49 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
 		<file>
 			<destination>system/modules/com.alkacon.opencms.comments/lib</destination>
 			<type>folder</type>
@@ -893,6 +959,21 @@
 			<datelastmodified>Fri, 07 Mar 2008 09:34:38 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Fri, 07 Mar 2008 09:34:38 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.comments/schemas/comment-display.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.comments/schemas/comment-display.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>1e6e63c4-ee9a-11e0-8ba4-314422e60e0b</uuidstructure>
+			<uuidresource>1e6e63c5-ee9a-11e0-8ba4-314422e60e0b</uuidresource>
+			<datelastmodified>Wed, 05 Oct 2011 09:37:47 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 Oct 2011 15:04:12 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>

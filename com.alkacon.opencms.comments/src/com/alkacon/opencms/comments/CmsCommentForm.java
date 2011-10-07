@@ -34,6 +34,7 @@ package com.alkacon.opencms.comments;
 
 import com.alkacon.opencms.formgenerator.CmsForm;
 import com.alkacon.opencms.formgenerator.CmsFormHandler;
+import com.alkacon.opencms.formgenerator.I_CmsField;
 
 import org.opencms.file.CmsFile;
 import org.opencms.file.CmsObject;
@@ -153,6 +154,8 @@ public class CmsCommentForm extends CmsForm {
      * 
      * @throws Exception if parsing the configuration fails
      */
+    @SuppressWarnings("deprecation")
+    @Override
     public void init(CmsFormHandler jsp, CmsMessages messages, boolean initial, String formConfigUri, String formAction)
     throws Exception {
 
@@ -172,9 +175,9 @@ public class CmsCommentForm extends CmsForm {
         initMembers();
 
         m_formAction = formAction;
-        m_fields = new ArrayList();
-        m_dynaFields = new ArrayList();
-        m_fieldsByName = new HashMap();
+        m_fields = new ArrayList<I_CmsField>();
+        m_dynaFields = new ArrayList<I_CmsField>();
+        m_fieldsByName = new HashMap<String, I_CmsField>();
         m_formHandler = jsp;
 
         // initialize general form configuration
@@ -221,6 +224,7 @@ public class CmsCommentForm extends CmsForm {
      * 
      * @throws Exception if initializing the form settings fails
      */
+    @Override
     protected void initFormGlobalConfiguration(CmsXmlContent content, CmsObject cms, Locale locale, CmsMessages messages)
     throws Exception {
 
@@ -350,9 +354,9 @@ public class CmsCommentForm extends CmsForm {
             CmsObject cms = m_formHandler.getCmsObject();
             String uri = cms.getRequestContext().getUri();
             try {
-                Iterator responsibles = cms.readResponsibleUsers(cms.readResource(uri)).iterator();
+                Iterator<CmsUser> responsibles = cms.readResponsibleUsers(cms.readResource(uri)).iterator();
                 while (responsibles.hasNext()) {
-                    CmsUser responsibleUser = (CmsUser)responsibles.next();
+                    CmsUser responsibleUser = responsibles.next();
                     String email = responsibleUser.getEmail();
                     if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(email)) {
                         if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(mailTo)) {

@@ -31,8 +31,10 @@
 
 package com.alkacon.opencms.comments;
 
+import com.alkacon.opencms.comments.CmsCommentConfiguration.CmsCommentSecurityMode;
 import com.alkacon.opencms.formgenerator.CmsFormHandlerFactory;
 import com.alkacon.opencms.formgenerator.database.CmsFormDataAccess;
+import com.alkacon.opencms.formgenerator.database.CmsFormDataBean;
 import com.alkacon.opencms.formgenerator.database.CmsFormDatabaseFilter;
 
 import org.opencms.db.CmsDbEntryNotFoundException;
@@ -58,6 +60,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -99,7 +102,16 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     public static final String PARAM_ENTRY = "cmtentry";
 
     /** Parameter name constant. */
+    public static final String PARAM_LIST = "cmtlist";
+
+    /** Parameter name constant. */
+    public static final String PARAM_MINIMIZED = "cmtminimized";
+
+    /** Parameter name constant. */
     public static final String PARAM_PAGE = "cmtpage";
+
+    /** Parameter name constant. */
+    public static final String PARAM_SECURITY = "cmtsecurity";
 
     /** Parameter name constant. */
     public static final String PARAM_SHOW = "cmtshow";
@@ -114,7 +126,7 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     protected static final Log LOG = CmsLog.getLog(CmsCommentsAccess.class);
 
     /** Cached configurations. */
-    protected static Map m_configs = Collections.synchronizedMap(new HashMap());
+    protected static Map<String, CmsCommentConfiguration> m_configs = Collections.synchronizedMap(new HashMap<String, CmsCommentConfiguration>());
 
     /** Property name constant. */
     private static final String PROPERTY_COMMENTS = "comments";
@@ -129,10 +141,13 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     private static final int STATE_NEW = 0;
 
     /** Cached list of current page comments. */
-    private List m_comments;
+    private List<CmsFormDataBean> m_comments;
 
     /** The configuration. */
     private CmsCommentConfiguration m_config;
+
+    /** The URI of the comments configuration. */
+    private String m_configUri;
 
     /** Cached count of approved comments. */
     private Integer m_countApprovedComments;
@@ -141,7 +156,7 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     private Integer m_countBlockedComments;
 
     /** Map where the key is the author name and the value the number of comments. */
-    private Map m_countByAuthor;
+    private Map<String, Integer> m_countByAuthor;
 
     /** Cached count of all comments. */
     private Integer m_countComments;
@@ -183,6 +198,22 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     public CmsCommentsAccess(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         super(context, req, res);
+        initConfig(context, req, res);
+    }
+
+    /**
+     * Constructor, with parameters.
+     * 
+     * @param context the JSP page context object
+     * @param req the JSP request 
+     * @param res the JSP response 
+     * @param configUri the URI of the comments configuration
+     */
+    public CmsCommentsAccess(PageContext context, HttpServletRequest req, HttpServletResponse res, String configUri) {
+
+        super(context, req, res);
+        m_configUri = configUri;
+        initConfig(context, req, res);
     }
 
     static {
@@ -213,9 +244,10 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
                             m_configs.clear();
                             break;
                         }
-
-                        String cacheKey = res.getRootPath() + "-";
-                        m_configs.remove(cacheKey);
+                        for (Locale locale : OpenCms.getLocaleManager().getAvailableLocales()) {
+                            String cacheKey = CmsCommentsAccess.generateCacheKey(res.getRootPath(), false, locale);
+                            m_configs.remove(cacheKey);
+                        }
                         break;
 
                     default:
@@ -231,6 +263,20 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
             I_CmsEventListener.EVENT_RESOURCE_DELETED,
             I_CmsEventListener.EVENT_RESOURCE_MODIFIED,
             I_CmsEventListener.EVENT_PUBLISH_PROJECT});
+    }
+
+    /**
+     * Returns the cache key for the given data.<p>
+     * 
+     * @param rootPath the resource root path
+     * @param isOnline <code>true</code> to cache for the online project
+     * @param locale the requested locale
+     * 
+     * @return the cache key
+     */
+    protected static String generateCacheKey(String rootPath, boolean isOnline, Locale locale) {
+
+        return rootPath + (isOnline ? "+" : "-") + "[" + locale + "]";
     }
 
     /**
@@ -336,7 +382,7 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
      * 
      * @return a list of {@link com.alkacon.opencms.formgenerator.database.CmsFormDataBean} objects
      */
-    public List getComments() {
+    public List<CmsFormDataBean> getComments() {
 
         if (m_comments == null) {
             CmsCommentFormHandler jsp = null;
@@ -371,7 +417,7 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
                 if (LOG.isErrorEnabled()) {
                     LOG.error(e.getLocalizedMessage(), e);
                 }
-                m_comments = new ArrayList();
+                m_comments = new ArrayList<CmsFormDataBean>();
             }
         }
         return m_comments;
@@ -447,10 +493,11 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
      * 
      * @return a map where the key is the author name and the value the number of comments
      */
-    public Map getCountByAuthor() {
+    @SuppressWarnings("unchecked")
+    public Map<String, Integer> getCountByAuthor() {
 
         if (m_countByAuthor == null) {
-            m_countByAuthor = LazyMap.decorate(new HashMap(), new Transformer() {
+            m_countByAuthor = LazyMap.decorate(new HashMap<String, Integer>(), new Transformer() {
 
                 /**
                  * @see org.apache.commons.collections.Transformer#transform(java.lang.Object)
@@ -553,6 +600,7 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     /**
      * @see org.opencms.jsp.CmsJspLoginBean#getLoginException()
      */
+    @Override
     public CmsException getLoginException() {
 
         if (m_exc == null) {
@@ -629,85 +677,13 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     }
 
     /**
-     * @see org.opencms.jsp.CmsJspBean#init(javax.servlet.jsp.PageContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-     */
-    public void init(PageContext context, HttpServletRequest req, HttpServletResponse res) {
-
-        super.init(context, req, res);
-        if (LOG.isDebugEnabled()) {
-            Iterator it = req.getParameterMap().entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry entry = (Map.Entry)it.next();
-                LOG.debug(Messages.get().getBundle().key(
-                    Messages.LOG_INIT_PARAM_2,
-                    entry.getKey(),
-                    Arrays.asList((String[])entry.getValue())));
-            }
-        }
-        try {
-            m_uri = req.getParameter(PARAM_URI);
-            m_resource = getCmsObject().readResource(m_uri);
-            getCmsObject().getRequestContext().setUri(m_uri);
-            String configUri = readConfigUri();
-            String cacheKey = getCmsObject().getRequestContext().addSiteRoot(configUri)
-                + (getCmsObject().getRequestContext().currentProject().isOnlineProject() ? "+" : "-");
-            m_config = (CmsCommentConfiguration)m_configs.get(cacheKey);
-            if (m_config == null) {
-                m_config = new CmsCommentConfiguration(this, configUri);
-                m_configs.put(cacheKey, m_config);
-            }
-            if (LOG.isDebugEnabled()) {
-                LOG.debug(Messages.get().getBundle().key(Messages.LOG_INIT_CONFIG_1, configUri));
-                LOG.debug(Messages.get().getBundle().key(
-                    Messages.LOG_INIT_PROJECT_1,
-                    getCmsObject().getRequestContext().currentProject().getName()));
-                LOG.debug(Messages.get().getBundle().key(
-                    Messages.LOG_INIT_SITE_1,
-                    getCmsObject().getRequestContext().getSiteRoot()));
-                LOG.debug(Messages.get().getBundle().key(Messages.LOG_INIT_RESOURCE_1, m_resource));
-            }
-        } catch (Exception e) {
-            if (LOG.isErrorEnabled()) {
-                LOG.error(e.getLocalizedMessage());
-            }
-        }
-        try {
-            m_state = Integer.valueOf(req.getParameter(PARAM_STATE));
-        } catch (NumberFormatException e) {
-            m_state = null;
-        }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug(Messages.get().getBundle().key(Messages.LOG_INIT_STATE_1, m_state));
-        }
-        m_show = Boolean.valueOf(req.getParameter(PARAM_SHOW)).booleanValue();
-        if (LOG.isDebugEnabled()) {
-            LOG.debug(Messages.get().getBundle().key(Messages.LOG_INIT_SHOW_1, "" + m_show));
-        }
-        m_page = 0;
-        try {
-            m_page = Integer.parseInt(req.getParameter(PARAM_PAGE));
-        } catch (Exception e) {
-            // ignore
-        }
-        if (m_page >= getPages()) {
-            m_page = getPages() - 1;
-        }
-        if (m_page < 0) {
-            m_page = 0;
-        }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug(Messages.get().getBundle().key(Messages.LOG_INIT_PAGE_1, "" + m_page));
-        }
-    }
-
-    /**
      * Checks if this user is the default guest user.<p>
      * 
      * @return <code>true</code> if this user is the default guest user
      */
     public boolean isGuestUser() {
 
-        return getRequestContext().currentUser().isGuestUser();
+        return getRequestContext().getCurrentUser().isGuestUser();
     }
 
     /**
@@ -824,16 +800,16 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     public boolean isUserValid() {
 
         if (m_userValid == null) {
-            CmsUser user = getRequestContext().currentUser();
+            CmsUser user = getRequestContext().getCurrentUser();
             if (m_config.getGroups().isEmpty() && m_config.getOrgUnits().isEmpty()) {
                 m_userValid = Boolean.valueOf(!user.isGuestUser());
             } else if (user.isGuestUser()) {
                 m_userValid = Boolean.FALSE;
             } else {
                 CmsObject cms = getCmsObject();
-                Iterator itGroups = m_config.getGroups().iterator();
+                Iterator<CmsGroup> itGroups = m_config.getGroups().iterator();
                 while (itGroups.hasNext() && (m_userValid == null)) {
-                    CmsGroup group = (CmsGroup)itGroups.next();
+                    CmsGroup group = itGroups.next();
                     try {
                         if (cms.userInGroup(user.getName(), group.getName())) {
                             m_userValid = Boolean.TRUE;
@@ -844,9 +820,9 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
                         }
                     }
                 }
-                Iterator itOus = m_config.getOrgUnits().iterator();
+                Iterator<CmsOrganizationalUnit> itOus = m_config.getOrgUnits().iterator();
                 while (itOus.hasNext() && (m_userValid == null)) {
-                    CmsOrganizationalUnit ou = (CmsOrganizationalUnit)itOus.next();
+                    CmsOrganizationalUnit ou = itOus.next();
                     if (ou.getName().startsWith(user.getOuFqn())) {
                         m_userValid = Boolean.TRUE;
                     }
@@ -862,6 +838,7 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     /**
      * @see org.opencms.jsp.CmsJspLoginBean#login(java.lang.String, java.lang.String, java.lang.String)
      */
+    @Override
     public void login(String userName, String password, String projectName) {
 
         super.login(userName, password, projectName);
@@ -874,9 +851,9 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
             exc = getLoginException();
         }
         // iterate the organizational units
-        Iterator itOus = getConfig().getOrgUnits().iterator();
+        Iterator<CmsOrganizationalUnit> itOus = getConfig().getOrgUnits().iterator();
         while (itOus.hasNext()) {
-            CmsOrganizationalUnit ou = (CmsOrganizationalUnit)itOus.next();
+            CmsOrganizationalUnit ou = itOus.next();
             String ouFqn = ou.getName();
             // iterate parent ous
             while (!ouFqn.equals("")) {
@@ -934,6 +911,98 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     }
 
     /**
+     * Initializes the comment configuration.<p>
+     * @param context the page context
+     * @param req the request
+     * @param res the response
+     */
+    private void initConfig(PageContext context, HttpServletRequest req, HttpServletResponse res) {
+
+        if (LOG.isDebugEnabled()) {
+            @SuppressWarnings("unchecked")
+            Iterator<Map.Entry<?, ?>> it = req.getParameterMap().entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry<?, ?> entry = it.next();
+                LOG.debug(Messages.get().getBundle().key(
+                    Messages.LOG_INIT_PARAM_2,
+                    entry.getKey(),
+                    Arrays.asList((String[])entry.getValue())));
+            }
+        }
+        try {
+            m_uri = req.getParameter(PARAM_URI);
+            if (m_uri == null) {
+                m_uri = (String)req.getAttribute(PARAM_URI);
+            }
+            m_resource = getCmsObject().readResource(m_uri);
+            getCmsObject().getRequestContext().setUri(m_uri);
+            String configUri = readConfigUri();
+            String cacheKey = generateCacheKey(
+                getCmsObject().getRequestContext().addSiteRoot(configUri),
+                getCmsObject().getRequestContext().getCurrentProject().isOnlineProject(),
+                getCmsObject().getRequestContext().getLocale());
+            m_config = m_configs.get(cacheKey);
+            // make sure only to use a cloned configuration instance
+            if (m_config == null) {
+                m_config = new CmsCommentConfiguration(this, configUri);
+                m_configs.put(cacheKey, m_config.clone());
+            } else {
+                m_config = m_config.clone();
+            }
+            if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(req.getParameter(PARAM_MINIMIZED))) {
+                m_config.setMinimized(Boolean.parseBoolean(req.getParameter(PARAM_MINIMIZED)));
+            }
+            if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(req.getParameter(PARAM_LIST))) {
+                m_config.setList(req.getParameter(PARAM_LIST));
+            }
+            if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(req.getParameter(PARAM_SECURITY))) {
+                m_config.setSecurity(CmsCommentSecurityMode.valueOf(req.getParameter(PARAM_SECURITY)));
+            }
+            if (LOG.isDebugEnabled()) {
+                LOG.debug(Messages.get().getBundle().key(Messages.LOG_INIT_CONFIG_1, configUri));
+                LOG.debug(Messages.get().getBundle().key(
+                    Messages.LOG_INIT_PROJECT_1,
+                    getCmsObject().getRequestContext().getCurrentProject().getName()));
+                LOG.debug(Messages.get().getBundle().key(
+                    Messages.LOG_INIT_SITE_1,
+                    getCmsObject().getRequestContext().getSiteRoot()));
+                LOG.debug(Messages.get().getBundle().key(Messages.LOG_INIT_RESOURCE_1, m_resource));
+            }
+        } catch (Exception e) {
+            if (LOG.isErrorEnabled()) {
+                LOG.error(e.getLocalizedMessage());
+            }
+        }
+        try {
+            m_state = Integer.valueOf(req.getParameter(PARAM_STATE));
+        } catch (NumberFormatException e) {
+            m_state = null;
+        }
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(Messages.get().getBundle().key(Messages.LOG_INIT_STATE_1, m_state));
+        }
+        m_show = Boolean.valueOf(req.getParameter(PARAM_SHOW)).booleanValue();
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(Messages.get().getBundle().key(Messages.LOG_INIT_SHOW_1, "" + m_show));
+        }
+        m_page = 0;
+        try {
+            m_page = Integer.parseInt(req.getParameter(PARAM_PAGE));
+        } catch (Exception e) {
+            // ignore
+        }
+        if (m_page >= getPages()) {
+            m_page = getPages() - 1;
+        }
+        if (m_page < 0) {
+            m_page = 0;
+        }
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(Messages.get().getBundle().key(Messages.LOG_INIT_PAGE_1, "" + m_page));
+        }
+    }
+
+    /**
      * Returns the right configuration uri.<p>
      * 
      * @return the right configuration uri
@@ -942,12 +1011,14 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
      */
     private String readConfigUri() throws CmsException {
 
-        String configUri = getCmsObject().readPropertyObject(m_resource, PROPERTY_COMMENTS, true).getValue();
-        if (!getCmsObject().existsResource(configUri)) {
-            configUri = OpenCms.getModuleManager().getModule(CmsCommentFormHandler.MODULE_NAME).getParameter(
-                CmsCommentFormHandler.MODULE_PARAM_CONFIG_PREFIX + configUri,
-                configUri);
+        if (CmsStringUtil.isEmptyOrWhitespaceOnly(m_configUri)) {
+            m_configUri = getCmsObject().readPropertyObject(m_resource, PROPERTY_COMMENTS, true).getValue();
+            if (!getCmsObject().existsResource(m_configUri)) {
+                m_configUri = OpenCms.getModuleManager().getModule(CmsCommentFormHandler.MODULE_NAME).getParameter(
+                    CmsCommentFormHandler.MODULE_PARAM_CONFIG_PREFIX + m_configUri,
+                    m_configUri);
+            }
         }
-        return configUri;
+        return m_configUri;
     }
 }

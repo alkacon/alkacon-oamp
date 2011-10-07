@@ -112,7 +112,7 @@ public class CmsCommentFormHandler extends CmsFormHandler {
     private static final Log LOG = CmsLog.getLog(CmsCommentFormHandler.class);
 
     /** Some predefined comment substitutions. */
-    private Map m_substitutions;
+    private Map<String, String> m_substitutions;
 
     /**
      * Empty constructor, be sure to call one of the available initialization methods afterwards.<p>
@@ -177,11 +177,11 @@ public class CmsCommentFormHandler extends CmsFormHandler {
         sTemplate.setAttribute(
             "formlink",
             link("/system/modules/com.alkacon.opencms.comments/elements/comment_form.jsp"));
-        sTemplate.setAttribute("isguest", new Boolean(getRequestContext().currentUser().isGuestUser()));
+        sTemplate.setAttribute("isguest", new Boolean(getRequestContext().getCurrentUser().isGuestUser()));
         sTemplate.setAttribute(
             "username",
-            ("" + getRequestContext().currentUser().getFirstname() + " " + getRequestContext().currentUser().getLastname()).trim());
-        sTemplate.setAttribute("useremail", getRequestContext().currentUser().getEmail());
+            ("" + getRequestContext().getCurrentUser().getFirstname() + " " + getRequestContext().getCurrentUser().getLastname()).trim());
+        sTemplate.setAttribute("useremail", getRequestContext().getCurrentUser().getEmail());
         sTemplate.setAttribute("namefield", getCommentFormConfiguration().getFieldByDbLabel("name"));
         sTemplate.setAttribute("emailfield", getCommentFormConfiguration().getFieldByDbLabel("email"));
         sTemplate.setAttribute("commentfield", getCommentFormConfiguration().getFieldByDbLabel("comment"));
@@ -271,13 +271,14 @@ public class CmsCommentFormHandler extends CmsFormHandler {
     public void init(PageContext context, HttpServletRequest req, HttpServletResponse res, String formConfigUri)
     throws CmsException {
 
-        CmsCommentsAccess access = new CmsCommentsAccess(context, req, res);
+        CmsCommentsAccess access = new CmsCommentsAccess(context, req, res, formConfigUri);
         init(context, req, res, access);
     }
 
     /**
      * @see com.alkacon.opencms.formgenerator.CmsFormHandler#sendData()
      */
+    @Override
     public boolean sendData() {
 
         I_CmsField field = getFormConfiguration().getFieldByDbLabel(FIELD_COMMENT);
@@ -328,7 +329,7 @@ public class CmsCommentFormHandler extends CmsFormHandler {
             // loop through all form input fields 
             I_CmsField field = getFormConfiguration().getFields().get(i);
 
-            if (i == n - 1) {
+            if (i == (n - 1)) {
                 // the last one has to close the row
                 place = 1;
             }
@@ -364,6 +365,14 @@ public class CmsCommentFormHandler extends CmsFormHandler {
         StringBuffer hFieldsBuf = new StringBuffer(256);
         hFieldsBuf.append("<input type=\"hidden\" name=\"cmturi\" value=\"").append(getRequest().getParameter("cmturi")).append(
             "\" />");
+        hFieldsBuf.append("<input type=\"hidden\" name=\"cmtminimized\" value=\"").append(
+            getRequest().getParameter("cmtminimized}")).append("\" />");
+        hFieldsBuf.append("<input type=\"hidden\" name=\"cmtlist\" value=\"").append(
+            getRequest().getParameter("cmtlist")).append("\" />");
+        hFieldsBuf.append("<input type=\"hidden\" name=\"cmtsecurity\" value=\"").append(
+            getRequest().getParameter("cmtsecurity")).append("\" />");
+        hFieldsBuf.append("<input type=\"hidden\" name=\"configUri\" value=\"").append(
+            getCommentFormConfiguration().getConfigUri()).append("\" />");
         hFieldsBuf.append("<input type=\"hidden\" name=\"__locale\" value=\"").append(
             getRequest().getParameter("__locale")).append("\" />");
         hiddenFields = hFieldsBuf.toString();
@@ -394,6 +403,8 @@ public class CmsCommentFormHandler extends CmsFormHandler {
      * 
      * @throws Exception if creating the form configuration objects fails
      */
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Override
     protected void configureForm(HttpServletRequest req, String formConfigUri) throws Exception {
 
         if (formConfigUri == null) {
@@ -427,10 +438,10 @@ public class CmsCommentFormHandler extends CmsFormHandler {
      * 
      * @return some predefined comment substitutions
      */
-    protected Map getSubstitutions() {
+    protected Map<String, String> getSubstitutions() {
 
         if (m_substitutions == null) {
-            m_substitutions = new HashMap();
+            m_substitutions = new HashMap<String, String>();
             m_substitutions.put("\n\n", "<p>");
             m_substitutions.put("\n", "<br>");
         }

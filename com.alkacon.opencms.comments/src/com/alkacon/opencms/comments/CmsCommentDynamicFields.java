@@ -56,7 +56,7 @@ public class CmsCommentDynamicFields implements I_CmsDynamicFieldResolver {
         } else if (field.getDbLabel().equals(CmsCommentFormHandler.FIELD_LOCALE)) {
             return ((CmsCommentForm)form).getFormHandler().getRequestContext().getLocale().toString();
         } else if (field.getDbLabel().equals(CmsCommentFormHandler.FIELD_USERNAME)) {
-            return ((CmsCommentForm)form).getFormHandler().getRequestContext().currentUser().getName();
+            return ((CmsCommentForm)form).getFormHandler().getRequestContext().getCurrentUser().getName();
         } else {
             return null;
         }

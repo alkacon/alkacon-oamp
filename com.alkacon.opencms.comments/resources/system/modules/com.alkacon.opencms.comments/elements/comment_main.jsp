@@ -13,8 +13,9 @@
 <cms:jquery dynamic='true' />
 <cms:jquery js='jquery' dynamic='true' />
 <cms:jquery js='jquery.pagination' css='pagination' dynamic='true' />
-<cms:jquery js='thickbox' css='thickbox/thickbox' dynamic='true' />
 <script type='text/javascript' >
+load_script('<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.v8.commons/resources/css/jquery.colorbox.css)</cms:link>', 'css');
+load_script('<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.v8.commons/resources/js/jquery.colorbox.js)</cms:link>', 'js');
 <c:choose>
 <c:when test="${!empty alkaconCmt.config.styleSheet}" >
 load_script('<cms:link>${alkaconCmt.config.styleSheet}</cms:link>', 'css');
@@ -35,18 +36,20 @@ load_script('<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/
      /**
       * Insert translated strings as inline javascript code          
       **/
-     var tb_msg = {
-       'close': '<fmt:message key="comment.image.close" />',
-       'next': '<fmt:message key="comment.image.next" />',
-       'prev': '<fmt:message key="comment.image.prev" />',
-       'imageCount': '<fmt:message key="comment.image.count" />'
-     };
+      var colorboxConfig_comments = {
+              close: '<fmt:message key="comment.image.close" />',
+              next: '<fmt:message key="comment.image.next" />',
+              previous: '<fmt:message key="comment.image.prev" />',
+              current: '<fmt:message key="comment.image.count" />'
+            };
 </script>
 <script type="text/javascript" >
-	$.post(
-		"<cms:link>${url}</cms:link>",
-		{ cmturi:'${param.cmturi}', __locale: '<cms:info property="opencms.request.locale" />' },
-		function(html) { $("#commentbox").html(html); }
-	);
+	$.ajax({
+	    type: 'POST', 
+	    url: '<cms:link>${url}</cms:link>', 
+	    data: { cmturi:'${param.cmturi}', __locale: '<cms:info property="opencms.request.locale" />' },
+	    success: function(html){ $("#commentbox").html(html); },
+	    error: function(){ $("#commentbox").html(""); }
+	});
 </script>
 </fmt:bundle>

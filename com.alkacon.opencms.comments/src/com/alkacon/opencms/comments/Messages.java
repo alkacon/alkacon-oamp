@@ -56,6 +56,9 @@ public final class Messages extends A_CmsMessageBundle {
     public static final String ERR_ORGUNIT_DOESNOT_EXIST_1 = "ERR_ORGUNIT_DOESNOT_EXIST_1";
 
     /** Message constant for key in the resource bundle. */
+    public static final String ERR_NO_CONFIGURATION_FILES_FOUND_0 = "ERR_NO_CONFIGURATION_FILES_FOUND_0";
+
+    /** Message constant for key in the resource bundle. */
     public static final String LOG_INIT_CONFIG_1 = "LOG_INIT_CONFIG_1";
 
     /** Message constant for key in the resource bundle. */
