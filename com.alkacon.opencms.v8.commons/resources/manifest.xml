@@ -20,7 +20,9 @@
 		<datecreated/>
 		<userinstalled/>
 		<dateinstalled/>
-		<dependencies/>
+		<dependencies>
+			<dependency name="org.opencms.jquery" version="8.0.0"/>
+		</dependencies>
 		<exportpoints>
 			<exportpoint uri="/system/modules/com.alkacon.opencms.v8.commons/classes/" destination="WEB-INF/classes/"/>
 			<exportpoint uri="/system/modules/com.alkacon.opencms.v8.commons/lib/" destination="WEB-INF/lib/"/>
