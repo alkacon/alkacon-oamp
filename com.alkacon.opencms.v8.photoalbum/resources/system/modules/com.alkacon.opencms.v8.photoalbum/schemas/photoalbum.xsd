@@ -46,10 +46,10 @@
 			</formatters>
 			<headincludes>
 				<headinclude type="javascript" uri="/system/modules/org.opencms.jquery/resources/packed/jquery.js"/>
-				<headinclude type="javascript" uri="/system/modules/org.opencms.jquery/resources/packed/jquery.pagination.js"/>
-				<headinclude type="javascript" uri="/system/modules/com.alkacon.opencms.v8.photoalbum/resources/jquery.colorbox-min.js" />
-			 	<headinclude type="css" uri="/system/modules/com.alkacon.opencms.v8.photoalbum/resources/colorbox.css" />
-				<headinclude type="css" uri="/system/modules/org.opencms.jquery/resources/css/pagination.css"/>
+				<headinclude type="javascript" uri="/system/modules/com.alkacon.opencms.v8.commons/resources/js/jquery.pagination.js"/>
+				<headinclude type="javascript" uri="/system/modules/com.alkacon.opencms.v8.commons/resources/js/jquery.colorbox.js" />
+			 	<headinclude type="css" uri="/system/modules/com.alkacon.opencms.v8.commons/resources/css/jquery.colorbox.css" />
+				<headinclude type="css" uri="/system/modules/com.alkacon.opencms.v8.commons/resources/css/pagination.css"/>
 				<headinclude type="css" uri="/system/modules/com.alkacon.opencms.v8.photoalbum/resources/album.css"/>
 			</headincludes>
 		</xsd:appinfo>
