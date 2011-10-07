@@ -357,7 +357,7 @@ public class CmsFormHandler extends CmsJspActionElement {
                 out.write(getFormConfiguration().getMaximumSubmissionsText());
             }
 
-        } else if (!showForm()) {
+        } else if (!showForm() && isValidFormaction()) {
             // form has been submitted with correct values, decide further actions
             if (showCheck()) {
                 // show optional check page
@@ -964,6 +964,30 @@ public class CmsFormHandler extends CmsJspActionElement {
     public boolean isInitSuccess() {
 
         return m_initSuccess;
+    }
+
+    /**
+     * Returns if the formaction is of predefined value.<p>
+     * 
+     * @return <code>true</code> if the formaction is valid, otherwise <code>false</code>
+     */
+    public boolean isValidFormaction() {
+
+        String formAction = getParameter(PARAM_FORMACTION);
+
+        boolean result = false;
+        if (ACTION_CONFIRMED.equalsIgnoreCase(formAction)) {
+            result = true;
+        } else if (ACTION_CORRECT_INPUT.equalsIgnoreCase(formAction)) {
+            result = true;
+        } else if (ACTION_DOWNLOAD_DATA_1.equalsIgnoreCase(formAction)) {
+            result = true;
+        } else if (ACTION_DOWNLOAD_DATA_2.equalsIgnoreCase(formAction)) {
+            result = true;
+        } else if (ACTION_SUBMIT.equalsIgnoreCase(formAction)) {
+            result = true;
+        }
+        return result;
     }
 
     /**
