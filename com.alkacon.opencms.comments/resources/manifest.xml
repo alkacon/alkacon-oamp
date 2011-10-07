@@ -3,7 +3,7 @@
 <export>
 	<info>
 		<creator>Admin</creator>
-		<opencms_version>7.5.3</opencms_version>
+		<opencms_version>8.0.3</opencms_version>
 		<createdate>Fri, 11 Mar 2011 15:52:38 GMT</createdate>
 		<infoproject>Offline</infoproject>
 		<export_version>7</export_version>
@@ -21,8 +21,9 @@
 		<userinstalled/>
 		<dateinstalled/>
 		<dependencies>
-			<dependency name="org.opencms.jquery" version="7.5.0"/>
-			<dependency name="com.alkacon.opencms.formgenerator" version="1.3.1"/>
+			<dependency name="org.opencms.jquery" version="8.0.0"/>
+			<dependency name="org.alkacon.opencms.commons" version="1.0.0" />
+			<dependency name="com.alkacon.opencms.formgenerator" version="2.0.0"/>
 		</dependencies>
 		<exportpoints>
 			<exportpoint uri="/system/modules/com.alkacon.opencms.comments/lib/" destination="WEB-INF/lib/"/>
