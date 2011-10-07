@@ -1470,7 +1470,7 @@ public class CmsForm {
     /**
      * Sets the form title.<p>
      * 
-     * @param formText the form title
+     * @param title the form title
      */
     public void setTitle(String title) {
 
@@ -1962,6 +1962,7 @@ public class CmsForm {
         }
 
         // get the file uploads stored in the session
+        @SuppressWarnings("unchecked")
         Map<String, FileItem> fileUploads = (Map<String, FileItem>)jsp.getRequest().getSession().getAttribute(
             CmsFormHandler.ATTRIBUTE_FILEITEMS);
 
@@ -1983,7 +1984,7 @@ public class CmsForm {
                 false));
         }
 
-        if (!jsp.getRequestContext().currentProject().isOnlineProject()) {
+        if (!jsp.getRequestContext().getCurrentProject().isOnlineProject()) {
             // validate the form configuration in offline project
             validateFormConfiguration(messages);
         }
@@ -2659,20 +2660,18 @@ public class CmsForm {
                         String suffix = new StringBuffer("-").append(index).append("-").append(fieldValue.hashCode()).toString();
                         List<I_CmsXmlContentValue> fieldValues = content.getValues(subPath + NODE_INPUTFIELD, locale);
                         for (Iterator<I_CmsXmlContentValue> k = fieldValues.iterator(); k.hasNext();) {
-                            field.addSubField(
-                                fieldValue,
-                                createInputField(
-                                    k.next().getPath(),
-                                    content,
-                                    jsp,
-                                    locale,
-                                    messages,
-                                    fieldTexts,
-                                    subFieldPaths,
-                                    fileUploads,
-                                    suffix,
-                                    initial,
-                                    true));
+                            field.addSubField(fieldValue, createInputField(
+                                k.next().getPath(),
+                                content,
+                                jsp,
+                                locale,
+                                messages,
+                                fieldTexts,
+                                subFieldPaths,
+                                fileUploads,
+                                suffix,
+                                initial,
+                                true));
                         }
                     }
                 }
