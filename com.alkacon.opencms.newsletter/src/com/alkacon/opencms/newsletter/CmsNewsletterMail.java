@@ -107,9 +107,9 @@ public class CmsNewsletterMail extends Thread {
         } catch (Throwable t) {
             // general failure, log it and add detailed error message to report
             if (LOG.isErrorEnabled()) {
-                LOG.error(Messages.get().getBundle().key(
-                    Messages.LOG_ERROR_NEWSLETTER_SEND_FAILED_1,
-                    getNewsletterName()), t);
+                LOG.error(
+                    Messages.get().getBundle().key(Messages.LOG_ERROR_NEWSLETTER_SEND_FAILED_1, getNewsletterName()),
+                    t);
             }
             getMailErrors().add(
                 0,
@@ -154,9 +154,11 @@ public class CmsNewsletterMail extends Thread {
             } catch (Throwable t) {
                 // failed to send error mail, log failure
                 if (LOG.isErrorEnabled()) {
-                    LOG.error(Messages.get().getBundle().key(
-                        Messages.LOG_ERROR_MAIL_REPORT_FAILED_1,
-                        getReportRecipientAddress()), t);
+                    LOG.error(
+                        Messages.get().getBundle().key(
+                            Messages.LOG_ERROR_MAIL_REPORT_FAILED_1,
+                            getReportRecipientAddress()),
+                        t);
                 }
             }
         }
@@ -168,6 +170,7 @@ public class CmsNewsletterMail extends Thread {
     public void sendMail() {
 
         Iterator<InternetAddress> i = getRecipients().iterator();
+        int errLogCount = 0;
         while (i.hasNext()) {
             InternetAddress to = i.next();
             List<InternetAddress> toList = new ArrayList<InternetAddress>(1);
@@ -184,9 +187,16 @@ public class CmsNewsletterMail extends Thread {
                         to.getAddress(),
                         getNewsletterName()));
                 }
+                if (LOG.isDebugEnabled() && (errLogCount < 10)) {
+                    LOG.debug(e);
+                    errLogCount++;
+                }
                 // store message for error report mail
-                getMailErrors().add(
-                    Messages.get().getBundle().key(Messages.MAIL_ERROR_EMAIL_ADDRESS_1, to.getAddress()));
+                String errMsg = Messages.get().getBundle().key(Messages.MAIL_ERROR_EMAIL_ADDRESS_1, to.getAddress());
+                if (errLogCount == 10) {
+                    errMsg += "\nStack:\n" + errMsg + "\n";
+                }
+                getMailErrors().add(errMsg);
             }
         }
     }
