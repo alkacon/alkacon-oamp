@@ -131,7 +131,7 @@ public class CmsCommentConfigurationSelectWidget extends CmsSelectWidget {
                 CmsResourceFilter filter = CmsResourceFilter.ONLY_VISIBLE_NO_DELETED.addRequireType(configTypeId);
                 configResources.addAll(cms.readResources(contentPath, filter));
                 // also read from module folder
-                configResources.addAll(cms.readResources("/system/modules/com.alkacon.opencms.comments/", filter));
+                configResources.addAll(cms.readResources("/system/modules/", filter));
                 // generate options for resources
                 for (CmsResource resource : configResources) {
                     String path = cms.getSitePath(resource);
