@@ -93,20 +93,20 @@ div.cmtDialog {
 }
 
 /* Form styles */
-form.cmtForm div.cmtFormRow {
+form.cmtForm div.webform_row {
 	display: block;
 	margin: 5px 0px 0px;
 	padding: 1px 3px;
 	text-align: left;
 }
-form.cmtForm div.cmtFormRow label {
+form.cmtForm div.webform_row label {
 	display: block;
 	float: left;
 	padding-right: 5px;
 	text-align: right;
 	width: 6em;
 }
-form.cmtForm div.cmtFormRow input {
+form.cmtForm div.webform_row input {
 	width: 300px;
 }
 form.cmtForm div.cmtButtonRow {
