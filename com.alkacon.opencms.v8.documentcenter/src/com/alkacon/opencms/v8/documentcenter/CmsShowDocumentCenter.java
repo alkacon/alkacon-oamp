@@ -197,6 +197,10 @@ public class CmsShowDocumentCenter implements I_CmsResourceInit {
                                 String inDocPath = (siteRoot + uri).substring(prevPath.length());
                                 String fullDocPath = cms.getRequestContext().removeSiteRoot(
                                     setDocumentCenterAttributes(startPath, inDocPath, req));
+                                if (!cms.existsResource(fullDocPath)) {
+                                    // the document does not exist, stop and return
+                                    return null;
+                                }
                                 if (!checkDisclaimer(fullDocPath, cms, req) && !CmsResource.isFolder(inDocPath)) {
                                     // no disclaimer to show, the document has to be shown
                                     result = cms.readResource(fullDocPath);
