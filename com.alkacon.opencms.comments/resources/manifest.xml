@@ -21,9 +21,8 @@
 		<userinstalled/>
 		<dateinstalled/>
 		<dependencies>
-			<dependency name="org.opencms.jquery" version="8.0.0"/>
-			<dependency name="com.alkacon.opencms.commons" version="1.0.0" />
-			<dependency name="com.alkacon.opencms.formgenerator" version="2.0.0"/>
+			<dependency name="com.alkacon.opencms.formgenerator" version="2.0" />
+			<dependency name="com.alkacon.opencms.v8.commons" version="1.0.0" />
 		</dependencies>
 		<exportpoints>
 			<exportpoint uri="/system/modules/com.alkacon.opencms.comments/lib/" destination="WEB-INF/lib/"/>
