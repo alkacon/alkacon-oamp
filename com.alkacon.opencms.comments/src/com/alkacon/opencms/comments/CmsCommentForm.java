@@ -42,6 +42,7 @@ import org.opencms.file.CmsUser;
 import org.opencms.i18n.CmsMessages;
 import org.opencms.main.CmsException;
 import org.opencms.main.CmsLog;
+import org.opencms.main.OpenCms;
 import org.opencms.util.CmsStringUtil;
 import org.opencms.xml.content.CmsXmlContent;
 import org.opencms.xml.content.CmsXmlContentFactory;
@@ -300,7 +301,10 @@ public class CmsCommentForm extends CmsForm {
 
         // get the mail to address(es)
         stringValue = content.getStringValue(cms, pathPrefix + NODE_MAILTO, locale);
-        setMailTo(getConfigurationValue(stringValue, ""));
+        String defaultMailTo = OpenCms.getModuleManager().getModule(CmsCommentFormHandler.MODULE_NAME).getParameter(
+            CmsCommentFormHandler.MODULE_PARAM_DEFAUL_MAIL_TO,
+            "");
+        setMailTo(getConfigurationValue(stringValue, defaultMailTo));
 
         // set if using responsibles or not
         stringValue = content.getStringValue(cms, pathPrefix + NODE_RESPONSIBLE, locale);

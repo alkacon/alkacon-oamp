@@ -103,6 +103,9 @@ public class CmsCommentFormHandler extends CmsFormHandler {
     /** Module parameter name prefix constant. */
     public static final String MODULE_PARAM_CONFIG_PREFIX = "config:";
 
+    /** Module parameter name for default mail to address. */
+    public static final String MODULE_PARAM_DEFAUL_MAIL_TO = "default_mail_to";
+
     /** The path to the default HTML templates for the form. */
     public static final String VFS_PATH_DEFAULT_TEMPLATEFILE = CmsWorkplace.VFS_PATH_MODULES
         + MODULE_NAME
@@ -293,7 +296,9 @@ public class CmsCommentFormHandler extends CmsFormHandler {
             value = CmsStringUtil.substitute(value, getSubstitutions());
             field.setValue(value);
         }
-        return super.sendData();
+        // only trigger error handling for the offline project
+        boolean result = super.sendData() || getCmsObject().getRequestContext().getCurrentProject().isOnlineProject();
+        return result;
     }
 
     /**
