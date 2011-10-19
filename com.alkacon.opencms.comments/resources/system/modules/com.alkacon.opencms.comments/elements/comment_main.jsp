@@ -9,11 +9,10 @@
 <c:set var="locale" value="${cms:vfs(pageContext).context.locale}" />
 <fmt:setLocale value="${locale}" />
 <fmt:bundle basename="com.alkacon.opencms.comments.frontend">
-
 <cms:jquery dynamic='true' />
-<cms:jquery js='jquery' dynamic='true' />
-<cms:jquery js='jquery.pagination' css='pagination' dynamic='true' />
 <script type='text/javascript' >
+load_script('<cms:link>%(link.weak:/system/modules/org.opencms.jquery/resources/packed/jquery.js)</cms:link>', 'js');
+load_script('<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.v8.commons/resources/js/pagination.js)</cms:link>', 'js');
 load_script('<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.v8.commons/resources/css/jquery.colorbox.css)</cms:link>', 'css');
 load_script('<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.v8.commons/resources/js/jquery.colorbox.js)</cms:link>', 'js');
 <c:choose>

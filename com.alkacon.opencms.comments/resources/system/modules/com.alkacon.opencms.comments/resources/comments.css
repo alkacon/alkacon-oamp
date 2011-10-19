@@ -97,6 +97,7 @@ form.cmtForm div.cmtFormRow {
 	display: block;
 	margin: 5px 0px 0px;
 	padding: 1px 3px;
+	text-align: left;
 }
 form.cmtForm div.cmtFormRow label {
 	display: block;
@@ -147,7 +148,9 @@ form.cmtForm img {
 	bottom: auto;
 	width: auto;
 }
-.cmt_TB_closeAjaxWindow {
+div.cmt_TB_closeAjaxWindow {
+	top: 0px;
+	margin-top: -20000px;
 	display: none;
 }
 #cboxContent #cboxLoadedContent{
