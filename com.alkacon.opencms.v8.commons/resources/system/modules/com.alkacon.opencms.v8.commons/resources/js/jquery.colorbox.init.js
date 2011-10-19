@@ -3,7 +3,9 @@ if (!colorboxConfig) {
 		close: 'Close',
 		next: 'Next >',
 		previous: '< Prev',
-		current: 'Image {current} of {total}'
+		current: 'Image {current} of {total}',
+		maxWidth: '98%',
+   		maxHeight: '98%'
 	};
 }
 

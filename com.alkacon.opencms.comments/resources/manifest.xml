@@ -22,7 +22,7 @@
 		<dateinstalled/>
 		<dependencies>
 			<dependency name="org.opencms.jquery" version="8.0.0"/>
-			<dependency name="org.alkacon.opencms.commons" version="1.0.0" />
+			<dependency name="com.alkacon.opencms.commons" version="1.0.0" />
 			<dependency name="com.alkacon.opencms.formgenerator" version="2.0.0"/>
 		</dependencies>
 		<exportpoints>

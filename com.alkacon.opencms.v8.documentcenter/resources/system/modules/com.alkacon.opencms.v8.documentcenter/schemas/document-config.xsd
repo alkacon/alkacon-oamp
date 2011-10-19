@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>	
+	<xsd:element name="AlkaconV8DocumentConfigs" type="OpenCmsAlkaconV8DocumentConfigs"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconV8DocumentConfigs">
+		<xsd:sequence>
+			<xsd:element name="AlkaconV8DocumentConfig" type="OpenCmsAlkaconV8DocumentConfig" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconV8DocumentConfig">
+		<xsd:sequence>
+			<xsd:element name="Title" type="OpenCmsString" />
+			<xsd:element name="Folder" type="OpenCmsVfsFile" />
+			<xsd:element name="ShowCategories" type="OpenCmsBoolean" />
+			<xsd:element name="ShowSearch" type="OpenCmsBoolean" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="required"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<defaults>
+				<default element="ShowCategories" value="true" />
+				<default element="ShowSearch" value="true" />
+			</defaults>
+			<formatters>
+				<formatter minwidth="400" maxwidth="800" uri="/system/modules/com.alkacon.opencms.v8.documentcenter/formatters/documentcenter.jsp" searchcontent="false" />
+				<formatter type="center" uri="/system/modules/com.alkacon.opencms.v8.documentcenter/formatters/documentcenter.jsp" searchcontent="false" />
+			</formatters>
+			<headincludes>
+				<headinclude type="css" uri="/system/modules/com.alkacon.opencms.v8.documentcenter/resources/documents.css" />
+			</headincludes>
+			<layouts>
+				<layout element="Folder" widget="VfsFileWidget" configuration="excludefiles" />
+			</layouts>
+			<mappings>
+				<mapping element="Title" mapto="property:Title" />
+				<mapping element="Title" mapto="urlName" /> 
+			</mappings>
+			<validationrules>
+			</validationrules>
+		</xsd:appinfo>
+	</xsd:annotation>
+
+</xsd:schema>
