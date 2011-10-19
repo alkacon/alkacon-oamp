@@ -85,7 +85,7 @@ public class CmsFormgeneratorToolHandler extends A_CmsToolHandler {
     public boolean isEnabled(CmsObject cms) {
 
         boolean result = false;
-        CmsUser user = cms.getRequestContext().currentUser();
+        CmsUser user = cms.getRequestContext().getCurrentUser();
         if (OpenCms.getRoleManager().hasRole(cms, CmsRole.DATABASE_MANAGER)) {
             // the database managers see the tool inside the "Database Management", hide this for them
             result = false;

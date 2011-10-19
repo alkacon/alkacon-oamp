@@ -745,7 +745,7 @@ public class CmsFormHandler extends CmsJspActionElement {
     public StringTemplate getOutputTemplate(String templateName) {
 
         StringTemplate result = getOutputTemplateGroup().getInstanceOf(templateName);
-        if (!getRequestContext().currentProject().isOnlineProject() && (result == null)) {
+        if (!getRequestContext().getCurrentProject().isOnlineProject() && (result == null)) {
             // no template with the specified name found, return initialized error template
             try {
                 CmsFile stFile = getCmsObject().readFile(CmsForm.VFS_PATH_ERROR_TEMPLATEFILE);
@@ -1113,9 +1113,10 @@ public class CmsFormHandler extends CmsJspActionElement {
                 }
             }
             // add current date as macro
-            m_macroResolver.addMacro(
-                MACRO_DATE,
-                CmsDateUtil.getDateTime(new Date(), DateFormat.LONG, getRequestContext().getLocale()));
+            m_macroResolver.addMacro(MACRO_DATE, CmsDateUtil.getDateTime(
+                new Date(),
+                DateFormat.LONG,
+                getRequestContext().getLocale()));
             // send optional confirmation mail
             if (data.isConfirmationMailEnabled()) {
                 if (!data.isConfirmationMailOptional()
@@ -1377,9 +1378,9 @@ public class CmsFormHandler extends CmsJspActionElement {
         // create the check page
         StringTemplate sTemplate = getOutputTemplate("checkpage");
         // set the necessary attributes to use in the string template
-        sTemplate.setAttribute(
-            "formuri",
-            OpenCms.getLinkManager().substituteLink(getCmsObject(), getCmsObject().getRequestContext().getUri()));
+        sTemplate.setAttribute("formuri", OpenCms.getLinkManager().substituteLink(
+            getCmsObject(),
+            getCmsObject().getRequestContext().getUri()));
         sTemplate.setAttribute("formconfig", getFormConfiguration());
         sTemplate.setAttribute("checktext", getFormCheckText());
 
@@ -1397,12 +1398,10 @@ public class CmsFormHandler extends CmsJspActionElement {
                 }
             }
             sTemplate.setAttribute("captchaerror", errorMessage);
-            sTemplate.setAttribute(
-                "captchaimagelink",
-                OpenCms.getLinkManager().substituteLink(
-                    getCmsObject(),
-                    "/system/modules/com.alkacon.opencms.formgenerator/pages/captcha.jsp?"
-                        + captchaField.getCaptchaSettings().toRequestParams(getCmsObject())));
+            sTemplate.setAttribute("captchaimagelink", OpenCms.getLinkManager().substituteLink(
+                getCmsObject(),
+                "/system/modules/com.alkacon.opencms.formgenerator/pages/captcha.jsp?"
+                    + captchaField.getCaptchaSettings().toRequestParams(getCmsObject())));
         }
 
         List<I_CmsField> fields = getFormConfiguration().getAllFields(true, false, false);
@@ -1635,16 +1634,16 @@ public class CmsFormHandler extends CmsJspActionElement {
 
         // determine if the download button has to be shown
         String downloadButton = null;
-        if (!getRequestContext().currentProject().isOnlineProject() && getFormConfiguration().isTransportDatabase()) {
+        if (!getRequestContext().getCurrentProject().isOnlineProject() && getFormConfiguration().isTransportDatabase()) {
             downloadButton = getMessages().key("form.button.downloaddata");
         }
 
         // create the main form and pass the previously generated field HTML as attribute
         StringTemplate sTemplate = getOutputTemplate("form");
         // set the necessary attributes to use in the string template
-        sTemplate.setAttribute(
-            "formuri",
-            OpenCms.getLinkManager().substituteLink(getCmsObject(), getCmsObject().getRequestContext().getUri()));
+        sTemplate.setAttribute("formuri", OpenCms.getLinkManager().substituteLink(
+            getCmsObject(),
+            getCmsObject().getRequestContext().getUri()));
         sTemplate.setAttribute("enctype", encType);
         sTemplate.setAttribute("errormessage", errorMessage);
         sTemplate.setAttribute("mandatorymessage", mandatoryMessage);
@@ -1669,7 +1668,7 @@ public class CmsFormHandler extends CmsJspActionElement {
     protected String buildTemplateGroupCheckHtml() {
 
         String result = "";
-        if (!getRequestContext().currentProject().isOnlineProject()) {
+        if (!getRequestContext().getCurrentProject().isOnlineProject()) {
             // check template group errors
             StringTemplateErrorListener el = getOutputTemplateGroup().getErrorListener();
             if ((el != null) && CmsStringUtil.isNotEmptyOrWhitespaceOnly(el.toString())) {
@@ -1714,12 +1713,10 @@ public class CmsFormHandler extends CmsJspActionElement {
         m_macroResolver = CmsMacroResolver.newInstance();
         m_macroResolver.setKeepEmptyMacros(true);
         m_macroResolver.setCmsObject(getCmsObject());
-        m_macroResolver.addMacro(
-            MACRO_URL,
-            OpenCms.getSiteManager().getCurrentSite(getCmsObject()).getServerPrefix(
-                getCmsObject(),
-                getRequestContext().getUri())
-                + link(getRequestContext().getUri()));
+        m_macroResolver.addMacro(MACRO_URL, OpenCms.getSiteManager().getCurrentSite(getCmsObject()).getServerPrefix(
+            getCmsObject(),
+            getRequestContext().getUri())
+            + link(getRequestContext().getUri()));
         m_macroResolver.addMacro(MACRO_LOCALE, getRequestContext().getLocale().toString());
 
         if (m_multipartFileItems != null) {
@@ -1753,7 +1750,7 @@ public class CmsFormHandler extends CmsJspActionElement {
         }
         String formAction = getParameter(PARAM_FORMACTION);
         // security check: some form actions are not allowed for everyone:
-        if (this.getCmsObject().getRequestContext().currentProject().isOnlineProject()) {
+        if (this.getCmsObject().getRequestContext().getCurrentProject().isOnlineProject()) {
             if (CmsFormHandler.ACTION_DOWNLOAD_DATA_1.equals(formAction)) {
                 LOG.error("Received an illegal request for download data of form "
                     + formConfigUri

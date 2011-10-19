@@ -71,9 +71,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.logging.Log;
@@ -981,7 +981,7 @@ public final class CmsFormDataAccess {
             String ph = "";
             for (int i = 0; i < states.size(); i++) {
                 ph += "?";
-                if (i < states.size() - 1) {
+                if (i < (states.size() - 1)) {
                     ph += ", ";
                 }
             }
@@ -1115,7 +1115,7 @@ public final class CmsFormDataAccess {
             itemName = m_cms.getRequestContext().getFileTranslator().translateResource(itemName);
 
             // store current project
-            CmsProject currProject = m_cms.getRequestContext().currentProject();
+            CmsProject currProject = m_cms.getRequestContext().getCurrentProject();
             try {
                 // switch to an offline project
                 String projectName = module.getParameter(CmsForm.MODULE_PARAM_UPLOADPROJECT, "Offline");
