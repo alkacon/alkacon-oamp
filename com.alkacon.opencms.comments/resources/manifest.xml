@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 
 <export>
 	<info>
 		<creator>Admin</creator>
-		<opencms_version>8.0.3</opencms_version>
-		<createdate>Fri, 11 Mar 2011 15:52:38 GMT</createdate>
+		<opencms_version>8.0.2</opencms_version>
+		<createdate>Thu, 20 Oct 2011 15:46:08 GMT</createdate>
 		<infoproject>Offline</infoproject>
 		<export_version>7</export_version>
 	</info>
@@ -21,8 +21,8 @@
 		<userinstalled/>
 		<dateinstalled/>
 		<dependencies>
-			<dependency name="com.alkacon.opencms.formgenerator" version="2.0" />
-			<dependency name="com.alkacon.opencms.v8.commons" version="1.0.0" />
+			<dependency name="com.alkacon.opencms.formgenerator" version="2.0"/>
+			<dependency name="com.alkacon.opencms.v8.commons" version="1.0.0"/>
 		</dependencies>
 		<exportpoints>
 			<exportpoint uri="/system/modules/com.alkacon.opencms.comments/lib/" destination="WEB-INF/lib/"/>
@@ -31,6 +31,8 @@
 		<resources>
 			<resource uri="/system/modules/com.alkacon.opencms.comments/"/>
 			<resource uri="/system/workplace/resources/filetypes/alkacon_comment.png"/>
+			<resource uri="/system/workplace/resources/filetypes/alkacon_comment-display.png"/>
+			<resource uri="/system/workplace/resources/filetypes/alkacon_comment-display_big.png"/>
 		</resources>
 		<parameters>
 			<param name="config:sample">/demo_en/_config_/comments</param>
@@ -50,7 +52,7 @@
 			</type>
 		</resourcetypes>
 		<explorertypes>
-			<explorertype name="alkacon-comment-display" key="fileicon.alkacon-comment-display" icon="alkacon_comment-display.png" reference="xmlcontent">
+			<explorertype name="alkacon-comment-display" key="fileicon.alkacon-comment-display" icon="alkacon_comment-display.png" bigicon="alkacon_comment-display_big.png" reference="xmlcontent">
 				<newresource page="structurecontent" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-comment-display" order="300" autosetnavigation="false" autosettitle="false" info="desc.alkacon-comment-display"/>
 				<accesscontrol>
 					<accessentry principal="ROLE.WORKPLACE_USER" permissions="+r+v+w+c"/>
@@ -68,10 +70,10 @@
 		<file>
 			<destination>system</destination>
 			<type>folder</type>
-			<uuidstructure>afa9d7a0-4bf1-11e0-9a44-7b3e4222a901</uuidstructure>
-			<datelastmodified>Fri, 11 Mar 2011 15:10:22 GMT</datelastmodified>
+			<uuidstructure>4b033a5b-2d15-11df-abcd-c9a60a7588dd</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Fri, 11 Mar 2011 15:10:22 GMT</datecreated>
+			<datecreated>Thu, 11 Mar 2010 13:52:12 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -90,10 +92,10 @@
 		<file>
 			<destination>system/modules</destination>
 			<type>folder</type>
-			<uuidstructure>b02d1199-4bf1-11e0-9a44-7b3e4222a901</uuidstructure>
-			<datelastmodified>Fri, 11 Mar 2011 15:10:23 GMT</datelastmodified>
+			<uuidstructure>4b8b0834-2d15-11df-abcd-c9a60a7588dd</uuidstructure>
+			<datelastmodified>Thu, 11 Mar 2010 13:52:12 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Fri, 11 Mar 2011 15:10:23 GMT</datecreated>
+			<datecreated>Thu, 11 Mar 2010 13:52:12 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -691,7 +693,7 @@
 			<relations/>
 			<accesscontrol/>
 		</file>
-			<file>
+		<file>
 			<destination>system/modules/com.alkacon.opencms.comments/formatters</destination>
 			<type>folder</type>
 			<uuidstructure>da8a8486-ee9a-11e0-8ba4-314422e60e0b</uuidstructure>
@@ -811,7 +813,7 @@
 			<type>plain</type>
 			<uuidstructure>96522ded-1204-11dd-8a3f-111d34530985</uuidstructure>
 			<uuidresource>96522dee-1204-11dd-8a3f-111d34530985</uuidresource>
-			<datelastmodified>Tue, 20 May 2008 14:30:00 GMT</datelastmodified>
+			<datelastmodified>Wed, 19 Oct 2011 15:06:09 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Thu, 24 Apr 2008 13:44:40 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -971,7 +973,7 @@
 			<type>plain</type>
 			<uuidstructure>1e6e63c4-ee9a-11e0-8ba4-314422e60e0b</uuidstructure>
 			<uuidresource>1e6e63c5-ee9a-11e0-8ba4-314422e60e0b</uuidresource>
-			<datelastmodified>Wed, 05 Oct 2011 09:37:47 GMT</datelastmodified>
+			<datelastmodified>Wed, 19 Oct 2011 15:08:27 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Tue, 04 Oct 2011 15:04:12 GMT</datecreated>
 			<usercreated>Admin</usercreated>
@@ -1166,6 +1168,46 @@
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/filetypes/alkacon_comment-display.png</source>
+			<destination>system/workplace/resources/filetypes/alkacon_comment-display.png</destination>
+			<type>image</type>
+			<uuidstructure>f62cf5cf-fb28-11e0-bb4c-c9a60a7588dd</uuidstructure>
+			<uuidresource>f62cf5d0-fb28-11e0-bb4c-c9a60a7588dd</uuidresource>
+			<datelastmodified>Thu, 20 Oct 2011 14:37:11 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 20 Oct 2011 14:36:56 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/filetypes/alkacon_comment-display_big.png</source>
+			<destination>system/workplace/resources/filetypes/alkacon_comment-display_big.png</destination>
+			<type>image</type>
+			<uuidstructure>f6531b73-fb28-11e0-bb4c-c9a60a7588dd</uuidstructure>
+			<uuidresource>f6531b74-fb28-11e0-bb4c-c9a60a7588dd</uuidresource>
+			<datelastmodified>Thu, 20 Oct 2011 14:37:16 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 20 Oct 2011 14:36:57 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:24,h:24]]></value>
+				</property>
+			</properties>
 			<relations/>
 			<accesscontrol/>
 		</file>
