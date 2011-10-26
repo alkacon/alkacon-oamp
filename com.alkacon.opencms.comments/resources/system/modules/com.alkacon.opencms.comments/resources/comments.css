@@ -89,13 +89,14 @@ div.cmtFilterState a {
 
 /* Dialog styles */
 div.cmtDialog { 
-	padding: 5px 5px;
+	padding: 5px;
+	width: 650px;
 }
 
 /* Form styles */
 form.cmtForm div.webform_row {
 	display: block;
-	margin: 5px 0px 0px;
+	margin: 5px 0 0;
 	padding: 1px 3px;
 	text-align: left;
 }

@@ -39,7 +39,10 @@ load_script('<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/
               close: '<fmt:message key="comment.image.close" />',
               next: '<fmt:message key="comment.image.next" />',
               previous: '<fmt:message key="comment.image.prev" />',
-              current: '<fmt:message key="comment.image.count" />'
+              current: '<fmt:message key="comment.image.count" />',
+              innerWidth: '700px',
+              maxWidth: '98%',
+   	      maxHeight: '98%'
             };
 </script>
 <script type="text/javascript" >
