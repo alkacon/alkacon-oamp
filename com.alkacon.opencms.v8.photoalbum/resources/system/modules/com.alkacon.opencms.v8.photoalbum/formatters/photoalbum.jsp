@@ -8,7 +8,13 @@
 <c:set var="albumid">${fn:replace(cms.element.id.stringValue,"-","_")}</c:set>
 <fmt:setLocale value="${cms.locale}" />
 <fmt:bundle basename="com.alkacon.opencms.v8.photoalbum.frontend">
-
+<c:choose>
+<c:when test="${cms.edited || cms.element.inMemoryOnly}">
+		<p style="color:red; font-weight: bold;">
+			<fmt:message key="photoalbum.javascript_disabled" />
+		</p>
+	</c:when>
+<c:otherwise>
 
 <c:set var="currentPage"><c:out value="${param.page}" default="1"/></c:set>
 	<c:set var="thumbs" value="${content.value['Thumbs']}" />
@@ -25,11 +31,7 @@
 	<c:if test="${!content.value['Title'].isEmptyOrWhitespaceOnly}">
 		<h1><c:out value="${content.value['Title']}" /></h1>
 	</c:if>
-	<c:if test="${cms.edited}">
-		<p style="color:red; font-weight: bold;">
-			<fmt:message key="photoalbum.javascript_disabled" />
-		</p>
-	</c:if>
+	
 	<%-- Pagination above top text --%>
 	<c:if test="${hasPagination && content.value['NavigationPosition'] == 't_a'}">
 		<div class="pagination_container" style="text-align: ${content.value['AlignNavigation']};">
@@ -100,7 +102,9 @@
        close: '<fmt:message key="photoalbum.image.close" />',
        next: '<fmt:message key="photoalbum.image.next" />',
        previous: '<fmt:message key="photoalbum.image.prev" />',
-       current: '<fmt:message key="photoalbum.image.count" />'
+       current: '<fmt:message key="photoalbum.image.count" />',
+       maxWidth: '98%',
+       maxHeight: '98%'
      };
      
      var currentPage_${albumid} = 1;
@@ -155,6 +159,6 @@
 		    });
      });
 </script>
-</div>
+</c:otherwise></c:choose></div>
 </fmt:bundle>
 </cms:formatter>
