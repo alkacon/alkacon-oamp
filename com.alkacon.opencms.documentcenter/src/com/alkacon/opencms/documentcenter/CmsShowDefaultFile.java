@@ -75,6 +75,7 @@ public class CmsShowDefaultFile implements I_CmsResourceInit {
     /**
      * @see org.opencms.main.I_CmsResourceInit#initResource(org.opencms.file.CmsResource, org.opencms.file.CmsObject, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
+    @Override
     public CmsResource initResource(CmsResource resource, CmsObject cms, HttpServletRequest req, HttpServletResponse res) {
 
         // search only when file is null!
@@ -98,36 +99,39 @@ public class CmsShowDefaultFile implements I_CmsResourceInit {
             try {
                 // make sure that the folder is existing!
                 if (cms.readFolder(uri, CmsResourceFilter.IGNORE_EXPIRATION) != null) {
-                    // test if the documentcenter is disbled fo this folder
-                    CmsProperty propertyDisabled = cms.readPropertyObject(uri, PROPERTY_DISABLE_DOCCENTER, true);
-                    if (!propertyDisabled.equals(CmsProperty.getNullProperty())) {
-                        if (propertyDisabled.getValue().equals("true")) {
-                            return resource;
+                    // check if the folder is part of a document center structure
+                    if (cms.readAncestor(uri, CmsResourceFilter.IGNORE_EXPIRATION.addRequireType(260)) != null) {
+                        // test if the document center is disabled for this folder
+                        CmsProperty propertyDisabled = cms.readPropertyObject(uri, PROPERTY_DISABLE_DOCCENTER, true);
+                        if (!propertyDisabled.equals(CmsProperty.getNullProperty())) {
+                            if (propertyDisabled.getValue().equals("true")) {
+                                return resource;
+                            }
                         }
-                    }
 
-                    // get the module and check the module parameter "defaultfile"
-                    CmsFile indexFile = null;
-                    CmsModule docModule = OpenCms.getModuleManager().getModule(MODULENAME);
-                    String siteroot = cms.getRequestContext().getSiteRoot();
-                    //siteroot
-                    if (siteroot.startsWith(CmsResource.VFS_FOLDER_SITES)) {
-                        siteroot = siteroot.substring(CmsResource.VFS_FOLDER_SITES.length() + 1);
-                    }
-                    if (!CmsStringUtil.isEmptyOrWhitespaceOnly(siteroot)) {
-                        //checks if default-file is marked for a site. (the parameter:defaultfile_SiteFolderName)
-                        String fileSite = docModule.getParameter(PARAMETER_DEFAULTFILE + "_" + siteroot);
-                        if (!CmsStringUtil.isEmptyOrWhitespaceOnly(fileSite)) {
-                            indexFile = cms.readFile(fileSite, CmsResourceFilter.IGNORE_EXPIRATION);
+                        // get the module and check the module parameter "defaultfile"
+                        CmsFile indexFile = null;
+                        CmsModule docModule = OpenCms.getModuleManager().getModule(MODULENAME);
+                        String siteroot = cms.getRequestContext().getSiteRoot();
+                        //siteroot
+                        if (siteroot.startsWith(CmsResource.VFS_FOLDER_SITES)) {
+                            siteroot = siteroot.substring(CmsResource.VFS_FOLDER_SITES.length() + 1);
                         }
-                    }
+                        if (!CmsStringUtil.isEmptyOrWhitespaceOnly(siteroot)) {
+                            //checks if default-file is marked for a site. (the parameter:defaultfile_SiteFolderName)
+                            String fileSite = docModule.getParameter(PARAMETER_DEFAULTFILE + "_" + siteroot);
+                            if (!CmsStringUtil.isEmptyOrWhitespaceOnly(fileSite)) {
+                                indexFile = cms.readFile(fileSite, CmsResourceFilter.IGNORE_EXPIRATION);
+                            }
+                        }
 
-                    if (indexFile == null) {
-                        String fileName = docModule.getParameter(PARAMETER_DEFAULTFILE, DEFAULTFILE);
-                        // read the file to ensure that it is present
-                        indexFile = cms.readFile(fileName, CmsResourceFilter.IGNORE_EXPIRATION);
+                        if (indexFile == null) {
+                            String fileName = docModule.getParameter(PARAMETER_DEFAULTFILE, DEFAULTFILE);
+                            // read the file to ensure that it is present
+                            indexFile = cms.readFile(fileName, CmsResourceFilter.IGNORE_EXPIRATION);
+                        }
+                        return indexFile;
                     }
-                    return indexFile;
                 }
             } catch (CmsException e) {
                 // ignore this exception
