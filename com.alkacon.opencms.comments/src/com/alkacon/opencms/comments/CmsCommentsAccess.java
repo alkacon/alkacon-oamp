@@ -507,6 +507,7 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
                     String author = String.valueOf(input);
                     CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.HEADERS;
                     filter = filter.filterFormId(CmsCommentForm.FORM_ID);
+                    filter = filter.filterResourceId(getResource().getStructureId());
                     filter = filter.filterField(CmsCommentFormHandler.FIELD_USERNAME, author);
                     try {
                         return new Integer(CmsFormDataAccess.getInstance().countForms(filter));
