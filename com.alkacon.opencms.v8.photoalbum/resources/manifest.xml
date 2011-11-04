@@ -4,7 +4,7 @@
 	<info>
 		<creator>Admin</creator>
 		<opencms_version>8.0.2</opencms_version>
-		<createdate>Thu, 27 Jan 2011 16:55:49 GMT</createdate>
+		<createdate>Fri, 04 Nov 2011 16:05:10 GMT</createdate>
 		<infoproject>Offline</infoproject>
 		<export_version>7</export_version>
 	</info>
@@ -31,6 +31,7 @@
 		<resources>
 			<resource uri="/system/modules/com.alkacon.opencms.v8.photoalbum/"/>
 			<resource uri="/system/workplace/resources/filetypes/alkacon-v8-photoalbum.png"/>
+			<resource uri="/system/workplace/resources/filetypes/alkacon-v8-photoalbum_big.png"/>
 		</resources>
 		<parameters/>
 		<resourcetypes>
@@ -39,7 +40,7 @@
 			</type>
 		</resourcetypes>
 		<explorertypes>
-			<explorertype name="alkacon-v8-photoalbum" key="fileicon.alkacon-v8-photoalbum" icon="alkacon-v8-photoalbum.png" reference="xmlcontent">
+			<explorertype name="alkacon-v8-photoalbum" key="fileicon.alkacon-v8-photoalbum" icon="alkacon-v8-photoalbum.png" bigicon="alkacon-v8-photoalbum_big.png" reference="xmlcontent">
 				<newresource page="structurecontent" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-v8-photoalbum" order="60" autosetnavigation="false" autosettitle="false" info="desc.alkacon-v8-photoalbum"/>
 				<accesscontrol>
 					<accessentry principal="ROLE.WORKPLACE_USER" permissions="+r+v+w+c"/>
@@ -51,10 +52,10 @@
 		<file>
 			<destination>system</destination>
 			<type>folder</type>
-			<uuidstructure>2a6ee1c5-da30-11e0-8ab5-8756953fbf24</uuidstructure>
-			<datelastmodified>Thu, 08 Sep 2011 15:35:23 GMT</datelastmodified>
+			<uuidstructure>23caadab-f006-11e0-b750-6f6871313691</uuidstructure>
+			<datelastmodified>Thu, 06 Oct 2011 10:29:58 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Thu, 08 Sep 2011 15:35:23 GMT</datecreated>
+			<datecreated>Thu, 06 Oct 2011 10:29:58 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -73,10 +74,10 @@
 		<file>
 			<destination>system/modules</destination>
 			<type>folder</type>
-			<uuidstructure>2b587eb1-da30-11e0-8ab5-8756953fbf24</uuidstructure>
-			<datelastmodified>Thu, 08 Sep 2011 15:35:24 GMT</datelastmodified>
+			<uuidstructure>245e8977-f006-11e0-b750-6f6871313691</uuidstructure>
+			<datelastmodified>Thu, 06 Oct 2011 10:29:59 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Thu, 08 Sep 2011 15:35:24 GMT</datecreated>
+			<datecreated>Thu, 06 Oct 2011 10:29:59 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -573,5 +574,30 @@
 			<relations/>
 			<accesscontrol/>
 		</file>
+		<file>
+			<source>system/workplace/resources/filetypes/alkacon-v8-photoalbum_big.png</source>
+			<destination>system/workplace/resources/filetypes/alkacon-v8-photoalbum_big.png</destination>
+			<type>image</type>
+			<uuidstructure>86d01890-06fe-11e1-9042-6f6871313691</uuidstructure>
+			<uuidresource>86d01891-06fe-11e1-9042-6f6871313691</uuidresource>
+			<datelastmodified>Fri, 04 Nov 2011 16:03:25 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 04 Nov 2011 16:03:25 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[v8-photoalbum_big]]></value>
+				</property>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:24,h:24]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
 	</files>
 </export>
+
