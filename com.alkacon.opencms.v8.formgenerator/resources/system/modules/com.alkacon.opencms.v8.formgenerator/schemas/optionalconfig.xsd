@@ -1,0 +1,47 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.formgenerator/schemas/link.xsd"/>
+		
+	<xsd:element name="OptionalAlkaconV8WebFormConfigurations" type="OpenCmsOptionalAlkaconV8WebFormConfigurations"/>
+	
+	<xsd:complexType name="OpenCmsOptionalAlkaconV8WebFormConfigurations">
+		<xsd:sequence>
+			<xsd:element name="OptionalAlkaconV8WebFormConfiguration" type="OpenCmsOptionalAlkaconV8WebFormConfiguration" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsOptionalAlkaconV8WebFormConfiguration">
+		<xsd:sequence>
+			<xsd:element name="MailType" type="OpenCmsString" />
+			<xsd:element name="MailCC" type="OpenCmsString" />
+			<xsd:element name="MailBCC" type="OpenCmsString" />
+			<xsd:element name="MailCSS" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="ShowCheck" type="OpenCmsBoolean" />
+			<xsd:element name="CheckText" type="OpenCmsHtml" />
+			<xsd:element name="ShowMandatory" type="OpenCmsBoolean" />
+			<xsd:element name="ShowReset" type="OpenCmsBoolean" />
+			<xsd:element name="FormAttributes" type="OpenCmsString" />
+			<xsd:element name="FormFieldAttributes" type="OpenCmsString" />
+			<xsd:element name="DynamicFieldClass" type="OpenCmsString" />
+			<xsd:element name="CSS" type="OpenCmsVfsFile" minOccurs="0" />
+			<xsd:element name="TemplateFile" type="OpenCmsVfsFile" minOccurs="0" />
+			<xsd:element name="PropertyFile" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="ActionClass" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="KeepSession" type="OpenCmsString" minOccurs="0" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+	</xsd:complexType>
+	
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.v8.formgenerator.workplace"/>
+			<layouts>
+				<layout element="MailType" widget="SelectorWidget" configuration="html*:${key.form.email.type.html}|text:${key.form.email.type.text}" />
+				<layout element="MailCSS" widget="TextareaWidget" configuration="6" />
+				<layout element="CheckText" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
+			</layouts>
+		</xsd:appinfo>
+	</xsd:annotation>  
+
+</xsd:schema>

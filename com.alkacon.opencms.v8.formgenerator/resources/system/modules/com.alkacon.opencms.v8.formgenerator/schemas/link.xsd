@@ -1,0 +1,28 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+		
+	<xsd:element name="AlkaconV8WebFormLinks" type="OpenCmsAlkaconV8WebFormLinks"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconV8WebFormLinks">
+		<xsd:sequence>
+			<xsd:element name="AlkaconV8WebFormLink" type="OpenCmsAlkaconV8WebFormLink" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconV8WebFormLink">
+		<xsd:sequence>
+			<xsd:element name="Title" type="OpenCmsString" />
+			<xsd:element name="Link" type="OpenCmsVarLink" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+	</xsd:complexType>
+	
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.v8.formgenerator.workplace"/>
+			<layouts/>
+		</xsd:appinfo>
+	</xsd:annotation>  
+ 
+</xsd:schema>

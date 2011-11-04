@@ -1,0 +1,35 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.formgenerator/schemas/inputfield.xsd"/>
+		
+	<xsd:element name="OptionalAlkaconV8WebFormSubFields" type="OpenCmsOptionalAlkaconV8WebFormSubFields"/>
+	
+	<xsd:complexType name="OpenCmsOptionalAlkaconV8WebFormSubFields">
+		<xsd:sequence>
+			<xsd:element name="OptionalAlkaconV8WebFormSubField" type="OpenCmsOptionalAlkaconV8WebFormSubField" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsOptionalAlkaconV8WebFormSubField">
+		<xsd:sequence>
+			<xsd:element name="ParentField" type="OpenCmsString" />
+			<xsd:element name="Value" type="OpenCmsString" />
+			<xsd:element name="InputField" type="OpenCmsAlkaconV8WebFormInputField" maxOccurs="unbounded" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+	</xsd:complexType>
+	
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.v8.formgenerator.workplace"/>
+			<layouts>
+				<layout element="ParentField" widget="com.alkacon.opencms.v8.formgenerator.CmsSelectFieldWidget" configuration="referencebylabel=true" />
+			</layouts>
+			<validationrules>
+				<rule element="Value" regex=".+" type="error" message="%(key.alkacon-v8-webform.err.xmlcontent.field.empty)"/>
+			</validationrules>
+		</xsd:appinfo>
+	</xsd:annotation>  
+
+</xsd:schema>

@@ -1,0 +1,97 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.formgenerator/schemas/inputfield.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.formgenerator/schemas/optionalconfig.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.formgenerator/schemas/optionalconfirmation.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.formgenerator/schemas/optionalexpiration.xsd"/>
+        <xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.formgenerator/schemas/optionalrelease.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.formgenerator/schemas/optionalfieldtext.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.formgenerator/schemas/optionalformcaptcha.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.formgenerator/schemas/optionalsubfield.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.formgenerator/schemas/formdatatarget.xsd"/>
+		
+	<xsd:element name="AlkaconV8WebForms" type="OpenCmsAlkaconV8WebForms"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconV8WebForms">
+		<xsd:sequence>
+			<xsd:element name="AlkaconV8WebForm" type="OpenCmsAlkaconV8WebForm" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconV8WebForm">
+		<xsd:sequence>
+			<xsd:element name="Title" type="OpenCmsString" />
+			<xsd:element name="DataTarget" type="OpenCmsDataTarget" minOccurs="0" />
+			<xsd:element name="MailFrom" type="OpenCmsString" />
+			<xsd:element name="MailFromName" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="MailTo" type="OpenCmsString" />
+			<xsd:element name="MailSubject" type="OpenCmsString" />
+			<xsd:element name="MailText" type="OpenCmsHtml" />				
+			<xsd:element name="FormText" type="OpenCmsHtml" />
+			<xsd:element name="FormMiddleText" type="OpenCmsHtml" minOccurs="0" />
+			<xsd:element name="FormFooterText" type="OpenCmsHtml" minOccurs="0" />
+			<xsd:element name="FormConfirmation" type="OpenCmsHtml" />
+			<xsd:element name="TargetUri" type="OpenCmsVfsFile" minOccurs="0" />
+			<xsd:element name="OptionalFormRelease" type="OpenCmsOptionalAlkaconV8WebFormRelease" minOccurs="0" />
+			<xsd:element name="OptionalFormExpiration" type="OpenCmsOptionalAlkaconV8WebFormExpiration" minOccurs="0" />
+
+			<xsd:element name="InputField" type="OpenCmsAlkaconV8WebFormInputField" maxOccurs="unbounded" />
+
+			<xsd:element name="OptionalSubField" type="OpenCmsOptionalAlkaconV8WebFormSubField" minOccurs="0" maxOccurs="unbounded" />
+
+			<xsd:element name="FormCaptcha" type="OpenCmsAlkaconV8WebFormCaptcha" minOccurs="0" />
+			<xsd:element name="OptionalFormConfiguration" type="OpenCmsOptionalAlkaconV8WebFormConfiguration" minOccurs="0" />
+			<xsd:element name="OptionalFieldText" type="OpenCmsOptionalAlkaconV8WebFormFieldText" minOccurs="0" maxOccurs="unbounded" />
+
+			<xsd:element name="OptionalConfirmationMail" type="OpenCmsOptionalAlkaconV8WebFormConfirmationMail" minOccurs="0" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.v8.formgenerator.workplace"/>
+			<preview uri="${previewtempfile}" />
+			<defaults>
+				<default element="OptionalFormConfiguration/MailCSS" value="%(key.form.email.css)" />
+				<default element="OptionalFormConfiguration/ShowMandatory" value="true" />
+				<default element="OptionalFormConfiguration/ShowReset" value="true" />
+				<default element="OptionalFormConfiguration/ActionClass" value="com.alkacon.opencms.v8.formgenerator.DefaultActionHandler" />
+				<default element="OptionalFormConfiguration/KeepSession" value="360" />
+				<default element="OptionalFormExpiration/Date" value="%(currenttime)" />
+				<default element="OptionalFormRelease/Date" value="%(currenttime)" />
+			</defaults>
+			<formatters>
+				<formatter minwidth="200" uri="/system/modules/com.alkacon.opencms.v8.formgenerator/elements/form.jsp" />
+			</formatters>
+			<validationrules>
+				<rule element="MailFrom" regex=".+" type="warning" message="%(key.alkacon-v8-webform.warn.xmlcontent.field.empty)"/>
+				<rule element="MailTo" regex=".+" type="warning" message="%(key.alkacon-v8-webform.warn.xmlcontent.field.empty)"/>
+				<rule element="MailSubject" regex=".+" type="warning" message="%(key.alkacon-v8-webform.warn.xmlcontent.field.empty)"/>
+			</validationrules>
+			<layouts>
+				<layout element="MailText" widget="HtmlWidget" configuration="formatselect,source,table" />
+				<layout element="FormText" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
+				<layout element="FormMiddleText" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
+				<layout element="FormFooterText" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
+				<layout element="FormConfirmation" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
+			</layouts>
+			<mappings>
+				<mapping element="OptionalFormConfiguration/PropertyFile" mapto="property:webform.propertyfile" />
+				<mapping element="Title" mapto="property:Title" />
+			</mappings>
+			<tabs>				
+				<tab element="Title" name="Tab.Basic" collapse="false" />
+				<tab element="InputField" name="Tab.Fields" collapse="false" />
+				<tab element="OptionalSubField" name="Tab.SubFieldConfig" collapse="false" />
+				<tab element="FormCaptcha" name="Tab.FormConfig" collapse="false" />
+				<tab element="OptionalConfirmationMail" name="Tab.ConfirmationMail" collapse="true" />		
+			</tabs>
+			<settings>
+				<setting name="boxschema" nice-name="Box Schema" type="string" widget="select" widget-config="box_schema1:Schema 1|box_schema2:Schema 2|box_schema3:Schema 3" />
+			</settings>
+		</xsd:appinfo>
+	</xsd:annotation>  
+	
+</xsd:schema>

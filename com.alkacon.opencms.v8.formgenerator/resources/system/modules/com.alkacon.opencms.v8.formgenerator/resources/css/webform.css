@@ -1,0 +1,393 @@
+/*
+ * Example for the Alkacon OAMP Webform Module, used as default CSS.
+ *
+ * The CSS to use can be specified as module parameter "css".
+ * If no value is defined, this CSS file shipped with the module is used.
+ * 
+ * Important: to generate valid XHTML code, specify "false" as module parameter value
+ * and include the CSS in your template head manually.
+ */
+@media all
+{
+	/****************************
+	 * Default DIV based styles *
+	 ****************************
+	 */
+
+	/* webform wrapper */
+	div.webform_wrapper {
+		background-color: #FFF;
+	}
+	
+	/* row wrapper */
+	div.webform_row{
+	}
+	
+	div.webform_middletext, div.webform_mandatory, div.webform_button{
+	}
+	
+	/* labels */
+	div.webform_label, div.webform_label_multi, div.webform_label_table, div.webform_text_left {
+		width: 30%;
+		display: inline-block;
+		vertical-align: top;
+		font-weight: bold;
+		padding: 4px 0;
+	}
+	
+	/* fields */
+	div.webform_field, div.webform_field_multi, div.webform_field_table, div.webform_text_right {
+		width: 69%;
+		display: inline-block;
+		vertical-align: top;
+		padding: 4px 0;
+	}
+	
+	/* additional fields */
+	div.webform_wrapper input[type=text], div.webform_wrapper input[type=password] {
+		width: 99%;
+		padding: 2px 0;
+		border: 1px solid #888;
+	}
+
+	div.webform_wrapper select {
+		width: 99%;
+		padding: 2px 0;
+		border: 1px solid #888;
+		height: 22px;
+	}
+
+	div.webform_wrapper textarea {
+		width: 99%;
+		padding: 2px 0;
+		border: 1px solid #888;
+		height: 60px;
+	}
+
+	div.webform_wrapper div.webform_button {
+		text-align: center;
+	}
+	
+	/* checkbox */
+	div.webform_checkbox_wrapper {
+		display: block;
+		padding-bottom: 2px;
+	}
+	
+	div.webform_checkbox_row_wrapper {
+		display: inline;
+		padding-right: 8px;
+	}
+
+	div.webform_field_checkbox, div.webform_field_checkbox_row {
+		vertical-align: top;
+		padding: 2px 0 0 0;
+		display: inline;
+	}
+
+	div.webform_label_checkbox, div.webform_label_checkbox_row {
+		padding: 0 0 0 2px;
+		display: inline;
+	}
+
+	/* radio */
+	div.webform_radio_wrapper {
+		display: block;
+		padding-bottom: 2px;
+	}
+	
+	div.webform_radio_row_wrapper {
+		display: inline;
+		padding-right: 8px;
+	}
+	
+	div.webform_field_radio, div.webform_field_radio_row {
+		vertical-align: middle;
+		padding: 2px 0 0 0;
+		display: inline;
+	}
+	
+	div.webform_label_radio, div.webform_label_radio_row {
+		padding: 0 0 0 2px;
+		display: inline;
+	}
+	
+	/* sub field sets */
+	div.webform_wrapper div.webform_subfields div.webform_label,
+	div.webform_wrapper div.webform_subfields div.webform_label_multi,
+	div.webform_wrapper v.webform_subfields div.webform_field {
+	}
+	
+	div.webform_wrapper div.webform_subfields div.webform_label,
+	div.webform_wrapper div.webform_subfields div.webform_label_multi {
+	}
+
+	div.webform_wrapper div.webform_subfields div.webform_field {
+		background-color: #EEE;
+	}
+
+	/* submit and other buttons */
+	div.webform_wrapper input.formbutton {
+		margin-top: 10px;
+	}
+	
+	/* check page */
+	div.webform_check_wrapper div.webform_label {
+		font-weight: normal;
+	}
+	
+	div.webform_check_wrapper div.webform_field {
+		font-weight: bold;
+	}
+	
+	div.webform_check_button {
+		margin-top: 10px;
+		float: left;
+	}
+	
+	/* confirmation page */
+	div.webform_confirm_wrapper div.webform_label {
+		font-weight: normal;
+	}
+	
+	div.webform_confirm_wrapper div.webform_field {
+		font-weight: bold;
+	}
+
+	/**********************
+	 * Table based styles *
+	 **********************
+	 */
+	
+	/* webform table */
+	table.webform_table {
+		width: 100%;
+		border-spacing: 0;
+		border: none;
+		background-color: #FFF;
+	}
+	
+	/* labels */
+	td.webform_label, td.webform_label_multi {
+		width: 30%;
+		vertical-align: top;
+		font-weight: bold;
+		padding: 4px 2px 4px 0;
+	}
+	
+	/* fields */
+	td.webform_field, td.webform_field_multi {
+		padding: 4px 0 4px 2px;
+	}
+	
+	/* additional fields */
+	table.webform_table input[type=text], table.webform_table input[type=password] {
+		width: 99%;
+		padding: 2px 0;
+		border: 1px solid #888;
+	}
+
+	table.webform_table select {
+		width: 99%;
+		padding: 2px 0;
+		border: 1px solid #888;
+		height: 22px;
+	}
+
+	table.webform_table textarea {
+		width: 99%;
+		padding: 2px 0;
+		border: 1px solid #888;
+		height: 60px;
+	}
+
+	table.webform_table tr td.webform_button {
+		text-align: center;
+	}
+
+	/* error */
+	span.webform_label_error {
+		color: #C00;
+	}
+
+	span.webform_msg_error {
+		color: #C00; 
+		font-weight: bold;
+	}
+	
+	/* checkbox */
+	table.webform_checkbox, table.webform_checkbox_row {
+		margin-top: 0;
+		border: none;
+		background-color: #FFF;
+	}
+	
+	table.webform_checkbox {
+		padding: 
+	}
+
+	table.webform_checkbox_row {
+		float: left; 
+		padding: 0px 8px 0px 0px;
+	}
+
+	td.webform_field_checkbox, td.webform_field_checkbox_row {
+		vertical-align: top;
+		padding: 2px 0px 2px 0px;
+	}
+
+	td.webform_label_checkbox {
+		padding: 2px 0px 2px 5px;
+	}
+
+	td.webform_label_checkbox_row {
+		padding: 2px 0px 2px 3px;
+	}
+
+	/* radio */
+	table.webform_radio, table.webform_radio_row {
+		margin-top: 0;
+		border: none;
+		background-color: #FFF;
+	}
+
+	table.webform_radio_row {
+		float: left; 
+		padding: 0px 8px 0px 0px;
+	}
+
+	td.webform_field_radio, td.webform_field_radio_row {
+		vertical-align: top;
+		padding: 4px 0px 0px 0px;
+	}
+
+	td.webform_label_radio, td.webform_label_radio_row {
+		padding: 2px 0px 2px 5px;
+	}
+
+	/* table field */
+	table.webform_label_table, table.webform_field_table {
+		margin-top: 0;
+		vertical-align: top;
+		border: none;
+		background-color: #FFF;
+	}
+
+	.webform_label_table tr th, .webform_label_table tr td, 
+	.webform_field_table tr th, .webform_field_table tr td {
+		white-space: nowrap;
+	}
+
+	.webform_field_table tr th, .webform_field_table tr td {
+		text-align: left;
+	}
+
+	.webform_field_table input {
+		border: 1px solid #888;
+		padding: 2px 0;
+	}
+	
+	table.webform_field_table thead, table.webform_field_table tbody, table.webform_label_table thead {
+		margin: 0;
+		padding: 0;
+	}
+	
+	table.webform_label_table tr th, table.webform_field_table tr td, table.webform_field_table tr th {
+		height: 25px;
+	}
+	
+	table.webform_field_table tr td {
+		padding-top: 0 !important;
+		padding-bottom: 0 !important;
+		padding-left: 4px;
+	}
+	
+	table.webform_field_table tr td:first-child {
+		padding-left: 0;
+	}
+	
+	table.webform_label_table tr th:first-child {
+		vertical-align: middle;
+	}
+	
+	
+	table.webform_field_table input {
+		width: 100%;
+	}
+
+	/* sub field sets */
+	table.webform_table tbody.webform_subfields td.webform_label,
+	table.webform_table tbody.webform_subfields td.webform_label_multi,
+	table.webform_table tbody.webform_subfields td.webform_field {
+	}
+	
+	table.webform_table tbody.webform_subfields td.webform_label,
+	table.webform_table tbody.webform_subfields td.webform_label_multi {
+	}
+
+	table.webform_table tbody.webform_subfields td.webform_field {
+		background-color: #EEE;
+	}
+
+
+	/* submit and other buttons */
+	table.webform_table input.formbutton {
+		margin-top: 10px;
+	}
+
+	/* check page */
+	table.webform_check_table {
+		margin-top: 14px;
+		border: none;
+	}
+
+	/* confirmation page */
+	table.webform_confirm_table {
+		margin-top: 14px;
+		border: none;
+	}
+
+	/********************************************************************************************* 
+	 * Orange style: In the optional form configuration field "Style" "orange" has been entered. * 
+	 * So the following styles are special for that webform:                                     *
+	 *********************************************************************************************
+	 */
+	td.webform_label_orange {
+		color: orange;
+	}
+
+	td.webform_field_orange {
+		color: orange;
+	}
+
+	td.webform_field_orange input, td.webform_field_orange select {
+		color: orange;
+		background-color: yellow;
+	}
+
+	td.webform_middletext_orange {
+		color: orange;
+	}
+
+	td.webform_mandatory_orange {
+		color: orange;
+	}
+
+	td.webform_button_orange input {
+		color: orange;
+		background-color: yellow;
+		font-weight: bold;
+	}
+
+	td.webform_error_text_start_orange {
+		color: orange;
+	}
+
+	td.webform_error_start_orange {
+		color: orange;
+	}
+	td.webform_label_table {
+	vertical-align: top;
+	}	
+
+}    

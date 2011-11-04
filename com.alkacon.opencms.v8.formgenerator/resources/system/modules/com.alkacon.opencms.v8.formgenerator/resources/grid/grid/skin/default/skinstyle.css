@@ -1,0 +1,419 @@
+.gt-viewport {
+	background-color: #ffffff;
+	border-color :#cccccc;
+}
+
+
+.gt-simple-scrollbar {
+	scrollbar-3dlight-color:#C0C0C0;
+	scrollbar-darkshadow-color:#C0C0C0;
+	scrollbar-arrow-color:#999999;
+	scrollbar-face-color:#DDDDDD;
+	scrollbar-highlight-color:#DDDDDD;
+	scrollbar-shadow-color:#DDDDDD;
+	scrollbar-track-color:#E9E9E9;
+}
+
+.gt-head-div {
+	background: #ebeadb url(./images/hd_row_over_bg.gif) repeat-x;
+
+}
+
+
+.gt-row {
+	background-color:#ffffff;
+}
+
+.gt-hd-row .gt-hd-row-over {
+	background: #ebeadb url(./images/hd_row_over_bg.gif) repeat-x;
+}
+
+.gt-hd-row td ,.gt-row td {
+
+	border-right-color:  #d6d6d6;
+	border-bottom-color:  #d6d6d6;
+
+}
+
+.gt-hd-row td {
+	border-right-color:  #778899;
+	border-bottom-color:  #778899;
+	background: #ebeadb url(./images/hd_row_bg.gif) repeat-x;
+}
+
+.gt-hd-row td .gt-inner {
+	color : #333333 ;
+
+}
+
+.gt-table thead tr td , .gt-table thead th td {
+	background: #ebeadb url(./images/hd_row_bg.gif) repeat-x;
+}
+
+.gt-row td.gt-index-col {
+	background: #e0e0e0 url(./images/cell_index_bg.gif) repeat-x ;
+}
+
+
+.gt-row-even {
+	background-color:#f3f6f5;
+}
+
+
+.gt-row-over td {
+	border-bottom-color:  #ff9966;
+}
+
+.gt-row-over td.gt-cell-group {
+	/* background: #ffeedd; */
+	background-image: url();
+}
+
+
+.gt-row-selected {
+	background-color: #ddeeff;
+}
+
+.gt-row-selected td.gt-cell-group {
+	background-color: #eef6ff;
+}
+
+.gt-row-del td{
+	background : #dddddd url(./images/row_del.gif) repeat-x center center ;
+}
+
+.gt-row-new {
+}
+
+.gt-cell-group {
+	background-color: #eef6ff;
+}
+
+.gt-hd-split {
+	background: url(./images/tool_split.gif)  repeat-y 3px center;
+
+}
+
+.gt-split-line {
+	background-color: #cccccc;
+
+}
+
+.gt-hd-icon {
+	background-image: url(./skin/default/images/s_sort_asc_desc.gif);
+}
+
+.gt-freeze-div {
+	border-right-color: #999999;
+
+}
+
+.gt-input-text {
+	border-color: #aabbcc;
+}
+
+.gt-input-button {
+
+	background : url(./images/input_button_bg.gif) repeat-x 0px -2px;
+}
+
+.gt-toolbar-box {
+	border-color:  #cccccc;
+	background:url(./images/toolbar_bg.gif) repeat 0px 0px; 
+
+}
+
+.gt-toolbar-box-top {
+	border-color: #cccccc;
+}
+
+.gt-tool-resize {
+
+	background:url(./images/tool_resize.gif) no-repeat 0px 0px;
+}
+
+.gt-cell-tooltip {
+
+	border-color: #666666;
+	background-color : #fff9f3;
+
+}
+
+.gt-grid-mask {
+
+	border-color: #ff0000;
+
+}
+
+.gt-grid-mask-bg {
+	background-color: #eeeeee;
+}
+
+
+.gt-grid-mask-bg {
+	background-color : #eceef3;
+	border-color: #336699;
+}
+
+
+.gt-grid-waiting-icon {
+	background:url(./images/s_loading.gif) no-repeat; 
+}
+
+
+.gt-dialog-head {
+	border-bottom-color: #b0c7d7;
+	background-image: url(./images/toolbar_bg.gif);
+
+}
+
+.gt-dialog-head-button {
+	border-color: #ff0000;
+}
+
+.gt-dialog-head-button a {
+	background : url(./images/dialog_close_btn.gif) no-repeat 0px 0px;
+}
+
+.gt-column-dialog , .gt-filter-dialog {
+
+	background-color:#ffffff;
+	border-color:#999999;
+}
+
+.gt-editor-container {
+	border-color: #335599;
+	background-color:#ffffff;
+}
+
+.gt-editor-text , .gt-editor-select {
+
+	border-color: #558899;
+}
+
+.gt-editor-date{
+
+	border-color: #dddddd;
+	background:transparent url(./images/icon_calendar.gif) no-repeat center center;
+
+}
+
+td.gt-cell-updated {
+	background-repeat :no-repeat;
+	background-position : right top;
+	background-image : url(./images/cell_updated.gif) 
+
+}
+
+.gt-editor-err {
+	border-color: #ff0000;
+}
+
+
+.gt-cell-actived {
+	background-color:#ffddee;
+
+}
+
+.gt-cell-actived-editable {
+	background-color:#eeffdd;
+}
+
+.gt-cell-vaildfailed {
+	background-color:#ffaabb;
+}
+
+
+.gt-grid-ghost-rect {
+	border-color: #3366cc;
+	background-color: #dde0e3;
+}
+
+.gt-head-ghost {
+
+	color: #000000;
+	background-color: #cccccc;
+}
+
+.gt-column-moveflag  {
+	background-color: #6693ff;
+}
+
+.gt-popmenu {
+
+	border:1px solid #99bbdd;
+	background-color:  #ffffff ;
+}
+
+.gt-menuitem {
+	border-color: #ff0000;
+	color:#335566;
+}
+
+.gt-menuitem:hover {
+	background-color: #ccddee;
+}
+
+.gt-menu-activemenu {
+	background-color: #eef3ff;
+}
+
+.gt-menu-icon {
+
+	border-color: #ff000;
+	background-color:  #ddeeff;
+}
+
+.gt-checkboxtext {
+
+	border-color: #00ff00;
+}
+
+.gt-aftericon {
+	border-color: #ff0000;
+}
+
+
+.gt-menu-parent {
+	background-image: url(./images/menu_hassub.gif) ;
+}
+
+.gt-icon-freeze {
+	background-image: url(./images/menu_icon_lock.gif);
+
+}
+.gt-icon-skin {
+	background-image: url(./images/menu_icon_themes.gif);
+
+}
+.gt-icon-hidecol {
+	background-image: url(./images/menu_icon_hidecol.gif);
+
+}
+.gt-icon-groupcol {
+	background-image: url(./images/menu_icon_column_group.gif);
+
+}
+
+.gt-icon-checkbox {
+	background-image: url(./images/s_checked.gif);
+}
+.gt-icon-radiobox {
+	background-image: url(./images/s_radiochecked.gif);
+}
+
+
+.gt-icon-unchecked {
+	background-image: url(./images/s_unchecked.gif);
+}
+
+
+.gt-image-button {
+	border-color: #336699;
+}
+
+.gt-image-button:hover {
+	background : url(./images/button_bg.gif) no-repeat center center;
+}
+
+.gt-image-button div , .gt-image-button button{
+
+	border-color: #ff0000;
+}
+
+
+.gt-image-button-down {
+	background : url(./images/button_down_bg.gif) no-repeat center center;
+}
+
+.gt-button-disable:hover {
+	background : url();
+}
+
+.gt-button-split {
+
+	background : url(./images/tool_split.gif)  no-repeat center center
+}
+
+
+.gt-first-page {
+	background : url(./images/page_first.gif) no-repeat center center;
+}
+
+
+.gt-prev-page {
+	background : url(./images/page_prev.gif) no-repeat center center;
+}
+
+.gt-next-page {
+	background : url(./images/page_next.gif) no-repeat center center;
+}
+
+.gt-last-page {
+	background : url(./images/page_last.gif) no-repeat center center;
+}
+
+.gt-goto-page {
+	background : url(./images/page_goto.gif) no-repeat center center;
+}
+
+.gt-toolbar-text {
+
+	color:#335566;
+}
+
+
+.gt-page-input {
+	border-color: #558899;
+}
+
+.gt-pagesize-select {
+	border-color: #558899;
+}
+
+
+.gt-page-state {
+
+	color:#335566;
+}
+
+.gt-tool-gridmenu {
+	background : url(./images/icon_grid_menu.gif) no-repeat center center;
+}
+
+.gt-tool-add {
+	background : url(./images/tool_add.gif) no-repeat center center;
+}
+
+.gt-tool-del {
+	background : url(./images/tool_del.gif) no-repeat center center;
+}
+
+.gt-tool-save {
+	background : url(./images/tool_save.gif) no-repeat center center;
+}
+
+.gt-tool-reload {
+	background : url(./images/tool_reload.gif) no-repeat center center;
+}
+
+.gt-tool-exp-print {
+	background : url(./images/tool_print.gif) no-repeat center center;
+}
+.gt-tool-exp-xls {
+	background : url(./images/tool_xls.gif) no-repeat center center;
+}
+
+.gt-tool-exp-csv {
+	background : url(./images/tool_csv.gif) no-repeat center center;
+}
+
+.gt-tool-filter {
+	background : url(./images/tool_filter.gif) no-repeat center center;
+}
+
+.gt-tool-chart {
+	background : url(./images/tool_chart.gif) no-repeat center center;
+}
+
+

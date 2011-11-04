@@ -1,0 +1,32 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+		
+	<xsd:element name="DataTargets" type="OpenCmsDataTargets"/>
+	
+	<xsd:complexType name="OpenCmsDataTargets">
+		<xsd:sequence>
+			<xsd:element name="DataTarget" type="OpenCmsDataTarget" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsDataTarget">
+		<xsd:sequence>
+			<xsd:element name="Transport" type="OpenCmsString" />
+			<xsd:element name="FormId" type="OpenCmsString" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+	</xsd:complexType>
+	
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.v8.formgenerator.workplace"/>
+			<validationrules>
+				<rule element="FormId" regex=".+" type="error" message="%(key.alkacon-v8-webform.err.xmlcontent.field.empty)"/>
+			</validationrules>
+			<layouts>
+				<layout element="Transport" widget="SelectorWidget" configuration="email*:%(key.alkacon-v8-webform.datatarget.email)|database:%(key.alkacon-v8-webform.datatarget.database)|email-database:%(key.alkacon-v8-webform.datatarget.email-database)" />
+			</layouts>
+		</xsd:appinfo>
+	</xsd:annotation>  
+</xsd:schema>

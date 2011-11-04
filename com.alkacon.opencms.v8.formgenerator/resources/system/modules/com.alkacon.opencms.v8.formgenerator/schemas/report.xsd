@@ -1,0 +1,70 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.formgenerator/schemas/inputfield.xsd"/>
+		
+	<xsd:element name="AlkaconV8WebFormReports" type="OpenCmsAlkaconV8WebFormReports"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconV8WebFormReports">
+		<xsd:sequence>
+			<xsd:element name="AlkaconV8WebFormReport" type="OpenCmsAlkaconV8WebFormReport" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconV8WebFormReport">
+		<xsd:sequence>
+			<xsd:element name="Title" type="OpenCmsString" />
+			<xsd:element name="URI" type="OpenCmsVfsFile" />
+			<xsd:element name="Text" type="OpenCmsHtml" />
+			<xsd:element name="LoadDynamic" type="OpenCmsBoolean" />
+			<xsd:element name="ShowDate" type="OpenCmsBoolean" />
+			<xsd:element name="Fields" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="ShowMenu" type="OpenCmsBoolean" />
+			<xsd:element name="ShowLabels" type="OpenCmsBoolean" />
+			<xsd:element name="GridHeight" type="OpenCmsString" />
+			<xsd:element name="Entries" type="OpenCmsString" />
+			<xsd:element name="Skin" type="OpenCmsString" />
+			<xsd:element name="ColWidth" type="OpenCmsString" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="required"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.v8.formgenerator.workplace"/>
+			<preview uri="${previewtempfile}" />
+			<defaults>
+				<default element="LoadDynamic" value="true" />
+				<default element="ShowDate" value="true" />
+				<default element="ShowLabels" value="true" />
+				<default element="GridHeight" value="350" />
+				<default element="ColWidth" value="90" />
+			</defaults>
+			<formatters>
+				<formatter minwidth="200" uri="/system/modules/com.alkacon.opencms.v8.formgenerator/elements/report.jsp" />
+			</formatters>
+			<headincludes>
+<headinclude type="javascript" uri="/system/modules/com.alkacon.opencms.v8.formgenerator/resources/js/dateformat.js" />
+<headinclude type="javascript" uri="/system/modules/com.alkacon.opencms.v8.formgenerator/resources/grid/grid/gt_grid_all.js" />
+			</headincludes>
+			<validationrules />
+			<layouts>
+				<layout element="URI" widget="com.alkacon.opencms.v8.formgenerator.CmsSelectWidgetXmlcontentType" configuration="resourcetypeName=alkacon-v8-webform|folder=%(currentsite)|displayOptionMacro=%(property.Title) (%(opencms.filename))" />
+				<layout element="Text" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
+				<layout element="Fields" widget="com.alkacon.opencms.v8.formgenerator.CmsReportCheckFieldsWidget" />
+				<layout element="GridHeight" widget="ComboWidget" configuration="100|150|200|250|300|350|400|450|500|auto" />
+				<layout element="Entries" widget="SelectorWidget" configuration="5|10|20|50|100*|150" />
+				<layout element="Skin" widget="SelectorWidget" configuration="default:Default|mac*:Mac|vista:Vista|pink:Pink" />
+				<layout element="ColWidth" widget="ComboWidget" configuration="40|50|60|70|80|90|100|120|150|200|250" />
+			</layouts>
+			<mappings>
+				<mapping element="Title" mapto="property:Title" />
+			</mappings>
+			<tabs>
+				<tab element="Title" name="Tab.General" collapse="false" />
+				<tab element="ShowMenu" name="Tab.Layout" collapse="false" />
+			</tabs>				
+		</xsd:appinfo>
+	</xsd:annotation>  
+	
+</xsd:schema>

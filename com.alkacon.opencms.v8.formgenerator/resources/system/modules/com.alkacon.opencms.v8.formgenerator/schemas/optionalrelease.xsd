@@ -1,0 +1,30 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+
+	<xsd:element name="OptionalAlkaconV8WebFormRelease" type="OpenCmsOptionalAlkaconV8WebFormRelease"/>
+
+	<xsd:complexType name="OpenCmsOptionalAlkaconV8WebFormRelease">
+		<xsd:sequence>
+			<xsd:element name="OptionalAlkaconV8WebFormRelease" type="OpenCmsOptionalAlkaconV8WebFormRelease" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsOptionalAlkaconV8WebFormRelease">
+		<xsd:sequence>
+			<xsd:element name="Date" type="OpenCmsDateTime" />
+			<xsd:element name="Text" type="OpenCmsHtml" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.v8.formgenerator.workplace"/>
+			<layouts>
+				<layout element="Text" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
+			</layouts>
+		</xsd:appinfo>
+	</xsd:annotation>
+
+</xsd:schema>

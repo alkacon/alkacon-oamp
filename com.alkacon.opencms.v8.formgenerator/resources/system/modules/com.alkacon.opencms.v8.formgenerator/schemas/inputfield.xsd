@@ -1,0 +1,38 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+		
+	<xsd:element name="AlkaconV8WebFormInputFields" type="OpenCmsAlkaconV8WebFormInputFields"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconV8WebFormInputFields">
+		<xsd:sequence>
+			<xsd:element name="AlkaconV8WebFormInputField" type="OpenCmsAlkaconV8WebFormInputField" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconV8WebFormInputField">
+		<xsd:sequence>
+			<xsd:element name="FieldType" type="OpenCmsString" />
+			<xsd:element name="FieldLabel" type="OpenCmsString" />
+			<xsd:element name="FieldMandatory" type="OpenCmsBoolean" />
+			<xsd:element name="FieldDefault" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="FieldParams" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="FieldValidation" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="FieldErrorMessage" type="OpenCmsString" minOccurs="0" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+	</xsd:complexType>
+	
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.v8.formgenerator.workplace"/>
+			<layouts>
+				<layout element="FieldType" widget="SelectorWidget" configuration="text*:${key.form.field.type.text}|textarea:${key.form.field.type.textarea}|checkbox:${key.form.field.type.checkbox}|privacy:${key.form.field.type.privacy}|radio:${key.form.field.type.radio}|select:${key.form.field.type.select}|hidden:${key.form.field.type.hidden}|file:${key.form.field.type.fileupload}|email:${key.form.field.type.email}|empty:${key.form.field.type.empty}|dynamic:${key.form.field.type.dynamic}|table:${key.form.field.type.table}|password:${key.form.field.type.password}|paging:${key.form.field.type.paging}|display:${key.form.field.type.display}|hiddendisplay:${key.form.field.type.hiddendisplay}" />
+			</layouts>
+			<validationrules>
+				<rule element="FieldLabel" regex=".+" type="warning" message="%(key.alkacon-v8-webform.warn.xmlcontent.field.empty)"/>
+			</validationrules>
+		</xsd:appinfo>
+	</xsd:annotation>  
+ 
+</xsd:schema>

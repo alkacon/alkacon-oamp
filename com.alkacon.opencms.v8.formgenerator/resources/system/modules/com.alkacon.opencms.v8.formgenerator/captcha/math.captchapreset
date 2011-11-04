@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<CaptchaPresets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/com.alkacon.opencms.v8.formgenerator/schemas/captchapreset.xsd">
+  <CaptchaPreset language="en">
+    <Name><![CDATA[Math]]></Name>
+    <MathField>true</MathField>
+  </CaptchaPreset>
+</CaptchaPresets>
