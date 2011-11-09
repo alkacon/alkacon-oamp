@@ -127,6 +127,8 @@
          
          var /**GMap2*/ map = null;
          
+         var prevAddr = null;
+         
          // hide controls depending on options
          var /**Function*/ hideParent = function() {
             $(this).parent().hide();
@@ -354,7 +356,10 @@
             geocoder.geocode({'address': address}, function(results, status) {
                // check to see if we have at least one valid address
                if (!results || (status != google.maps.GeocoderStatus.OK) || !results[0].formatted_address) {
-                  alert("Address not found");
+                  if (prevAddr == null || prevAddr != address) {
+                  	prevAddr = address;
+                  	alert("Address not found");
+                  }
                   return;
                }
                // in case of only one place,  just set it
