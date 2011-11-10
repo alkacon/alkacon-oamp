@@ -131,7 +131,7 @@ public class CmsFormEditDialog extends CmsWidgetDialog {
     @Override
     public void actionCommit() {
 
-        List<Exception> errors = new ArrayList<Exception>();
+        List<Throwable> errors = new ArrayList<Throwable>();
         try {
             // get the list of all fields 
             List<String> columnNames = CmsFormDataAccess.getInstance().readFormFieldNames(
