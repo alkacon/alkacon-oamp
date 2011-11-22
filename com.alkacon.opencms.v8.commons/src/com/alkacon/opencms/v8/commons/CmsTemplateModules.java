@@ -150,10 +150,14 @@ public class CmsTemplateModules extends CmsTemplateBase {
         // calculate levels to go down
         int displayLevels = -((CmsResource.getPathLevel(getCategoryFolder()) - CmsResource.getPathLevel(startfolder)) + 1);
         // get the navigation list
-        List breadcrumb = getNavigation().getNavigationBreadCrumb(getCategoryFolder(), displayLevels, -1, true);
+        List<CmsJspNavElement> breadcrumb = getNavigation().getNavigationBreadCrumb(
+            getCategoryFolder(),
+            displayLevels,
+            -1,
+            true);
 
         for (int i = 0, n = breadcrumb.size(); i < n; i++) {
-            CmsJspNavElement navElement = (CmsJspNavElement)breadcrumb.get(i);
+            CmsJspNavElement navElement = breadcrumb.get(i);
             // get the title of the current navigation element
             String title = navElement.getTitle();
             if (CmsStringUtil.isEmptyOrWhitespaceOnly(title)) {
@@ -212,7 +216,7 @@ public class CmsTemplateModules extends CmsTemplateBase {
 
         // read the resource tree
         CmsResourceFilter filter = CmsResourceFilter.DEFAULT.addRequireType(CmsResourceTypeFolder.RESOURCE_TYPE_ID);
-        List resourceTree = getCmsObject().readResources(startfolder, filter, true);
+        List<CmsResource> resourceTree = getCmsObject().readResources(startfolder, filter, true);
 
         String indent = "&nbsp;&nbsp;";
         StringBuffer result = new StringBuffer(32);
@@ -229,14 +233,14 @@ public class CmsTemplateModules extends CmsTemplateBase {
             result.append(">\n");
 
             int indentCount = 0;
-            int startLevel = CmsResource.getPathLevel(getCmsObject().getSitePath((CmsResource)resourceTree.get(0)));
+            int startLevel = CmsResource.getPathLevel(getCmsObject().getSitePath(resourceTree.get(0)));
             int lastLevel = startLevel;
             // set flag that category folders are present
             m_hasCategoryFolders = true;
 
             for (int i = 0, n = resourceTree.size(); i < n; i++) {
 
-                CmsResource resource = (CmsResource)resourceTree.get(i);
+                CmsResource resource = resourceTree.get(i);
                 String resourceName = getCmsObject().getSitePath(resource);
 
                 // skip files
@@ -456,10 +460,10 @@ public class CmsTemplateModules extends CmsTemplateBase {
             }
 
             // get images
-            Iterator iterImages = xmlContent.getValues(NODE_IMAGE, locale).iterator();
+            Iterator<I_CmsXmlContentValue> iterImages = xmlContent.getValues(NODE_IMAGE, locale).iterator();
             while (iterImages.hasNext()) {
                 // loop all image nodes
-                I_CmsXmlContentValue value = (I_CmsXmlContentValue)iterImages.next();
+                I_CmsXmlContentValue value = iterImages.next();
                 String xPath = value.getPath() + "/";
                 xPath += NODE_IMAGE + "/";
 
@@ -516,18 +520,20 @@ public class CmsTemplateModules extends CmsTemplateBase {
             xmlContent = CmsXmlContentFactory.unmarshal(cmsObject, xmlFile);
             // get the paragraph nodes from the XML content
 
-            Iterator iterParagraphs = xmlContent.getValues(NODE_FAQPARAGRAPH, locale).iterator();
+            Iterator<I_CmsXmlContentValue> iterParagraphs = xmlContent.getValues(NODE_FAQPARAGRAPH, locale).iterator();
             while (iterParagraphs.hasNext()) {
                 // loop all paragraph nodes
-                I_CmsXmlContentValue valueParagraph = (I_CmsXmlContentValue)iterParagraphs.next();
+                I_CmsXmlContentValue valueParagraph = iterParagraphs.next();
 
                 if (paragraphCounter == paragraphNumber) {
                     String xPathParagraph = valueParagraph.getPath();
 
-                    Iterator iterImages = xmlContent.getValues(xPathParagraph + "/" + NODE_IMAGE, locale).iterator();
+                    Iterator<I_CmsXmlContentValue> iterImages = xmlContent.getValues(
+                        xPathParagraph + "/" + NODE_IMAGE,
+                        locale).iterator();
                     while (iterImages.hasNext()) {
                         // loop all image nodes
-                        I_CmsXmlContentValue valueImage = (I_CmsXmlContentValue)iterImages.next();
+                        I_CmsXmlContentValue valueImage = iterImages.next();
                         String xPathImage = valueImage.getPath() + "/";
                         xPathImage += NODE_IMAGE + "/";
 
@@ -594,7 +600,7 @@ public class CmsTemplateModules extends CmsTemplateBase {
         try {
             // filter the resources with the specified id
             CmsResourceFilter filter = CmsResourceFilter.DEFAULT.addRequireType(resourceTypeId);
-            List resources = getCmsObject().readResources(foldername, filter, false);
+            List<CmsResource> resources = getCmsObject().readResources(foldername, filter, false);
             result = resources.size();
         } catch (CmsException e) {
             // error reading the resources
@@ -643,8 +649,9 @@ public class CmsTemplateModules extends CmsTemplateBase {
      * 
      * @param file File to show top message for
      * @param localeString Locale in string format
-     * @param showDate Show date
-     * @param uri Current uri
+     * @param imgWidth the image width
+     * @param imgHeight the image height
+     * @param imgClass the image class
      * 
      * @return HTML code to show top messages in modules: event and news
      */
@@ -727,11 +734,11 @@ public class CmsTemplateModules extends CmsTemplateBase {
             CmsFile xmlFile = cmsObject.readFile(imgUri);
             xmlContent = CmsXmlContentFactory.unmarshal(cmsObject, xmlFile);
 
-            Iterator iterImages = xmlContent.getValues(NODE_IMAGE, locale).iterator();
+            Iterator<I_CmsXmlContentValue> iterImages = xmlContent.getValues(NODE_IMAGE, locale).iterator();
 
             while (iterImages.hasNext()) {
                 // loop all paragraph nodes
-                I_CmsXmlContentValue value = (I_CmsXmlContentValue)iterImages.next();
+                I_CmsXmlContentValue value = iterImages.next();
                 String xPath = value.getPath() + "/";
                 xPath += NODE_DESCRIPTION;
 
@@ -767,16 +774,18 @@ public class CmsTemplateModules extends CmsTemplateBase {
             CmsFile xmlFile = cmsObject.readFile(imgUri);
             xmlContent = CmsXmlContentFactory.unmarshal(cmsObject, xmlFile);
 
-            Iterator iterParagraphs = xmlContent.getValues(NODE_FAQPARAGRAPH, locale).iterator();
+            Iterator<I_CmsXmlContentValue> iterParagraphs = xmlContent.getValues(NODE_FAQPARAGRAPH, locale).iterator();
             while (iterParagraphs.hasNext()) {
                 // loop all paragraph nodes
-                I_CmsXmlContentValue valueParagraph = (I_CmsXmlContentValue)iterParagraphs.next();
+                I_CmsXmlContentValue valueParagraph = iterParagraphs.next();
                 String xPathParagraph = valueParagraph.getPath();
 
-                Iterator iterImages = xmlContent.getValues(xPathParagraph + "/" + NODE_IMAGE, locale).iterator();
+                Iterator<I_CmsXmlContentValue> iterImages = xmlContent.getValues(
+                    xPathParagraph + "/" + NODE_IMAGE,
+                    locale).iterator();
                 while (iterImages.hasNext()) {
                     // loop all image nodes
-                    I_CmsXmlContentValue valueImage = (I_CmsXmlContentValue)iterImages.next();
+                    I_CmsXmlContentValue valueImage = iterImages.next();
                     String xPath = valueImage.getPath() + "/";
                     xPath += NODE_DESCRIPTION;
 
@@ -902,7 +911,7 @@ public class CmsTemplateModules extends CmsTemplateBase {
         String paragraphType = "";
         StringBuffer imgTagBuf = new StringBuffer(1024);
         String imgUri = xmlContent.getStringValue(getCmsObject(), xPath, locale);
-        Map imgParams = new HashMap();
+        Map<String, String[]> imgParams = new HashMap<String, String[]>();
         if (CmsStringUtil.isNotEmpty(imgUri)) {
             int pos = imgUri.indexOf(CmsRequestUtil.URL_DELIMITER);
             if (pos >= 0) {
@@ -930,15 +939,15 @@ public class CmsTemplateModules extends CmsTemplateBase {
             // image exists, create image tag to show
             String crop = null;
             // get description from parameter value
-            String[] descParam = (String[])imgParams.get(CmsXmlVfsImageValue.PARAM_DESCRIPTION);
+            String[] descParam = imgParams.get(CmsXmlVfsImageValue.PARAM_DESCRIPTION);
             if (descParam != null) {
                 imgDesc = CmsEncoder.unescape(descParam[0], CmsEncoder.ENCODING_UTF_8);
             }
-            String[] typeParam = (String[])imgParams.get(CmsXmlVfsImageValue.PARAM_FORMAT);
+            String[] typeParam = imgParams.get(CmsXmlVfsImageValue.PARAM_FORMAT);
             if (typeParam != null) {
                 paragraphType = typeParam[0];
             }
-            String[] cropParam = (String[])imgParams.get(CmsImageScaler.PARAM_SCALE);
+            String[] cropParam = imgParams.get(CmsImageScaler.PARAM_SCALE);
             if (cropParam != null) {
                 crop = cropParam[0];
             }
@@ -967,12 +976,10 @@ public class CmsTemplateModules extends CmsTemplateBase {
      * 
      * @param cmsResource Current resource
      * @param imgDescr Image description
-     * @param mainImgUri Main image URI
      * @param imgUri Current image URI
+     * @param imgClass the image class
      * @param scaler OpenCms scaler
      * @param cmsObject Current CmsObject
-     * @param hide True if to hide image 
-     * @param textContent Text context
      * 
      * @return Single HTML tag to show image in photo gallery
      */
@@ -1113,8 +1120,9 @@ public class CmsTemplateModules extends CmsTemplateBase {
      *  @param xPath Path to current xml node
      *  @param xmlContent Current Xml content
      *  @param locale Current locale
-     *  @param file Uri to current top message
-     *  @param textContent Text content
+     * @param imgWidth the image width 
+     * @param imgHeight the image height
+     * @param imgClass the image class
      *  
      *  @return HTML code in new format for one image
      */
@@ -1132,7 +1140,7 @@ public class CmsTemplateModules extends CmsTemplateBase {
         String paragraphType = "";
         StringBuffer imgTagBuf = new StringBuffer(1024);
         String imgUri = xmlContent.getStringValue(getCmsObject(), xPath, locale);
-        Map imgParams = new HashMap();
+        Map<String, String[]> imgParams = new HashMap<String, String[]>();
         if (CmsStringUtil.isNotEmpty(imgUri)) {
             int pos = imgUri.indexOf(CmsRequestUtil.URL_DELIMITER);
             if (pos >= 0) {
@@ -1156,15 +1164,15 @@ public class CmsTemplateModules extends CmsTemplateBase {
             // image exists, create image tag to show
             String crop = null;
             // get description from parameter value
-            String[] descParam = (String[])imgParams.get(CmsXmlVfsImageValue.PARAM_DESCRIPTION);
+            String[] descParam = imgParams.get(CmsXmlVfsImageValue.PARAM_DESCRIPTION);
             if (descParam != null) {
                 imgDesc = CmsEncoder.unescape(descParam[0], CmsEncoder.ENCODING_UTF_8);
             }
-            String[] typeParam = (String[])imgParams.get(CmsXmlVfsImageValue.PARAM_FORMAT);
+            String[] typeParam = imgParams.get(CmsXmlVfsImageValue.PARAM_FORMAT);
             if (typeParam != null) {
                 paragraphType = typeParam[0];
             }
-            String[] cropParam = (String[])imgParams.get(CmsImageScaler.PARAM_SCALE);
+            String[] cropParam = imgParams.get(CmsImageScaler.PARAM_SCALE);
             if (cropParam != null) {
                 crop = cropParam[0];
             }
@@ -1230,6 +1238,8 @@ public class CmsTemplateModules extends CmsTemplateBase {
      * 
      * @param paragraphType the paragraph type to show
      * @param imgSize the image size property value containing the original image information
+     * @param imgMaxWidth the image width
+     * @param imgMaxHeight the image height
      * @param crop the crop scale parameters
      * 
      * @return an initialized image scaler depending on the image align to use

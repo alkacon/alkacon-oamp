@@ -29,7 +29,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package com.alkacon.opencms.v8.photoalbum;import org.opencms.file.CmsResource;
+package com.alkacon.opencms.v8.photoalbum;
+
+import org.opencms.file.CmsResource;
 import org.opencms.file.CmsResourceFilter;
 import org.opencms.file.types.CmsResourceTypeImage;
 import org.opencms.jsp.CmsJspActionElement;
@@ -47,30 +49,30 @@ import javax.servlet.jsp.PageContext;
 
 import org.apache.commons.collections.Transformer;
 import org.apache.commons.collections.map.LazyMap;
-;
 
 /**
  * Contains helper functions to show the photo album.<p>
  * 
  * @author Peter Bonrad
+ * @author Ruediger Kurz
  * 
  * @version $Revision: 1.3 $
  * 
- * @since 7.0.4
+ * @since 8.0.2
  */
 public class CmsPhotoAlbumBean extends CmsJspActionElement {
 
     /** The image scaler to check if a downscale is required. */
-    CmsImageScaler m_imageScaler;
+    protected CmsImageScaler m_imageScaler;
 
-    /** Lazy map with the list of resources (images) for a path.*/
-    private Map m_downscaleRequired;
+    /** Lazy map with the list of resources (images) for a path. */
+    private Map<CmsResource, Boolean> m_downscaleRequired;
 
-    /** Lazy map with the list of resources (images) for a path.*/
-    private Map m_images;
+    /** Lazy map with the list of resources (images) for a path. */
+    private Map<String, List<CmsResource>> m_images;
 
     /**
-     * Empty constructor, required for every JavaBean.
+     * Empty constructor, required for every JavaBean.<p>
      */
     public CmsPhotoAlbumBean() {
 
@@ -78,7 +80,7 @@ public class CmsPhotoAlbumBean extends CmsJspActionElement {
     }
 
     /**
-     * Constructor, with parameters.
+     * Constructor, with parameters.<p>
      * 
      * @param context the JSP page context object
      * @param req the JSP request 
@@ -96,10 +98,11 @@ public class CmsPhotoAlbumBean extends CmsJspActionElement {
      * 
      * @return a lazy initialized map
      */
-    public Map getIsDownscaleRequired() {
+    @SuppressWarnings("unchecked")
+    public Map<CmsResource, Boolean> getIsDownscaleRequired() {
 
         if (m_downscaleRequired == null) {
-            m_downscaleRequired = LazyMap.decorate(new HashMap(), new Transformer() {
+            m_downscaleRequired = LazyMap.decorate(new HashMap<CmsResource, Boolean>(), new Transformer() {
 
                 /**
                  * @see org.apache.commons.collections.Transformer#transform(java.lang.Object)
@@ -128,17 +131,18 @@ public class CmsPhotoAlbumBean extends CmsJspActionElement {
      * 
      * @return a lazy initialized map
      */
-    public Map getReadImages() {
+    @SuppressWarnings("unchecked")
+    public Map<String, List<CmsResource>> getReadImages() {
 
         if (m_images == null) {
-            m_images = LazyMap.decorate(new HashMap(), new Transformer() {
+            m_images = LazyMap.decorate(new HashMap<String, List<CmsResource>>(), new Transformer() {
 
                 /**
                  * @see org.apache.commons.collections.Transformer#transform(java.lang.Object)
                  */
                 public Object transform(Object input) {
 
-                    List result = null;
+                    List<CmsResource> result = null;
                     try {
                         result = getCmsObject().readResources(
                             (String)input,
@@ -157,6 +161,7 @@ public class CmsPhotoAlbumBean extends CmsJspActionElement {
     /**
      * @see org.opencms.jsp.CmsJspBean#init(javax.servlet.jsp.PageContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
+    @Override
     public void init(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         String imgSize = req.getParameter("maxImageSize");
