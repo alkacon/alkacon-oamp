@@ -75,7 +75,6 @@ public final class CmsDocumentFactory {
         /**
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
-        @Override
         public int compare(CmsDocument o1, CmsDocument o2) {
 
             CmsDocument d1 = getSortDocument(o1);
@@ -99,7 +98,6 @@ public final class CmsDocumentFactory {
         /**
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
-        @Override
         public int compare(CmsDocument o1, CmsDocument o2) {
 
             CmsDocument d1 = getSortDocument(o1);
@@ -123,7 +121,6 @@ public final class CmsDocumentFactory {
         /**
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
-        @Override
         public int compare(CmsDocument o1, CmsDocument o2) {
 
             CmsDocument d1 = getSortDocument(o1);
@@ -147,7 +144,6 @@ public final class CmsDocumentFactory {
         /**
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
-        @Override
         public int compare(CmsDocument o1, CmsDocument o2) {
 
             CmsDocument d1 = getSortDocument(o1);
@@ -171,7 +167,6 @@ public final class CmsDocumentFactory {
         /**
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
-        @Override
         public int compare(CmsDocument o1, CmsDocument o2) {
 
             CmsDocument d1 = getSortDocument(o1);
@@ -190,7 +185,6 @@ public final class CmsDocumentFactory {
         /**
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
-        @Override
         public int compare(CmsDocument o1, CmsDocument o2) {
 
             CmsDocument d1 = getSortDocument(o1);
@@ -209,7 +203,6 @@ public final class CmsDocumentFactory {
         /**
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
-        @Override
         public int compare(CmsDocument o1, CmsDocument o2) {
 
             CmsDocument d1 = getSortDocument(o1);
@@ -228,7 +221,6 @@ public final class CmsDocumentFactory {
         /**
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
-        @Override
         public int compare(CmsDocument o1, CmsDocument o2) {
 
             CmsDocument d1 = getSortDocument(o1);
@@ -247,7 +239,6 @@ public final class CmsDocumentFactory {
         /**
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
-        @Override
         public int compare(CmsDocument o1, CmsDocument o2) {
 
             CmsDocument d1 = getSortDocument(o1);
@@ -271,7 +262,6 @@ public final class CmsDocumentFactory {
         /**
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
-        @Override
         public int compare(CmsDocument o1, CmsDocument o2) {
 
             CmsDocument d1 = getSortDocument(o1);
@@ -295,7 +285,6 @@ public final class CmsDocumentFactory {
         /**
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
-        @Override
         public int compare(CmsDocument o1, CmsDocument o2) {
 
             CmsDocument d1 = getSortDocument(o1);
@@ -319,7 +308,6 @@ public final class CmsDocumentFactory {
         /**
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
-        @Override
         public int compare(CmsDocument o1, CmsDocument o2) {
 
             CmsDocument d1 = getSortDocument(o1);
@@ -343,7 +331,6 @@ public final class CmsDocumentFactory {
         /**
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
-        @Override
         public int compare(CmsDocument o1, CmsDocument o2) {
 
             CmsDocument d1 = getSortDocument(o1);
@@ -362,7 +349,6 @@ public final class CmsDocumentFactory {
         /**
          * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
-        @Override
         public int compare(CmsDocument o1, CmsDocument o2) {
 
             CmsDocument d1 = getSortDocument(o1);

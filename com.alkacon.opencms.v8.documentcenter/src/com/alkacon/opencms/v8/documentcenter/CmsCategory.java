@@ -146,7 +146,6 @@ public class CmsCategory implements Comparable<CmsCategory> {
      * @param obj the other given object instance to compare with
      * @return integer value for sorting the objects
      */
-    @Override
     public int compareTo(CmsCategory obj) {
 
         if (obj == this) {
