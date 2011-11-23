@@ -73,13 +73,13 @@
 			</type>
 		</resourcetypes>
 		<explorertypes>
-			<explorertype name="alkacon-v8-webform" key="fileicon.alkacon-v8-webform" icon="v8-alkacon-webform.gif" bigicon="v8-alkacon-webform_big.png" reference="xmlcontent">
+			<explorertype name="alkacon-v8-webform" key="fileicon.alkacon-v8-webform" icon="v8-alkacon-webform.png" bigicon="v8-alkacon-webform_big.png" reference="xmlcontent">
 				<newresource page="structurecontent" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-v8-webform" order="65" autosetnavigation="false" autosettitle="false" info="desc.alkacon-v8-webform"/>
 				<accesscontrol>
 					<accessentry principal="ROLE.WORKPLACE_USER" permissions="+r+v+w+c"/>
 				</accesscontrol>
 			</explorertype>
-			<explorertype name="alkacon-v8-webformreport" key="fileicon.alkacon-v8-webformreport" icon="v8-alkacon-webformreport.gif" bigicon="v8-alkacon-webformreport_big.png" reference="xmlcontent">
+			<explorertype name="alkacon-v8-webformreport" key="fileicon.alkacon-v8-webformreport" icon="v8-alkacon-webformreport.png" bigicon="v8-alkacon-webformreport_big.png" reference="xmlcontent">
 				<newresource page="structurecontent" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-v8-webformreport" order="66" autosetnavigation="false" autosettitle="false" info="desc.alkacon-v8-webformreport"/>
 				<accesscontrol>
 					<accessentry principal="ROLE.WORKPLACE_USER" permissions="+r+v+w+c"/>
