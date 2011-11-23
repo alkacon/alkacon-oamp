@@ -2022,7 +2022,10 @@ public class CmsForm {
         setRefreshSessionInterval(-1);
         setShowMandatory(true);
         setShowReset(true);
-        setTemplateFile(VFS_PATH_DEFAULT_TEMPLATEFILE);
+        String tempfilePath = OpenCms.getModuleManager().getModule(MODULE_NAME).getParameter(
+            MODULE_PARAM_TEMPLATE_FILE,
+            VFS_PATH_DEFAULT_TEMPLATEFILE);
+        setTemplateFile(tempfilePath);
         setTitle("");
     }
 
@@ -2660,18 +2663,20 @@ public class CmsForm {
                         String suffix = new StringBuffer("-").append(index).append("-").append(fieldValue.hashCode()).toString();
                         List<I_CmsXmlContentValue> fieldValues = content.getValues(subPath + NODE_INPUTFIELD, locale);
                         for (Iterator<I_CmsXmlContentValue> k = fieldValues.iterator(); k.hasNext();) {
-                            field.addSubField(fieldValue, createInputField(
-                                k.next().getPath(),
-                                content,
-                                jsp,
-                                locale,
-                                messages,
-                                fieldTexts,
-                                subFieldPaths,
-                                fileUploads,
-                                suffix,
-                                initial,
-                                true));
+                            field.addSubField(
+                                fieldValue,
+                                createInputField(
+                                    k.next().getPath(),
+                                    content,
+                                    jsp,
+                                    locale,
+                                    messages,
+                                    fieldTexts,
+                                    subFieldPaths,
+                                    fileUploads,
+                                    suffix,
+                                    initial,
+                                    true));
                         }
                     }
                 }
