@@ -53,7 +53,7 @@
 			<param name="usergroup">Users</param>
 		</parameters>
 		<resourcetypes>
-			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="alkacon-v8-webform" id="269">
+			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="alkacon-v8-webform" id="270">
 				<properties>
 					<property>
 						<name>template-elements</name>
@@ -62,7 +62,7 @@
 				</properties>
 				<param name="schema">/system/modules/com.alkacon.opencms.v8.formgenerator/schemas/form.xsd</param>
 			</type>
-			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="alkacon-v8-webformreport" id="270">
+			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="alkacon-v8-webformreport" id="271">
 				<properties>
 					<property>
 						<name>template-elements</name>
