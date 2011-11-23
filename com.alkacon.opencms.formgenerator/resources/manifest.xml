@@ -30,8 +30,10 @@
 		</exportpoints>
 		<resources>
 			<resource uri="/system/modules/com.alkacon.opencms.formgenerator/"/>
-			<resource uri="/system/workplace/resources/filetypes/alkacon-webform.gif"/>
-			<resource uri="/system/workplace/resources/filetypes/alkacon-webformreport.gif"/>
+			<resource uri="/system/workplace/resources/filetypes/alkacon-webform.png"/>
+			<resource uri="/system/workplace/resources/filetypes/alkacon-webformreport.png"/>
+			<resource uri="/system/workplace/resources/filetypes/alkacon-webform_big.png"/>
+			<resource uri="/system/workplace/resources/filetypes/alkacon-webformreport_big.png"/>
 			<resource uri="/system/workplace/resources/tools/database/icons/big/webform.png"/>
 			<resource uri="/system/workplace/resources/tools/database/buttons/webform_download.png"/>
 			<resource uri="/system/workplace/resources/tools/database/buttons/webform_delete_disabled.png"/>
@@ -71,13 +73,13 @@
 			</type>
 		</resourcetypes>
 		<explorertypes>
-			<explorertype name="alkacon-webform" key="fileicon.alkacon-webform" icon="alkacon-webform.gif" reference="xmlcontent">
+			<explorertype name="alkacon-webform" key="fileicon.alkacon-webform" icon="alkacon-webform.png" bigicon="alkacon-webform_big.png" reference="xmlcontent">
 				<newresource page="structurecontent" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-webform" order="65" autosetnavigation="false" autosettitle="false" info="desc.webform"/>
 				<accesscontrol>
 					<accessentry principal="ROLE.WORKPLACE_USER" permissions="+r+v+w+c"/>
 				</accesscontrol>
 			</explorertype>
-			<explorertype name="alkacon-webformreport" key="fileicon.alkacon-webformreport" icon="alkacon-webformreport.gif" reference="xmlcontent">
+			<explorertype name="alkacon-webformreport" key="fileicon.alkacon-webformreport" icon="alkacon-webformreport.png" bigicon="alkacon-webformreport_big.png" reference="xmlcontent">
 				<newresource page="structurecontent" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-webformreport" order="66" autosetnavigation="false" autosettitle="false" info="desc.webformreport"/>
 				<accesscontrol>
 					<accessentry principal="ROLE.WORKPLACE_USER" permissions="+r+v+w+c"/>
