@@ -4806,8 +4806,8 @@
 			<accesscontrol/>
 		</file>
 		<file>
-			<source>system/workplace/resources/filetypes/v8-alkacon-webform.gif</source>
-			<destination>system/workplace/resources/filetypes/v8-alkacon-webform.gif</destination>
+			<source>system/workplace/resources/filetypes/v8-alkacon-webform.png</source>
+			<destination>system/workplace/resources/filetypes/v8-alkacon-webform.png</destination>
 			<type>image</type>
 			<uuidstructure>0657a054-0628-11e1-a876-6f6871313691</uuidstructure>
 			<uuidresource>0657a055-0628-11e1-a876-6f6871313691</uuidresource>
@@ -4846,8 +4846,8 @@
 			<accesscontrol/>
 		</file>
 		<file>
-			<source>system/workplace/resources/filetypes/v8-alkacon-webformreport.gif</source>
-			<destination>system/workplace/resources/filetypes/v8-alkacon-webformreport.gif</destination>
+			<source>system/workplace/resources/filetypes/v8-alkacon-webformreport.png</source>
+			<destination>system/workplace/resources/filetypes/v8-alkacon-webformreport.png</destination>
 			<type>image</type>
 			<uuidstructure>065a1157-0628-11e1-a876-6f6871313691</uuidstructure>
 			<uuidresource>065a1158-0628-11e1-a876-6f6871313691</uuidresource>
