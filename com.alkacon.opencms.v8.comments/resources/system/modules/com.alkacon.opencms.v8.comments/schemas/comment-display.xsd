@@ -1,0 +1,56 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+	
+	<xsd:element name="AlkaconV8CommentDisplays" type="OpenCmsAlkaconV8CommentDisplays"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconV8CommentDisplays">
+		<xsd:sequence>
+			<xsd:element name="AlkaconV8CommentDisplay" type="OpenCmsAlkaconV8CommentDisplay" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconV8CommentDisplay">
+		<xsd:sequence>
+			<xsd:element name="Title" type="OpenCmsString" />
+			<xsd:element name="Headline" type="OpenCmsString" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="ConfigUri" type="OpenCmsVfsFile" />	
+			<xsd:element name="Minimized" type="OpenCmsBoolean" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="List" type="OpenCmsString" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="Security" type="OpenCmsString" minOccurs="0" maxOccurs="1" />	
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="required" />
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.v8.comments.workplace"/>
+			<layouts>
+				<layout element="ConfigUri" widget="com.alkacon.opencms.v8.comments.CmsCommentConfigurationSelectWidget" />
+				<layout element="List" widget="SelectorWidget" configuration="3:3|5:5|10:10|20:20|50:50|all:${key.label.AlkaconV8CommentFormOption.List.all}" />
+				<layout element="Security" widget="RadioSelectWidget" configuration="none*:${key.label.AlkaconV8CommentFormOption.Security.none}|write:${key.label.AlkaconV8CommentFormOption.Security.write}|view:${key.label.AlkaconV8CommentFormOption.Security.view}|noview:${key.label.AlkaconV8CommentFormOption.Security.noview}" />
+			</layouts>
+			<relations>
+				<relation element="ConfigUri" type="strong" invalidate="false"/>
+			</relations>
+			<formatters>
+				<formatter minwidth="400" uri="/system/modules/com.alkacon.opencms.v8.comments/formatters/comment-formatter.jsp" searchcontent="false" />
+			</formatters>
+			<settings>
+				<setting name="minimized" nice-name="%(key.label.AlkaconV8CommentDisplay.Minimized)" type="string" widget="select" widget-config="true:Yes|false:No" />
+				<setting name="list" nice-name="%(key.label.AlkaconV8CommentDisplay.List)" type="string" widget="select" widget-config="3|5|10|20|50|all:${key.label.AlkaconV8CommentFormOption.List.all}" />
+				<setting name="security" nice-name="%(key.label.AlkaconV8CommentDisplay.Security)" type="string" widget="select" widget-config="none:${key.label.AlkaconV8CommentFormOption.Security.none}|write:${key.label.AlkaconV8CommentFormOption.Security.write}|view:${key.label.AlkaconV8CommentFormOption.Security.view}|noview:${key.label.AlkaconV8CommentFormOption.Security.noview}" />
+				<setting name="visibility" nice-name="%(key.label.setting.visibility)" default="always" type="string" widget="select" widget-config="always:%(key.label.setting.visibility.always)|detailview:%(key.label.setting.visibility.detailview)|directview:%(key.label.setting.visibility.directview)" />
+			</settings>
+			<headincludes>
+				<headinclude type="javascript" uri="/system/modules/org.opencms.jquery/resources/load.js" />
+				<headinclude type="javascript" uri="/system/modules/org.opencms.jquery/resources/packed/jquery.js"/>
+				<headinclude type="javascript" uri="/system/modules/com.alkacon.opencms.v8.commons/resources/js/jquery.pagination.js"/>
+				<headinclude type="javascript" uri="/system/modules/com.alkacon.opencms.v8.commons/resources/js/jquery.colorbox.js" />
+			 	<headinclude type="css" uri="/system/modules/com.alkacon.opencms.v8.commons/resources/css/jquery.colorbox.css" />
+				<headinclude type="css" uri="/system/modules/com.alkacon.opencms.v8.commons/resources/css/pagination.css"/>
+			</headincludes>
+		</xsd:appinfo>
+	</xsd:annotation>  
+	
+</xsd:schema>

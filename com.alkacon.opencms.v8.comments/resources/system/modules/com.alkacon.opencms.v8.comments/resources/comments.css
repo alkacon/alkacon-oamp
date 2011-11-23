@@ -1,0 +1,161 @@
+/* Header Styles */
+div.cmtLoading {
+	background: transparent url(load.gif) no-repeat scroll center;
+	height: 15px;
+	width: 100%;
+}
+div.cmtHeader {
+	text-align: center; 
+	width: 100%;
+}
+
+/* Comment entries styles */
+div.cmtCommentEntry { 
+	margin-top: 5px; 
+	border: 1px solid #CCCCCC; 
+}
+div.cmtCommentHeader { 
+	background: #CCCCCC url(gradient.png) repeat-x scroll center top;
+	color: black;
+	padding: 3px 5px;
+}
+div.cmtCommentBody { 
+	padding: 5px 20px;
+}
+div.cmtCommentTitle {
+	padding-top: 3px; 
+	font-weight: bold;
+}
+div.cmtCommentSubtitle, div.cmtCommentSubtitle b {
+	font-size: 9px;
+}
+
+/* Comment entries in management mode */
+div.cmtCommentApproved { 
+	background: #CCCCCC url(gradient.png) repeat-x scroll center top;
+	color: black;
+	padding: 3px 5px;
+}
+div.cmtCommentNew {
+	background: #AACCFF url(gradient.png) repeat-x scroll center top;
+	color: black;
+	padding: 3px 5px;
+}
+div.cmtCommentBlocked {
+	background: #FFAAAA url(gradient.png) repeat-x scroll center top;
+	color: black;
+	padding: 3px 5px;
+}
+div.cmtCommentManager {
+	padding: 5px 20px;
+}
+div.cmtActionsHeader {
+	position: relative;
+}
+div.cmtActions {
+	position: absolute; right: 5px;
+}
+div.cmtActions img {
+	border: none;
+}
+
+/* Pagination styles */
+div.cmtPaginationHeader {
+	position: relative;
+	height: 18px;
+}
+div.cmtPaginationBox {
+	position: absolute;
+	right: 0px;
+	font-size: 10px;
+	top: 3px;
+}
+div.cmtPaginationBox a, div.cmtPaginationBox span {
+	font-size: 10px;
+	margin-bottom: 0px;
+	padding: 2px 4px;
+}
+
+/* State filtering styles */
+div.cmtFilterState {
+	margin: 8px 0px 0px 5px;
+	font-size: 9px;
+	position: absolute;
+	left: 0px;
+}
+div.cmtFilterState a {
+	font-size: 9px;
+}
+
+/* Dialog styles */
+div.cmtDialog { 
+	padding: 5px;
+	width: 650px;
+}
+
+/* Form styles */
+form.cmtForm div.webform_row {
+	display: block;
+	margin: 5px 0 0;
+	padding: 1px 3px;
+	text-align: left;
+}
+form.cmtForm div.webform_row label {
+	display: block;
+	float: left;
+	padding-right: 5px;
+	text-align: right;
+	width: 6em;
+}
+form.cmtForm div.webform_row input {
+	width: 300px;
+}
+form.cmtForm div.cmtButtonRow {
+	float: right; 
+	padding-top: 10px;
+}
+form.cmtForm input, form.cmtForm textarea {
+	border: 1px solid #AAAACC;
+}
+form.cmtForm div.cmtButtonRow input.cmtButton {
+	width: 100px;
+	padding: 2px;
+	border: 1px solid #444455;
+	text-align: center;
+}
+form.cmtForm div.cmtErrorMessage {
+	font-weight: bold;
+	color: #B31334;
+}
+form.cmtForm textarea {
+	height: 200px;
+	width: 100%;
+}
+form.cmtForm img {
+	max-width: 99%;
+}
+
+/* Overwrite default thickbox styles */
+#cboxTitle.cmt_TB_title { 
+	background: #AACCFF url(gradient.png) repeat-x scroll center top;
+	height: auto;
+	color: black;
+	padding: 3px 5px;
+	font-weight: bold;
+	top: 0;
+	left: 0;
+	right: 0;
+	line-height:38px;
+	bottom: auto;
+	width: auto;
+}
+div.cmt_TB_closeAjaxWindow {
+	top: 0px;
+	margin-top: -20000px;
+	display: none;
+}
+#cboxContent #cboxLoadedContent{
+	background-color: #EEEEFF;
+	margin-bottom: 0;
+	margin-top: 44px;
+}

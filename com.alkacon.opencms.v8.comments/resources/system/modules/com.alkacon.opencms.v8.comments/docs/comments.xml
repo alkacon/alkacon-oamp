@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<AlkaconV8CommentForms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/com.alkacon.opencms.v8.comments/schemas/comment.xsd">
+  <AlkaconV8CommentForm language="en">
+    <Options>
+      <Moderated>false</Moderated>
+      <List><![CDATA[5]]></List>
+      <Security><![CDATA[none]]></Security>
+      <Minimized>false</Minimized>
+      <OfferLogin>false</OfferLogin>
+    </Options>
+    <InputField>
+      <FieldType><![CDATA[text]]></FieldType>
+      <FieldLabel><![CDATA[Your name:|name]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[email]]></FieldType>
+      <FieldLabel><![CDATA[Your Email (will not be shown):|email]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[text]]></FieldType>
+      <FieldLabel><![CDATA[Subject:|subject]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[textarea]]></FieldType>
+      <FieldLabel><![CDATA[Your comment:|comment]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[dynamic]]></FieldType>
+      <FieldLabel><![CDATA[ipaddress]]></FieldLabel>
+      <FieldMandatory>false</FieldMandatory>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[dynamic]]></FieldType>
+      <FieldLabel><![CDATA[locale]]></FieldLabel>
+      <FieldMandatory>false</FieldMandatory>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[dynamic]]></FieldType>
+      <FieldLabel><![CDATA[username]]></FieldLabel>
+      <FieldMandatory>false</FieldMandatory>
+    </InputField>
+    <FormCaptcha>
+      <FieldLabel><![CDATA[Verification:]]></FieldLabel>
+      <Preset><![CDATA[/system/workplace/admin/captcha/alkacon-dict-en.captchapreset]]></Preset>
+    </FormCaptcha>
+    <MailAlert>
+      <MailFrom><![CDATA[comments.noreply@server.com]]></MailFrom>
+      <MailResponsible>true</MailResponsible>
+      <MailSubject><![CDATA[New comment for %(url) from %(name)]]></MailSubject>
+      <MailText name="MailText0">
+        <links>
+          <link name="link0" internal="false" type="A">
+            <target><![CDATA[%(url)]]></target>
+          </link>
+        </links>
+        <content><![CDATA[<p>A new comment for <a href="%(link0)">%(url)</a> has been added by %(name) (%(email)) at %(date):</p>
+<p>%(comment)</p>
+<p>&nbsp;</p>]]></content>
+      </MailText>
+      <MailType><![CDATA[html]]></MailType>
+    </MailAlert>
+    <FormConfirmation name="FormConfirmation0">
+      <links/>
+      <content><![CDATA[<p>Thank you very much for your comment.</p>
+<p>&nbsp;</p>
+<p>Your comment has been successful submitted and will be reviewed and published as soon as possible.</p>
+<p>&nbsp;</p>
+<p>Sincerely,</p>
+<p>The OpenCms Team</p>]]></content>
+    </FormConfirmation>
+    <OptionalFormConfiguration>
+      <ShowMandatory>true</ShowMandatory>
+      <FormAttributes><![CDATA[class="cmtForm"]]></FormAttributes>
+      <FormFieldAttributes><![CDATA[style="width: 99%"]]></FormFieldAttributes>
+      <DynamicFieldClass><![CDATA[com.alkacon.opencms.v8.comments.CmsCommentDynamicFields]]></DynamicFieldClass>
+    </OptionalFormConfiguration>
+  </AlkaconV8CommentForm>
+  <AlkaconV8CommentForm language="de">
+    <Options>
+      <Moderated>false</Moderated>
+      <List><![CDATA[5]]></List>
+      <Security><![CDATA[none]]></Security>
+      <Minimized>false</Minimized>
+      <OfferLogin>false</OfferLogin>
+    </Options>
+    <InputField>
+      <FieldType><![CDATA[text]]></FieldType>
+      <FieldLabel><![CDATA[Ihr Name:|name]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[email]]></FieldType>
+      <FieldLabel><![CDATA[Ihre E-Mail (wird nicht angezeigt):|email]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[text]]></FieldType>
+      <FieldLabel><![CDATA[Betreff:|subject]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[textarea]]></FieldType>
+      <FieldLabel><![CDATA[Ihr Beitrag:|comment]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[dynamic]]></FieldType>
+      <FieldLabel><![CDATA[ipaddress]]></FieldLabel>
+      <FieldMandatory>false</FieldMandatory>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[dynamic]]></FieldType>
+      <FieldLabel><![CDATA[locale]]></FieldLabel>
+      <FieldMandatory>false</FieldMandatory>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[dynamic]]></FieldType>
+      <FieldLabel><![CDATA[username]]></FieldLabel>
+      <FieldMandatory>false</FieldMandatory>
+    </InputField>
+    <FormCaptcha>
+      <FieldLabel><![CDATA[Verification:]]></FieldLabel>
+      <Preset><![CDATA[/system/workplace/admin/captcha/alkacon-dict-de.captchapreset]]></Preset>
+    </FormCaptcha>
+    <MailAlert>
+      <MailFrom><![CDATA[comments.noreply@server.com]]></MailFrom>
+      <MailTo><![CDATA[info@server.com]]></MailTo>
+      <MailResponsible>false</MailResponsible>
+      <MailSubject><![CDATA[Neuer Beitrag für %(url) von %(name)]]></MailSubject>
+      <MailText name="MailText0">
+        <links>
+          <link name="link0" internal="false" type="A">
+            <target><![CDATA[%(url)]]></target>
+          </link>
+        </links>
+        <content><![CDATA[<p>Ein neuer Beitrag für <a href="%(link0)">%(url)</a> wurde von %(name) (%(email)) um %(date) abgeschickt:</p>
+<p>%(comment)</p>
+<p>&nbsp;</p>]]></content>
+      </MailText>
+      <MailType><![CDATA[html]]></MailType>
+    </MailAlert>
+    <OptionalFormConfiguration>
+      <ShowMandatory>true</ShowMandatory>
+      <FormAttributes><![CDATA[class="cmtForm"]]></FormAttributes>
+      <FormFieldAttributes><![CDATA[style="width: 99%"]]></FormFieldAttributes>
+      <DynamicFieldClass><![CDATA[com.alkacon.opencms.v8.comments.CmsCommentDynamicFields]]></DynamicFieldClass>
+    </OptionalFormConfiguration>
+  </AlkaconV8CommentForm>
+</AlkaconV8CommentForms>
