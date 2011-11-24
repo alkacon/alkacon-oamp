@@ -201,7 +201,7 @@ public class CmsCaptchaEngine extends ImageCaptchaEngine {
         if (m_settings.isUseBackgroundImage()) {
             background = new FileReaderRandomBackgroundGenerator(new Integer(m_settings.getImageWidth()), new Integer(
                 m_settings.getImageHeight()), OpenCms.getSystemInfo().getAbsoluteRfsPathRelativeToWebApplication(
-                "resources/captchabackgrounds/"));
+                "resources/captchabackgrounds/v8/"));
 
         } else {
             background = new UniColorBackgroundGenerator(new Integer(m_settings.getImageWidth()), new Integer(
