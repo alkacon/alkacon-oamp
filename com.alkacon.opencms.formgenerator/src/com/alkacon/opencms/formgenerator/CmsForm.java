@@ -1731,7 +1731,7 @@ public class CmsForm {
         stringValue = getContentStringValue(content, cms, pathPrefix + NODE_DATATARGET_FORMID, locale);
         setFormId(getConfigurationValue(stringValue, content.getFile().getRootPath()));
 
-        if (content.hasValue(NODE_OPTIONALCONFIGURATION, locale)) {
+        if (CmsFormContentUtil.hasContentValue(content, NODE_OPTIONALCONFIGURATION, locale)) {
             // optional configuration options
             pathPrefix = NODE_OPTIONALCONFIGURATION + "/";
 
@@ -1874,7 +1874,7 @@ public class CmsForm {
                 messages.key("form.confirmation.checkbox")));
         }
 
-        if (content.hasValue(NODE_OPTIONALEXPIRATION, locale)) {
+        if (CmsFormContentUtil.hasContentValue(content, NODE_OPTIONALEXPIRATION, locale)) {
             // optional confirmation mail nodes
             pathPrefix = NODE_OPTIONALEXPIRATION + "/";
             stringValue = getContentStringValue(content, cms, pathPrefix + NODE_DATE, locale);
@@ -1887,7 +1887,7 @@ public class CmsForm {
             setExpirationText(getConfigurationValue(stringValue, ""));
         }
 
-        if (content.hasValue(NODE_OPTIONALRELEASE, locale)) {
+        if (CmsFormContentUtil.hasContentValue(content, NODE_OPTIONALRELEASE, locale)) {
             // optional form release nodes
             pathPrefix = NODE_OPTIONALRELEASE + "/";
             stringValue = getContentStringValue(content, cms, pathPrefix + NODE_DATE, locale);
@@ -1900,8 +1900,11 @@ public class CmsForm {
             setReleaseText(getConfigurationValue(stringValue, ""));
         }
 
-        if (content.hasValue(NODE_OPTIONALCONFIGURATION + "/" + NODE_OPTIONALMAXSUBMISSIONS, locale)) {
-            // optional form release nodes
+        if (CmsFormContentUtil.hasContentValue(
+            content,
+            NODE_OPTIONALCONFIGURATION + "/" + NODE_OPTIONALMAXSUBMISSIONS,
+            locale)) {
+            // optional form submissions nodes
             pathPrefix = NODE_OPTIONALCONFIGURATION + "/" + NODE_OPTIONALMAXSUBMISSIONS + "/";
             stringValue = getContentStringValue(content, cms, pathPrefix + NODE_VALUE, locale);
             try {
