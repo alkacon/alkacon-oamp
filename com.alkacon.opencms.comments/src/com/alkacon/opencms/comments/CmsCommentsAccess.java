@@ -63,9 +63,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.xml.transform.Transformer;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.PageContext;
 
-import sun.rmi.runtime.Log;
+import org.apache.commons.collections.Transformer;
+import org.apache.commons.collections.map.LazyMap;
+import org.apache.commons.logging.Log;
 
 /**
  * Provides direct access to comments.<p>
