@@ -59,14 +59,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.PageContext;
+import javax.xml.transform.Transformer;
 
-import org.apache.commons.collections.Transformer;
-import org.apache.commons.collections.map.LazyMap;
-import org.apache.commons.logging.Log;
+import sun.rmi.runtime.Log;
 
 /**
  * Provides direct access to comments.<p>
@@ -638,7 +633,7 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
         }
         try {
             m_uri = req.getParameter(PARAM_URI);
-            m_resource = getCmsObject().readResource(m_uri);
+            m_resource = getCmsObject().readResource(m_uri, CmsResourceFilter.ONLY_VISIBLE_NO_DELETED);
             getCmsObject().getRequestContext().setUri(m_uri);
             String configUri = readConfigUri();
             String cacheKey = getCmsObject().getRequestContext().addSiteRoot(configUri)
