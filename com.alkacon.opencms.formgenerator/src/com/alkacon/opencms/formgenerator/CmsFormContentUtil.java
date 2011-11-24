@@ -114,4 +114,18 @@ public final class CmsFormContentUtil {
         return "";
     }
 
+    /**
+     * Checks the presence of a content value from the given content,
+     * but from a nested path if a NODE_NESTED_FORM node is present.<p>
+     * 
+     * @param content the XML content
+     * @param path the path of the content value
+     * @param locale the locale to use
+     * @return if the value exists
+     */
+    public static boolean hasContentValue(CmsXmlContent content, String path, Locale locale) {
+
+        return content.hasValue(getNestedPathPrefix(content, NODE_NESTED_FORM, locale) + path, locale);
+    }
+
 }

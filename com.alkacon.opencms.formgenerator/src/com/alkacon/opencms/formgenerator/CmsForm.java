@@ -55,8 +55,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.StringTokenizer;
 import java.util.Map.Entry;
+import java.util.StringTokenizer;
 
 import org.apache.commons.fileupload.FileItem;
 
@@ -1613,7 +1613,7 @@ public class CmsForm {
         stringValue = getContentStringValue(content, cms, pathPrefix + NODE_DATATARGET_FORMID, locale);
         setFormId(getConfigurationValue(stringValue, content.getFile().getRootPath()));
 
-        if (content.hasValue(NODE_OPTIONALCONFIGURATION, locale)) {
+        if (CmsFormContentUtil.hasContentValue(content, NODE_OPTIONALCONFIGURATION, locale)) {
             // optional configuration options
             pathPrefix = NODE_OPTIONALCONFIGURATION + "/";
 
@@ -1750,7 +1750,7 @@ public class CmsForm {
                 messages.key("form.confirmation.checkbox")));
         }
 
-        if (content.hasValue(NODE_OPTIONALEXPIRATION, locale)) {
+        if (CmsFormContentUtil.hasContentValue(content, NODE_OPTIONALEXPIRATION, locale)) {
             // optional confirmation mail nodes
             pathPrefix = NODE_OPTIONALEXPIRATION + "/";
             stringValue = getContentStringValue(content, cms, pathPrefix + NODE_DATE, locale);
@@ -2418,7 +2418,7 @@ public class CmsForm {
         int pos = locLabel.indexOf('|');
         if (pos > -1) {
             locLabel = locLabel.substring(0, pos);
-            if (pos + 1 < dbLabel.length()) {
+            if ((pos + 1) < dbLabel.length()) {
                 dbLabel = dbLabel.substring(pos + 1);
             }
         }
@@ -2457,18 +2457,20 @@ public class CmsForm {
                         String suffix = new StringBuffer("-").append(index).append("-").append(fieldValue.hashCode()).toString();
                         List<I_CmsXmlContentValue> fieldValues = content.getValues(subPath + NODE_INPUTFIELD, locale);
                         for (Iterator<I_CmsXmlContentValue> k = fieldValues.iterator(); k.hasNext();) {
-                            field.addSubField(fieldValue, createInputField(
-                                k.next().getPath(),
-                                content,
-                                jsp,
-                                locale,
-                                messages,
-                                fieldTexts,
-                                subFieldPaths,
-                                fileUploads,
-                                suffix,
-                                initial,
-                                true));
+                            field.addSubField(
+                                fieldValue,
+                                createInputField(
+                                    k.next().getPath(),
+                                    content,
+                                    jsp,
+                                    locale,
+                                    messages,
+                                    fieldTexts,
+                                    subFieldPaths,
+                                    fileUploads,
+                                    suffix,
+                                    initial,
+                                    true));
                         }
                     }
                 }
