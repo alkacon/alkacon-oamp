@@ -26,7 +26,7 @@
 		<exportpoints>
 			<exportpoint uri="/system/modules/com.alkacon.opencms.v8.formgenerator/classes/" destination="WEB-INF/classes/"/>
 			<exportpoint uri="/system/modules/com.alkacon.opencms.v8.formgenerator/lib/" destination="WEB-INF/lib/"/>
-			<exportpoint uri="/system/modules/com.alkacon.opencms.v8.formgenerator/captchabackgrounds/" destination="resources/captchabackgrounds/"/>
+			<exportpoint uri="/system/modules/com.alkacon.opencms.v8.formgenerator/captchabackgrounds/" destination="resources/captchabackgrounds/v8/"/>
 		</exportpoints>
 		<resources>
 			<resource uri="/system/modules/com.alkacon.opencms.v8.formgenerator/"/>
