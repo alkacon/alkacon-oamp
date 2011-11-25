@@ -1,0 +1,42 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd" />
+    <xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.survey/schemas/report.xsd" />
+    <xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.formgenerator/schemas/form.xsd" />
+    <xsd:element name="AlkaconV8Surveys" type="OpenCmsAlkaconV8Surveys" />
+    
+    <xsd:complexType name="OpenCmsAlkaconV8Surveys">
+        <xsd:sequence>
+            <xsd:element name="AlkaconV8Survey" type="OpenCmsAlkaconV8Survey" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="OpenCmsAlkaconV8Survey">
+        <xsd:sequence>
+            <xsd:element name="Form" type="OpenCmsAlkaconV8WebForm" minOccurs="1" maxOccurs="1" />
+            <xsd:element name="Expire" type="OpenCmsDateTime" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="SurveyReport" type="OpenCmsAlkaconV8SurveyReport" minOccurs="1" maxOccurs="1" /> 
+        </xsd:sequence>
+        <xsd:attribute name="language" type="OpenCmsLocale" use="required" />
+    </xsd:complexType>
+    
+    <xsd:annotation>
+    	<xsd:appinfo>
+		<mappings>
+			<mapping element="Expire" mapto="property:expiry-date" />
+			<mapping element="Form/Title" mapto="property:Title" />
+		</mappings>
+		<formatters>
+			<formatter minwidth="200" uri="/system/modules/com.alkacon.opencms.v8.survey/pages/survey.jsp" />
+		</formatters>
+	    	<tabs>
+		    	<tab element="Form" collapse="false" name="FormTab"/>
+	    		<tab element="SurveyReport" collapse="true" name="ReportTab" />
+		</tabs>
+		<headincludes>
+			<headinclude type="css" uri="/system/modules/com.alkacon.opencms.v8.survey/resources/css/webform.css" />
+			<headinclude type="css" uri="/system/modules/com.alkacon.opencms.v8.formgenerator/resources/css/webform.css" />
+		</headincludes>
+    	</xsd:appinfo>
+    </xsd:annotation>
+
+</xsd:schema>

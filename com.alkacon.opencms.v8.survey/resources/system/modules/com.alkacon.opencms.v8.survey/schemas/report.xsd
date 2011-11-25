@@ -1,0 +1,49 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+	
+	<xsd:element name="AlkaconV8SurveyReports" type="OpenCmsAlkaconV8SurveyReports"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconV8SurveyReports">
+		<xsd:sequence>
+			<xsd:element name="AlkaconV8SurveyReport" type="OpenCmsAlkaconV8SurveyReport" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconV8SurveyReport">
+		<xsd:sequence>
+			<xsd:element name="Color" type="OpenCmsColor" minOccurs="1" maxOccurs="unbounded"/>
+			<xsd:element name="DetailGroup" type="OpenCmsString" minOccurs="0"/>
+			<xsd:element name="AverageColor" type="OpenCmsColor" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="Text" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="ShowCount" type="OpenCmsBoolean" minOccurs="1" maxOccurs="1" />
+			<xsd:element name="AddText" type="OpenCmsHtml" minOccurs="0" />
+			<xsd:element name="SurveyClosedText" type="OpenCmsHtml" minOccurs="0" maxOccurs="1" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.v8.survey.workplace"/>
+			<preview uri="${previewtempfile}" />
+			<defaults>
+				<default element="DetailGroup" value="Administrators"/>
+				<default element="AverageColor" value="#ffff00" />
+			</defaults>
+			<formatters>
+				<formatter minwidth="200" uri="/system/modules/com.alkacon.opencms.v8.survey/pages/reporting.jsp" />
+			</formatters>
+			<validationrules>
+				<rule element="Color" regex=".+" type="error" message="${key.err.xmlcontent.field.empty}"/>
+				<rule element="DetailGroup" regex=".+" type="error" message="${key.err.xmlcontent.field.empty}"/>
+			</validationrules>
+			<layouts>
+				<layout element="Text" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
+				<layout element="DetailGroup" widget="GroupWidget" />
+				<layout element="AddText" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
+			</layouts>	
+		</xsd:appinfo>
+	</xsd:annotation>  
+	
+</xsd:schema>
