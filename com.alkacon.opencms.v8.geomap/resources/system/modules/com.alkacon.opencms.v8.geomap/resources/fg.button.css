@@ -1,0 +1,17 @@
+/* buttons default settings */  
+.fg-button { padding-left: 4px; padding-right: 4px; outline: 0; margin:0 4px 0 0; text-decoration:none !important; cursor:pointer; position: relative; text-align: center; zoom: 1; font-weight: normal; }
+.fg-button .ui-icon { position: absolute; top: 50%; left: 50%; margin-top: -8px; margin-left: -8px; }
+.fg-buttonset-single .fg-button, .fg-buttonset-multi .fg-button { margin-right: -1px; }
+/* ensure border visibility */
+.fg-buttonset .ui-state-default { z-index: 1; }
+.fg-buttonset .ui-state-active { z-index: 2; }
+.fg-buttonset .ui-state-hover { z-index: 3; }
+/* buttons with icons */	
+.fg-button-icon-left { padding-left: 2em; }
+.fg-button-icon-right { padding-right: 2em; }
+.fg-button-icon-left .ui-icon { right: auto; left: .2em; margin-left: 0; }
+.fg-button-icon-right .ui-icon { left: auto; right: .2em; margin-left: 0; }
+.fg-button-icon-solo { padding-left: 1.1em; }
+.fg-button.ui-state-loading .ui-icon { background: url(spinner_bar.gif) no-repeat 0 0; }
+/* remove extra button width in IE */
+.fg-button { width:auto; overflow:visible; }

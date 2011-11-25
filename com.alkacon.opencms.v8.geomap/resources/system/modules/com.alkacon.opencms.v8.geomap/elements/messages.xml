@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<AlkaconV8GeoMapMessages xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/com.alkacon.opencms.v8.geomap/schemas/messages.xsd">
+  <AlkaconV8GeoMapMessage language="en">
+    <Label>
+      <Latitude><![CDATA[Latitude:]]></Latitude>
+      <Longitude><![CDATA[Longitude:]]></Longitude>
+      <Address><![CDATA[Address:]]></Address>
+      <Zoom><![CDATA[Zoom:]]></Zoom>
+      <Size><![CDATA[Size:]]></Size>
+      <Type><![CDATA[Type:]]></Type>
+      <Mode><![CDATA[Mode:]]></Mode>
+    </Label>
+    <Type>
+      <Map><![CDATA[Map]]></Map>
+      <Satellite><![CDATA[Satellite]]></Satellite>
+      <Hybrid><![CDATA[Hybrid]]></Hybrid>
+      <Terrain><![CDATA[Terrain]]></Terrain>
+    </Type>
+    <Mode>
+      <Static><![CDATA[Static]]></Static>
+      <Dynamic><![CDATA[Dynamic]]></Dynamic>
+    </Mode>
+  </AlkaconV8GeoMapMessage>
+  <AlkaconV8GeoMapMessage language="de">
+    <Label>
+      <Latitude><![CDATA[Breitengrad:]]></Latitude>
+      <Longitude><![CDATA[Laengengrad:]]></Longitude>
+      <Address><![CDATA[Adresse:]]></Address>
+      <Zoom><![CDATA[Zoom:]]></Zoom>
+      <Size><![CDATA[Groesse:]]></Size>
+      <Type><![CDATA[Typ:]]></Type>
+      <Mode><![CDATA[Modus:]]></Mode>
+    </Label>
+    <Type>
+      <Map><![CDATA[Karte]]></Map>
+      <Satellite><![CDATA[Satellit]]></Satellite>
+      <Hybrid><![CDATA[Hybrid]]></Hybrid>
+      <Terrain><![CDATA[Terrain]]></Terrain>
+    </Type>
+    <Mode>
+      <Static><![CDATA[Statisch]]></Static>
+      <Dynamic><![CDATA[Dynamisch]]></Dynamic>
+    </Mode>
+  </AlkaconV8GeoMapMessage>
+</AlkaconV8GeoMapMessages>
