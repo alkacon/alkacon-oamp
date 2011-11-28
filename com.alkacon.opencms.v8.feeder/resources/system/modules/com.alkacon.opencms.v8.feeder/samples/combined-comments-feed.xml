@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<AlkaconV8Feeds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/com.alkacon.opencms.v8.feeder/schemas/alkacon-v8-feed.xsd">
+  <AlkaconV8Feed language="en">
+    <Title><![CDATA[Test.com]]></Title>
+    <Type><![CDATA[rss_2.0]]></Type>
+    <Description><![CDATA[my nice SEO'ed description]]></Description>
+    <Copyright><![CDATA[2008 Alkacon Software]]></Copyright>
+    <Collector><![CDATA[allInSubTreePriorityDateDesc]]></Collector>
+    <Parameter><![CDATA[/blog/|blog-article|50]]></Parameter>
+    <DescriptionFormat><![CDATA[html]]></DescriptionFormat>
+    <Mapping>
+      <Field><![CDATA[Title]]></Field>
+      <XmlNode><![CDATA[Title]]></XmlNode>
+    </Mapping>
+    <Mapping>
+      <Field><![CDATA[Description]]></Field>
+      <XmlNode><![CDATA[Content]]></XmlNode>
+    </Mapping>
+    <Mapping>
+      <Field><![CDATA[Author]]></Field>
+      <XmlNode><![CDATA[Author]]></XmlNode>
+    </Mapping>
+    <Mapping>
+      <Field><![CDATA[DatePublished]]></Field>
+      <XmlNode><![CDATA[dateCreated]]></XmlNode>
+    </Mapping>
+    <Mapping>
+      <Field><![CDATA[DateUpdated]]></Field>
+      <XmlNode><![CDATA[dateLastModified]]></XmlNode>
+    </Mapping>
+    <ResourceSet>
+      <Collector><![CDATA[allInSubTreePriorityDateDesc]]></Collector>
+      <Parameter><![CDATA[/gallery/|photoalbum|50]]></Parameter>
+      <DescriptionFormat><![CDATA[html]]></DescriptionFormat>
+      <Mapping>
+        <Field><![CDATA[Title]]></Field>
+        <XmlNode><![CDATA[Title]]></XmlNode>
+      </Mapping>
+      <Mapping>
+        <Field><![CDATA[Description]]></Field>
+        <XmlNode><![CDATA[<p><img width="200" height="150" alt="view" src="%(link.%(xml.Portrait)?__scale=w:200,h:150,c:ffffff,q:90)" /><p> %(xml.Description)]]></XmlNode>
+      </Mapping>
+      <Mapping>
+        <Field><![CDATA[Author]]></Field>
+        <XmlNode><![CDATA[Author]]></XmlNode>
+      </Mapping>
+      <Mapping>
+        <Field><![CDATA[DatePublished]]></Field>
+        <XmlNode><![CDATA[dateCreated]]></XmlNode>
+      </Mapping>
+      <Mapping>
+        <Field><![CDATA[DateUpdated]]></Field>
+        <XmlNode><![CDATA[dateLastModified]]></XmlNode>
+      </Mapping>
+    </ResourceSet>
+    <ResourceSet>
+      <Collector><![CDATA[allInSubTreePriorityDateDesc]]></Collector>
+      <Parameter><![CDATA[/blog/|blog-article|50]]></Parameter>
+      <DescriptionFormat><![CDATA[html]]></DescriptionFormat>
+      <DataForm>
+        <Id><![CDATA[__oamp-comment__]]></Id>
+        <MaxEntries><![CDATA[20]]></MaxEntries>
+      </DataForm>
+      <Mapping>
+        <Field><![CDATA[Title]]></Field>
+        <XmlNode><![CDATA[New comment on [%(xml.Title)] by %(data.name)]]></XmlNode>
+      </Mapping>
+      <Mapping>
+        <Field><![CDATA[Description]]></Field>
+        <XmlNode><![CDATA[<p><b>%(data.subject)</b></p><p>%(data.comment)</p>]]></XmlNode>
+      </Mapping>
+      <Mapping>
+        <Field><![CDATA[Author]]></Field>
+        <XmlNode><![CDATA[%(data.name)]]></XmlNode>
+      </Mapping>
+      <Mapping>
+        <Field><![CDATA[Link]]></Field>
+        <XmlNode><![CDATA[%(xml._URI_)#comment-%(data._ID_)]]></XmlNode>
+      </Mapping>
+      <Mapping>
+        <Field><![CDATA[DatePublished]]></Field>
+        <XmlNode><![CDATA[%(data._DATE_)]]></XmlNode>
+      </Mapping>
+    </ResourceSet>
+  </AlkaconV8Feed>
+</AlkaconV8Feeds>

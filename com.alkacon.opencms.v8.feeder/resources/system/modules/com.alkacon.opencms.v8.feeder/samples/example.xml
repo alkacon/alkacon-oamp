@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<AlkaconV8Feeds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/com.alkacon.opencms.v8.feeder/schemas/alkacon-v8-feed.xsd">
+  <AlkaconV8Feed language="en">
+    <Title><![CDATA[Flower News]]></Title>
+    <Type><![CDATA[rss_2.0]]></Type>
+    <Description><![CDATA[News from the wonderful world of flowers]]></Description>
+    <Copyright><![CDATA[Alkacon Software GmbH]]></Copyright>
+    <Image>
+      <Title><![CDATA[OpenCms]]></Title>
+      <Url>
+        <link internal="false" type="WEAK">
+          <target><![CDATA[http://www.opencms.org/system/galleries/images/logos/logo_opencms_200.gif]]></target>
+        </link>
+      </Url>
+      <Link>
+        <link internal="false" type="WEAK">
+          <target><![CDATA[http://www.opencms.org/]]></target>
+        </link>
+      </Link>
+    </Image>
+    <Collector><![CDATA[allInFolderPriorityDateAsc]]></Collector>
+    <Parameter><![CDATA[/sites/default/.content/news/|v8news|5]]></Parameter>
+    <Mapping>
+      <Field><![CDATA[Title]]></Field>
+      <XmlNode><![CDATA[Title]]></XmlNode>
+    </Mapping>
+    <Mapping>
+      <Field><![CDATA[Description]]></Field>
+      <XmlNode><![CDATA[Paragraph/Text]]></XmlNode>
+    </Mapping>
+  </AlkaconV8Feed>
+</AlkaconV8Feeds>
