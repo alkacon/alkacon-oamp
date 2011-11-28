@@ -12,7 +12,9 @@
 <c:forEach items="${cms.readImages[param.vfsFolder]}" var="photo" varStatus="status">
 
 	<c:set var="imagePath" value="${fn:substringAfter(photo.rootPath, cms:vfs(pageContext).requestContext.siteRoot)}" />
-
+  	<c:if test="${empty imagePath}" >
+		<c:set var="imagePath" value="${photo.rootPath}" />
+	</c:if>
 	<c:set var="imageTitle" value="${cms:vfs(pageContext).property[imagePath]['Title']}" />
 	<c:if test="${empty imageTitle && param.showResourceNameAsTitle == 'true'}">
 		<c:set var="imageTitle" value="${photo.name}" />
