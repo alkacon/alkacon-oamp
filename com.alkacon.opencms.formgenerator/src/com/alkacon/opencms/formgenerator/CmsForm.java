@@ -489,6 +489,9 @@ public class CmsForm {
     /** If there is at least one mandatory field. */
     protected boolean m_hasMandatoryFields;
 
+    /** The current jsp action element. */
+    protected CmsJspActionElement m_jspAction;
+
     /** configuration value. */
     protected String m_mailBCC;
 
@@ -1067,6 +1070,16 @@ public class CmsForm {
     }
 
     /**
+     * Returns the current jsp action element.<p>
+     *
+     * @return the jsp action element
+     */
+    public CmsJspActionElement getJspAction() {
+
+        return m_jspAction;
+    }
+
+    /**
      * Returns the mail bcc recipient(s).<p>
      * 
      * @return the mail bcc recipient(s)
@@ -1336,6 +1349,7 @@ public class CmsForm {
         m_fields = new ArrayList<I_CmsField>();
         m_dynaFields = new ArrayList<I_CmsField>();
         m_fieldsByName = new HashMap<String, I_CmsField>();
+        m_jspAction = jsp;
 
         // initialize general form configuration
         initFormGlobalConfiguration(content, jsp.getCmsObject(), locale, messages);
