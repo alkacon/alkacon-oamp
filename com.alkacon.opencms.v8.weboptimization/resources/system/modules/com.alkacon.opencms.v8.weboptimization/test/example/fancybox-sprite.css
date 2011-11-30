@@ -1,0 +1,11 @@
+<%@ page session="false" import="com.alkacon.opencms.v8.weboptimization.*" %><%
+
+  CmsOptimizationSprite sprite = new CmsOptimizationSprite(pageContext, request, response);
+  sprite.includeOptimized("%(link.strong:/test/example/fancybox.png)");
+%>
+td#fancy_title_left { background-repeat: no-repeat; }
+td#fancy_title_right { background-repeat: no-repeat; }
+<%
+  sprite.includeOptimized("%(link.strong:/test/example/fancybox-x.png)");
+  sprite.includeOptimized("%(link.strong:/test/example/fancybox-y.png)");
+%>

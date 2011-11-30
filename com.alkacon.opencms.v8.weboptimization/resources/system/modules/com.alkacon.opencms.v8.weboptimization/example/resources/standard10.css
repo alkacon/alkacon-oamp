@@ -1,0 +1,1312 @@
+/***** Wichtige Farben ******
+
+Body-Background-Gelb = #FFFFEE
+TD-Background-Gelb = #FFF8DC
+Gelber Rahmen = #FFDF89
+Blauer Rahmen = #6181FF
+Link (unvisited) = #464E90
+Link (visited) = #2200B3
+Error Rot = #880000
+
+****************************/
+/**
+* Allgemein gÃRltige Definitionen
+*/
+html, body, div, p, h1, h2, h3, span, a, table, td, th, form, img {
+	margin: 0;
+	padding: 0;
+	/*line-height:130%;
+	font-size: 93%;*/
+	
+}
+
+div, p, h1, h2, h3, span, td, th,li {
+  font-size: 1em;
+}
+
+html {
+	color:				#000000;
+	background:			#FFFFEE;
+}
+
+body {
+	font-size: 			86%;
+	width:				100%;
+	max-width:			1200px;
+	margin-left:		auto;
+	margin-right:		auto;
+	/*line-height:		120%;*/
+	font-family:		Arial,Verdana,sans-serif;
+	text-align:			left;
+}
+
+*[onclick] {
+	cursor: pointer;
+}
+
+.drag {
+	cursor: move;
+}
+
+table {
+	/*width: 100%;*/
+	border-collapse: collapse;
+}
+	
+	table.border, td.border, tr.border {
+		border: 2px solid #FFDF89;
+		border-collapse: collapse;
+	}
+
+	th {
+		background: #FFDF89;
+		line-height: 150%;
+		font-weight: normal;
+		text-align: center;
+	}
+
+	td {
+		text-align: left;
+		border-collapse: collapse;
+	}
+
+a {
+	text-decoration: none;
+	color: #464E90;
+}
+
+	a:visited {
+		text-decoration: none;
+		color: #2200B3;
+	}
+	
+	a:hover {
+		text-decoration: underline;
+	}
+
+
+h1 {
+	margin:0px;
+	font-weight:lighter;
+}
+
+h2 {
+	vertical-align:top;
+	font-weight:normal;
+}
+
+h3 {
+	margin: 0px 0px 5px 0px;
+	/*font-weight: medium;*/
+}
+
+h4 {
+	margin: 0px 0px 5px 0px;
+	font-weight: normal;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+img {
+	vertical-align:middle;
+}
+
+strong, b {
+	font-weight: bold;
+}
+
+i {
+	font-style: italic;
+}
+
+small {
+	font-weight: lighter;
+	font-size: 75%;
+}
+
+optgroup {
+	font-weight: normal;
+	margin-left: 2px;
+}
+
+/**
+* Eingabefelder
+*
+*/
+textarea{
+	border: 1px solid black;
+}
+
+input[type=text] {
+	border: 1px solid black;
+}
+input[type=password] {
+	border: 1px solid black;
+}
+input[type=file] {
+	border: 1px solid black;
+	width: 200px;
+}
+
+/*****************************
+  *** Header ***
+*****************************/
+
+#header {
+	text-align:			center;
+	margin:				10px 0 5px 0;
+	width:				100%;
+}
+
+	#header td {
+		text-align: 		center;	
+	}
+
+#body {
+	width: 100%;
+}
+/*****************************
+  *** MainNavigation ***
+*****************************/
+
+#mainnavigation {
+	padding:			0;
+	border:				0px;
+	width:				100%;
+	margin:				0 0 15px 0;
+}
+
+	#mainnavigation td {
+		border:				2px solid #FFDF89;
+		text-align:			center;
+	}
+
+		#mainnavigation td.active {
+			background-image:	url(/navi_bg.gif);
+			background-repeat:	repeat-x;
+			background-color: 	#FFECBD;
+		}
+
+		#mainnavigation td.inactive {
+			background:			transparent;
+		}
+
+/*****************************
+  *** SuchZeile ***
+*****************************/
+
+#searchrow {
+	padding:			0;
+	border:				0px;
+	width:				100%;
+	margin:				0 0 15px 0;
+	font-size:			93%;
+}
+
+	#searchrow td.searchform {
+		width: 				250px;
+		vertical-align: 	top;
+		background:			#FFF8DC;
+		border:				2px solid #FFDF89;
+		padding:			8px;
+		white-space:		nowrap;
+	}
+	
+		#searchrow td.searchform td{
+			padding:			0 2px 0 0;
+		}
+		
+			#searchrow td.searchform td tr.language{
+				margin:				8px 0 0 0;
+				border-top: 		1px solid #FFDF89;
+				font-size: 			0.8em;
+			}
+				
+				#searchrow td.searchform td tr.language td:first-child{
+					font-size: 			1.2em;
+				}
+
+	#searchrow td.standard_banner {
+		text-align:			center;
+		padding-left: 5px;
+	}
+
+/*****************************
+  *** Footer ***
+*****************************/
+
+#footer {
+	width:				100%;
+}
+
+/*****************************
+  *** Footer ***
+*****************************/
+
+#footer {
+	width:				100%;
+}
+
+/*****************************
+  *** Main (Linke Sidebar, Content, Rechte Sidebar) ***
+*****************************/
+
+#main{
+	width: 				100%;
+	margin:				6px 0 0 0;
+	border-collapse: 	collapse;
+}
+
+#main > td {
+	border-collapse: 	collapse;
+}
+
+/*****************************
+  *** Sidebars (Werbung, Navigation, Login) ***
+*****************************/
+
+.sidebar {
+	width: 				178px;
+	vertical-align:		top;
+}
+
+	.sidebar table.border {
+		background:			#FFF8DC;
+	}
+	
+	.banner {
+		text-align:			center;
+		padding:			0 0 12px 0;
+	}
+
+  #supportedby td {
+  	vertical-align:			middle;
+  	text-align:				center;
+  	border:					2px solid #FFDF89;
+  }
+
+		#supportedby td table td {
+			border:					0;
+		}
+		
+/*****************************
+*** DICT ***
+*** ContentHolder ***
+*****************************/
+
+#contentholder {
+	padding:			0 10px 0 12px;
+	vertical-align:		top;
+}
+
+	#singleword {
+		margin: 0px;
+		padding: 0px;
+		display: block;
+	}
+	
+	#multiword {
+		margin: 0px;
+		padding: 0px;
+		display: none;
+	}
+	
+	#subnavigation {
+		width:					100%;
+		border-collapse:		separate;
+		padding: 				1px 0 0 1px;
+	}
+	
+		/*#subnavigation tr,th,td{
+			background-color: none;
+		}*/
+	
+	.titel {
+		width:					75%;
+		text-align:				left;
+	}
+	
+	.datum {
+		width:					25%;
+		text-align:				right;
+	}
+	
+	.announce {
+		border: 				1px solid #FFDF89;
+	}
+		.announce th{
+			padding:			4px;
+			background-image:	url(/navi_bg.gif);
+			height:22px;
+			text-align:			justify;
+		}
+		
+		.announce td {
+			padding:			4px;
+			text-align:			justify;
+		}
+
+.content {
+	text-align: justify;
+}
+	.content .th
+	{
+		text-align: left;
+		white-space:nowrap;
+	}
+	.content td{
+		padding-top: 3px;
+		padding-bottom: 3px;
+	}
+	.content tbody.overflow {
+		width: 100%;
+		overflow-y: auto; 
+		overflow-x: hidden;
+		height: 400px;
+	}
+	
+	.content .left {
+		float: left;
+		height: 100%;
+	}
+	
+	
+
+.para {
+	margin: 3px 10px 10px 3px;
+	padding: 3px 3px 8px 5px;
+}
+
+	.content .para {
+		min-height: 60px;
+		clear: both;
+	}
+
+.hint {
+	color: #999999;
+	font-weight: normal;
+	margin-right: 3px;
+}
+
+.warning {
+	/*background-color: #6181FF;*/
+	padding: 3px 0px 0px 3px;
+	min-height: 40px;
+	vertical-align: middle;
+	background-color: #FF9999;
+}
+	.warning img {
+		float: left;
+		margin: 3px 3px 0px 3px;
+	}
+	.warning .hint {
+		color: #880000;
+		font-weight: bold;
+	}
+
+.mainsubheadingtop .hint {
+	color: black;
+}
+
+.mainsubheadingtop a .hint {
+	text-decoration: none;
+	color: #464E90;
+	font-weight: bold;
+}
+
+.mainsubheadingbottom a .hint {
+	text-decoration: none;
+	color: #464E90;
+	font-weight: bold;
+}
+
+/* Char-Buttons **/
+.char span{
+	text-decoration: underline;
+	cursor: pointer;
+	padding: 2px;
+}
+
+.noborder, .noborder td, .noborder th {
+	border-style: none;
+}
+
+#richtextarea {
+	border: 1px solid black;
+	margin-top: 3px;
+}
+
+.cC {
+	background-color:#fff8dc;
+	border-style:solid;
+	border-width:2px;
+	border-color:#FFdf89;
+	padding:0px;
+}
+
+.cT {
+	border-spacing: 0px;
+	padding:0px;
+	font-weight:lighter;
+}
+
+.aC {
+	border-top-style:solid;
+	border-top-width:2px;
+	border-top-color:#FFdf89;
+	font-weight:lighter;
+}
+
+.td1 {
+	padding-left: 2px;
+}
+
+.maxwidth {
+	width: 100%;
+	max-width: 1200px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+/**
+* Tabs
+*/
+.tab {
+	/*border-bottom: 1px solid #FFDF89;*/
+	margin: 3px 0px 0px 0px;
+	padding: 0px;
+	z-index: 1;
+	padding-left: 10px;
+	text-align: left;
+}
+
+	td>ul.tab {
+		margin-right: -4px;
+	}
+
+	.tab li {
+		padding: 5px;
+		display: inline;
+		overflow: hidden;
+		list-style-type: none;
+		margin: 0px;
+	}
+
+	.tab span {
+		background-color: #FFEDBF;
+		cursor: pointer;
+		color: #2200B3;
+		border-left: 2px solid #FFF0CA;
+		border-top: 2px solid #FFF0CA;
+		border-right: 2px solid #FFF0CA;
+		padding: 1px 5px 2px 5px;
+		margin: 0px;
+		display: inline;
+	}
+
+		.tab span:hover {
+			text-decoration: underline;
+		}
+
+		.tab span.active {
+			border: 2px solid #ffdf89;
+			background-color: #ffdf89;
+			display: inline;
+		}
+
+		.tab span.inactive {
+			display: inline;
+		}
+		
+		.tab span.hint {
+			display: inline;
+			background-color: #FFFFEE;
+			font-size: 0.8em;
+			border: 0px solid black;
+			margin-top: -2px;
+			color: black;
+			cursor: none;
+			color: black;
+		}
+		
+		.tab span.action {
+			/*width: 400px;	*/
+			display: inline;
+			border: 0px solid black;
+			background-color: #d7e6ff;
+		}
+		
+		.tab span div {
+			display: inline;
+		}
+
+/**
+* Inhalt der den Einzelnen Tabs zugeordnet ist
+* Der tabContentContainer wird durch position = relative zum
+* Bezugspunkt fÃRr folgende position=absolute Positionierungen
+*/
+.tabContentContainer {
+	/*height: 450px;*/
+	position: relative;
+	top: 0px;
+	left: 0px;
+}
+	.tabContentContainer div.inactive 	{
+		display: none;
+	}
+
+	.tabContentContainer div.active  	{
+		display: block;
+	}
+
+	/*
+	* Ãýberschrift fÃRr den TabContainer
+	*/
+	.tabContentContainer h1 {
+		margin: 0px;
+		padding: 6px 8px 2px 8px;
+		/*font-size: 100%;*/
+		font-weight: normal;
+		background-image: url(/navi_bg.gif);
+		height: 22px;
+	}
+
+	.tabContentContainer .content {
+		width: 100%;
+		display: block;
+		height: 420px;
+		margin: 0px; /* Kein Margin, damit die Scrolbars im umrandeten Bereich sind*/
+		z-index: 2;
+		overflow: auto;
+	}
+		.popup .tabContentContainer table.content {
+			display: table;
+			height: 350px;
+		}
+		
+			.popup .tabContentContainer table.content tbody.overflow {
+				height:385px;
+			}
+
+		.tabContentContainer .content .left {
+			float: left;
+			width: 300px;
+			height: 100%;
+		}
+			
+
+		.tabContentContainer .content th {
+			margin: 0px;
+			padding: 8px 8px 3px 0px;
+			/*font-size: 99%;*/
+			font-weight: normal;
+			background-image: url(/navi_bg.gif);
+			height: 22px;
+			text-align: left;
+			overflow: hidden;
+		}
+
+/*
+* Blaue Aktionsleiste im Vokabeltrainer
+*/
+ul.action {
+	background-color: #d7e6ff;
+	padding: 2px 8px 2px 8px;
+	vertical-align: bottom;
+	text-align: right;
+	/*color: #999999;*/
+	font-weight: normal;
+	margin: 0px;
+	border-top: 1px solid #6181FF;
+	line-height: 120%;
+	height: 24px;
+	z-index: 2;
+}
+
+	.contentContainer ul.action {
+		background-color: transparent;
+		position: absolute;
+		bottom: -30px;
+		right: 0px;
+		border: 0px solid black;
+		width: 600px;
+	}
+
+	ul.action li {
+		display: inline;
+		overflow: hidden;
+		list-style-type: none;
+		margin-left: 10px;
+		float: right;
+		font-size: 90%;
+		height: 100%;
+		line-height: 24px;
+	}
+
+	ul.action li img {
+		padding-left: 3px;
+		margin-top: -4px;
+	}
+
+	ul.action .left {
+		display: inline;
+		width: 280px;
+		text-align: left;
+		float: left;
+		z-index: 3;
+	}
+	ul.action #paging {
+		color: black;
+		font-size: 75%;
+	}
+	ul.action #paging span.active{
+		font-weight: bold;
+	}
+
+div.action {
+	font-size: 0.8em; 
+	float: right;
+	margin-top: -4px;
+	margin-right: 16px;
+	padding: 2px 0px 2px 16px;
+	width: auto;
+}
+	
+	div.action div {
+		display: inline;
+	}
+	
+	div.action>div {
+		height: 100%;
+		display: inline;
+		margin-left: 10px;
+		background-color: #d7e6ff;
+		padding: 4px;
+		border-top: 1px solid #6181FF;
+		border-left: 1px solid #6181FF;
+		border-right: 1px solid #6181FF;
+	}
+	
+		div.action input {
+			font-size: 0.9em;
+		}
+		
+		div.action img {
+			vertical-align: top;
+		}
+		
+/*
+* AuswahlmÃ¶glichkeiten
+*/
+ul.optionContainer {
+	color:black;
+	margin: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	line-height: 24px;
+	width:300px;
+	overflow: auto;
+	height: 100%;
+	float: left;
+	border-right: 1px solid #999999;
+}
+	ul.optionContainer li {
+		display: block;
+		overflow: hidden;
+		list-style-type: none;
+		margin: 0px 0px;
+		padding: 5px 0px;
+		font-weight: bold;
+	}
+
+ul.option {
+	color:#464E90;
+	margin-left: 0px;
+	padding-left: 0px;
+	line-height: 24px;
+}
+
+	ul.option li {
+		display: block;
+		overflow: hidden;
+		list-style-type: none;
+		margin: 0px 0px;
+		padding: 5px 5px;
+		cursor: pointer;
+		border-bottom: 1px solid #6181FF;
+		font-weight: normal;
+	}
+
+	ul.option li:hover	{
+		text-decoration:	underline;
+	}
+
+/*
+*
+*/
+ul.listContainer {
+	margin: 0px;
+	padding-left: 0px;
+	overflow: auto;
+	height: 100%;
+}
+
+ul.list {
+	color:#464E90;
+	margin-left: 0px;
+	padding-left: 0px;
+	line-height: 18px;
+}
+
+	ul.list li {
+		display: block;
+		overflow: hidden;
+		list-style-type: none;
+		margin: 0px 0px;
+		padding: 3px 5px;
+		cursor: pointer;
+		font-weight: normal;
+	}
+
+.sort {
+	margin-top: -5px;
+	margin-bottom: -5px;
+}
+
+/*
+* Folder und Tree Views
+*/
+ul.folder
+{
+	margin-left: 0px;
+	padding-left: 0px;
+}
+
+	ul.folder li {
+		float: left;
+		margin-right: 20px;
+		margin-bottom: 10px;
+		margin-top: 10px;
+		list-style-type: none;
+		text-align: center;
+		width: 200px;
+		height: 120px;
+		overflow: hidden;
+		background-color: #FFF8DC;
+		/*position: relative;*/
+	}
+		ul.folder li .hint {
+			font-size: 85%;
+			color: #000000;
+			position: absolute; 
+			bottom: 2px; 
+			width: 198px;
+		}
+
+		ul.folder li img
+		{
+			display: block;
+		}
+
+/*
+* PopUp Fenster
+*/
+#popup
+{
+	width: 800px;
+	height: 520px;
+	top: 200px;
+	left: 200px;
+}
+.popup {
+	display: none;
+	position: absolute;
+	width: 480px;
+	height: 320px;
+	background-color: #FFFFEE;
+	border: 1px solid #6181FF;
+	z-index: 10;
+}
+	/* Ãýberschrift incl. blauer Hintergrund*/
+	.popup h1 {
+		text-align: right;
+		/*font-size: 100%;*/
+		height: 24px;
+		padding: 3px;
+		background-image: url(/navi_bg_blue.gif);
+	}
+	
+	.popup textarea {
+		width: 100%;
+	}
+
+	.popup div.content {
+		height: 260px;
+	}
+	
+	.popup div.middleform {
+		height: 460px;
+		border: 0px solid black;
+		width: 100%;
+		padding: 0px;
+	}
+	
+	.popup div.tabContentContainer {
+		height: 460px;
+	}
+
+		/* "extra" Ãýberschrift, wird in das blaue Header Feld "gehoben" */
+		.popup .content h1 {
+			position: relative;
+			top: -28px;
+			background-image: url();
+			right: 24px;
+			width: auto;
+		}
+
+			#popup .content .left{
+				width: 300px;
+				overflow: auto;
+			}
+				#popup .content .left select{
+					width: 280px;
+				}
+				
+				#popup .content .right textarea{
+					width: 480px;
+				}
+
+			#popup div.content {
+				height: 461px;
+			}
+
+		.popup .content .inactive {
+			display: none;
+		}
+
+		.popup .content .active {
+			display: block;
+		}
+
+	.popup .tab {
+		position: absolute;
+		top: -22px;
+		border-bottom: 1px solid #6181FF;
+	}
+		.popup .tab li span {
+			background-color: #f3f5ff;
+			border: 0px solid #d7e6ff;
+			background-image: url();
+		}
+
+			.popup .tab li span.active {
+				background-color: #d7e6ff;
+				border: 1px solid #6181FF;
+				border-bottom: 1px solid #d7e6ff;
+				background-image: url();
+			}
+
+	.popup h1 {
+		background-image: url(/navi_bg_blue.gif);
+	}
+
+/*
+* Hilfe Fenster
+*/
+.helpButton {
+	float: right;
+	margin: 0px 0px 2px 0px;
+	padding: 0px;
+	z-index: 1;
+	text-align: right;
+	/*font-size: 90%;*/
+}
+	.helpButton img {
+		margin-top: 0px;
+		vertical-align: top;
+	}
+	.tabContentContainer .helpButton {
+		position: absolute;
+		top: -30px;
+		right: 0px;
+		margin: 10px 0px 2px 0px;
+		padding: 0px;
+		z-index: 1;
+		text-align: right;
+		/*font-size: 90%;*/
+	}
+
+.help {
+	width: 550px;
+}
+
+	.help table {
+		height: 280px;
+	}
+
+	.help th {
+		height: 20px;
+	}
+
+	.help div {
+		width: 100%;
+	}
+		.help div.right {
+			float: right;
+			width: 393px;
+			margin: 5px 3px 3px 3px;
+			padding-right: 6px;
+			height: 280px;
+			overflow: auto;
+		}
+		
+			.help div.right li {
+				margin-left: 5px;
+			}
+
+		.help div.left {
+			margin: 3px 3px 3px 0px;
+			border-right: 1px solid #999999;
+			width: 140px;
+			float: left;
+			height: 280px;
+			overflow: auto;
+		}
+
+		/*
+		* Muss noch irgendwie eingebaut werden
+		.tabContentContainer .help .left {
+			margin: 3px 3px 3px 0px;
+			border-right: 1px solid #999999;
+			width: 140px;
+			float: left;
+			height: 280px;
+			overflow: auto;
+		}*/
+		
+/**
+* Eingabe Helfer mit Sonderzeichen uÃ¬
+*/
+.assistance {
+	display: none;
+	position: absolute;
+	background-color: #d7e6ff;
+	padding: 10px 25px 2px 10px;
+	border: 1px solid #6181FF;
+	z-index: 200;
+	max-width: 300px;
+	line-height: 150%;
+	top: 30px;
+	left: 250px;
+}
+	.assistance img.close{
+		position: absolute;
+		top: auto;
+		left: auto;
+		bottom: 3px;
+		right: 3px;
+	}
+	
+	.assistance .result{
+		width: 200px;
+		height: 240px;
+		overflow: auto;
+	}
+	
+	.assistance .hint{
+		font-size: 90%;
+	}
+	
+	.assistance ul.tab {
+		border-bottom: 1px solid #6181FF;
+		margin: -5px -25px 3px -10px;
+		padding-right: 25px;
+	}
+	
+	.assistance .tab li span {
+		background-color: #f3f5ff;
+		border: 0px solid #d7e6ff;
+		background-image: url();
+	}
+
+		.assistance .tab li span.active {
+			background-color: #d7e6ff;
+			border: 1px solid #6181FF;
+			border-bottom: 1px solid #d7e6ff;
+			background-image: url();
+		}
+	
+	.assistance div.tabContentContainer {
+		margin-top: 15px;
+	}
+	
+
+/**
+* Kommen auf allen vom dictQuery ausgelieferten Seiten vor
+*/
+#divMoreInfo {
+	position: absolute;
+	visibility: hidden;
+	background-color: #ffee99;
+	border: 1px outset black;
+	padding: 2px;
+	z-index: 99;
+	width: auto;
+	height: auto;
+}
+
+	#divMoreInfo tr {
+		margin-top:1px;
+	}
+	
+	#divMoreInfo td,#divMoreInfo th {
+		border: 2px solid #ffee99;
+		border-collapse: collapse;
+	}
+	
+	#divMoreInfo td {
+		background-color: #FFFFEE;
+		padding: 3px;
+	}
+	
+	#divMoreInfo th {
+		padding: 5px;
+	}
+
+/**
+* Suchergebnissseite WÃ¶rterbuch
+*/
+#results {
+	border: 1px outset #EEEEEE;
+	border-collapse: separate;
+}
+
+	#results td, #results th {
+		border: 1px inset #EEEEEE;
+		border-collapse: separate;
+	}
+
+#divForumInfo {
+	visibility: hidden;
+	display:none;
+	padding: 0px;
+	position: absolute;
+	background-color: #FFFFEE;
+	border: 1px outset black;
+	padding: 0px;
+	z-index: 70;
+	height: auto;
+	width: 780px;
+}
+	#divForumInfoContent {
+		height: 500px;
+		width: 780px;
+		overflow: auto;
+	}
+	
+	#divForumInfoContent div.gecko {
+		display: none;
+	}
+	
+	#divForumInfoContent table{
+		width: 763px;
+	}
+	#divForumInfoContent table.action {
+		margin-bottom: 5px;
+	}
+
+#filter {
+	position: absolute;
+	display: none;
+	width: 160px;
+	border-color: #000000;
+	border-style: solid;
+	border-width: 1px;
+	z-index: 50;
+	background-color: #ffffff;
+}
+
+	#filter table {
+		width: 100%;
+	}
+
+	#filter th {
+		margin:0px;
+		padding:2px;
+		background-color: #ffee99;
+		color: #000000;
+		/*font-size: 90%;*/
+		text-align: left;
+	}
+
+	#filter td {
+		/*font-size: 90%;*/
+	}
+
+
+/*
+* Keine Stelle gefunden wo dies verwendet wird
+.border {
+	border: 1px outset #ffffff;
+	border-collapse: separate;
+	border-spacing: 2px 2px;
+}
+	.border td {
+		border: 1px inset #ffffff;
+		border-collapse: separate;
+		border-spacing: 2px 2px;
+	}*/
+
+
+/**
+* Plugin Seite
+*/
+.pluginheader    {text-align: center; background-color:#ffdf89;}
+
+.pluginwrapper   {
+	border: 1px solid #ffdf89;
+	background-color:#fff8dc;
+	text-align: justify;
+}
+
+	.pluginwrapper img   {
+		padding: 0px 5px 5px 15px;
+		float: right;
+	}
+
+ul.tab img {
+	padding: 0px;
+	width: 20px;
+	height: 20px;
+	margin-top: -6px;
+	float: none;
+}
+
+li.plugin    {
+  border-bottom: 1px solid #6181FF;
+	padding: 5px;
+}
+/*
+* Formular-formatierung
+*/
+fieldset {
+	border: 1px solid #FFDF89;
+	margin-left: 5px;
+	margin-top: 5px;
+	margin-bottom: 15px;
+	max-width: 700px;
+	vertical-align: bottom;
+}
+	fieldset br {
+		clear: both;
+		
+	}
+	
+	fieldset abbr {
+		text-decoration: underline;
+	}
+	fieldset label {
+		display: block;
+		width: 200px;
+		margin-left: 10px;
+		margin-top: 7px;
+		
+		min-height: 20px;
+		float: left;
+		text-align: right;
+		margin-right: 10px;
+	}
+	fieldset input, textarea, select {
+		vertical-align: bottom;
+		border: 1px solid #666666;
+		margin: 1px;
+	}
+	fieldset input[type=radio] {
+		border: 0px solid #666666;
+	}
+	
+	fieldset table{
+		border-spacing: 0px;
+		/*margin: 0px;
+		padding: 0px;*/
+		width: auto;
+	}
+		
+		fieldset table label{
+			margin-right: 0px;
+			vertical-align: middle;
+		}
+		
+		fieldset table td .assistance {
+			left: 30px;
+		}
+	
+.captcha {
+}
+
+	.captcha .assistance {
+		left: 30px;
+		display: none;
+	}
+
+div.grammar {
+	text-align: center;
+}
+
+	.grammar table {
+		background-color: #f3f5ff;
+		border: 1px solid black;
+		width: 90%;		
+		border-collapse: collapse;
+		margin: 15px auto;
+	}
+	
+		.grammar th {
+			background-color: #6181FF;
+			border: 1px solid black;
+			padding: 1.5px 3px;
+		}
+		
+		.grammar td {
+			border: 1px solid black;
+			padding: 1.5px 3px;
+		}
+		
+div.inline {
+	text-align: center;
+}
+
+	.inline table {
+		margin-top: 15px;
+		margin-left: 20px;
+	}
+	
+		.inline th {
+			background-color: #f3f5ff;
+			border: 1px solid black;
+			padding: 1.5px 3px;
+		}
+		
+		.inline td {
+			padding: 1.5px 20px;
+		}
+/*
+* Formatierung fÃRr Statistik, Werbung usw.
+*/
+table.pages {
+	width: 100%;
+	/*border: 0px solid none;*/
+	background-color: #fff8cc; 
+	margin: 0px 0px 20px 0px;
+}
+	.pages td {
+		padding: 4px;
+		/*text-align: center;*/
+		vertical-align: top;
+	}
+	
+	.pages th {
+		background-image: url(/navi_bg.gif);
+		background-repeat:	repeat-x;
+		background-color: 	#FFECBD;
+	}

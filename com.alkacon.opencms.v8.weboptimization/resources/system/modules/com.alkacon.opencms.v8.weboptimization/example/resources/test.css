@@ -1,0 +1,4 @@
+<%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms"%>
+h1 {
+  background-image: url(<cms:link>/a/b/c.png</cms:link>);
+}

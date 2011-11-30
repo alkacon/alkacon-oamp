@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<AlkaconSprites xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/com.alkacon.opencms.v8.weboptimization/schemas/sprite.xsd">
+  <AlkaconSprite language="en">
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.v8.weboptimization/test/jquery.fancybox/fancy_shadow_w.png]]></target>
+          <uuid>df52f802-1b47-11e1-85b6-9b778fa0dc42</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[0]]></X>
+        <Y><![CDATA[0]]></Y>
+      </Position>
+      <Selector><![CDATA[div.fancy_bg_w]]></Selector>
+    </Resource>
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.v8.weboptimization/test/jquery.fancybox/fancy_shadow_e.png]]></target>
+          <uuid>df3b031d-1b47-11e1-85b6-9b778fa0dc42</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[13]]></X>
+        <Y><![CDATA[0]]></Y>
+      </Position>
+      <Selector><![CDATA[div.fancy_bg_e]]></Selector>
+    </Resource>
+  </AlkaconSprite>
+</AlkaconSprites>

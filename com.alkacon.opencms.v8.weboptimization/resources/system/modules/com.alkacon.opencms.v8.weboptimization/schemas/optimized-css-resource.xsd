@@ -1,0 +1,30 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.weboptimization/schemas/optimized-css-options.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.weboptimization/schemas/optimized-behaviour.xsd"/>
+		
+	<xsd:element name="AlkaconV8OptimizedCssResources" type="OpenCmsAlkaconV8OptimizedCssResources"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconV8OptimizedCssResources">
+		<xsd:sequence>
+			<xsd:element name="AlkaconV8OptimizedCssResource" type="OpenCmsAlkaconV8OptimizedCssResource" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconV8OptimizedCssResource">
+		<xsd:sequence>
+			<xsd:element name="Path" type="OpenCmsVfsFile" minOccurs="1" maxOccurs="1" />
+			<xsd:element name="Options" type="OpenCmsAlkaconV8OptimizedCssOption" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="Behaviour" type="OpenCmsAlkaconV8OptimizedBehaviour" minOccurs="0" maxOccurs="1" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.v8.weboptimization.workplace"/>
+		</xsd:appinfo>
+	</xsd:annotation>  
+	
+</xsd:schema>
