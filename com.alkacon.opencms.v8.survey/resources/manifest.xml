@@ -46,7 +46,7 @@
 			</type>
 		</resourcetypes>
 		<explorertypes>
-			<explorertype name="alkacon-v8-survey" key="fileicon.alkacon-v8-survey" icon="v8-alkacon-webform.gif" bigicon="v8-alkacon-webform_big.png" reference="xmlcontent">
+			<explorertype name="alkacon-v8-survey" key="fileicon.alkacon-v8-survey" icon="v8-alkacon-webform.png" bigicon="v8-alkacon-webform_big.png" reference="xmlcontent">
 				<newresource page="structurecontent" uri="newresource_xmlcontent.jsp?newresourcetype=alkacon-v8-survey" order="999" autosetnavigation="false" autosettitle="false" info="desc.v8survey"/>
 				<accesscontrol>
 					<accessentry principal="ROLE.WORKPLACE_USER" permissions="+r+v+w+c"/>
