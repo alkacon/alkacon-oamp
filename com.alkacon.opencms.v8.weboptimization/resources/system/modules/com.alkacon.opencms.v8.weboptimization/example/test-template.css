@@ -1,0 +1,10 @@
+<%@ page session="false" import="com.alkacon.opencms.v8.weboptimization.*" %><%
+
+  CmsOptimizationSprite sprite = new CmsOptimizationSprite(pageContext, request, response);
+  // including sprite originals
+  sprite.includeOriginal("%(link.strong:/system/modules/com.alkacon.opencms.v8.weboptimization/example/test-nested-sprite.png)");
+  // including sprite optimized
+  sprite.includeOptimized("%(link.strong:/system/modules/com.alkacon.opencms.v8.weboptimization/example/test-nested-sprite.png)");
+  // including sprite depending of project
+  sprite.includeDefault("%(link.strong:/system/modules/com.alkacon.opencms.v8.weboptimization/example/test-nested-sprite.png)");
+%>

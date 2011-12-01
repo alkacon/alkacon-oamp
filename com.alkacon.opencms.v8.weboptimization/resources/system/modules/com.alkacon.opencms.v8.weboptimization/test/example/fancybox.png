@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<AlkaconSprites xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/com.alkacon.opencms.v8.weboptimization/schemas/sprite.xsd">
+  <AlkaconSprite language="en">
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.v8.weboptimization/test/jquery.fancybox/fancy_progress.png]]></target>
+          <uuid>df33d727-1b47-11e1-85b6-9b778fa0dc42</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[0]]></X>
+        <Y><![CDATA[0]]></Y>
+      </Position>
+      <Selector><![CDATA[div#fancy_loading div]]></Selector>
+    </Resource>
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.v8.weboptimization/test/jquery.fancybox/fancy_closebox.png]]></target>
+          <uuid>df2cd241-1b47-11e1-85b6-9b778fa0dc42</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[40]]></X>
+        <Y><![CDATA[0]]></Y>
+      </Position>
+      <Selector><![CDATA[div#fancy_close]]></Selector>
+    </Resource>
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.v8.weboptimization/test/jquery.fancybox/fancy_left.png]]></target>
+          <uuid>df2f1c34-1b47-11e1-85b6-9b778fa0dc42</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[40]]></X>
+        <Y><![CDATA[30]]></Y>
+      </Position>
+      <Selector><![CDATA[span#fancy_left_ico]]></Selector>
+    </Resource>
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.v8.weboptimization/test/jquery.fancybox/fancy_right.png]]></target>
+          <uuid>df38b92a-1b47-11e1-85b6-9b778fa0dc42</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[40]]></X>
+        <Y><![CDATA[60]]></Y>
+      </Position>
+      <Selector><![CDATA[span#fancy_right_ico]]></Selector>
+    </Resource>
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.v8.weboptimization/test/jquery.fancybox/fancy_shadow_nw.png]]></target>
+          <uuid>df44a016-1b47-11e1-85b6-9b778fa0dc42</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[42]]></X>
+        <Y><![CDATA[92]]></Y>
+      </Position>
+      <Selector><![CDATA[div.fancy_bg_nw]]></Selector>
+    </Resource>
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.v8.weboptimization/test/jquery.fancybox/fancy_shadow_ne.png]]></target>
+          <uuid>df422f13-1b47-11e1-85b6-9b778fa0dc42</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[55]]></X>
+        <Y><![CDATA[92]]></Y>
+      </Position>
+      <Selector><![CDATA[div.fancy_bg_ne]]></Selector>
+    </Resource>
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.v8.weboptimization/test/jquery.fancybox/fancy_shadow_sw.png]]></target>
+          <uuid>df5086ff-1b47-11e1-85b6-9b778fa0dc42</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[42]]></X>
+        <Y><![CDATA[110]]></Y>
+      </Position>
+      <Selector><![CDATA[div.fancy_bg_sw]]></Selector>
+    </Resource>
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.v8.weboptimization/test/jquery.fancybox/fancy_shadow_se.png]]></target>
+          <uuid>df4bcc0c-1b47-11e1-85b6-9b778fa0dc42</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[55]]></X>
+        <Y><![CDATA[110]]></Y>
+      </Position>
+      <Selector><![CDATA[div.fancy_bg_se]]></Selector>
+    </Resource>
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.v8.weboptimization/test/jquery.fancybox/fancy_title_left.png]]></target>
+          <uuid>df57b2f5-1b47-11e1-85b6-9b778fa0dc42</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[40]]></X>
+        <Y><![CDATA[130]]></Y>
+      </Position>
+      <Selector><![CDATA[td#fancy_title_left]]></Selector>
+    </Resource>
+    <Resource>
+      <Path>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.v8.weboptimization/test/jquery.fancybox/fancy_title_right.png]]></target>
+          <uuid>df5edeeb-1b47-11e1-85b6-9b778fa0dc42</uuid>
+        </link>
+      </Path>
+      <Position>
+        <X><![CDATA[55]]></X>
+        <Y><![CDATA[130]]></Y>
+      </Position>
+      <Selector><![CDATA[td#fancy_title_right]]></Selector>
+    </Resource>
+  </AlkaconSprite>
+</AlkaconSprites>

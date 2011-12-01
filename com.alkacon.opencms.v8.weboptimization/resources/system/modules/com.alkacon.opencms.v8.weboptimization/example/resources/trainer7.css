@@ -1,0 +1,697 @@
+/*
+*Hack der eigentlich nicht existieren sollte
+*/
+.middleform
+{
+	/*height: 420px; /* F√Rr 1024x768 */
+	height: auto; /* F√Rr 1400x977 */
+	border: 2px solid #FFDF89;
+	border-top: 0px solid #6181FF;
+	width: 100%;
+	padding: 0px;
+}
+
+
+	.middleform th
+	{
+		margin: 0px;
+		padding: 4px 8px 7px 0px;
+		/*font-size: 16px;*/
+		font-weight: normal;
+		background-image: url(/trainer/img/navi_bg.gif);
+		background-repeat:	repeat-x;
+		background-color: 	#FFECBD;
+		height: 22px;
+		text-align: left;
+		overflow: hidden;
+	}
+	
+		.middleform th.subject {
+			padding-right: 20px;
+			text-align: right;
+			vertical-align: top;
+		}
+
+.tabContent
+{
+	height: 420px;
+	width: 100%;
+	margin: 0px;
+	padding: 3px;
+}
+#right
+{
+	padding-top: 28px;
+}
+form
+{
+	padding: 0px;
+	margin: 0px;
+}
+
+.mainsubheadingbottom
+{
+	background-color: #d7e6ff;
+	padding: 2px 8px 2px 8px;
+	vertical-align: middle;
+}
+/*
+* Hack ende
+*/
+
+
+.tabContent .inputTable th {
+	height: 20px;
+}
+
+.even {
+	background-color: #fff8cc;
+	/*background-color: #FFF8DC*/
+}
+
+.odd {
+	background-color: #FFFFEE;
+}
+.uneven {
+	background-color: #FFFFEE;
+}
+
+.highlight {
+}
+
+.even .highlight {
+	background-color:#E6D5AC;
+}
+.uneven .highlight {
+	background-color:#e6e6d6;
+}
+
+/*#startlearning select
+{
+	width: 150px;
+}
+#startquery select
+{
+	width: 150px;
+}*/
+
+#contentDisplayVocables
+{
+	height: 550px;
+	overflow: scroll;
+}
+
+/*
+* Lerningcontent
+*/	
+.lectionlisting
+{
+	display: none;
+}
+
+.contentContainer
+{
+	padding: 0px;
+	overflow: auto;
+	height: 100%;
+	vertical-align: top;
+}
+
+/*
+* Tree View
+*/
+.treeContainer
+{
+	width:300px;
+	overflow: auto;
+	height: 100%;
+	float: left;
+	border-right: 1px solid #999999;
+}
+
+.tree
+{
+	margin-top: 0px;
+}
+.tree [ondblclick]
+{
+	cursor: pointer;
+}
+.tree h2
+{
+	margin: 0px;
+	background-color: transparent;
+}
+.tree div
+{
+	display: none;
+	margin-left: 6px;
+	padding-left: 8px;
+	margin-bottom: 0px;
+}
+
+/*
+* Folder View
+*/
+.folder
+{
+	margin-top: 0px;
+}
+.folder img
+{
+	margin-right: 2px;
+}
+.folder [ondblclick]
+{
+	cursor: pointer;
+}
+.folder h2
+{
+	margin: 0px;
+	background-color: transparent;
+}
+.folder div
+{
+	display: none;
+}
+
+/*
+* DHTML Option
+*/
+/*.active
+{
+	background-color: #447BCD;
+}*/
+/*.option
+{
+	color:#464E90;
+	cursor: pointer;
+	line-height: 24px;
+
+}
+.option:hover
+{
+	text-decoration:	underline;
+}
+.option div:hover {
+	text-decoration:	underline;
+}*/
+/*.option:visited {
+	color:				#2200B3;
+	text-decoration:	none;
+}*/
+.select div:hover
+{
+	background-color: #F0F0F0;
+}
+
+/*
+* Karteikarte
+*/
+#trainerContent .card
+{
+	width: 320px;
+	height: 240px;
+	margin: 25px 0px 25px 200px;
+	border-right: 1px solid #666666;
+	border-bottom: 1px solid #666666;
+	border-top: 1px solid #CCCCCC;
+	border-left: 1px solid #CCCCCC;
+}
+	#trainerContent .card th
+	{
+		padding-left: 5px;
+		text-align: left;
+		height: 100px;
+		vertical-align: middle;
+		font-size: 150%;
+		font-weight:bolder;
+		background-color: #FFEDBF;
+		cursor: pointer;
+		background-image:	url(/trainer/img/cardBackground.jpg);
+	}
+	#trainerContent .card td
+	{
+		padding-left: 5px;
+		text-align: left;
+		height: 100px;
+		vertical-align: middle;
+		font-size: 150%;
+		font-weight:bolder;
+		visibility: hidden;
+	}
+	#trainerContent .card .info
+	{
+		text-align: right;
+		vertical-align: top;
+	}
+	#trainerContent input[type=text] {
+		width: 100%;
+	}
+
+div.vcard {
+	margin-left: 50px;
+	width: 240px; 
+	text-align: left; 
+	vertical-align: middle; 
+	background-image: url(/trainer/img/card2.png); 
+	height: 250px; 
+	padding-top: 6px;
+}
+	.vcard table {
+		margin-left: 10px;
+		width: 210px; 
+		height: 182px; 
+	}
+		.vcard th {
+			height: 78px;
+			background-image: none;
+			background-color: transparent;
+			font-size: 120%;
+			text-align: center; 
+			
+		}
+		.vcard td {
+			height: 28px; 
+			padding-left: 10px;
+		}
+	
+.selector {
+	width: 1050px; 
+	height: 180px;
+	white-space:nowrap;
+	overflow: auto;
+	overflow-x: auto;
+	overflow-y: none;
+	border-top: 1px solid #6181FF;
+}
+	.selector div.table {
+		display: table;
+	}
+	.selector div.row {
+		display: table-row;
+		
+	}
+	.selector div.cell {
+		position: relative; 
+		width: 170px; 
+		height: 180px; 
+		display: table-cell; 
+		border-spacing: 0px;
+		
+	}
+	.selector div.content {
+		position: relative; 
+		width: 171px; 
+		height: 180px;
+		top:0px;
+		left:0px;
+		overflow: hidden;
+	}
+	.selector div.vcover {
+		position: absolute;
+		top: 0px;
+		left:0px;
+		z-index: 5;
+		background-color: #333333;
+		opacity: .15;
+		width: 100%;
+		height: 100%;
+	}
+		.selector .active div.vcover {
+			opacity: .0;
+		}
+		.selector div.vcover:hover {
+			opacity: .08;
+		}
+		.selector .active div.vcover:hover {
+			opacity: .0;
+		}
+
+div.vcard {
+	margin-left: 50px;
+	width: 240px; 
+	text-align: left; 
+	vertical-align: middle; 
+	background-image: url(/trainer/img/card2.png); 
+	height: 250px; 
+	padding-top: 6px;
+}
+
+	.selector div.vcard {
+		margin-left: 10px; 
+		margin-top: 10px; 
+		width: 150px; 
+		text-align: left; 
+		vertical-align: middle; 
+		background-image: url(/trainer/img/card3.png); 
+		height: 165px; 
+		padding-top: 5px; 
+		
+	}
+		.selector .vcard table {
+			margin-left: 10px;
+			width: 130px; 
+			height: 91px;
+			overflow: hidden;
+			table-layout: fixed;
+		}
+		.selector .vcard th {
+			/*white-space: normal;*/
+			height: 50px;
+			background-image: none;
+			background-color: transparent;
+			font-size: 85%;
+			text-align: center;
+			overflow: hidden;
+		}
+		.selector .vcard td{
+			height: 14px; 
+			padding-left: 5px;
+			font-size: 80%;
+		}
+		
+	.selector div.vcard {
+		margin-left: 10px; 
+		margin-top: 10px; 
+		width: 150px; 
+		text-align: left; 
+		vertical-align: middle; 
+		background-image: url(/trainer/img/card3.png); 
+		height: 165px; 
+		padding-top: 5px; 
+		overflow: hidden;
+	}
+		.selector .vcard div{
+			text-align: center; 
+			line-height: 50px;
+			font-size: 85%;
+		}
+		.selector .vcard span{
+			line-height: 15px; 
+			padding-left: 10px; 
+			font-size: 80%;
+		}
+	
+	
+#previewClozeTarget
+{
+	line-height: 110%;
+}
+.cloze
+{
+	line-height: 180%;
+}
+
+#clozetext {
+	line-height: 180%;
+	width: 784px;
+	height: 320px;
+	overflow: auto;
+}
+
+#content
+{
+	position: absolute;
+	width: 480px;
+	height: 320px;
+	background-color: #FFFFEE;
+	border: 1px solid #666666;
+	left: 600px;
+	top: 400px;
+}
+
+.exercise
+{
+	margin-bottom: 25px;
+}
+	.exercise th
+	{
+		background-color: transparent;
+		/*font-size: 120%;*/
+		font-weight: bold;
+		text-align: left;
+	}
+	.exercise td
+	{
+		vertical-align: top;
+	}
+	.exercise textarea
+	{
+		width: 100%;
+		height: 100%;
+	}
+
+.drag
+{
+	text-align: right;
+	background-color: #447BCD;
+}
+
+/**
+* Einzel Anweisungen
+*
+*/
+#editexercise {
+		height: 464px;
+	}
+		
+	#editexercise.content div.left {
+		width: 548px;
+	}
+	
+		#editexercise.content div.left div.popupcontent {
+			width: 530px;
+			height: 100%;
+			margin: 0px;
+			float: left;
+		}
+
+#queryDict div.content {
+	height: 280px;
+	width: 100%;
+	overflow: auto;
+	margin: 0px;
+	padding: 0px;
+}
+
+	#queryDict #queryResult {
+		height: auto;
+		max-height: 230px;
+		overflow: auto;
+	}
+	
+	#queryDict #vocableContainer {
+		width: 249px; 
+		height: 100%; 
+		margin: 0px; 
+		float: right; 
+		border-left: 1px solid #447BCD; 
+		overflow: auto;
+	}
+
+/* Auskommentiert weil sonst Result beim Lernen / Abfragen nicht sichtbar ist
+#result
+{
+	display: none;
+	position: absolute;
+	width: 320px;
+	height: 480px;
+	background-color: #FFFFEE;
+	border: 1px solid #666666;
+	top: 250px;
+	left: 200px;
+}*/
+span.result {
+	display: inline-block;
+	background-color: #cccccc;
+	min-width: 30px;
+}
+
+.pan {
+	float: left;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	margin-left: 3px;
+	margin-right: 17px;
+	/*list-style-type: none;*/
+	width: 200px;
+	height: 120px;
+	overflow: hidden;
+	background-color: #FFF8DC;
+	/*position: relative;*/
+	/*padding: 5px;*/
+	border: 1px solid #FFEDBF;
+	/*font-size: 80%;*/
+}
+	
+	.pan .hint {
+		font-size: 75%; 
+		width: 198px;
+	}
+	
+	.pan h1{
+		text-align: left;
+		padding-left:2px; 
+		height: 28px; 
+		padding-top: 1px;
+	}
+	
+	.pan > div {
+		padding: 3px;
+	}
+	
+.head th {
+	overflow: hidden;
+}
+/*
+* CSS f√Rr Verbesserung von Exercises
+*/
+u, ins
+{
+	background-color: #99FF99;
+}
+strike, del
+{
+	background-color: #FF9999;
+}
+
+.comment font
+{
+	background-color: #666666;
+}
+
+table.loading {
+	width: 100%;
+	height: 100%;
+}
+	.loading td {
+		text-align: center;
+	}
+	
+.gap {
+	font-weight: bold;
+	/*font-size: 130%;*/
+}
+	.gap span {
+		letter-spacing: 0.2em;
+		background-color: #99FF99;
+	}
+	.gap u, ins {
+		background-color: #FF9999;
+	}
+	.gap strike, del {
+		background-color: #FF9999;
+	}
+	
+	
+	.dictation u, ins {
+		letter-spacing: 0.2em;
+		background-color: #FF9999;
+	}
+	.dictation strike, del {
+		letter-spacing: 0.2em;
+		background-color: #FF9999;
+	}
+
+.translation {
+	width: 100%;
+}
+	.translation textarea {
+		width: 447px;
+		height: 210px;
+	}
+
+	#multiplechoicetext table {
+		width: 100%;
+	}
+	#multiplechoicetext td {
+		vertical-align: top;
+		padding: 3px;
+		
+	}
+	
+	
+div.readingexercise {
+	margin: 10px 10px 30px 10px;
+	background-color: #FFF8DC;
+	border: 1px solid #FFDF89;
+	padding: 0px;
+}
+	div.readingexercise .title {
+		padding-left: 3px;
+		background-color: #FFDF89;
+	}
+	div.readingexercise .para {
+		margin: 0px;
+	}
+	/*div.readingexercise.even .title {
+		background-color: #FFDF89;
+	}*/
+	
+	.readingexercise table {
+		width: auto;
+	}
+	
+
+.companyButton {
+	position: absolute;
+	right: 10px;
+	z-index: 5;
+	top: -22px;
+	vertical-align: bottom;
+}
+	.companyButton img {
+		vertical-align:text-bottom;
+	}
+
+/*
+* Formatierungen in der Korrektur
+*/
+.marking span {
+	line-height: 1.2em;
+}
+
+	.marking sup.comment {
+		color: blue;
+	}
+	
+	.marking .correction {
+		margin: 3px;
+		padding: 2px;
+		border: 1px solid black;
+		background: white;
+	}
+
+.marking u, ins {
+	background-color: #99FF99;
+}
+.marking strike, del {
+	background-color: #FF9999;
+}
+
+/*
+* Hueber
+*/
+.middleform.comp3 h1 {
+	background-image: none;
+	background-color: #D72F1F;
+}
+
+.middleform.comp3 .content h1 {
+	background-image: url(/navi_bg.gif);
+	background-color: #FFDF89;
+}
+
+/*
+* Dolce Lauda
+*/
+.middleform.comp4 h1 {
+	background-image: none;
+	background-color: #BBBBBB;
+}
+
+.middleform.comp4 .content h1 {
+	background-image: url(/navi_bg.gif);
+	background-color: #FFDF89;
+}

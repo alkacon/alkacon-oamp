@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<AlkaconV8WebuserProfileForms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/com.alkacon.opencms.v8.registration/schemas/profile.xsd">
+  <AlkaconV8WebuserProfileForm language="en">
+    <FormText name="FormText0">
+      <links/>
+      <content><![CDATA[<p>Dear %(title) %(lastname):</p>
+<p>Here you can edit your personal data:</p>]]></content>
+    </FormText>
+    <FormFooterText name="FormFooterText0">
+      <links/>
+      <content><![CDATA[<p>(*) mandatory field<br />
+(+) To prevent the misuse of the contact form, please enter&amp;nbsp;the five character verification code which is shown above.</p>
+<p>Alkacon Software is committed to respect your online privacy and recognizes your need for appropriate protection and management of any personally identifiable information you share with us. No information you provide to Alkacon in this form will be disclosed to third parties.</p>]]></content>
+    </FormFooterText>
+    <InputField>
+      <FieldType><![CDATA[radio]]></FieldType>
+      <FieldLabel><![CDATA[Title:|title]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+      <FieldDefault><![CDATA[%(row)Ms|Mrs|*Mr]]></FieldDefault>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[text]]></FieldType>
+      <FieldLabel><![CDATA[Last name:|lastname]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+      <FieldValidation><![CDATA[.+]]></FieldValidation>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[text]]></FieldType>
+      <FieldLabel><![CDATA[First name:|firstname]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+      <FieldValidation><![CDATA[.+]]></FieldValidation>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[email]]></FieldType>
+      <FieldLabel><![CDATA[Your Email:|email]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[password]]></FieldType>
+      <FieldLabel><![CDATA[Password:|password]]></FieldLabel>
+      <FieldMandatory>false</FieldMandatory>
+      <FieldValidation><![CDATA[....*]]></FieldValidation>
+    </InputField>
+    <InputField>
+      <FieldType><![CDATA[checkbox]]></FieldType>
+      <FieldLabel><![CDATA[Newsletters]]></FieldLabel>
+      <FieldMandatory>true</FieldMandatory>
+      <FieldDefault><![CDATA[n1:OpenCms Newsletter|n2:Alkacon Newsletter]]></FieldDefault>
+    </InputField>
+    <FormCaptcha>
+      <FieldLabel><![CDATA[Verification:+]]></FieldLabel>
+      <Preset><![CDATA[/system/workplace/admin/captcha/alkacon.captchapreset]]></Preset>
+    </FormCaptcha>
+    <FormConfirmation name="FormConfirmation0">
+      <links/>
+      <content><![CDATA[<p>Dear %(title) %(lastname):</p>
+<p>Your account data has been successfully updated.</p>
+<p>Thank you for using OpenCms</p>]]></content>
+    </FormConfirmation>
+    <OptionalFormConfiguration>
+      <ShowCheck>false</ShowCheck>
+      <CheckText name="CheckText0">
+        <links/>
+        <content/>
+      </CheckText>
+      <ShowMandatory>true</ShowMandatory>
+      <ShowReset>false</ShowReset>
+      <FormAttributes/>
+      <FormFieldAttributes><![CDATA[class="cform" maxlength="100"]]></FormFieldAttributes>
+      <DynamicFieldClass/>
+    </OptionalFormConfiguration>
+  </AlkaconV8WebuserProfileForm>
+</AlkaconV8WebuserProfileForms>
