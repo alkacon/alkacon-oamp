@@ -100,6 +100,9 @@ public class CmsForm {
     /** Name of the CSS style sheet module parameter. */
     public static final String MODULE_PARAM_CSS = "css";
 
+    /** Name of the module parameter excel.delimiter defines the column delimiter in excel. */
+    public static final String MODULE_PARAM_CSV_DELIMITER = "export.delimiter";
+
     /** Name of the db index table space module parameter. */
     public static final String MODULE_PARAM_DB_INDEXTABLESPACE = "index-tablespace";
 
@@ -114,9 +117,6 @@ public class CmsForm {
 
     /** Name of the module parameter for the configuration of the time format of the export data. */
     public static final String MODULE_PARAM_EXPORT_TIMEFORMAT = "export.timeformat";
-
-    /** Name of the module parameter excel.delimiter defines the column delimiter in excel. */
-    public static final String MODULE_PARAM_CSV_DELIMITER = "export.delimiter";
 
     /** 
      * Module parameter for the content encoding (text encoding) of the exported csv data. This encoding may vary 
@@ -326,14 +326,14 @@ public class CmsForm {
     /** Configuration node name for the optional form expiration configuration. */
     public static final String NODE_OPTIONALEXPIRATION = "OptionalFormExpiration";
 
-    /** Configuration node name for the optional form release configuration. */
-    public static final String NODE_OPTIONALRELEASE = "OptionalFormRelease";
+    /** Configuration node name for the optional field text configuration. */
+    public static final String NODE_OPTIONALFIELDTEXT = "OptionalFieldText";
 
     /** Configuration node name for the optional form max submissions configuration. */
     public static final String NODE_OPTIONALMAXSUBMISSIONS = "OptionalFormMaxSubmissions";
 
-    /** Configuration node name for the optional field text configuration. */
-    public static final String NODE_OPTIONALFIELDTEXT = "OptionalFieldText";
+    /** Configuration node name for the optional form release configuration. */
+    public static final String NODE_OPTIONALRELEASE = "OptionalFormRelease";
 
     /** Configuration node name for the optional sub field configuration. */
     public static final String NODE_OPTIONALSUBFIELD = "OptionalSubField";
@@ -441,18 +441,6 @@ public class CmsForm {
     /** The form expiration text. */
     protected String m_expirationText;
 
-    /** The optional form release date. */
-    protected long m_releaseDate;
-
-    /** The optional form release text. */
-    protected String m_releaseText;
-
-    /** The optional form max submissions. */
-    protected long m_maxSubmissions;
-
-    /** The optional form max submissions text. */
-    protected String m_maxSubmissionsText;
-
     /** Stores the form input fields. */
     protected List<I_CmsField> m_fields;
 
@@ -489,6 +477,9 @@ public class CmsForm {
     /** If there is at least one mandatory field. */
     protected boolean m_hasMandatoryFields;
 
+    /** The current jsp action element. */
+    protected CmsJspActionElement m_jspAction;
+
     /** configuration value. */
     protected String m_mailBCC;
 
@@ -522,6 +513,12 @@ public class CmsForm {
     /** The email type, either HTML or text mail. */
     protected String m_mailType;
 
+    /** The optional form max submissions. */
+    protected long m_maxSubmissions;
+
+    /** The optional form max submissions text. */
+    protected String m_maxSubmissionsText;
+
     /** The map of request parameters. */
     protected Map<String, String[]> m_parameterMap;
 
@@ -530,6 +527,12 @@ public class CmsForm {
 
     /** Interval to refresh the session. */
     protected int m_refreshSessionInterval;
+
+    /** The optional form release date. */
+    protected long m_releaseDate;
+
+    /** The optional form release text. */
+    protected String m_releaseText;
 
     /** Flag if the check page has to be shown. */
     protected boolean m_showCheck;
@@ -897,46 +900,6 @@ public class CmsForm {
     }
 
     /**
-     * Returns the optional form release date.<p>
-     *
-     * @return the optional form release date
-     */
-    public long getReleaseDate() {
-
-        return m_releaseDate;
-    }
-
-    /**
-     * Returns the form release text.<p>
-     *
-     * @return the form release text
-     */
-    public String getReleaseText() {
-
-        return m_releaseText;
-    }
-
-    /**
-     * Returns the optional form maximum submissions number.<p>
-     *
-     * @return the optional form maximum submissions number
-     */
-    public long getMaximumSubmissions() {
-
-        return m_maxSubmissions;
-    }
-
-    /**
-     * Returns the form maximum submissions text.<p>
-     *
-     * @return the form maximum submissions text
-     */
-    public String getMaximumSubmissionsText() {
-
-        return m_maxSubmissionsText;
-    }
-
-    /**
      * Returns the field with the given database label.<p>
      * 
      * @param dbLabel the database label
@@ -1067,6 +1030,16 @@ public class CmsForm {
     }
 
     /**
+     * Returns the current jsp action element.<p>
+     *
+     * @return the jsp action element
+     */
+    public CmsJspActionElement getJspAction() {
+
+        return m_jspAction;
+    }
+
+    /**
      * Returns the mail bcc recipient(s).<p>
      * 
      * @return the mail bcc recipient(s)
@@ -1177,6 +1150,26 @@ public class CmsForm {
     }
 
     /**
+     * Returns the optional form maximum submissions number.<p>
+     *
+     * @return the optional form maximum submissions number
+     */
+    public long getMaximumSubmissions() {
+
+        return m_maxSubmissions;
+    }
+
+    /**
+     * Returns the form maximum submissions text.<p>
+     *
+     * @return the form maximum submissions text
+     */
+    public String getMaximumSubmissionsText() {
+
+        return m_maxSubmissionsText;
+    }
+
+    /**
      * Returns the property file. 
      * <p> 
      * 
@@ -1195,6 +1188,26 @@ public class CmsForm {
     public int getRefreshSessionInterval() {
 
         return m_refreshSessionInterval;
+    }
+
+    /**
+     * Returns the optional form release date.<p>
+     *
+     * @return the optional form release date
+     */
+    public long getReleaseDate() {
+
+        return m_releaseDate;
+    }
+
+    /**
+     * Returns the form release text.<p>
+     *
+     * @return the form release text
+     */
+    public String getReleaseText() {
+
+        return m_releaseText;
     }
 
     /**
@@ -1336,6 +1349,7 @@ public class CmsForm {
         m_fields = new ArrayList<I_CmsField>();
         m_dynaFields = new ArrayList<I_CmsField>();
         m_fieldsByName = new HashMap<String, I_CmsField>();
+        m_jspAction = jsp;
 
         // initialize general form configuration
         initFormGlobalConfiguration(content, jsp.getCmsObject(), locale, messages);
@@ -1468,16 +1482,6 @@ public class CmsForm {
     }
 
     /**
-     * Sets the form title.<p>
-     * 
-     * @param title the form title
-     */
-    public void setTitle(String title) {
-
-        m_title = title;
-    }
-
-    /**
      * Sets if the mandatory marks and text should be shown.<p>
      * 
      * @param showMandatory the setting for the mandatory marks
@@ -1495,6 +1499,16 @@ public class CmsForm {
     public void setShowReset(boolean showReset) {
 
         m_showReset = showReset;
+    }
+
+    /**
+     * Sets the form title.<p>
+     * 
+     * @param title the form title
+     */
+    public void setTitle(String title) {
+
+        m_title = title;
     }
 
     /**
@@ -2226,46 +2240,6 @@ public class CmsForm {
     }
 
     /**
-     * Sets the optional form release date.<p>
-     *
-     * @param releaseDate the optional form release date
-     */
-    protected void setReleaseDate(long releaseDate) {
-
-        m_releaseDate = releaseDate;
-    }
-
-    /**
-     * Sets the form release text.<p>
-     *
-     * @param releaseText the form release text
-     */
-    protected void setReleaseText(String releaseText) {
-
-        m_releaseText = releaseText;
-    }
-
-    /**
-     * Sets the optional form max submissions number.<p>
-     *
-     * @param maxSubmissions the optional form max submissions number
-     */
-    protected void setMaximumSubmissions(long maxSubmissions) {
-
-        m_maxSubmissions = maxSubmissions;
-    }
-
-    /**
-     * Sets the form max submissions text.<p>
-     *
-     * @param maxSubmissionsText the form release text
-     */
-    protected void setMaximumSubmissionsText(String maxSubmissionsText) {
-
-        m_maxSubmissionsText = maxSubmissionsText;
-    }
-
-    /**
      * Sets the global form attributes.<p>
      * 
      * @param formAttributes the global form attributes
@@ -2456,6 +2430,26 @@ public class CmsForm {
     }
 
     /**
+     * Sets the optional form max submissions number.<p>
+     *
+     * @param maxSubmissions the optional form max submissions number
+     */
+    protected void setMaximumSubmissions(long maxSubmissions) {
+
+        m_maxSubmissions = maxSubmissions;
+    }
+
+    /**
+     * Sets the form max submissions text.<p>
+     *
+     * @param maxSubmissionsText the form release text
+     */
+    protected void setMaximumSubmissionsText(String maxSubmissionsText) {
+
+        m_maxSubmissionsText = maxSubmissionsText;
+    }
+
+    /**
      * Sets the property file. 
      * <p> 
      * 
@@ -2474,6 +2468,26 @@ public class CmsForm {
     protected void setRefreshSessionInterval(int refreshSessionInterval) {
 
         m_refreshSessionInterval = refreshSessionInterval;
+    }
+
+    /**
+     * Sets the optional form release date.<p>
+     *
+     * @param releaseDate the optional form release date
+     */
+    protected void setReleaseDate(long releaseDate) {
+
+        m_releaseDate = releaseDate;
+    }
+
+    /**
+     * Sets the form release text.<p>
+     *
+     * @param releaseText the form release text
+     */
+    protected void setReleaseText(String releaseText) {
+
+        m_releaseText = releaseText;
     }
 
     /**
