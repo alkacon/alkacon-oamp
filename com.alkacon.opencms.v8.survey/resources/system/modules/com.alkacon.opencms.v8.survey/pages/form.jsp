@@ -11,6 +11,7 @@
 <cms:property name="locale" file="search" default="en" />
 </c:if>
 </c:set>
+<fmt:setLocale value="${locale}" />
 
 <fmt:bundle basename="com.alkacon.opencms.v8.survey.frontend">
 <cms:formatter var="rootContent">
@@ -35,8 +36,8 @@
 <c:choose>
 	<c:when test="${cms.element.inMemoryOnly}">
 		<div>
-			<h3><c:out value="New Alkacon V8 Survey" /></h3>
-			<h4><c:out value="Please edit!" /></h4>
+			<h3><fmt:message key="survey.init.newAlkaconSurvey" /></h3>
+			<h4><fmt:message key="survey.init.pleaseEdit" /></h4>
 		</div>
 		<%
 		// initialize the form handler
