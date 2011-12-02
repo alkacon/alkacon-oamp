@@ -15,8 +15,8 @@
 <c:choose>
 	<c:when test="${cms.element.inMemoryOnly}">
 		<div>
-			<h3><c:out value="New Alkacon GeoMap" /></h3>
-			<h4><c:out value="Please edit!" /></h4>
+			<h3><fmt:message key="geomap.init.newGeoMap" /></h3>
+			<h4><fmt:message key="geomap.init.pleaseEdit" /></h4>
 		</div>
 	</c:when>
 	<c:otherwise>
