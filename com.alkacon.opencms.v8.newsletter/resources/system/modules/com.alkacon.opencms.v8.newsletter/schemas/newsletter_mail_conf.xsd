@@ -1,0 +1,34 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+		
+	<xsd:element name="AlkaconV8NewsletterMailConfigs" type="OpenCmsAlkaconV8NewsletterMailConfigs"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconV8NewsletterMailConfigs">
+		<xsd:sequence>
+			<xsd:element name="AlkaconV8NewsletterMailConfig" type="OpenCmsAlkaconV8NewsletterMailConfig" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconV8NewsletterMailConfig">
+		<xsd:sequence>
+			<xsd:element name="Html" type="OpenCmsBoolean" />
+			<xsd:element name="HtmlOnly" type="OpenCmsBoolean" minOccurs="0" />
+			<xsd:element name="ConfFile" type="OpenCmsVfsFile" minOccurs="0" />						
+			<xsd:element name="MailHead" type="OpenCmsString" />	
+			<xsd:element name="MailFoot" type="OpenCmsString" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.v8.newsletter.workplace"/>
+			<layouts>
+				<layout element="MailHead" widget="TextareaWidget" configuration="6" />
+				<layout element="MailFoot" widget="TextareaWidget" configuration="3" />
+			</layouts>
+		</xsd:appinfo>
+	</xsd:annotation>  
+	
+</xsd:schema>

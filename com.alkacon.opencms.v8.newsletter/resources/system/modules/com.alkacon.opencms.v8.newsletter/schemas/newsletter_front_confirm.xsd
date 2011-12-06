@@ -1,0 +1,31 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>	
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.newsletter/schemas/newsletter_front_confirm_text.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.newsletter/schemas/newsletter_front_confirm_mail.xsd"/>
+		
+	<xsd:element name="AlkaconV8NewsletterConfirms" type="OpenCmsAlkaconV8NewsletterConfirms"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconV8NewsletterConfirms">
+		<xsd:sequence>
+			<xsd:element name="AlkaconV8NewsletterConfirm" type="OpenCmsAlkaconV8NewsletterConfirm" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconV8NewsletterConfirm">
+		<xsd:sequence>
+			<xsd:element name="Confirm" type="OpenCmsBoolean" />					
+			<xsd:element name="Subscribe" type="OpenCmsAlkaconV8NewsletterConfirmText" />
+			<xsd:element name="UnSubscribe" type="OpenCmsAlkaconV8NewsletterConfirmText" />
+			<xsd:element name="Mail" type="OpenCmsAlkaconV8NewsletterConfirmMail" />				
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.v8.newsletter.workplace"/>
+		</xsd:appinfo>
+	</xsd:annotation>  
+	
+</xsd:schema>
