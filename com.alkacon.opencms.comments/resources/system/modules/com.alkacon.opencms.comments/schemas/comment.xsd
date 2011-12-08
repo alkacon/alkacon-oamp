@@ -33,8 +33,8 @@
 		<xsd:appinfo>
 			<resourcebundle name="com.alkacon.opencms.comments.workplace"/>
 			<layouts>	
-				<layout element="FormText" widget="HtmlWidget" configuration="height:100px" />		
-				<layout element="FormFooterText" widget="HtmlWidget" configuration="height:100px" />		
+				<layout element="FormText" widget="HtmlWidget" configuration="link,anchor,height:100px" />		
+				<layout element="FormFooterText" widget="HtmlWidget" configuration="link,anchor,height:100px" />		
 			</layouts>
 			<defaults>
 				<default element="OptionalFormConfiguration/ShowMandatory" value="true" />
