@@ -940,6 +940,7 @@ public class CmsFormHandler extends CmsJspActionElement {
             configureForm(req, formConfigUri);
             m_initSuccess = true;
         } catch (Exception e) {
+            LOG.error(e);
             // error in form initialization, initialize at least the localized messages
             initMessages(formConfigUri);
         }
@@ -1113,10 +1114,9 @@ public class CmsFormHandler extends CmsJspActionElement {
                 }
             }
             // add current date as macro
-            m_macroResolver.addMacro(MACRO_DATE, CmsDateUtil.getDateTime(
-                new Date(),
-                DateFormat.LONG,
-                getRequestContext().getLocale()));
+            m_macroResolver.addMacro(
+                MACRO_DATE,
+                CmsDateUtil.getDateTime(new Date(), DateFormat.LONG, getRequestContext().getLocale()));
             // send optional confirmation mail
             if (data.isConfirmationMailEnabled()) {
                 if (!data.isConfirmationMailOptional()
@@ -1378,9 +1378,9 @@ public class CmsFormHandler extends CmsJspActionElement {
         // create the check page
         StringTemplate sTemplate = getOutputTemplate("checkpage");
         // set the necessary attributes to use in the string template
-        sTemplate.setAttribute("formuri", OpenCms.getLinkManager().substituteLink(
-            getCmsObject(),
-            getCmsObject().getRequestContext().getUri()));
+        sTemplate.setAttribute(
+            "formuri",
+            OpenCms.getLinkManager().substituteLink(getCmsObject(), getCmsObject().getRequestContext().getUri()));
         sTemplate.setAttribute("formconfig", getFormConfiguration());
         sTemplate.setAttribute("checktext", getFormCheckText());
 
@@ -1398,10 +1398,12 @@ public class CmsFormHandler extends CmsJspActionElement {
                 }
             }
             sTemplate.setAttribute("captchaerror", errorMessage);
-            sTemplate.setAttribute("captchaimagelink", OpenCms.getLinkManager().substituteLink(
-                getCmsObject(),
-                "/system/modules/com.alkacon.opencms.v8.formgenerator/pages/captcha.jsp?"
-                    + captchaField.getCaptchaSettings().toRequestParams(getCmsObject())));
+            sTemplate.setAttribute(
+                "captchaimagelink",
+                OpenCms.getLinkManager().substituteLink(
+                    getCmsObject(),
+                    "/system/modules/com.alkacon.opencms.v8.formgenerator/pages/captcha.jsp?"
+                        + captchaField.getCaptchaSettings().toRequestParams(getCmsObject())));
         }
 
         List<I_CmsField> fields = getFormConfiguration().getAllFields(true, false, false);
@@ -1641,9 +1643,9 @@ public class CmsFormHandler extends CmsJspActionElement {
         // create the main form and pass the previously generated field HTML as attribute
         StringTemplate sTemplate = getOutputTemplate("form");
         // set the necessary attributes to use in the string template
-        sTemplate.setAttribute("formuri", OpenCms.getLinkManager().substituteLink(
-            getCmsObject(),
-            getCmsObject().getRequestContext().getUri()));
+        sTemplate.setAttribute(
+            "formuri",
+            OpenCms.getLinkManager().substituteLink(getCmsObject(), getCmsObject().getRequestContext().getUri()));
         sTemplate.setAttribute("enctype", encType);
         sTemplate.setAttribute("errormessage", errorMessage);
         sTemplate.setAttribute("mandatorymessage", mandatoryMessage);
@@ -1713,10 +1715,12 @@ public class CmsFormHandler extends CmsJspActionElement {
         m_macroResolver = CmsMacroResolver.newInstance();
         m_macroResolver.setKeepEmptyMacros(true);
         m_macroResolver.setCmsObject(getCmsObject());
-        m_macroResolver.addMacro(MACRO_URL, OpenCms.getSiteManager().getCurrentSite(getCmsObject()).getServerPrefix(
-            getCmsObject(),
-            getRequestContext().getUri())
-            + link(getRequestContext().getUri()));
+        m_macroResolver.addMacro(
+            MACRO_URL,
+            OpenCms.getSiteManager().getCurrentSite(getCmsObject()).getServerPrefix(
+                getCmsObject(),
+                getRequestContext().getUri())
+                + link(getRequestContext().getUri()));
         m_macroResolver.addMacro(MACRO_LOCALE, getRequestContext().getLocale().toString());
 
         if (m_multipartFileItems != null) {
