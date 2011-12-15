@@ -8,7 +8,7 @@
     <MinPhraseLength><![CDATA[5]]></MinPhraseLength>
     <MaxPhraseLength><![CDATA[7]]></MaxPhraseLength>
     <MinFontSize><![CDATA[20]]></MinFontSize>
-    <MaxFontSize><![CDATA[40]]></MaxFontSize>
+    <MaxFontSize><![CDATA[35]]></MaxFontSize>
     <FontColor>#000000</FontColor>
     <HolesPerGlyph><![CDATA[0]]></HolesPerGlyph>
     <FilterAmplitude><![CDATA[5]]></FilterAmplitude>

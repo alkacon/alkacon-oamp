@@ -5,11 +5,11 @@
     <Name><![CDATA[Alkacon]]></Name>
     <Characters><![CDATA[abcdefghiklmnoprstuvwxyz]]></Characters>
     <ImageWidth><![CDATA[390]]></ImageWidth>
-    <ImageHeight><![CDATA[45]]></ImageHeight>
+    <ImageHeight><![CDATA[60]]></ImageHeight>
     <MinPhraseLength><![CDATA[5]]></MinPhraseLength>
     <MaxPhraseLength><![CDATA[5]]></MaxPhraseLength>
-    <MinFontSize><![CDATA[30]]></MinFontSize>
-    <MaxFontSize><![CDATA[35]]></MaxFontSize>
+    <MinFontSize><![CDATA[25]]></MinFontSize>
+    <MaxFontSize><![CDATA[30]]></MaxFontSize>
     <FontColor>#B31B34</FontColor>
     <BackgroundColor>#FFFFFF</BackgroundColor>
     <HolesPerGlyph><![CDATA[0]]></HolesPerGlyph>

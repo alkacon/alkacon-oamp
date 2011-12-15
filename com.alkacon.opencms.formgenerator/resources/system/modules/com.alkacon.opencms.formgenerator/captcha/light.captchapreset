@@ -3,12 +3,12 @@
 <CaptchaPresets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/com.alkacon.opencms.formgenerator/schemas/captchapreset.xsd">
   <CaptchaPreset language="en">
     <Name><![CDATA[Light]]></Name>
-    <ImageWidth><![CDATA[220]]></ImageWidth>
-    <ImageHeight><![CDATA[55]]></ImageHeight>
+    <ImageWidth><![CDATA[250]]></ImageWidth>
+    <ImageHeight><![CDATA[60]]></ImageHeight>
     <MinPhraseLength><![CDATA[5]]></MinPhraseLength>
     <MaxPhraseLength><![CDATA[5]]></MaxPhraseLength>
-    <MinFontSize><![CDATA[30]]></MinFontSize>
-    <MaxFontSize><![CDATA[40]]></MaxFontSize>
+    <MinFontSize><![CDATA[20]]></MinFontSize>
+    <MaxFontSize><![CDATA[35]]></MaxFontSize>
     <FontColor>#000000</FontColor>
     <BackgroundColor>#FFFFFF</BackgroundColor>
     <HolesPerGlyph><![CDATA[0]]></HolesPerGlyph>
