@@ -26,14 +26,14 @@
 	<c:set var="loc" value="${cms.locale}" />
 	<c:choose>
 		<c:when test="${cms.element.inMemoryOnly}">
-			<div>
-				<h3><c:out value="New Alkacon Webform Report" /></h3>
-				<h4><c:out value="Please edit!" /></h4>
-			</div>
 			<%
 			// initialize the form report bean
 			report = new CmsFormReport(pageContext, request, response);
 			%>
+			<div>
+				<h3><%= report.getMessages().key("webformreport.init.newAlkaconWebform") %></h3>
+				<h4><%= report.getMessages().key("webformreport.init.pleaseEdit") %></h4>
+			</div>
 		</c:when>
 		<c:otherwise>
 			<%
