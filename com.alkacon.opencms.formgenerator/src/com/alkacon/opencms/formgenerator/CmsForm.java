@@ -94,6 +94,9 @@ public class CmsForm {
     /** Mail type: text mail. */
     public static final String MAILTYPE_TEXT = "text";
 
+    /** Mailto property: can be attached to container page. Overwrites the "Mail to" field from the webform*/
+    public static final String PROPERTY_MAILTO = "webform.mailto";
+
     /** The module name. */
     public static final String MODULE_NAME = CmsForm.class.getPackage().getName();
 
@@ -1694,7 +1697,13 @@ public class CmsForm {
         setMailFromName(getConfigurationValue(stringValue, ""));
         // get the mail to address(es)
         stringValue = getContentStringValue(content, cms, NODE_MAILTO, locale);
-        setMailTo(getConfigurationValue(stringValue, ""));
+        String uri = cms.getRequestContext().getUri();
+        if (cms.readPropertyObject(uri, PROPERTY_MAILTO, false) != null) {
+            String mailto = (cms.readPropertyObject(uri, PROPERTY_MAILTO, false)).getValue();
+            setMailTo(getConfigurationValue(mailto, ""));
+        } else {
+            setMailTo(getConfigurationValue(stringValue, ""));
+        }
         // get the mail subject
         stringValue = getContentStringValue(content, cms, NODE_MAILSUBJECT, locale);
         setMailSubject(getConfigurationValue(resolver, stringValue, ""));
