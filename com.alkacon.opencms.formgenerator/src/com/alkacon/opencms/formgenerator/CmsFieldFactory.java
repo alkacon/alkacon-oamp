@@ -108,6 +108,7 @@ public final class CmsFieldFactory {
         registerFieldType(CmsPagingField.getStaticType(), CmsPagingField.class.getName());
         registerFieldType(CmsDisplayField.getStaticType(), CmsDisplayField.class.getName());
         registerFieldType(CmsHiddenDisplayField.getStaticType(), CmsHiddenDisplayField.class.getName());
+        registerFieldType(CmsParameterField.getStaticType(), CmsParameterField.class.getName());
 
         File propertyFile = null;
         try {
@@ -152,9 +153,11 @@ public final class CmsFieldFactory {
             }
         } catch (IOException e) {
             if (LOG.isErrorEnabled()) {
-                LOG.error(Messages.get().getBundle().key(
-                    Messages.LOG_ERR_READING_CUSTOM_FORM_FIELD_PROPERTIES_1,
-                    propertyFile == null ? CUSTOM_FORM_FIELD_PROPERTIES : propertyFile.getAbsolutePath()), e);
+                LOG.error(
+                    Messages.get().getBundle().key(
+                        Messages.LOG_ERR_READING_CUSTOM_FORM_FIELD_PROPERTIES_1,
+                        propertyFile == null ? CUSTOM_FORM_FIELD_PROPERTIES : propertyFile.getAbsolutePath()),
+                    e);
             }
         }
     }

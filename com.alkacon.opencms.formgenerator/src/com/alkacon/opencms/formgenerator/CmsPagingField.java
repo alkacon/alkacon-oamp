@@ -92,6 +92,9 @@ public class CmsPagingField extends A_CmsField {
                     }
                 }
             }
+            if ((fieldPage != page) && (field instanceof CmsParameterField)) {
+                buf.append(CmsParameterField.createHiddenFields(formHandler.getParameterMap(), field.getParameters()));
+            }
         }
 
         return buf;

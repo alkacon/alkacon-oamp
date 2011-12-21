@@ -436,6 +436,15 @@ public class CmsFormHandler extends CmsJspActionElement {
                         result.append(CmsEncoder.escapeXml(item.getValue()));
                         result.append("\" />\n");
                     }
+                } else if (CmsParameterField.class.equals(currentField.getClass())) {
+                    // special case: table, can have more than one value
+                    //Iterator<CmsFieldItem> k = currentField.getItems().iterator();
+                    result.append("<input type=\"hidden\" name=\"");
+                    result.append(currentField.getName());
+                    result.append("\" value=\"");
+                    result.append(CmsEncoder.escapeXml(currentField.getValue()));
+                    result.append("\" />\n");
+                    result.append(CmsParameterField.createHiddenFields(getParameterMap(), currentField.getParameters()));
                 } else if (CmsStringUtil.isNotEmpty(currentField.getValue())) {
                     // all other fields are converted to a simple hidden field
                     result.append("<input type=\"hidden\" name=\"");
@@ -521,6 +530,10 @@ public class CmsFormHandler extends CmsJspActionElement {
                 } else if (current instanceof CmsEmptyField) {
                     fieldValue = value;
                 }
+                // if label and value is not set, skip it
+                if (CmsStringUtil.isEmpty(label) && CmsStringUtil.isEmpty(fieldValue)) {
+                    continue;
+                }
                 I_CmsField mailField = new CmsTextField();
                 mailField.setLabel(label);
                 mailField.setValue(fieldValue);
@@ -536,6 +549,10 @@ public class CmsFormHandler extends CmsJspActionElement {
                 } catch (Exception e) {
                     // error parsing the String, provide it as is
                     label = current.getLabel();
+                }
+                // if label and value is not set, skip it
+                if (CmsStringUtil.isEmpty(label) && CmsStringUtil.isEmpty(value)) {
+                    continue;
                 }
                 fieldsResult.append(label);
 

@@ -123,6 +123,9 @@ public final class Messages extends A_CmsMessageBundle {
     /** Message constant for key in the resource bundle. */
     public static final String LOG_ERR_TABLEFIELD_REPLACE_0 = "LOG_ERR_TABLEFIELD_REPLACE_0";
 
+    /** Message constant for key in the resource bundle. */
+    public static final String PARAMETER_FIELD_SELECTBOX = "PARAMETER_FIELD_SELECTBOX";
+
     /** Name of the used resource bundle. */
     private static final String BUNDLE_NAME = "com.alkacon.opencms.formgenerator.messages";
 
