@@ -4,18 +4,18 @@
 <%
 	CmsFormHandler form = null;
 %>
+<c:set var="locale" value="${cms:vfs(pageContext).context.locale}" />
+
 <c:choose>
 	<c:when test="${cms.element.inMemoryOnly}">
-		<div>
-			<h3><c:out value="New Alkacon Webform" /></h3>
-			<h4><c:out value="Please edit!" /></h4>
-		</div>
-
 		<%
 		// initialize the form handler
 		form = CmsFormHandlerFactory.create(pageContext, request, response);
-
 		%>
+		<div>
+			<h3><%= form.getMessages().key("webform.init.newAlkaconWebform") %></h3>
+			<h4><%= form.getMessages().key("webform.init.pleaseEdit") %></h4>
+		</div>
 	</c:when>
 	<c:otherwise>
 		<%
@@ -42,6 +42,7 @@ pageContext.setAttribute("dd", dd);
 		<%
 		form.createForm();
 		%>
+		<br style="clear:both;" />
 		</div>
 		</cms:formatter>
 	</c:otherwise>
