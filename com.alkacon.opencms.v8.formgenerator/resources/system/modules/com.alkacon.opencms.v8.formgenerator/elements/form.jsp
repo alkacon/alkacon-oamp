@@ -42,6 +42,7 @@ pageContext.setAttribute("dd", dd);
 		<%
 		form.createForm();
 		%>
+		<br style="clear:both;" />
 		</div>
 		</cms:formatter>
 	</c:otherwise>
