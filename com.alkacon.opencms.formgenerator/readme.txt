@@ -1,6 +1,6 @@
 
                 Alkacon OpenCms Add-On Module Package: Webform
-                       Version 2.0; July 27, 2011
+                       Version 2.0.1; December 21st, 2011
 
 
                                     WARNING:
@@ -55,6 +55,11 @@ Legend:
 ! New Feature
 * Bug fixed
 - General comment
+
+2.0.1 - December 21st, 2011
+! Added Parameter field to process HTTP request parameters
+! Added mailto property that can be attached to container page and overwrites "Mail to" field from webform.
+- Displayed default text of newly generated webform and webform report now uses locale.
 
 2.0 - July 27th, 2011
 * Fixed issue #1957: Added option "Release date" to Basic configuration . 
