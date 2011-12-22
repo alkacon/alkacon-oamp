@@ -1517,6 +1517,10 @@ public class CmsFormHandler extends CmsJspActionElement {
             } else {
                 value = convertToHtmlValue(value);
             }
+            // if label and value is not set, skip it
+            if (CmsStringUtil.isEmpty(label) && CmsStringUtil.isEmpty(value)) {
+                continue;
+            }
             I_CmsField confirmField = new CmsTextField();
             confirmField.setLabel(label);
             confirmField.setValue(value);
