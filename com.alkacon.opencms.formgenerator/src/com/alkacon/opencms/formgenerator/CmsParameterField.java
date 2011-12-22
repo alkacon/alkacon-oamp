@@ -272,9 +272,9 @@ public class CmsParameterField extends A_CmsField {
                         items.add(new CmsFieldItem(value, label, false, false));
                         // while 
                         for (String paramValue : paramValues) {
-
-                            value = CmsEncoder.escapeXml(paramValue);
-                            label = CmsEncoder.escapeXml(paramValue);
+                            value = CmsEncoder.createString(paramValue.getBytes(), CmsEncoder.ENCODING_UTF_8);
+                            value = CmsEncoder.escapeXml(value);
+                            label = value;
                             boolean isSelected = false;
                             if (selectedValue != null) {
                                 if (value.equals(selectedValue[0])) {
@@ -288,7 +288,9 @@ public class CmsParameterField extends A_CmsField {
                     } else {
                         // parameter has a single value -> display as non-editable text
                         type = CmsDisplayField.getStaticType();
-                        setValue(CmsEncoder.escapeXml(paramValues.get(0)));
+                        String value = paramValues.get(0);
+                        value = CmsEncoder.createString(value.getBytes(), CmsEncoder.ENCODING_UTF_8);
+                        setValue(CmsEncoder.escapeXml(value));
                         setMandatory(false);
                     }
                 } else {
