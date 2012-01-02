@@ -1697,10 +1697,9 @@ public class CmsForm {
         setMailFromName(getConfigurationValue(stringValue, ""));
         // get the mail to address(es)
         stringValue = getContentStringValue(content, cms, NODE_MAILTO, locale);
-        String uri = cms.getRequestContext().getUri();
-        if (cms.readPropertyObject(uri, PROPERTY_MAILTO, false) != null) {
-            String mailto = (cms.readPropertyObject(uri, PROPERTY_MAILTO, false)).getValue();
-            setMailTo(getConfigurationValue(mailto, ""));
+        String mailto = (cms.readPropertyObject(cms.getRequestContext().getUri(), PROPERTY_MAILTO, false)).getValue("");
+        if (CmsStringUtil.isNotEmpty(mailto)) {
+            setMailTo(mailto);
         } else {
             setMailTo(getConfigurationValue(stringValue, ""));
         }
