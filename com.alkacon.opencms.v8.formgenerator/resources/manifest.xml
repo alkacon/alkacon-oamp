@@ -3,8 +3,8 @@
 <export>
 	<info>
 		<creator>Admin</creator>
-		<opencms_version>8.0.2</opencms_version>
-		<createdate>Fri, 04 Nov 2011 15:10:29 GMT</createdate>
+		<opencms_version>8.0.3</opencms_version>
+		<createdate>Mon, 02 Jan 2012 10:17:23 GMT</createdate>
 		<infoproject>Offline</infoproject>
 		<export_version>7</export_version>
 	</info>
@@ -91,10 +91,10 @@
 		<file>
 			<destination>system</destination>
 			<type>folder</type>
-			<uuidstructure>23caadab-f006-11e0-b750-6f6871313691</uuidstructure>
-			<datelastmodified>Thu, 06 Oct 2011 10:29:58 GMT</datelastmodified>
+			<uuidstructure>f1138ef7-20ac-11e1-a228-27f2fbbdf126</uuidstructure>
+			<datelastmodified>Wed, 07 Dec 2011 08:24:54 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Thu, 06 Oct 2011 10:29:58 GMT</datecreated>
+			<datecreated>Wed, 07 Dec 2011 08:24:54 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -113,10 +113,10 @@
 		<file>
 			<destination>system/modules</destination>
 			<type>folder</type>
-			<uuidstructure>245e8977-f006-11e0-b750-6f6871313691</uuidstructure>
-			<datelastmodified>Thu, 06 Oct 2011 10:29:59 GMT</datelastmodified>
+			<uuidstructure>f20df4c3-20ac-11e1-a228-27f2fbbdf126</uuidstructure>
+			<datelastmodified>Wed, 07 Dec 2011 08:24:56 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Thu, 06 Oct 2011 10:29:59 GMT</datecreated>
+			<datecreated>Wed, 07 Dec 2011 08:24:56 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -799,6 +799,26 @@
 				<property>
 					<name>Title</name>
 					<value><![CDATA[workplace_de]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.v8.formgenerator/classes/com/alkacon/opencms/v8/formgenerator/workplace_es.properties</source>
+			<destination>system/modules/com.alkacon.opencms.v8.formgenerator/classes/com/alkacon/opencms/v8/formgenerator/workplace_es.properties</destination>
+			<type>plain</type>
+			<uuidstructure>ac701294-352a-11e1-ac2d-27f2fbbdf126</uuidstructure>
+			<uuidresource>ac701295-352a-11e1-ac2d-27f2fbbdf126</uuidresource>
+			<datelastmodified>Mon, 02 Jan 2012 10:15:19 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 02 Jan 2012 10:15:19 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[workplace_es]]></value>
 				</property>
 			</properties>
 			<relations/>
