@@ -57,6 +57,7 @@ Legend:
 - General comment
 
 2.0.1 - December 21st, 2011
+- Added Spanish translation "workplace_es.properties".
 ! Added Parameter field to process HTTP request parameters
 ! Added mailto property that can be attached to container page and overwrites "Mail to" field from webform.
 - Displayed default text of newly generated webform and webform report now uses locale.
