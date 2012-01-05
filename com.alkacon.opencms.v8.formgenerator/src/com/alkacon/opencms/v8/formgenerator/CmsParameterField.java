@@ -222,6 +222,82 @@ public class CmsParameterField extends A_CmsField {
     }
 
     /**
+     * Checks if a string contains only ASCII characters<p>
+     * @param in the input string the handler of the current form
+     * @return if the input string contains only ASCII characters 
+     */
+    public boolean isAscii(String in) {
+
+        boolean check = false;
+
+        for (int i = 0; i < in.length(); i++) {
+            char c = in.charAt(i);
+            if ((31 < c) && (c < 127)) {
+                check = true;
+            } else {
+                return false;
+            }
+        }
+        return check;
+    }
+
+    /**
+     * Checks if a string contains undefined characters indicating an UTF-8 encoding<p>
+     * @param in the input string the handler of the current form
+     * @return if the input string contains undefined characters 
+     */
+    public boolean containsUndefinedCharacters(String in) {
+
+        boolean check = false;
+
+        for (int i = 0; i < in.length(); i++) {
+            char c = in.charAt(i);
+            if ((128 < c) && (c < 191)) {
+                return true;
+            } else {
+                check = false;
+            }
+        }
+        return check;
+    }
+
+    /**
+     * Decodes a UTF-8 string<p>
+     * @param in the input UTF-8 string
+     * @return The decoded string
+     */
+    public String decode(String in) {
+
+        StringBuffer buf = new StringBuffer();
+
+        for (int i = 0; i < in.length(); i++) {
+            char c = in.charAt(i);
+            if ((31 < c) && (c < 127)) {
+                buf.append(c);
+            } else {
+                if (containsUndefinedCharacters(in)) {
+                    // String probably UTF-8 encoded
+                    byte[] u = new byte[2];
+                    u[0] = (byte)c;
+                    if (i < in.length()) {
+                        u[1] = (byte)in.charAt(i + 1);
+                        i++;
+                    } else {
+                        u[1] = 0;
+                    }
+                    String value = CmsEncoder.createString(u, CmsEncoder.ENCODING_UTF_8);
+                    buf.append(value);
+                } else {
+                    // String probably contains ANSI code extending the ASCII code
+                    buf.append(c);
+                }
+            }
+        }
+
+        return buf.toString();
+    }
+
+    /**
      * @see com.alkacon.opencms.v8.formgenerator.I_CmsField#buildHtml(CmsFormHandler, CmsMessages, String, boolean, String)
      */
     @Override
@@ -272,9 +348,11 @@ public class CmsParameterField extends A_CmsField {
                         items.add(new CmsFieldItem(value, label, false, false));
                         // while 
                         for (String paramValue : paramValues) {
-
+                            if (!isAscii(paramValue)) {
+                                paramValue = decode(paramValue);
+                            }
                             value = CmsEncoder.escapeXml(paramValue);
-                            label = CmsEncoder.escapeXml(paramValue);
+                            label = value;
                             boolean isSelected = false;
                             if (selectedValue != null) {
                                 if (value.equals(selectedValue[0])) {
@@ -288,7 +366,11 @@ public class CmsParameterField extends A_CmsField {
                     } else {
                         // parameter has a single value -> display as non-editable text
                         type = CmsDisplayField.getStaticType();
-                        setValue(CmsEncoder.escapeXml(paramValues.get(0)));
+                        String value = paramValues.get(0);
+                        if (!isAscii(value)) {
+                            value = decode(value);
+                        }
+                        setValue(CmsEncoder.escapeXml(value));
                         setMandatory(false);
                     }
                 } else {
