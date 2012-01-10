@@ -22,6 +22,8 @@ $if(mandatorymessage)$
 $endif$
 
 </div>
+$! --- show form footer text --- !$
+$formconfig.formFooterText$
 
 <div class="cmtButtonRow">
 	$hiddenfields$
@@ -30,6 +32,7 @@ $endif$
 	<input class="cmtButton" type="button" value="$resetbutton$" onclick="\$.colorbox.close();" />
 </div>
 </form>
+</div>
 >>
 
 
