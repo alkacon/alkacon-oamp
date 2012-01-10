@@ -45,19 +45,9 @@
 		<c:set var="mapw">width: ${mapw};</c:set>
 	</c:if>
 	<c:set var="maph">height: ${maph};</c:set>
-	
-	<%-- get map key from property map.key or module parameter map.key --%>
-	<c:set var="mapkey"><cms:property name="map.key" file="search" default="" /></c:set>
-	<%
-		String mapKey = (String)pageContext.getAttribute("mapkey");
-		if (CmsStringUtil.isEmptyOrWhitespaceOnly(mapKey)) {
-			mapKey = OpenCms.getModuleManager().getModule("com.alkacon.opencms.geomap").getParameter("map.key", "");
-		}
-		pageContext.setAttribute("mapkey", mapKey);
-	%>
 
 	<%-- include Google Maps JS --%>
-	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&language=${locale}&key=${mapkey}"></script>
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;language=${locale}"></script>
 	<script type="text/javascript">
 		// map object
 		var map;
