@@ -37,6 +37,7 @@
 			</layouts>
 			<defaults>
 				<default element="ShowNavigationBorder" value="true" />
+				<default element="Thumbs/ItemsPerPage" value="12" />
 			</defaults>
 			<mappings>
 				<mapping element="Title" mapto="property:Title" />
