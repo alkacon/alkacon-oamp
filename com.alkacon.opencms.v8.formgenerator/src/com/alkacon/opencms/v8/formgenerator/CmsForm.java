@@ -41,6 +41,7 @@ import org.opencms.file.CmsFile;
 import org.opencms.file.CmsObject;
 import org.opencms.i18n.CmsMessages;
 import org.opencms.jsp.CmsJspActionElement;
+import org.opencms.main.CmsException;
 import org.opencms.main.OpenCms;
 import org.opencms.util.CmsMacroResolver;
 import org.opencms.util.CmsStringUtil;
@@ -1040,6 +1041,102 @@ public class CmsForm {
     public CmsJspActionElement getJspAction() {
 
         return m_jspAction;
+    }
+
+    /**
+     * Get list with mandatory input values.<p>
+     * 
+     * @param jsp the initialized CmsJspActionElement to access the OpenCms API
+     * @param locale the currently active Locale
+     * @param formConfigUri Form configuration
+     * 
+     * @return List with input defaults and its default values
+     */
+    public Map<String, String> getListWithMandatoryInputFields(
+        CmsJspActionElement jsp,
+        Locale locale,
+        String formConfigUri) {
+
+        HashMap<String, String> inputFieldsWithDefaultValues = new HashMap<String, String>();
+
+        // read the form configuration file from VFS
+        if (CmsStringUtil.isEmpty(formConfigUri)) {
+            formConfigUri = jsp.getRequestContext().getUri();
+        }
+        CmsXmlContent content = null;
+        try {
+            CmsFile file = jsp.getCmsObject().readFile(formConfigUri);
+            content = CmsXmlContentFactory.unmarshal(jsp.getCmsObject(), file);
+        } catch (CmsException e) {
+            return inputFieldsWithDefaultValues;
+        }
+        if (content == null) {
+            return inputFieldsWithDefaultValues;
+        }
+
+        CmsObject cms = jsp.getCmsObject();
+        List<I_CmsXmlContentValue> fieldValues = content.getValues(NODE_INPUTFIELD, locale);
+
+        for (I_CmsXmlContentValue inputField : fieldValues) {
+            String inputFieldPath = inputField.getPath() + "/";
+
+            // get the field from the factory for the specified type
+            String stringValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDTYPE, locale);
+
+            // get the field label
+            stringValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDLABEL, locale);
+
+            String locLabel = getConfigurationValue(stringValue, "");
+            String dbLabel = locLabel;
+            boolean useDbLabel = false;
+            int pos = locLabel.indexOf('|');
+            if (pos > -1) {
+                locLabel = locLabel.substring(0, pos);
+                if ((pos + 1) < dbLabel.length()) {
+                    dbLabel = dbLabel.substring(pos + 1);
+                    useDbLabel = true;
+                }
+            }
+
+            // create the field name
+            String fieldName = inputField.getPath();
+            String label = "";
+            if (useDbLabel) {
+
+                // set field name to db label
+                fieldName = dbLabel;
+                label = locLabel;
+            } else {
+
+                // cut off the XML content index ("[number]") 
+                int indexStart = fieldName.lastIndexOf('[') + 1;
+                String index = fieldName.substring(indexStart, fieldName.length() - 1);
+                // set the field name to generic value "InputField-number"
+                // replace the index ("[number]") of the xmlcontent field by "-number":
+                fieldName = new StringBuffer(fieldName.substring(0, indexStart - 1)).append('-').append(index).toString();
+                // cut off initial path all but the last path segments
+                // (make sure there is a slash in the string first).
+                fieldName = "/" + fieldName;
+                int slashIndex = fieldName.lastIndexOf("/");
+                fieldName = fieldName.substring(slashIndex + 1);
+                label = locLabel;
+
+            }
+
+            if (CmsStringUtil.isEmpty(label)) {
+                label = content.getStringValue(cms, inputFieldPath + NODE_FIELDDEFAULTVALUE, locale);
+            }
+
+            // get the field mandatory flag
+            stringValue = content.getStringValue(cms, inputFieldPath + NODE_FIELDMANDATORY, locale);
+            boolean isMandatory = Boolean.valueOf(stringValue).booleanValue();
+
+            if (isMandatory && !CmsStringUtil.isEmpty(fieldName) && !CmsStringUtil.isEmpty(label)) {
+                // set flag that determines if mandatory fields are present
+                inputFieldsWithDefaultValues.put(fieldName, label);
+            }
+        }
+        return inputFieldsWithDefaultValues;
     }
 
     /**
