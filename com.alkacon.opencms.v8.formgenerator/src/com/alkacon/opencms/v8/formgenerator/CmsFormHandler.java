@@ -511,6 +511,13 @@ public class CmsFormHandler extends CmsJspActionElement {
                 continue;
             } else if (current instanceof CmsFileUploadField) {
                 value = current.getValue();
+                if (CmsStringUtil.isEmptyOrWhitespaceOnly(value)) {
+                    // try to read upload item from session attribute
+                    FileItem fileItem = getUploadFile(current);
+                    if (fileItem != null) {
+                        value = fileItem.getName();
+                    }
+                }
                 value = CmsFormHandler.getTruncatedFileItemName(value);
             }
             if (isHtmlMail) {
@@ -1113,6 +1120,13 @@ public class CmsFormHandler extends CmsJspActionElement {
                     fValue = data.getFieldStringValueByName(field.getName());
                 }
                 if (field instanceof CmsFileUploadField) {
+                    if (CmsStringUtil.isEmptyOrWhitespaceOnly(fValue)) {
+                        // try to read upload item from session attribute
+                        FileItem fileItem = getUploadFile(field);
+                        if (fileItem != null) {
+                            fValue = fileItem.getName();
+                        }
+                    }
                     fValue = CmsFormHandler.getTruncatedFileItemName(fValue);
                 }
                 m_macroResolver.addMacro(field.getLabel(), fValue);
@@ -1444,6 +1458,13 @@ public class CmsFormHandler extends CmsJspActionElement {
                 } else if (current instanceof CmsPasswordField) {
                     value = value.replaceAll(".", "*");
                 } else if (current instanceof CmsFileUploadField) {
+                    if (CmsStringUtil.isEmptyOrWhitespaceOnly(value)) {
+                        // try to read upload item from session attribute
+                        FileItem fileItem = getUploadFile(current);
+                        if (fileItem != null) {
+                            value = fileItem.getName();
+                        }
+                    }
                     value = CmsFormHandler.getTruncatedFileItemName(value);
                     value = convertToHtmlValue(value);
                 } else {
@@ -1510,6 +1531,13 @@ public class CmsFormHandler extends CmsJspActionElement {
             } else if (current instanceof CmsPasswordField) {
                 value = value.replaceAll(".", "*");
             } else if (current instanceof CmsFileUploadField) {
+                if (CmsStringUtil.isEmptyOrWhitespaceOnly(value)) {
+                    // try to read upload item from session attribute
+                    FileItem fileItem = getUploadFile(current);
+                    if (fileItem != null) {
+                        value = fileItem.getName();
+                    }
+                }
                 value = CmsFormHandler.getTruncatedFileItemName(value);
                 value = convertToHtmlValue(value);
             } else if (current instanceof CmsEmptyField) {

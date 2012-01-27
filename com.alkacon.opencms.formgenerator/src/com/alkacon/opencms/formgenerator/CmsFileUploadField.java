@@ -41,6 +41,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.fileupload.FileItem;
+
 /**
  * Represents a file upload field.<p>
  * 
@@ -86,9 +88,19 @@ public class CmsFileUploadField extends A_CmsField {
         // info message
         if (CmsStringUtil.isNotEmpty(infoKey)) {
             if (CmsFormHandler.INFO_UPLOAD_FIELD_MANDATORY_FILLED_OUT.equals(infoKey)) {
+                // try to read the file name of the upload field
                 String value = getValue();
-                value = CmsFormHandler.getTruncatedFileItemName(value);
-                infoMessage = messages.key("form.html.info.fileuploadname", value);
+                if (CmsStringUtil.isEmptyOrWhitespaceOnly(value)) {
+                    // try to read the file name from the session attribute
+                    FileItem fileItem = formHandler.getUploadFile(this);
+                    if (fileItem != null) {
+                        value = fileItem.getName();
+                    }
+                }
+                if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(value)) {
+                    value = CmsFormHandler.getTruncatedFileItemName(value);
+                    infoMessage = messages.key("form.html.info.fileuploadname", value);
+                }
             } else if (CmsStringUtil.isNotEmpty(getErrorMessage())) {
                 infoMessage = getInfoMessage();
             }
@@ -127,8 +139,13 @@ public class CmsFileUploadField extends A_CmsField {
     public String validateForInfo(CmsFormHandler formHandler) {
 
         String validationInfo = "";
+        // check the request parameter  
         String param = formHandler.getParameter(getName());
-        if (CmsStringUtil.isNotEmpty(param)) {
+        // check the session attribute
+        FileItem fileItem = formHandler.getUploadFile(this);
+
+        if (CmsStringUtil.isNotEmpty(param) || (fileItem != null)) {
+            // set the info message, if the upload field is found as parameter or in the session attribute
             validationInfo = CmsFormHandler.INFO_UPLOAD_FIELD_MANDATORY_FILLED_OUT;
         }
         return validationInfo;
