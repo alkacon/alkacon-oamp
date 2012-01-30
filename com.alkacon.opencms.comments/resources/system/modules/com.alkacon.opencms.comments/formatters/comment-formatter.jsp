@@ -59,7 +59,7 @@
 					<div class="cmtLoading"></div>
 					<c:set var="url">
 						<c:choose>
-							<c:when test="${(content.hasValue.Minimized && content.value.Minimized.stringValue=='true')|| not alkaconCmt.maximized}">%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_header.jsp:fe055c44-120a-11dd-8a3f-111d34530985)</c:when>
+							<c:when test="${(content.hasValue.Minimized && content.value.Minimized.stringValue=='true')}">%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_header.jsp:fe055c44-120a-11dd-8a3f-111d34530985)</c:when>
 							<c:otherwise>%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_list.jsp:f11cf62d-ec2e-11dc-990f-dfec94299cf1)</c:otherwise>
 						</c:choose>
 					</c:set>
