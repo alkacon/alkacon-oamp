@@ -1,7 +1,7 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 	
 	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
-	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.htmlcleaner/schemas/replacetag.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.htmlcleaner/schemas/replacetag.xsd"/>
 		
 	<xsd:element name="HtmlCleanerReplaceTags" type="OpenCmsHtmlCleanerReplaceTags"/>
 	

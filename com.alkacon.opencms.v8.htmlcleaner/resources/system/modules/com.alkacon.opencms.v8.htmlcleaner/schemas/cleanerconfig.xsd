@@ -1,9 +1,9 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 	
 	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
-	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.htmlcleaner/schemas/keeptags.xsd"/>
-	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.htmlcleaner/schemas/replacetags.xsd"/>
-	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.htmlcleaner/schemas/removeattributes.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.htmlcleaner/schemas/keeptags.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.htmlcleaner/schemas/replacetags.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.htmlcleaner/schemas/removeattributes.xsd"/>
 		
 	<xsd:element name="HtmlCleanerConfigurations" type="OpenCmsHtmlCleanerConfigurations"/>
 	
