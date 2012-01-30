@@ -266,6 +266,19 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<source>system/modules/com.alkacon.opencms.v8.htmlcleaner/lib/com.alkacon.opencms.v8.htmlcleaner.jar</source>
+			<destination>system/modules/com.alkacon.opencms.v8.htmlcleaner/lib/com.alkacon.opencms.v8.htmlcleaner.jar</destination>
+			<type>binary</type>
+			<datelastmodified>Wed, 02 Mar 2011 09:53:10 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Mar 2011 09:52:46 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
 			<source>system/modules/com.alkacon.opencms.v8.htmlcleaner/lib/jericho-html-3.2.jar</source>
 			<destination>system/modules/com.alkacon.opencms.v8.htmlcleaner/lib/jericho-html-3.2.jar</destination>
 			<type>binary</type>
