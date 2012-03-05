@@ -52,4 +52,16 @@ public interface I_CmsWebformActionHandler {
      * 
      */
     void afterWebformAction(CmsObject cmsObject, CmsFormHandler formHandler);
+
+    /**
+     * Runs the action before the form is sent.<p>
+     * 
+     * In error cases the returned String will be used as redirect target.<p> 
+     * 
+     * @param cmsObject the current users context
+     * @param formHandler the initialized web form handler
+     * 
+     * @return a link target URI inside OpenCms if an error occurred or <code>null</code> on success
+     */
+    String beforeWebformAction(CmsObject cmsObject, CmsFormHandler formHandler);
 }

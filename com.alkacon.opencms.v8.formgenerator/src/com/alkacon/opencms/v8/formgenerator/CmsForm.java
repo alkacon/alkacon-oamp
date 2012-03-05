@@ -94,9 +94,6 @@ public class CmsForm {
     /** Mail type: text mail. */
     public static final String MAILTYPE_TEXT = "text";
 
-    /** Mailto property: can be attached to container page. Overwrites the "Mail to" field from the webform*/
-    public static final String PROPERTY_MAILTO = "webform.mailto";
-
     /** The module name. */
     public static final String MODULE_NAME = CmsForm.class.getPackage().getName();
 
@@ -272,6 +269,9 @@ public class CmsForm {
     /** Configuration node name for the form text node. */
     public static final String NODE_FORMTEXT = "FormText";
 
+    /** Configuration node name for the optional forward mode. */
+    public static final String NODE_FORWARD_MODE = "ForwardMode";
+
     /** Configuration node name for the input field node. */
     public static final String NODE_INPUTFIELD = "InputField";
 
@@ -373,6 +373,9 @@ public class CmsForm {
 
     /** Request parameter name for the optional send confirmation email checkbox. */
     public static final String PARAM_SENDCONFIRMATION = "sendconfirmation";
+
+    /** Mailto property: can be attached to container page. Overwrites the "Mail to" field from the webform*/
+    public static final String PROPERTY_MAILTO = "webform.mailto";
 
     /** The path to the default HTML templates for the form. */
     public static final String VFS_PATH_DEFAULT_TEMPLATEFILE = CmsWorkplace.VFS_PATH_MODULES
@@ -560,6 +563,9 @@ public class CmsForm {
 
     /** Flag to signal that data should be sent by email - defaults to true. */
     protected boolean m_transportEmail = true;
+
+    /** The forward mode. */
+    private boolean m_forwardMode;
 
     /**
      * Default constructor which parses the configuration file.<p>
@@ -919,6 +925,18 @@ public class CmsForm {
             }
         }
         return null;
+    }
+
+    /**
+     * Returns the field specified by it's name (Xpath).<p>
+     * 
+     * @param fieldName the field's name (Xpath)
+     * 
+     * @return the field, or null
+     */
+    public I_CmsField getFieldByName(String fieldName) {
+
+        return m_fieldsByName.get(fieldName);
     }
 
     /**
@@ -1400,6 +1418,17 @@ public class CmsForm {
     }
 
     /**
+     * Returns <code>true</code> if the request should be forwarded to 
+     * the given target URI, <code>false</code> otherwise.<p>
+     * 
+     * @return the <code>true</code> if the request should be forwarded
+     */
+    public boolean isForwardMode() {
+
+        return m_forwardMode;
+    }
+
+    /**
      * Tests if the input page was submitted.<p>
      * 
      * @return true, if the input page was submitted
@@ -1689,6 +1718,9 @@ public class CmsForm {
         // get the optional target URI
         stringValue = getContentStringValue(content, cms, NODE_TARGET_URI, locale);
         setTargetUri(getConfigurationValue(stringValue, ""));
+        // get the optional target URI
+        stringValue = getContentStringValue(content, cms, NODE_FORWARD_MODE, locale);
+        setForwardMode(Boolean.parseBoolean(getConfigurationValue(stringValue, Boolean.FALSE.toString())));
         // get the mail from address
         stringValue = getContentStringValue(content, cms, NODE_MAILFROM, locale);
         setMailFrom(getConfigurationValue(stringValue, ""));
@@ -2315,6 +2347,16 @@ public class CmsForm {
     protected void setFormMiddleText(String formMiddleText) {
 
         m_formMiddleText = formMiddleText;
+    }
+
+    /**
+     * Sets the optional forward mode.<p>
+     * 
+     * @param isForward 
+     */
+    protected void setForwardMode(boolean isForward) {
+
+        m_forwardMode = isForward;
     }
 
     /**

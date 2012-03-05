@@ -55,8 +55,19 @@ public class CmsWebformDefaultActionHandler implements I_CmsWebformActionHandler
      */
     public void afterWebformAction(CmsObject cmsObject, CmsFormHandler formHandler) {
 
-        if (LOG.isErrorEnabled()) {
-            LOG.error("The CmsWebformDefaultActionHandler run successfully.");
+        if (LOG.isInfoEnabled()) {
+            LOG.info("The after webform action is executed successfully.");
         }
+    }
+
+    /**
+     * @see com.alkacon.opencms.v8.formgenerator.I_CmsWebformActionHandler#beforeWebformAction(org.opencms.file.CmsObject, com.alkacon.opencms.v8.formgenerator.CmsFormHandler)
+     */
+    public String beforeWebformAction(CmsObject cmsObject, CmsFormHandler formHandler) {
+
+        if (LOG.isInfoEnabled()) {
+            LOG.info("The before webform action is executed successfully.");
+        }
+        return null;
     }
 }

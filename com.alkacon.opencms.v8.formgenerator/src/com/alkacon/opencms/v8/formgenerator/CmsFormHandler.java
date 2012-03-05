@@ -73,6 +73,7 @@ import java.util.StringTokenizer;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
@@ -312,8 +313,9 @@ public class CmsFormHandler extends CmsJspActionElement {
      * 
      * @throws IOException if an I/O error occurs
      * @throws JspException if redirection fails
+     * @throws ServletException if forwarding goes wrong
      */
-    public void createForm() throws IOException, JspException {
+    public void createForm() throws IOException, JspException, ServletException {
 
         // the output writer
         Writer out = getJspContext().getOut();
@@ -364,24 +366,36 @@ public class CmsFormHandler extends CmsJspActionElement {
                 out.write(buildCheckHtml());
             } else if (showDownloadData()) {
                 // show the data download page
-                //                include(modulePath + "elements/datadownload.jsp");
-                Map modParameterMap = getParameterMap();
+                Map<String, String[]> modParameterMap = getParameterMap();
                 modParameterMap.put(PARAM_URI, new String[] {getFormConfiguration().getConfigUri().toString()});
                 include(modulePath + "elements/datadownload.jsp", null, false, modParameterMap);
 
             } else {
                 // try to send a notification email with the submitted form field values
+                String errorLinkTarget = executeBeforeWebformAction();
+                if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(errorLinkTarget)) {
+                    getResponse().sendRedirect(link(errorLinkTarget));
+                    return;
+                }
                 if (sendData()) {
                     // successfully sent email, decide further actions
                     if (getFormConfiguration().hasTargetUri()) {
-                        // another target URI is configured, redirect to it
-                        getResponse().sendRedirect(link(getFormConfiguration().getTargetUri()));
+                        if (getFormConfiguration().isForwardMode()) {
+                            CmsRequestUtil.forwardRequest(
+                                link(getFormConfiguration().getTargetUri()),
+                                m_parameterMap,
+                                getRequest(),
+                                getResponse());
+                        } else {
+                            // another target URI is configured, redirect to it
+                            getResponse().sendRedirect(link(getFormConfiguration().getTargetUri()));
+                        }
                     } else {
                         // show confirmation end page
                         out.write(buildConfirmHtml());
                     }
                     // prepare the web form action class if configured
-                    prepareAfterWebformAction();
+                    executeAfterWebformAction();
                 } else {
                     // failure sending email, show error message
                     StringTemplate sTemplate = getOutputTemplate("emailerror");
@@ -750,6 +764,16 @@ public class CmsFormHandler extends CmsJspActionElement {
     }
 
     /**
+     * Returns the macro resolver.<p>
+     * 
+     * @return the resolver
+     */
+    public CmsMacroResolver getMacroResolver() {
+
+        return m_macroResolver;
+    }
+
+    /**
      * Returns the localized messages.<p>
      *
      * @return the localized messages
@@ -903,9 +927,7 @@ public class CmsFormHandler extends CmsJspActionElement {
         FileItem current;
         String fieldName = isFileUploadField.getName();
         String uploadFileFieldName;
-        Map<String, FileItem> fileUploads = (Map<String, FileItem>)getRequest().getSession().getAttribute(
-            ATTRIBUTE_FILEITEMS);
-
+        Map<String, FileItem> fileUploads = getFileUploads();
         if (fileUploads != null) {
             Iterator<FileItem> i = fileUploads.values().iterator();
             while (i.hasNext()) {
@@ -1016,9 +1038,29 @@ public class CmsFormHandler extends CmsJspActionElement {
     }
 
     /**
-     * Prepares the after web form action.<p>
+     * Executes the before web form action.<p>
+     * @return <code>true</code> if successful
      */
-    public void prepareAfterWebformAction() {
+    public String executeBeforeWebformAction() {
+
+        String actionClass = getFormConfiguration().getActionClass();
+        if (CmsStringUtil.isNotEmpty(actionClass)) {
+            try {
+                I_CmsWebformActionHandler handler = getObject(actionClass);
+                return handler.beforeWebformAction(getCmsObject(), this);
+            } catch (Exception e) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Invalid webform action handler class: " + actionClass, e);
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Executes the after web form action.<p>
+     */
+    public void executeAfterWebformAction() {
 
         String actionClass = getFormConfiguration().getActionClass();
         if (CmsStringUtil.isNotEmpty(actionClass)) {
@@ -1231,39 +1273,6 @@ public class CmsFormHandler extends CmsJspActionElement {
     }
 
     /**
-     * Returns if the release text should be shown instead of the form.<p>
-     *
-     * @return <code>true</code> if the release text should be shown, otherwise <code>false</code>
-     */
-    public boolean showRelease() {
-
-        return (getFormConfiguration().getReleaseDate() > 0)
-            && (System.currentTimeMillis() < getFormConfiguration().getReleaseDate());
-    }
-
-    /**
-     * Returns if the maximum submissions text should be shown instead of the form.<p>
-     *
-     * @return <code>true</code> if the maximum submissions text should be shown, otherwise <code>false</code>
-     */
-    public boolean showMaximumSubmissions() {
-
-        CmsFormDataAccess formDataInstance = CmsFormDataAccess.getInstance();
-
-        int count = 0;
-        CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.DEFAULT.filterEntryId(m_entryId);
-
-        String formID = getFormConfiguration().getFormId();
-        filter = filter.filterFormId(formID);
-        try {
-            count = formDataInstance.countForms(filter);
-        } catch (SQLException ex) {
-            // problem reading from database
-        }
-        return ((getFormConfiguration().getMaximumSubmissions() > 0) && (getFormConfiguration().getMaximumSubmissions() <= count));
-    }
-
-    /**
      * Returns if the input form should be displayed.<p>
      * 
      * @return <code>true</code> if the input form should be displayed, otherwise <code>false</code>
@@ -1306,6 +1315,39 @@ public class CmsFormHandler extends CmsJspActionElement {
         }
 
         return result;
+    }
+
+    /**
+     * Returns if the maximum submissions text should be shown instead of the form.<p>
+     *
+     * @return <code>true</code> if the maximum submissions text should be shown, otherwise <code>false</code>
+     */
+    public boolean showMaximumSubmissions() {
+
+        CmsFormDataAccess formDataInstance = CmsFormDataAccess.getInstance();
+
+        int count = 0;
+        CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.DEFAULT.filterEntryId(m_entryId);
+
+        String formID = getFormConfiguration().getFormId();
+        filter = filter.filterFormId(formID);
+        try {
+            count = formDataInstance.countForms(filter);
+        } catch (SQLException ex) {
+            // problem reading from database
+        }
+        return ((getFormConfiguration().getMaximumSubmissions() > 0) && (getFormConfiguration().getMaximumSubmissions() <= count));
+    }
+
+    /**
+     * Returns if the release text should be shown instead of the form.<p>
+     *
+     * @return <code>true</code> if the release text should be shown, otherwise <code>false</code>
+     */
+    public boolean showRelease() {
+
+        return (getFormConfiguration().getReleaseDate() > 0)
+            && (System.currentTimeMillis() < getFormConfiguration().getReleaseDate());
     }
 
     /**
@@ -1782,8 +1824,7 @@ public class CmsFormHandler extends CmsJspActionElement {
         }
 
         if (m_multipartFileItems != null) {
-            Map<String, FileItem> fileUploads = (Map<String, FileItem>)req.getSession().getAttribute(
-                ATTRIBUTE_FILEITEMS);
+            Map<String, FileItem> fileUploads = getFileUploads();
             if (fileUploads == null) {
                 fileUploads = new HashMap<String, FileItem>();
             }
@@ -1951,8 +1992,7 @@ public class CmsFormHandler extends CmsJspActionElement {
                 theMail.setHtmlMsg(createMailTextFromFields(true, false));
 
                 // attach file uploads
-                Map<String, FileItem> fileUploads = (Map<String, FileItem>)getRequest().getSession().getAttribute(
-                    ATTRIBUTE_FILEITEMS);
+                Map<String, FileItem> fileUploads = getFileUploads();
                 if (fileUploads != null) {
                     Iterator<FileItem> i = fileUploads.values().iterator();
                     while (i.hasNext()) {
@@ -2055,11 +2095,27 @@ public class CmsFormHandler extends CmsJspActionElement {
     }
 
     /**
+     * Returns the map of uploaded files.<p>
+     * 
+     * @return the map of uploaded files
+     */
+    @SuppressWarnings("unchecked")
+    private Map<String, FileItem> getFileUploads() {
+
+        if (getRequest().getSession().getAttribute(ATTRIBUTE_FILEITEMS) != null) {
+            return (Map<String, FileItem>)getRequest().getSession().getAttribute(ATTRIBUTE_FILEITEMS);
+        }
+        return null;
+    }
+
+    /**
      * Creates an object from data type I_CmsWebformActionHandler.<p>
      * 
      * @param className name from class to create an object from
      * 
      * @return object from data type I_CmsWebformActionHandler
+     * 
+     * @throws Exception if the creation goes wrong
      */
     private I_CmsWebformActionHandler getObject(String className) throws Exception {
 

@@ -33,6 +33,7 @@
 			<xsd:element name="FormFooterText" type="OpenCmsHtml" minOccurs="0" />
 			<xsd:element name="FormConfirmation" type="OpenCmsHtml" />
 			<xsd:element name="TargetUri" type="OpenCmsVfsFile" minOccurs="0" />
+			<xsd:element name="ForwardMode" type="OpenCmsBoolean" minOccurs="0" />
 			<xsd:element name="OptionalFormRelease" type="OpenCmsOptionalAlkaconV8WebFormRelease" minOccurs="0" />
 			<xsd:element name="OptionalFormExpiration" type="OpenCmsOptionalAlkaconV8WebFormExpiration" minOccurs="0" />
 
