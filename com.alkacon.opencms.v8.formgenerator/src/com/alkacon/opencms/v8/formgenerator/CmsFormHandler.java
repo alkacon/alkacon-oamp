@@ -509,6 +509,7 @@ public class CmsFormHandler extends CmsJspActionElement {
             if (!useInFormDataMacro(current)) {
                 continue;
             }
+            // only show the empty field in the confirmation mail, if it is marked as mandatory
             if ((current instanceof CmsEmptyField) && !current.isMandatory()) {
                 continue;
             }
@@ -574,6 +575,8 @@ public class CmsFormHandler extends CmsJspActionElement {
                 // if label and value is not set, skip it
                 if (CmsStringUtil.isEmpty(label) && CmsStringUtil.isEmpty(value)) {
                     continue;
+                } else if (current instanceof CmsEmptyField) {
+                    label = "";
                 }
                 fieldsResult.append(label);
 
@@ -1487,12 +1490,17 @@ public class CmsFormHandler extends CmsJspActionElement {
                 && !CmsHiddenField.class.isAssignableFrom(current.getClass())
                 && !CmsCaptchaField.class.isAssignableFrom(current.getClass()) && !CmsHiddenDisplayField.class.isAssignableFrom(current.getClass()))
                 || (CmsDisplayField.class.isAssignableFrom(current.getClass()))) {
-                if ((current instanceof CmsEmptyField) || (current instanceof CmsPagingField)) {
+
+                // only show the empty field in the confirmation mail, if it is marked as mandatory
+                if (((current instanceof CmsEmptyField) && (!current.isMandatory()))
+                    || (current instanceof CmsPagingField)) {
                     continue;
                 }
                 String label = current.getLabel();
                 if (current instanceof CmsTableField) {
                     label = ((CmsTableField)current).buildLabel(this);
+                } else if (current instanceof CmsEmptyField) {
+                    label = "";
                 }
                 String value = current.toString();
                 if (current instanceof CmsTableField) {
@@ -1509,6 +1517,8 @@ public class CmsFormHandler extends CmsJspActionElement {
                     }
                     value = CmsFormHandler.getTruncatedFileItemName(value);
                     value = convertToHtmlValue(value);
+                } else if (current instanceof CmsEmptyField) {
+                    // do nothing
                 } else {
                     value = convertToHtmlValue(value);
                 }
@@ -1549,6 +1559,12 @@ public class CmsFormHandler extends CmsJspActionElement {
                 || CmsPagingField.class.isAssignableFrom(current.getClass())) {
                 continue;
             }
+
+            // only show the empty field in the confirmation mail, if it is marked as mandatory
+            if ((current instanceof CmsEmptyField) && (!current.isMandatory())) {
+                continue;
+            }
+
             String label = current.getLabel();
             if (current instanceof CmsTableField) {
                 label = ((CmsTableField)current).buildLabel(this);
