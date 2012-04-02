@@ -681,6 +681,45 @@ public class CmsFormHandler extends CmsJspActionElement {
     }
 
     /**
+     * Executes the after web form action.<p>
+     */
+    public void executeAfterWebformAction() {
+
+        String actionClass = getFormConfiguration().getActionClass();
+        if (CmsStringUtil.isNotEmpty(actionClass)) {
+            try {
+                I_CmsWebformActionHandler handler = getObject(actionClass);
+                handler.afterWebformAction(getCmsObject(), this);
+            } catch (Exception e) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Invalid webform action handler class: " + actionClass, e);
+                }
+            }
+        }
+    }
+
+    /**
+     * Executes the before web form action.<p>
+     * 
+     * @return <code>true</code> if successful
+     */
+    public String executeBeforeWebformAction() {
+
+        String actionClass = getFormConfiguration().getActionClass();
+        if (CmsStringUtil.isNotEmpty(actionClass)) {
+            try {
+                I_CmsWebformActionHandler handler = getObject(actionClass);
+                return handler.beforeWebformAction(getCmsObject(), this);
+            } catch (Exception e) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Invalid webform action handler class: " + actionClass, e);
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * Returns the entry id of the submitted form in the database.<p>
      * 
      * Returns a value > 0, if the form was submitted to database successfully,
@@ -1038,44 +1077,6 @@ public class CmsFormHandler extends CmsJspActionElement {
             result = true;
         }
         return result;
-    }
-
-    /**
-     * Executes the before web form action.<p>
-     * @return <code>true</code> if successful
-     */
-    public String executeBeforeWebformAction() {
-
-        String actionClass = getFormConfiguration().getActionClass();
-        if (CmsStringUtil.isNotEmpty(actionClass)) {
-            try {
-                I_CmsWebformActionHandler handler = getObject(actionClass);
-                return handler.beforeWebformAction(getCmsObject(), this);
-            } catch (Exception e) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Invalid webform action handler class: " + actionClass, e);
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Executes the after web form action.<p>
-     */
-    public void executeAfterWebformAction() {
-
-        String actionClass = getFormConfiguration().getActionClass();
-        if (CmsStringUtil.isNotEmpty(actionClass)) {
-            try {
-                I_CmsWebformActionHandler handler = getObject(actionClass);
-                handler.afterWebformAction(getCmsObject(), this);
-            } catch (Exception e) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Invalid webform action handler class: " + actionClass, e);
-                }
-            }
-        }
     }
 
     /**
@@ -1860,7 +1861,7 @@ public class CmsFormHandler extends CmsJspActionElement {
         }
         String formAction = getParameter(PARAM_FORMACTION);
         // security check: some form actions are not allowed for everyone:
-        if (this.getCmsObject().getRequestContext().getCurrentProject().isOnlineProject()) {
+        if (getCmsObject().getRequestContext().getCurrentProject().isOnlineProject()) {
             if (CmsFormHandler.ACTION_DOWNLOAD_DATA_1.equals(formAction)) {
                 LOG.error("Received an illegal request for download data of form "
                     + formConfigUri
