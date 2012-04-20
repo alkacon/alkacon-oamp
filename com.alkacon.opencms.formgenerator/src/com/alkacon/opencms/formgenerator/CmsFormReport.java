@@ -37,6 +37,7 @@ import com.alkacon.opencms.formgenerator.database.CmsFormDataBean;
 import com.alkacon.opencms.formgenerator.database.CmsFormDatabaseFilter;
 
 import org.opencms.file.CmsFile;
+import org.opencms.i18n.CmsEncoder;
 import org.opencms.i18n.CmsMessages;
 import org.opencms.json.JSONArray;
 import org.opencms.json.JSONException;
@@ -639,7 +640,7 @@ public class CmsFormReport extends CmsJspActionElement {
                     // also store empty values
                     row.put("");
                 } else {
-                    row.put(val);
+                    row.put(CmsEncoder.escapeXml(val));
                 }
             }
             data.put(row);
