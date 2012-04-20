@@ -30,10 +30,10 @@
     #cboxBottomCenter{height:21px; background:url(../img/colorbox/border.png) 0 -29px repeat-x;}
     #cboxContent{background:#fff; overflow:hidden;}
         #cboxError{padding:50px; border:1px solid #ccc;}
-        /* next two lines modified to have a nicer layout for long image titles */
+        /* next three lines modified to have a nicer layout for long image titles */
         #cboxLoadedContent{margin-bottom:44px;}
-        #cboxTitle{position:absolute; bottom:4px; left:17%; text-align:center; width:66%; color:#949494;}
-        #cboxCurrent{position:absolute; bottom:4px; left:58px; color:#949494;}
+        #cboxTitle{position:absolute; bottom:4px; left:66px; text-align:center; width:70%; color:#949494;}
+        #cboxCurrent{position:absolute; bottom:28px; left:0; color:#949494; font-size: 10px;}
         #cboxSlideshow{position:absolute; bottom:4px; right:30px; color:#0092ef;}
         #cboxPrevious{position:absolute; bottom:0; left:0; background:url(../img/colorbox/controls.png) no-repeat -75px 0; width:25px; height:25px; text-indent:-9999px;}
         #cboxPrevious.hover{background-position:-75px -25px;}
