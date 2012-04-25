@@ -76,7 +76,6 @@
 			</div>
 		</c:otherwise>
 	</c:choose>
-	<div class="album_clear"></div>
 
 	<%-- Pagination above bottom text --%>
 	<c:if test="${hasPagination && content.value['NavigationPosition'] == 'b_a'}">
@@ -87,7 +86,7 @@
 
 	<%-- Bottom Text --%>
 	<c:if test="${!thumbs.value['TextBottom'].isEmptyOrWhitespaceOnly}">
-		<div style="clear: left;"><c:out value="${thumbs.value['TextBottom']}" escapeXml="false"/></div>
+		<div><c:out value="${thumbs.value['TextBottom']}" escapeXml="false"/></div>
 	</c:if>
 	
 	<%-- Pagination below bottom text --%>

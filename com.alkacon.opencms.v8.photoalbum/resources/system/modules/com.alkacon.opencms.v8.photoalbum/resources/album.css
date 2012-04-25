@@ -1,5 +1,6 @@
 .pagination_container {
 	margin: 5px 0px 5px 0px;
+	height: 30px;
 }
 	
 .album-pagination {
@@ -20,6 +21,8 @@
     padding: 0.3em 0.5em;
     margin-right: 5px;
 	margin-bottom: 5px;
+	float: none;
+	display: inline-block;
 }
 
 .album-pagination .current {
@@ -37,7 +40,7 @@
 }
 
 .album_box {
-	float: left; 
+	display: inline-block; 
 	padding: 5px; 
 	margin: 5px; 
 }
@@ -49,4 +52,3 @@
 .album_clear {
 	clear: left;
 }
-
