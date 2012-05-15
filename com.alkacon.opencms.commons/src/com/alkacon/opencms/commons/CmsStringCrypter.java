@@ -77,7 +77,7 @@ public final class CmsStringCrypter {
 
         // hide constructor
     }
-    
+
     /**
      * Decrypts the given value which was encrypted with the encrypt method with a default password.<p>
      * 
@@ -85,7 +85,7 @@ public final class CmsStringCrypter {
      * @return the decrypted string of the value or null if something went wrong
      */
     public static String decrypt(String value) {
-        
+
         return decrypt(value, PASSWORD_DEFAULT);
     }
 
@@ -115,6 +115,10 @@ public final class CmsStringCrypter {
 
             // decode from base64
             BASE64Decoder base64decoder = new BASE64Decoder();
+
+            value = CmsStringUtil.substitute(value, "-", "+");
+            value = CmsStringUtil.substitute(value, "_", "/");
+
             byte[] cleartext = base64decoder.decodeBuffer(value);
 
             // decrypt text
@@ -128,7 +132,7 @@ public final class CmsStringCrypter {
 
         return null;
     }
-    
+
     /**
      * Encrypts the given value with a default password.<p>
      * 
@@ -136,7 +140,7 @@ public final class CmsStringCrypter {
      * @return the encrypted string of the value or null if something went wrong
      */
     public static String encrypt(String value) {
-        
+
         return encrypt(value, PASSWORD_DEFAULT);
     }
 
@@ -171,7 +175,11 @@ public final class CmsStringCrypter {
 
             // encode with base64 to be used as a url parameter
             BASE64Encoder base64encoder = new BASE64Encoder();
-            return CmsEncoder.encode(base64encoder.encode(ciphertext));
+            String base64encoded = base64encoder.encode(ciphertext);
+            base64encoded = CmsStringUtil.substitute(base64encoded, "+", "-");
+            base64encoded = CmsStringUtil.substitute(base64encoded, "/", "_");
+
+            return base64encoded;
         } catch (Exception ex) {
             if (LOG.isErrorEnabled()) {
                 LOG.error(Messages.get().getBundle().key(Messages.LOG_ERROR_ENCRYPT_0), ex);
