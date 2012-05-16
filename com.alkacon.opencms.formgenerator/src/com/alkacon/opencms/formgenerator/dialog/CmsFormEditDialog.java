@@ -38,6 +38,7 @@ import com.alkacon.opencms.formgenerator.database.CmsFormDataBean;
 
 import org.opencms.file.CmsResource;
 import org.opencms.file.CmsResourceFilter;
+import org.opencms.i18n.CmsEncoder;
 import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.main.CmsException;
 import org.opencms.main.CmsLog;
@@ -433,6 +434,8 @@ public class CmsFormEditDialog extends CmsWidgetDialog {
             widget = new CmsFormFileWidget();
         } else if (!editable) {
             widget = new CmsDisplayWidget();
+            // escape the value to ensure that no HTML code is executed
+            value = CmsEncoder.escapeXml(value);
         } else if (isTextareaWidget(value)) {
             widget = new CmsTextareaWidget(5);
         } else {
