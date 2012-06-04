@@ -34,7 +34,7 @@
 		</resources>
 		<parameters/>
 		<resourcetypes>
-			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="v8listconfig" id="140">
+			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="v8listconfig" id="288">
 				<param name="schema">/system/modules/com.alkacon.opencms.v8.commons/schemas/listconfig.xsd</param>
 			</type>
 		</resourcetypes>
