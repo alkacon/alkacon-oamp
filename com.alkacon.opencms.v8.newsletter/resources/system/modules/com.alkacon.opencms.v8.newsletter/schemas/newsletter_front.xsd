@@ -65,6 +65,13 @@
 			<mappings>
 				<mapping element="Title" mapto="property:Title" />
 			</mappings>
+			<formatters>
+				<formatter minwidth="400" maxwidth="800" uri="/system/modules/com.alkacon.opencms.v8.newsletter/formatters/nl-subscribe-center.jsp" />
+				<formatter minwidth="100" maxwidth="399" uri="/system/modules/com.alkacon.opencms.v8.newsletter/formatters/nl-subscribe-side.jsp" />
+			</formatters>
+			<settings>
+				<setting name="boxschema" nice-name="Box Schema" type="string" widget="select" widget-config="box_schema1:Schema Blue|box_schema2:Schema Red|box_schema3:Schema White" />
+			</settings>
 			<validationrules>
 				<rule element="MailingList" regex="(?s).+" type="error" message="${key.error.alknewsletter.MailingList.notempty}" />
 			</validationrules>
