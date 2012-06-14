@@ -214,6 +214,24 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
     }
 
     /**
+     * Constructor, with parameters.
+     * 
+     * @param context the JSP page context object
+     * @param req the JSP request 
+     * @param res the JSP response 
+     * @param configUri the URI of the Newsletter Subscription file 
+     */
+    public CmsNewsletterSubscriptionBean(
+        PageContext context,
+        HttpServletRequest req,
+        HttpServletResponse res,
+        String configUri) {
+
+        super();
+        init(context, req, res, configUri);
+    }
+
+    /**
      * Performs subscription confirmation action and returns the text output for the result page.<p>
      * 
      * @return the text output for the result page, according to the success of the subscription action
@@ -474,6 +492,29 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
             // validate the parameters
             validate();
         }
+    }
+
+    /**
+     * Tries to read the schema of the subscription file and initializes the newsletter subscription.<p>
+     *
+     * @param context the JSP page context object
+     * @param req the JSP request 
+     * @param res the JSP response 
+     * @param configUri URI of the newsletter subscription file
+     */
+
+    public void init(PageContext context, HttpServletRequest req, HttpServletResponse res, String configUri) {
+
+        super.init(context, req, res);
+        if (m_configContent == null) {
+            try {
+                CmsFile file = getCmsObject().readFile(configUri);
+                m_configContent = CmsXmlContentFactory.unmarshal(getCmsObject(), file);
+            } catch (CmsException e) {
+                // error reading configuration content
+            }
+        }
+        init(context, req, res);
     }
 
     /**
