@@ -1,6 +1,6 @@
 
                 Alkacon OpenCms Add-On Module Package: Webform
-                       Version 2.0.1; December 21st, 2011
+                       Version 2.0.1; June 14th, 2012
 
 
                                     WARNING:
@@ -56,7 +56,7 @@ Legend:
 * Bug fixed
 - General comment
 
-2.0.1 - December 21st, 2011
+2.0.1 - June 14th, 2012
 - Added Spanish translation "workplace_es.properties".
 - Renamed package according to OpenCms 8 naming convention, so the module can be installed parallel to OpenCms 7 version for easy migration.
 - Added big icon used by the ADE Add Wizard.
