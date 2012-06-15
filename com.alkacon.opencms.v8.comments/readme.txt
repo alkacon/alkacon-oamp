@@ -1,6 +1,6 @@
 
                 Alkacon OpenCms Add-On Module Package: Comments
-                       Version 2.0.0; November 23rd, 2011
+                       Version 2.0.0; June 14th, 2012
 
 
                                     WARNING:
@@ -56,7 +56,7 @@ Legend:
 * Bug fixed
 - General comment
 
-2.0.0 - November 23rd, 2011
+2.0.0 - June 14th, 2012
 - Renamed package according to OpenCms 8 naming convention, so the module can be installed parallel to OpenCms 7 version for easy migration.
 - Necessary adaptations to work with OAMP WebForm Module 2.0
 - Added module configuration .config
