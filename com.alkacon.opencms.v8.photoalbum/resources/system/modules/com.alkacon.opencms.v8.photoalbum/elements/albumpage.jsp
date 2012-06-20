@@ -9,24 +9,24 @@
 <c:set var="start" value="${((param.page-1) * param.itemsPerPage) + 1}" />
 <c:set var="end" value="${param.page * param.itemsPerPage}" />
 
-<c:forEach items="${cms.readImages[param.vfsFolder]}" var="photo" varStatus="status">
+<c:forEach items="${cms.readImages[param.vfsFolder]}" var="photo" varStatus="status"><%--
 
-	<c:set var="imagePath" value="${fn:substringAfter(photo.rootPath, cms:vfs(pageContext).requestContext.siteRoot)}" />
-  	<c:if test="${empty imagePath}" >
-		<c:set var="imagePath" value="${photo.rootPath}" />
-	</c:if>
-	<c:set var="imageTitle" value="${cms:vfs(pageContext).property[imagePath]['Title']}" />
-	<c:if test="${empty imageTitle && param.showResourceNameAsTitle == 'true'}">
-		<c:set var="imageTitle" value="${photo.name}" />
-	</c:if>
+	--%><c:set var="imagePath" value="${fn:substringAfter(photo.rootPath, cms:vfs(pageContext).requestContext.siteRoot)}" /><%--
+	--%><c:if test="${empty imagePath}" ><%--
+	        --%><c:set var="imagePath" value="${photo.rootPath}" /><%--
+	--%></c:if><%--
+	--%><c:set var="imageTitle" value="${cms:vfs(pageContext).property[imagePath]['Title']}" /><%--
+	--%><c:if test="${empty imageTitle && param.showResourceNameAsTitle == 'true'}"><%--
+		--%><c:set var="imageTitle" value="${photo.name}" /><%--
+	--%></c:if><%--
 
-	<c:if test="${cms.isDownscaleRequired[photo]}">
-		<c:set var="imageParam" value="?__scale=t:3,q:${param.quality},w:${fn:substringBefore(param.maxImageSize, 'x')},h:${fn:substringAfter(param.maxImageSize, 'x')}" />
-	</c:if>
+	--%><c:if test="${cms.isDownscaleRequired[photo]}"><%--
+		--%><c:set var="imageParam" value="?__scale=t:3,q:${param.quality},w:${fn:substringBefore(param.maxImageSize, 'x')},h:${fn:substringAfter(param.maxImageSize, 'x')}" /><%--
+	--%></c:if><%--
 
-	<c:choose>
-		<c:when test="${start le status.count && (end ge status.count || param.itemsPerPage == -1)}">
-			<div style="background-color: ${param.background}; width: ${fn:substringBefore(param.size, 'x')}px; " class="album_box">
+	--%><c:choose><%--
+		--%><c:when test="${start le status.count && (end ge status.count || param.itemsPerPage == -1)}"><%--
+			--%><div style="background-color: ${param.background}; width: ${fn:substringBefore(param.size, 'x')}px; " class="album_box">
 				<div>
 					<a href="<cms:link>${imagePath}${imageParam}</cms:link>" title="${imageTitle}" class="imagelink_${param.albumid}" rel="page${param.page}" >
 						<cms:img src="${imagePath}" alt="${imageTitle}" width="${fn:substringBefore(param.size, 'x')}" height="${fn:substringAfter(param.size, 'x')}" scaleColor="${param.background}" scaleQuality="${param.quality}" scaleFilter="${fn:replace(param.filter, '.', ':')}" >
@@ -44,10 +44,10 @@
 						<c:out value="${imageTitle}" escapeXml="false" />
 					</c:if>
 				</div>
-			</div>
-		</c:when>
-		<c:otherwise>
-			<a href="<cms:link>${imagePath}${imageParam}</cms:link>" title="${imageTitle}" class="imagelink_${param.albumid}" rel="page${param.page}" style="display: none;" ></a>
-		</c:otherwise>
-	</c:choose>
-</c:forEach>
+			</div><%--
+		--%></c:when><%--
+		--%><c:otherwise><%--
+			--%><a href="<cms:link>${imagePath}${imageParam}</cms:link>" title="${imageTitle}" class="imagelink_${param.albumid}" rel="page${param.page}" style="display: none;" ></a><%--
+		--%></c:otherwise><%--
+	--%></c:choose><%--
+--%></c:forEach>
