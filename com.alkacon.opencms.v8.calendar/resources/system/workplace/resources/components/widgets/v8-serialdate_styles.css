@@ -1,0 +1,44 @@
+table.serialdate {
+	border: 1px solid ThreeDShadow;
+}
+td.sdheader {
+	font-weight: bold; padding: 3px; color: CaptionText; background-color: ActiveCaption;
+}
+td.sdbody {
+	padding: 0 8px 8px 8px;
+}
+
+fieldset.sd {
+	margin-top: 8px;
+}
+
+table.sdpattern {
+	border-right: 2px groove ThreeDFace;
+}
+td.sdpattern {
+	vertical-align: top; height: 100px; width: 350px;
+}
+
+input.sdcount {
+	text-align: center; width: 25px;
+}
+
+span.sdweekday {
+	white-space: nowrap; width: 90px;
+}
+
+.sdfloat {
+	float: left;
+}
+
+.sdclear {
+	clear: both;
+}
+
+.sdnowrap {
+	white-space:nowrap;
+}
+
+table.sdenddate {
+	white-space:nowrap; border-left: 2px groove ActiveBorder;
+}
