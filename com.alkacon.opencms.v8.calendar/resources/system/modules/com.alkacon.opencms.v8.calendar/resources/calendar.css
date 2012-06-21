@@ -1,0 +1,222 @@
+/** ### Side month element styles ### */
+
+/** The calendar table */
+table.cal_month_table {
+	text-align: center;
+	width: 100%;	
+}
+
+/** Global styles for the calendar table cells */
+table.cal_month_table td {
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 10px;
+	padding: 1px 2px;
+	width: 14%;
+}
+
+/** Global styles for the calendar table cells */
+table.cal_month_table td a span, table.cal_month_table td span {
+	font-family: Verdana, Arial, Helvetica;
+	font-size: 10px;
+}
+
+/** The month navigation row */
+td.cal_mon_nav {
+	border: 1px solid #FFFFFF;
+	background-color: #CCCCCC;
+}
+
+td.cal_mon_nav a.cal_mon_nav, td.cal_mon_nav a.cal_mon_nav:hover {
+	color: #FF0000;
+	text-decoration: none;
+}
+
+/** The week day names rows */
+td.cal_mon_weekday {
+	border: 1px solid #FFFFFF;
+	background-color: #DDDDDD;
+}
+
+/** A common calendar day */
+.cal_mon_day {
+	color: #000000;
+}
+
+td.cal_mon_day {
+	border: 1px solid #FFFFFF;
+	background-color: #DDDDDD;
+}
+
+/** The current calendar day */
+td.cal_mon_day_current {
+	background-color: #DDDDDD;
+	border: 1px solid #FF0000;
+}
+
+/** An empty cell displaying no calendar day */
+td.cal_mon_day_empty {
+	background-color: #FFFFFF;
+	border: 1px solid #FFFFFF;
+}
+
+/** Font color of a real holiday day */
+span.cal_mon_day_holiday {
+	color: #FF0000;
+}
+
+/** Font color of a maybe a holiday day */
+span.cal_mon_day_maybeholiday {
+	color: #888888;
+}
+
+/** The link for calendar days with entries */
+a.cal_mon_day_event, a.cal_mon_day_event:hover {
+	font-weight: bold;
+	text-decoration: none;
+}
+
+/** ### Overview entries styles ### */
+
+/** Element around complete overview block */
+div.cal_wrapper {}
+
+/** Element around "time" navigation */
+div.cal_nav_time {}
+
+/** Element around "switch view" links */
+div.cal_nav_switch {
+	margin-top: 5px;
+}
+
+span.cal_entry_date {}
+
+a.cal_entry_link {
+	font-weight: bold;
+}
+
+span.cal_entry_type {}
+
+span.cal_entry_description {
+	font-size: 0.9em;
+}
+
+/** ### Month list styles ### */
+
+table.cal_monthlist {
+	text-align: left;
+	background-color: #FFFFFF;
+	border: 1px solid #CCC;
+	width: 100%;
+}
+
+table.cal_monthlist tr td {
+	background-color: #DDD;
+	padding: 3px;
+}
+
+table.cal_monthlist tr.holiday td {
+	background-color: #DDD;
+}
+
+table.cal_monthlist tr.maybeholiday td {
+	background-color: #DDD;
+}
+
+table.cal_monthlist tr td.day {
+	vertical-align: top;
+	padding-right: 6px;
+	width: 1%;
+	white-space: nowrap;
+	color: #000000;
+}
+
+table.cal_monthlist tr td.entries div {
+	margin-bottom: 8px;
+	color: #000000;
+}
+
+table.cal_monthlist tr td.entries div.lastentry {
+	margin-bottom: 0;
+}
+
+table.cal_monthlist tr.holiday td.day, table.cal_monthlist tr.holiday td.entries div {
+	color: #FF0000;
+}
+
+table.cal_monthlist tr.maybeholiday td.day, table.cal_monthlist tr.maybeholiday td.entries div {
+	color: #888888;
+}
+
+/** Link style of a common entry link */
+table.cal_monthlist tr td.entries a {
+
+}
+
+/** Link style of a holiday entry link */
+table.cal_monthlist tr.holiday td.entries a {
+
+}
+
+/** Link style of a maybe a holiday entry link */
+table.cal_monthlist tr.maybeholiday td.entries a {
+
+}
+
+/** ### Side list styles ### */
+
+/** Encloses the listed entries */
+div.cal_side_entry_list {
+
+}
+
+/** Wrapper around a listed entry */
+div.cal_side_entry_wrapper {
+	margin-top: 8px;
+}
+
+/** Headline of a listed entry */
+div.cal_side_entry_head {
+	font-size: 1.1em;
+	font-weight: bold;
+	padding-bottom: 2px;
+}
+
+/** Descriptive teaser text of a listed entry */
+div.cal_side_entry_teaser {
+
+}
+
+/** Date of a listed entry */
+span.cal_side_entry_date {
+	font-style: italic;
+}
+
+/** ### Detail view styles ### */
+
+h1.cal_detail_headline {}
+
+p.cal_detail_date {
+	
+}
+
+p.cal_detail_location {
+
+}
+
+div.cal_detail_text {
+	margin-top: 10px;
+	padding-top: 5px;
+	border-top: 1px solid #DDD;
+}
+
+p.cal_detail_links {
+	margin-top: 10px;
+	padding-top: 10px;
+	border-top: 1px solid #DDD;
+}
+
+p.cal_detail_links ul {}
+
+span.cal_detail_label {
+	font-weight: bold;
+}

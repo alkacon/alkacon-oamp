@@ -1,0 +1,195 @@
+<table class="serialdate" cellpadding="0" cellspacing="0">
+	<tr>
+		<td class="sdbody">
+			<fieldset class="sd">
+    			<legend>%(key.GUI_SERIALDATE_SUBHEAD_TIME_0)</legend>
+    			<table>
+			        <tr>
+			          <td>%(key.GUI_SERIALDATE_TIME_START_0):</td>
+			          <td><input type="text" class="xmlInputSmall" style="width: 80px;" id="starttime" value="%(val.starttime)" name="starttime" maxlength="8"></td>
+			          <td>%(key.GUI_SERIALDATE_TIME_END_0):</td>
+			          <td><input type="text" class="xmlInputSmall" style="width: 80px;" id="endtime" value="%(val.endtime)" name="endtime" maxlength="8"></td>
+			          <td>%(key.GUI_SERIALDATE_TIME_DURATION_0):</td>
+			          <td>
+			          	%(select.durationdays)
+			          </td>
+			        </tr>
+			    </table>
+    		</fieldset>
+    		<fieldset class="sd">
+    			<legend>%(key.GUI_SERIALDATE_SUBHEAD_PATTERN_0)</legend>
+    			<table>
+    				<tr>
+    					<td>
+    						<table class="sdpattern">
+    						<tr>
+    							<td><input type="radio" name="serialtype" id="serialtype.1" value="1" onclick="setSerialTab('1');" %(val.serialtype.1)/></td>
+    							<td>%(key.GUI_SERIALDATE_TYPE_DAILY_0)</td>
+    						</tr>
+    						<tr>
+    							<td><input type="radio" name="serialtype" id="serialtype.2" value="2" onclick="setSerialTab('2');" %(val.serialtype.2)/></td>
+    							<td>%(key.GUI_SERIALDATE_TYPE_WEEKLY_0)</td>
+    						</tr>
+    						<tr>
+    							<td><input type="radio" name="serialtype" id="serialtype.3" value="3" onclick="setSerialTab('3');" %(val.serialtype.3)/></td>
+    							<td>%(key.GUI_SERIALDATE_TYPE_MONTHLY_0)</td>
+    						</tr>
+    						<tr>
+    							<td><input type="radio" name="serialtype" id="serialtype.4" value="4" onclick="setSerialTab('4');" %(val.serialtype.4)/></td>
+    							<td>%(key.GUI_SERIALDATE_TYPE_YEARLY_0)</td>
+    						</tr>
+    						</table>
+    					</td>
+    					<td class="sdpattern">
+    						<div id="serialtab.1" style="display: none;">
+								<table>
+									<tr>
+										<td><input type="radio" name="sd_everyworkingday" id="serialdayeveryworkingday.false" value="false" %(val.sd_everyworkingday.false)/></td>
+										<td>%(key.GUI_SERIALDATE_DAILY_EVERY_0)</td>
+										<td><input type="text" class="xmlInputSmall sdcount" value="%(val.sd_dailyinterval)" name="sd_dailyinterval" onfocus="document.getElementById('serialdayeveryworkingday.false').checked = true;" /></td>
+										<td>%(key.GUI_SERIALDATE_DAILY_DAYS_0)</td>
+									</tr>
+									<tr>
+										<td><input type="radio" name="sd_everyworkingday" id="serialdayeveryworkingday.true" value="true" %(val.sd_everyworkingday.true)/></td>
+										<td colspan="3">%(key.GUI_SERIALDATE_DAILY_EVERYWORKINGDAY_0)</td>
+									</tr>
+								</table>
+    						</div>
+    						<div id="serialtab.2" style="display: none;">
+								<table>
+									<tr>
+										<td style="width: 1%;">%(key.GUI_SERIALDATE_WEEKLY_EVERY_0)</td>
+										<td style="width: 1%;"><input type="text" class="xmlInputSmall sdcount" value="%(val.sw_weeklyinterval)" name="sw_weeklyinterval" /></td>
+										<td>%(key.GUI_SERIALDATE_WEEKLY_WEEK_AT_0)</td>
+									</tr>
+									<tr>
+										<td colspan="3">
+											<span class="sdweekday sdfloat"><input type="checkbox" name="sw_weekday" value="2" %(val.sw_weekday.2)/> %(key.GUI_SERIALDATE_DAY_MONDAY_0)</span>
+											<span class="sdweekday sdfloat"><input type="checkbox" name="sw_weekday" value="3" %(val.sw_weekday.3)/> %(key.GUI_SERIALDATE_DAY_TUESDAY_0)</span>
+											<span class="sdweekday"><input type="checkbox" name="sw_weekday" value="4" %(val.sw_weekday.4)/> %(key.GUI_SERIALDATE_DAY_WEDNESDAY_0)</span><br/>
+											<span class="sdclear sdweekday sdfloat"><input type="checkbox" name="sw_weekday" value="5" %(val.sw_weekday.5)/> %(key.GUI_SERIALDATE_DAY_THURSDAY_0)</span>
+											<span class="sdweekday sdfloat"><input type="checkbox" name="sw_weekday" value="6" %(val.sw_weekday.6)/> %(key.GUI_SERIALDATE_DAY_FRIDAY_0)</span>
+											<span class="sdweekday"><input type="checkbox" name="sw_weekday" value="7" %(val.sw_weekday.7)/> %(key.GUI_SERIALDATE_DAY_SATURDAY_0)</span><br/>
+											<span class="sdclear sdweekday"><input type="checkbox" name="sw_weekday" value="1" %(val.sw_weekday.1)/> %(key.GUI_SERIALDATE_DAY_SUNDAY_0)</span>
+										</td>
+									</tr>
+								</table>
+    						</div>
+    						<div id="serialtab.3" style="display: none;">
+								<table>
+									<tr>
+										<td><input type="radio" name="sm_serialmonthday" id="sm_serialmonthday.false" value="false" %(val.sm_serialmonthday.false)/></td>
+										<td>%(key.GUI_SERIALDATE_MONTHLY_MONTHDAY_AT_0)</td>
+										<td><input type="text" class="xmlInputSmall sdcount" value="%(val.sm_dayofmonth)" name="sm_dayofmonth" onfocus="document.getElementById('sm_serialmonthday.false').checked = true;" /></td>
+										<td>%(key.GUI_SERIALDATE_MONTHLY_MONTHDAY_DAY_EVERY_0)</td>
+										<td><input type="text" class="xmlInputSmall sdcount" value="%(val.sm_monthlyinterval)" name="sm_monthlyinterval" onfocus="document.getElementById('sm_serialmonthday.false').checked = true;" /></td>
+										<td>%(key.GUI_SERIALDATE_MONTHLY_MONTH_0)</td>
+									</tr>
+								</table>
+								<table>
+									<tr>
+										<td><input type="radio" name="sm_serialmonthday" id="sm_serialmonthday.true" value="true" %(val.sm_serialmonthday.true)/></td>
+										<td>%(key.GUI_SERIALDATE_MONTHLY_WEEKDAY_AT_0)</td>
+										<td style="white-space: nowrap;">
+											%(select.monthnumberofweekday)
+											%(select.monthweekday)
+										</td>
+										<td>%(key.GUI_SERIALDATE_MONTHLY_WEEKDAY_EVERY_0)</td>
+										<td><input type="text" class="xmlInputSmall sdcount" value="%(val.sm_monthlyinterval2)" name="sm_monthlyinterval2" onfocus="document.getElementById('sm_serialmonthday.true').checked = true;" /></td>
+										<td>%(key.GUI_SERIALDATE_MONTHLY_MONTH_0)</td>
+									</tr>
+								</table>
+    						</div>
+    						<div id="serialtab.4" style="display: none;">
+								<table>
+									<tr>
+										<td><input type="radio" name="sy_serialyearday" id="sy_serialyearday.false" value="false" %(val.sy_serialyearday.false)/></td>
+										<td>%(key.GUI_SERIALDATE_YEARLY_EVERY_0)</td>
+										<td><input type="text" class="xmlInputSmall sdcount" value="%(val.sy_dayofmonth)" name="sy_dayofmonth" onfocus="document.getElementById('sy_serialyearday.false').checked = true;" /></td>
+										<td>%(key.GUI_SERIALDATE_YEARLY_EVERY_DOT_0)</td>
+										<td>
+											%(select.yearmonth)
+										</td>
+									</tr>
+								</table>
+								<table>
+									<tr>
+										<td><input type="radio" name="sy_serialyearday" id="sy_serialyearday.true" value="true" %(val.sy_serialyearday.true)/></td>
+										<td>%(key.GUI_SERIALDATE_YEARLY_AT_0)</td>
+										<td style="white-space: nowrap;">
+											%(select.yearnumberofweekday)
+											%(select.yearweekday)
+										</td>
+										<td>%(key.GUI_SERIALDATE_YEARLY_IN_0)</td>
+										<td>
+											%(select.yearmonthweekday)
+										</td>
+									</tr>
+								</table>
+    						</div>
+    					</td>
+    				</tr>
+    			</table>
+    		</fieldset>
+    		<fieldset class="sd">
+    			<legend>%(key.GUI_SERIALDATE_SUBHEAD_DURATION_0)</legend>
+    			<table>
+    				<tr>
+    					<td style="vertical-align: top;">
+
+    						<table cellSpacing=0 cellPadding=0 border=0>
+						        <tr>
+						          <td>%(key.GUI_SERIALDATE_DURATION_BEGIN_0):&nbsp;</td>
+						          <td>
+						          %(calendar.startdate)
+    					</td>
+
+    					<td class="sdenddate">
+    						<table class="sdnowrap">
+    							<tr>
+    								<td>
+    									<input type="radio" name="endtype" id="endtype.never" value="1" %(val.endtype.1)/>
+    								</td>
+    								<td class="sdnowrap" colspan="3">
+    									%(key.GUI_SERIALDATE_DURATION_ENDTYPE_NEVER_0)
+    								</td>
+    							</tr>
+    							<tr>
+    								<td>
+    									<input type="radio" name="endtype" id="endtype.occurences" value="2" %(val.endtype.2)/>
+    								</td>
+    								<td class="sdnowrap">
+    									 %(key.GUI_SERIALDATE_DURATION_ENDTYPE_OCC_0):
+    								</td>
+    								<td>
+    									<input type="text" class="xmlInputSmall sdcount" value="%(val.occurences)" name="occurences" onfocus="document.getElementById('endtype.occurences').checked = true;" />
+    								</td>
+    								<td style="width: 100%;">
+    									%(key.GUI_SERIALDATE_DURATION_ENDTYPE_OCC_TIMES_0)
+    								</td>
+    							</tr>
+    							<tr>
+    								<td>
+    									<input type="radio" name="endtype" id="endtype.date" value="3" %(val.endtype.3)/>
+    								</td>
+    								<td class="sdnowrap">
+    									 %(key.GUI_SERIALDATE_DURATION_ENDTYPE_DATE_0):
+    								</td>
+    								<td colspan="2">
+    									<!-- START DATE END PICKER -->
+    									<table cellspacing="0" cellpadding="0">
+									        <TBODY>
+									        <TR><td>
+									          %(calendar.serialenddate)
+
+    									<!-- END DATE END PICKER -->
+    								</td>
+    							</tr>
+    						</table>
+    					</td>
+    				</tr>
+    			</table>
+    		</fieldset>
+		</td>
+	</tr>
+</table>

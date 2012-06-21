@@ -1,0 +1,27 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>	
+	<xsd:element name="AlkaconV8CalendarResourceConfigs" type="OpenCmsAlkaconV8CalendarResourceConfigs"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconV8CalendarResourceConfigs">
+		<xsd:sequence>
+			<xsd:element name="AlkaconV8CalendarResourceConfig" type="OpenCmsAlkaconV8CalendarResourceConfig" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconV8CalendarResourceConfig">
+		<xsd:sequence>
+			<xsd:element name="ResType" type="OpenCmsString" />
+			<xsd:element name="Folder" type="OpenCmsVfsFile" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<layouts>
+				<layout element="ResType" widget="SelectorWidget" configuration="alkacon-v8-cal-entry:%(key.fileicon.alkacon-v8-cal-entry)|alkacon-v8-cal-serial:%(key.fileicon.alkacon-v8-cal-serial)" />
+			</layouts>
+		</xsd:appinfo>
+	</xsd:annotation>  
+</xsd:schema>

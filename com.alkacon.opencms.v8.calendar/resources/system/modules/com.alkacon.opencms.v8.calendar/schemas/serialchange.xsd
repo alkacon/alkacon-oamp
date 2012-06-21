@@ -1,0 +1,37 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+		
+	<xsd:element name="AlkaconV8CalendarSerialDateChanges" type="OpenCmsAlkaconV8CalendarSerialDateChanges"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconV8CalendarSerialDateChanges">
+		<xsd:sequence>
+			<xsd:element name="AlkaconV8CalendarSerialDateChange" type="OpenCmsAlkaconV8CalendarSerialDateChange" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconV8CalendarSerialDateChange">
+		<xsd:sequence>
+			<xsd:element name="Change" type="OpenCmsString" />
+			<xsd:element name="Title" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="Teaser" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="Text" type="OpenCmsHtml" minOccurs="0" />
+			<xsd:element name="Location" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="Time" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="Showtime" type="OpenCmsBoolean" minOccurs="0" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.v8.calendar.workplace"/>
+			<handler class="com.alkacon.opencms.v8.calendar.CmsSerialDateXmlContentHandler" />
+			<layouts>
+				<layout element="Change" widget="V8SerialDateSelectWidget" configuration="property:calendar.startdate|count:52" />
+				<layout element="Teaser" widget="TextareaWidget" configuration="3" />
+				<layout element="Text" widget="HtmlWidget" configuration="formatselect,anchor,link,image,table,downloadgallery,imagegallery" />
+			</layouts>
+		</xsd:appinfo>
+	</xsd:annotation>  
+</xsd:schema>
