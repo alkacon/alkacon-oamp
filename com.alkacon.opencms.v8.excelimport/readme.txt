@@ -1,6 +1,6 @@
 
                 Alkacon OpenCms Add-On Module Package: ExcelImport
-                       Version 1.0.1; November 28th, 2011
+                       Version 2.0.0; June 18th, 2012
 
 
                                     WARNING:
@@ -15,8 +15,8 @@ or FITNESS FOR A PARTICULAR PURPOSE.
 Alkacon Software does not guarantee that there will be no damage to your
 existing OpenCms installation when using this module.
 
-Please use our Bugzilla to report bugs in this module:
-http://bugzilla.opencms.org
+Please use our GitHub issue tracker to report bugs in this module:
+https://github.com/alkacon/alkacon-oamp/issues
 
 IMPORTANT: Before using this module, make sure you have a full backup
 of your OpenCms installation and database.
@@ -53,7 +53,7 @@ Legend:
 * Bug fixed
 - General comment
 
-1.0.1 - November 28th, 2011
+2.0.0 - June 18th, 2012
 - Renamed package to "com.alkacon.opencms.v8.excelimport"
 - Moved messages.properties from "/src/com/alkacon/opencms/v8/excelimport/" to "/resources/system/modules/com.alkacon.opencms.v8.excelimport/classes/com/alkacon/opencms/v8/excelimport/"
 

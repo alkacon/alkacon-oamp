@@ -1,6 +1,6 @@
 
           Alkacon OpenCms Add-On Module Package: Webuser Registration
-                       Version 2.0.0; November 30th, 2011
+                       Version 2.0.0; June 19th, 2012
 
 
                                     WARNING:
@@ -15,8 +15,8 @@ or FITNESS FOR A PARTICULAR PURPOSE.
 Alkacon Software does not guarantee that there will be no damage to your
 existing OpenCms installation when using this module.
 
-Please use our Bugzilla to report bugs in this module:
-http://bugzilla.opencms.org
+Please use our GitHub issue tracker to report bugs in this module:
+https://github.com/alkacon/alkacon-oamp/issues
 
 IMPORTANT: Before using this module, make sure you have a full backup
 of your OpenCms installation and database.
@@ -65,7 +65,7 @@ Legend:
 * Bug fixed
 - General comment
 
-2.0.0 - November 30th, 2011
+2.0.0 - June 19th, 2012
 - Renamed package to "com.alkacon.opencms.v8.registration"
 - Necessary adaptations to work with OAMP WebForm Module 2.0
 
