@@ -1,6 +1,6 @@
 
                 Alkacon OpenCms Add-On Module Package: HtmlCleaner
-                       Version 2.0.0; November 25th, 2011
+                       Version 2.0.0; June 18th, 2012
 
 
                                     WARNING:
@@ -53,7 +53,7 @@ Legend:
 * Bug fixed
 - General comment
 
-2.0.0 - November 25th, 2011
+2.0.0 - June 18th, 2012
 - Renamed package to com.alkacon.opencms.v8.htmlcleaner
 
 1.0.0 - March 2nd, 2011

@@ -1,6 +1,6 @@
 
                 Alkacon OpenCms Add-On Module Package: Calendar module
-                       Version 1.0.1; April 25th, 2008
+                       Version 2.0.0; June 21st, 2012
 
 
                                     WARNING:
@@ -15,8 +15,8 @@ or FITNESS FOR A PARTICULAR PURPOSE.
 Alkacon Software does not guarantee that there will be no damage to your
 existing OpenCms installation when using this module.
 
-Please use our Bugzilla to report bugs in this module:
-http://bugzilla.opencms.org
+Please use our GitHub issue tracker to report bugs in this module:
+https://github.com/alkacon/alkacon-oamp/issues
 
 IMPORTANT: Before using this module, make sure you have a full backup
 of your OpenCms installation and database.
@@ -45,7 +45,7 @@ http://www.alkacon.com
 3. Installation
 
 A detailed description of the installation is described in the provided
-PDF file "Alkacon_OpenCms_Calendar_1.0.0.pdf".
+PDF file "Alkacon_OpenCms_Calendar.pdf".
 
 
 4. History of changes
@@ -57,6 +57,10 @@ Legend:
 ! New Feature
 * Bug fixed
 - General comment
+
+2.0.0 - June 21st, 2012
+! Added fullcalendar.js
+- Changed package name to "com.alkacon.opencms.v8.calendar"
 
 1.0.0 - April 25th, 2008
 - First public release
