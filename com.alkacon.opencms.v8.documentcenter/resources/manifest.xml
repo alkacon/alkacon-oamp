@@ -3,7 +3,7 @@
 <export>
 	<info>
 		<creator>Admin</creator>
-		<opencms_version>8.0.2 EBK</opencms_version>
+		<opencms_version>8.0.2</opencms_version>
 		<createdate>Wed, 19 Oct 2011 09:27:59 GMT</createdate>
 		<infoproject>Offline</infoproject>
 		<export_version>7</export_version>
@@ -16,7 +16,7 @@
 		<description><![CDATA[<p>This module provides document management functionality: Documents may be stored in document center areas where they can be browsed and downloaded.</p>
             <p>DocCenters are highly configurable and do not require coding to set them up.</p>
 			<p><i>(c) 2010 by Alkacon Software GmbH (http://www.alkacon.com).</i></p>]]></description>
-		<version>2.2</version>
+		<version>2.0.0</version>
 		<authorname><![CDATA[Alkacon Software GmbH]]></authorname>
 		<authoremail><![CDATA[info@alkacon.com]]></authoremail>
 		<datecreated/>
