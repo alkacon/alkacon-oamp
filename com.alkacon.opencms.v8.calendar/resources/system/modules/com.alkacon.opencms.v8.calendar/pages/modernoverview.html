@@ -1,0 +1,173 @@
+<%@ page session="false" taglibs="c,cms,fmt,fn" buffer="none" import="java.util.*, com.alkacon.opencms.v8.calendar.*, org.opencms.jsp.*, org.opencms.util.*" %>
+
+<c:set var="locale" value="${cms:vfs(pageContext).context.locale}" />
+<fmt:setLocale value="${locale}" />
+
+
+<%
+CmsJspActionElement cms = new CmsJspActionElement(pageContext, request, response);
+%>
+
+
+<cms:formatter var="content" val="value">
+<div>
+<%--
+<div class="box ${cms.element.settings.boxschema}">
+--%>
+
+<%-- show optional text element above calendar entries --%>
+<c:if test="${content.value.Title.exists}">
+	${content.value.Title}
+</c:if>
+<c:set var="defaultView">${content.value.DefaultView}</c:set>
+<%--
+<div class="cal_wrapper">
+--%>
+<%
+
+
+Calendar cal = new GregorianCalendar(cms.getRequestContext().getLocale());
+int currDay = cal.get(Calendar.DATE);
+int currMonth = cal.get(Calendar.MONTH);
+int currYear = cal.get(Calendar.YEAR);
+
+String pDay = request.getParameter("calDay");
+String pMonth = request.getParameter("calMonth");
+String pYear = request.getParameter("calYear");
+
+
+
+if (CmsStringUtil.isNotEmpty(pDay)) {
+	currDay = Integer.parseInt(pDay);
+}
+
+if (CmsStringUtil.isNotEmpty(pMonth)) {
+	currMonth = Integer.parseInt(pMonth);
+}
+
+if (CmsStringUtil.isNotEmpty(pYear)) {
+	currYear = Integer.parseInt(pYear);
+}
+
+// Calendar documentation: http://arshaw.com/fullcalendar/
+%>
+<link rel='stylesheet' type='text/css' href="<cms:link>/system/modules/com.alkacon.opencms.v8.calendar/resources/fullcalendar.css</cms:link>" />
+<script type="text/javascript" src="<cms:link>/system/modules/com.alkacon.opencms.v8.calendar/resources/fullcalendar.min.js</cms:link>"></script>
+<script type="text/javascript" src="<cms:link>/system/modules/com.alkacon.opencms.v8.calendar/resources/jquery.qtip.min.js</cms:link>"></script>
+<script type="text/javascript">
+
+var calItemsJsp = "<%= cms.link("/system/modules/com.alkacon.opencms.v8.calendar/pages/modern_items.jsp") %>";
+
+function calendarCenterLoad() {
+	calendarCenterShow(<%= currDay %>, <%= currMonth %>, <%= currYear %>);
+}
+
+function calendarCenterShow(cDay, cMonth, cYear) {
+
+	$("#calendarcenter").fullCalendar({
+		// calendar options
+		// date to show
+		year: cYear,
+		month: cMonth,
+		date: cDay,
+		editable: false,
+		allDayDefault: false,
+		//defaultView: "basicDay",
+
+		dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+		dayNamesShort: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+		monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'], 
+		monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+
+		timeFormat: 'H:mm{ - H:mm}',
+
+		titleFormat: {
+			month: 'MMMM yyyy',                             // September 2009
+			week: "d.[ MMM][ yyyy]{ '—' d. MMM yyyy}", // 7. - 13. Sep 2009
+			day: 'dddd, d. MMM yyyy'                  // Dienstag, 8. Sep 8 2009
+		},
+
+		columnFormat: {
+			month: 'ddd',    // Mo
+			week: 'ddd, d.M.', // Mo, 7.12.
+			day: 'dddd, d.M.'  // Montag 7.12.
+		},
+
+		header: {
+			left:   'prev,next today',
+			center: 'title',
+			right:  'month,basicWeek,basicDay'
+		},
+
+		buttonText: {
+			prev:     '&nbsp;◄&nbsp;',  // left triangle
+			next:     '&nbsp;►&nbsp;',  // right triangle
+			prevYear: '&nbsp;&lt;&lt;&nbsp;', // <<
+			nextYear: '&nbsp;&gt;&gt;&nbsp;', // >>
+			today:    'Today',
+			month:    'Month',
+			week:     'Week',
+			day:      'Day'
+		},
+		
+		eventRender: function(event, element) {
+			element.qtip({
+				content: event.description,
+				style: { 
+					corner: "topLeft",
+					tip: "leftTop",
+					name: "light"
+				}
+			});
+			//element.children("a").css("background-color", "pink");
+			//element.children("a").children("span").css("background-color", "pink");
+
+		},
+
+		events: function(start, end, callback) {
+			$.post(calItemsJsp, { 
+				uri: "<%= cms.getRequestContext().getUri() %>",
+				__locale: "<%= cms.getRequestContext().getLocale() %>",
+				sYear: start.getFullYear(),
+				sMonth: start.getMonth(),
+				sDay: start.getDate(),
+				eYear: end.getFullYear(),
+				eMonth: end.getMonth(),
+				eDay: end.getDate() },
+				function(data){
+					var events = eval(data); 
+					callback(events);
+				}
+			);
+		},
+		
+		firstDay: 1,
+		weekMode: "liquid"
+		
+	});
+	$("#calendarcenterload").remove();
+
+}
+
+window.onload = calendarCenterLoad;
+
+
+</script>
+
+<%--  
+--%>
+<div class="element">
+<div id="calendarcenter">
+<div id="calendarcenterload" style="text-align: center;"><img src="<%= cms.link("/system/modules/com.alkacon.opencms.v8.calendar/resources/load.gif") %>" alt="" style="padding: 24px 8px;" /></div>
+</div>
+</div>
+<%--  
+--%>
+<%--  
+	</div>
+--%>
+<%--  
+	</div>
+	--%>
+</div>
+</cms:formatter>
