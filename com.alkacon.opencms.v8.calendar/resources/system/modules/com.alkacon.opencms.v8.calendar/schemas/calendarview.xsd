@@ -1,0 +1,54 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.calendar/schemas/calendarviewresconf.xsd"/>
+		
+	<xsd:element name="AlkaconV8CalendarViews" type="OpenCmsAlkaconV8CalendarViews"/>
+	
+	<xsd:complexType name="OpenCmsAlkaconV8CalendarViews">
+		<xsd:sequence>
+			<xsd:element name="AlkaconV8CalendarView" type="OpenCmsAlkaconV8CalendarView" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconV8CalendarView">
+		<xsd:sequence>
+			<xsd:element name="Title" type="OpenCmsString" />
+			<xsd:element name="Text" type="OpenCmsHtml" minOccurs="0" />
+			<xsd:element name="DefaultView" type="OpenCmsString" />
+			<xsd:element name="UseConfig" type="OpenCmsBoolean" />
+			<xsd:element name="ResConfig" type="OpenCmsAlkaconV8CalendarResourceConfig" minOccurs="0" maxOccurs="10" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="required"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.v8.calendar.workplace"/>
+			<preview uri="%(previewtempfile)" />
+			<layouts>
+				<layout element="DefaultView" widget="SelectorWidget" configuration="0:%(key.calendar.default.view.day)|2:%(key.calendar.default.view.week)|1:%(key.calendar.default.view.month)|3:%(key.calendar.default.view.year)" />
+				<layout element="Text" widget="HtmlWidget" configuration="formatselect,anchor,link,image,table,downloadgallery,imagegallery" />
+			</layouts>
+			<mappings>
+				<mapping element="Title" mapto="property:Title" />
+			</mappings>
+			<formatters>
+				<formatter minwidth="400" uri="/system/modules/com.alkacon.opencms.v8.calendar/pages/modernoverview.html" searchcontent="true" />
+				<formatter minwidth="150" maxwidth="250" uri="/system/modules/com.alkacon.opencms.v8.calendar/elements/calendar-side-month.jsp" searchcontent="true" />
+			</formatters>
+			<headincludes>
+				<headinclude type="css" uri="/system/modules/com.alkacon.opencms.v8.calendar/resources/calendar.css"/>
+				<headinclude type="css" uri="/system/modules/com.alkacon.opencms.v8.calendar/resources/fullcalendar.css"/>
+				<headinclude type="javascript" uri="/system/modules/org.opencms.jquery/resources/packed/jquery.js" />
+				<headinclude type="javascript" uri="/system/modules/com.alkacon.opencms.v8.calendar/resources/fullcalendar.min.js" />
+				<headinclude type="javascript" uri="/system/modules/com.alkacon.opencms.v8.calendar/resources/jquery.qtip.min.js" />
+			</headincludes>
+			<settings>
+				<setting name="boxschema" nice-name="Box Schema" default="box_schema3" type="string" widget="select" widget-config="box_schema3:Schema White|box_schema1:Schema Blue|box_schema2:Schema Red" />
+			</settings>
+			<validationrules/>
+		</xsd:appinfo>
+
+	</xsd:annotation>  
+</xsd:schema>
