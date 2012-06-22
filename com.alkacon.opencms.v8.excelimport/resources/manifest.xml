@@ -3,8 +3,8 @@
 <export>
 	<info>
 		<creator>Admin</creator>
-		<opencms_version>8.0.2</opencms_version>
-		<createdate>Mon, 28 Nov 2011 13:36:06 GMT</createdate>
+		<opencms_version>8.0.4</opencms_version>
+		<createdate>Fri, 22 Jun 2012 09:32:01 GMT</createdate>
 		<infoproject>Offline</infoproject>
 		<export_version>7</export_version>
 	</info>
@@ -22,11 +22,12 @@
 		<dependencies/>
 		<exportpoints>
 			<exportpoint uri="/system/modules/com.alkacon.opencms.v8.excelimport/classes/" destination="WEB-INF/classes/"/>
-			<exportpoint uri="/system/modules/com.alkacon.opencms.v8.excelimport/lib/" destination=""/>
+			<exportpoint uri="/system/modules/com.alkacon.opencms.v8.excelimport/lib/" destination="WEB-INF/lib/"/>
 		</exportpoints>
 		<resources>
 			<resource uri="/system/modules/com.alkacon.opencms.v8.excelimport/"/>
 			<resource uri="/system/workplace/commons/newresource_v8_excelimport.jsp"/>
+			<resource uri="/system/workplace/resources/filetypes/v8_excel_import.png"/>
 		</resources>
 		<parameters>
 			<param name="configurationpath">/system/modules/com.alkacon.opencms.v8.excelimport/configurations/</param>
@@ -42,10 +43,10 @@
 		<file>
 			<destination>system</destination>
 			<type>folder</type>
-			<uuidstructure>6d889fbe-0f61-11e1-a755-9b778fa0dc42</uuidstructure>
-			<datelastmodified>Tue, 15 Nov 2011 08:11:32 GMT</datelastmodified>
+			<uuidstructure>4b37dab7-abfe-11e1-a640-b918196c8756</uuidstructure>
+			<datelastmodified>Fri, 01 Jun 2012 15:27:27 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Tue, 15 Nov 2011 08:11:32 GMT</datecreated>
+			<datecreated>Fri, 01 Jun 2012 15:27:27 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -64,10 +65,10 @@
 		<file>
 			<destination>system/modules</destination>
 			<type>folder</type>
-			<uuidstructure>6e2f8d5a-0f61-11e1-a755-9b778fa0dc42</uuidstructure>
-			<datelastmodified>Tue, 15 Nov 2011 08:11:33 GMT</datelastmodified>
+			<uuidstructure>4bd79d63-abfe-11e1-a640-b918196c8756</uuidstructure>
+			<datelastmodified>Fri, 01 Jun 2012 15:27:28 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Tue, 15 Nov 2011 08:11:33 GMT</datecreated>
+			<datecreated>Fri, 01 Jun 2012 15:27:28 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -281,12 +282,50 @@
 			<type>xmlcontent</type>
 			<uuidstructure>93896d4c-19a9-11e1-8241-9b778fa0dc42</uuidstructure>
 			<uuidresource>93896d4d-19a9-11e1-8241-9b778fa0dc42</uuidresource>
-			<datelastmodified>Mon, 28 Nov 2011 11:42:28 GMT</datelastmodified>
+			<datelastmodified>Fri, 22 Jun 2012 09:26:58 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Fri, 03 Apr 2009 15:40:49 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.v8.excelimport/docs</destination>
+			<type>folder</type>
+			<uuidstructure>f2011946-bc4c-11e1-b34f-b918196c8756</uuidstructure>
+			<datelastmodified>Fri, 22 Jun 2012 09:30:52 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 22 Jun 2012 09:30:46 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Example]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.v8.excelimport/docs/demo-file.xls</source>
+			<destination>system/modules/com.alkacon.opencms.v8.excelimport/docs/demo-file.xls</destination>
+			<type>binary</type>
+			<uuidstructure>010b806a-bc4d-11e1-b34f-b918196c8756</uuidstructure>
+			<uuidresource>010b806b-bc4d-11e1-b34f-b918196c8756</uuidresource>
+			<datelastmodified>Fri, 22 Jun 2012 09:31:11 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 22 Jun 2012 09:31:11 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[demo-file]]></value>
+				</property>
+			</properties>
 			<relations/>
 			<accesscontrol/>
 		</file>
@@ -455,6 +494,56 @@
 				<property type="shared">
 					<name>export</name>
 					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace/resources</destination>
+			<type>folder</type>
+			<uuidstructure>6dbfdf50-8db6-11e0-972f-8f51174189b7</uuidstructure>
+			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/workplace/resources/filetypes</destination>
+			<type>folder</type>
+			<uuidstructure>6dc24f52-8db6-11e0-972f-8f51174189b7</uuidstructure>
+			<datelastmodified>Mon, 27 Jun 2005 08:00:00 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/workplace/resources/filetypes/v8_excel_import.png</source>
+			<destination>system/workplace/resources/filetypes/v8_excel_import.png</destination>
+			<type>image</type>
+			<uuidstructure>0f9bc0e5-bc40-11e1-88bd-b918196c8756</uuidstructure>
+			<uuidresource>0f9bc0e6-bc40-11e1-88bd-b918196c8756</uuidresource>
+			<datelastmodified>Fri, 22 Jun 2012 07:58:32 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Fri, 22 Jun 2012 07:58:32 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[v8_excel_import]]></value>
+				</property>
+				<property type="shared">
+					<name>image.size</name>
+					<value><![CDATA[w:16,h:16]]></value>
 				</property>
 			</properties>
 			<relations/>
