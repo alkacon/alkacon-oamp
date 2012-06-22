@@ -2,22 +2,22 @@
 
 <AlkaconV8ExcelImportConfigs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/com.alkacon.opencms.v8.excelimport/schemas/config.xsd">
   <AlkaconV8ExcelImportConfig language="en">
-    <ResourceType><![CDATA[alkacon-v8-photoalbum]]></ResourceType>
+    <ResourceType><![CDATA[v8news]]></ResourceType>
     <Mapping>
       <XmlTag><![CDATA[Title]]></XmlTag>
-      <ExcelColumn><![CDATA[Was]]></ExcelColumn>
+      <ExcelColumn><![CDATA[myTitle]]></ExcelColumn>
       <Weight><![CDATA[2]]></Weight>
       <Mandatory>true</Mandatory>
     </Mapping>
     <Mapping>
-      <XmlTag><![CDATA[Thumbs[1]/TextTop]]></XmlTag>
-      <ExcelColumn><![CDATA[Wo]]></ExcelColumn>
+      <XmlTag><![CDATA[Paragraph/Headline]]></XmlTag>
+      <ExcelColumn><![CDATA[myHeadline]]></ExcelColumn>
       <Weight><![CDATA[3]]></Weight>
       <Mandatory>false</Mandatory>
     </Mapping>
     <Mapping>
-      <XmlTag><![CDATA[Thumbs[1]/ShowTitle]]></XmlTag>
-      <ExcelColumn><![CDATA[Titel]]></ExcelColumn>
+      <XmlTag><![CDATA[Paragraph/Text]]></XmlTag>
+      <ExcelColumn><![CDATA[myText]]></ExcelColumn>
       <Weight><![CDATA[2]]></Weight>
       <Mandatory>false</Mandatory>
     </Mapping>
