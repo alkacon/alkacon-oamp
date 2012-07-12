@@ -96,6 +96,9 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
     /** The name of the file request parameter. */
     public static final String PARAM_FILE = "file";
 
+    /** The name of the file request parameter. */
+    public static final String PARAM_SEND = "send";
+
     /** The password used for encryption and decryption actions. */
     private static final String CRYPT_PASSWORD = "YwqP-82h";
 
@@ -189,6 +192,9 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
     /** The resolver to use on the subscription page configuration texts. */
     private CmsMacroResolver m_resolver;
 
+    /** The send last newsletter flag to decide, if last newsletter should be sent or not. */
+    private String m_send;
+
     /** The flag that indicates if the subscription was successful.  */
     private boolean m_subscribeSuccess;
 
@@ -211,6 +217,24 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
 
         super();
         init(context, req, res);
+    }
+
+    /**
+     * Constructor, with parameters.
+     * 
+     * @param context the JSP page context object
+     * @param req the JSP request 
+     * @param res the JSP response 
+     * @param configUri the URI of the Newsletter Subscription file 
+     */
+    public CmsNewsletterSubscriptionBean(
+        PageContext context,
+        HttpServletRequest req,
+        HttpServletResponse res,
+        String configUri) {
+
+        super();
+        init(context, req, res, configUri);
     }
 
     /**
@@ -258,37 +282,41 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
      */
     public String actionSendLastNewsletter() {
 
-        String result = getConfigText(XPATH_2_SENDLAST + NODE_ERROR);
-        try {
-            // get the newsletter file from the found ID
-            CmsUUID fileId = getNewsletterManager().getSentNewsletterInfo(getConfigText(NODE_MAILINGLIST));
-            if (fileId != null) {
-                // found last sent newsletter ID, try to send the newsletter
-                CmsResource res = getCmsObject().readResource(fileId);
-                String fileName = getRequestContext().getSitePath(res);
-                if (CmsStringUtil.isNotEmpty(fileName)) {
-                    // generate the newsletter mail and list of recipients (with the subscriber email)
-                    List<InternetAddress> recipients = new ArrayList<InternetAddress>(1);
-                    recipients.add(new InternetAddress(getEmail()));
-                    I_CmsNewsletterMailData mailData = CmsNewsletterManager.getMailData(this, recipients, fileName);
-                    String rootPath = res.getRootPath();
-                    if (mailData.getContent() != null) {
-                        rootPath = mailData.getContent().getFile().getRootPath();
+        String result = "";
+        if (getSend()) {
+            // only try to send the newsletter, if the user checked it
+            result = getConfigText(XPATH_2_SENDLAST + NODE_ERROR);
+            try {
+                // get the newsletter file from the found ID
+                CmsUUID fileId = getNewsletterManager().getSentNewsletterInfo(getConfigText(NODE_MAILINGLIST));
+                if (fileId != null) {
+                    // found last sent newsletter ID, try to send the newsletter
+                    CmsResource res = getCmsObject().readResource(fileId);
+                    String fileName = getRequestContext().getSitePath(res);
+                    if (CmsStringUtil.isNotEmpty(fileName)) {
+                        // generate the newsletter mail and list of recipients (with the subscriber email)
+                        List<InternetAddress> recipients = new ArrayList<InternetAddress>(1);
+                        recipients.add(new InternetAddress(getEmail()));
+                        I_CmsNewsletterMailData mailData = CmsNewsletterManager.getMailData(this, recipients, fileName);
+                        String rootPath = res.getRootPath();
+                        if (mailData.getContent() != null) {
+                            rootPath = mailData.getContent().getFile().getRootPath();
+                        }
+                        if (mailData.isSendable()) {
+                            // send the email to the new subscriber
+                            CmsNewsletterMail nlMail = new CmsNewsletterMail(
+                                mailData,
+                                mailData.getRecipients(),
+                                null,
+                                rootPath);
+                            nlMail.start();
+                        }
+                        result = getConfigText(XPATH_2_SENDLAST + NODE_OK);
                     }
-                    if (mailData.isSendable()) {
-                        // send the email to the new subscriber
-                        CmsNewsletterMail nlMail = new CmsNewsletterMail(
-                            mailData,
-                            mailData.getRecipients(),
-                            null,
-                            rootPath);
-                        nlMail.start();
-                    }
-                    result = getConfigText(XPATH_2_SENDLAST + NODE_OK);
                 }
+            } catch (Exception e) {
+                // sending last newsletter failed, show error
             }
-        } catch (Exception e) {
-            // sending last newsletter failed, show error
         }
         return result;
     }
@@ -423,6 +451,19 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
     }
 
     /**
+     * Returns the flag, if the last send newsletter should be resend to user.<p>
+     * 
+     * @return  true if the last sent newsletter should be sent to user
+     */
+    public boolean getSend() {
+
+        if (CmsStringUtil.isEmpty(m_send)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Returns the found validation errors formatted as HTML.<p>
      * 
      * Each error is enclosed with the provided element name.<p>
@@ -468,12 +509,36 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
                     // decrypt email parameter if action is a confirm action
                     m_email = CmsStringCrypter.decrypt(m_email, CRYPT_PASSWORD);
                 }
+                m_send = req.getParameter(PARAM_SEND);
             } catch (NumberFormatException e) {
                 // no valid action found, this is handled in the validate method
             }
             // validate the parameters
             validate();
         }
+    }
+
+    /**
+     * Tries to read the schema of the subscription file and initializes the newsletter subscription.<p>
+     *
+     * @param context the JSP page context object
+     * @param req the JSP request 
+     * @param res the JSP response 
+     * @param configUri URI of the newsletter subscription file
+     */
+
+    public void init(PageContext context, HttpServletRequest req, HttpServletResponse res, String configUri) {
+
+        super.init(context, req, res);
+        if (m_configContent == null) {
+            try {
+                CmsFile file = getCmsObject().readFile(configUri);
+                m_configContent = CmsXmlContentFactory.unmarshal(getCmsObject(), file);
+            } catch (CmsException e) {
+                // error reading configuration content
+            }
+        }
+        init(context, req, res);
     }
 
     /**
@@ -508,16 +573,6 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
     public boolean isSubscribeSuccess() {
 
         return m_subscribeSuccess;
-    }
-
-    /**
-     * Sets if the subscription was successful.<p>
-     * 
-     * @param success the result of the subscription process
-     */
-    private void setSubscribeSuccess(boolean success) {
-
-        m_subscribeSuccess = success;
     }
 
     /**
@@ -701,6 +756,16 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
         result.append("</a>");
         // add the link macro to the resolver
         getMacroResolver().addMacro(MACRO_LINK, result.toString());
+    }
+
+    /**
+     * Sets if the subscription was successful.<p>
+     * 
+     * @param success the result of the subscription process
+     */
+    private void setSubscribeSuccess(boolean success) {
+
+        m_subscribeSuccess = success;
     }
 
     /**
