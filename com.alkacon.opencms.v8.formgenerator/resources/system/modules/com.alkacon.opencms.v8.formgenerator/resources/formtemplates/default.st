@@ -83,7 +83,7 @@ $row_start(field=field)$
 $label(field=field,formconfig=formconfig,errormessage=errormessage,mandatory=mandatory)$
 <div class="webform_field">
 	$captcha$
-	<input type="text" name="$field.name$" value="$field.valueEscaped$" $formconfig.formFieldAttributes$/>
+	<input type="text" name="$field.name$" id="$field.name$" value="$field.valueEscaped$" $formconfig.formFieldAttributes$/>
 	$if(errormessage)$
 	<br/><span class="webform_label_error">$errormessage$</span>
 	$endif$
@@ -103,7 +103,7 @@ $label(field=field,formconfig=formconfig,errormessage=errormessage,mandatory=man
 		$else$
 			<div class="webform_checkbox_wrapper"><div class="webform_field_checkbox">
 		$endif$
-		<input type="checkbox" name="$field.name$" value="$it.value$" class="check"$if(it.selected)$ checked="checked"$endif$/>
+		<input type="checkbox" name="$field.name$" id="$field.name$" value="$it.value$" class="check"$if(it.selected)$ checked="checked"$endif$/>
 		$if(it.showInRow)$
 			</div><div class="webform_label_checkbox_row">
 			$it.label$
@@ -133,7 +133,7 @@ $label(field=field,formconfig=formconfig,errormessage=errormessage,mandatory=man
 	$else$
 		&nbsp;
 	$endif$
-	<input type="hidden" name="$field.name$" value="$field.valueEscaped$"/>
+	<input type="hidden" name="$field.name$" id="$field.name$" value="$field.valueEscaped$"/>
 	$if(errormessage)$
 	<br/><span class="webform_label_error">$errormessage$</span>
 	$endif$
@@ -183,7 +183,7 @@ $row_start(field=field)$
 	$endif$
 </div>
 <div class="webform_field">
-	<input type="file" name="$field.name$" value="$field.valueEscaped$" $formconfig.formFieldAttributes$/>
+	<input type="file" name="$field.name$" id="$field.name$" value="$field.valueEscaped$" $formconfig.formFieldAttributes$/>
 	$if(errormessage)$
 	<br/><span class="webform_label_error">$errormessage$</span>
 	$endif$
@@ -197,7 +197,7 @@ $row_end(field=field,formconfig=formconfig)$
 
 field_hidden(field,formconfig,attributes,errormessage,mandatory) ::= <<
 $! ###### HIDDEN field ###### !$
-<div style="display: none;"><input type="hidden" name="$field.name$" value="$field.valueEscaped$"/></div>
+<div style="display: none;"><input type="hidden" name="$field.name$" id="$field.name$" value="$field.valueEscaped$"/></div>
 $subtext(field=field,formconfig=formconfig)$
 >>
 
@@ -208,7 +208,7 @@ $row_start(field=field)$
 <div class="webform_label">&nbsp;</div>
 <div class="webform_field">
 
-	<input type="hidden" name="$field.name$" value="$field.valueEscaped$"/>
+	<input type="hidden" name="$field.name$" id="$field.name$" value="$field.valueEscaped$"/>
 	$if(errormessage)$
 	<br/><span class="webform_label_error">$errormessage$</span>
 	$endif$
@@ -238,7 +238,7 @@ $! ###### PASSWORD field ###### !$
 $row_start(field=field)$
 $label(field=field,formconfig=formconfig,errormessage=errormessage,mandatory=mandatory)$
 <div class="webform_field">
-	<input type="password" name="$field.name$" value="$field.valueEscaped$" $formconfig.formFieldAttributes$/>
+	<input type="password" name="$field.name$" id="$field.name$" value="$field.valueEscaped$" $formconfig.formFieldAttributes$/>
 	$if(errormessage)$
 	<br/><span class="webform_label_error">$errormessage$</span>
 	$endif$
@@ -261,7 +261,7 @@ $row_start(field=field)$
 </div>
 <div class="webform_field">
 	$field.items:{
-		<input type="checkbox" name="$field.name$" value="$it.value$" class="check"$if(it.selected)$ checked="checked"$endif$/>
+		<input type="checkbox" name="$field.name$" id="$field.name$" value="$it.value$" class="check"$if(it.selected)$ checked="checked"$endif$/>
 	}$
 	<a href="$link$" rel="_blank">$linktext$</a>
 	$if(errormessage)$
@@ -283,7 +283,7 @@ $label(field=field,formconfig=formconfig,errormessage=errormessage,mandatory=man
 		$else$
 			<div class="webform_radio_wrapper"><div class="webform_field_radio">
 		$endif$
-		<input type="radio" name="$field.name$" value="$it.value$" class="radio"$if(it.selected)$ checked="checked"$endif$$if(field.hasSubFields)$ onchange="toggleWebformSubFields(this);"$endif$/>
+		<input type="radio" name="$field.name$" id="$field.name$" value="$it.value$" class="radio"$if(it.selected)$ checked="checked"$endif$$if(field.hasSubFields)$ onchange="toggleWebformSubFields(this);"$endif$/>
 		$if(it.showInRow)$
 			</div><div class="webform_label_radio_row">
 			$it.label$
@@ -308,7 +308,7 @@ $! ###### SELECT field ###### !$
 $row_start(field=field)$
 $label(field=field,formconfig=formconfig,errormessage=errormessage,mandatory=mandatory)$
 <div class="webform_field">
-	<select name="$field.name$" $if(formconfig.formFieldAttributes)$ $formconfig.formFieldAttributes$$endif$$if(field.hasSubFields)$ onchange="toggleWebformSubFields(this);"$endif$>
+	<select name="$field.name$" id="$field.name$" $if(formconfig.formFieldAttributes)$ $formconfig.formFieldAttributes$$endif$$if(field.hasSubFields)$ onchange="toggleWebformSubFields(this);"$endif$>
 	$field.items:{
 		<option value="$it.value$" $if(it.selected)$ selected="selected"$endif$>$it.label$</option>
 	}$
@@ -400,7 +400,7 @@ $! ###### TEXT field ###### !$
 $row_start(field=field)$
 $label(field=field,formconfig=formconfig,errormessage=errormessage,mandatory=mandatory)$
 <div class="webform_field">
-	<input type="text" name="$field.name$" value="$field.valueEscaped$" $formconfig.formFieldAttributes$/>
+	<input type="text" name="$field.name$" id="$field.name$" value="$field.valueEscaped$" $formconfig.formFieldAttributes$/>
 	$if(errormessage)$
 	<br/><span class="webform_label_error">$errormessage$</span>
 	$endif$
@@ -422,7 +422,7 @@ $row_start(field=field)$
 	$endif$
 </div>
 <div class="webform_field_multi">
-	<textarea cols="5" rows="5" name="$field.name$" $formconfig.formFieldAttributes$$attributes$>$field.valueEscaped$</textarea>
+	<textarea cols="5" rows="5" name="$field.name$" id="$field.name$" $formconfig.formFieldAttributes$$attributes$>$field.valueEscaped$</textarea>
 	$if(errormessage)$
 	<br/><span class="webform_label_error">$errormessage$</span>
 	$endif$
@@ -436,10 +436,10 @@ $! ###### Standard LABEL for a field ###### !$
 <div class="webform_label">
 	$if(errormessage)$
 		<span class="webform_msg_error">
-			$field.label$$mandatory$
+			<label for="$field.name$">$field.label$$mandatory$</label>
 		</span>
 	$else$
-		$field.label$$mandatory$
+		<label for="$field.name$">$field.label$$mandatory$</label>
 	$endif$
 </div>
 >>
