@@ -172,14 +172,14 @@ $row_start(field=field)$
 <div class="webform_label">
 	$if(errormessage)$
 		<span class="webform_msg_error">
-			$field.label$$mandatory$
+			<label for="$field.name$">$field.label$$mandatory$</label>
 		</span>
 	$elseif(infomessage)$
 		<span class="webform_msg_info">
-			$field.label$$mandatory$
+			<label for="$field.name$">$field.label$$mandatory$</label>
 		</span>
 	$else$
-		$field.label$$mandatory$
+		<label for="$field.name$">$field.label$$mandatory$</label>
 	$endif$
 </div>
 <div class="webform_field">
@@ -348,10 +348,10 @@ $! ###### Labels for the TABLE field, separate sub template because also used fo
 		<th align='left' valign='top' style='font-weight: normal; '>
 			$if(errormessage)$
 				<span class="webform_msg_error">
-					$field.label$$mandatory$
+					<label for="$field.name$">$field.label$$mandatory$</label>
 				</span>
 			$else$
-				$field.label$$mandatory$
+				<label for="$field.name$">$field.label$$mandatory$</label>
 			$endif$
 		</th>
 	</tr>
@@ -415,10 +415,10 @@ $row_start(field=field)$
 <div class="webform_label_multi">
 	$if(errormessage)$
 		<span class="webform_msg_error">
-			$field.label$$mandatory$
+			<label for="$field.name$">$field.label$$mandatory$</label>
 		</span>
 	$else$
-		$field.label$$mandatory$
+		<label for="$field.name$">$field.label$$mandatory$</label>
 	$endif$
 </div>
 <div class="webform_field_multi">
