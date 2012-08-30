@@ -56,6 +56,7 @@ public interface I_CmsWebformActionHandler {
     /**
      * Runs the action before the form is sent.<p>
      * 
+     * Should return <code>null</code> if the performed action was successful.
      * In error cases the returned String will be used as redirect target.<p> 
      * 
      * @param cmsObject the current users context
