@@ -37,8 +37,8 @@ import org.opencms.file.CmsRequestContext;
 import org.opencms.file.CmsResource;
 import org.opencms.main.CmsException;
 import org.opencms.main.OpenCms;
+import org.opencms.search.A_CmsSearchIndex;
 import org.opencms.search.CmsSearch;
-import org.opencms.search.CmsSearchIndex;
 import org.opencms.search.CmsSearchResult;
 import org.opencms.util.CmsStringUtil;
 
@@ -89,7 +89,7 @@ public class CmsDocumentSearch {
      * @param index the name of the index which should be used
      * @return a list with all found resources
      */
-    public List execute(String index) {
+    public List<CmsResource> execute(String index) {
 
         String query = (String)m_request.getSession().getAttribute(CmsDocumentSearch.SEARCH_PARAM_QUERY);
         return execute(index, query);
@@ -102,16 +102,15 @@ public class CmsDocumentSearch {
      * @param query the query to search for
      * @return a list with all found resources
      */
-    public List execute(String index, String query) {
+    public List<CmsResource> execute(String index, String query) {
 
-        ArrayList result = new ArrayList();
-        long t = System.currentTimeMillis();
+        ArrayList<CmsResource> result = new ArrayList<CmsResource>();
         CmsSearch search = new CmsSearch();
         search.setMatchesPerPage(-1);
         search.setIndex(index);
 
         OpenCms.getSearchManager().getIndex(index).addConfigurationParameter(
-            CmsSearchIndex.EXCERPT,
+            A_CmsSearchIndex.EXCERPT,
             CmsStringUtil.FALSE);
 
         if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(query)) {
@@ -131,19 +130,16 @@ public class CmsDocumentSearch {
                 }
             }
             CmsRequestContext context = m_cms.getRequestContext();
-            Iterator iter = search.getSearchResult().iterator();
+            Iterator<CmsSearchResult> iter = search.getSearchResult().iterator();
 
             while (iter.hasNext()) {
-                CmsSearchResult searchResult = (CmsSearchResult)iter.next();
+                CmsSearchResult searchResult = iter.next();
                 try {
-
                     CmsResource resource = m_cms.readResource(context.removeSiteRoot(searchResult.getPath()));
-
                     // filter files starting with a "$"
                     if (resource.getName().startsWith("$")) {
                         continue;
                     }
-
                     result.add(resource);
                 } catch (Exception ex) {
                     // do nothing
