@@ -283,7 +283,7 @@ $label(field=field,formconfig=formconfig,errormessage=errormessage,mandatory=man
 		$else$
 			<div class="webform_radio_wrapper"><div class="webform_field_radio">
 		$endif$
-		<input type="radio" name="$field.name$" value="$it.value$" class="radio"$if(it.selected)$ checked="checked"$endif$$if(field.hasSubFields)$ onchange="toggleWebformSubFields(this);"$endif$/>
+		<input type="radio" name="$field.name$" value="$it.value$" class="radio"$if(it.selected)$ checked="checked"$endif$$if(field.hasSubFields)$ onclick="toggleWebformSubFields(this);"$endif$/>
 		$if(it.showInRow)$
 			</div><div class="webform_label_radio_row">
 			$it.label$

@@ -291,7 +291,7 @@ $label(field=field,formconfig=formconfig,errormessage=errormessage,mandatory=man
 		$else$
 			<table border="0" cellpadding="0" cellspacing="0" class="webform_radio"><tr><td class="webform_field_radio">
 		$endif$
-		<input type="radio" name="$field.name$" value="$it.value$" class="radio"$if(it.selected)$ checked="checked"$endif$$if(field.hasSubFields)$ onchange="toggleWebformSubFields(this);"$endif$/>
+		<input type="radio" name="$field.name$" value="$it.value$" class="radio"$if(it.selected)$ checked="checked"$endif$$if(field.hasSubFields)$ onclick="toggleWebformSubFields(this);"$endif$/>
 		$if(it.showInRow)$
 			</td><td class="webform_label_radio_row">
 			$it.label$
