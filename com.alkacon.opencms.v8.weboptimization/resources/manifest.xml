@@ -33,7 +33,7 @@
 		</resources>
 		<parameters/>
 		<resourcetypes>
-			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="v8-alkacon-optimized-js" id="282">
+			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="v8-alkacon-optimized-js" id="762">
 				<properties>
 					<property>
 						<name>template-elements</name>
@@ -42,7 +42,7 @@
 				</properties>
 				<param name="schema">/system/modules/com.alkacon.opencms.v8.weboptimization/schemas/optimized-js.xsd</param>
 			</type>
-			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="v8-alkacon-optimized-css" id="283">
+			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="v8-alkacon-optimized-css" id="763">
 				<properties>
 					<property>
 						<name>template-elements</name>
@@ -51,7 +51,7 @@
 				</properties>
 				<param name="schema">/system/modules/com.alkacon.opencms.v8.weboptimization/schemas/optimized-css.xsd</param>
 			</type>
-			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="v8-alkacon-sprite" id="284">
+			<type class="org.opencms.file.types.CmsResourceTypeXmlContent" name="v8-alkacon-sprite" id="764">
 				<properties>
 					<property>
 						<name>template-elements</name>
