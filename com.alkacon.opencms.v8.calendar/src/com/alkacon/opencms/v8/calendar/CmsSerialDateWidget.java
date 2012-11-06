@@ -38,6 +38,7 @@ import org.opencms.file.CmsProperty;
 import org.opencms.file.CmsResource;
 import org.opencms.i18n.CmsMessages;
 import org.opencms.main.CmsLog;
+import org.opencms.main.OpenCms;
 import org.opencms.util.CmsMacroResolver;
 import org.opencms.util.CmsStringUtil;
 import org.opencms.widgets.CmsCalendarWidget;
@@ -54,6 +55,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -368,7 +370,6 @@ public class CmsSerialDateWidget extends CmsCalendarWidget {
     @Override
     public boolean isInternal() {
 
-        // TODO: Auto-generated method stub
         return false;
     }
 
@@ -402,18 +403,18 @@ public class CmsSerialDateWidget extends CmsCalendarWidget {
             switch (type) {
                 case I_CmsCalendarSerialDateOptions.TYPE_DAILY:
                     // daily series
-                    params.put(I_CmsCalendarSerialDateOptions.CONFIG_INTERVAL, getParameterValue(
-                        PARAM_DAY_DAILYINTERVAL,
-                        formParameters));
-                    params.put(I_CmsCalendarSerialDateOptions.CONFIG_EVERY_WORKING_DAY, getParameterValue(
-                        PARAM_DAY_EVERYWORKINGDAY,
-                        formParameters));
+                    params.put(
+                        I_CmsCalendarSerialDateOptions.CONFIG_INTERVAL,
+                        getParameterValue(PARAM_DAY_DAILYINTERVAL, formParameters));
+                    params.put(
+                        I_CmsCalendarSerialDateOptions.CONFIG_EVERY_WORKING_DAY,
+                        getParameterValue(PARAM_DAY_EVERYWORKINGDAY, formParameters));
                     break;
                 case I_CmsCalendarSerialDateOptions.TYPE_WEEKLY:
                     // weekly series
-                    params.put(I_CmsCalendarSerialDateOptions.CONFIG_INTERVAL, getParameterValue(
-                        PARAM_WEEK_WEEKLYINTERVAL,
-                        formParameters));
+                    params.put(
+                        I_CmsCalendarSerialDateOptions.CONFIG_INTERVAL,
+                        getParameterValue(PARAM_WEEK_WEEKLYINTERVAL, formParameters));
                     String[] weekDays = formParameters.get(PARAM_WEEK_WEEKDAY);
                     // create list of week days
                     StringBuffer weekDaysList = new StringBuffer(14);
@@ -433,23 +434,23 @@ public class CmsSerialDateWidget extends CmsCalendarWidget {
                     boolean isMonthDay = Boolean.valueOf(getParameterValue(PARAM_MONTH_SERIALMONTHDAY, formParameters)).booleanValue();
                     if (!isMonthDay) {
                         // no week day selected
-                        params.put(I_CmsCalendarSerialDateOptions.CONFIG_DAY_OF_MONTH, getParameterValue(
-                            PARAM_MONTH_DAYOFMONTH,
-                            formParameters));
-                        params.put(I_CmsCalendarSerialDateOptions.CONFIG_INTERVAL, getParameterValue(
-                            PARAM_MONTH_MONTHLYINTERVAL,
-                            formParameters));
+                        params.put(
+                            I_CmsCalendarSerialDateOptions.CONFIG_DAY_OF_MONTH,
+                            getParameterValue(PARAM_MONTH_DAYOFMONTH, formParameters));
+                        params.put(
+                            I_CmsCalendarSerialDateOptions.CONFIG_INTERVAL,
+                            getParameterValue(PARAM_MONTH_MONTHLYINTERVAL, formParameters));
                     } else {
                         // special week day selected
-                        params.put(I_CmsCalendarSerialDateOptions.CONFIG_DAY_OF_MONTH, getParameterValue(
-                            PARAM_MONTH_NUMBEROFWEEKDAYOFMONTH,
-                            formParameters));
-                        params.put(I_CmsCalendarSerialDateOptions.CONFIG_WEEKDAYS, getParameterValue(
-                            PARAM_MONTH_WEEKDAY,
-                            formParameters));
-                        params.put(I_CmsCalendarSerialDateOptions.CONFIG_INTERVAL, getParameterValue(
-                            PARAM_MONTH_MONTHLYINTERVALWEEKDAY,
-                            formParameters));
+                        params.put(
+                            I_CmsCalendarSerialDateOptions.CONFIG_DAY_OF_MONTH,
+                            getParameterValue(PARAM_MONTH_NUMBEROFWEEKDAYOFMONTH, formParameters));
+                        params.put(
+                            I_CmsCalendarSerialDateOptions.CONFIG_WEEKDAYS,
+                            getParameterValue(PARAM_MONTH_WEEKDAY, formParameters));
+                        params.put(
+                            I_CmsCalendarSerialDateOptions.CONFIG_INTERVAL,
+                            getParameterValue(PARAM_MONTH_MONTHLYINTERVALWEEKDAY, formParameters));
                     }
                     break;
                 case I_CmsCalendarSerialDateOptions.TYPE_YEARLY:
@@ -457,23 +458,23 @@ public class CmsSerialDateWidget extends CmsCalendarWidget {
                     boolean isYearday = Boolean.valueOf(getParameterValue(PARAM_YEAR_SERIALYEARDAY, formParameters)).booleanValue();
                     if (!isYearday) {
                         // no week day selected
-                        params.put(I_CmsCalendarSerialDateOptions.CONFIG_DAY_OF_MONTH, getParameterValue(
-                            PARAM_YEAR_DAYOFMONTH,
-                            formParameters));
-                        params.put(I_CmsCalendarSerialDateOptions.CONFIG_MONTH, getParameterValue(
-                            PARAM_YEAR_MONTH,
-                            formParameters));
+                        params.put(
+                            I_CmsCalendarSerialDateOptions.CONFIG_DAY_OF_MONTH,
+                            getParameterValue(PARAM_YEAR_DAYOFMONTH, formParameters));
+                        params.put(
+                            I_CmsCalendarSerialDateOptions.CONFIG_MONTH,
+                            getParameterValue(PARAM_YEAR_MONTH, formParameters));
                     } else {
                         // special week day selected
-                        params.put(I_CmsCalendarSerialDateOptions.CONFIG_DAY_OF_MONTH, getParameterValue(
-                            PARAM_YEAR_WEEKDAYOFMONTH,
-                            formParameters));
-                        params.put(I_CmsCalendarSerialDateOptions.CONFIG_WEEKDAYS, getParameterValue(
-                            PARAM_YEAR_WEEKDAY,
-                            formParameters));
-                        params.put(I_CmsCalendarSerialDateOptions.CONFIG_MONTH, getParameterValue(
-                            PARAM_YEAR_WEEKDAYMONTH,
-                            formParameters));
+                        params.put(
+                            I_CmsCalendarSerialDateOptions.CONFIG_DAY_OF_MONTH,
+                            getParameterValue(PARAM_YEAR_WEEKDAYOFMONTH, formParameters));
+                        params.put(
+                            I_CmsCalendarSerialDateOptions.CONFIG_WEEKDAYS,
+                            getParameterValue(PARAM_YEAR_WEEKDAY, formParameters));
+                        params.put(
+                            I_CmsCalendarSerialDateOptions.CONFIG_MONTH,
+                            getParameterValue(PARAM_YEAR_WEEKDAYMONTH, formParameters));
                     }
                     break;
                 default:
@@ -531,9 +532,9 @@ public class CmsSerialDateWidget extends CmsCalendarWidget {
             String endType = getParameterValue(PARAM_ENDTYPE, formParameters);
             params.put(I_CmsCalendarSerialDateOptions.CONFIG_END_TYPE, endType);
             if (String.valueOf(I_CmsCalendarSerialDateOptions.END_TYPE_TIMES).equals(endType)) {
-                params.put(I_CmsCalendarSerialDateOptions.CONFIG_OCCURENCES, getParameterValue(
-                    PARAM_OCCURENCES,
-                    formParameters));
+                params.put(
+                    I_CmsCalendarSerialDateOptions.CONFIG_OCCURENCES,
+                    getParameterValue(PARAM_OCCURENCES, formParameters));
             }
             String serialEndDateStr = getParameterValue(PARAM_ENDDATE, formParameters);
             if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(serialEndDateStr)) {
@@ -551,11 +552,29 @@ public class CmsSerialDateWidget extends CmsCalendarWidget {
             }
 
             // set the value of the XML content element, create a key-value String from the parameter map
-            param.setStringValue(cms, CmsStringUtil.mapAsString(
-                params,
-                String.valueOf(CmsProperty.VALUE_LIST_DELIMITER),
-                String.valueOf(CmsProperty.VALUE_MAP_DELIMITER)));
+            param.setStringValue(
+                cms,
+                CmsStringUtil.mapAsString(
+                    params,
+                    String.valueOf(CmsProperty.VALUE_LIST_DELIMITER),
+                    String.valueOf(CmsProperty.VALUE_MAP_DELIMITER)));
         }
+    }
+
+    /**
+     * @see org.opencms.widgets.CmsCalendarWidget#getJavaScriptResourceLinks(org.opencms.file.CmsObject)
+     */
+    @Override
+    public List<String> getJavaScriptResourceLinks(CmsObject cms) {
+
+        String link = "/system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/com.alkacon.opencms.v8.calendar.SerialDateWidget.nocache.js";
+        return Collections.singletonList(OpenCms.getLinkManager().substituteLink(cms, link));
+    }
+
+    @Override
+    public String getInitCall() {
+
+        return "initSerialDateWidget";
     }
 
     /**
@@ -900,10 +919,9 @@ public class CmsSerialDateWidget extends CmsCalendarWidget {
         }
         resolver.addMacro(MACRO_PREFIX_PARAMVALUE + PARAM_ENDTIME, endTime);
 
-        resolver.addMacro("select.durationdays", buildSelectDurationDays(
-            PARAM_DURATIONDAYS,
-            messages,
-            entryDate.getDuration()));
+        resolver.addMacro(
+            "select.durationdays",
+            buildSelectDurationDays(PARAM_DURATIONDAYS, messages, entryDate.getDuration()));
 
         // set found values to serial option tabs
         // daily options
@@ -922,41 +940,43 @@ public class CmsSerialDateWidget extends CmsCalendarWidget {
         // set the macros for the week day of month options
         resolver.addMacro(MACRO_PREFIX_PARAMVALUE + PARAM_MONTH_MONTHLYINTERVALWEEKDAY, monthMonthlyIntervalWeekDay);
         // build the select boxes
-        resolver.addMacro("select.monthnumberofweekday", buildSelectNumberOfWeekDayOfMonth(
-            PARAM_MONTH_NUMBEROFWEEKDAYOFMONTH,
-            "onfocus=\"document.getElementById('" + PARAM_MONTH_SERIALMONTHDAY + ".true').checked = true;\"",
-            messages,
-            monthSelectedIndexWeekDayOfMonth));
-        resolver.addMacro("select.monthweekday", buildSelectWeekDay(
-            PARAM_MONTH_WEEKDAY,
-            "onfocus=\"document.getElementById('" + PARAM_MONTH_SERIALMONTHDAY + ".true').checked = true;\"",
-            messages,
-            monthSelectedWeekDay));
+        resolver.addMacro(
+            "select.monthnumberofweekday",
+            buildSelectNumberOfWeekDayOfMonth(PARAM_MONTH_NUMBEROFWEEKDAYOFMONTH, "onfocus=\"document.getElementById('"
+                + PARAM_MONTH_SERIALMONTHDAY
+                + ".true').checked = true;\"", messages, monthSelectedIndexWeekDayOfMonth));
+        resolver.addMacro(
+            "select.monthweekday",
+            buildSelectWeekDay(PARAM_MONTH_WEEKDAY, "onfocus=\"document.getElementById('"
+                + PARAM_MONTH_SERIALMONTHDAY
+                + ".true').checked = true;\"", messages, monthSelectedWeekDay));
 
         // yearly options
         // mark the correct radio
         resolver.addMacro(MACRO_PREFIX_PARAMVALUE + PARAM_YEAR_SERIALYEARDAY + "." + yearUseWeekday, ATTR_CHECKED);
         // set the macros for the day of month options
         resolver.addMacro(MACRO_PREFIX_PARAMVALUE + PARAM_YEAR_DAYOFMONTH, yearDayOfMonth);
-        resolver.addMacro("select.yearmonth", buildSelectMonth(PARAM_YEAR_MONTH, "onfocus=\"document.getElementById('"
-            + PARAM_YEAR_SERIALYEARDAY
-            + ".false').checked = true;\"", messages, yearSelectedIndexMonth));
+        resolver.addMacro(
+            "select.yearmonth",
+            buildSelectMonth(PARAM_YEAR_MONTH, "onfocus=\"document.getElementById('"
+                + PARAM_YEAR_SERIALYEARDAY
+                + ".false').checked = true;\"", messages, yearSelectedIndexMonth));
         // set the macros for the week day of month options
-        resolver.addMacro("select.yearnumberofweekday", buildSelectNumberOfWeekDayOfMonth(
-            PARAM_YEAR_WEEKDAYOFMONTH,
-            "onfocus=\"document.getElementById('" + PARAM_YEAR_SERIALYEARDAY + ".true').checked = true;\"",
-            messages,
-            yearSelectedIndexWeekDayOfMonth));
-        resolver.addMacro("select.yearweekday", buildSelectWeekDay(
-            PARAM_YEAR_WEEKDAY,
-            "onfocus=\"document.getElementById('" + PARAM_YEAR_SERIALYEARDAY + ".true').checked = true;\"",
-            messages,
-            yearSelectedWeekDayDay));
-        resolver.addMacro("select.yearmonthweekday", buildSelectMonth(
-            PARAM_YEAR_WEEKDAYMONTH,
-            "onfocus=\"document.getElementById('" + PARAM_YEAR_SERIALYEARDAY + ".true').checked = true;\"",
-            messages,
-            yearSelectedIndexWeekDayMonth));
+        resolver.addMacro(
+            "select.yearnumberofweekday",
+            buildSelectNumberOfWeekDayOfMonth(PARAM_YEAR_WEEKDAYOFMONTH, "onfocus=\"document.getElementById('"
+                + PARAM_YEAR_SERIALYEARDAY
+                + ".true').checked = true;\"", messages, yearSelectedIndexWeekDayOfMonth));
+        resolver.addMacro(
+            "select.yearweekday",
+            buildSelectWeekDay(PARAM_YEAR_WEEKDAY, "onfocus=\"document.getElementById('"
+                + PARAM_YEAR_SERIALYEARDAY
+                + ".true').checked = true;\"", messages, yearSelectedWeekDayDay));
+        resolver.addMacro(
+            "select.yearmonthweekday",
+            buildSelectMonth(PARAM_YEAR_WEEKDAYMONTH, "onfocus=\"document.getElementById('"
+                + PARAM_YEAR_SERIALYEARDAY
+                + ".true').checked = true;\"", messages, yearSelectedIndexWeekDayMonth));
 
         // set serial duration values
 

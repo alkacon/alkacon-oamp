@@ -62,7 +62,7 @@ public class CmsSerialDateWidgetFactory extends A_NativeWidgetFactory {
     @Override
     protected String getInitCallName() {
 
-        return "initCmsSerialDateWidget";
+        return "initSerialDateWidget";
     }
 
     /**
