@@ -242,8 +242,82 @@
 			</then>
 		</if>
 	</target>
+	
+	<target name="compile-gwt" depends="init, builddeps" description="Compiles GWT ${module.gwt} module">
+			
+			<if>
+				<isset property="module.gwt" />
+				<then>
+					<property name="module.gwt.bootstrap" value="${module.gwt}" />
+					<property name="module.gwt.output" location="${module.input.res}/system/modules/${module.name}/resources/${module.gwt.bootstrap}" />
+					<outofdate verbose="false">
+						<sourcefiles>
+							<fileset dir="${opencms.input}/src" erroronmissingdir="false">
+								<include name="**/shared/**" />
+							</fileset>
+							<fileset dir="${opencms.input}/src-gwt" erroronmissingdir="false">
+								<include name="**/*.gwt.xml" />
+								<include name="**/client/**" />
+							</fileset>
+							<fileset dir="${module.input}/src" erroronmissingdir="false">
+								<include name="**/shared/**" />
+								<include name="**/*.gwt.xml" />
+								<include name="**/client/**" />
+							</fileset>
+							<fileset dir="${opencms.input.libs.runtime}" />
+							<fileset dir="${opencms.input.libs.compile}" />
+						</sourcefiles>
+						<targetfiles path="${module.gwt.output}/${module.gwt.bootstrap}.nocache.js" />
+						<sequential>
+							<echo message="Deleting GWT output folder: ${module.gwt.output}"/>
+							<delete dir="${module.gwt.output}" failonerror="false" />
 
-	<target name="compile" depends="init, buildcore, builddeps" description="Compiles ${module.name} module classes">
+							<!-- GWT compiling -->
+							<java dir="${basedir}" 
+										  classname="com.google.gwt.dev.Compiler" 
+										  fork="yes" 
+										  failonerror="true"
+										  maxmemory="1024m">
+								<!--	<arg value="-XdisableClassMetadata" />
+							  			<arg value="-XdisableCastChecking" />
+							  			<arg value="-compileReport" />  removing compiler args for faster compiling and easier debugging -> stacktrace -->
+								<arg value="-localWorkers" />
+								<arg value="2" />
+								<arg value="-logLevel" />
+								<arg value="INFO" />
+								<arg value="-style" />
+								<arg value="obfuscated" />
+								<arg value="-gen" />
+								<arg file="${opencms.output}/gwt/gen/" />
+								<arg value="-extra" />
+								<arg file="${opencms.output}/gwt/extra/" />
+								<arg value="-war" />
+								<arg file="${module.input.res}/system/modules/${module.name}/resources" />
+								<arg value="${module.gwt}" />
+								<classpath>
+									<fileset dir="${opencms.input.libs.runtime}">
+										<include name="**/*.jar" />
+									</fileset>
+									<fileset dir="${opencms.input.libs.compile}">
+										<include name="**/*.jar" />
+									</fileset>
+									<pathelement path="${module.input}/src" />
+									<pathelement path="${module.dependencies.path}" />
+									<pathelement path="${module.libs.path}" />
+									<pathelement path="${opencms.input}/src" />
+									<pathelement path="${opencms.input}/src-gwt" />
+									<pathelement path="${opencms.input.gwt}" />
+								</classpath>
+							</java>
+							<delete dir="${module.gwt.output}/../WEB-INF" failonerror="false" />
+							<delete dir="${module.gwt.output}/../../gwt-unitCache" failonerror="false" />
+						</sequential>
+					</outofdate>
+				</then>
+			</if>
+		</target>
+
+	<target name="compile" depends="init, buildcore, builddeps,compile-gwt" description="Compiles ${module.name} module classes">
 
 		<if>
 			<available file="${module.input.src}" />
@@ -328,6 +402,8 @@
 
 				<javac srcdir="${module.input}/src" destdir="${module.output.classes}" debug="on" optimize="on" deprecation="on" source="1.5" target="1.5">
 					<exclude name="**/test/**/*.java" />
+					<exclude name="**/*.gwt.xml" />
+					<exclude name="**/client/**" />
 					<classpath>
 						<fileset dir="${opencms.input.libs.runtime}">
 							<include name="**/*.jar" />
@@ -379,6 +455,12 @@
 	<target name="dist" depends="jar" description="Builds the distribution .zip file">
 
 		<mkdir dir="${module.output.zip}" />
+		<if>
+					<isset property="module.gwt" />
+					<then>
+						<ensuredirmanifest xmlfile="${module.input.res}/manifest.xml" base="${module.input.res}/" directory="${module.gwt.output}" />
+					</then>
+		</if>
 		<if>
 			<and>
 				<available file="${module.output.jar}" />
