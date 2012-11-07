@@ -1,4 +1,39 @@
-@external html-face, textboxGhostMode, scrollContainer, popupContent, gwt-ToggleButton, cmsState-up-disabled, cmsState-down-disabled, cmsState-up, cmsState-up-hovering, cmsState-down-hovering, cmsState-down, cmsState-up-disabled, cmsState-down-disabled;
+@external primary;
+
+.serialDataWidget {
+	border: 1px solid #7788AA;
+}
+
+.emptyValue .serialDataWidget {
+	border: 1px solid value("constants.css.borderColor");
+}
+
+.serialDateLable {
+	color: black;
+}
+
+.emptyValue .serialDateLable {
+	color: value("constants.css.borderColor");
+	font-style: italic;
+}
+
+.serialDataTabelBorderBottom {
+	border-bottom: 1px solid #7788AA !important;
+}
+
+.emptyValue .serialDataTabelBorderBottom {
+	border-bottom: 1px solid value("constants.css.borderColor") !important;
+}
+
+.serialDataTabelBorderRight {
+	border-right:1px solid #7788AA !important;
+	width:15px !important;
+}
+.emptyValue .serialDataTabelBorderRight {
+	border-right:1px solid value("constants.css.borderColor") !important;
+}
+
+
 
 
 .serialDataTabel {
@@ -218,14 +253,13 @@ input.textBoxSerialDate{
 }
 
 .serialDatelowPanel td>div>div:last-child{
-	border: 1px solid #7788AA;
 	border-radius: 3px;
 	background: #fff;
 }
-
-	
+.selectBoxPanel{}
+.widget{}
+.dragHelper{}
 .emptyValue{}
-.inputField{}
 .hasError{}
 .hasWarning{}
 .label{}
@@ -233,9 +267,3 @@ input.textBoxSerialDate{
 .widgetHolder{}
 .entity{}
 .attributeValue{}
-.floatDecoratedPanel{}
-.primary{}
-.floatBox{}
-.decorationBox{}
-.decorationBoxSmall{}
-.openerNoHover, .openerHover{}

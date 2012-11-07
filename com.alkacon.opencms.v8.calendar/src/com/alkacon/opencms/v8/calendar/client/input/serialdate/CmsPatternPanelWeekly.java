@@ -27,13 +27,16 @@
 
 package com.alkacon.opencms.v8.calendar.client.input.serialdate;
 
-import org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle;
+import com.alkacon.opencms.v8.calendar.client.widget.css.I_CmsLayoutBundle;
+
 import org.opencms.gwt.client.ui.input.CmsCheckBox;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -230,6 +233,14 @@ public class CmsPatternPanelWeekly extends FlowPanel implements HasValueChangeHa
         m_everyPanel.add(new Label("Every"));
         m_everyPanel.add(m_everyDay);
         m_everyDay.setStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().textBoxSerialDate());
+        m_everyDay.addKeyPressHandler(new KeyPressHandler() {
+
+            public void onKeyPress(KeyPressEvent event) {
+
+                fireValueChange();
+
+            }
+        });
         m_everyPanel.add(new Label("week(s) at"));
     }
 }

@@ -29,8 +29,6 @@ package com.alkacon.opencms.v8.calendar.client.widget.css;
 
 import com.alkacon.acacia.client.css.I_LayoutBundle.I_Widgets;
 
-import org.opencms.gwt.client.ui.css.I_CmsFloatDecoratedPanelCss;
-
 import com.google.gwt.core.client.GWT;
 
 /**
@@ -39,7 +37,7 @@ import com.google.gwt.core.client.GWT;
 public interface I_CmsLayoutBundle extends org.opencms.gwt.client.ui.css.I_CmsLayoutBundle {
 
     /** The XML content widget CSS. */
-    interface I_CmsWidgetCss extends I_Widgets, I_CmsFloatDecoratedPanelCss, I_CmsGlobalWidgetCss {
+    interface I_CmsWidgetCss extends I_Widgets {
 
         /**
          * Css class reader.<p>
@@ -60,6 +58,27 @@ public interface I_CmsLayoutBundle extends org.opencms.gwt.client.ui.css.I_CmsLa
          * 
          * @return the css class
          */
+        String serialDataTabelBorderBottom();
+
+        /**
+         * Css class reader.<p>
+         * 
+         * @return the css class
+         */
+        String serialDataTabelBorderRight();
+
+        /**
+         * Css class reader.<p>
+         * 
+         * @return the css class
+         */
+        String serialDataWidget();
+
+        /**
+         * Css class reader.<p>
+         * 
+         * @return the css class
+         */
         String serialDateCheckBox();
 
         /**
@@ -68,6 +87,13 @@ public interface I_CmsLayoutBundle extends org.opencms.gwt.client.ui.css.I_CmsLa
          * @return the css class
          */
         String serialDateDay();
+
+        /**
+         * Css class reader.<p>
+         * 
+         * @return the css class
+         */
+        String serialDateLable();
 
         /**
          * Css class reader.<p>
@@ -119,11 +145,12 @@ public interface I_CmsLayoutBundle extends org.opencms.gwt.client.ui.css.I_CmsLa
         String serialDateYearSelection();
 
         /**
-        * Css class reader.<p>
-        * 
-        * @return the css class
-        */
+         * Css class reader.<p>
+         * 
+         * @return the css class
+         */
         String textBoxSerialDate();
+
     }
 
     /** The bundle instance. */

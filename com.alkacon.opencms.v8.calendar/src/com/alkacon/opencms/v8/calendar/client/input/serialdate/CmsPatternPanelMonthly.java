@@ -27,7 +27,8 @@
 
 package com.alkacon.opencms.v8.calendar.client.input.serialdate;
 
-import org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle;
+import com.alkacon.opencms.v8.calendar.client.widget.css.I_CmsLayoutBundle;
+
 import org.opencms.gwt.client.ui.input.CmsRadioButton;
 import org.opencms.gwt.client.ui.input.CmsRadioButtonGroup;
 import org.opencms.gwt.client.ui.input.CmsSelectBox;
@@ -36,6 +37,8 @@ import java.util.Iterator;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -87,11 +90,13 @@ public class CmsPatternPanelMonthly extends FlowPanel implements HasValueChangeH
         m_radio[0] = sel1;
         sel1.setChecked(true);
         sel1.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateMonthSelection());
+        sel1.addStyleName(org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
         createEverPanel();
         CmsRadioButton sel2 = new CmsRadioButton("sel2", "At");
         m_radio[1] = sel2;
         sel2.setGroup(m_group);
         sel2.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateMonthSelection());
+        sel2.addStyleName(org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
         createAtPanel();
         this.add(sel1);
         this.add(m_everyPanel);
@@ -267,10 +272,22 @@ public class CmsPatternPanelMonthly extends FlowPanel implements HasValueChangeH
         m_atDay.addOption("7", "Saturday");
         m_atDay.setWidth("100px");
 
-        m_atPanel.add(new Label("every"));
+        Label every = new Label("every");
+        every.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateLable());
+        m_atPanel.add(every);
         m_atPanel.add(m_atMonth);
         m_atMonth.setStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().textBoxSerialDate());
-        m_atPanel.add(new Label(" month"));
+        m_atMonth.addKeyPressHandler(new KeyPressHandler() {
+
+            public void onKeyPress(KeyPressEvent event) {
+
+                fireValueChange();
+
+            }
+        });
+        Label month = new Label(" month");
+        month.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateLable());
+        m_atPanel.add(month);
 
     }
 
@@ -282,10 +299,30 @@ public class CmsPatternPanelMonthly extends FlowPanel implements HasValueChangeH
 
         m_everyPanel.add(m_everyDay);
         m_everyDay.setStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().textBoxSerialDate());
-        m_everyPanel.add(new Label(" day every"));
+        m_everyDay.addKeyPressHandler(new KeyPressHandler() {
+
+            public void onKeyPress(KeyPressEvent event) {
+
+                fireValueChange();
+
+            }
+        });
+        Label day = new Label(" day every");
+        day.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateLable());
+        m_everyPanel.add(day);
         m_everyPanel.add(m_everyMonth);
         m_everyMonth.setStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().textBoxSerialDate());
-        m_everyPanel.add(new Label(" month"));
+        m_everyMonth.addKeyPressHandler(new KeyPressHandler() {
+
+            public void onKeyPress(KeyPressEvent event) {
+
+                fireValueChange();
+
+            }
+        });
+        Label month = new Label(" month");
+        month.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateLable());
+        m_everyPanel.add(month);
 
     }
 

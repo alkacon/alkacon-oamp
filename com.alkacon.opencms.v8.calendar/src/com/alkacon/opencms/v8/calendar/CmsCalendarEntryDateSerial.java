@@ -105,10 +105,10 @@ public class CmsCalendarEntryDateSerial extends CmsCalendarEntryDate {
      * 
      * @return the configuration values for the serial date as Map
      */
-    public Map getConfigurationValuesAsMap() {
+    public Map<String, String> getConfigurationValuesAsMap() {
 
         // create the Map containing the date settings
-        Map values = new HashMap();
+        Map<String, String> values = new HashMap<String, String>();
 
         // first put the values of serial date fields used by all serial types
 

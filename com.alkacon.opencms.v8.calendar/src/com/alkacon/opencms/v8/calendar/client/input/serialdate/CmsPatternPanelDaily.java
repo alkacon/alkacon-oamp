@@ -27,7 +27,8 @@
 
 package com.alkacon.opencms.v8.calendar.client.input.serialdate;
 
-import org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle;
+import com.alkacon.opencms.v8.calendar.client.widget.css.I_CmsLayoutBundle;
+
 import org.opencms.gwt.client.ui.input.CmsRadioButton;
 import org.opencms.gwt.client.ui.input.CmsRadioButtonGroup;
 
@@ -37,6 +38,8 @@ import com.google.gwt.dom.client.Style.Float;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -66,6 +69,9 @@ public class CmsPatternPanelDaily extends FlowPanel implements HasValueChangeHan
     /** Value change handler. */
     private ValueChangeHandler<String> m_handler;
 
+    /** Value if the view is active. */
+    private boolean m_active;
+
     /**
      * Default constructor to create the panel.<p>
      */
@@ -73,6 +79,7 @@ public class CmsPatternPanelDaily extends FlowPanel implements HasValueChangeHan
 
         addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateDay());
         CmsRadioButton sel1 = new CmsRadioButton("sel1", "Every");
+
         sel1.addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
@@ -83,11 +90,14 @@ public class CmsPatternPanelDaily extends FlowPanel implements HasValueChangeHan
 
         });
         m_selection[0] = sel1;
+        sel1.addStyleName(org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
         sel1.setGroup(m_group);
         sel1.setChecked(true);
         sel1.getElement().getStyle().setFloat(Float.LEFT);
+
         createEverPanel();
         CmsRadioButton sel2 = new CmsRadioButton("sel2", "Every working days");
+        sel2.addStyleName(org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
         sel2.addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
@@ -130,6 +140,15 @@ public class CmsPatternPanelDaily extends FlowPanel implements HasValueChangeHan
     public String getIterval() {
 
         return m_everyDay.getText();
+    }
+
+    /**
+     * Returns the selection.<p>
+     * @return the selection
+     * */
+    public CmsRadioButton[] getSelection() {
+
+        return m_selection;
     }
 
     /**
@@ -190,8 +209,18 @@ public class CmsPatternPanelDaily extends FlowPanel implements HasValueChangeHan
         m_everyPanel.add(m_everyDay);
         m_everyDay.setStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().textBoxSerialDate());
         m_everyDay.getElement().getStyle().setWidth(25, Unit.PX);
+        m_everyDay.addKeyPressHandler(new KeyPressHandler() {
 
-        m_everyPanel.add(new Label("day(s)"));
+            public void onKeyPress(KeyPressEvent event) {
+
+                fireValueChange();
+
+            }
+        });
+
+        Label days = new Label(" day(s)");
+        days.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateLable());
+        m_everyPanel.add(days);
     }
 
 }

@@ -27,7 +27,8 @@
 
 package com.alkacon.opencms.v8.calendar.client.input.serialdate;
 
-import org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle;
+import com.alkacon.opencms.v8.calendar.client.widget.css.I_CmsLayoutBundle;
+
 import org.opencms.gwt.client.ui.input.CmsRadioButton;
 import org.opencms.gwt.client.ui.input.CmsRadioButtonGroup;
 import org.opencms.gwt.client.ui.input.CmsSelectBox;
@@ -36,6 +37,8 @@ import java.util.Iterator;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -88,10 +91,12 @@ public class CmsPatternPanelYearly extends FlowPanel implements HasValueChangeHa
         sel1.setGroup(m_group);
         sel1.setChecked(true);
         sel1.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateYearSelection());
+        sel1.addStyleName(org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
         createEverPanel();
         CmsRadioButton sel2 = new CmsRadioButton("sel2", "At");
         m_radio[1] = sel2;
         sel2.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateYearSelection());
+        sel2.addStyleName(org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
         sel2.setGroup(m_group);
         createAtPanel();
         this.add(sel1);
@@ -299,6 +304,14 @@ public class CmsPatternPanelYearly extends FlowPanel implements HasValueChangeHa
 
         m_everyPanel.add(m_everyDay);
         m_everyDay.setStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().textBoxSerialDate());
+        m_everyDay.addKeyPressHandler(new KeyPressHandler() {
+
+            public void onKeyPress(KeyPressEvent event) {
+
+                fireValueChange();
+
+            }
+        });
         m_everyPanel.add(new Label(""));
         m_everyPanel.add(m_everyMonth);
         m_everyMonth.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxPanel());

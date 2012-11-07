@@ -29,12 +29,9 @@ package com.alkacon.opencms.v8.calendar.client.widget;
 
 import com.alkacon.acacia.client.css.I_LayoutBundle;
 import com.alkacon.acacia.client.widgets.I_EditWidget;
+import com.alkacon.opencms.v8.calendar.client.input.CmsSerialDate;
+import com.alkacon.opencms.v8.calendar.client.widget.css.I_CmsLayoutBundle;
 
-import org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle;
-import org.opencms.gwt.client.ui.input.CmsSerialDate;
-
-import com.google.gwt.dom.client.Style.BorderStyle;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -71,10 +68,9 @@ public class CmsSerialDateWidget extends Composite implements I_EditWidget {
             }
 
         };
-        m_serialDate.addStyleName(I_CmsLayoutBundle.INSTANCE.generalCss().cornerAll());
-        m_serialDate.getElement().getStyle().setBorderStyle(BorderStyle.SOLID);
-        m_serialDate.getElement().getStyle().setBorderColor("#7788AA");
-        m_serialDate.getElement().getStyle().setBorderWidth(1, Unit.PX);
+        I_CmsLayoutBundle.INSTANCE.widgetCss().ensureInjected();
+        m_serialDate.addStyleName(org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.generalCss().cornerAll());
+        m_serialDate.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDataWidget());
         m_serialDate.addValueChangeHandler(handler);
     }
 
@@ -137,6 +133,7 @@ public class CmsSerialDateWidget extends Composite implements I_EditWidget {
             return;
         }
         m_active = active;
+
         if (m_active) {
             getElement().removeClassName(I_LayoutBundle.INSTANCE.form().inActive());
             getElement().focus();
@@ -144,6 +141,7 @@ public class CmsSerialDateWidget extends Composite implements I_EditWidget {
             getElement().addClassName(I_LayoutBundle.INSTANCE.form().inActive());
             m_serialDate.clearFealds();
         }
+        m_serialDate.setActive(m_active);
         if (active) {
             fireChangeEvent();
         }
