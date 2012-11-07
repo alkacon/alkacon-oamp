@@ -27,7 +27,6 @@
 
 package com.alkacon.opencms.v8.calendar.client.input;
 
-import com.alkacon.opencms.v8.calendar.I_CmsCalendarSerialDateOptions;
 import com.alkacon.opencms.v8.calendar.client.input.serialdate.CmsPatternPanelDaily;
 import com.alkacon.opencms.v8.calendar.client.input.serialdate.CmsPatternPanelMonthly;
 import com.alkacon.opencms.v8.calendar.client.input.serialdate.CmsPatternPanelWeekly;
@@ -80,6 +79,60 @@ import com.google.gwt.user.client.ui.TextBox;
  * 
  */
 public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHasInit, HasValueChangeHandlers<String> {
+
+    /** Configuration key name for the serial date day of month. */
+    private static final String CONFIG_DAY_OF_MONTH = "dayofmonth";
+
+    /** Configuration key name for the serial date end type. */
+    private static final String CONFIG_END_TYPE = "endtype";
+
+    /** Configuration key name for the serial date end date and time (sets duration together with start date). */
+    private static final String CONFIG_ENDDATE = "enddate";
+
+    /** Configuration key name for the serial date daily configuration: every working day flag. */
+    private static final String CONFIG_EVERY_WORKING_DAY = "everyworkingday";
+
+    /** Configuration key name for the serial date interval. */
+    private static final String CONFIG_INTERVAL = "interval";
+
+    /** Configuration key name for the serial date month. */
+    private static final String CONFIG_MONTH = "month";
+
+    /** Configuration key name for the serial date number of occurences. */
+    private static final String CONFIG_OCCURENCES = "occurences";
+
+    /** Configuration key name for the serial date: series end date. */
+    private static final String CONFIG_SERIAL_ENDDATE = "serialenddate";
+
+    /** Configuration key name for the serial date start date and time. */
+    private static final String CONFIG_STARTDATE = "startdate";
+
+    /** Configuration key name for the serial date type. */
+    private static final String CONFIG_TYPE = "type";
+
+    /** Configuration key name for the serial date week day(s). */
+    private static final String CONFIG_WEEKDAYS = "weekdays";
+
+    /** Series end type: ends at specific date. */
+    private static final int END_TYPE_DATE = 3;
+
+    /** Series end type: ends never. */
+    private static final int END_TYPE_NEVER = 1;
+
+    /** Series end type: ends after n times. */
+    private static final int END_TYPE_TIMES = 2;
+
+    /** Serial type: daily series. */
+    private static final int TYPE_DAILY = 1;
+
+    /** Serial type: monthly series. */
+    private static final int TYPE_MONTHLY = 3;
+
+    /** Serial type: weekly series. */
+    private static final int TYPE_WEEKLY = 2;
+
+    /** Serial type: yearly series. */
+    private static final int TYPE_YEARLY = 4;
 
     /***/
     private static final String KEY_DAILY = "1";
@@ -498,7 +551,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
 
         // fetch the start date and time
 
-        String startLong = values.get(I_CmsCalendarSerialDateOptions.CONFIG_STARTDATE);
+        String startLong = values.get(CONFIG_STARTDATE);
         m_startDateValue = new Date(getLongValue(startLong, 0));
         DateTimeFormat timeformate = DateTimeFormat.getFormat("hh:mm aa");
         m_startDate.setValue(timeformate.format(m_startDateValue));
@@ -506,7 +559,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
         m_dateboxbegin.setValue(m_startDateValue);
         // the end date and time (this means the duration of a single entry)
 
-        String endLong = values.get(I_CmsCalendarSerialDateOptions.CONFIG_ENDDATE);
+        String endLong = values.get(CONFIG_ENDDATE);
         m_endDateValue = new Date(getLongValue(endLong, 0));
         m_endDate.setValue(timeformate.format(m_endDateValue));
 
@@ -518,16 +571,16 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
         }
 
         // determine the serial end type
-        String endTypeStr = values.get(I_CmsCalendarSerialDateOptions.CONFIG_END_TYPE);
-        int endType = getIntValue(endTypeStr, I_CmsCalendarSerialDateOptions.END_TYPE_NEVER);
+        String endTypeStr = values.get(CONFIG_END_TYPE);
+        int endType = getIntValue(endTypeStr, END_TYPE_NEVER);
         m_groupDuration.selectButton(m_lowRadioButton[endType - 1]);
-        if (endType == I_CmsCalendarSerialDateOptions.END_TYPE_TIMES) {
+        if (endType == END_TYPE_TIMES) {
             // end type: after a number of occurences
-            String occurStr = values.get(I_CmsCalendarSerialDateOptions.CONFIG_OCCURENCES);
+            String occurStr = values.get(CONFIG_OCCURENCES);
             m_times.setText(occurStr);
-        } else if (endType == I_CmsCalendarSerialDateOptions.END_TYPE_DATE) {
+        } else if (endType == END_TYPE_DATE) {
             // end type: ends at a specified date
-            String endDateStr = values.get(I_CmsCalendarSerialDateOptions.CONFIG_SERIAL_ENDDATE);
+            String endDateStr = values.get(CONFIG_SERIAL_ENDDATE);
             long endDate = getLongValue(endDateStr, 0);
             m_dateboxend.setValue(new Date(endDate));
 
@@ -535,15 +588,15 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
 
         // now determine the serial date options depending on the serial date type
 
-        String type = values.get(I_CmsCalendarSerialDateOptions.CONFIG_TYPE);
+        String type = values.get(CONFIG_TYPE);
         int entryType = getIntValue(type, 1);
         m_groupPattern.selectButton(m_arrayRadiobox[entryType - 1]);
         changePattern();
         switch (entryType) {
-            case I_CmsCalendarSerialDateOptions.TYPE_DAILY:
+            case TYPE_DAILY:
                 // daily series entry, get interval and working days flag
-                String intervalStr = values.get(I_CmsCalendarSerialDateOptions.CONFIG_INTERVAL);
-                String workingDaysStr = values.get(I_CmsCalendarSerialDateOptions.CONFIG_EVERY_WORKING_DAY);
+                String intervalStr = values.get(CONFIG_INTERVAL);
+                String workingDaysStr = values.get(CONFIG_EVERY_WORKING_DAY);
                 boolean workingDays = Boolean.valueOf(workingDaysStr).booleanValue();
                 m_dailyPattern.setInterval(intervalStr);
                 if (workingDays) {
@@ -553,33 +606,33 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
                 }
 
                 break;
-            case I_CmsCalendarSerialDateOptions.TYPE_WEEKLY:
+            case TYPE_WEEKLY:
                 // weekly series entry
-                intervalStr = values.get(I_CmsCalendarSerialDateOptions.CONFIG_INTERVAL);
-                String weekDaysStr = values.get(I_CmsCalendarSerialDateOptions.CONFIG_WEEKDAYS);
+                intervalStr = values.get(CONFIG_INTERVAL);
+                String weekDaysStr = values.get(CONFIG_WEEKDAYS);
                 List<String> weekDaysStrList = CmsStringUtil.splitAsList(weekDaysStr, SEPARATOR_WEEKDAYS, true);
                 m_weeklyPattern.setInterval(intervalStr);
                 m_weeklyPattern.setWeekDays(weekDaysStrList);
                 break;
-            case I_CmsCalendarSerialDateOptions.TYPE_MONTHLY:
+            case TYPE_MONTHLY:
                 // monthly series entry
-                intervalStr = values.get(I_CmsCalendarSerialDateOptions.CONFIG_INTERVAL);
-                String dayOfMonthStr = values.get(I_CmsCalendarSerialDateOptions.CONFIG_DAY_OF_MONTH);
+                intervalStr = values.get(CONFIG_INTERVAL);
+                String dayOfMonthStr = values.get(CONFIG_DAY_OF_MONTH);
                 int dayOfMonth = getIntValue(dayOfMonthStr, 1);
-                String weekDayStr = values.get(I_CmsCalendarSerialDateOptions.CONFIG_WEEKDAYS);
+                String weekDayStr = values.get(CONFIG_WEEKDAYS);
                 int weekDay = getIntValue(weekDayStr, -1);
                 m_monthlyPattern.setWeekDay(weekDay);
                 m_monthlyPattern.setInterval(intervalStr);
                 m_monthlyPattern.setDayOfMonth(dayOfMonth);
 
                 break;
-            case I_CmsCalendarSerialDateOptions.TYPE_YEARLY:
+            case TYPE_YEARLY:
                 // yearly series entry
-                dayOfMonthStr = values.get(I_CmsCalendarSerialDateOptions.CONFIG_DAY_OF_MONTH);
+                dayOfMonthStr = values.get(CONFIG_DAY_OF_MONTH);
                 dayOfMonth = getIntValue(dayOfMonthStr, 1);
-                weekDayStr = values.get(I_CmsCalendarSerialDateOptions.CONFIG_WEEKDAYS);
+                weekDayStr = values.get(CONFIG_WEEKDAYS);
                 weekDay = getIntValue(weekDayStr, -1);
-                String monthStr = values.get(I_CmsCalendarSerialDateOptions.CONFIG_MONTH);
+                String monthStr = values.get(CONFIG_MONTH);
                 int month = getIntValue(monthStr, 0);
                 m_yearlyPattern.setWeekDay(weekDay);
                 m_yearlyPattern.setDayOfMonth(dayOfMonth);
@@ -667,44 +720,29 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
         if (m_groupPattern.getSelectedButton() != null) {
             type = m_groupPattern.getSelectedButton().getName();
         }
-        result += I_CmsCalendarSerialDateOptions.CONFIG_TYPE + "=" + type + "|";
+        result += CONFIG_TYPE + "=" + type + "|";
         switch (Integer.parseInt(type)) {
             case (1):
-                result += I_CmsCalendarSerialDateOptions.CONFIG_INTERVAL + "=" + m_dailyPattern.getIterval() + "|";
-                result += I_CmsCalendarSerialDateOptions.CONFIG_EVERY_WORKING_DAY
-                    + "="
-                    + m_dailyPattern.getWorkingDay()
-                    + "|";
+                result += CONFIG_INTERVAL + "=" + m_dailyPattern.getIterval() + "|";
+                result += CONFIG_EVERY_WORKING_DAY + "=" + m_dailyPattern.getWorkingDay() + "|";
                 break;
             case (2):
-                result += I_CmsCalendarSerialDateOptions.CONFIG_INTERVAL + "=" + m_weeklyPattern.getInterval() + "|";
-                result += I_CmsCalendarSerialDateOptions.CONFIG_WEEKDAYS + "=" + m_weeklyPattern.getWeekDays() + "|";
+                result += CONFIG_INTERVAL + "=" + m_weeklyPattern.getInterval() + "|";
+                result += CONFIG_WEEKDAYS + "=" + m_weeklyPattern.getWeekDays() + "|";
 
                 break;
             case (3):
-                result += I_CmsCalendarSerialDateOptions.CONFIG_INTERVAL + "=" + m_monthlyPattern.getInterval() + "|";
-                result += I_CmsCalendarSerialDateOptions.CONFIG_DAY_OF_MONTH
-                    + "="
-                    + m_monthlyPattern.getDayOfMonth()
-                    + "|";
+                result += CONFIG_INTERVAL + "=" + m_monthlyPattern.getInterval() + "|";
+                result += CONFIG_DAY_OF_MONTH + "=" + m_monthlyPattern.getDayOfMonth() + "|";
                 if (!m_monthlyPattern.getWeekDays().equals("-1")) {
-                    result += I_CmsCalendarSerialDateOptions.CONFIG_WEEKDAYS
-                        + "="
-                        + m_monthlyPattern.getWeekDays()
-                        + "|";
+                    result += CONFIG_WEEKDAYS + "=" + m_monthlyPattern.getWeekDays() + "|";
                 }
                 break;
             case (4):
-                result += I_CmsCalendarSerialDateOptions.CONFIG_DAY_OF_MONTH
-                    + "="
-                    + m_yearlyPattern.getDayOfMonth()
-                    + "|";
-                result += I_CmsCalendarSerialDateOptions.CONFIG_MONTH + "=" + m_yearlyPattern.getMonth() + "|";
+                result += CONFIG_DAY_OF_MONTH + "=" + m_yearlyPattern.getDayOfMonth() + "|";
+                result += CONFIG_MONTH + "=" + m_yearlyPattern.getMonth() + "|";
                 if (!m_yearlyPattern.getWeekDays().equals("-1")) {
-                    result += I_CmsCalendarSerialDateOptions.CONFIG_WEEKDAYS
-                        + "="
-                        + m_yearlyPattern.getWeekDays()
-                        + "|";
+                    result += CONFIG_WEEKDAYS + "=" + m_yearlyPattern.getWeekDays() + "|";
                 }
                 break;
             default:
@@ -728,8 +766,8 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
         m_endDateValue.setHours(endDate.getHours());
         m_endDateValue.setMinutes(endDate.getMinutes());
 
-        result += I_CmsCalendarSerialDateOptions.CONFIG_STARTDATE + "=" + m_startDateValue.getTime() + "|";
-        result += I_CmsCalendarSerialDateOptions.CONFIG_ENDDATE + "=" + m_endDateValue.getTime() + "|";
+        result += CONFIG_STARTDATE + "=" + m_startDateValue.getTime() + "|";
+        result += CONFIG_ENDDATE + "=" + m_endDateValue.getTime() + "|";
         String endtype = "1";
         if (m_groupDuration.getSelectedButton() != null) {
             endtype = m_groupDuration.getSelectedButton().getName();
@@ -737,16 +775,14 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
         switch (Integer.parseInt(endtype)) {
             case (1):
                 break;
-            case (I_CmsCalendarSerialDateOptions.END_TYPE_TIMES):
+            case (END_TYPE_TIMES):
                 if (!m_times.getText().isEmpty()) {
-                    result += I_CmsCalendarSerialDateOptions.CONFIG_OCCURENCES + "=" + m_times.getText();
+                    result += CONFIG_OCCURENCES + "=" + m_times.getText();
                 }
                 break;
-            case (I_CmsCalendarSerialDateOptions.END_TYPE_DATE):
+            case (END_TYPE_DATE):
                 if (!m_dateboxend.getValueAsFormatedString().isEmpty()) {
-                    result += I_CmsCalendarSerialDateOptions.CONFIG_SERIAL_ENDDATE
-                        + "="
-                        + m_dateboxend.getFormValueAsString();
+                    result += CONFIG_SERIAL_ENDDATE + "=" + m_dateboxend.getFormValueAsString();
                 }
                 break;
             default:
@@ -754,7 +790,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
 
         }
 
-        result += I_CmsCalendarSerialDateOptions.CONFIG_END_TYPE + "=" + endtype;
+        result += CONFIG_END_TYPE + "=" + endtype;
         return result;
     }
 

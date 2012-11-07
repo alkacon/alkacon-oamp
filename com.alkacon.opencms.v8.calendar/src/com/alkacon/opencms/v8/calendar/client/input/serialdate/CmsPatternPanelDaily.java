@@ -69,9 +69,6 @@ public class CmsPatternPanelDaily extends FlowPanel implements HasValueChangeHan
     /** Value change handler. */
     private ValueChangeHandler<String> m_handler;
 
-    /** Value if the view is active. */
-    private boolean m_active;
-
     /**
      * Default constructor to create the panel.<p>
      */

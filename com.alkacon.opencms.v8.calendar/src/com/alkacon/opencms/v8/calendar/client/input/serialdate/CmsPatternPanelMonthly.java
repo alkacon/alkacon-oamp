@@ -77,6 +77,7 @@ public class CmsPatternPanelMonthly extends FlowPanel implements HasValueChangeH
     /** The array of all radiobuttons. */
     private CmsRadioButton[] m_radio = new CmsRadioButton[2];
 
+    /** The value change handler. */
     private ValueChangeHandler<String> m_handler;
 
     /**
