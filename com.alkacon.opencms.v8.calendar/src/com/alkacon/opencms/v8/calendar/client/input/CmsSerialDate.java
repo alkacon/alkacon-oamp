@@ -34,6 +34,7 @@ import com.alkacon.opencms.v8.calendar.client.input.serialdate.CmsPatternPanelYe
 import com.alkacon.opencms.v8.calendar.client.widget.css.I_CmsLayoutBundle;
 
 import org.opencms.gwt.client.I_CmsHasInit;
+import org.opencms.gwt.client.Messages;
 import org.opencms.gwt.client.ui.I_CmsAutoHider;
 import org.opencms.gwt.client.ui.input.CmsErrorWidget;
 import org.opencms.gwt.client.ui.input.CmsRadioButton;
@@ -226,6 +227,9 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
     /** The top Panel for detail time information. */
     private Panel m_topPanel = new FlowPanel();
 
+    /** The used time format. */
+    private DateTimeFormat m_timeFormat;
+
     /**
      * Category field widgets for ADE forms.<p>
      */
@@ -236,10 +240,14 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
         m_weeklyPattern = new CmsPatternPanelWeekly();
         m_monthlyPattern = new CmsPatternPanelMonthly();
         m_yearlyPattern = new CmsPatternPanelYearly();
-
-        DateTimeFormat timeformate = DateTimeFormat.getFormat("hh:mm aa");
-        m_endDate.setValue(timeformate.format(new Date()));
-        m_startDate.setValue(timeformate.format(new Date()));
+        try {
+            m_timeFormat = DateTimeFormat.getFormat(Messages.get().key(Messages.GUI_DATEBOX_TIME_PATTERN_0));
+        } catch (Exception e) {
+            // in case the pattern is not available, fall back to standard en pattern
+            m_timeFormat = DateTimeFormat.getFormat("hh:mm aa");
+        }
+        m_endDate.setValue(m_timeFormat.format(new Date()));
+        m_startDate.setValue(m_timeFormat.format(new Date()));
         m_dateboxbegin.setValue(new Date());
 
         setSelectVaues();
@@ -553,15 +561,14 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
 
         String startLong = values.get(CONFIG_STARTDATE);
         m_startDateValue = new Date(getLongValue(startLong, 0));
-        DateTimeFormat timeformate = DateTimeFormat.getFormat("hh:mm aa");
-        m_startDate.setValue(timeformate.format(m_startDateValue));
+        m_startDate.setValue(m_timeFormat.format(m_startDateValue));
 
         m_dateboxbegin.setValue(m_startDateValue);
         // the end date and time (this means the duration of a single entry)
 
         String endLong = values.get(CONFIG_ENDDATE);
         m_endDateValue = new Date(getLongValue(endLong, 0));
-        m_endDate.setValue(timeformate.format(m_endDateValue));
+        m_endDate.setValue(m_timeFormat.format(m_endDateValue));
 
         if (getLongValue(endLong, 0) > getLongValue(startLong, 0)) {
             // duration at least one day, calculate it
@@ -749,20 +756,19 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
                 break;
 
         }
-        DateTimeFormat format = DateTimeFormat.getFormat("hh:mm aa");
         Date startDate = new Date();
         Date endDate = new Date();
         m_startDateValue = m_dateboxbegin.getValue();
         if (m_startDateValue == null) {
             m_startDateValue = new Date();
-            m_startDate.setText(format.format(m_startDateValue));
-            m_endDate.setText(format.format(m_startDateValue));
+            m_startDate.setText(m_timeFormat.format(m_startDateValue));
+            m_endDate.setText(m_timeFormat.format(m_startDateValue));
         }
-        startDate = format.parse(m_startDate.getText());
+        startDate = m_timeFormat.parse(m_startDate.getText());
         m_startDateValue.setHours(startDate.getHours());
         m_startDateValue.setMinutes(startDate.getMinutes());
 
-        endDate = format.parse(m_endDate.getText());
+        endDate = m_timeFormat.parse(m_endDate.getText());
         m_endDateValue.setHours(endDate.getHours());
         m_endDateValue.setMinutes(endDate.getMinutes());
 
