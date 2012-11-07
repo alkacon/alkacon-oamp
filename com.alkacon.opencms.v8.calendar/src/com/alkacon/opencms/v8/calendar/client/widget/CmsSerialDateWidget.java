@@ -32,6 +32,9 @@ import com.alkacon.acacia.client.widgets.I_EditWidget;
 import com.alkacon.opencms.v8.calendar.client.input.CmsSerialDate;
 import com.alkacon.opencms.v8.calendar.client.widget.css.I_CmsLayoutBundle;
 
+import org.opencms.json.JSONException;
+import org.opencms.json.JSONObject;
+
 import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -48,7 +51,10 @@ public class CmsSerialDateWidget extends Composite implements I_EditWidget {
     private boolean m_active = true;
 
     /** The global select box. */
-    private CmsSerialDate m_serialDate = new CmsSerialDate();
+    private CmsSerialDate m_serialDate;
+
+    /** JSON of all labels for this widget. */
+    private JSONObject m_labels;
 
     /**
      * Constructs an CmsComboWidget with the in XSD schema declared configuration.<p>
@@ -56,6 +62,8 @@ public class CmsSerialDateWidget extends Composite implements I_EditWidget {
      */
     public CmsSerialDateWidget(String config) {
 
+        parseConfiguration(config);
+        m_serialDate = new CmsSerialDate(m_labels);
         // All composites must call initWidget() in their constructors.
         initWidget(m_serialDate);
 
@@ -172,6 +180,20 @@ public class CmsSerialDateWidget extends Composite implements I_EditWidget {
         m_serialDate.setFormValueAsString(value);
         if (fireEvents) {
             fireChangeEvent();
+        }
+
+    }
+
+    /**
+     * Parse the configuration into a JSON.
+     * */
+    private void parseConfiguration(String config) {
+
+        try {
+            m_labels = new JSONObject(config);
+        } catch (JSONException e) {
+            // TODO: Auto-generated catch block
+            e.printStackTrace();
         }
 
     }

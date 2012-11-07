@@ -31,6 +31,7 @@ import com.alkacon.opencms.v8.calendar.client.widget.css.I_CmsLayoutBundle;
 
 import org.opencms.gwt.client.ui.input.CmsRadioButton;
 import org.opencms.gwt.client.ui.input.CmsRadioButtonGroup;
+import org.opencms.json.JSONObject;
 
 import java.util.Iterator;
 
@@ -69,11 +70,16 @@ public class CmsPatternPanelDaily extends FlowPanel implements HasValueChangeHan
     /** Value change handler. */
     private ValueChangeHandler<String> m_handler;
 
+    /** JSON of all needed labels. */
+    private JSONObject m_labels;
+
     /**
      * Default constructor to create the panel.<p>
+     * @param labels JSON of all labels
      */
-    public CmsPatternPanelDaily() {
+    public CmsPatternPanelDaily(JSONObject labels) {
 
+        m_labels = labels;
         addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateDay());
         CmsRadioButton sel1 = new CmsRadioButton("sel1", "Every");
 

@@ -44,6 +44,7 @@ import org.opencms.gwt.client.ui.input.I_CmsFormWidget;
 import org.opencms.gwt.client.ui.input.datebox.CmsDateBox;
 import org.opencms.gwt.client.ui.input.form.CmsWidgetFactoryRegistry;
 import org.opencms.gwt.client.ui.input.form.I_CmsFormWidgetFactory;
+import org.opencms.json.JSONObject;
 import org.opencms.util.CmsStringUtil;
 
 import java.util.Date;
@@ -216,7 +217,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
     /** The mein panel for the table. */
     private Panel m_panel = new FlowPanel();
     /** The actual active pattern panel. */
-    private Panel m_patterPanel = new CmsPatternPanelDaily();
+    private Panel m_patterPanel;
     /** The duratioen selection. */
     CmsSelectBox m_duration;
 
@@ -230,16 +231,24 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
     /** The used time format. */
     private DateTimeFormat m_timeFormat;
 
+    /** JSON of all labels. */
+    private JSONObject m_labels;
+
     /**
      * Category field widgets for ADE forms.<p>
+     * @param labels a JSON of all needed labels
      */
-    public CmsSerialDate() {
+    public CmsSerialDate(JSONObject labels) {
 
         super();
-        m_dailyPattern = new CmsPatternPanelDaily();
-        m_weeklyPattern = new CmsPatternPanelWeekly();
-        m_monthlyPattern = new CmsPatternPanelMonthly();
-        m_yearlyPattern = new CmsPatternPanelYearly();
+
+        m_labels = labels;
+
+        m_dailyPattern = new CmsPatternPanelDaily(m_labels);
+        m_weeklyPattern = new CmsPatternPanelWeekly(m_labels);
+        m_monthlyPattern = new CmsPatternPanelMonthly(m_labels);
+        m_yearlyPattern = new CmsPatternPanelYearly(m_labels);
+        m_patterPanel = m_dailyPattern;
         try {
             m_timeFormat = DateTimeFormat.getFormat(Messages.get().key(Messages.GUI_DATEBOX_TIME_PATTERN_0));
         } catch (Exception e) {
@@ -271,7 +280,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
         // add the date view.
         topPanel.setWidget(0, 1, m_lowPanel);
         m_table.setWidget(0, 0, topPanel);
-        m_table.getCellFormatter().getElement(0, 0).setAttribute("colspan", "3");
+        m_table.getFlexCellFormatter().setColSpan(0, 0, 3);
         m_table.getCellFormatter().addStyleName(
             0,
             0,
@@ -319,7 +328,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
              */
             public I_CmsFormWidget createWidget(Map<String, String> widgetParams) {
 
-                return new CmsSerialDate();
+                return new CmsSerialDate(null);
             }
         });
     }
@@ -923,6 +932,14 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
 
             }
         });
+        m_dateboxend.addDomHandler(new ClickHandler() {
+
+            public void onClick(ClickEvent event) {
+
+                selectEnding(2);
+
+            }
+        }, ClickEvent.getType());
         table.setWidget(0, 1, cell2);
         m_lowPanel.add(table);
         m_lowPanel.setStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDatelowPanel());

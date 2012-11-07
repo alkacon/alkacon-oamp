@@ -30,6 +30,7 @@ package com.alkacon.opencms.v8.calendar.client.input.serialdate;
 import com.alkacon.opencms.v8.calendar.client.widget.css.I_CmsLayoutBundle;
 
 import org.opencms.gwt.client.ui.input.CmsCheckBox;
+import org.opencms.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -66,10 +67,16 @@ public class CmsPatternPanelWeekly extends FlowPanel implements HasValueChangeHa
     /** The handler. */
     private ValueChangeHandler<String> m_handler;
 
+    /** JSON of all needed labels. */
+    private JSONObject m_labels;
+
     /**
      * Default constructor to create the panel.<p>
+     * @param labels JSON of all needed labels
      */
-    public CmsPatternPanelWeekly() {
+    public CmsPatternPanelWeekly(JSONObject labels) {
+
+        m_labels = labels;
 
         addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateWeek());
         createEverPanel();
