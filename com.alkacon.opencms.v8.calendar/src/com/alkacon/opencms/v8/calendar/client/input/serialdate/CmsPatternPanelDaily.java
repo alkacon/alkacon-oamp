@@ -31,7 +31,6 @@ import com.alkacon.opencms.v8.calendar.client.widget.css.I_CmsLayoutBundle;
 
 import org.opencms.gwt.client.ui.input.CmsRadioButton;
 import org.opencms.gwt.client.ui.input.CmsRadioButtonGroup;
-import org.opencms.json.JSONObject;
 
 import java.util.Iterator;
 
@@ -45,6 +44,7 @@ import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
@@ -81,7 +81,9 @@ public class CmsPatternPanelDaily extends FlowPanel implements HasValueChangeHan
 
         m_labels = labels;
         addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateDay());
-        CmsRadioButton sel1 = new CmsRadioButton("sel1", "Every");
+        CmsRadioButton sel1 = new CmsRadioButton(
+            "sel1",
+            m_labels.get("GUI_SERIALDATE_DAILY_EVERY_0").isString().stringValue());
 
         sel1.addClickHandler(new ClickHandler() {
 
@@ -99,7 +101,9 @@ public class CmsPatternPanelDaily extends FlowPanel implements HasValueChangeHan
         sel1.getElement().getStyle().setFloat(Float.LEFT);
 
         createEverPanel();
-        CmsRadioButton sel2 = new CmsRadioButton("sel2", "Every working days");
+        CmsRadioButton sel2 = new CmsRadioButton(
+            "sel2",
+            m_labels.get("GUI_SERIALDATE_DAILY_EVERYWORKINGDAY_0").isString().stringValue());
         sel2.addStyleName(org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
         sel2.addClickHandler(new ClickHandler() {
 
@@ -221,7 +225,7 @@ public class CmsPatternPanelDaily extends FlowPanel implements HasValueChangeHan
             }
         });
 
-        Label days = new Label(" day(s)");
+        Label days = new Label(m_labels.get("GUI_SERIALDATE_DAILY_DAYS_0").isString().stringValue());
         days.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateLable());
         m_everyPanel.add(days);
     }

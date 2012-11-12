@@ -34,7 +34,10 @@ package com.alkacon.opencms.v8.calendar;
 
 import org.opencms.file.CmsObject;
 import org.opencms.file.CmsProperty;
+import org.opencms.file.CmsResource;
+import org.opencms.i18n.CmsMessages;
 import org.opencms.main.CmsException;
+import org.opencms.main.OpenCms;
 import org.opencms.util.CmsStringUtil;
 import org.opencms.widgets.CmsSelectWidget;
 import org.opencms.widgets.CmsSelectWidgetOption;
@@ -42,6 +45,7 @@ import org.opencms.widgets.I_CmsWidget;
 import org.opencms.widgets.I_CmsWidgetDialog;
 import org.opencms.widgets.I_CmsWidgetParameter;
 import org.opencms.xml.content.I_CmsXmlContentHandler;
+import org.opencms.xml.types.A_CmsXmlContentValue;
 import org.opencms.xml.types.I_CmsXmlContentValue;
 
 import java.text.DateFormat;
@@ -50,7 +54,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -106,13 +112,13 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
      * @param maxCount the maximum count of entries
      * @return the calculated calendar entries
      */
-    public static List getCalendarEntries(Map serialDateValues, Locale locale, int maxCount) {
+    public static List<?> getCalendarEntries(Map<?, ?> serialDateValues, Locale locale, int maxCount) {
 
         CmsCalendarEntryDateSerial serialDate = CmsCalendarSerialDateFactory.getSerialDate(serialDateValues, locale);
-        List entries = new ArrayList(maxCount);
+        List<?> entries = new ArrayList<Object>(maxCount);
         if (serialDate != null) {
             // calculate the entries
-            List viewDates = new ArrayList(1);
+            List<CmsCalendarEntryDate> viewDates = new ArrayList<CmsCalendarEntryDate>(1);
             // set start date for view creation
             Calendar startDate = (Calendar)serialDate.getStartDate().clone();
             startDate = CmsCalendarDisplay.setDayTime(startDate, 0, 0, 0);
@@ -137,6 +143,70 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
     }
 
     /**
+     * Parse the given select parameter to select option.<p>
+     * 
+     * @param selectValues the selection parameter
+     * @param locale the locale
+     * @param maxCount the max values to show
+     * @return List of select options
+     */
+    protected static LinkedList<CmsSelectWidgetOption> parseOptions(String selectValues, Locale locale, int maxCount) {
+
+        LinkedList<CmsSelectWidgetOption> result = new LinkedList<CmsSelectWidgetOption>();
+
+        // initialize configuration before calculating the serial date entries
+        result.add(new CmsSelectWidgetOption("", false, "Please select"));
+        // read the configured property value
+        Map<String, String> serialDateValues = new HashMap<String, String>();
+        String[] values = selectValues.split("\\|");
+        for (String value : values) {
+            String[] val = value.split("=");
+            serialDateValues.put(val[0], val[1]);
+        }
+        // get the entries
+        List<?> entries = getCalendarEntries(serialDateValues, locale, maxCount);
+        // create formatting objects to format select box options
+        SimpleDateFormat df = new SimpleDateFormat("EE, MMM d, yyyy", locale);
+        NumberFormat nf = NumberFormat.getIntegerInstance(locale);
+
+        nf.setMinimumIntegerDigits(2);
+        for (int i = 0; i < entries.size(); i++) {
+            CmsCalendarEntry currEntry = (CmsCalendarEntry)entries.get(i);
+            Calendar entryStart = currEntry.getEntryDate().getStartDate();
+            // create displayed option text
+            StringBuffer displayDate = new StringBuffer(32);
+            displayDate.append(nf.format(i + 1));
+            displayDate.append(": ");
+            displayDate.append(df.format(entryStart.getTime()));
+            CmsSelectWidgetOption option = new CmsSelectWidgetOption(
+                String.valueOf(i + 1),
+                false,
+                displayDate.toString());
+            // add option to result list
+            result.add(option);
+        }
+
+        return result;
+
+    }
+
+    /**
+     * @see org.opencms.widgets.A_CmsSelectWidget#getConfiguration(org.opencms.file.CmsObject, org.opencms.xml.types.A_CmsXmlContentValue, org.opencms.i18n.CmsMessages, org.opencms.file.CmsResource, java.util.Locale)
+     */
+    @Override
+    public String getConfiguration(
+        CmsObject cms,
+        A_CmsXmlContentValue schemaType,
+        CmsMessages messages,
+        CmsResource resource,
+        Locale contentLocale) {
+
+        initConfiguration(getConfiguration());
+
+        return getEntryCount() + "";
+    }
+
+    /**
      * Returns the count of the entry dates that should be shown in the select box.<p>
      * 
      * @return the count of the entry dates that should be shown in the select box
@@ -144,6 +214,25 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
     public int getEntryCount() {
 
         return m_entryCount;
+    }
+
+    /**
+     * @see org.opencms.widgets.CmsCalendarWidget#getInitCall()
+     */
+    @Override
+    public String getInitCall() {
+
+        return "initSerialDateSelectWidget";
+    }
+
+    /**
+     * @see org.opencms.widgets.CmsCalendarWidget#getJavaScriptResourceLinks(org.opencms.file.CmsObject)
+     */
+    @Override
+    public List<String> getJavaScriptResourceLinks(CmsObject cms) {
+
+        String link = "/system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/com.alkacon.opencms.v8.calendar.SerialDateWidget.nocache.js";
+        return Collections.singletonList(OpenCms.getLinkManager().substituteLink(cms, link));
     }
 
     /**
@@ -157,6 +246,15 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
     }
 
     /**
+     * @see org.opencms.widgets.I_CmsADEWidget#getWidgetName()
+     */
+    @Override
+    public String getWidgetName() {
+
+        return CmsSerialDateSelectWidget.class.getName();
+    }
+
+    /**
      * Sets the select widget configuration options from the given configuration string.<p>
      * 
      * @param configuration the configuration string
@@ -167,8 +265,8 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
         setEntryCount(20);
         setPropertyName(CmsCalendarDisplay.PROPERTY_CALENDAR_STARTDATE);
         if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(configuration)) {
-            List parts = CmsStringUtil.splitAsList(configuration, CmsProperty.VALUE_LIST_DELIMITER, true);
-            Iterator i = parts.iterator();
+            List<?> parts = CmsStringUtil.splitAsList(configuration, CmsProperty.VALUE_LIST_DELIMITER, true);
+            Iterator<?> i = parts.iterator();
             while (i.hasNext()) {
                 String part = (String)i.next();
                 if (part.startsWith(PREFIX_COUNT)) {
@@ -186,8 +284,18 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
     }
 
     /**
+     * @see org.opencms.widgets.I_CmsADEWidget#isInternal()
+     */
+    @Override
+    public boolean isInternal() {
+
+        return false;
+    }
+
+    /**
      * @see org.opencms.widgets.I_CmsWidget#newInstance()
      */
+    @Override
     public I_CmsWidget newInstance() {
 
         return new CmsSerialDateSelectWidget(getConfiguration());
@@ -216,9 +324,13 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
     /**
      * @see org.opencms.widgets.A_CmsSelectWidget#parseSelectOptions(org.opencms.file.CmsObject, org.opencms.widgets.I_CmsWidgetDialog, org.opencms.widgets.I_CmsWidgetParameter)
      */
-    protected List parseSelectOptions(CmsObject cms, I_CmsWidgetDialog widgetDialog, I_CmsWidgetParameter param) {
+    @Override
+    protected List<CmsSelectWidgetOption> parseSelectOptions(
+        CmsObject cms,
+        I_CmsWidgetDialog widgetDialog,
+        I_CmsWidgetParameter param) {
 
-        List result = new ArrayList(getEntryCount() + 1);
+        List<CmsSelectWidgetOption> result = new ArrayList<CmsSelectWidgetOption>(getEntryCount() + 1);
         // cast param to I_CmsXmlContentValue
         I_CmsXmlContentValue value = (I_CmsXmlContentValue)param;
         // initialize configuration before calculating the serial date entries
@@ -229,10 +341,10 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
             widgetDialog.getMessages().key("GUI_SERIALDATE_WIDGET_SELECT_0")));
         try {
             // read the configured property value
-            Map serialDateValues = cms.readPropertyObject(value.getDocument().getFile(), getPropertyName(), false).getValueMap(
-                Collections.EMPTY_MAP);
+            Map<?, ?> serialDateValues = cms.readPropertyObject(value.getDocument().getFile(), getPropertyName(), false).getValueMap(
+                Collections.<String, String> emptyMap());
             // get the entries
-            List entries = getCalendarEntries(serialDateValues, value.getLocale(), getEntryCount());
+            List<?> entries = getCalendarEntries(serialDateValues, value.getLocale(), getEntryCount());
             // create formatting objects to format select box options
             SimpleDateFormat df = new SimpleDateFormat("EE, ", widgetDialog.getLocale());
             NumberFormat nf = NumberFormat.getIntegerInstance(widgetDialog.getLocale());
@@ -259,4 +371,5 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
 
         return result;
     }
+
 }

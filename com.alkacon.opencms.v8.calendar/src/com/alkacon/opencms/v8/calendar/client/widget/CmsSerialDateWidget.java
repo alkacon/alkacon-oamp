@@ -32,13 +32,12 @@ import com.alkacon.acacia.client.widgets.I_EditWidget;
 import com.alkacon.opencms.v8.calendar.client.input.CmsSerialDate;
 import com.alkacon.opencms.v8.calendar.client.widget.css.I_CmsLayoutBundle;
 
-import org.opencms.json.JSONException;
-import org.opencms.json.JSONObject;
-
 import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 import com.google.gwt.user.client.ui.Composite;
 
 /**
@@ -104,6 +103,9 @@ public class CmsSerialDateWidget extends Composite implements I_EditWidget {
      */
     public void fireChangeEvent() {
 
+        if (m_active) {
+            saveValueGlobale(m_serialDate.getFormValueAsString());
+        }
         ValueChangeEvent.fire(this, m_serialDate.getFormValueAsString());
 
     }
@@ -186,15 +188,18 @@ public class CmsSerialDateWidget extends Composite implements I_EditWidget {
 
     /**
      * Parse the configuration into a JSON.
+     * @param config the configuration string
      * */
     private void parseConfiguration(String config) {
 
-        try {
-            m_labels = new JSONObject(config);
-        } catch (JSONException e) {
-            // TODO: Auto-generated catch block
-            e.printStackTrace();
-        }
+        m_labels = (JSONObject)JSONParser.parseStrict(config);
 
     }
+
+    /**
+     * Saves the value in a global js variable.<p>
+     * */
+    private native void saveValueGlobale(String value) /*-{
+        $wnd.cmsSerialDateWidgetValue = value;
+    }-*/;
 }

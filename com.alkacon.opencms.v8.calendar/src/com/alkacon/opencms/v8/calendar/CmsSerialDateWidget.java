@@ -276,13 +276,38 @@ public class CmsSerialDateWidget extends CmsCalendarWidget {
 
         try {
 
-            test.put("GUI_SERIALDATE_TIME_START_0", messages.key("GUI_SERIALDATE_TIME_START_0"));
-            test.put("GUI_SERIALDATE_TIME_END_0", messages.key("GUI_SERIALDATE_TIME_END_0"));
-            test.put("GUI_SERIALDATE_TIME_DURATION_0", messages.key("GUI_SERIALDATE_TIME_DURATION_0"));
-            test.put("GUI_SERIALDATE_TIME_DURATION_DAY_0", messages.key("GUI_SERIALDATE_TIME_DURATION_DAY_0"));
-            test.put("GUI_SERIALDATE_TIME_DURATION_DAYS_0", messages.key("GUI_SERIALDATE_TIME_DURATION_DAYS_0"));
-            test.put("GUI_SERIALDATE_TIME_DURATION_WEEK_0", messages.key("GUI_SERIALDATE_TIME_DURATION_WEEK_0"));
-            test.put("GUI_SERIALDATE_TIME_DURATION_WEEKS_0", messages.key("GUI_SERIALDATE_TIME_DURATION_WEEKS_0"));
+            test.put("GUI_SERIALDATE_TIME_STARTTIME_0", messages.key("GUI_SERIALDATE_TIME_STARTTIME_0"));
+            test.put("GUI_SERIALDATE_TIME_ENDTIME_0", messages.key("GUI_SERIALDATE_TIME_ENDTIME_0"));
+
+            test.put("GUI_SERIALDATE_TIME_STARTDATE_0", messages.key("GUI_SERIALDATE_TIME_STARTDATE_0"));
+
+            test.put(
+                "GUI_SERIALDATE_DURATION_DURATION_SAMEDAY_0",
+                messages.key("GUI_SERIALDATE_DURATION_DURATION_SAMEDAY_0"));
+            test.put(
+                "GUI_SERIALDATE_DURATION_DURATION_FIRST_0",
+                messages.key("GUI_SERIALDATE_DURATION_DURATION_FIRST_0"));
+            test.put(
+                "GUI_SERIALDATE_DURATION_DURATION_SECOND_0",
+                messages.key("GUI_SERIALDATE_DURATION_DURATION_SECOND_0"));
+            test.put(
+                "GUI_SERIALDATE_DURATION_DURATION_THIRD_0",
+                messages.key("GUI_SERIALDATE_DURATION_DURATION_THIRD_0"));
+            test.put(
+                "GUI_SERIALDATE_DURATION_DURATION_FOURTH_0",
+                messages.key("GUI_SERIALDATE_DURATION_DURATION_FOURTH_0"));
+            test.put(
+                "GUI_SERIALDATE_DURATION_DURATION_FIFTH_0",
+                messages.key("GUI_SERIALDATE_DURATION_DURATION_FIFTH_0"));
+            test.put(
+                "GUI_SERIALDATE_DURATION_DURATION_SIXTH_0",
+                messages.key("GUI_SERIALDATE_DURATION_DURATION_SIXTH_0"));
+            test.put(
+                "GUI_SERIALDATE_DURATION_DURATION_ONEWEEK_0",
+                messages.key("GUI_SERIALDATE_DURATION_DURATION_ONEWEEK_0"));
+            test.put(
+                "GUI_SERIALDATE_DURATION_DURATION_TWOWEEK_0",
+                messages.key("GUI_SERIALDATE_DURATION_DURATION_TWOWEEK_0"));
 
             test.put("GUI_SERIALDATE_TYPE_DAILY_0", messages.key("GUI_SERIALDATE_TYPE_DAILY_0"));
             test.put("GUI_SERIALDATE_TYPE_WEEKLY_0", messages.key("GUI_SERIALDATE_TYPE_WEEKLY_0"));
@@ -317,6 +342,19 @@ public class CmsSerialDateWidget extends CmsCalendarWidget {
 
             test.put("GUI_SERIALDATE_YEARLY_AT_0", messages.key("GUI_SERIALDATE_YEARLY_AT_0"));
             test.put("GUI_SERIALDATE_YEARLY_IN_0", messages.key("GUI_SERIALDATE_YEARLY_IN_0"));
+
+            test.put("GUI_SERIALDATE_YEARLY_JAN_0", messages.key("GUI_SERIALDATE_YEARLY_JAN_0"));
+            test.put("GUI_SERIALDATE_YEARLY_FEB_0", messages.key("GUI_SERIALDATE_YEARLY_FEB_0"));
+            test.put("GUI_SERIALDATE_YEARLY_MAR_0", messages.key("GUI_SERIALDATE_YEARLY_MAR_0"));
+            test.put("GUI_SERIALDATE_YEARLY_APR_0", messages.key("GUI_SERIALDATE_YEARLY_APR_0"));
+            test.put("GUI_SERIALDATE_YEARLY_MAY_0", messages.key("GUI_SERIALDATE_YEARLY_MAY_0"));
+            test.put("GUI_SERIALDATE_YEARLY_JUN_0", messages.key("GUI_SERIALDATE_YEARLY_JUN_0"));
+            test.put("GUI_SERIALDATE_YEARLY_JUL_0", messages.key("GUI_SERIALDATE_YEARLY_JUL_0"));
+            test.put("GUI_SERIALDATE_YEARLY_AUG_0", messages.key("GUI_SERIALDATE_YEARLY_AUG_0"));
+            test.put("GUI_SERIALDATE_YEARLY_SEP_0", messages.key("GUI_SERIALDATE_YEARLY_SEP_0"));
+            test.put("GUI_SERIALDATE_YEARLY_OCT_0", messages.key("GUI_SERIALDATE_YEARLY_OCT_0"));
+            test.put("GUI_SERIALDATE_YEARLY_NOV_0", messages.key("GUI_SERIALDATE_YEARLY_NOV_0"));
+            test.put("GUI_SERIALDATE_YEARLY_DEC_0", messages.key("GUI_SERIALDATE_YEARLY_DEC_0"));
 
             test.put("GUI_SERIALDATE_WEEKDAYNUMBER_1_0", messages.key("GUI_SERIALDATE_WEEKDAYNUMBER_1_0"));
             test.put("GUI_SERIALDATE_WEEKDAYNUMBER_2_0", messages.key("GUI_SERIALDATE_WEEKDAYNUMBER_2_0"));
@@ -422,6 +460,9 @@ public class CmsSerialDateWidget extends CmsCalendarWidget {
         return result.toString();
     }
 
+    /**
+     * @see org.opencms.widgets.CmsCalendarWidget#getInitCall()
+     */
     @Override
     public String getInitCall() {
 

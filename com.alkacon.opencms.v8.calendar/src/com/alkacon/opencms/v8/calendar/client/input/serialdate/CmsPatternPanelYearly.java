@@ -32,7 +32,6 @@ import com.alkacon.opencms.v8.calendar.client.widget.css.I_CmsLayoutBundle;
 import org.opencms.gwt.client.ui.input.CmsRadioButton;
 import org.opencms.gwt.client.ui.input.CmsRadioButtonGroup;
 import org.opencms.gwt.client.ui.input.CmsSelectBox;
-import org.opencms.json.JSONObject;
 
 import java.util.Iterator;
 
@@ -44,6 +43,7 @@ import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
@@ -93,14 +93,18 @@ public class CmsPatternPanelYearly extends FlowPanel implements HasValueChangeHa
         m_labels = labels;
 
         addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateYear());
-        CmsRadioButton sel1 = new CmsRadioButton("sel1", "Every");
+        CmsRadioButton sel1 = new CmsRadioButton(
+            "sel1",
+            m_labels.get("GUI_SERIALDATE_YEARLY_EVERY_0").isString().stringValue());
         m_radio[0] = sel1;
         sel1.setGroup(m_group);
         sel1.setChecked(true);
         sel1.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateYearSelection());
         sel1.addStyleName(org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
         createEverPanel();
-        CmsRadioButton sel2 = new CmsRadioButton("sel2", "At");
+        CmsRadioButton sel2 = new CmsRadioButton(
+            "sel2",
+            m_labels.get("GUI_SERIALDATE_YEARLY_AT_0").isString().stringValue());
         m_radio[1] = sel2;
         sel2.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateYearSelection());
         sel2.addStyleName(org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
@@ -262,44 +266,44 @@ public class CmsPatternPanelYearly extends FlowPanel implements HasValueChangeHa
             org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
         m_atNummer.getSelectorPopup().addStyleName(I_CmsLayoutBundle.INSTANCE.globalWidgetCss().selectBoxPopup());
         m_atNummer.setWidth("80px");
-        m_atNummer.addOption("1", "first");
-        m_atNummer.addOption("2", "second");
-        m_atNummer.addOption("3", "third");
-        m_atNummer.addOption("4", "fourth");
-        m_atNummer.addOption("5", "fifth");
+        m_atNummer.addOption("1", m_labels.get("GUI_SERIALDATE_WEEKDAYNUMBER_1_0").isString().stringValue());
+        m_atNummer.addOption("2", m_labels.get("GUI_SERIALDATE_WEEKDAYNUMBER_2_0").isString().stringValue());
+        m_atNummer.addOption("3", m_labels.get("GUI_SERIALDATE_WEEKDAYNUMBER_3_0").isString().stringValue());
+        m_atNummer.addOption("4", m_labels.get("GUI_SERIALDATE_WEEKDAYNUMBER_4_0").isString().stringValue());
+        m_atNummer.addOption("5", m_labels.get("GUI_SERIALDATE_WEEKDAYNUMBER_5_0").isString().stringValue());
         m_atPanel.add(m_atDay);
         m_atDay.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxPanel());
         m_atDay.getOpener().setStyleName(
             org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
         m_atDay.getSelectorPopup().addStyleName(I_CmsLayoutBundle.INSTANCE.globalWidgetCss().selectBoxPopup());
         m_atDay.setWidth("100px");
-        m_atDay.addOption("1", "Sunday");
-        m_atDay.addOption("2", "Monday");
-        m_atDay.addOption("3", "Tuesday");
-        m_atDay.addOption("4", "Wednesday");
-        m_atDay.addOption("5", "Thurday");
-        m_atDay.addOption("6", "Friday");
-        m_atDay.addOption("7", "Saturday");
+        m_atDay.addOption("1", m_labels.get("GUI_SERIALDATE_DAY_SUNDAY_0").isString().stringValue());
+        m_atDay.addOption("2", m_labels.get("GUI_SERIALDATE_DAY_MONDAY_0").isString().stringValue());
+        m_atDay.addOption("3", m_labels.get("GUI_SERIALDATE_DAY_TUESDAY_0").isString().stringValue());
+        m_atDay.addOption("4", m_labels.get("GUI_SERIALDATE_DAY_WEDNESDAY_0").isString().stringValue());
+        m_atDay.addOption("5", m_labels.get("GUI_SERIALDATE_DAY_THURSDAY_0").isString().stringValue());
+        m_atDay.addOption("6", m_labels.get("GUI_SERIALDATE_DAY_FRIDAY_0").isString().stringValue());
+        m_atDay.addOption("7", m_labels.get("GUI_SERIALDATE_DAY_SATURDAY_0").isString().stringValue());
 
-        m_atPanel.add(new Label("in"));
+        m_atPanel.add(new Label(m_labels.get("GUI_SERIALDATE_YEARLY_IN_0").isString().stringValue()));
         m_atPanel.add(m_atMonth);
         m_atMonth.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxPanel());
         m_atMonth.getOpener().setStyleName(
             org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
         m_everyMonth.getSelectorPopup().addStyleName(I_CmsLayoutBundle.INSTANCE.globalWidgetCss().selectBoxPopup());
         m_atMonth.setWidth("100px");
-        m_atMonth.addOption("0", "January");
-        m_atMonth.addOption("1", "February");
-        m_atMonth.addOption("2", "March");
-        m_atMonth.addOption("3", "April");
-        m_atMonth.addOption("4", "May");
-        m_atMonth.addOption("5", "June");
-        m_atMonth.addOption("6", "July");
-        m_atMonth.addOption("7", "August");
-        m_atMonth.addOption("8", "Septemer");
-        m_atMonth.addOption("9", "October");
-        m_atMonth.addOption("10", "November");
-        m_atMonth.addOption("11", "December");
+        m_atMonth.addOption("0", m_labels.get("GUI_SERIALDATE_YEARLY_JAN_0").isString().stringValue());
+        m_atMonth.addOption("1", m_labels.get("GUI_SERIALDATE_YEARLY_FEB_0").isString().stringValue());
+        m_atMonth.addOption("2", m_labels.get("GUI_SERIALDATE_YEARLY_MAR_0").isString().stringValue());
+        m_atMonth.addOption("3", m_labels.get("GUI_SERIALDATE_YEARLY_APR_0").isString().stringValue());
+        m_atMonth.addOption("4", m_labels.get("GUI_SERIALDATE_YEARLY_MAY_0").isString().stringValue());
+        m_atMonth.addOption("5", m_labels.get("GUI_SERIALDATE_YEARLY_JUN_0").isString().stringValue());
+        m_atMonth.addOption("6", m_labels.get("GUI_SERIALDATE_YEARLY_JUL_0").isString().stringValue());
+        m_atMonth.addOption("7", m_labels.get("GUI_SERIALDATE_YEARLY_AUG_0").isString().stringValue());
+        m_atMonth.addOption("8", m_labels.get("GUI_SERIALDATE_YEARLY_SEP_0").isString().stringValue());
+        m_atMonth.addOption("9", m_labels.get("GUI_SERIALDATE_YEARLY_OCT_0").isString().stringValue());
+        m_atMonth.addOption("10", m_labels.get("GUI_SERIALDATE_YEARLY_NOV_0").isString().stringValue());
+        m_atMonth.addOption("11", m_labels.get("GUI_SERIALDATE_YEARLY_DEC_0").isString().stringValue());
 
     }
 
@@ -326,18 +330,18 @@ public class CmsPatternPanelYearly extends FlowPanel implements HasValueChangeHa
             org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
         m_everyMonth.getSelectorPopup().addStyleName(I_CmsLayoutBundle.INSTANCE.globalWidgetCss().selectBoxPopup());
         m_everyMonth.setWidth("100px");
-        m_everyMonth.addOption("0", "January");
-        m_everyMonth.addOption("1", "February");
-        m_everyMonth.addOption("2", "March");
-        m_everyMonth.addOption("3", "April");
-        m_everyMonth.addOption("4", "May");
-        m_everyMonth.addOption("5", "June");
-        m_everyMonth.addOption("6", "July");
-        m_everyMonth.addOption("7", "August");
-        m_everyMonth.addOption("8", "Septemer");
-        m_everyMonth.addOption("9", "October");
-        m_everyMonth.addOption("10", "November");
-        m_everyMonth.addOption("11", "December");
+        m_everyMonth.addOption("0", m_labels.get("GUI_SERIALDATE_YEARLY_JAN_0").isString().stringValue());
+        m_everyMonth.addOption("1", m_labels.get("GUI_SERIALDATE_YEARLY_FEB_0").isString().stringValue());
+        m_everyMonth.addOption("2", m_labels.get("GUI_SERIALDATE_YEARLY_MAR_0").isString().stringValue());
+        m_everyMonth.addOption("3", m_labels.get("GUI_SERIALDATE_YEARLY_APR_0").isString().stringValue());
+        m_everyMonth.addOption("4", m_labels.get("GUI_SERIALDATE_YEARLY_MAY_0").isString().stringValue());
+        m_everyMonth.addOption("5", m_labels.get("GUI_SERIALDATE_YEARLY_JUN_0").isString().stringValue());
+        m_everyMonth.addOption("6", m_labels.get("GUI_SERIALDATE_YEARLY_JUL_0").isString().stringValue());
+        m_everyMonth.addOption("7", m_labels.get("GUI_SERIALDATE_YEARLY_AUG_0").isString().stringValue());
+        m_everyMonth.addOption("8", m_labels.get("GUI_SERIALDATE_YEARLY_SEP_0").isString().stringValue());
+        m_everyMonth.addOption("9", m_labels.get("GUI_SERIALDATE_YEARLY_OCT_0").isString().stringValue());
+        m_everyMonth.addOption("10", m_labels.get("GUI_SERIALDATE_YEARLY_NOV_0").isString().stringValue());
+        m_everyMonth.addOption("11", m_labels.get("GUI_SERIALDATE_YEARLY_DEC_0").isString().stringValue());
 
     }
 

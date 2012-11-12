@@ -3,7 +3,8 @@
 <module>
 	<inherits
 		name="org.opencms.ade.contenteditor.ContentEditorBare" />
-	<source path="client" />
+	<source path="client"/>
+	<source path="shared"/>
 	<entry-point
 		class="com.alkacon.opencms.v8.calendar.client.CmsSerialDateEntryPoint" />
 </module>

@@ -32,7 +32,6 @@ import com.alkacon.opencms.v8.calendar.client.widget.css.I_CmsLayoutBundle;
 import org.opencms.gwt.client.ui.input.CmsRadioButton;
 import org.opencms.gwt.client.ui.input.CmsRadioButtonGroup;
 import org.opencms.gwt.client.ui.input.CmsSelectBox;
-import org.opencms.json.JSONObject;
 
 import java.util.Iterator;
 
@@ -44,6 +43,7 @@ import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
@@ -93,14 +93,18 @@ public class CmsPatternPanelMonthly extends FlowPanel implements HasValueChangeH
         m_labels = labels;
 
         addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateMonth());
-        CmsRadioButton sel1 = new CmsRadioButton("sel1", "At");
+        CmsRadioButton sel1 = new CmsRadioButton(
+            "sel1",
+            m_labels.get("GUI_SERIALDATE_MONTHLY_MONTHDAY_AT_0").isString().stringValue());
         sel1.setGroup(m_group);
         m_radio[0] = sel1;
         sel1.setChecked(true);
         sel1.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateMonthSelection());
         sel1.addStyleName(org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
         createEverPanel();
-        CmsRadioButton sel2 = new CmsRadioButton("sel2", "At");
+        CmsRadioButton sel2 = new CmsRadioButton(
+            "sel2",
+            m_labels.get("GUI_SERIALDATE_MONTHLY_WEEKDAY_AT_0").isString().stringValue());
         m_radio[1] = sel2;
         sel2.setGroup(m_group);
         sel2.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateMonthSelection());
@@ -259,11 +263,11 @@ public class CmsPatternPanelMonthly extends FlowPanel implements HasValueChangeH
         m_atNummer.getOpener().setStyleName(
             org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
         m_atNummer.getSelectorPopup().addStyleName(I_CmsLayoutBundle.INSTANCE.globalWidgetCss().selectBoxPopup());
-        m_atNummer.addOption("1", "first");
-        m_atNummer.addOption("2", "second");
-        m_atNummer.addOption("3", "third");
-        m_atNummer.addOption("4", "fourth");
-        m_atNummer.addOption("5", "fifth");
+        m_atNummer.addOption("1", m_labels.get("GUI_SERIALDATE_WEEKDAYNUMBER_1_0").isString().stringValue());
+        m_atNummer.addOption("2", m_labels.get("GUI_SERIALDATE_WEEKDAYNUMBER_2_0").isString().stringValue());
+        m_atNummer.addOption("3", m_labels.get("GUI_SERIALDATE_WEEKDAYNUMBER_3_0").isString().stringValue());
+        m_atNummer.addOption("4", m_labels.get("GUI_SERIALDATE_WEEKDAYNUMBER_4_0").isString().stringValue());
+        m_atNummer.addOption("5", m_labels.get("GUI_SERIALDATE_WEEKDAYNUMBER_5_0").isString().stringValue());
         m_atNummer.setWidth("80px");
 
         m_atPanel.add(m_atDay);
@@ -271,16 +275,16 @@ public class CmsPatternPanelMonthly extends FlowPanel implements HasValueChangeH
         m_atDay.getOpener().setStyleName(
             org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
         m_atDay.getSelectorPopup().addStyleName(I_CmsLayoutBundle.INSTANCE.globalWidgetCss().selectBoxPopup());
-        m_atDay.addOption("1", "Sunday");
-        m_atDay.addOption("2", "Monday");
-        m_atDay.addOption("3", "Tuesday");
-        m_atDay.addOption("4", "Wednesday");
-        m_atDay.addOption("5", "Thurday");
-        m_atDay.addOption("6", "Friday");
-        m_atDay.addOption("7", "Saturday");
+        m_atDay.addOption("1", m_labels.get("GUI_SERIALDATE_DAY_SUNDAY_0").isString().stringValue());
+        m_atDay.addOption("2", m_labels.get("GUI_SERIALDATE_DAY_MONDAY_0").isString().stringValue());
+        m_atDay.addOption("3", m_labels.get("GUI_SERIALDATE_DAY_TUESDAY_0").isString().stringValue());
+        m_atDay.addOption("4", m_labels.get("GUI_SERIALDATE_DAY_WEDNESDAY_0").isString().stringValue());
+        m_atDay.addOption("5", m_labels.get("GUI_SERIALDATE_DAY_THURSDAY_0").isString().stringValue());
+        m_atDay.addOption("6", m_labels.get("GUI_SERIALDATE_DAY_FRIDAY_0").isString().stringValue());
+        m_atDay.addOption("7", m_labels.get("GUI_SERIALDATE_DAY_SATURDAY_0").isString().stringValue());
         m_atDay.setWidth("100px");
 
-        Label every = new Label("every");
+        Label every = new Label(m_labels.get("GUI_SERIALDATE_MONTHLY_WEEKDAY_EVERY_0").isString().stringValue());
         every.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateLable());
         m_atPanel.add(every);
         m_atPanel.add(m_atMonth);
@@ -293,7 +297,7 @@ public class CmsPatternPanelMonthly extends FlowPanel implements HasValueChangeH
 
             }
         });
-        Label month = new Label(" month");
+        Label month = new Label(m_labels.get("GUI_SERIALDATE_MONTHLY_MONTH_0").isString().stringValue());
         month.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateLable());
         m_atPanel.add(month);
 
@@ -315,7 +319,7 @@ public class CmsPatternPanelMonthly extends FlowPanel implements HasValueChangeH
 
             }
         });
-        Label day = new Label(" day every");
+        Label day = new Label(m_labels.get("GUI_SERIALDATE_MONTHLY_MONTHDAY_DAY_EVERY_0").isString().stringValue());
         day.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateLable());
         m_everyPanel.add(day);
         m_everyPanel.add(m_everyMonth);
@@ -328,7 +332,7 @@ public class CmsPatternPanelMonthly extends FlowPanel implements HasValueChangeH
 
             }
         });
-        Label month = new Label(" month");
+        Label month = new Label(m_labels.get("GUI_SERIALDATE_MONTHLY_MONTH_0").isString().stringValue());
         month.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateLable());
         m_everyPanel.add(month);
 

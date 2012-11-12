@@ -44,7 +44,6 @@ import org.opencms.gwt.client.ui.input.I_CmsFormWidget;
 import org.opencms.gwt.client.ui.input.datebox.CmsDateBox;
 import org.opencms.gwt.client.ui.input.form.CmsWidgetFactoryRegistry;
 import org.opencms.gwt.client.ui.input.form.I_CmsFormWidgetFactory;
-import org.opencms.json.JSONObject;
 import org.opencms.util.CmsStringUtil;
 
 import java.util.Date;
@@ -66,6 +65,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -83,68 +83,70 @@ import com.google.gwt.user.client.ui.TextBox;
 public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHasInit, HasValueChangeHandlers<String> {
 
     /** Configuration key name for the serial date day of month. */
-    private static final String CONFIG_DAY_OF_MONTH = "dayofmonth";
+    public static final String CONFIG_DAY_OF_MONTH = "dayofmonth";
 
     /** Configuration key name for the serial date end type. */
-    private static final String CONFIG_END_TYPE = "endtype";
+    public static final String CONFIG_END_TYPE = "endtype";
 
     /** Configuration key name for the serial date end date and time (sets duration together with start date). */
-    private static final String CONFIG_ENDDATE = "enddate";
+    public static final String CONFIG_ENDDATE = "enddate";
 
     /** Configuration key name for the serial date daily configuration: every working day flag. */
-    private static final String CONFIG_EVERY_WORKING_DAY = "everyworkingday";
+    public static final String CONFIG_EVERY_WORKING_DAY = "everyworkingday";
 
     /** Configuration key name for the serial date interval. */
-    private static final String CONFIG_INTERVAL = "interval";
+    public static final String CONFIG_INTERVAL = "interval";
 
     /** Configuration key name for the serial date month. */
-    private static final String CONFIG_MONTH = "month";
+    public static final String CONFIG_MONTH = "month";
 
     /** Configuration key name for the serial date number of occurences. */
-    private static final String CONFIG_OCCURENCES = "occurences";
+    public static final String CONFIG_OCCURENCES = "occurences";
 
     /** Configuration key name for the serial date: series end date. */
-    private static final String CONFIG_SERIAL_ENDDATE = "serialenddate";
+    public static final String CONFIG_SERIAL_ENDDATE = "serialenddate";
 
     /** Configuration key name for the serial date start date and time. */
-    private static final String CONFIG_STARTDATE = "startdate";
+    public static final String CONFIG_STARTDATE = "startdate";
 
     /** Configuration key name for the serial date type. */
-    private static final String CONFIG_TYPE = "type";
+    public static final String CONFIG_TYPE = "type";
 
     /** Configuration key name for the serial date week day(s). */
-    private static final String CONFIG_WEEKDAYS = "weekdays";
+    public static final String CONFIG_WEEKDAYS = "weekdays";
 
     /** Series end type: ends at specific date. */
-    private static final int END_TYPE_DATE = 3;
+    public static final int END_TYPE_DATE = 3;
 
     /** Series end type: ends never. */
-    private static final int END_TYPE_NEVER = 1;
+    public static final int END_TYPE_NEVER = 1;
 
     /** Series end type: ends after n times. */
-    private static final int END_TYPE_TIMES = 2;
+    public static final int END_TYPE_TIMES = 2;
 
     /** Serial type: daily series. */
-    private static final int TYPE_DAILY = 1;
+    public static final int TYPE_DAILY = 1;
 
     /** Serial type: monthly series. */
-    private static final int TYPE_MONTHLY = 3;
+    public static final int TYPE_MONTHLY = 3;
 
     /** Serial type: weekly series. */
-    private static final int TYPE_WEEKLY = 2;
+    public static final int TYPE_WEEKLY = 2;
 
     /** Serial type: yearly series. */
-    private static final int TYPE_YEARLY = 4;
+    public static final int TYPE_YEARLY = 4;
 
-    /***/
-    private static final String KEY_DAILY = "1";
+    /** The key for daily. */
+    public static final String KEY_DAILY = "1";
 
-    /***/
-    private static final String KEY_MONTHLY = "3";
-    /***/
-    private static final String KEY_WEEKLY = "2";
-    /***/
-    private static final String KEY_YEARLY = "4";
+    /** The key for monthly. */
+    public static final String KEY_MONTHLY = "3";
+
+    /** The key for weekly. */
+    public static final String KEY_WEEKLY = "2";
+
+    /** The key for yearly. */
+    public static final String KEY_YEARLY = "4";
 
     /** The widget type identifier for this widget. */
     private static final String WIDGET_TYPE = "SerialDate";
@@ -817,7 +819,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
         FlexTable table = new FlexTable();
         table.insertRow(0);
         FlowPanel cell1 = new FlowPanel();
-        Label startDate = new Label("Startdate:");
+        Label startDate = new Label(m_labels.get("GUI_SERIALDATE_TIME_STARTDATE_0").isString().stringValue());
         startDate.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateLable());
         cell1.add(startDate);
         cell1.getElement().getStyle().setWidth(100, Unit.PCT);
@@ -838,7 +840,9 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
         table.getCellFormatter().getElement(0, 0).getStyle().setVerticalAlign(VerticalAlign.TOP);
 
         FlowPanel cell2 = new FlowPanel();
-        CmsRadioButton sel1 = new CmsRadioButton("1", "No ending");
+        CmsRadioButton sel1 = new CmsRadioButton(
+            "1",
+            m_labels.get("GUI_SERIALDATE_DURATION_ENDTYPE_NEVER_0").isString().stringValue());
         m_lowRadioButton[0] = sel1;
         sel1.setGroup(m_groupDuration);
         sel1.setChecked(true);
@@ -855,7 +859,9 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
             }
         });
 
-        CmsRadioButton sel2 = new CmsRadioButton("2", "Ends after:");
+        CmsRadioButton sel2 = new CmsRadioButton(
+            "2",
+            m_labels.get("GUI_SERIALDATE_DURATION_ENDTYPE_OCC_0").isString().stringValue());
         m_lowRadioButton[1] = sel2;
         sel2.setGroup(m_groupDuration);
         sel2.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDatelowPanelSelection());
@@ -872,7 +878,9 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
             }
         });
 
-        CmsRadioButton sel3 = new CmsRadioButton("3", "Ends at:");
+        CmsRadioButton sel3 = new CmsRadioButton(
+            "3",
+            m_labels.get("GUI_SERIALDATE_DURATION_ENDTYPE_DATE_0").isString().stringValue());
         m_lowRadioButton[2] = sel3;
         sel3.setGroup(m_groupDuration);
         sel3.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDatelowPanelSelection());
@@ -912,7 +920,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
 
             }
         });
-        Label times = new Label("times");
+        Label times = new Label(m_labels.get("GUI_SERIALDATE_DURATION_ENDTYPE_OCC_TIMES_0").isString().stringValue());
         times.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateLable());
         times.getElement().getStyle().setMarginTop(7, Unit.PX);
         times.getElement().getStyle().setMarginLeft(2, Unit.PX);
@@ -951,14 +959,22 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
     private void setSelectVaues() {
 
         m_arrayRadiobox = new CmsRadioButton[4];
-        m_arrayRadiobox[0] = new CmsRadioButton(KEY_DAILY, "Daily");
+        m_arrayRadiobox[0] = new CmsRadioButton(
+            KEY_DAILY,
+            m_labels.get("GUI_SERIALDATE_TYPE_DAILY_0").isString().stringValue());
         m_arrayRadiobox[0].setGroup(m_groupPattern);
         m_arrayRadiobox[0].setChecked(true);
-        m_arrayRadiobox[1] = new CmsRadioButton(KEY_WEEKLY, "Weekly");
+        m_arrayRadiobox[1] = new CmsRadioButton(
+            KEY_WEEKLY,
+            m_labels.get("GUI_SERIALDATE_TYPE_WEEKLY_0").isString().stringValue());
         m_arrayRadiobox[1].setGroup(m_groupPattern);
-        m_arrayRadiobox[2] = new CmsRadioButton(KEY_MONTHLY, "Monthly");
+        m_arrayRadiobox[2] = new CmsRadioButton(
+            KEY_MONTHLY,
+            m_labels.get("GUI_SERIALDATE_TYPE_MONTHLY_0").isString().stringValue());
         m_arrayRadiobox[2].setGroup(m_groupPattern);
-        m_arrayRadiobox[3] = new CmsRadioButton(KEY_YEARLY, "Yearly");
+        m_arrayRadiobox[3] = new CmsRadioButton(
+            KEY_YEARLY,
+            m_labels.get("GUI_SERIALDATE_TYPE_YEARLY_0").isString().stringValue());
         m_arrayRadiobox[3].setGroup(m_groupPattern);
     }
 
@@ -967,7 +983,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
      * */
     private void setTopPanel() {
 
-        Label l_start = new Label("Starttime:");
+        Label l_start = new Label(m_labels.get("GUI_SERIALDATE_TIME_STARTTIME_0").isString().stringValue());
         l_start.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateLable());
         l_start.getElement().getStyle().setFloat(Float.LEFT);
         m_startDate.setStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().textBoxSerialDate());
@@ -983,7 +999,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
             }
         });
 
-        Label l_end = new Label("Endtime:");
+        Label l_end = new Label(m_labels.get("GUI_SERIALDATE_TIME_ENDTIME_0").isString().stringValue());
         l_end.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateLable());
         l_end.getElement().getStyle().clearLeft();
         l_end.getElement().getStyle().setFloat(Float.LEFT);
@@ -1020,15 +1036,15 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
             }
         });
 
-        m_duration.addOption("0", "at same day");
-        m_duration.addOption("1", "after 1 day");
-        m_duration.addOption("2", "after 2 days");
-        m_duration.addOption("3", "after 3 days");
-        m_duration.addOption("4", "after 4 days");
-        m_duration.addOption("5", "after 5 days");
-        m_duration.addOption("6", "after 6 days");
-        m_duration.addOption("7", "after 1 week");
-        m_duration.addOption("8", "after 2 weeks");
+        m_duration.addOption("0", m_labels.get("GUI_SERIALDATE_DURATION_DURATION_SAMEDAY_0").isString().stringValue());
+        m_duration.addOption("1", m_labels.get("GUI_SERIALDATE_DURATION_DURATION_FIRST_0").isString().stringValue());
+        m_duration.addOption("2", m_labels.get("GUI_SERIALDATE_DURATION_DURATION_SECOND_0").isString().stringValue());
+        m_duration.addOption("3", m_labels.get("GUI_SERIALDATE_DURATION_DURATION_THIRD_0").isString().stringValue());
+        m_duration.addOption("4", m_labels.get("GUI_SERIALDATE_DURATION_DURATION_FOURTH_0").isString().stringValue());
+        m_duration.addOption("5", m_labels.get("GUI_SERIALDATE_DURATION_DURATION_FIFTH_0").isString().stringValue());
+        m_duration.addOption("6", m_labels.get("GUI_SERIALDATE_DURATION_DURATION_SIXTH_0").isString().stringValue());
+        m_duration.addOption("7", m_labels.get("GUI_SERIALDATE_DURATION_DURATION_ONEWEEK_0").isString().stringValue());
+        m_duration.addOption("8", m_labels.get("GUI_SERIALDATE_DURATION_DURATION_TWOWEEK_0").isString().stringValue());
 
         m_topPanel.add(l_start);
         m_topPanel.add(m_startDate);

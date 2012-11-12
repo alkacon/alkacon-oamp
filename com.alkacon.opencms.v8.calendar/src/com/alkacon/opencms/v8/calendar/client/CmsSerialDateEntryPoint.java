@@ -27,6 +27,7 @@
 
 package com.alkacon.opencms.v8.calendar.client;
 
+import com.alkacon.opencms.v8.calendar.client.widget.CmsSerialDateSelectWidgetFactory;
 import com.alkacon.opencms.v8.calendar.client.widget.CmsSerialDateWidgetFactory;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -44,5 +45,8 @@ public class CmsSerialDateEntryPoint implements EntryPoint {
         // export the widget factory so it may be used by the content editor
         CmsSerialDateWidgetFactory factory = new CmsSerialDateWidgetFactory();
         factory.exportFactory();
+
+        CmsSerialDateSelectWidgetFactory selectFactory = new CmsSerialDateSelectWidgetFactory();
+        selectFactory.exportFactory();
     }
 }
