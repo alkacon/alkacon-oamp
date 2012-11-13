@@ -30,6 +30,7 @@ package com.alkacon.opencms.v8.calendar;
 import com.alkacon.opencms.v8.calendar.shared.rpc.I_CmsSerialDateService;
 
 import org.opencms.gwt.CmsGwtService;
+import org.opencms.gwt.CmsRpcException;
 import org.opencms.widgets.CmsSelectWidgetOption;
 
 import java.util.Iterator;
@@ -55,17 +56,23 @@ public class CmsSerialDateService extends CmsGwtService implements I_CmsSerialDa
     /**
      * @see com.alkacon.opencms.v8.calendar.shared.rpc.I_CmsSerialDateService#getSeriaDateSelection(java.lang.String, java.lang.String, int)
      */
-    public Map<String, String> getSeriaDateSelection(String selectValues, String locale, int maxCount) {
+    public Map<String, String> getSeriaDateSelection(String selectValues, String locale, int maxCount)
+    throws CmsRpcException {
 
-        LinkedList<CmsSelectWidgetOption> selectOptions = CmsSerialDateSelectWidget.parseOptions(
-            selectValues,
-            new Locale(locale),
-            maxCount);
-        Map<String, String> result = new LinkedHashMap<String, String>();
-        Iterator<CmsSelectWidgetOption> it = selectOptions.iterator();
-        while (it.hasNext()) {
-            CmsSelectWidgetOption selectOption = it.next();
-            result.put(selectOption.getValue(), selectOption.getOption());
+        Map<String, String> result = null;
+        try {
+            LinkedList<CmsSelectWidgetOption> selectOptions = CmsSerialDateSelectWidget.parseOptions(
+                selectValues,
+                new Locale(locale),
+                maxCount);
+            result = new LinkedHashMap<String, String>();
+            Iterator<CmsSelectWidgetOption> it = selectOptions.iterator();
+            while (it.hasNext()) {
+                CmsSelectWidgetOption selectOption = it.next();
+                result.put(selectOption.getValue(), selectOption.getOption());
+            }
+        } catch (Throwable t) {
+            error(t);
         }
         return result;
     }
