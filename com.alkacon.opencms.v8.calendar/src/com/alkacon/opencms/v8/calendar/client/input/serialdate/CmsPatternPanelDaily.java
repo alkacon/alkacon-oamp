@@ -215,6 +215,7 @@ public class CmsPatternPanelDaily extends FlowPanel implements HasValueChangeHan
 
         m_everyPanel.add(m_everyDay);
         m_everyDay.setStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().textBoxSerialDate());
+        m_everyDay.setText("1");
         m_everyDay.getElement().getStyle().setWidth(25, Unit.PX);
         m_everyDay.addKeyPressHandler(new KeyPressHandler() {
 

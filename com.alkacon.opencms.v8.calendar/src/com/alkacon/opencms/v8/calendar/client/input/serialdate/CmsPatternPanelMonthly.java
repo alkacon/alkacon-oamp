@@ -311,6 +311,7 @@ public class CmsPatternPanelMonthly extends FlowPanel implements HasValueChangeH
 
         m_everyPanel.add(m_everyDay);
         m_everyDay.setStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().textBoxSerialDate());
+        m_everyDay.setText("1");
         m_everyDay.addKeyPressHandler(new KeyPressHandler() {
 
             public void onKeyPress(KeyPressEvent event) {
@@ -323,6 +324,7 @@ public class CmsPatternPanelMonthly extends FlowPanel implements HasValueChangeH
         day.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateLable());
         m_everyPanel.add(day);
         m_everyPanel.add(m_everyMonth);
+        m_everyMonth.setText("1");
         m_everyMonth.setStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().textBoxSerialDate());
         m_everyMonth.addKeyPressHandler(new KeyPressHandler() {
 

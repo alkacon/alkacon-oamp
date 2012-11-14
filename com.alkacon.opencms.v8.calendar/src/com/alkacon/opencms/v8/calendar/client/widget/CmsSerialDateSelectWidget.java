@@ -55,6 +55,12 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
     /** The String of select configuration. */
     String m_selectValues = "";
 
+    /** The locale. */
+    private String m_locale;
+
+    /** The entry count. */
+    private int m_entryCount;
+
     /**
      * Constructs an CmsComboWidget with the in XSD schema declared configuration.<p>
      * @param config The configuration string given from OpenCms XSD.
@@ -62,6 +68,10 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
     public CmsSerialDateSelectWidget(String config) {
 
         super("Please Select");
+        getNewValues();
+        String[] configs = config.split(";");
+        m_entryCount = Integer.parseInt(configs[0]);
+        m_locale = configs[1];
         m_selectBox.addDomHandler(new ClickHandler() {
 
             public void onClick(ClickEvent event) {
@@ -101,7 +111,9 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
         String actualValue = getGlobalValue();
         if (!m_selectValues.equals(actualValue)) {
             m_selectValues = actualValue;
-            generateNewSelection(m_selectValues);
+            if (!m_selectValues.isEmpty()) {
+                generateNewSelection(m_selectValues);
+            }
         }
 
     }
@@ -128,6 +140,7 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
     protected void updateSelection(Map<String, String> newValues) {
 
         m_selectBox.setItems(newValues);
+
     }
 
     /**
@@ -138,9 +151,9 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
     private void generateNewSelection(String selectValues) {
 
         // generate a list of all configured categories.
-        final String locale = "en";
+        final String locale = m_locale;
         final String values = selectValues;
-
+        final int entryCount = m_entryCount;
         // start request 
         CmsRpcAction<Map<String, String>> action = new CmsRpcAction<Map<String, String>>() {
 
@@ -151,7 +164,7 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
             public void execute() {
 
                 try {
-                    getService().getSeriaDateSelection(values, locale, 25, this);
+                    getService().getSeriaDateSelection(values, locale, entryCount, this);
                 } catch (CmsRpcException e) {
                     // TODO: Auto-generated catch block
                     e.printStackTrace();

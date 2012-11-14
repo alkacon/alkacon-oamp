@@ -272,110 +272,117 @@ public class CmsSerialDateWidget extends CmsCalendarWidget {
         CmsResource resource,
         Locale contentLocale) {
 
-        JSONObject test = new JSONObject();
+        JSONObject message = new JSONObject();
 
         try {
 
-            test.put("GUI_SERIALDATE_TIME_STARTTIME_0", messages.key("GUI_SERIALDATE_TIME_STARTTIME_0"));
-            test.put("GUI_SERIALDATE_TIME_ENDTIME_0", messages.key("GUI_SERIALDATE_TIME_ENDTIME_0"));
+            message.put("GUI_SERIALDATE_TIME_STARTTIME_0", messages.key("GUI_SERIALDATE_TIME_STARTTIME_0"));
+            message.put("GUI_SERIALDATE_TIME_ENDTIME_0", messages.key("GUI_SERIALDATE_TIME_ENDTIME_0"));
 
-            test.put("GUI_SERIALDATE_TIME_STARTDATE_0", messages.key("GUI_SERIALDATE_TIME_STARTDATE_0"));
+            message.put("GUI_SERIALDATE_TIME_STARTDATE_0", messages.key("GUI_SERIALDATE_TIME_STARTDATE_0"));
 
-            test.put(
+            message.put(
                 "GUI_SERIALDATE_DURATION_DURATION_SAMEDAY_0",
                 messages.key("GUI_SERIALDATE_DURATION_DURATION_SAMEDAY_0"));
-            test.put(
+            message.put(
                 "GUI_SERIALDATE_DURATION_DURATION_FIRST_0",
                 messages.key("GUI_SERIALDATE_DURATION_DURATION_FIRST_0"));
-            test.put(
+            message.put(
                 "GUI_SERIALDATE_DURATION_DURATION_SECOND_0",
                 messages.key("GUI_SERIALDATE_DURATION_DURATION_SECOND_0"));
-            test.put(
+            message.put(
                 "GUI_SERIALDATE_DURATION_DURATION_THIRD_0",
                 messages.key("GUI_SERIALDATE_DURATION_DURATION_THIRD_0"));
-            test.put(
+            message.put(
                 "GUI_SERIALDATE_DURATION_DURATION_FOURTH_0",
                 messages.key("GUI_SERIALDATE_DURATION_DURATION_FOURTH_0"));
-            test.put(
+            message.put(
                 "GUI_SERIALDATE_DURATION_DURATION_FIFTH_0",
                 messages.key("GUI_SERIALDATE_DURATION_DURATION_FIFTH_0"));
-            test.put(
+            message.put(
                 "GUI_SERIALDATE_DURATION_DURATION_SIXTH_0",
                 messages.key("GUI_SERIALDATE_DURATION_DURATION_SIXTH_0"));
-            test.put(
+            message.put(
                 "GUI_SERIALDATE_DURATION_DURATION_ONEWEEK_0",
                 messages.key("GUI_SERIALDATE_DURATION_DURATION_ONEWEEK_0"));
-            test.put(
+            message.put(
                 "GUI_SERIALDATE_DURATION_DURATION_TWOWEEK_0",
                 messages.key("GUI_SERIALDATE_DURATION_DURATION_TWOWEEK_0"));
 
-            test.put("GUI_SERIALDATE_TYPE_DAILY_0", messages.key("GUI_SERIALDATE_TYPE_DAILY_0"));
-            test.put("GUI_SERIALDATE_TYPE_WEEKLY_0", messages.key("GUI_SERIALDATE_TYPE_WEEKLY_0"));
-            test.put("GUI_SERIALDATE_TYPE_MONTHLY_0", messages.key("GUI_SERIALDATE_TYPE_MONTHLY_0"));
-            test.put("GUI_SERIALDATE_TYPE_YEARLY_0", messages.key("GUI_SERIALDATE_TYPE_YEARLY_0"));
+            message.put("GUI_SERIALDATE_TYPE_DAILY_0", messages.key("GUI_SERIALDATE_TYPE_DAILY_0"));
+            message.put("GUI_SERIALDATE_TYPE_WEEKLY_0", messages.key("GUI_SERIALDATE_TYPE_WEEKLY_0"));
+            message.put("GUI_SERIALDATE_TYPE_MONTHLY_0", messages.key("GUI_SERIALDATE_TYPE_MONTHLY_0"));
+            message.put("GUI_SERIALDATE_TYPE_YEARLY_0", messages.key("GUI_SERIALDATE_TYPE_YEARLY_0"));
 
-            test.put("GUI_SERIALDATE_DAILY_EVERY_0", messages.key("GUI_SERIALDATE_DAILY_EVERY_0"));
-            test.put("GUI_SERIALDATE_DAILY_DAYS_0", messages.key("GUI_SERIALDATE_DAILY_DAYS_0"));
-            test.put("GUI_SERIALDATE_DAILY_EVERYWORKINGDAY_0", messages.key("GUI_SERIALDATE_DAILY_EVERYWORKINGDAY_0"));
+            message.put("GUI_SERIALDATE_DAILY_EVERY_0", messages.key("GUI_SERIALDATE_DAILY_EVERY_0"));
+            message.put("GUI_SERIALDATE_DAILY_DAYS_0", messages.key("GUI_SERIALDATE_DAILY_DAYS_0"));
+            message.put(
+                "GUI_SERIALDATE_DAILY_EVERYWORKINGDAY_0",
+                messages.key("GUI_SERIALDATE_DAILY_EVERYWORKINGDAY_0"));
 
-            test.put("GUI_SERIALDATE_WEEKLY_EVERY_0", messages.key("GUI_SERIALDATE_WEEKLY_EVERY_0"));
-            test.put("GUI_SERIALDATE_WEEKLY_WEEK_AT_0", messages.key("GUI_SERIALDATE_WEEKLY_WEEK_AT_0"));
+            message.put("GUI_SERIALDATE_WEEKLY_EVERY_0", messages.key("GUI_SERIALDATE_WEEKLY_EVERY_0"));
+            message.put("GUI_SERIALDATE_WEEKLY_WEEK_AT_0", messages.key("GUI_SERIALDATE_WEEKLY_WEEK_AT_0"));
 
-            test.put("GUI_SERIALDATE_DAY_MONDAY_0", messages.key("GUI_SERIALDATE_DAY_MONDAY_0"));
-            test.put("GUI_SERIALDATE_DAY_TUESDAY_0", messages.key("GUI_SERIALDATE_DAY_TUESDAY_0"));
-            test.put("GUI_SERIALDATE_DAY_WEDNESDAY_0", messages.key("GUI_SERIALDATE_DAY_WEDNESDAY_0"));
-            test.put("GUI_SERIALDATE_DAY_THURSDAY_0", messages.key("GUI_SERIALDATE_DAY_THURSDAY_0"));
-            test.put("GUI_SERIALDATE_DAY_FRIDAY_0", messages.key("GUI_SERIALDATE_DAY_FRIDAY_0"));
-            test.put("GUI_SERIALDATE_DAY_SATURDAY_0", messages.key("GUI_SERIALDATE_DAY_SATURDAY_0"));
-            test.put("GUI_SERIALDATE_DAY_SUNDAY_0", messages.key("GUI_SERIALDATE_DAY_SUNDAY_0"));
+            message.put("GUI_SERIALDATE_DAY_MONDAY_0", messages.key("GUI_SERIALDATE_DAY_MONDAY_0"));
+            message.put("GUI_SERIALDATE_DAY_TUESDAY_0", messages.key("GUI_SERIALDATE_DAY_TUESDAY_0"));
+            message.put("GUI_SERIALDATE_DAY_WEDNESDAY_0", messages.key("GUI_SERIALDATE_DAY_WEDNESDAY_0"));
+            message.put("GUI_SERIALDATE_DAY_THURSDAY_0", messages.key("GUI_SERIALDATE_DAY_THURSDAY_0"));
+            message.put("GUI_SERIALDATE_DAY_FRIDAY_0", messages.key("GUI_SERIALDATE_DAY_FRIDAY_0"));
+            message.put("GUI_SERIALDATE_DAY_SATURDAY_0", messages.key("GUI_SERIALDATE_DAY_SATURDAY_0"));
+            message.put("GUI_SERIALDATE_DAY_SUNDAY_0", messages.key("GUI_SERIALDATE_DAY_SUNDAY_0"));
 
-            test.put("GUI_SERIALDATE_MONTHLY_MONTHDAY_AT_0", messages.key("GUI_SERIALDATE_MONTHLY_MONTHDAY_AT_0"));
-            test.put(
+            message.put("GUI_SERIALDATE_MONTHLY_MONTHDAY_AT_0", messages.key("GUI_SERIALDATE_MONTHLY_MONTHDAY_AT_0"));
+            message.put(
                 "GUI_SERIALDATE_MONTHLY_MONTHDAY_DAY_EVERY_0",
                 messages.key("GUI_SERIALDATE_MONTHLY_MONTHDAY_DAY_EVERY_0"));
-            test.put("GUI_SERIALDATE_MONTHLY_MONTH_0", messages.key("GUI_SERIALDATE_MONTHLY_MONTH_0"));
+            message.put("GUI_SERIALDATE_MONTHLY_MONTH_0", messages.key("GUI_SERIALDATE_MONTHLY_MONTH_0"));
 
-            test.put("GUI_SERIALDATE_MONTHLY_WEEKDAY_AT_0", messages.key("GUI_SERIALDATE_MONTHLY_WEEKDAY_AT_0"));
-            test.put("GUI_SERIALDATE_MONTHLY_WEEKDAY_EVERY_0", messages.key("GUI_SERIALDATE_MONTHLY_WEEKDAY_EVERY_0"));
+            message.put("GUI_SERIALDATE_MONTHLY_WEEKDAY_AT_0", messages.key("GUI_SERIALDATE_MONTHLY_WEEKDAY_AT_0"));
+            message.put(
+                "GUI_SERIALDATE_MONTHLY_WEEKDAY_EVERY_0",
+                messages.key("GUI_SERIALDATE_MONTHLY_WEEKDAY_EVERY_0"));
 
-            test.put("GUI_SERIALDATE_YEARLY_EVERY_0", messages.key("GUI_SERIALDATE_YEARLY_EVERY_0"));
+            message.put("GUI_SERIALDATE_YEARLY_EVERY_0", messages.key("GUI_SERIALDATE_YEARLY_EVERY_0"));
 
-            test.put("GUI_SERIALDATE_YEARLY_AT_0", messages.key("GUI_SERIALDATE_YEARLY_AT_0"));
-            test.put("GUI_SERIALDATE_YEARLY_IN_0", messages.key("GUI_SERIALDATE_YEARLY_IN_0"));
+            message.put("GUI_SERIALDATE_YEARLY_AT_0", messages.key("GUI_SERIALDATE_YEARLY_AT_0"));
+            message.put("GUI_SERIALDATE_YEARLY_IN_0", messages.key("GUI_SERIALDATE_YEARLY_IN_0"));
 
-            test.put("GUI_SERIALDATE_YEARLY_JAN_0", messages.key("GUI_SERIALDATE_YEARLY_JAN_0"));
-            test.put("GUI_SERIALDATE_YEARLY_FEB_0", messages.key("GUI_SERIALDATE_YEARLY_FEB_0"));
-            test.put("GUI_SERIALDATE_YEARLY_MAR_0", messages.key("GUI_SERIALDATE_YEARLY_MAR_0"));
-            test.put("GUI_SERIALDATE_YEARLY_APR_0", messages.key("GUI_SERIALDATE_YEARLY_APR_0"));
-            test.put("GUI_SERIALDATE_YEARLY_MAY_0", messages.key("GUI_SERIALDATE_YEARLY_MAY_0"));
-            test.put("GUI_SERIALDATE_YEARLY_JUN_0", messages.key("GUI_SERIALDATE_YEARLY_JUN_0"));
-            test.put("GUI_SERIALDATE_YEARLY_JUL_0", messages.key("GUI_SERIALDATE_YEARLY_JUL_0"));
-            test.put("GUI_SERIALDATE_YEARLY_AUG_0", messages.key("GUI_SERIALDATE_YEARLY_AUG_0"));
-            test.put("GUI_SERIALDATE_YEARLY_SEP_0", messages.key("GUI_SERIALDATE_YEARLY_SEP_0"));
-            test.put("GUI_SERIALDATE_YEARLY_OCT_0", messages.key("GUI_SERIALDATE_YEARLY_OCT_0"));
-            test.put("GUI_SERIALDATE_YEARLY_NOV_0", messages.key("GUI_SERIALDATE_YEARLY_NOV_0"));
-            test.put("GUI_SERIALDATE_YEARLY_DEC_0", messages.key("GUI_SERIALDATE_YEARLY_DEC_0"));
+            message.put("GUI_SERIALDATE_YEARLY_JAN_0", messages.key("GUI_SERIALDATE_YEARLY_JAN_0"));
+            message.put("GUI_SERIALDATE_YEARLY_FEB_0", messages.key("GUI_SERIALDATE_YEARLY_FEB_0"));
+            message.put("GUI_SERIALDATE_YEARLY_MAR_0", messages.key("GUI_SERIALDATE_YEARLY_MAR_0"));
+            message.put("GUI_SERIALDATE_YEARLY_APR_0", messages.key("GUI_SERIALDATE_YEARLY_APR_0"));
+            message.put("GUI_SERIALDATE_YEARLY_MAY_0", messages.key("GUI_SERIALDATE_YEARLY_MAY_0"));
+            message.put("GUI_SERIALDATE_YEARLY_JUN_0", messages.key("GUI_SERIALDATE_YEARLY_JUN_0"));
+            message.put("GUI_SERIALDATE_YEARLY_JUL_0", messages.key("GUI_SERIALDATE_YEARLY_JUL_0"));
+            message.put("GUI_SERIALDATE_YEARLY_AUG_0", messages.key("GUI_SERIALDATE_YEARLY_AUG_0"));
+            message.put("GUI_SERIALDATE_YEARLY_SEP_0", messages.key("GUI_SERIALDATE_YEARLY_SEP_0"));
+            message.put("GUI_SERIALDATE_YEARLY_OCT_0", messages.key("GUI_SERIALDATE_YEARLY_OCT_0"));
+            message.put("GUI_SERIALDATE_YEARLY_NOV_0", messages.key("GUI_SERIALDATE_YEARLY_NOV_0"));
+            message.put("GUI_SERIALDATE_YEARLY_DEC_0", messages.key("GUI_SERIALDATE_YEARLY_DEC_0"));
 
-            test.put("GUI_SERIALDATE_WEEKDAYNUMBER_1_0", messages.key("GUI_SERIALDATE_WEEKDAYNUMBER_1_0"));
-            test.put("GUI_SERIALDATE_WEEKDAYNUMBER_2_0", messages.key("GUI_SERIALDATE_WEEKDAYNUMBER_2_0"));
-            test.put("GUI_SERIALDATE_WEEKDAYNUMBER_3_0", messages.key("GUI_SERIALDATE_WEEKDAYNUMBER_3_0"));
-            test.put("GUI_SERIALDATE_WEEKDAYNUMBER_4_0", messages.key("GUI_SERIALDATE_WEEKDAYNUMBER_4_0"));
-            test.put("GUI_SERIALDATE_WEEKDAYNUMBER_5_0", messages.key("GUI_SERIALDATE_WEEKDAYNUMBER_5_0"));
+            message.put("GUI_SERIALDATE_WEEKDAYNUMBER_1_0", messages.key("GUI_SERIALDATE_WEEKDAYNUMBER_1_0"));
+            message.put("GUI_SERIALDATE_WEEKDAYNUMBER_2_0", messages.key("GUI_SERIALDATE_WEEKDAYNUMBER_2_0"));
+            message.put("GUI_SERIALDATE_WEEKDAYNUMBER_3_0", messages.key("GUI_SERIALDATE_WEEKDAYNUMBER_3_0"));
+            message.put("GUI_SERIALDATE_WEEKDAYNUMBER_4_0", messages.key("GUI_SERIALDATE_WEEKDAYNUMBER_4_0"));
+            message.put("GUI_SERIALDATE_WEEKDAYNUMBER_5_0", messages.key("GUI_SERIALDATE_WEEKDAYNUMBER_5_0"));
 
-            test.put("GUI_SERIALDATE_DURATION_BEGIN_0", messages.key("GUI_SERIALDATE_DURATION_BEGIN_0"));
-            test.put("GUI_SERIALDATE_DURATION_ENDTYPE_NEVER_0", messages.key("GUI_SERIALDATE_DURATION_ENDTYPE_NEVER_0"));
-            test.put("GUI_SERIALDATE_DURATION_ENDTYPE_OCC_0", messages.key("GUI_SERIALDATE_DURATION_ENDTYPE_OCC_0"));
-            test.put(
+            message.put("GUI_SERIALDATE_DURATION_BEGIN_0", messages.key("GUI_SERIALDATE_DURATION_BEGIN_0"));
+            message.put(
+                "GUI_SERIALDATE_DURATION_ENDTYPE_NEVER_0",
+                messages.key("GUI_SERIALDATE_DURATION_ENDTYPE_NEVER_0"));
+            message.put("GUI_SERIALDATE_DURATION_ENDTYPE_OCC_0", messages.key("GUI_SERIALDATE_DURATION_ENDTYPE_OCC_0"));
+            message.put(
                 "GUI_SERIALDATE_DURATION_ENDTYPE_OCC_TIMES_0",
                 messages.key("GUI_SERIALDATE_DURATION_ENDTYPE_OCC_TIMES_0"));
-            test.put("GUI_SERIALDATE_DURATION_ENDTYPE_DATE_0", messages.key("GUI_SERIALDATE_DURATION_ENDTYPE_DATE_0"));
+            message.put(
+                "GUI_SERIALDATE_DURATION_ENDTYPE_DATE_0",
+                messages.key("GUI_SERIALDATE_DURATION_ENDTYPE_DATE_0"));
 
         } catch (JSONException e) {
-            // TODO: Auto-generated catch block
-            e.printStackTrace();
+            LOG.error(e);
         }
 
-        return test.toString();
+        return message.toString();
     }
 
     /**

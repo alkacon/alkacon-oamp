@@ -315,6 +315,7 @@ public class CmsPatternPanelYearly extends FlowPanel implements HasValueChangeHa
 
         m_everyPanel.add(m_everyDay);
         m_everyDay.setStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().textBoxSerialDate());
+        m_everyDay.setText("1");
         m_everyDay.addKeyPressHandler(new KeyPressHandler() {
 
             public void onKeyPress(KeyPressEvent event) {
