@@ -27,8 +27,6 @@
 
 package com.alkacon.opencms.v8.calendar.shared.rpc;
 
-import org.opencms.gwt.CmsRpcException;
-
 import java.util.Map;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -51,13 +49,11 @@ public interface I_CmsSerialDateServiceAsync {
      * @param locale the locale
      * @param maxCount 
      * @param callback the async callback
-     * 
-     * @throws CmsRpcException if something goes wrong 
      */
     void getSeriaDateSelection(
         String selectValues,
         String locale,
         int maxCount,
-        AsyncCallback<Map<String, String>> callback) throws CmsRpcException;
+        AsyncCallback<Map<String, String>> callback);
 
 }

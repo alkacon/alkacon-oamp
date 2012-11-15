@@ -29,9 +29,12 @@ package com.alkacon.opencms.v8.calendar.client.widget;
 
 import com.alkacon.opencms.v8.calendar.shared.rpc.I_CmsSerialDateService;
 import com.alkacon.opencms.v8.calendar.shared.rpc.I_CmsSerialDateServiceAsync;
+import com.alkacon.vie.client.Entity;
 
+import org.opencms.ade.contenteditor.client.CmsContentEditor;
+import org.opencms.ade.contenteditor.client.I_CmsEntityChangeListener;
 import org.opencms.ade.contenteditor.client.widgets.CmsSelectWidget;
-import org.opencms.gwt.CmsRpcException;
+import org.opencms.ade.contenteditor.shared.CmsContentDefinition;
 import org.opencms.gwt.client.CmsCoreProvider;
 import org.opencms.gwt.client.rpc.CmsRpcAction;
 import org.opencms.util.CmsStringUtil;
@@ -39,8 +42,6 @@ import org.opencms.util.CmsStringUtil;
 import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
 /**
@@ -55,11 +56,11 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
     /** The String of select configuration. */
     String m_selectValues = "";
 
-    /** The locale. */
-    private String m_locale;
-
     /** The entry count. */
     private int m_entryCount;
+
+    /** The locale. */
+    private String m_locale;
 
     /**
      * Constructs an CmsComboWidget with the in XSD schema declared configuration.<p>
@@ -68,19 +69,17 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
     public CmsSerialDateSelectWidget(String config) {
 
         super("Please Select");
-        getNewValues();
         String[] configs = config.split(";");
         m_entryCount = Integer.parseInt(configs[0]);
         m_locale = configs[1];
-        m_selectBox.addDomHandler(new ClickHandler() {
+        getNewValues(CmsContentDefinition.getValueForPath(CmsContentEditor.getEntity(), "Serialdate"));
+        CmsContentEditor.addEntityChangeListener(new I_CmsEntityChangeListener() {
 
-            public void onClick(ClickEvent event) {
+            public void onEntityChange(Entity entity) {
 
-                getNewValues();
-
+                getNewValues(CmsContentDefinition.getValueForPath(entity, "Serialdate"));
             }
-        }, ClickEvent.getType());
-
+        }, "Serialdate");
     }
 
     /**
@@ -105,12 +104,13 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
 
     /**
      * Checks if the select values have to be change.<p>
+     * 
+     * @param serialDateValue the serial date widget value
      * */
-    protected void getNewValues() {
+    protected void getNewValues(String serialDateValue) {
 
-        String actualValue = getGlobalValue();
-        if (!m_selectValues.equals(actualValue)) {
-            m_selectValues = actualValue;
+        if (!m_selectValues.equals(serialDateValue)) {
+            m_selectValues = serialDateValue;
             if (!m_selectValues.isEmpty()) {
                 generateNewSelection(m_selectValues);
             }
@@ -163,12 +163,7 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
             @Override
             public void execute() {
 
-                try {
-                    getService().getSeriaDateSelection(values, locale, entryCount, this);
-                } catch (CmsRpcException e) {
-                    // TODO: Auto-generated catch block
-                    e.printStackTrace();
-                }
+                getService().getSeriaDateSelection(values, locale, entryCount, this);
 
             }
 
@@ -184,12 +179,4 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
         };
         action.execute();
     }
-
-    /**
-     * Selects the value from the global variable.<p>
-     * @return the value from the global variable
-     */
-    private native String getGlobalValue()/*-{
-        return $wnd.cmsSerialDateWidgetValue;
-    }-*/;
 }

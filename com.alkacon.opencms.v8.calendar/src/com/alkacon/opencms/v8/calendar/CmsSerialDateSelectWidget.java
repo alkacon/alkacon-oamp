@@ -203,7 +203,7 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
 
         initConfiguration(getConfiguration());
 
-        return getEntryCount() + ";" + contentLocale.getLanguage();
+        return getEntryCount() + ";" + contentLocale.toString();
     }
 
     /**
