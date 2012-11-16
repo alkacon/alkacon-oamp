@@ -103,9 +103,6 @@ public class CmsSerialDateWidget extends Composite implements I_EditWidget {
      */
     public void fireChangeEvent() {
 
-        if (m_active) {
-            saveValueGlobal(m_serialDate.getFormValueAsString());
-        }
         ValueChangeEvent.fire(this, m_serialDate.getFormValueAsString());
 
     }
@@ -183,7 +180,6 @@ public class CmsSerialDateWidget extends Composite implements I_EditWidget {
         if (fireEvents) {
             fireChangeEvent();
         }
-        saveValueGlobal(value);
 
     }
 
@@ -197,12 +193,4 @@ public class CmsSerialDateWidget extends Composite implements I_EditWidget {
 
     }
 
-    /**
-     * Saves the value in a global js variable.<p>
-     * 
-     * @param value that should be saved
-     */
-    private native void saveValueGlobal(String value) /*-{
-        $wnd.cmsSerialDateWidgetValue = value;
-    }-*/;
 }

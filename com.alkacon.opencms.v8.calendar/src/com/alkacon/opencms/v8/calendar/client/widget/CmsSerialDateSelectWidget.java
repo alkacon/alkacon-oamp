@@ -62,6 +62,9 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
     /** The locale. */
     private String m_locale;
 
+    /** The set value.*/
+    private String m_value;
+
     /**
      * Constructs an CmsComboWidget with the in XSD schema declared configuration.<p>
      * @param config The configuration string given from OpenCms XSD.
@@ -103,6 +106,17 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
     }
 
     /**
+     * @see org.opencms.ade.contenteditor.client.widgets.CmsSelectWidget#setValue(java.lang.String, boolean)
+     */
+    @Override
+    public void setValue(String value, boolean fireEvents) {
+
+        // TODO: Auto-generated method stub
+        super.setValue(value, fireEvents);
+        m_value = value;
+    }
+
+    /**
      * Checks if the select values have to be change.<p>
      * 
      * @param serialDateValue the serial date widget value
@@ -140,7 +154,7 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
     protected void updateSelection(Map<String, String> newValues) {
 
         m_selectBox.setItems(newValues);
-
+        m_selectBox.selectValue(m_value);
     }
 
     /**

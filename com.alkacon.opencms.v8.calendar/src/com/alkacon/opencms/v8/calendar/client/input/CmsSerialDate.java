@@ -44,6 +44,7 @@ import org.opencms.gwt.client.ui.input.I_CmsFormWidget;
 import org.opencms.gwt.client.ui.input.datebox.CmsDateBox;
 import org.opencms.gwt.client.ui.input.form.CmsWidgetFactoryRegistry;
 import org.opencms.gwt.client.ui.input.form.I_CmsFormWidgetFactory;
+import org.opencms.gwt.client.util.CmsDebugLog;
 import org.opencms.util.CmsStringUtil;
 
 import java.util.Date;
@@ -399,6 +400,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
      */
     public void fireValueChange() {
 
+        CmsDebugLog.getInstance().printLine(getFormValueAsString());
         ValueChangeEvent.fire(this, getFormValueAsString());
     }
 

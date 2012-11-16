@@ -161,7 +161,11 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
         String[] values = selectValues.split("\\|");
         for (String value : values) {
             String[] val = value.split("=");
-            serialDateValues.put(val[0], val[1]);
+            if (val.length >= 2) {
+                serialDateValues.put(val[0], val[1]);
+            } else {
+                serialDateValues.put(val[0], "");
+            }
         }
         // get the entries
         List<?> entries = getCalendarEntries(serialDateValues, locale, maxCount);
