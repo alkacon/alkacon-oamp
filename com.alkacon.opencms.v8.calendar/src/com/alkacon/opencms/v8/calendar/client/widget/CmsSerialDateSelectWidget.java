@@ -39,6 +39,7 @@ import org.opencms.gwt.client.CmsCoreProvider;
 import org.opencms.gwt.client.rpc.CmsRpcAction;
 import org.opencms.util.CmsStringUtil;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
@@ -71,7 +72,7 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
      */
     public CmsSerialDateSelectWidget(String config) {
 
-        super("Please Select");
+        super("");
         String[] configs = config.split(";");
         m_entryCount = Integer.parseInt(configs[0]);
         m_locale = configs[1];
@@ -112,6 +113,11 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
     public void setValue(String value, boolean fireEvents) {
 
         // TODO: Auto-generated method stub
+        if (!m_selectBox.getItems().containsKey(value)) {
+            Map<String, String> val = new HashMap<String, String>();
+            val.put(value, value);
+            m_selectBox.setItems(val);
+        }
         super.setValue(value, fireEvents);
         m_value = value;
     }
@@ -154,7 +160,7 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
     protected void updateSelection(Map<String, String> newValues) {
 
         m_selectBox.setItems(newValues);
-        m_selectBox.selectValue(m_value);
+        setValue(m_value);
     }
 
     /**
