@@ -51,6 +51,7 @@ import org.opencms.main.I_CmsEventListener;
 import org.opencms.main.OpenCms;
 import org.opencms.security.CmsOrganizationalUnit;
 import org.opencms.security.CmsPermissionSet;
+import org.opencms.util.CmsRequestUtil;
 import org.opencms.util.CmsStringUtil;
 
 import java.sql.SQLException;
@@ -920,14 +921,11 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     private void initConfig(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         if (LOG.isDebugEnabled()) {
-            @SuppressWarnings("unchecked")
-            Iterator<Map.Entry<?, ?>> it = req.getParameterMap().entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry<?, ?> entry = it.next();
+            for (Map.Entry<String, String[]> entry : CmsRequestUtil.createParameterMap(req.getParameterMap()).entrySet()) {
                 LOG.debug(Messages.get().getBundle().key(
                     Messages.LOG_INIT_PARAM_2,
                     entry.getKey(),
-                    Arrays.asList((String[])entry.getValue())));
+                    Arrays.asList(entry.getValue())));
             }
         }
         try {
