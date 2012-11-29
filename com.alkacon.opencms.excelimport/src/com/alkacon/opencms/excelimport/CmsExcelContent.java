@@ -311,14 +311,17 @@ public class CmsExcelContent {
                                             break;
                                         case Cell.CELL_TYPE_NUMERIC:
                                             // check for date
-                                            if (DateUtil.isCellDateFormatted(cell)
-                                                || DateUtil.isValidExcelDate(cell.getNumericCellValue())) {
+                                            double d = cell.getNumericCellValue();
+                                            if (DateUtil.isCellDateFormatted(cell) && DateUtil.isValidExcelDate(d)) {
                                                 // valid date
-                                                Date date = DateUtil.getJavaDate(cell.getNumericCellValue());
+                                                Date date = DateUtil.getJavaDate(d);
                                                 text = new Long(date.getTime()).toString();
                                             } else {
                                                 // no valid date
-                                                text = Double.toString(cell.getNumericCellValue());
+                                                text = "" + d;
+                                                if (text.endsWith(".0")) {
+                                                    text = text.substring(0, text.lastIndexOf(".0"));
+                                                }
                                             }
                                             break;
                                         case Cell.CELL_TYPE_BOOLEAN:
