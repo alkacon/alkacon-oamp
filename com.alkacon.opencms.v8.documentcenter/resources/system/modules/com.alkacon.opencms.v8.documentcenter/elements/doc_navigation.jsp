@@ -2,6 +2,7 @@
 	org.opencms.file.*,
 	org.opencms.jsp.*,
 	org.opencms.i18n.CmsMessages,
+	org.opencms.util.*,
 	com.alkacon.opencms.v8.documentcenter.*,
 	java.util.*" 
 	buffer="none"
@@ -23,6 +24,8 @@ if (cms.template("default")) {
 	String startfolder = (String)request.getAttribute(CmsDocumentFrontend.ATTR_STARTPATH);
 	String docFullFolder = (String)request.getAttribute(CmsDocumentFrontend.ATTR_FULLPATH);
 
+	boolean showUpLink = !CmsFileUtil.removeTrailingSeparator(startfolder).equals(CmsFileUtil.removeTrailingSeparator(docFullFolder));
+
 	// get the bread crumb navigation
 	List navPath = cms.getNavigation().getNavigationBreadCrumb(docFullFolder, 1, -1, true);
 	int navSize = navPath.size();
@@ -31,14 +34,14 @@ if (cms.template("default")) {
 	if (navSize > 0) {
 
 	    String separator = "&nbsp;&raquo; ";
-	    
+
 		// print the bread crumb navigation 
 	    out.print("<p class=\"downloadcenter\">");
 
 		out.print(cms.buildBreadCrumbNavigation(startfolder, navPath, "breadcrumb", separator, false));
 
 		// check if the link "up one folder" can be displayed
-		if (navSize > 1) {
+		if (showUpLink && navSize > 1) {
 			navElement = (CmsJspNavElement)navPath.get(navSize - 2);
 			String link = navElement.getResourceName();
 
