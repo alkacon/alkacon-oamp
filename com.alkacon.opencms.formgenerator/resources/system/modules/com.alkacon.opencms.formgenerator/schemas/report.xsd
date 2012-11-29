@@ -48,7 +48,7 @@
 <headinclude type="javascript" uri="/system/modules/com.alkacon.opencms.formgenerator/resources/grid/grid/gt_grid_all.js" />
 			</headincludes>
 			<validationrules />
-			<layouts>
+			<layouts useAcacia="false">
 				<layout element="URI" widget="com.alkacon.opencms.formgenerator.CmsSelectWidgetXmlcontentType" configuration="resourcetypeName=alkacon-webform|folder=%(currentsite)|displayOptionMacro=%(property.Title) (%(opencms.filename))" />
 				<layout element="Text" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
 				<layout element="Fields" widget="com.alkacon.opencms.formgenerator.CmsReportCheckFieldsWidget" />

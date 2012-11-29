@@ -70,7 +70,7 @@
 				<rule element="MailTo" regex=".+" type="warning" message="%(key.alkacon-webform.warn.xmlcontent.field.empty)"/>
 				<rule element="MailSubject" regex=".+" type="warning" message="%(key.alkacon-webform.warn.xmlcontent.field.empty)"/>
 			</validationrules>
-			<layouts>
+			<layouts useAcacia="false">
 				<layout element="MailText" widget="HtmlWidget" configuration="formatselect,source,table" />
 				<layout element="FormText" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
 				<layout element="FormMiddleText" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />

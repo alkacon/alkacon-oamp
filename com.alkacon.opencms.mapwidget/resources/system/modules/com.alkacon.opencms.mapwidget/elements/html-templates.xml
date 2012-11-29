@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 
 <MMHtmlTemplates xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/com.alkacon.opencms.mapwidget/schemas/html-templates.xsd">
   <MMHtmlTemplate language="en">
@@ -16,26 +16,26 @@
 ]]></Main>
     <Coords><![CDATA[<span class='mm-nowrap'>
   <label for='map-lat'>%(xml.label.latitude)</label>
-  <input name='lat' class='map-lat' size='10' />
+  <input name='lat' class='map-lat' size='10' type='text' />
   <label for='map-lng'>%(xml.label.longitude)</label>
-  <input name='lng' class='map-lng' size='10' />
+  <input name='lng' class='map-lng' size='10' type='text' />
 </span>
 ]]></Coords>
     <Address><![CDATA[<span class='mm-nowrap'>
   <label for='map-address'>%(xml.label.address)</label>
-  <input name='address' class='map-address' size='40'/>
+  <input name='address' class='map-address' size='40' type='text' />
 </span>
 ]]></Address>
     <Zoom><![CDATA[<span class='mm-nowrap'>
   <label for='map-zoom'>%(xml.label.zoom)</label>
-  <input name='zoom' class='map-zoom' size='3' />
+  <input name='zoom' class='map-zoom' size='3' type='text' />
 </span>
 ]]></Zoom>
     <Size><![CDATA[<span class='mm-nowrap'>
   <label for='map-width'>%(xml.label.size)</label>
-  <input name='width' class='map-width' size='6' />
+  <input name='width' class='map-width' size='6' type='text' />
   <label for='map-height'>&times;</label>
-  <input name='height' class='map-height' size='6' />
+  <input name='height' class='map-height' size='6' type='text' />
 </span>
 ]]></Size>
     <Type><![CDATA[<span class='mm-nowrap'>

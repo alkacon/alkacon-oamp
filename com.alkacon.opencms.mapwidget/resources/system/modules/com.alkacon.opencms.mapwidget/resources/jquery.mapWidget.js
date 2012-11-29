@@ -24,14 +24,14 @@
    };
 
    /**
-    * Helper to create 'on return' and 'on blur' event handlers.<p>
+    * Helper to create 'on return' event handlers.<p>
     *
     * @callee {Element} The element that generated the event
     * @param {Function} handler the actual event handler
     *
-    * @returns a new 'on return' and 'on blur' event handler
+    * @returns a new 'on return' event handler
     */
-   var onReturnOrBlur = function(handler) {
+   var onReturnOrLeave = function(handler) {
    
       // return a new handler
       return function(/**jQuery.Event*/event, /**int*/ kc) {
@@ -113,17 +113,17 @@
          var /**AsocArray*/ opts = $.metadata ? $.extend({}, config, $container.metadata()) : config;
          
          // cache some controls
-         var /**jQuery*/ $base = $container.find('input[type=hidden]:first');
-         var /**jQuery*/ $lat = $container.find('input[type=text].map-lat');
-         var /**jQuery*/ $lng = $container.find('input[type=text].map-lng');
-         var /**jQuery*/ $address = $container.find('input[type=text].map-address');
-         var /**jQuery*/ $zoom = $container.find('input[type=text].map-zoom');
-         var /**jQuery*/ $width = $container.find('input[type=text].map-width');
-         var /**jQuery*/ $height = $container.find('input[type=text].map-height');
+         var /**jQuery*/ $base = $container.find('input[type="hidden"]:first');
+         var /**jQuery*/ $lat = $container.find('input[type="text"].map-lat');
+         var /**jQuery*/ $lng = $container.find('input[type="text"].map-lng');
+         var /**jQuery*/ $address = $container.find('input[type="text"].map-address');
+         var /**jQuery*/ $zoom = $container.find('input[type="text"].map-zoom');
+         var /**jQuery*/ $width = $container.find('input[type="text"].map-width');
+         var /**jQuery*/ $height = $container.find('input[type="text"].map-height');
          var /**jQuery*/ $type = $container.find('select.map-type');
          var /**jQuery*/ $map = $container.find('div.map-container');
-         var /**jQuery*/ $mode = $container.find('input[type=radio][name=mode]');
-         var /**jQuery*/ $allow = $container.find('input[type=checkbox].map-allow');
+         var /**jQuery*/ $mode = $container.find('input[type="radio"][name="mode"]');
+         var /**jQuery*/ $allow = $container.find('input[type="checkbox"].map-allow');
          
          var /**GMap2*/ map = null;
          
@@ -350,7 +350,7 @@
          };
          
          // bind the address to the map
-         $address.bind('blur keydown', onReturnOrBlur(function() {
+         $address.bind('blur keydown', onReturnOrLeave(function() {
             var /**jQuery*/ thisAddr = $(this);
             var /**String*/ address = thisAddr.val();
             geocoder.geocode({'address': address}, function(results, status) {
@@ -428,9 +428,9 @@
          // style check boxes
          $allow.mmToggleBar();
          // style input text boxes
-         $container.find('input[type=text]').mmInput();
+         $container.find('input[type="text"]').mmInput();
          // style radio buttons
-         $container.find('input[type=radio]').mmRadio();
+         $container.find('input[type="radio"]').mmRadio();
          
          // enable option panel expander
          $container.find('a.collapsible').mmCollapsible({
@@ -629,7 +629,9 @@
    
    // install the widgets after loading
    $(document).ready(function() {
-      $('input[type=hidden].map-widget').each(function() {
+
+      $('input[type="hidden"].map-widget').each(function() {
+
          $(this).parent('div').mmMap({
             idPre: this.id.replace(/[\._]/g, '-')
          });
