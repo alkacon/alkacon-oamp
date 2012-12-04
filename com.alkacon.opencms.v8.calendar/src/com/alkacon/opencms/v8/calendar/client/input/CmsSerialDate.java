@@ -796,12 +796,12 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
                 break;
             case (END_TYPE_TIMES):
                 if (!m_times.getText().isEmpty()) {
-                    result += CONFIG_OCCURENCES + "=" + m_times.getText();
+                    result += CONFIG_OCCURENCES + "=" + m_times.getText() + "|";
                 }
                 break;
             case (END_TYPE_DATE):
                 if (!m_dateboxend.getValueAsFormatedString().isEmpty()) {
-                    result += CONFIG_SERIAL_ENDDATE + "=" + m_dateboxend.getFormValueAsString();
+                    result += CONFIG_SERIAL_ENDDATE + "=" + m_dateboxend.getFormValueAsString() + "|";
                 }
                 break;
             default:
