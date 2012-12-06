@@ -37,12 +37,14 @@ import org.opencms.ade.contenteditor.client.widgets.CmsSelectWidget;
 import org.opencms.ade.contenteditor.shared.CmsContentDefinition;
 import org.opencms.gwt.client.CmsCoreProvider;
 import org.opencms.gwt.client.rpc.CmsRpcAction;
+import org.opencms.gwt.client.util.CmsDebugLog;
 import org.opencms.util.CmsStringUtil;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
 /**
@@ -112,7 +114,6 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
     @Override
     public void setValue(String value, boolean fireEvents) {
 
-        // TODO: Auto-generated method stub
         if (!m_selectBox.getItems().containsKey(value)) {
             Map<String, String> val = new HashMap<String, String>();
             val.put(value, value);
@@ -120,6 +121,17 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
         }
         super.setValue(value, fireEvents);
         m_value = value;
+    }
+
+    /**
+     * @see org.opencms.ade.contenteditor.client.widgets.CmsSelectWidget#fireChangeEvent()
+     */
+    @Override
+    public void fireChangeEvent() {
+
+        m_value = m_selectBox.getFormValueAsString();
+        ValueChangeEvent.fire(this, m_selectBox.getFormValueAsString());
+
     }
 
     /**
@@ -160,7 +172,13 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
     protected void updateSelection(Map<String, String> newValues) {
 
         m_selectBox.setItems(newValues);
-        setValue(m_value);
+        CmsDebugLog.getInstance().printLine("m_value= " + m_value);
+        CmsDebugLog.getInstance().printLine("newValues contains: " + m_value + " = " + newValues.containsKey(m_value));
+        if (newValues.containsKey(m_value)) {
+            setValue(m_value);
+        } else {
+            setValue("");
+        }
     }
 
     /**

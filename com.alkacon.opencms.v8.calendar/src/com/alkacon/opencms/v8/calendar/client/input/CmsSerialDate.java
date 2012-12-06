@@ -784,9 +784,11 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
         endDate = m_timeFormat.parse(m_endDate.getText());
         m_endDateValue.setHours(endDate.getHours());
         m_endDateValue.setMinutes(endDate.getMinutes());
-
+        m_endDateValue.setDate((m_endDateValue.getDate() + Integer.parseInt(m_duration.getFormValueAsString())));
+        long endtime = m_endDateValue.getTime();
+        CmsDebugLog.getInstance().printLine("New Endtime: " + endtime);
         result += CONFIG_STARTDATE + "=" + m_startDateValue.getTime() + "|";
-        result += CONFIG_ENDDATE + "=" + m_endDateValue.getTime() + "|";
+        result += CONFIG_ENDDATE + "=" + endtime + "|";
         String endtype = "1";
         if (m_groupDuration.getSelectedButton() != null) {
             endtype = m_groupDuration.getSelectedButton().getName();
@@ -838,7 +840,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
             }
         });
         table.setWidget(0, 0, cell1);
-        table.getCellFormatter().getElement(0, 0).getStyle().setWidth(176, Unit.PX);
+        table.getCellFormatter().getElement(0, 0).getStyle().setWidth(185, Unit.PX);
         table.getCellFormatter().getElement(0, 0).getStyle().setVerticalAlign(VerticalAlign.TOP);
 
         FlowPanel cell2 = new FlowPanel();
@@ -875,6 +877,9 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
 
             public void onClick(ClickEvent event) {
 
+                if (m_times.getText().isEmpty()) {
+                    m_times.setValue("1");
+                }
                 fireValueChange();
 
             }
@@ -894,6 +899,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
 
             public void onClick(ClickEvent event) {
 
+                m_dateboxend.setValue(new Date());
                 fireValueChange();
 
             }
@@ -913,6 +919,15 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
                 fireValueChange();
 
             }
+        });
+        m_times.addValueChangeHandler(new ValueChangeHandler<String>() {
+
+            public void onValueChange(ValueChangeEvent<String> event) {
+
+                fireValueChange();
+
+            }
+
         });
         m_times.addFocusHandler(new FocusHandler() {
 
