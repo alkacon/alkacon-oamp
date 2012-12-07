@@ -37,7 +37,7 @@ import org.opencms.file.CmsRequestContext;
 import org.opencms.file.CmsResource;
 import org.opencms.main.CmsException;
 import org.opencms.main.OpenCms;
-import org.opencms.search.A_CmsSearchIndex;
+import org.opencms.search.CmsSearchIndex;
 import org.opencms.search.CmsSearch;
 import org.opencms.search.CmsSearchResult;
 import org.opencms.util.CmsStringUtil;
@@ -110,7 +110,7 @@ public class CmsDocumentSearch {
         search.setIndex(index);
 
         OpenCms.getSearchManager().getIndex(index).addConfigurationParameter(
-            A_CmsSearchIndex.EXCERPT,
+            CmsSearchIndex.EXCERPT,
             CmsStringUtil.FALSE);
 
         if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(query)) {
