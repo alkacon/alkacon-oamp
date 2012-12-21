@@ -36,7 +36,7 @@
 
 			<mappings>
 			</mappings>
-
+			<searchsettings containerPageOnly="true" />
 			<validationrules>
 			</validationrules>
 		</xsd:appinfo>

@@ -41,6 +41,7 @@
 				<mapping element="Title" mapto="property:Title" />
 				<mapping element="Title" mapto="urlName" /> 
 			</mappings>
+			<searchsettings containerPageOnly="true" />
 			<validationrules>
 			</validationrules>
 		</xsd:appinfo>
