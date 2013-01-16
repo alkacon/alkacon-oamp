@@ -56,7 +56,7 @@ public class CmsFormReportColumn {
     private String m_columnType;
 
     /** The list of items of the column, if field type is table. */
-    private List m_columnItems;
+    private List<CmsFieldItem> m_columnItems;
 
     /**
      * Returns a list of configured form report columns from the given form fields.<p>
@@ -149,7 +149,7 @@ public class CmsFormReportColumn {
      * 
      * @return the list of items of the column, if field type is table
      */
-    public List getColumnItems() {
+    public List<CmsFieldItem> getColumnItems() {
 
         return m_columnItems;
     }

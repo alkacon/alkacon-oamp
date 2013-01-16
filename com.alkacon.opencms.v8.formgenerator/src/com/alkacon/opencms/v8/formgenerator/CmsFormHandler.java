@@ -1813,6 +1813,7 @@ public class CmsFormHandler extends CmsJspActionElement {
      * 
      * @throws Exception if creating the form configuration objects fails
      */
+    @SuppressWarnings("unchecked")
     protected void configureForm(HttpServletRequest req, String formConfigUri) throws Exception {
 
         // read the form configuration file from VFS
@@ -2137,6 +2138,7 @@ public class CmsFormHandler extends CmsJspActionElement {
     private I_CmsWebformActionHandler getObject(String className) throws Exception {
 
         I_CmsWebformActionHandler object = null;
+        @SuppressWarnings("unchecked")
         Class<I_CmsWebformActionHandler> c = (Class<I_CmsWebformActionHandler>)Class.forName(className);
         object = c.newInstance();
 

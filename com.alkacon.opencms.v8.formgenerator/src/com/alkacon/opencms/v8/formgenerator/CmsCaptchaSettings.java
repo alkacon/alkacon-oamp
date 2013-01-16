@@ -441,6 +441,7 @@ public final class CmsCaptchaSettings implements Cloneable {
      * @see #C_PARAM_BACKGROUND_COLOR
      * @see #C_PARAM_FILTER_AMPLITUDE
      */
+    @SuppressWarnings("unchecked")
     public void init(CmsJspActionElement jsp) {
 
         List<FileItem> multipartFileItems = CmsRequestUtil.readMultipartFileItems(jsp.getRequest());

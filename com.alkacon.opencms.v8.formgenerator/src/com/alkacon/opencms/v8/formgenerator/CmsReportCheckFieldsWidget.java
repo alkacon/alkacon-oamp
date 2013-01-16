@@ -34,14 +34,19 @@ package com.alkacon.opencms.v8.formgenerator;
 
 import org.opencms.file.CmsFile;
 import org.opencms.file.CmsObject;
+import org.opencms.file.CmsResource;
 import org.opencms.i18n.CmsEncoder;
+import org.opencms.i18n.CmsMessages;
 import org.opencms.util.CmsStringUtil;
 import org.opencms.widgets.A_CmsWidget;
+import org.opencms.widgets.CmsInputWidget;
+import org.opencms.widgets.I_CmsADEWidget;
 import org.opencms.widgets.I_CmsWidget;
 import org.opencms.widgets.I_CmsWidgetDialog;
 import org.opencms.widgets.I_CmsWidgetParameter;
 import org.opencms.xml.content.CmsXmlContent;
 import org.opencms.xml.content.CmsXmlContentFactory;
+import org.opencms.xml.types.A_CmsXmlContentValue;
 import org.opencms.xml.types.I_CmsXmlContentValue;
 
 import java.util.ArrayList;
@@ -55,7 +60,7 @@ import java.util.Map;
  *
  * @author Andreas Zahner 
  */
-public class CmsReportCheckFieldsWidget extends A_CmsWidget {
+public class CmsReportCheckFieldsWidget extends A_CmsWidget implements I_CmsADEWidget {
 
     /** Separator for fields used in XML content value. */
     public static final char SEPARATOR_FIELDS = '|';
@@ -77,6 +82,28 @@ public class CmsReportCheckFieldsWidget extends A_CmsWidget {
     public CmsReportCheckFieldsWidget(String configuration) {
 
         super(configuration);
+    }
+
+    /**
+     * @see org.opencms.widgets.I_CmsADEWidget#getConfiguration(org.opencms.file.CmsObject, org.opencms.xml.types.A_CmsXmlContentValue, org.opencms.i18n.CmsMessages, org.opencms.file.CmsResource, java.util.Locale)
+     */
+    public String getConfiguration(
+        CmsObject cms,
+        A_CmsXmlContentValue contentValue,
+        CmsMessages messages,
+        CmsResource resource,
+        Locale contentLocale) {
+
+        // no special configuration needed
+        return "";
+    }
+
+    /**
+     * @see org.opencms.widgets.I_CmsADEWidget#getCssResourceLinks(org.opencms.file.CmsObject)
+     */
+    public List<String> getCssResourceLinks(CmsObject cms) {
+
+        return null;
     }
 
     /**
@@ -140,7 +167,7 @@ public class CmsReportCheckFieldsWidget extends A_CmsWidget {
                     String dbLabel = label;
                     // extract DB label if present
                     int pos = label.indexOf('|');
-                    if ((pos > -1) && (pos + 1 < label.length())) {
+                    if ((pos > -1) && ((pos + 1) < label.length())) {
                         dbLabel = label.substring(pos + 1);
                         label = label.substring(0, pos);
                     }
@@ -172,6 +199,39 @@ public class CmsReportCheckFieldsWidget extends A_CmsWidget {
     }
 
     /**
+     * @see org.opencms.widgets.I_CmsADEWidget#getInitCall()
+     */
+    public String getInitCall() {
+
+        return null;
+    }
+
+    /**
+     * @see org.opencms.widgets.I_CmsADEWidget#getJavaScriptResourceLinks(org.opencms.file.CmsObject)
+     */
+    public List<String> getJavaScriptResourceLinks(CmsObject cms) {
+
+        return null;
+    }
+
+    /**
+     * @see org.opencms.widgets.I_CmsADEWidget#getWidgetName()
+     */
+    public String getWidgetName() {
+
+        // use the basic string widget for new content editor
+        return CmsInputWidget.class.getName();
+    }
+
+    /**
+     * @see org.opencms.widgets.I_CmsADEWidget#isInternal()
+     */
+    public boolean isInternal() {
+
+        return true;
+    }
+
+    /**
      * @see org.opencms.widgets.I_CmsWidget#newInstance()
      */
     public I_CmsWidget newInstance() {
@@ -185,17 +245,17 @@ public class CmsReportCheckFieldsWidget extends A_CmsWidget {
     @Override
     public void setEditorValue(
         CmsObject cms,
-        Map formParameters,
+        Map<String, String[]> formParameters,
         I_CmsWidgetDialog widgetDialog,
         I_CmsWidgetParameter param) {
 
-        String[] values = (String[])formParameters.get(param.getId());
+        String[] values = formParameters.get(param.getId());
         if ((values != null) && (values.length > 0)) {
             StringBuffer newValue = new StringBuffer(values.length * 8);
             // loop the found values
             for (int i = 0; i < values.length; i++) {
                 newValue.append(values[i]);
-                if (i < values.length - 1) {
+                if (i < (values.length - 1)) {
                     newValue.append(SEPARATOR_FIELDS);
                 }
             }
@@ -208,5 +268,4 @@ public class CmsReportCheckFieldsWidget extends A_CmsWidget {
             param.setStringValue(cms, "");
         }
     }
-
 }

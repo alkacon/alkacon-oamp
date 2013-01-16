@@ -157,6 +157,9 @@ public class CmsHtmlToTextConverter extends CmsHtmlParser {
         m_useBlankForLinebreak = useBlankForLinebreak;
     }
 
+    /**
+     * Appends an indentation to the result.<p>
+     */
     private void appendIndentation() {
 
         if (m_lineLength <= m_indent) {
@@ -172,11 +175,22 @@ public class CmsHtmlToTextConverter extends CmsHtmlParser {
         }
     }
 
+    /**
+     * Appends line breaks to the result.<p>
+     * 
+     * @param count the number of line breaks to append
+     */
     private void appendLinebreak(int count) {
 
         appendLinebreak(count, false);
     }
 
+    /**
+     * Appends line breaks to the result.<p>
+     * 
+     * @param count the number of line breaks to append
+     * @param force if the number of line breaks should be forced
+     */
     private void appendLinebreak(int count, boolean force) {
 
         if (m_appendBr) {
@@ -203,6 +217,12 @@ public class CmsHtmlToTextConverter extends CmsHtmlParser {
         }
     }
 
+    /**
+     * Appends line breaks using the specified tag.<p>
+     * 
+     * @param tag the tag name
+     * @param open the open flag
+     */
     private void appendLinebreaks(Tag tag, boolean open) {
 
         String name = tag.getTagName();
@@ -265,6 +285,11 @@ public class CmsHtmlToTextConverter extends CmsHtmlParser {
         }
     }
 
+    /**
+     * Appends text.<p>
+     * 
+     * @param text the text
+     */
     private void appendText(String text) {
 
         if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(text)) {
@@ -306,6 +331,12 @@ public class CmsHtmlToTextConverter extends CmsHtmlParser {
         }
     }
 
+    /**
+     * Sets the indentation.<p>
+     * 
+     * @param length the indentation length
+     * @param open if the indentation should be increased or reduced
+     */
     private void setIndentation(int length, boolean open) {
 
         if (open) {
@@ -318,6 +349,12 @@ public class CmsHtmlToTextConverter extends CmsHtmlParser {
         }
     }
 
+    /**
+     * Sets a marker.<p>
+     * 
+     * @param marker the marker
+     * @param open if the marker should be set
+     */
     private void setMarker(String marker, boolean open) {
 
         if (open) {

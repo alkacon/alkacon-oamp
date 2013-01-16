@@ -33,14 +33,18 @@
 package com.alkacon.opencms.v8.formgenerator;
 
 import org.opencms.file.CmsObject;
+import org.opencms.file.CmsResource;
+import org.opencms.i18n.CmsMessages;
 import org.opencms.util.CmsMacroResolver;
 import org.opencms.util.CmsStringUtil;
+import org.opencms.widgets.CmsInputWidget;
 import org.opencms.widgets.CmsSelectWidget;
 import org.opencms.widgets.CmsSelectWidgetOption;
 import org.opencms.widgets.I_CmsWidget;
 import org.opencms.widgets.I_CmsWidgetDialog;
 import org.opencms.widgets.I_CmsWidgetParameter;
 import org.opencms.xml.content.CmsXmlContent;
+import org.opencms.xml.types.A_CmsXmlContentValue;
 import org.opencms.xml.types.I_CmsXmlContentValue;
 
 import java.util.ArrayList;
@@ -193,7 +197,7 @@ public class CmsSelectFieldWidget extends CmsSelectWidget {
                 // remove DB label if present
                 int pos = label.indexOf('|');
                 if (pos > -1) {
-                    if (isReferenceByLabel() && (pos + 1 < label.length())) {
+                    if (isReferenceByLabel() && ((pos + 1) < label.length())) {
                         // only use DB label for reference
                         value = label.substring(pos + 1);
                     }
@@ -201,7 +205,7 @@ public class CmsSelectFieldWidget extends CmsSelectWidget {
                 }
                 boolean isDefault = false;
                 // check if this field should be marked as default because of index conversion
-                if ((fieldIndex > 0) && (fieldIndex == i + 1)) {
+                if ((fieldIndex > 0) && (fieldIndex == (i + 1))) {
                     isDefault = true;
                 }
                 result.add(new CmsSelectWidgetOption(value, isDefault, label));
@@ -209,6 +213,31 @@ public class CmsSelectFieldWidget extends CmsSelectWidget {
             setSelectOptions(result);
         }
         return getSelectOptions();
+    }
+
+    /**
+     * @see org.opencms.widgets.CmsSelectWidget#getWidgetName()
+     */
+    @Override
+    public String getWidgetName() {
+
+        // use the basic string widget for new content editor
+        return CmsInputWidget.class.getName();
+    }
+
+    /**
+     * @see org.opencms.widgets.A_CmsSelectWidget#getConfiguration(org.opencms.file.CmsObject, org.opencms.xml.types.A_CmsXmlContentValue, org.opencms.i18n.CmsMessages, org.opencms.file.CmsResource, java.util.Locale)
+     */
+    @Override
+    public String getConfiguration(
+        CmsObject cms,
+        A_CmsXmlContentValue schemaType,
+        CmsMessages messages,
+        CmsResource resource,
+        Locale contentLocale) {
+
+        // no configuration needed
+        return "";
     }
 
     /**

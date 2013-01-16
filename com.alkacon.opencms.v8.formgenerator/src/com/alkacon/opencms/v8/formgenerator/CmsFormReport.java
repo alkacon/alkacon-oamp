@@ -239,9 +239,6 @@ public class CmsFormReport extends CmsJspActionElement {
     /** Indicates if the labels of the fields should be shown. */
     private Boolean m_showLabels;
 
-    /** Indicates if the main report output should be generated. */
-    private Boolean m_showReport;
-
     /**
      * Constructor, creates the necessary form report configuration objects.<p>
      * 
@@ -610,10 +607,7 @@ public class CmsFormReport extends CmsJspActionElement {
      */
     public boolean isShowReport() {
 
-        //        return getRequest().getParameter(PARAM_ACTION) == null;
-        m_showReport = (getRequest().getParameter(PARAM_ACTION) == null);
-        return m_showReport;
-
+        return getRequest().getParameter(PARAM_ACTION) == null;
     }
 
     /**

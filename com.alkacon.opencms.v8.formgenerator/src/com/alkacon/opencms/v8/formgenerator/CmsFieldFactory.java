@@ -124,6 +124,7 @@ public final class CmsFieldFactory {
                 ExtendedProperties fieldProperties = new ExtendedProperties();
                 fieldProperties.load(new FileInputStream(propertyFile));
 
+                @SuppressWarnings("unchecked")
                 Iterator<String> i = fieldProperties.keySet().iterator();
                 while (i.hasNext()) {
 
@@ -156,7 +157,7 @@ public final class CmsFieldFactory {
                 LOG.error(
                     Messages.get().getBundle().key(
                         Messages.LOG_ERR_READING_CUSTOM_FORM_FIELD_PROPERTIES_1,
-                        propertyFile == null ? CUSTOM_FORM_FIELD_PROPERTIES : propertyFile.getAbsolutePath()),
+                        propertyFile.getAbsolutePath()),
                     e);
             }
         }

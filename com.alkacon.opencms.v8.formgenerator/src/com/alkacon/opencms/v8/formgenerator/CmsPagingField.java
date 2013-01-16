@@ -273,6 +273,7 @@ public class CmsPagingField extends A_CmsField {
     /**
      * Gets the page to the current field.<p>
      * 
+     * @param formHandler the form handler 
      * @param fieldNr the current field number
      * 
      * @return the page to the current field
@@ -302,6 +303,8 @@ public class CmsPagingField extends A_CmsField {
 
     /**
      * Initialize the fields.<p>
+     * 
+     * @param formHandler the form handler 
      */
     private static void initializeFields(CmsFormHandler formHandler) {
 
