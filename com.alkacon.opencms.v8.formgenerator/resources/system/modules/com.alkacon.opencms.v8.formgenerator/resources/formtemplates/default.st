@@ -256,7 +256,7 @@ $row_start(field=field)$
 			$label$
 		</span>
 	$else$
-		$label$
+		<label for="$field.name$">$label$</label>
 	$endif$
 </div>
 <div class="webform_field">
