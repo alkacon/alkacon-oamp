@@ -38,7 +38,7 @@ pageContext.setAttribute("dd", dd);
 	</c:when>
 	<c:otherwise>
 		<cms:formatter var="content" val="value">
-		<div>
+		<div class="OpenCmsWebform">
 		<%
 		form.createForm();
 		%>
