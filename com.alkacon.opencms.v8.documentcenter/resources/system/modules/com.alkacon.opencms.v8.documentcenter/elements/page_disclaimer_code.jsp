@@ -1,4 +1,4 @@
-<%@ page session="false" buffer="none"
+<%@ page session="true" buffer="none"
          import="
          java.util.*,
          org.opencms.jsp.*,
@@ -37,7 +37,7 @@ HttpSession sess = request.getSession();
 // get action parameter from form
 String paramAction = CmsStringUtil.escapeHtml(request.getParameter("action"));
 
-if (paramAction == null || "".equals(paramAction) || messages.key("disclaimer.decline").equals(paramAction)) { 
+if (paramAction == null || "".equals(paramAction) || "decline".equals(paramAction)) { 
   	// show the disclaimer form
 	CmsXmlDocumentContent xmlContent = new CmsXmlDocumentContent(cms);
 	if (messages.key("disclaimer.decline").equals(paramAction)) {
@@ -52,23 +52,24 @@ if (paramAction == null || "".equals(paramAction) || messages.key("disclaimer.de
 		}
 	}
 	if ( !messages.key("disclaimer.decline").equals(paramAction)) { %>
-	<form action="<%= cms.link(uriForm) %>" method="get" name="disclaimer" target="_blank" ><p>
-		<input type="button" value="<%= messages.key("disclaimer.accept") %>" class="button" onclick="redir(1);" />
+	<form action="<%= cms.link(uriForm) %>" method="get" name="disclaimerform" target="_top" ><input type="hidden" name="action" value="" /><p>
+		<input type="button" value="<%= messages.key("disclaimer.accept") %>" class="button" onclick="submitDisclaimer(1);" />
 		&nbsp;&nbsp;&nbsp;
-		<input type="button" value="<%= messages.key("disclaimer.decline") %>" class="button" onclick="redir(2);" />
+		<input type="button" value="<%= messages.key("disclaimer.decline") %>" class="button" onclick="submitDisclaimer(2);" />
 	</p></form>
 	<% }
 	// show some debug information
 	if (DEBUG > 0) { %>
 		<h4>Debug information</h4>
 		<ul><li>Requested resource: <b><%= uriForm%></b></li>
+		<li>Session ID: <b><%= sess.getId() %></b></li>
 		<li>Session value for resource: <b><%= sess.getAttribute(uriForm) %></b></li>
 		<li>Locale: <b><%= locale %></b></li>
 		<li>Disclaimer page: <b><%= cms.property("disclaimer_page", "search", "(none)") %></b></li>
 		<li>Real URI: <b><%= cms.getRequestContext().getUri() %></b></li></ul>
 	<% } 
 
-} else if (messages.key("disclaimer.accept").equals(paramAction)) {
+} else if ("accept".equals(paramAction)) {
 	// user accepted disclaimer for current resource
 	String disclaimer = (String)request.getAttribute(CmsDocumentFrontend.ATTR_DISCLAIMER);
 	sess.setAttribute(disclaimer, "true");
@@ -79,14 +80,14 @@ if (paramAction == null || "".equals(paramAction) || messages.key("disclaimer.de
 %>
 <script type="text/javascript">
 
-	function redir(type) {
+	function submitDisclaimer(type) {
+		var theForm = document.forms["disclaimerform"];
 		if (type == 1) {
-			var uri = "<%= cms.link(uriForm + "?action=" + messages.key("disclaimer.accept")) %>";
-			window.location.href = uri;
+			theForm.elements["action"].value = "accept";
 		} else {
-			var uri = "<%= cms.link(uriForm + "?action=" + messages.key("disclaimer.decline")) %>";
-			window.location.href = uri;
+			theForm.elements["action"].value = "decline";
 		}
+		theForm.submit();
 	}
 
 </script>
