@@ -49,6 +49,9 @@ public final class Messages extends A_CmsMessageBundle {
     /** Message constant for key in the resource bundle. */
     public static final String LOG_WARN_NOTHING_TO_PROCESS_1 = "LOG_WARN_NOTHING_TO_PROCESS_1";
 
+    /** Message constant for key in the resource bundle. */
+    public static final String LOG_WARN_RESOLVE_EMPTY_PATH_1 = "LOG_WARN_RESOLVE_EMPTY_PATH_1";
+
     /** Name of the used resource bundle. */
     private static final String BUNDLE_NAME = "com.alkacon.opencms.weboptimization.messages";
 

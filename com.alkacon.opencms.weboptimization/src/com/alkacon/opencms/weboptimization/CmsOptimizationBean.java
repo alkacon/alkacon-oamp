@@ -60,6 +60,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.PageContext;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 
 /**
@@ -483,9 +484,16 @@ public abstract class CmsOptimizationBean extends CmsJspActionElement {
      */
     protected List<CmsResource> resolveResource(CmsObject cms, String path, String ext) throws CmsException {
 
+        List<CmsResource> resorces = new ArrayList<CmsResource>();
+        
+        // An empty path is most probably a bug/unintentionally included. Ignoring it.
+        if (StringUtils.isBlank(path)) {
+            LOG.warn(Messages.get().getBundle().key(Messages.LOG_WARN_RESOLVE_EMPTY_PATH_1, cms.getRequestContext().getUri()));
+            return resorces;
+        }
+        
         CmsResource res = cms.readResource(path);
 
-        List<CmsResource> resorces = new ArrayList<CmsResource>();
         if (res.isFolder()) {
             // if folder, get all files with the given extension in the folder
             List<CmsResource> files = cms.readResources(path, CmsResourceFilter.DEFAULT_FILES);
