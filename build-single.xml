@@ -30,7 +30,11 @@
 
 	<taskdef resource="net/sf/antcontrib/antlib.xml" loaderref="contrib">
 		<classpath>
-			<pathelement location="${opencms.input.libs.compile}/ant-contrib-1.0b1.jar" />
+			<pathelement location="${opencms.input.libs.compile}/ant-opencms-1.2.jar" />
+			<pathelement location="${opencms.input.libs.runtime}/commons-digester-1.8.jar" />
+			<pathelement location="${opencms.input.libs.runtime}/commons-collections-3.2.1.jar" />
+			<pathelement location="${opencms.input.libs.runtime}/commons-logging-1.1.1.jar" />
+			<pathelement location="${opencms.input.libs.runtime}/commons-beanutils-1.8.0.jar" />
 		</classpath>
 	</taskdef>
 
