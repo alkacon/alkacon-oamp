@@ -31,7 +31,7 @@
 
 package com.alkacon.opencms.v8.commons;
 
-import org.opencms.ade.configuration.CmsADEConfigData;
+import org.opencms.ade.configuration.CmsADEManager;
 import org.opencms.file.CmsFile;
 import org.opencms.file.CmsObject;
 import org.opencms.file.CmsResourceFilter;
@@ -166,7 +166,7 @@ public class CmsTemplateBase extends CmsJspActionElement {
 
         if (m_rssFeedConfiguration == null) {
             m_rssFeedConfiguration = getConfigurationFile(getStartFolder()
-                + CmsADEConfigData.CONTENT_FOLDER_NAME
+                + CmsADEManager.CONTENT_FOLDER_NAME
                 + "/"
                 + RSSFEED_CONFIG_FILE, getCmsObject());
         }
@@ -239,7 +239,7 @@ public class CmsTemplateBase extends CmsJspActionElement {
             rssFeedHtmlCode.append(link("/system/modules/com.alkacon.opencms.feeder/resources/rssfeed-news-v8.html?path="));
             rssFeedHtmlCode.append(getStartFolder());
             rssFeedHtmlCode.append("&configfile="
-                + CmsADEConfigData.CONTENT_FOLDER_NAME
+                + CmsADEManager.CONTENT_FOLDER_NAME
                 + "/"
                 + RSSFEED_CONFIG_FILE
                 + "\">");
@@ -259,7 +259,7 @@ public class CmsTemplateBase extends CmsJspActionElement {
             rssFeedHtmlCode.append(link("/system/modules/com.alkacon.opencms.feeder/resources/rssfeed-events-v8.html?path="));
             rssFeedHtmlCode.append(getStartFolder());
             rssFeedHtmlCode.append("&configfile="
-                + CmsADEConfigData.CONTENT_FOLDER_NAME
+                + CmsADEManager.CONTENT_FOLDER_NAME
                 + "/"
                 + RSSFEED_CONFIG_FILE
                 + "\">");
@@ -279,7 +279,7 @@ public class CmsTemplateBase extends CmsJspActionElement {
             rssFeedHtmlCode.append(link("/system/modules/com.alkacon.opencms.feeder/resources/rssfeed-services-v8.html?path="));
             rssFeedHtmlCode.append(getStartFolder());
             rssFeedHtmlCode.append("&configfile="
-                + CmsADEConfigData.CONTENT_FOLDER_NAME
+                + CmsADEManager.CONTENT_FOLDER_NAME
                 + "/"
                 + RSSFEED_CONFIG_FILE
                 + "\">");

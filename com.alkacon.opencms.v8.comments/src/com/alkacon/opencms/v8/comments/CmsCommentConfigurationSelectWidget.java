@@ -123,7 +123,7 @@ public class CmsCommentConfigurationSelectWidget extends CmsSelectWidget {
             String currentRootPath = cms.addSiteRoot(((CmsDialog)widgetDialog).getParamResource());
             String contentPath = CmsStringUtil.joinPaths(
                 OpenCms.getADEManager().getSubSiteRoot(cms, currentRootPath),
-                CmsADEManager.CONFIG_FOLDER_NAME + "/");
+                CmsADEManager.CONTENT_FOLDER_NAME + "/");
             contentPath = cms.getRequestContext().removeSiteRoot(contentPath);
             int configTypeId;
             try {
