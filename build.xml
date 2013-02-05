@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="Alkacon OpenCms Add-On Module Package" default="dist" basedir=".">
+	<property file="${basedir}/alkacon.properties" />
 
 	<property name="opencms.input" location="${basedir}/../OpenCms" />
 	<property name="opencms.output" location="${basedir}/../BuildOamp" />
 	<property name="excludes" value="**/CVS/*,**/.cvsignore,**/.nbattrs,**/.project,**/.classpath" />
 	<property name="opencms.output.distfiles" location="${opencms.output}/zip" />
 
-	<property file="alkacon.properties" />
 
 	<!--
 		Set/Override this property to one of the following values:
@@ -25,7 +25,7 @@
 
 	<taskdef resource="org/opencms/util/ant/taskdefs.properties" loaderref="opencms">
 		<classpath>
-			<pathelement location="${opencms.input}/lib/compile/ant-opencms-1.1.jar" />
+			<pathelement location="${opencms.input}/lib/compile/ant-opencms-1.2.jar" />
 		</classpath>
 	</taskdef>
 
@@ -38,9 +38,7 @@
 				<isset property="modules.common.all" />
 			</not>
 			<then>
-				<fail>
-    			property modules.common.all undefined.
-    		</fail>
+				<fail>property modules.common.all undefined.</fail>
 			</then>
 			<else>
 				<echo message="all: ${modules.common.all}" />
@@ -96,6 +94,7 @@
 
 	<!-- Build dependencies -->
 	<target name="dependencies">
+		<echo level="verbose" message="[oamp/build.xml] calling [oamp/build-single/dist] for module.name='${module.name}'" />
 		<!-- just redirect back to the calling build-single script, for avoiding ant's recursive loop check -->
 		<ant antfile="${basedir}/build-single.xml" target="dist" inheritAll="false">
 			<property name="module.name" value="${module.name}" />

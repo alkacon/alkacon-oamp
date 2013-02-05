@@ -13,6 +13,63 @@ The [Alkacon OpenCms Add-On Module Package](http://www.alkacon.com/oamp/) (also 
 
 The Alkacon OAMP modules are installed on a standard OpenCms system. 
 
+##Building OAMP##
+
+---
+
+The build scripts read the alkacon.properties configuration file. These scripts supports now the separation of the opencms and oamp project trees.
+
+###1. Check out this repository###
+Create the initial directory structure and check out this repo:
+```
+$ mkdir -p ~/src/opencms
+$ cd ~/src/opencms
+$ git clone https://github.com/alkacon/alkacon-oamp.git
+```
+   This will copy this repository sources under `~/src/opencms/alkacon-oamp`
+
+###2. Check out the dependencies###
+If you are building modules that depend upon [opencms-core](https://github.com/alkacon/opencms-core), [modules-v7](https://github.com/alkacon/modules-v7) or [modules-v8](https://github.com/alkacon/modules-v8), check out them too:
+```
+$ git clone https://github.com/alkacon/opencms-core.git
+$ git clone https://github.com/alkacon/modules-v7.git
+```
+   Note that to build all modules, you need `opencms-core` and `modules-v7`.
+
+###3. Configure the build###
+Edit `alkacon.properties` to fit your directory structure. If you have followed this instructions, you should be fine. The file has some comments that should already help, but just in case, the most important variables to set are:
+```
+# Where are opencms-core modules and build scripts
+opencms.input
+opencms.input.warfiles
+opencms.output
+# Where are the alkacon-oamp modules and where to save the artifacts
+oamp.input
+oamp.output
+```
+
+###4. Build###
+Build the artifacts. By default, you will be asked what modules to build:
+```
+$ ant 
+```
+
+Notice that if you are building all modules, there is one module (`com.alkacon.opencms.oampdemo`) that also depends upon `modules-v7`. To build it, you have to pass to `ant` the directory where the `modules-v7` sources are. If you followed this instructions:
+```
+$ ant -Dexternaldirectories=/home/myuser/src/opencms/modules-v7
+```
+Note.- `externaldirectories` must be an absolute path (tilde is not expanded!).
+
+To automate the build process, you can skip the selection dialog and have `ant` build everything:
+```
+$ ant -Dexternaldirectories=/home/myuser/src/opencms/modules-v7 -Dmodules.selection.mode=all
+```
+
+or you can configure the modules to build setting the build variable `modules.selection` (for example, edit `alkacon.properties`) and have `ant` build only the selected modules:
+```
+$ ant -Dexternaldirectories=/home/myuser/src/opencms/modules-v7 -Dmodules.selection.mode=selection
+```
+
 
 
 

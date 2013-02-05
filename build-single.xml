@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="Alkacon OpenCms Add-On Module Package" default="dist" basedir=".">
+	<property file="${basedir}/alkacon.properties" />
 
 	<property name="opencms.input" location="${basedir}/../OpenCms" />
 	<property name="opencms.output" location="${basedir}/../BuildOamp" />
+	<property name="opencms.output.zip" location="${opencms.output}/zip" />
 	<property name="opencms.input.warfiles" location="${opencms.input}/webapp" />
 	<property name="opencms.input.libs.runtime" location="${opencms.input}/lib/runtime" />
 	<property name="opencms.input.libs.compile" location="${opencms.input}/lib/compile" />
 	<property name="opencms.core.lib" location="${opencms.output}/build/jars-core" />
 
+	<property name="oamp.input" location="${basedir}" />
+	<property name="oamp.output" location="${basedir}/../BuildOamp" />
+	
 	<property name="module.input" location="${basedir}/${module.name}" />
 	<property name="module.input.res" location="${module.input}/resources" />
 	<property name="module.input.lib" location="${module.input.res}/system/modules/${module.name}/lib" />
 	<property name="module.input.src" location="${module.input}/src" />
 
-	<property name="module.output.classes" location="${opencms.output}/build/classes-${module.name}" />
-	<property name="module.output.jar" location="${opencms.output}/build/jars-${module.name}" />
-	<property name="module.output.zip" location="${opencms.output}/zip" />
+	<property name="module.output.classes" location="${oamp.output}/build/classes-${module.name}" />
+	<property name="module.output.jar" location="${oamp.output}/build/jars-${module.name}" />
+	<property name="module.output.zip" location="${oamp.output}/zip" />
 
 	<property name="app.name" location="opencms" />
 
@@ -26,17 +31,34 @@
 
 	<property environment="env" />
 
-	<property file="${basedir}/alkacon.properties" />
-
+	<!--
+		if, foreach, trhow, trycatch, switch, outofdate, runtarget, timestampselector,
+		propertycopy, osfamily, shellscript, pathtofileset, propertyselector, propertyregex,
+		sortlist, urlencode, compilewithwalls, forget, antcallback, antfetch, assert, bool,
+		limit, math, post, stopwatch, var, initfile, antclipse, antserver, remoteant, for
+		isgreaterthan, islessthan, ispropertyfalse, ispropertytrue
+	-->
 	<taskdef resource="net/sf/antcontrib/antlib.xml" loaderref="contrib">
 		<classpath>
 			<pathelement location="${opencms.input.libs.compile}/ant-contrib-1.0b1.jar" />
 		</classpath>
 	</taskdef>
 
+	<!--
+		selectionprompt, readxmlproperty, selectiontreeprompt, ensuredirmanifest
+	-->
 	<taskdef resource="org/opencms/util/ant/taskdefs.properties" loaderref="opencms">
 		<classpath>
-			<pathelement location="${opencms.input.libs.compile}/ant-opencms-1.1.jar" />
+			<pathelement location="${opencms.input.libs.compile}/ant.jar" />
+			<pathelement location="${opencms.input.libs.compile}/ant-contrib-1.0b1.jar" />
+			<pathelement location="${opencms.input.libs.compile}/ant-opencms-1.2.jar" />
+			<pathelement location="${opencms.input.libs.runtime}/commons-beanutils-1.8.3.jar" />
+			<pathelement location="${opencms.input.libs.runtime}/commons-collections-3.2.1.jar" />
+			<pathelement location="${opencms.input.libs.runtime}/commons-digester-1.8.jar" />
+			<pathelement location="${opencms.input.libs.runtime}/commons-logging-1.1.1.jar" />
+			<pathelement location="${opencms.input.libs.runtime}/dom4j-1.6.1.jar" />
+			<pathelement location="${opencms.input.libs.runtime}/jug-lgpl-2.0.0.jar" />
+			<pathelement location="${opencms.input.libs.runtime}/xml-apis-2.11-0.jar" />
 		</classpath>
 	</taskdef>
 
@@ -66,6 +88,9 @@
 				<echo message="Building OpenCms Module ${module.name} for OpenCms ${version.number}" />
 				<fail>Module Directory not found: ${module.input}</fail>
 			</then>
+			<else>
+				<echo level="verbose" message="[${module.name}] module.input='${module.input}'" />
+			</else>
 		</if>
 		<if>
 			<not>
@@ -83,8 +108,13 @@
 			<available file="${module.input.res}/manifest.xml" />
 			<then>
 				<readxmlproperty property="module.version" xmlfile="${module.input.res}/manifest.xml" element="export/module/version" />
+				<echo level="verbose" message="[${module.name}] version='${module.version}'" />
 				<readxmlproperty property="module.dependencies" xmlfile="${module.input.res}/manifest.xml" element="export/module/dependencies/dependency" attribute="name" />
+				<echo level="verbose" message="[${module.name}] dependencies='${module.dependencies}'" />
 			</then>
+			<else>
+				<echo level="verbose" message="[${module.name}] no manifest found" />
+			</else>
 		</if>
 		<property file="${module.input}/module.properties" />
 		<if>
@@ -102,9 +132,34 @@
 
 		<for list="${module.dependencies}" param="dependency" trim="true">
 			<sequential>
-				<property name="@{dependency}.input" value="${basedir}/@{dependency}" />
-				<property name="@{dependency}.output.classes" location="${opencms.output}/build/classes-@{dependency}" />
-				<property name="@{dependency}.output.jar" location="${opencms.output}/build/jars-@{dependency}" />
+				<!-- Does the module belong to opencms tree or to oamp tree? -->
+				<echo level="verbose" message="[${module.name}] inspecting dependency [@{dependency}]..." />
+				<if>
+					<or>
+						<available file="${oamp.input}/@{dependency}" />
+						<available file="${oamp.output}/build/classes-@{dependency}" />
+						<available file="${oamp.output}/build/jars-@{dependency}" />
+					</or>
+					<then>
+						<!-- It belongs to oamp tree. -->
+						<echo level="verbose" message="[${module.name}/@{dependency}] ...oamp dependency detected" />
+						<property name="@{dependency}.input" value="${oamp.input}/@{dependency}" />
+						<property name="@{dependency}.output.classes" location="${oamp.output}/build/classes-@{dependency}" />
+						<property name="@{dependency}.output.jar" location="${oamp.output}/build/jars-@{dependency}" />
+						<property name="@{dependency}.output.zip.dir" location="${module.output.zip}" />
+						<property name="@{dependency}.buildfile" value="${oamp.input}/build.xml" />
+					</then>
+					<else>
+						<!-- It belongs to opencms tree. -->
+						<echo level="verbose" message="[${module.name}/@{dependency}] ...opencms dependency detected" />
+						<property name="@{dependency}.input" value="${opencms.input}/modules/@{dependency}" />
+						<property name="@{dependency}.output.classes" location="${opencms.output}/build/classes-@{dependency}" />
+						<property name="@{dependency}.output.jar" location="${opencms.output}/build/jars-@{dependency}" />
+						<property name="@{dependency}.output.zip.dir" location="${opencms.output.zip}" />
+						<property name="@{dependency}.buildfile" value="${opencms.input}/modules/build.xml" />
+					</else>
+				</if>
+				
 				<if>
 					<available file="${@{dependency}.input}/resources/manifest.xml" />
 					<then>
@@ -113,13 +168,31 @@
 					</then>
 				</if>
 				<property file="${@{dependency}.input}/module.properties" prefix="@{dependency}" />
-				<property name="@{dependency}.output.zip" location="${module.output.zip}/@{dependency}_${@{dependency}.module.version}.zip" />
+				<!--
+				XXX: 2013-02-04 agallardo
+				- Warning 1: the following property (@{dependency}.output.zip) won't have a proper value if neither
+				  the manifest nor module.properties define @{dependency}.module.version.
+				- Warning 2: the zip found this way (using ${@{dependency}.input}/resources/manifest.xml) completely
+				  ignores the version declared in the module's manifest itself.
+				  It would be better to use the version declared in the path "export/module/dependencies/dependency"
+				  of the "${module.input.res}/manifest.xml" file.
+				-->
+				<property name="@{dependency}.output.zip" location="${@{dependency}.output.zip.dir}/@{dependency}_${@{dependency}.module.version}.zip" />
 
-				<condition property="@{dependency}.available">
+				<condition property="@{dependency}.available" else="false">
 					<and>
 						<available file="${@{dependency}.output.zip}" />
 					</and>
 				</condition>
+				
+				<echo level="verbose" message="[${module.name}/@{dependency}] input='${@{dependency}.input}'" />
+				<echo level="verbose" message="[${module.name}/@{dependency}] output.classes='${@{dependency}.output.classes}'" />
+				<echo level="verbose" message="[${module.name}/@{dependency}] output.jar='${@{dependency}.output.jar}'" />
+				<echo level="verbose" message="[${module.name}/@{dependency}] output.zip.dir='${@{dependency}.output.zip.dir}'" />
+				<echo level="verbose" message="[${module.name}/@{dependency}] module.version='${@{dependency}.module.version}'" />
+				<echo level="verbose" message="[${module.name}/@{dependency}] module.dependencies='${@{dependency}.module.dependencies}'" />
+				<echo level="verbose" message="[${module.name}/@{dependency}] output.zip='${@{dependency}.output.zip}'" />
+				<echo level="verbose" message="[${module.name}/@{dependency}] available='${@{dependency}.available}'" />
 			</sequential>
 		</for>
 
@@ -137,6 +210,7 @@
 				<property name="module.libs" value="" />
 			</then>
 		</if>
+		<echo level="verbose" message="[${module.name}] module.libs='${module.libs}'" />
 
 		<for list="${module.libs}" param="library" trim="true">
 			<sequential>
@@ -178,7 +252,7 @@
 	<target name="buildcore" unless="opencms.available">
 
 		<echo message="Core opencms.jar missing, building it using ${opencms.input}/build.xml" />
-		<ant antfile="${opencms.input}/build.xml" target="jar" />
+		<ant antfile="${opencms.input}/build.xml" target="jar" inheritall="false" />
 		<antcall target="clean" />
 	</target>
 
@@ -192,19 +266,9 @@
 					</not>
 					<then>
 						<echo message="Module dependency @{dependency} is missing, building it" />
-						<if>
-							<available file="${@{dependency}.input}" type="dir" />
-							<then>
-								<ant antfile="${basedir}/build.xml" target="dependencies" inheritAll="false">
-									<property name="module.name" value="@{dependency}" />
-								</ant>
-							</then>
-							<else>
-								<ant antfile="${opencms.input}/modules/build.xml" target="dependencies" inheritAll="false">
-									<property name="module.name" value="@{dependency}" />
-								</ant>
-							</else>
-						</if>
+						<ant antfile="${@{dependency}.buildfile}" target="dependencies" inheritAll="false">
+							<property name="module.name" value="@{dependency}" />
+						</ant>
 					</then>
 				</if>
 			</sequential>
@@ -289,7 +353,7 @@
 								<fileset dir="${module.input.lib}" includes="*.jar" />
 							</path>
 							<sequential>
-								<var name="module.libs.path" value="${module.libs.path}:${module.input.lib}/@{archive}" />
+								<var name="module.libs.path" value="${module.libs.path}:@{archive}" />
 							</sequential>
 						</for>
 					</then>
@@ -303,13 +367,6 @@
 				<for list="${module.dependencies}" param="dependency">
 					<sequential>
 						<if>
-							<!--
-								This assumes that the dependency module is in the same project: OpenCms Modules
-								because module.input is set hardcoded to "${basedir}".
-
-								Support for including libs of dependencies in project OpenCms has to be added when
-								required in future!!!
-							-->
 							<available file="${@{dependency}.input}" />
 							<then>
 								<for param="archive">
@@ -409,6 +466,9 @@
 		<if>
 			<available file="${module.output.jar}" />
 			<then>
+				<echo message="Copying to tomcat.home/webapps/app.name/WEB-INF/lib:" />
+				<echo message="tomcat.home: ${tomcat.home}" />
+				<echo message="app.name: ${app.name}" />
 				<copy todir="${tomcat.home}/webapps/${app.name}/WEB-INF/lib">
 					<fileset dir="${module.output.jar}" includes="*.jar" />
 				</copy>
