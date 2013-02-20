@@ -25,7 +25,7 @@
 	<xsd:annotation>
 		<xsd:appinfo>
 			<resourcebundle name="com.alkacon.opencms.comments.workplace"/>
-			<layouts>
+			<layouts useAcacia="false">
 				<layout element="ConfigUri" widget="com.alkacon.opencms.comments.CmsCommentConfigurationSelectWidget" />
 				<layout element="List" widget="SelectorWidget" configuration="3:3|5:5|10:10|20:20|50:50|all:${key.label.AlkaconCommentFormOption.List.all}" />
 				<layout element="Security" widget="RadioSelectWidget" configuration="none*:${key.label.AlkaconCommentFormOption.Security.none}|write:${key.label.AlkaconCommentFormOption.Security.write}|view:${key.label.AlkaconCommentFormOption.Security.view}|noview:${key.label.AlkaconCommentFormOption.Security.noview}" />
