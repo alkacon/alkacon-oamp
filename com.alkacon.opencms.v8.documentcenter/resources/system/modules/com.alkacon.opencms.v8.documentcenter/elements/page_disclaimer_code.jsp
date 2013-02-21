@@ -53,9 +53,9 @@ if (paramAction == null || "".equals(paramAction) || "decline".equals(paramActio
 	}
 	if ( !messages.key("disclaimer.decline").equals(paramAction)) { %>
 	<form action="<%= cms.link(uriForm) %>" method="get" name="disclaimerform" target="_top" ><input type="hidden" name="action" value="" /><p>
-		<input type="button" value="<%= messages.key("disclaimer.accept") %>" class="button" onclick="submitDisclaimer(1);" />
+		<input type="button" value="<%= messages.key("disclaimer.accept") %>" class="button btn" onclick="submitDisclaimer(1);" />
 		&nbsp;&nbsp;&nbsp;
-		<input type="button" value="<%= messages.key("disclaimer.decline") %>" class="button" onclick="submitDisclaimer(2);" />
+		<input type="button" value="<%= messages.key("disclaimer.decline") %>" class="button btn" onclick="submitDisclaimer(2);" />
 	</p></form>
 	<% }
 	// show some debug information

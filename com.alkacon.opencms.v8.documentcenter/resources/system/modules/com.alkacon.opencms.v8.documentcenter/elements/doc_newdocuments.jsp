@@ -116,9 +116,9 @@ documentList = CmsDocumentFactory.getSortedDocuments(cms, newResources, "D", fal
 
 	<p style="margin:8px;">
 		<% if (paramUri != null) { %>
-			<a class="button-w" href="<%= cms.link(uri) %>"><%= messages.key("newdocuments.button.back") %></a>&nbsp;
+			<a class="button-w btn" href="<%= cms.link(uri) %>"><%= messages.key("newdocuments.button.back") %></a>&nbsp;
 		<% } %>
-		<a class="button-w" href="<%= cms.link(newSearchLink) %>"><%= messages.key("newdocuments.button.newsearch") %></a>
+		<a class="button-w btn" href="<%= cms.link(newSearchLink) %>"><%= messages.key("newdocuments.button.newsearch") %></a>
 	</p>
     <% if (documentList.size() > 0) { 
         	// show the folder column, this boolean is used in the included "list_documents.txt" file

@@ -35,11 +35,11 @@ package com.alkacon.opencms.v8.documentcenter;
 import org.opencms.file.CmsObject;
 import org.opencms.file.CmsRequestContext;
 import org.opencms.file.CmsResource;
-import org.opencms.main.CmsException;
 import org.opencms.main.OpenCms;
-import org.opencms.search.CmsSearchIndex;
 import org.opencms.search.CmsSearch;
+import org.opencms.search.CmsSearchIndex;
 import org.opencms.search.CmsSearchResult;
+import org.opencms.util.CmsFileUtil;
 import org.opencms.util.CmsStringUtil;
 
 import java.util.ArrayList;
@@ -123,12 +123,15 @@ public class CmsDocumentSearch {
             if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(categories)) {
                 search.setSearchRoots(CmsStringUtil.splitAsArray(categories, CategoryTree.C_LIST_SEPARATOR));
             } else {
-                try {
-                    // TODO: Use different site path
-                    search.setSearchRoot(m_cms.getSitePath(m_cms.readAncestor(m_cms.getRequestContext().getUri(), 260)));
-                } catch (CmsException ex) {
-                    return result;
+                // no categories selected, search complete document center
+                String docCenterPath = (String)m_request.getAttribute(CmsDocumentFrontend.ATTR_STARTPATH);
+                if (CmsStringUtil.isEmptyOrWhitespaceOnly(docCenterPath)) {
+                    docCenterPath = "/";
+                } else {
+                    CmsFileUtil.addTrailingSeparator(docCenterPath);
                 }
+                search.setSearchRoot(docCenterPath);
+
             }
             CmsRequestContext context = m_cms.getRequestContext();
             Iterator<CmsSearchResult> iter = search.getSearchResult().iterator();

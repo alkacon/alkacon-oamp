@@ -42,7 +42,7 @@ if (CmsStringUtil.isNotEmpty(doc.getDocumentId())) {
 %></h2>
 <p>
 <form>
-	&nbsp;&nbsp;<input type="button" class="headbutton" value="<%= messages.key("link.back") %>" onclick="history.back();">
+	&nbsp;&nbsp;<input type="button" class="headbutton btn" value="<%= messages.key("link.back") %>" onclick="history.back();">
 </form>
 </p>
 <!-- doclist start -->

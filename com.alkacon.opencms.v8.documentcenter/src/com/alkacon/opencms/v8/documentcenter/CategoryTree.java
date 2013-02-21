@@ -438,8 +438,12 @@ public class CategoryTree {
                     buf.append(" ").append(optAnchorArgs);
                 }
 
-                buf.append(" href=\"#\" onClick=\"toggleTree(" + categoryTree.size() + ",'" + resourceName + "','").append(
-                    toggleMode).append("')\">");
+                buf.append(
+                    " href=\"#\" class=\"btn btn-info btn-small\" onclick=\"toggleTree("
+                        + categoryTree.size()
+                        + ",'"
+                        + resourceName
+                        + "','").append(toggleMode).append("')\">");
                 buf.append("[").append(toggleMode).append("]</a>");
                 buf.append("&nbsp;");
                 if (mainCat) {

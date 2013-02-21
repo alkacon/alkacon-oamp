@@ -36,7 +36,7 @@
 <div style="margin: 8px"><h2><%= messages.key("versions.headline") %></h2>
 <p>
 <form>
-	&nbsp;&nbsp;<a class="button-w" onclick="history.back()"><%= messages.key("link.back") %></a>
+	&nbsp;&nbsp;<a class="button-w btn" onclick="history.back()"><%= messages.key("link.back") %></a>
 </form>
 </p>
 </div>
