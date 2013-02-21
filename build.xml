@@ -4,6 +4,7 @@
 
 	<property name="opencms.input" location="${basedir}/../OpenCms" />
 	<property name="opencms.output" location="${basedir}/../BuildOamp" />
+	<property name="opencms.output.jars-components" location="${opencms.output}/build/jars-components" />
 	<property name="excludes" value="**/CVS/*,**/.cvsignore,**/.nbattrs,**/.project,**/.classpath" />
 	<property name="opencms.output.distfiles" location="${opencms.output}/zip" />
 
@@ -25,7 +26,7 @@
 
 	<taskdef resource="org/opencms/util/ant/taskdefs.properties" loaderref="opencms">
 		<classpath>
-			<pathelement location="${opencms.input}/lib/compile/ant-opencms-1.1.jar" />
+			<pathelement location="${opencms.output.jars-components}/ant-opencms.jar" />
 		</classpath>
 	</taskdef>
 

@@ -7,6 +7,7 @@
 	<property name="opencms.input.warfiles" location="${opencms.input}/webapp" />
 	<property name="opencms.input.libs.runtime" location="${opencms.input}/lib/runtime" />
 	<property name="opencms.input.libs.compile" location="${opencms.input}/lib/compile" />
+	<property name="opencms.output.jars-components" location="${opencms.output}/build/jars-components" />
 	<property name="opencms.core.lib" location="${opencms.output}/build/jars-core" />
 
 	<property name="module.input" location="${basedir}/${module.name}" />
@@ -36,7 +37,7 @@
 
 	<taskdef resource="org/opencms/util/ant/taskdefs.properties" loaderref="opencms">
 		<classpath>
-			<pathelement location="${opencms.input.libs.compile}/ant-opencms-1.1.jar" />
+			<pathelement location="${opencms.output.jars-components}/ant-opencms.jar" />
 		</classpath>
 	</taskdef>
 
