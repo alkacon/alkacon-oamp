@@ -41,7 +41,7 @@
 
 	<%-- Top Text --%>
 	<c:if test="${!thumbs.value['TextTop'].isEmptyOrWhitespaceOnly}">
-		<div><c:out value="${thumbs.value['TextTop']}" escapeXml="false"/></div>
+		<div class="albumtexttop"><c:out value="${thumbs.value['TextTop']}" escapeXml="false"/></div>
 	</c:if>	
 
 	<%-- Pagination below top text --%>
@@ -86,7 +86,7 @@
 
 	<%-- Bottom Text --%>
 	<c:if test="${!thumbs.value['TextBottom'].isEmptyOrWhitespaceOnly}">
-		<div><c:out value="${thumbs.value['TextBottom']}" escapeXml="false"/></div>
+		<div class="albumtextbottom"><c:out value="${thumbs.value['TextBottom']}" escapeXml="false"/></div>
 	</c:if>
 	
 	<%-- Pagination below bottom text --%>
