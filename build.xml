@@ -25,7 +25,7 @@
 
 	<taskdef resource="org/opencms/util/ant/taskdefs.properties" loaderref="opencms">
 		<classpath>
-			<pathelement location="${opencms.input}/lib/compile/ant-opencms-1.1.jar" />
+			<pathelement location="${opencms.input}/lib/compile/ant-opencms-1.2.jar" />
 		</classpath>
 	</taskdef>
 
