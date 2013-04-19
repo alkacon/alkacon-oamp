@@ -40,6 +40,8 @@ import org.opencms.file.I_CmsResource;
 import org.opencms.file.collectors.A_CmsResourceCollector;
 import org.opencms.main.CmsException;
 import org.opencms.main.CmsIllegalArgumentException;
+import org.opencms.relations.CmsCategory;
+import org.opencms.relations.CmsCategoryService;
 import org.opencms.util.CmsStringUtil;
 import org.opencms.xml.CmsXmlException;
 import org.opencms.xml.content.CmsXmlContent;
@@ -70,6 +72,9 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
     /** The collector name. */
     public static final String COLLECTOR_NAME = "configurableCollector";
 
+    /** Node name for XMLContent collector configuration file: the node(s) containing the categories. */
+    public static final String NODE_CATEGORY = "Category";
+
     /** Node name for XMLContent collector configuration file: the node containing the VFS folder. */
     public static final String NODE_FOLDER = "Folder";
 
@@ -83,7 +88,7 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
     public static final String NODE_RESTYPE = "ResType";
 
     /** The collector configurations to use to collect the resources. */
-    private final List m_collectorConfigurations;
+    private final List<CmsCollectorConfiguration> m_collectorConfigurations;
 
     /** The path prefix to use when reading the collector configurations. */
     private String m_pathPrefix;
@@ -106,7 +111,7 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
         super();
         setDefaultCollectorName(COLLECTOR_NAME);
         setDefaultCollectorParam("");
-        m_collectorConfigurations = new ArrayList();
+        m_collectorConfigurations = new ArrayList<CmsCollectorConfiguration>();
         m_pathPrefix = pathPrefix;
     }
 
@@ -115,7 +120,7 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
      * 
      * @param collectorConfigurations the list of collector configurations to use
      */
-    public CmsConfigurableCollector(List collectorConfigurations) {
+    public CmsConfigurableCollector(List<CmsCollectorConfiguration> collectorConfigurations) {
 
         this();
         m_collectorConfigurations.addAll(collectorConfigurations);
@@ -126,7 +131,7 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
      *
      * @return the collector configurations to use to collect the resources
      */
-    public List getCollectorConfigurations() {
+    public List<CmsCollectorConfiguration> getCollectorConfigurations() {
 
         return m_collectorConfigurations;
     }
@@ -134,7 +139,7 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
     /**
      * @see org.opencms.file.collectors.I_CmsResourceCollector#getCollectorNames()
      */
-    public List getCollectorNames() {
+    public List<String> getCollectorNames() {
 
         return Collections.singletonList(COLLECTOR_NAME);
     }
@@ -160,7 +165,7 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
     /**
      * @see org.opencms.file.collectors.I_CmsResourceCollector#getResults(org.opencms.file.CmsObject, java.lang.String, java.lang.String)
      */
-    public List getResults(CmsObject cms, String collectorName, String param)
+    public List<CmsResource> getResults(CmsObject cms, String collectorName, String param)
     throws CmsDataAccessException, CmsException {
 
         // if action is not set use default
@@ -176,7 +181,7 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
      *
      * @param collectorConfigurations the collector configurations to use to collect the resources
      */
-    public void setCollectorConfigurations(List collectorConfigurations) {
+    public void setCollectorConfigurations(List<CmsCollectorConfiguration> collectorConfigurations) {
 
         m_collectorConfigurations.clear();
         m_collectorConfigurations.addAll(collectorConfigurations);
@@ -194,9 +199,10 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
      * @throws CmsIllegalArgumentException if the given param argument is not a link to a single file
      * 
      */
-    protected List getAllInFolder(CmsObject cms, String param) throws CmsException, CmsIllegalArgumentException {
+    protected List<CmsResource> getAllInFolder(CmsObject cms, String param)
+    throws CmsException, CmsIllegalArgumentException {
 
-        List collectorConfigurations = getCollectorConfigurations();
+        List<CmsCollectorConfiguration> collectorConfigurations = getCollectorConfigurations();
         if (CmsStringUtil.isNotEmpty(param)) {
             // read configuration from param specifying config file in VFS
             try {
@@ -207,25 +213,41 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
             }
         }
 
-        Set collected = new HashSet();
+        Set<CmsResource> collected = new HashSet<CmsResource>();
         for (int i = 0; i < collectorConfigurations.size(); i++) {
             // loop all configurations and collect the resources
-            CmsCollectorConfiguration config = (CmsCollectorConfiguration)collectorConfigurations.get(i);
+            CmsCollectorConfiguration config = collectorConfigurations.get(i);
             CmsResourceFilter filter = CmsResourceFilter.DEFAULT.addExcludeFlags(CmsResource.FLAG_TEMPFILE);
             if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(config.getResourceType())) {
                 filter = filter.addRequireType(config.getResourceTypeId());
             }
-            List resources = cms.readResources(config.getUri(), filter, config.isRecursive());
+            List<CmsResource> resources = cms.readResources(config.getUri(), filter, config.isRecursive());
+
+            if (config.getCategories().size() > 0) {
+                // check the categories of each resource
+                List<CmsResource> catResources = new ArrayList<CmsResource>(resources.size());
+                CmsCategoryService service = CmsCategoryService.getInstance();
+                for (CmsResource resource : resources) {
+                    List<CmsCategory> categories = service.readResourceCategories(cms, cms.getSitePath(resource));
+                    for (CmsCategory neededCategory : config.getCategories()) {
+                        if (categories.contains(neededCategory)) {
+                            catResources.add(resource);
+                            break;
+                        }
+                    }
+                }
+                resources = catResources;
+            }
 
             if (config.getProperties().size() > 0) {
                 // check the properties of each resource
                 for (int k = resources.size() - 1; k > -1; k--) {
-                    CmsResource res = (CmsResource)resources.get(k);
+                    CmsResource res = resources.get(k);
                     cms.readPropertyObjects(res, false);
                     boolean addToResult = true;
                     for (int m = config.getProperties().size() - 1; m > -1; m--) {
                         // loop all required properties
-                        String propertyDef = (String)config.getProperties().get(m);
+                        String propertyDef = config.getProperties().get(m);
                         if (CmsStringUtil.isEmptyOrWhitespaceOnly(cms.readPropertyObject(res, propertyDef, false).getValue())) {
                             addToResult = false;
                             break;
@@ -241,7 +263,7 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
             }
         }
 
-        List result = new ArrayList(collected);
+        List<CmsResource> result = new ArrayList<CmsResource>(collected);
 
         Collections.sort(result, I_CmsResource.COMPARE_ROOT_PATH);
         Collections.reverse(result);
@@ -259,9 +281,10 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
      * 
      * @throws CmsException if something goes wrong
      */
-    private List readConfigurationFromFile(CmsObject cms, String resourceName) throws CmsException {
+    private List<CmsCollectorConfiguration> readConfigurationFromFile(CmsObject cms, String resourceName)
+    throws CmsException {
 
-        List result = new ArrayList();
+        List<CmsCollectorConfiguration> result = new ArrayList<CmsCollectorConfiguration>();
         Locale locale = cms.getRequestContext().getLocale();
 
         // get the resource
@@ -272,23 +295,32 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
         if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(m_pathPrefix)) {
             prefix = m_pathPrefix + "/";
         }
-        List configurations = xml.getValues(prefix + NODE_RESCONFIG, locale);
+        List<I_CmsXmlContentValue> configurations = xml.getValues(prefix + NODE_RESCONFIG, locale);
         int configurationSize = configurations.size();
         for (int i = 0; i < configurationSize; i++) {
             // loop all configuration nodes
-            I_CmsXmlContentValue resConfig = (I_CmsXmlContentValue)configurations.get(i);
+            I_CmsXmlContentValue resConfig = configurations.get(i);
             String resConfigPath = resConfig.getPath() + "/";
             String resType = xml.getStringValue(cms, resConfigPath + NODE_RESTYPE, locale);
             String folder = xml.getStringValue(cms, resConfigPath + NODE_FOLDER, locale);
             // determine the properties to check
-            List propertyValues = xml.getValues(resConfigPath + NODE_PROPERTY, locale);
-            List properties = new ArrayList(propertyValues.size());
+            List<I_CmsXmlContentValue> propertyValues = xml.getValues(resConfigPath + NODE_PROPERTY, locale);
+            List<String> properties = new ArrayList<String>(propertyValues.size());
             for (int k = propertyValues.size() - 1; k > -1; k--) {
-                I_CmsXmlContentValue value = (I_CmsXmlContentValue)propertyValues.get(k);
+                I_CmsXmlContentValue value = propertyValues.get(k);
                 properties.add(value.getStringValue(cms));
             }
+            // determine the categories to check
+            List<I_CmsXmlContentValue> categoryValues = xml.getValues(resConfigPath + NODE_CATEGORY, locale);
+            List<CmsCategory> categories = new ArrayList<CmsCategory>(categoryValues.size());
+            for (int k = categoryValues.size() - 1; k > -1; k--) {
+                I_CmsXmlContentValue value = categoryValues.get(k);
+                String categoryPath = value.getStringValue(cms);
+                CmsResource catRes = cms.readResource(categoryPath);
+                categories.add(CmsCategoryService.getInstance().getCategory(cms, catRes));
+            }
             // add the configuration to the result
-            result.add(new CmsCollectorConfiguration(folder, resType, properties));
+            result.add(new CmsCollectorConfiguration(folder, resType, properties, categories));
         }
 
         return result;

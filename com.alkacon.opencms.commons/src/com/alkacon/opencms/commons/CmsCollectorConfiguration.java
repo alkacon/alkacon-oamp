@@ -34,6 +34,7 @@ package com.alkacon.opencms.commons;
 
 import org.opencms.loader.CmsLoaderException;
 import org.opencms.main.OpenCms;
+import org.opencms.relations.CmsCategory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +54,11 @@ import java.util.List;
  */
 public class CmsCollectorConfiguration {
 
+    /** The categories, at least one of them has to be set on the resources. */
+    private List<CmsCategory> m_categories;
+
     /** The properties that must be set on the collected resources. */
-    private List m_properties;
+    private List<String> m_properties;
 
     /** Flag to indicate if the collector should recursively search the given uri, default is to search recursively. */
     private boolean m_recursive = true;
@@ -73,7 +77,8 @@ public class CmsCollectorConfiguration {
     public CmsCollectorConfiguration(String uri) {
 
         m_uri = uri;
-        m_properties = new ArrayList();
+        m_categories = new ArrayList<CmsCategory>();
+        m_properties = new ArrayList<String>();
     }
 
     /**
@@ -83,7 +88,7 @@ public class CmsCollectorConfiguration {
      * @param resourceType the required resource type
      * @param properties the list of mandatory properties on the resources
      */
-    public CmsCollectorConfiguration(String uri, String resourceType, List properties) {
+    public CmsCollectorConfiguration(String uri, String resourceType, List<String> properties) {
 
         this(uri);
         m_resourceType = resourceType;
@@ -98,10 +103,60 @@ public class CmsCollectorConfiguration {
      * @param properties the list of mandatory properties on the resources
      * @param recurse Flag to indicate if the collector should recursively search the given uri
      */
-    public CmsCollectorConfiguration(String uri, String resourceType, List properties, boolean recurse) {
+    public CmsCollectorConfiguration(String uri, String resourceType, List<String> properties, boolean recurse) {
 
         this(uri, resourceType, properties);
         m_recursive = recurse;
+    }
+
+    /**
+     * Constructor to create a new collector configuration.<p>
+     * 
+     * @param uri the uri to look up the resources from, default is to search recursively
+     * @param resourceType the required resource type
+     * @param properties the list of mandatory properties on the resources
+     * @param categories the categories, at least one of them has to be set on the collected resources
+     */
+    public CmsCollectorConfiguration(
+        String uri,
+        String resourceType,
+        List<String> properties,
+        List<CmsCategory> categories) {
+
+        this(uri);
+        m_resourceType = resourceType;
+        setProperties(properties);
+        setCategories(categories);
+    }
+
+    /**
+     * Constructor to create a new collector configuration.<p>
+     * 
+     * @param uri the uri to look up the resources from, default is to search recursively
+     * @param resourceType the required resource type
+     * @param properties the list of mandatory properties on the resources
+     * @param categories the categories, at least one of them has to be set on the collected resources
+     * @param recurse Flag to indicate if the collector should recursively search the given uri
+     */
+    public CmsCollectorConfiguration(
+        String uri,
+        String resourceType,
+        List<String> properties,
+        List<CmsCategory> categories,
+        boolean recurse) {
+
+        this(uri, resourceType, properties, categories);
+        m_recursive = recurse;
+    }
+
+    /**
+     * Returns the categories, at least one of them has to be set on the collected resources.<p>
+     *
+     * @return the categories, at least one of them has to be set on the collected resources
+     */
+    public List<CmsCategory> getCategories() {
+
+        return m_categories;
     }
 
     /**
@@ -109,7 +164,7 @@ public class CmsCollectorConfiguration {
      *
      * @return the properties that must be set on the collected resources
      */
-    public List getProperties() {
+    public List<String> getProperties() {
 
         return m_properties;
     }
@@ -160,11 +215,24 @@ public class CmsCollectorConfiguration {
     }
 
     /**
+     * Sets the categories, at least one of them has to be set on the collected resources.<p>
+     *
+     * @param categories the categories, at least one of them has to be set on the collected resources
+     */
+    public void setCategories(List<CmsCategory> categories) {
+
+        m_categories.clear();
+        if (categories != null) {
+            m_categories.addAll(categories);
+        }
+    }
+
+    /**
      * Sets the properties that must be set on the collected resources.<p>
      *
      * @param properties the properties that must be set on the collected resources
      */
-    public void setProperties(List properties) {
+    public void setProperties(List<String> properties) {
 
         m_properties.clear();
         if (properties != null) {
