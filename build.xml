@@ -6,6 +6,7 @@
 	<property name="opencms.output" location="${basedir}/../BuildOamp" />
 	<property name="excludes" value="**/CVS/*,**/.cvsignore,**/.nbattrs,**/.project,**/.classpath" />
 	<property name="opencms.output.distfiles" location="${opencms.output}/zip" />
+	<property name="opencms.output.jars-components" location="${opencms.output}/build/jars-components" />
 
 	<property file="alkacon.properties" />
 
@@ -22,15 +23,25 @@
 			<pathelement location="${opencms.input}/lib/compile/ant-contrib-1.0b1.jar" />
 		</classpath>
 	</taskdef>
-
-	<taskdef resource="org/opencms/util/ant/taskdefs.properties" loaderref="opencms">
-		<classpath>
-			<pathelement location="${opencms.input}/lib/compile/ant-opencms-1.1.jar" />
-		</classpath>
-	</taskdef>
+	
+	<target name="init-opencmstasks">
+		<ant antfile="${opencms.input}/build.xml" dir="${opencms.input}" inheritall="false" target="init-components" />
+		<taskdef resource="org/opencms/util/ant/taskdefs.properties" loaderref="opencms">
+			<classpath>
+				<pathelement location="${opencms.output.jars-components}/ant-opencms.jar" />
+				<fileset dir="${opencms.input}">
+					<include name="lib/runtime/commons-digester*.jar" />
+					<include name="lib/runtime/commons-collections*.jar" />
+					<include name="lib/runtime/commons-logging*.jar" />
+					<include name="lib/runtime/commons-beanutils*.jar" />
+					<include name="lib/runtime/mail*.jar" />
+				</fileset>
+			</classpath>
+		</taskdef>
+	</target>
 
 	<!-- internal target for modules.comman.all property initialization -->
-	<target name="init-all">
+	<target name="init-all" depends="init-opencmstasks">
 
 		<property file="${basedir}/all-modules.properties" />
 		<if>
