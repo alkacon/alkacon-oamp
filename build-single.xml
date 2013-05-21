@@ -17,11 +17,12 @@
 	<property name="module.output.classes" location="${opencms.output}/build/classes-${module.name}" />
 	<property name="module.output.jar" location="${opencms.output}/build/jars-${module.name}" />
 	<property name="module.output.zip" location="${opencms.output}/zip" />
+	<property name="opencms.output.jars-components" location="${opencms.output}/build/jars-components" />
 
 	<property name="app.name" location="opencms" />
 
 	<property name="jar.excludes" value="**/CVS/*,**/.cvsignore,**/.nbattrs,**/.project,**/.classpath" />
-	<property name="zip.excludes" value="**/CVS/*,**/.cvsignore,**/.nbattrs,**/.project,**/.classpath" />
+	<property name="zip.excludes" value="**/CVS/*,**/.cvsignore,**/.nbattrs,**/.project,**/.classpath,components.properties" />
 	<property name="jar.includes" value="**/*.properties,**/*.txt,**/*.dtd,**/*.xml,**/*.xsd" />
 
 	<property environment="env" />
@@ -36,7 +37,14 @@
 
 	<taskdef resource="org/opencms/util/ant/taskdefs.properties" loaderref="opencms">
 		<classpath>
-			<pathelement location="${opencms.input.libs.compile}/ant-opencms-1.1.jar" />
+			<pathelement location="${opencms.output.jars-components}/ant-opencms.jar" />
+			<pathelement location="${opencms.input.libs.runtime}/commons-digester-1.8.jar" />
+			<pathelement location="${opencms.input.libs.runtime}/commons-logging-1.1.1.jar" />
+			<pathelement location="${opencms.input.libs.runtime}/commons-collections-3.2.1.jar" />
+			<pathelement location="${opencms.input.libs.runtime}/commons-beanutils-1.8.3.jar" />
+			<pathelement location="${opencms.input.libs.runtime}/dom4j-1.6.1.jar" />
+			<pathelement location="${opencms.input.libs.runtime}/jaxen-1.1.1.jar" />
+			<pathelement location="${opencms.input.libs.runtime}/jug-lgpl-2.0.0.jar" />
 		</classpath>
 	</taskdef>
 
@@ -242,80 +250,80 @@
 			</then>
 		</if>
 	</target>
-	
-	<target name="compile-gwt" depends="init, builddeps" description="Compiles GWT ${module.gwt} module">
-			
-			<if>
-				<isset property="module.gwt" />
-				<then>
-					<property name="module.gwt.bootstrap" value="${module.gwt}" />
-					<property name="module.gwt.output" location="${module.input.res}/system/modules/${module.name}/resources/${module.gwt.bootstrap}" />
-					<outofdate verbose="false">
-						<sourcefiles>
-							<fileset dir="${opencms.input}/src" erroronmissingdir="false">
-								<include name="**/shared/**" />
-							</fileset>
-							<fileset dir="${opencms.input}/src-gwt" erroronmissingdir="false">
-								<include name="**/*.gwt.xml" />
-								<include name="**/client/**" />
-							</fileset>
-							<fileset dir="${module.input}/src" erroronmissingdir="false">
-								<include name="**/shared/**" />
-								<include name="**/*.gwt.xml" />
-								<include name="**/client/**" />
-							</fileset>
-							<fileset dir="${opencms.input.libs.runtime}" />
-							<fileset dir="${opencms.input.libs.compile}" />
-						</sourcefiles>
-						<targetfiles path="${module.gwt.output}/${module.gwt.bootstrap}.nocache.js" />
-						<sequential>
-							<echo message="Deleting GWT output folder: ${module.gwt.output}"/>
-							<delete dir="${module.gwt.output}" failonerror="false" />
 
-							<!-- GWT compiling -->
-							<java dir="${basedir}" 
-										  classname="com.google.gwt.dev.Compiler" 
-										  fork="yes" 
-										  failonerror="true"
-										  maxmemory="1024m">
-								<!--	<arg value="-XdisableClassMetadata" />
+	<target name="compile-gwt" depends="init, builddeps" description="Compiles GWT ${module.gwt} module">
+
+		<if>
+			<isset property="module.gwt" />
+			<then>
+				<property name="module.gwt.bootstrap" value="${module.gwt}" />
+				<property name="module.gwt.output" location="${module.input.res}/system/modules/${module.name}/resources/${module.gwt.bootstrap}" />
+				<outofdate verbose="false">
+					<sourcefiles>
+						<fileset dir="${opencms.input}/src" erroronmissingdir="false">
+							<include name="**/shared/**" />
+						</fileset>
+						<fileset dir="${opencms.input}/src-gwt" erroronmissingdir="false">
+							<include name="**/*.gwt.xml" />
+							<include name="**/client/**" />
+						</fileset>
+						<fileset dir="${module.input}/src" erroronmissingdir="false">
+							<include name="**/shared/**" />
+							<include name="**/*.gwt.xml" />
+							<include name="**/client/**" />
+						</fileset>
+						<fileset dir="${opencms.input.libs.runtime}" />
+						<fileset dir="${opencms.input.libs.compile}" />
+					</sourcefiles>
+					<targetfiles path="${module.gwt.output}/${module.gwt.bootstrap}.nocache.js" />
+					<sequential>
+						<echo message="Deleting GWT output folder: ${module.gwt.output}" />
+						<delete dir="${module.gwt.output}" failonerror="false" />
+
+						<!-- GWT compiling -->
+						<java dir="${basedir}" classname="com.google.gwt.dev.Compiler" fork="yes" failonerror="true" maxmemory="1024m">
+							<!--	<arg value="-XdisableClassMetadata" />
 							  			<arg value="-XdisableCastChecking" />
 							  			<arg value="-compileReport" />  removing compiler args for faster compiling and easier debugging -> stacktrace -->
-								<arg value="-localWorkers" />
-								<arg value="2" />
-								<arg value="-logLevel" />
-								<arg value="INFO" />
-								<arg value="-style" />
-								<arg value="obfuscated" />
-								<arg value="-gen" />
-								<arg file="${opencms.output}/gwt/gen/" />
-								<arg value="-extra" />
-								<arg file="${opencms.output}/gwt/extra/" />
-								<arg value="-war" />
-								<arg file="${module.input.res}/system/modules/${module.name}/resources" />
-								<arg value="${module.gwt}" />
-								<classpath>
-									<fileset dir="${opencms.input.libs.runtime}">
-										<include name="**/*.jar" />
-									</fileset>
-									<fileset dir="${opencms.input.libs.compile}">
-										<include name="**/*.jar" />
-									</fileset>
-									<pathelement path="${module.input}/src" />
-									<pathelement path="${module.dependencies.path}" />
-									<pathelement path="${module.libs.path}" />
-									<pathelement path="${opencms.input}/src" />
-									<pathelement path="${opencms.input}/src-gwt" />
-									<pathelement path="${opencms.input.gwt}" />
-								</classpath>
-							</java>
-							<delete dir="${module.gwt.output}/../WEB-INF" failonerror="false" />
-							<delete dir="${module.gwt.output}/../../gwt-unitCache" failonerror="false" />
-						</sequential>
-					</outofdate>
-				</then>
-			</if>
-		</target>
+							<arg value="-localWorkers" />
+							<arg value="2" />
+							<arg value="-logLevel" />
+							<arg value="INFO" />
+							<arg value="-style" />
+							<arg value="obfuscated" />
+							<arg value="-gen" />
+							<arg file="${opencms.output}/gwt/gen/" />
+							<arg value="-extra" />
+							<arg file="${opencms.output}/gwt/extra/" />
+							<arg value="-war" />
+							<arg file="${module.input.res}/system/modules/${module.name}/resources" />
+							<arg value="${module.gwt}" />
+							<classpath>
+								<fileset dir="${opencms.input.libs.runtime}">
+									<include name="**/*.jar" />
+								</fileset>
+								<fileset dir="${opencms.input.libs.compile}">
+									<include name="**/*.jar" />
+								</fileset>
+								<fileset dir="${opencms.output.jars-components}">
+									<include name="**/*.jar" />
+								</fileset>
+								<pathelement path="${module.input}/src" />
+								<pathelement path="${module.dependencies.path}" />
+								<pathelement path="${module.libs.path}" />
+								<pathelement path="${opencms.input}/src" />
+								<pathelement path="${opencms.input}/src-gwt" />
+								<pathelement path="${opencms.input.gwt}" />
+
+							</classpath>
+						</java>
+						<delete dir="${module.gwt.output}/../WEB-INF" failonerror="false" />
+						<delete dir="${module.gwt.output}/../../gwt-unitCache" failonerror="false" />
+					</sequential>
+				</outofdate>
+			</then>
+		</if>
+	</target>
 
 	<target name="compile" depends="init, buildcore, builddeps,compile-gwt" description="Compiles ${module.name} module classes">
 
@@ -456,34 +464,32 @@
 
 		<mkdir dir="${module.output.zip}" />
 		<if>
-					<isset property="module.gwt" />
-					<then>
-						<ensuredirmanifest xmlfile="${module.input.res}/manifest.xml" base="${module.input.res}/" directory="${module.gwt.output}" />
-					</then>
+			<isset property="module.gwt" />
+			<then>
+				<syncmanifest srcmanifestfile="${module.input.res}/manifest.xml" dstmanifestfile="${module.input.res}/manifest.synched.xml" base="${module.input.res}/" directory="${module.gwt.output}" />
+				<zipfileset id="manifest.zipid" dir="${module.input.res}" includes="manifest.synched.xml" fullpath="manifest.xml" />
+			</then>
+			<else>
+				<zipfileset id="manifest.zipid" dir="${module.input.res}" prefix="" includes="manifest.xml" />
+			</else>
 		</if>
 		<if>
-			<and>
-				<available file="${module.output.jar}" />
-				<available file="${module.input.res}" type="dir" />
-			</and>
+			<available file="${module.output.jar}" />
 			<then>
 				<zip destfile="${module.output.zip}/${module.name}_${module.version}.zip">
 					<zipfileset dir="${module.output.jar}" prefix="system/modules/${module.name}/lib/" includes="${module.name}.jar" />
-					<zipfileset dir="${module.input.res}" prefix="" excludes="${zip.excludes}" />
+					<zipfileset dir="${module.input.res}" prefix="" excludes="${zip.excludes},manifest*.xml" />
+					<zipfileset refid="manifest.zipid" />
 				</zip>
 			</then>
 			<else>
-				<if>
-					<available file="${module.input.res}" type="dir" />
-					<then>
-						<zip destfile="${module.output.zip}/${module.name}_${module.version}.zip">
-							<zipfileset dir="${module.input.res}" prefix="" excludes="${zip.excludes}" />
-						</zip>
-					</then>
-				</if>
+				<zip destfile="${module.output.zip}/${module.name}_${module.version}.zip">
+					<zipfileset dir="${module.input.res}" prefix="" excludes="${zip.excludes},manifest*.xml" />
+					<zipfileset refid="manifest.zipid" />
+				</zip>
 			</else>
 		</if>
-
+		<delete file="${module.input.res}/manifest.synched.xml" failonerror="false" />
 	</target>
 
 	<target name="tomcat.copy" depends="dist" description="Copies module resources to Tomcat directory">
