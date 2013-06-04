@@ -56,6 +56,13 @@ Legend:
 * Bug fixed
 - General comment
 
+2.0.2 - June 4th, 2013
+* Fixed issue in form generator with subfields in IE < 9.
+- Added css class for surrounding webform div.
+- Added HTML <label>-tag for form fields in the default string template.
+- Added missing <label>-tags.
+! Improved compatibility with new OpenCms 8.5 content editor.
+
 2.0.1 - June 14th, 2012
 - Added Spanish translation "workplace_es.properties".
 - Renamed package according to OpenCms 8 naming convention, so the module can be installed parallel to OpenCms 7 version for easy migration.
