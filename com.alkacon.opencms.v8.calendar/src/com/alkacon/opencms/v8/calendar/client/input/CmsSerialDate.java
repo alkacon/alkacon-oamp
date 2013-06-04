@@ -586,8 +586,8 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
         if (getLongValue(endLong, 0) > getLongValue(startLong, 0)) {
             // duration at least one day, calculate it
             long delta = getLongValue(endLong, 0) - getLongValue(startLong, 0);
-            int test = new Long(delta / MILLIS_02_PER_DAY).intValue();
-            m_duration.selectValue((test + 1) + "");
+            int test = (int)(delta / MILLIS_02_PER_DAY);
+            m_duration.selectValue((test) + "");
         }
 
         // determine the serial end type
@@ -829,7 +829,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
         cell1.getElement().getStyle().setWidth(100, Unit.PCT);
         cell1.add(m_dateboxbegin);
         m_dateboxbegin.setDateOnly(true);
-        m_dateboxbegin.getElement().getStyle().setWidth(108, Unit.PX);
+        m_dateboxbegin.getElement().getStyle().setWidth(100, Unit.PX);
         m_dateboxbegin.getElement().getStyle().setFloat(Float.RIGHT);
         m_dateboxbegin.addValueChangeHandler(new ValueChangeHandler<Date>() {
 
@@ -1007,9 +1007,9 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
         m_startDate.getElement().getStyle().setWidth(110, Unit.PX);
         m_startDate.getElement().getStyle().setMarginRight(1, Unit.PX);
         m_startDate.getElement().getStyle().setFloat(Float.RIGHT);
-        m_startDate.addKeyPressHandler(new KeyPressHandler() {
+        m_startDate.addValueChangeHandler(new ValueChangeHandler<String>() {
 
-            public void onKeyPress(KeyPressEvent event) {
+            public void onValueChange(ValueChangeEvent<String> event) {
 
                 fireValueChange();
 
@@ -1026,9 +1026,9 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
         m_endDate.getElement().getStyle().setMarginRight(1, Unit.PX);
         m_endDate.getElement().getStyle().setMarginTop(5, Unit.PX);
         m_endDate.getElement().getStyle().setFloat(Float.RIGHT);
-        m_endDate.addKeyPressHandler(new KeyPressHandler() {
+        m_endDate.addValueChangeHandler(new ValueChangeHandler<String>() {
 
-            public void onKeyPress(KeyPressEvent event) {
+            public void onValueChange(ValueChangeEvent<String> event) {
 
                 fireValueChange();
 
@@ -1036,14 +1036,6 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
         });
 
         m_duration = new CmsSelectBox();
-        m_duration.getElement().getStyle().setMarginTop(5, Unit.PX);
-        m_duration.getElement().getStyle().setFloat(Float.RIGHT);
-        m_duration.getElement().getStyle().setMarginRight(1, Unit.PX);
-        m_duration.getElement().getStyle().setMarginBottom(3, Unit.PX);
-        m_duration.getOpener().setWidth("118px");
-        m_duration.getOpener().setStyleName(
-            org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
-        m_duration.getSelectorPopup().addStyleName(I_CmsLayoutBundle.INSTANCE.globalWidgetCss().selectBoxPopup());
         m_duration.addValueChangeHandler(new ValueChangeHandler<String>() {
 
             public void onValueChange(ValueChangeEvent<String> event) {
@@ -1052,6 +1044,14 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
 
             }
         });
+        m_duration.getElement().getStyle().setMarginTop(5, Unit.PX);
+        m_duration.getElement().getStyle().setFloat(Float.RIGHT);
+        m_duration.getElement().getStyle().setMarginRight(1, Unit.PX);
+        m_duration.getElement().getStyle().setMarginBottom(3, Unit.PX);
+        m_duration.getOpener().setWidth("118px");
+        m_duration.getOpener().setStyleName(
+            org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
+        m_duration.getSelectorPopup().addStyleName(I_CmsLayoutBundle.INSTANCE.globalWidgetCss().selectBoxPopup());
 
         m_duration.addOption("0", m_labels.get("GUI_SERIALDATE_DURATION_DURATION_SAMEDAY_0").isString().stringValue());
         m_duration.addOption("1", m_labels.get("GUI_SERIALDATE_DURATION_DURATION_FIRST_0").isString().stringValue());
