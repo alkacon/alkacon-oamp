@@ -138,7 +138,7 @@ public final class CmsCaptchaServiceCache implements I_CmsEventListener {
 
         String key = null;
         if (captchaSettings.getPresetPath() != null) {
-            key = captchaSettings.getPresetPath();
+            key = captchaSettings.getPresetPath() + captchaSettings.getConfigId();
         } else {
             key = captchaSettings.toRequestParams(cms);
         }

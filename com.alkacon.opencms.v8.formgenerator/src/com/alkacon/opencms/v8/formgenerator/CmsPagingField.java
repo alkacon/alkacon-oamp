@@ -54,9 +54,6 @@ import java.util.Map;
  */
 public class CmsPagingField extends A_CmsField {
 
-    /** The list with all paging fields. */
-    private static List<Integer> m_fields;
-
     /** HTML field type: hidden field. */
     private static final String TYPE = "paging";
 
@@ -147,12 +144,12 @@ public class CmsPagingField extends A_CmsField {
         // the first input field position from the current page
         int firstField = 0;
         // initialize the fields list
-        CmsPagingField.initializeFields(formHandler);
+        List<Integer> pFields = CmsPagingField.initializeFields(formHandler);
         // get the first field
         if (page == 1) {
             firstField = 0;
         } else {
-            firstField = (m_fields.get(page - 2)).intValue() + 1;
+            firstField = (pFields.get(page - 2)).intValue() + 1;
         }
         return firstField;
     }
@@ -170,9 +167,9 @@ public class CmsPagingField extends A_CmsField {
         // the last input field position from the current page
         int lastField = 0;
         // initialize the fields list
-        CmsPagingField.initializeFields(formHandler);
+        List<Integer> pFields = CmsPagingField.initializeFields(formHandler);
         // get the last field
-        lastField = (m_fields.get(page - 1)).intValue();
+        lastField = (pFields.get(page - 1)).intValue();
         return lastField;
     }
 
@@ -287,9 +284,9 @@ public class CmsPagingField extends A_CmsField {
         // the paging position from the last page
         int previousPos = -2;
         // initialize the fields list
-        CmsPagingField.initializeFields(formHandler);
+        List<Integer> pFields = CmsPagingField.initializeFields(formHandler);
         // loop over the fields list
-        Iterator<Integer> iter = m_fields.iterator();
+        Iterator<Integer> iter = pFields.iterator();
         while (iter.hasNext()) {
             int pos = (iter.next()).intValue();
             if ((fieldNr > previousPos) && (fieldNr <= pos)) {
@@ -306,10 +303,10 @@ public class CmsPagingField extends A_CmsField {
      * 
      * @param formHandler the form handler 
      */
-    private static void initializeFields(CmsFormHandler formHandler) {
+    private static List<Integer> initializeFields(CmsFormHandler formHandler) {
 
         // get the positions of all paging fields
-        m_fields = new ArrayList<Integer>();
+        List<Integer> pfields = new ArrayList<Integer>();
         CmsForm formConfiguration = formHandler.getFormConfiguration();
         List<I_CmsField> fields = formConfiguration.getFields();
         for (int pos = 0, n = fields.size(); pos < n; pos++) {
@@ -317,11 +314,12 @@ public class CmsPagingField extends A_CmsField {
             I_CmsField field = fields.get(pos);
             // only use the paging fields
             if (field instanceof CmsPagingField) {
-                m_fields.add(new Integer(pos));
+                pfields.add(new Integer(pos));
             }
         }
         // add the last element as end element
-        m_fields.add(new Integer(fields.size() - 1));
+        pfields.add(new Integer(fields.size() - 1));
+        return pfields;
     }
 
     /**
@@ -354,6 +352,7 @@ public class CmsPagingField extends A_CmsField {
     /**
      * @see com.alkacon.opencms.v8.formgenerator.I_CmsField#getType()
      */
+    @Override
     public String getType() {
 
         return TYPE;

@@ -78,6 +78,9 @@ public final class CmsCaptchaSettings implements Cloneable {
     /** Request parameter for the characters to use for generation. */
     public static final String C_PARAM_CHARACTERS = "crs";
 
+    /** Request parameter for the config ID. */
+    public static final String C_PARAM_CONFIG_ID = "confid";
+
     /** Request parameter for the encoded captcha data. */
     public static final String C_PARAM_DATA = "data";
 
@@ -188,6 +191,9 @@ public final class CmsCaptchaSettings implements Cloneable {
 
     /** The string containing the characters to use for word generation. */
     private String m_characterPool = "";
+
+    /** The ID of the form configuration. */
+    private int m_configId;
 
     /** The string containing the dictionary to use for word generation. */
     private String m_dictionary;
@@ -304,6 +310,16 @@ public final class CmsCaptchaSettings implements Cloneable {
         buf.append(toHexString(m_backgroundColor.getBlue()));
 
         return buf.toString();
+    }
+
+    /**
+     * Returns the ID of the form configuration.<p>
+     * 
+     * @return the ID of the form configuration
+     */
+    public int getConfigId() {
+
+        return m_configId;
     }
 
     /**
@@ -562,6 +578,12 @@ public final class CmsCaptchaSettings implements Cloneable {
             setMathField(Boolean.valueOf(stringValue).booleanValue());
         }
 
+        // form config ID
+        stringValue = getParameter(C_PARAM_CONFIG_ID);
+        if (CmsStringUtil.isNotEmpty(stringValue)) {
+            setConfigId(Integer.valueOf(stringValue).intValue());
+        }
+
         // just for logging comfort (find misconfigured presets):
         stringValue = getParameter(C_PARAM_PRESET);
         if (CmsStringUtil.isNotEmpty(stringValue)) {
@@ -589,10 +611,12 @@ public final class CmsCaptchaSettings implements Cloneable {
      * @param cms the current user's Cms object
      * @param content the XML content of the form
      * @param locale the current locale
+     * @param configId the ID of the form configuration
      */
-    public void init(CmsObject cms, CmsXmlContent content, Locale locale) {
+    public void init(CmsObject cms, CmsXmlContent content, Locale locale, int configId) {
 
         try {
+            m_configId = configId;
             String captchaSettingsPath = CmsFormContentUtil.getContentStringValue(content, cms, new StringBuffer(
                 CmsForm.NODE_CAPTCHA).append("/").append(CmsForm.NODE_CAPTCHA_PRESET).toString(), locale);
             if (CmsStringUtil.isNotEmpty(captchaSettingsPath)) {
@@ -792,6 +816,16 @@ public final class CmsCaptchaSettings implements Cloneable {
     }
 
     /**
+     * Sets the ID of the form configuration.<p>
+     * 
+     * @param id the ID of the form configuration
+     */
+    public void setConfigId(int id) {
+
+        m_configId = id;
+    }
+
+    /**
      * Sets the dictionary for word generation.<p>
      *
      * @param dictionary the dictionary to set
@@ -971,6 +1005,7 @@ public final class CmsCaptchaSettings implements Cloneable {
         buf.append(PARAM_DELIM).append(C_PARAM_PRESET).append(PARAM_KV_SEPARATOR).append(m_presetPath);
         buf.append(PARAM_DELIM).append(C_PARAM_USE_BACKGROUND_IMAGE).append(PARAM_KV_SEPARATOR).append(
             Boolean.toString(m_useBackgroundImage));
+        buf.append(PARAM_DELIM).append(C_PARAM_CONFIG_ID).append(PARAM_KV_SEPARATOR).append(getConfigId());
 
         String result = "";
         // encrypt the parameters
@@ -1005,6 +1040,7 @@ public final class CmsCaptchaSettings implements Cloneable {
         result.m_presetPath = m_presetPath;
         result.m_dictionary = m_dictionary;
         result.m_mathField = m_mathField;
+        result.m_configId = m_configId;
         return result;
     }
 

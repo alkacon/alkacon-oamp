@@ -46,6 +46,7 @@ private static final Log LOG = CmsLog.getLog(CmsCvsExportBean.class);
     // get the configured form elements
     CmsForm form = cms.getFormConfiguration();
     if (cms.downloadData()) {
+
     	CmsCvsExportBean exportBean = new CmsCvsExportBean(cms);
 
         // Preparing the date values for the export bean: 
@@ -98,6 +99,7 @@ private static final Log LOG = CmsLog.getLog(CmsCvsExportBean.class);
 	// set the necessary attributes to use in the string template
 	sTemplate.setAttribute("formuri", cms.link(formUri));
 	sTemplate.setAttribute("formconfig", form);
+	sTemplate.setAttribute("locale", locale.toString());
 	sTemplate.setAttribute("skinuri", org.opencms.workplace.CmsWorkplace.getSkinUri());
 	sTemplate.setAttribute("labelfrom", messages.key("v8.form.label.dataexport.from"));
 	sTemplate.setAttribute("labelto", messages.key("v8.form.label.dataexport.to"));

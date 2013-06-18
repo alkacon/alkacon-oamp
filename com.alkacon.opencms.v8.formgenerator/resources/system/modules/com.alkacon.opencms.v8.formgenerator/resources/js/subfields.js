@@ -1,8 +1,12 @@
 // stores the currently active sub fields
-var activeWebformSubFields = new Array();
+if (activeWebformSubFields == null) {
+	var activeWebformSubFields = new Array();
+}
 
-// stores the stores the mapping of parent field name, chosen parent value and sub field set ID 
-var webFormSubFieldMappings = new Array();
+// stores the stores the mapping of parent field name, chosen parent value and sub field set ID
+if (webFormSubFieldMappings == null) {
+	var webFormSubFieldMappings = new Array();
+}
 
 // toggles the sub field visibility depending on the field value
 function toggleWebformSubFields(inputField) {

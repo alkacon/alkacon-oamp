@@ -40,6 +40,7 @@ import org.opencms.file.CmsFile;
 import org.opencms.file.CmsProperty;
 import org.opencms.file.CmsResource;
 import org.opencms.i18n.CmsEncoder;
+import org.opencms.i18n.CmsLocaleManager;
 import org.opencms.i18n.CmsMessages;
 import org.opencms.i18n.CmsMultiMessages;
 import org.opencms.jsp.CmsJspActionElement;
@@ -368,6 +369,9 @@ public class CmsFormHandler extends CmsJspActionElement {
                 // show the data download page
                 Map<String, String[]> modParameterMap = getParameterMap();
                 modParameterMap.put(PARAM_URI, new String[] {getFormConfiguration().getConfigUri().toString()});
+                modParameterMap.put(
+                    CmsLocaleManager.PARAMETER_LOCALE,
+                    new String[] {getRequestContext().getLocale().toString()});
                 include(modulePath + "elements/datadownload.jsp", null, false, modParameterMap);
 
             } else {
@@ -1312,9 +1316,10 @@ public class CmsFormHandler extends CmsJspActionElement {
             result = false;
         } else if (ACTION_DOWNLOAD_DATA_2.equalsIgnoreCase(formAction)) {
             result = false;
-        } else if (CmsStringUtil.isNotEmpty(getParameter("back"))) {
+        } else if (CmsStringUtil.isNotEmpty(getParameter(PARAM_BACK + getFormConfiguration().getConfigId()))) {
             result = true;
-        } else if ((CmsStringUtil.isNotEmpty(getParameter("page"))) && CmsStringUtil.isEmpty(getParameter("finalpage"))) {
+        } else if ((CmsStringUtil.isNotEmpty(getParameter(PARAM_PAGE + getFormConfiguration().getConfigId())))
+            && CmsStringUtil.isEmpty(getParameter("finalpage"))) {
             result = true;
         }
 
@@ -1386,7 +1391,7 @@ public class CmsFormHandler extends CmsJspActionElement {
         boolean allOk = true;
 
         // if the previous button was used, then no validation is necessary here
-        if (CmsStringUtil.isNotEmpty(getParameter("back"))) {
+        if (CmsStringUtil.isNotEmpty(getParameter(PARAM_BACK + getFormConfiguration().getConfigId()))) {
             return true;
         }
 
@@ -1394,8 +1399,8 @@ public class CmsFormHandler extends CmsJspActionElement {
         List<I_CmsField> fields = getFormConfiguration().getFields();
 
         int pagingPos = fields.size();
-        if (CmsStringUtil.isNotEmpty(getParameter("page"))) {
-            int value = new Integer(getParameter("page")).intValue();
+        if (CmsStringUtil.isNotEmpty(getParameter(PARAM_PAGE + getFormConfiguration().getConfigId()))) {
+            int value = new Integer(getParameter(PARAM_PAGE + getFormConfiguration().getConfigId())).intValue();
             pagingPos = CmsPagingField.getLastFieldPosFromPage(this, value) + 1;
         }
 
@@ -1653,16 +1658,18 @@ public class CmsFormHandler extends CmsJspActionElement {
         int place = 0;
         int currPage = 1;
         int pagingPos = 0;
-        if (getParameterMap().containsKey(PARAM_BACK) && getParameterMap().containsKey(PARAM_PAGE)) {
-            String[] pagingString = getParameterMap().get(PARAM_PAGE);
+        String pagingParam = PARAM_PAGE + getFormConfiguration().getConfigId();
+        if (getParameterMap().containsKey(PARAM_BACK + getFormConfiguration().getConfigId())
+            && getParameterMap().containsKey(pagingParam)) {
+            String[] pagingString = getParameterMap().get(pagingParam);
             currPage = new Integer(pagingString[0]).intValue();
             currPage = CmsPagingField.getPreviousPage(currPage);
-        } else if (getParameterMap().containsKey("page") && !hasValidationErrors()) {
-            String[] pagingString = getParameterMap().get(PARAM_PAGE);
+        } else if (getParameterMap().containsKey(pagingParam) && !hasValidationErrors()) {
+            String[] pagingString = getParameterMap().get(pagingParam);
             currPage = new Integer(pagingString[0]).intValue();
             currPage = CmsPagingField.getNextPage(currPage);
-        } else if (getParameterMap().containsKey(PARAM_PAGE) && hasValidationErrors()) {
-            String[] pagingString = getParameterMap().get(PARAM_PAGE);
+        } else if (getParameterMap().containsKey(pagingParam) && hasValidationErrors()) {
+            String[] pagingString = getParameterMap().get(pagingParam);
             currPage = new Integer(pagingString[0]).intValue();
         }
         pagingPos = CmsPagingField.getFirstFieldPosFromPage(this, currPage);
@@ -1719,7 +1726,7 @@ public class CmsFormHandler extends CmsJspActionElement {
         if (!paging) {
             // show submit button on last form page
             submitButton = getMessages().key("form.button.submit");
-            if (getParameterMap().containsKey(PARAM_PAGE)) {
+            if (getParameterMap().containsKey(pagingParam)) {
                 // add hidden fields and previous button on last form page
                 StringBuffer hFieldsBuf = CmsPagingField.appendHiddenFields(
                     this,
@@ -1860,7 +1867,7 @@ public class CmsFormHandler extends CmsJspActionElement {
         } else {
             req.getSession().removeAttribute(ATTRIBUTE_FILEITEMS);
         }
-        String formAction = getParameter(PARAM_FORMACTION);
+        String formAction = getParameter(PARAM_FORMACTION + formConfigUri.hashCode());
         // security check: some form actions are not allowed for everyone:
         if (getCmsObject().getRequestContext().getCurrentProject().isOnlineProject()) {
             if (CmsFormHandler.ACTION_DOWNLOAD_DATA_1.equals(formAction)) {
@@ -1913,6 +1920,9 @@ public class CmsFormHandler extends CmsJspActionElement {
      */
     protected String getParameter(String parameter) {
 
+        if (PARAM_FORMACTION.equals(parameter)) {
+            parameter += getFormConfiguration().getConfigId();
+        }
         try {
             return (m_parameterMap.get(parameter))[0];
         } catch (NullPointerException e) {

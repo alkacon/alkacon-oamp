@@ -396,6 +396,9 @@ public class CmsForm {
     /** The captcha field. */
     protected CmsCaptchaField m_captchaField;
 
+    /** The form configuration ID. */
+    protected int m_configId;
+
     /** The list of possible configuration errors. */
     protected List<String> m_configurationErrors;
 
@@ -740,6 +743,22 @@ public class CmsForm {
     public CmsCaptchaField getCaptchaField() {
 
         return m_captchaField;
+    }
+
+    /**
+     * Returns the configuration ID of this form.<p>
+     * 
+     * This ID is used as suffix for form field names and other field specific stuff,
+     * making it possible to have more than one form on a page.<p>
+     * 
+     * @return the configuration ID of this form
+     */
+    public int getConfigId() {
+
+        if (m_configId == 0) {
+            m_configId = getConfigUri().hashCode();
+        }
+        return m_configId;
     }
 
     /**
@@ -1572,7 +1591,7 @@ public class CmsForm {
     protected I_CmsField createConfirmationMailCheckbox(CmsMessages messages, boolean initial) {
 
         A_CmsField field = new CmsCheckboxField();
-        field.setName(PARAM_SENDCONFIRMATION);
+        field.setName(PARAM_SENDCONFIRMATION + getConfigId());
         field.setDbLabel(PARAM_SENDCONFIRMATION);
         field.setLabel(messages.key("form.confirmation.label"));
         // check the field status
@@ -1671,7 +1690,7 @@ public class CmsForm {
                 // get the field value
                 String fieldValue = "";
                 if (!initial) {
-                    fieldValue = getParameter(CmsCaptchaField.C_PARAM_CAPTCHA_PHRASE);
+                    fieldValue = getParameter(CmsCaptchaField.C_PARAM_CAPTCHA_PHRASE + getConfigId());
                     if (fieldValue == null) {
                         fieldValue = "";
                     }
@@ -1679,7 +1698,7 @@ public class CmsForm {
 
                 // get the image settings from the XML content
                 CmsCaptchaSettings captchaSettings = CmsCaptchaSettings.getInstance(jsp);
-                captchaSettings.init(cms, content, locale);
+                captchaSettings.init(cms, content, locale, getConfigId());
                 m_captchaField = new CmsCaptchaField(captchaSettings, fieldLabel, fieldValue);
             }
         }
@@ -2695,7 +2714,7 @@ public class CmsForm {
         if (useDbLabel) {
             // set field name to db label
             fieldName = dbLabel;
-            field.setName(fieldName);
+            field.setName(fieldName + getConfigId());
         } else {
             // set the field name to generic value "InputField-number"
             // replace the index ("[number]") of the xmlcontent field by "-number":
@@ -2705,7 +2724,7 @@ public class CmsForm {
             fieldName = "/" + fieldName;
             int slashIndex = fieldName.lastIndexOf("/");
             fieldName = fieldName.substring(slashIndex + 1);
-            field.setName(fieldName + subFieldNameSuffix);
+            field.setName(fieldName + subFieldNameSuffix + getConfigId());
         }
 
         // get the optional text that is shown below the field

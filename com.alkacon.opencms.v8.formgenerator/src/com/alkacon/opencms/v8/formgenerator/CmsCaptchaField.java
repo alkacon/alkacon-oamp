@@ -100,7 +100,7 @@ public class CmsCaptchaField extends A_CmsField {
 
         m_captchaSettings = captchaSettings;
 
-        setName(C_PARAM_CAPTCHA_PHRASE);
+        setName(C_PARAM_CAPTCHA_PHRASE + m_captchaSettings.getConfigId());
         setValue(fieldValue);
         setLabel(fieldLabel);
         setMandatory(true);
@@ -195,11 +195,12 @@ public class CmsCaptchaField extends A_CmsField {
         CmsCaptchaSettings settings = m_captchaSettings;
         // check if there are changed captcha settings stored in the session (true if first image generation failed)
         CmsCaptchaSettings sessionSettings = (CmsCaptchaSettings)jsp.getRequest().getSession().getAttribute(
-            SESSION_PARAM_CAPTCHASETTINGS);
+            SESSION_PARAM_CAPTCHASETTINGS + m_captchaSettings.getConfigId());
         if (sessionSettings != null) {
             // use captcha settings from session to validate the response
             settings = sessionSettings;
-            jsp.getRequest().getSession().removeAttribute(SESSION_PARAM_CAPTCHASETTINGS);
+            jsp.getRequest().getSession().removeAttribute(
+                SESSION_PARAM_CAPTCHASETTINGS + m_captchaSettings.getConfigId());
         }
         String sessionId = jsp.getRequest().getSession().getId();
 
@@ -210,7 +211,9 @@ public class CmsCaptchaField extends A_CmsField {
                     settings,
                     jsp.getCmsObject());
                 if (captchaService != null) {
-                    result = captchaService.validateResponseForID(sessionId, captchaPhrase).booleanValue();
+                    result = captchaService.validateResponseForID(
+                        sessionId + m_captchaSettings.getConfigId(),
+                        captchaPhrase).booleanValue();
                 }
             } catch (CaptchaServiceException cse) {
                 // most often this will be
@@ -232,7 +235,7 @@ public class CmsCaptchaField extends A_CmsField {
     public void writeCaptchaImage(CmsJspActionElement cms) throws IOException {
 
         // remove eventual session attribute containing captcha settings
-        cms.getRequest().getSession().removeAttribute(SESSION_PARAM_CAPTCHASETTINGS);
+        cms.getRequest().getSession().removeAttribute(SESSION_PARAM_CAPTCHASETTINGS + m_captchaSettings.getConfigId());
         String sessionId = cms.getRequest().getSession().getId();
         Locale locale = cms.getRequestContext().getLocale();
         BufferedImage captchaImage = null;
@@ -242,7 +245,7 @@ public class CmsCaptchaField extends A_CmsField {
                 maxTries--;
                 captchaImage = ((ImageCaptchaService)CmsCaptchaServiceCache.getSharedInstance().getCaptchaService(
                     m_captchaSettings,
-                    cms.getCmsObject())).getImageChallengeForID(sessionId, locale);
+                    cms.getCmsObject())).getImageChallengeForID(sessionId + m_captchaSettings.getConfigId(), locale);
             } catch (CaptchaException cex) {
                 // image size is too small, increase dimensions and try it again
                 if (LOG.isInfoEnabled()) {
@@ -254,7 +257,9 @@ public class CmsCaptchaField extends A_CmsField {
                 m_captchaSettings.setImageHeight((int)(m_captchaSettings.getImageHeight() * 1.1));
                 m_captchaSettings.setImageWidth((int)(m_captchaSettings.getImageWidth() * 1.1));
                 // IMPORTANT: store changed captcha settings in session, they have to be used when validating the phrase
-                cms.getRequest().getSession().setAttribute(SESSION_PARAM_CAPTCHASETTINGS, m_captchaSettings.clone());
+                cms.getRequest().getSession().setAttribute(
+                    SESSION_PARAM_CAPTCHASETTINGS + m_captchaSettings.getConfigId(),
+                    m_captchaSettings.clone());
             }
         } while ((captchaImage == null) && (maxTries > 0));
 

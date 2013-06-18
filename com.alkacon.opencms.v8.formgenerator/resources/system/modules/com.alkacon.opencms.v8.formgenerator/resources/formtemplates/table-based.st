@@ -12,10 +12,9 @@ $if(errormessage)$
 	$errormessage$
 	</span></p>
 $endif$
-<form id="emailform"
-	action="$formuri$"
+<form name="emailform$formconfig.configId$" id="emailform$formconfig.configId$" action="$formuri$"
 	method="post"$enctype$ $formconfig.formAttributes$>
-<div style="display: none;"><input type="hidden" name="formaction" id="formaction" value="submit" /></div>
+<div style="display: none;"><input type="hidden" name="formaction$formconfig.configId$" id="formaction$formconfig.configId$" value="submit" /></div>
 <table class="webform_table">
 $fields$
 
@@ -34,11 +33,11 @@ $if(submitbutton)$
 	<tbody><tr><td>&nbsp;</td><td class="webform_button">
 		$hiddenfields$
 		$if(prevbutton)$
-			<input type="submit" value="$prevbutton$" name="back" class="formbutton prevbutton" />
+			<input type="submit" value="$prevbutton$" name="back" class="formbutton btn prevbutton" />
 		$endif$
-		<input type="submit" value="$submitbutton$" class="formbutton submitbutton" />  
+		<input type="submit" value="$submitbutton$" class="formbutton btn submitbutton" />  
 		$if(resetbutton)$
-			&nbsp;<input type="reset" value="$resetbutton$" class="formbutton resetbutton" />
+			&nbsp;<input type="reset" value="$resetbutton$" class="formbutton btn resetbutton" />
 		$endif$
 	</td></tr></tbody>
 $endif$
@@ -47,9 +46,9 @@ $! --- show download button -- !$
 $if(downloadbutton)$
 	<tbody><tr><td>&nbsp;</td><td class="webform_button">
 	<input type="submit"
-		onclick="javascript:document.getElementById('formaction').value='export1';"
+		onclick="javascript:document.getElementById('formaction$formconfig.configId$').value='export1';"
 		value="$downloadbutton$"
-		class="formbutton downloadbutton" />
+		class="formbutton btn downloadbutton" />
 	</td></tr></tbody>
 $endif$
 </table></form>
@@ -232,10 +231,10 @@ $row_start(field=field)$
 <td class="webform_field">
 	$hiddenfields$
 	$if(prevbutton)$
-	<input type="submit" value="$prevbutton$" name="back" class="formbutton prevbutton" />&nbsp;
+	<input type="submit" value="$prevbutton$" name="back$formconfig.configId$" class="formbutton btn prevbutton" />&nbsp;
 	$endif$
-	<input type="submit" value="$nextbutton$" class="formbutton nextbutton" />
-	<input type="hidden" name="page" value="$page$" />
+	<input type="submit" value="$nextbutton$" class="formbutton btn nextbutton" />
+	<input type="hidden" name="page$formconfig.configId$" value="$page$" />
 </td>
 $row_end(field=field,formconfig=formconfig)$
 >>
@@ -291,7 +290,7 @@ $label(field=field,formconfig=formconfig,errormessage=errormessage,mandatory=man
 		$else$
 			<table border="0" cellpadding="0" cellspacing="0" class="webform_radio"><tr><td class="webform_field_radio">
 		$endif$
-		<input type="radio" name="$field.name$" value="$it.value$" class="radio"$if(it.selected)$ checked="checked"$endif$$if(field.hasSubFields)$ onclick="toggleWebformSubFields(this);"$endif$/>
+		<input type="radio" name="$field.name$" value="$it.value$" class="radio"$if(it.selected)$ checked="checked"$endif$$if(field.hasSubFields)$ onchange="toggleWebformSubFields(this);"$endif$/>
 		$if(it.showInRow)$
 			</td><td class="webform_label_radio_row">
 			$it.label$
@@ -535,7 +534,7 @@ $if(captchafield)$
 			return true;
 		}
 	</script>
-	<form id="webformcaptcha" action="" method="post" enctype="multipart/form-data">
+	<form id="webformcaptcha$formconfig.configId$" action="" method="post" enctype="multipart/form-data">
 $endif$
 <table border="0" class="webform_check_table">
 $checkfields:{
@@ -569,9 +568,9 @@ $endif$
 
 <table border="0" class="webform_check_table">
 <tr><td>
-<form id="webformconfirmvalues" method="post" enctype="multipart/form-data" action="$formuri$" onsubmit="return runConfirmValues();">
+<form id="webformconfirmvalues$formconfig.configId$" method="post" enctype="multipart/form-data" action="$formuri$" onsubmit="return runConfirmValues();">
 <div style="display: none;">
-<input type="hidden" name="formaction" value="confirmed" />
+<input type="hidden" name="formaction$formconfig.configId$" value="confirmed" />
 <input type="hidden" name="captchaphrase" value="" />
 $hiddenfields$
 </div><div>
@@ -579,9 +578,9 @@ $hiddenfields$
 </form>
 </td>
 <td>
-<form id="webformdisplayvalues" method="post" enctype="multipart/form-data" action="$formuri$">
+<form id="webformdisplayvalues$formconfig.configId$" method="post" enctype="multipart/form-data" action="$formuri$">
 <div style="display: none;">
-<input type="hidden" name="formaction" value="correct" />
+<input type="hidden" name="formaction$formconfig.configId$" value="correct" />
 $hiddenfields$
 </div><div>
 <input type="submit" value="$correctbutton$" class="formbutton" /></div>
@@ -602,7 +601,7 @@ $confirmfields:{
 >>
 
 
-datadownloadpage(formuri,formconfig,skinuri,labelfrom,datefrom,labelto,dateto,calendaralttext,submitbutton,resetbutton) ::= <<
+datadownloadpage(formuri,formconfig,locale,skinuri,labelfrom,datefrom,labelto,dateto,calendaralttext,submitbutton,resetbutton) ::= <<
 $! ###### DATA DOWNLOAD page of the form ###### !$
 <style type="text/css">
 .calendarinput {
@@ -631,7 +630,7 @@ a.button {
 	padding: 2px;
 }
 </style>
-<form name="emailform" action="$formuri$" method="post" class="formarea">
+<form name="emailform$formconfig.configId$" action="$formuri$" method="post" class="formarea">
 <table class="webform_table">
 <tbody><tr>
  <td class="webform_label">
@@ -673,7 +672,8 @@ a.button {
  </td>
 </tr></tbody>
 </table>
- <input type="hidden" name="formaction" value="export2" />
+ <input type="hidden" name="formaction$formconfig.configId$" value="export2" />
+ <input type="hidden" name="__locale" value="$locale$" />
 </form>
 >>
 
