@@ -775,20 +775,49 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
         if (m_startDateValue == null) {
             m_startDateValue = new Date();
             m_startDate.setText(m_timeFormat.format(m_startDateValue));
-            m_endDate.setText(m_timeFormat.format(m_startDateValue));
+
         }
+
+        switch (Integer.parseInt(m_duration.getFormValueAsString())) {
+            case (0):
+                m_endDateValue.setTime(m_startDateValue.getTime() + (0 * MILLIS_02_PER_DAY));
+                break;
+            case (1):
+                m_endDateValue.setTime(m_startDateValue.getTime() + (1 * MILLIS_02_PER_DAY));
+                break;
+            case (2):
+                m_endDateValue.setTime(m_startDateValue.getTime() + (2 * MILLIS_02_PER_DAY));
+                break;
+            case (3):
+                m_endDateValue.setTime(m_startDateValue.getTime() + (3 * MILLIS_02_PER_DAY));
+                break;
+            case (4):
+                m_endDateValue.setTime(m_startDateValue.getTime() + (4 * MILLIS_02_PER_DAY));
+                break;
+            case (5):
+                m_endDateValue.setTime(m_startDateValue.getTime() + (5 * MILLIS_02_PER_DAY));
+                break;
+            case (6):
+                m_endDateValue.setTime(m_startDateValue.getTime() + (6 * MILLIS_02_PER_DAY));
+                break;
+            case (7):
+                m_endDateValue.setTime(m_startDateValue.getTime() + (7 * MILLIS_02_PER_DAY));
+                break;
+            case (8):
+                m_endDateValue.setTime(m_startDateValue.getTime() + (8 * MILLIS_02_PER_DAY));
+                break;
+        }
+
         startDate = m_timeFormat.parse(m_startDate.getText());
         m_startDateValue.setHours(startDate.getHours());
         m_startDateValue.setMinutes(startDate.getMinutes());
-
         endDate = m_timeFormat.parse(m_endDate.getText());
         m_endDateValue.setHours(endDate.getHours());
         m_endDateValue.setMinutes(endDate.getMinutes());
-        m_endDateValue.setDate((m_endDateValue.getDate() + Integer.parseInt(m_duration.getFormValueAsString())));
-        long endtime = m_endDateValue.getTime();
-        CmsDebugLog.getInstance().printLine("New Endtime: " + endtime);
+
+        CmsDebugLog.getInstance().printLine("New Endtime: " + m_endDateValue.getTime());
         result += CONFIG_STARTDATE + "=" + m_startDateValue.getTime() + "|";
-        result += CONFIG_ENDDATE + "=" + endtime + "|";
+        result += CONFIG_ENDDATE + "=" + m_endDateValue.getTime() + "|";
         String endtype = "1";
         if (m_groupDuration.getSelectedButton() != null) {
             endtype = m_groupDuration.getSelectedButton().getName();
