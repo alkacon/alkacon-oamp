@@ -256,6 +256,11 @@ input.textBoxSerialDate{
 	border-radius: 3px;
 	background: #fff;
 }
+.singleLine{}
+.firstColumn{}
+.defaultView{}
+.secondColumn{}
+.compactView
 .selectBoxPanel{}
 .widget{}
 .dragHelper{}
