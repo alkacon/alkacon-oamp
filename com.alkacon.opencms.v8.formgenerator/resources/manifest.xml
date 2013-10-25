@@ -4692,7 +4692,7 @@
 				</property>
 				<property>
 					<name>default-file</name>
-					<value><![CDATA[form.jsp]]></value>
+					<value><![CDATA[v8-form.jsp]]></value>
 				</property>
 			</properties>
 			<relations/>
