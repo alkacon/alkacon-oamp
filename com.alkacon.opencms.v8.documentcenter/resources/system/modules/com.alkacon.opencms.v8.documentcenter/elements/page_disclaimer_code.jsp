@@ -40,7 +40,7 @@ String paramAction = CmsStringUtil.escapeHtml(request.getParameter("action"));
 if (paramAction == null || "".equals(paramAction) || "decline".equals(paramAction)) { 
   	// show the disclaimer form
 	CmsXmlDocumentContent xmlContent = new CmsXmlDocumentContent(cms);
-	if (messages.key("disclaimer.decline").equals(paramAction)) {
+	if ("decline".equals(paramAction)) {
 		String declinedText = xmlContent.getDisclaimerDeclined();
 		if (declinedText != null) {
 			out.println(declinedText);
@@ -51,7 +51,7 @@ if (paramAction == null || "".equals(paramAction) || "decline".equals(paramActio
 			out.println(disclaimerText);
 		}
 	}
-	if ( !messages.key("disclaimer.decline").equals(paramAction)) { %>
+	if ( !"decline".equals(paramAction)) { %>
 	<form action="<%= cms.link(uriForm) %>" method="get" name="disclaimerform" target="_top" ><input type="hidden" name="action" value="" /><p>
 		<input type="button" value="<%= messages.key("disclaimer.accept") %>" class="button btn" onclick="submitDisclaimer(1);" />
 		&nbsp;&nbsp;&nbsp;

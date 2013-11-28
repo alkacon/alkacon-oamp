@@ -109,49 +109,59 @@ public class CmsDocumentSearch {
         search.setMatchesPerPage(-1);
         search.setIndex(index);
 
-        OpenCms.getSearchManager().getIndex(index).addConfigurationParameter(
-            CmsSearchIndex.EXCERPT,
-            CmsStringUtil.FALSE);
+        // store excerpt configuration of used search index
+        boolean isCreatingExcerpt = OpenCms.getSearchManager().getIndex(index).isCreatingExcerpt();
 
-        if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(query)) {
-            search.setQuery(query);
-            search.init(m_cms);
+        try {
+            OpenCms.getSearchManager().getIndex(index).addConfigurationParameter(
+                CmsSearchIndex.EXCERPT,
+                CmsStringUtil.FALSE);
 
-            // filter the selected categories
-            String categories = (String)m_request.getSession().getAttribute(
-                NewDocumentsTree.C_DOCUMENT_SEARCH_PARAM_CATEGORYLIST);
-            if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(categories)) {
-                search.setSearchRoots(CmsStringUtil.splitAsArray(categories, CategoryTree.C_LIST_SEPARATOR));
-            } else {
-                // no categories selected, search complete document center
-                String docCenterPath = (String)m_request.getAttribute(CmsDocumentFrontend.ATTR_STARTPATH);
-                if (CmsStringUtil.isEmptyOrWhitespaceOnly(docCenterPath)) {
-                    docCenterPath = "/";
+            if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(query)) {
+                search.setQuery(query);
+                search.init(m_cms);
+
+                // filter the selected categories
+                String categories = (String)m_request.getSession().getAttribute(
+                    NewDocumentsTree.C_DOCUMENT_SEARCH_PARAM_CATEGORYLIST);
+                if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(categories)) {
+                    search.setSearchRoots(CmsStringUtil.splitAsArray(categories, CategoryTree.C_LIST_SEPARATOR));
                 } else {
-                    CmsFileUtil.addTrailingSeparator(docCenterPath);
-                }
-                search.setSearchRoot(docCenterPath);
-
-            }
-            CmsRequestContext context = m_cms.getRequestContext();
-            Iterator<CmsSearchResult> iter = search.getSearchResult().iterator();
-
-            while (iter.hasNext()) {
-                CmsSearchResult searchResult = iter.next();
-                try {
-
-                    CmsResource resource = m_cms.readResource(context.removeSiteRoot(searchResult.getPath()));
-
-                    // filter files starting with a "$"
-                    if (resource.getName().startsWith("$")) {
-                        continue;
+                    // no categories selected, search complete document center
+                    String docCenterPath = (String)m_request.getAttribute(CmsDocumentFrontend.ATTR_STARTPATH);
+                    if (CmsStringUtil.isEmptyOrWhitespaceOnly(docCenterPath)) {
+                        docCenterPath = "/";
+                    } else {
+                        CmsFileUtil.addTrailingSeparator(docCenterPath);
                     }
+                    search.setSearchRoot(docCenterPath);
 
-                    result.add(resource);
-                } catch (Exception ex) {
-                    // do nothing
+                }
+                CmsRequestContext context = m_cms.getRequestContext();
+                Iterator<CmsSearchResult> iter = search.getSearchResult().iterator();
+
+                while (iter.hasNext()) {
+                    CmsSearchResult searchResult = iter.next();
+                    try {
+
+                        CmsResource resource = m_cms.readResource(context.removeSiteRoot(searchResult.getPath()));
+
+                        // filter files starting with a "$"
+                        if (resource.getName().startsWith("$")) {
+                            continue;
+                        }
+
+                        result.add(resource);
+                    } catch (Exception ex) {
+                        // do nothing
+                    }
                 }
             }
+        } finally {
+            // reset excerpt creation setting
+            OpenCms.getSearchManager().getIndex(index).addConfigurationParameter(
+                CmsSearchIndex.EXCERPT,
+                Boolean.toString(isCreatingExcerpt));
         }
 
         return result;
