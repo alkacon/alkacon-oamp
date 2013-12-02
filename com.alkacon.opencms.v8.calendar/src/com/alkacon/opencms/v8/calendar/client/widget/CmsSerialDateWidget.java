@@ -32,6 +32,7 @@ import com.alkacon.acacia.client.widgets.I_EditWidget;
 import com.alkacon.opencms.v8.calendar.client.input.CmsSerialDate;
 import com.alkacon.opencms.v8.calendar.client.widget.css.I_CmsLayoutBundle;
 
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.FocusHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -49,11 +50,11 @@ public class CmsSerialDateWidget extends Composite implements I_EditWidget {
     /** Value of the activation. */
     private boolean m_active = true;
 
-    /** The global select box. */
-    private CmsSerialDate m_serialDate;
-
     /** JSON of all labels for this widget. */
     private JSONObject m_labels;
+
+    /** The global select box. */
+    private CmsSerialDate m_serialDate;
 
     /**
      * Constructs an CmsComboWidget with the in XSD schema declared configuration.<p>
@@ -129,6 +130,14 @@ public class CmsSerialDateWidget extends Composite implements I_EditWidget {
     public void onAttachWidget() {
 
         super.onAttach();
+    }
+
+    /**
+     * @see com.alkacon.acacia.client.widgets.I_EditWidget#owns(com.google.gwt.dom.client.Element)
+     */
+    public boolean owns(Element element) {
+
+        return getElement().isOrHasChild(element);
     }
 
     /**
