@@ -1,0 +1,26 @@
+dependencies {
+    compile group: 'javax.servlet', name: 'jsp-api', version: '2.0'
+    compile group: 'javax.servlet', name: 'servlet-api', version: '2.4'
+    compile group: 'org.opencms', name: 'opencms-core', version: opencms_version
+    compile group: 'org.opencms', name: 'opencms-setup', version: opencms_version
+    compile group: 'org.opencms', name: 'opencms-gwt', version: opencms_version
+    compile group: 'org.opencms', name: 'opencms-components', version: opencms_version
+    compile group: 'org.opencms', name: 'org.opencms.workplace.administration', version: opencms_version
+    compile group: 'org.opencms', name: 'org.opencms.workplace.tools.accounts', version: opencms_version
+    compile group: 'org.opencms', name: 'org.opencms.workplace.tools.cache', version: opencms_version
+    compile group: 'org.opencms', name: 'org.opencms.workplace.tools.scheduler', version: opencms_version
+    compile group: 'org.opencms', name: 'org.opencms.workplace.tools.searchindex', version: opencms_version
+    compile group: 'org.opencms', name: 'org.opencms.workplace.tools.modules', version: opencms_version
+    compile group: 'org.opencms', name: 'org.opencms.workplace.tools.sites', version: opencms_version
+
+    // used in old an v8 version of the modules
+    compile files('com.alkacon.opencms.counter/resources/system/modules/com.alkacon.opencms.counter/lib/com.alkacon.opencms.util.jar')
+    compile files('com.alkacon.opencms.feeder/resources/system/modules/com.alkacon.opencms.feeder/lib/jdom-1.0.jar')
+    compile files('com.alkacon.opencms.feeder/resources/system/modules/com.alkacon.opencms.feeder/lib/rome-1.0RC1.jar')
+    compile files('com.alkacon.opencms.formgenerator/resources/system/modules/com.alkacon.opencms.formgenerator/lib/jcaptcha-1.0-all.jar')
+    compile files('com.alkacon.opencms.htmlcleaner/resources/system/modules/com.alkacon.opencms.htmlcleaner/lib/jericho-html-3.1.jar')
+    compile files('com.alkacon.opencms.weboptimization/resources/system/modules/com.alkacon.opencms.weboptimization/lib/yuicompressor-2.4.2.jar')
+  
+    testCompile group: 'org.opencms', name: 'opencms-test', version: opencms_version
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}

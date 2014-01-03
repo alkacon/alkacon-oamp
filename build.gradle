@@ -1,0 +1,236 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+buildDir = build_directory
+project.ext.currentDate=new Date().format('dd.MM.yy')
+project.ext.modulesDistsDir = file("${project.buildDir}/modulesZip")
+
+if (!project.hasProperty('max_heap_size')){
+    project.ext.max_heap_size='1024m'
+}
+
+repositories {
+    mavenLocal()
+    if (project.hasProperty('additional_repositories')){
+        additional_repositories.split(';').each{ repo ->
+            maven { url repo }
+        }
+    }
+    mavenCentral()
+}
+
+configurations { compile { description = 'used to compile the modules jars'
+    } }
+
+// import dependencies
+apply from: 'dependencies.gradle'
+
+modules_oamp_all.split(',').each{ moduleName ->
+    sourceSets.create(moduleName,{
+        java {
+            srcDir "${moduleName}/src"
+            exclude '**/test/**'
+            exclude '**/client/**'
+        }
+        resources.srcDir "${moduleName}/src"
+    });
+    sourceSets[moduleName].compileClasspath=configurations.compile
+    def moduleFolder = file("${projectDir}/${moduleName}")
+    def srcGwtDir = file("${moduleFolder}/src")
+    def manifestFile = file("${moduleFolder}/resources/manifest.xml")
+    def gwtModule = null
+    def gwtSourceSetName = null
+    def propertyFile = file("${moduleFolder}/module.properties")
+    def gwtRename = null
+    if (propertyFile.exists()){
+        println "checking properties for module $moduleName"
+        Properties moduleProperties= new Properties()
+        moduleProperties.load(new FileInputStream(propertyFile))
+        if (moduleProperties['module.gwt']!=null){
+            gwtModule = moduleProperties['module.gwt']
+            gwtSourceSetName = moduleName.replace(".", "_")+'_gwt'
+            println "found GWT module $gwtModule"
+            def moduleXml = (new XmlParser()).parse(srcGwtDir.toString()+"/" +gwtModule.replaceAll('\\.','/')+'.gwt.xml')
+            gwtRename = moduleXml['@rename-to']
+            if (gwtRename==null){
+                gwtRename=gwtModule
+            }
+        }
+    }
+    
+    
+    def moduleDependencies=[]
+    def moduleVersion = version
+    if (manifestFile.exists()){
+        def parsedManifest= (new XmlParser()).parse("${moduleFolder}/resources/manifest.xml")
+        parsedManifest.module[0].dependencies[0].dependency.each{ dep ->
+            moduleDependencies.add(dep.@name)
+        }
+        moduleVersion = parsedManifest.module[0].version[0].text()
+    }
+    task "jar_$moduleName" (type: Jar) {
+        ext.moduleName = moduleName
+        ext.moduleVersion= moduleVersion
+        manifest {
+            attributes 'Implementation-Title': 'Alkacon OAMP', 'Implementation-Version': moduleVersion
+        }
+        from sourceSets[moduleName].output
+        archiveName moduleName+'.jar'
+        baseName moduleName
+        exclude '**/.gitignore'
+        exclude '**/test/**'
+        doFirst {
+            println '======================================================'
+            println "Building JAR for $moduleName version $moduleVersion"
+            println '======================================================'
+        }
+    }
+
+    task "dist_$moduleName" (dependsOn: "jar_$moduleName", type: Zip){
+        ext.moduleName = moduleName
+        ext.moduleFolder = moduleFolder
+        ext.dependencies = moduleDependencies
+        ext.gwtSourceSetName = gwtSourceSetName
+        ext.gwtRenameTo = gwtRename
+        version moduleVersion
+        destinationDir modulesDistsDir
+        // include the jar file
+        from( "${project.buildDir}/libs") {
+            include "${moduleName}.jar"
+            into "/system/modules/${moduleName}/lib/"
+        }
+        baseName moduleName
+        doFirst {
+            println '======================================================'
+            println "Building ZIP for $moduleName version $moduleVersion"
+            println '======================================================'
+        }
+        // include the GWT resources if necessary
+        if (gwtModule == null){
+            from "${moduleFolder}/resources"
+        }else{
+            // exclude the manifest for now, use the synced manifest later
+            from ("${moduleFolder}/resources") {
+                exclude 'manifest.xml'
+                exclude "system/modules/${moduleName}/resources/${gwtRenameTo}/**"
+            }
+            from( "${project.buildDir}/gwt/${moduleName}") {
+                exclude '**/WEB-INF/**'
+                into "/system/modules/${moduleName}/resources/"
+            }
+            def syncedManifest="${project.buildDir}/extra/${moduleName}/manifest.xml"
+            from syncedManifest
+            doFirst{
+                println "Syncing manifest from ${moduleFolder}/resources/manifest.xml to ${syncedManifest} using resources folder system/modules/${moduleName}/resources/${gwtRenameTo} with resources from ${project.buildDir}/gwt/${moduleName}/${gwtRenameTo}" 
+                ant.taskdef(resource: 'org/opencms/util/ant/taskdefs.properties', classpath: configurations.compile.asPath)
+                ant.syncmanifest(
+                        srcmanifestfile: "${moduleFolder}/resources/manifest.xml",
+                        dstmanifestfile: syncedManifest,
+                        base: "${moduleFolder}/resources/",
+                        prefix: "system/modules/${moduleName}/resources/${gwtRenameTo}",
+                        directory: "${project.buildDir}/gwt/${moduleName}/${gwtRenameTo}"
+                        )
+            }
+        }
+    }
+    
+    if (gwtModule != null){
+        println "creating sourceset for $gwtModule"
+        
+        sourceSets.create(gwtSourceSetName,{
+            java {
+                srcDirs srcGwtDir
+                exclude '**/test/**'
+            }
+            resources {
+                srcDirs srcGwtDir
+            }
+        })
+        sourceSets[gwtSourceSetName].compileClasspath=configurations.compile
+        task "gwt_$moduleName" (dependsOn: "${gwtSourceSetName}Classes", type: JavaExec) {
+            ext.buildDir =  project.buildDir.toString()  +"/gwt/$moduleName"
+            ext.extraDir =  project.buildDir.toString() + "/extra/$moduleName"
+            ext.moduleName = moduleName
+            inputs.source sourceSets[gwtSourceSetName].java.srcDirs
+            inputs.dir sourceSets[gwtSourceSetName].output.resourcesDir
+            outputs.dir buildDir
+
+            // Workaround for incremental build (GRADLE-1483)
+            outputs.upToDateSpec = new org.gradle.api.specs.AndSpec()
+
+            doFirst {
+                println '======================================================'
+                println "Building GWT resources for $gwtModule"
+                println '======================================================'
+                // to clean the output directory, delete it first
+                def dir = file(buildDir)
+                if (dir.exists()){
+                    delete{ delete dir }
+                }
+                dir.mkdirs()
+            }
+
+            main = 'com.google.gwt.dev.Compiler'
+
+            classpath {
+                [
+                    sourceSets[moduleName].java.srcDirs,
+                    sourceSets[moduleName].compileClasspath,
+                    sourceSets[gwtSourceSetName].java.srcDirs,
+                    sourceSets[gwtSourceSetName].output.resourcesDir,
+                    sourceSets[gwtSourceSetName].output.classesDir
+                ]
+            }
+
+
+            args =
+                    [
+                        gwtModule,
+                        // Your GWT module
+                        '-war',
+                        buildDir,
+                        '-logLevel',
+                        'INFO',
+                        '-localWorkers',
+                        '2',
+                        '-style',
+                        'obfuscated',
+                        '-extra',
+                        extraDir,
+                        '-strict'
+                        // '-draftCompile' // Speeds up compile with 25%
+                    ]
+
+            maxHeapSize = max_heap_size
+        }
+
+        tasks["dist_$moduleName"].dependsOn tasks["gwt_$moduleName"]
+    }
+    
+}
+task bindist {
+    doFirst{
+        println 'Done'
+    }
+}
+
+tasks.findAll{ task -> task.name.startsWith('dist_')}.each{ dist_task ->
+    dist_task.dependencies.each{ dep ->
+        def depCompileName = 'compile'+dep.replaceAll('\\.','')+'java'
+        tasks.findAll{ comp_task -> comp_task.name.toLowerCase().equals(depCompileName)}.each {comp_task ->
+            sourceSets[dist_task.moduleName].compileClasspath += files("${project.buildDir}/classes/$dep") { builtBy comp_task.name }
+            if (dist_task.gwtSourceSetName!=null){
+                sourceSets["${dist_task.gwtSourceSetName}"].compileClasspath += files("${project.buildDir}/classes/$dep") { builtBy comp_task.name }
+            }
+        }
+    }
+    tasks['jar_'+dist_task.moduleName].dependsOn{
+        tasks.findAll{ comp_task -> comp_task.name.toLowerCase().equals('compile'+dist_task.moduleName.replaceAll('\\.','')+'java')}
+    }
+    bindist.dependsOn dist_task
+}
+
+// fixed issue with libraries containing both .java and .class files
+tasks.withType(JavaCompile) {
+    options.compilerArgs += ["-sourcepath", ""]
+}
