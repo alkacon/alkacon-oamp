@@ -259,6 +259,19 @@ public class CmsCommentConfiguration {
         init(jsp, configUri);
     }
 
+    /**
+     * Constructor for cloning only.<p>
+     * 
+     * @param configUri the configuration URI
+     * @param groups the groups
+     * @param minimized the minimized flag
+     * @param moderated the moderated flag
+     * @param offerLogin the offer login flag
+     * @param orgUnits the org-units
+     * @param resourceBundle the resource bundle
+     * @param security the security mode
+     * @param styleSheet the style sheet
+     */
     private CmsCommentConfiguration(
         String configUri,
         List<CmsGroup> groups,

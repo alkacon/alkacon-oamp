@@ -141,6 +141,9 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     /** Form state for new comments. */
     private static final int STATE_NEW = 0;
 
+    /** The cloned cms context. */
+    private CmsObject m_cms;
+
     /** Cached list of current page comments. */
     private List<CmsFormDataBean> m_comments;
 
@@ -376,6 +379,24 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
             }
         }
         return null;
+    }
+
+    /**
+     * Overriding to work with a cloned context only.<p>
+     * 
+     * @see org.opencms.jsp.CmsJspBean#getCmsObject()
+     */
+    @Override
+    public CmsObject getCmsObject() {
+
+        if (m_cms == null) {
+            try {
+                m_cms = OpenCms.initCmsObject(super.getCmsObject());
+            } catch (CmsException e) {
+                LOG.error(e);
+            }
+        }
+        return m_cms;
     }
 
     /**
@@ -918,6 +939,7 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
      * @param req the request
      * @param res the response
      */
+    @SuppressWarnings("unchecked")
     private void initConfig(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         if (LOG.isDebugEnabled()) {

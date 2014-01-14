@@ -40,6 +40,7 @@ import com.alkacon.opencms.v8.formgenerator.I_CmsField;
 
 import org.opencms.cache.CmsVfsMemoryObjectCache;
 import org.opencms.file.CmsFile;
+import org.opencms.file.CmsObject;
 import org.opencms.i18n.CmsMessages;
 import org.opencms.main.CmsException;
 import org.opencms.main.CmsLog;
@@ -113,6 +114,9 @@ public class CmsCommentFormHandler extends CmsFormHandler {
 
     /** The log object for this class. */
     private static final Log LOG = CmsLog.getLog(CmsCommentFormHandler.class);
+
+    /** The cloned cms context. */
+    private CmsObject m_cms;
 
     /** Some predefined comment substitutions. */
     private Map<String, String> m_substitutions;
@@ -190,6 +194,24 @@ public class CmsCommentFormHandler extends CmsFormHandler {
         sTemplate.setAttribute("commentfield", getCommentFormConfiguration().getFieldByDbLabel("comment"));
         sTemplate.setAttribute("charleft", getMessages().key("form.comment.char.left"));
         out.write(sTemplate.toString());
+    }
+
+    /**
+     * Overriding to work with a cloned context only.<p>
+     * 
+     * @see org.opencms.jsp.CmsJspBean#getCmsObject()
+     */
+    @Override
+    public CmsObject getCmsObject() {
+
+        if (m_cms == null) {
+            try {
+                m_cms = OpenCms.initCmsObject(super.getCmsObject());
+            } catch (CmsException e) {
+                LOG.error(e);
+            }
+        }
+        return m_cms;
     }
 
     /**

@@ -32,6 +32,8 @@ import org.opencms.file.CmsObject;
 import org.opencms.file.CmsPropertyDefinition;
 import org.opencms.file.CmsResource;
 import org.opencms.file.CmsResourceFilter;
+import org.opencms.file.CmsVfsException;
+import org.opencms.i18n.CmsMessages;
 import org.opencms.main.CmsException;
 import org.opencms.main.CmsLog;
 import org.opencms.main.OpenCms;
@@ -42,9 +44,11 @@ import org.opencms.widgets.I_CmsWidget;
 import org.opencms.widgets.I_CmsWidgetDialog;
 import org.opencms.widgets.I_CmsWidgetParameter;
 import org.opencms.workplace.CmsDialog;
+import org.opencms.xml.types.A_CmsXmlContentValue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.logging.Log;
 
@@ -88,6 +92,31 @@ public class CmsCommentConfigurationSelectWidget extends CmsSelectWidget {
     }
 
     /**
+     * @see org.opencms.widgets.A_CmsSelectWidget#getConfiguration(org.opencms.file.CmsObject, org.opencms.xml.types.A_CmsXmlContentValue, org.opencms.i18n.CmsMessages, org.opencms.file.CmsResource, java.util.Locale)
+     */
+    @Override
+    public String getConfiguration(
+        CmsObject cms,
+        A_CmsXmlContentValue schemaType,
+        CmsMessages messages,
+        CmsResource resource,
+        Locale contentLocale) {
+
+        List<CmsSelectWidgetOption> options = getSelectOptionForRootPath(cms, resource.getRootPath());
+        String result = "";
+        int i = 0;
+        for (CmsSelectWidgetOption option : options) {
+            if (i > 0) {
+                result += "|";
+            }
+            result += option.toString();
+            i++;
+        }
+        return result;
+
+    }
+
+    /**
      * @see org.opencms.widgets.CmsSelectWidget#newInstance()
      */
     @Override
@@ -116,39 +145,59 @@ public class CmsCommentConfigurationSelectWidget extends CmsSelectWidget {
         I_CmsWidgetParameter param) {
 
         if (getSelectOptions() == null) {
-            List<CmsSelectWidgetOption> options = new ArrayList<CmsSelectWidgetOption>();
-            // reading the available configuration files
-            List<CmsResource> configResources = new ArrayList<CmsResource>();
-            // first get the path of .content folder within the present sub-site
-            String currentRootPath = cms.addSiteRoot(((CmsDialog)widgetDialog).getParamResource());
-            String contentPath = CmsStringUtil.joinPaths(
-                OpenCms.getADEManager().getSubSiteRoot(cms, currentRootPath),
-                CmsADEManager.CONFIG_FILE_NAME + "/");
-            contentPath = cms.getRequestContext().removeSiteRoot(contentPath);
-            int configTypeId;
-            try {
-                configTypeId = OpenCms.getResourceManager().getResourceType("alkacon-v8-comment").getTypeId();
-                CmsResourceFilter filter = CmsResourceFilter.ONLY_VISIBLE_NO_DELETED.addRequireType(configTypeId);
-                configResources.addAll(cms.readResources(contentPath, filter));
-                // also read from module folder
-                configResources.addAll(cms.readResources("/system/modules/", filter));
-                // generate options for resources
-                for (CmsResource resource : configResources) {
-                    String path = cms.getSitePath(resource);
-                    String title = cms.readPropertyObject(resource, CmsPropertyDefinition.PROPERTY_TITLE, false).getValue(
-                        path);
-                    CmsSelectWidgetOption option = new CmsSelectWidgetOption(path, options.isEmpty(), title, path);
-                    options.add(option);
-                }
-            } catch (CmsException e) {
-                LOG.error(e.getLocalizedMessage(), e);
-            }
-            if (options.isEmpty()) {
-                options.add(new CmsSelectWidgetOption("", true, Messages.get().container(
-                    Messages.ERR_NO_CONFIGURATION_FILES_FOUND_0).key()));
-            }
+            String recourceRootPath = (widgetDialog instanceof CmsDialog)
+            ? cms.addSiteRoot(((CmsDialog)widgetDialog).getParamResource())
+            : cms.addSiteRoot(cms.getRequestContext().getUri());
+            List<CmsSelectWidgetOption> options = getSelectOptionForRootPath(cms, recourceRootPath);
             setSelectOptions(options);
         }
         return getSelectOptions();
+    }
+
+    /**
+     * Collects the available configuration files for the given root path.<p>
+     * 
+     * @param cms the cms context
+     * @param currentRootPath the root path of the edited resource
+     * 
+     * @return the configuration file select options
+     */
+    private List<CmsSelectWidgetOption> getSelectOptionForRootPath(CmsObject cms, String currentRootPath) {
+
+        List<CmsSelectWidgetOption> options = new ArrayList<CmsSelectWidgetOption>();
+        // reading the available configuration files
+        List<CmsResource> configResources = new ArrayList<CmsResource>();
+        // first get the path of .content folder within the present sub-site
+        String contentPath = CmsStringUtil.joinPaths(
+            OpenCms.getADEManager().getSubSiteRoot(cms, currentRootPath),
+            CmsADEManager.CONTENT_FOLDER_NAME + "/");
+        contentPath = cms.getRequestContext().removeSiteRoot(contentPath);
+        int configTypeId;
+        try {
+            configTypeId = OpenCms.getResourceManager().getResourceType("alkacon-v8-comment").getTypeId();
+            CmsResourceFilter filter = CmsResourceFilter.ONLY_VISIBLE_NO_DELETED.addRequireType(configTypeId);
+            try {
+                configResources.addAll(cms.readResources(contentPath, filter));
+            } catch (CmsVfsException e) {
+                // may happen if content path does not exist, can be ignored
+            }
+            // also read from module folder
+            configResources.addAll(cms.readResources("/system/modules/", filter));
+            // generate options for resources
+            for (CmsResource resource : configResources) {
+                String path = cms.getSitePath(resource);
+                String title = cms.readPropertyObject(resource, CmsPropertyDefinition.PROPERTY_TITLE, false).getValue(
+                    path);
+                CmsSelectWidgetOption option = new CmsSelectWidgetOption(path, options.isEmpty(), title, path);
+                options.add(option);
+            }
+        } catch (CmsException e) {
+            LOG.error(e.getLocalizedMessage(), e);
+        }
+        if (options.isEmpty()) {
+            options.add(new CmsSelectWidgetOption("", true, Messages.get().container(
+                Messages.ERR_NO_CONFIGURATION_FILES_FOUND_0).key()));
+        }
+        return options;
     }
 }
