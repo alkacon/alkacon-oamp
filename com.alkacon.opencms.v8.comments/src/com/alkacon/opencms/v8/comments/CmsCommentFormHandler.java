@@ -463,6 +463,22 @@ public class CmsCommentFormHandler extends CmsFormHandler {
     }
 
     /**
+     * Returns the request parameter with the specified name.<p>
+     * 
+     * @param parameter the parameter to return
+     * 
+     * @return the parameter value
+     */
+    protected String getParameter(String parameter) {
+
+        try {
+            return (m_parameterMap.get(parameter))[0];
+        } catch (NullPointerException e) {
+            return "";
+        }
+    }
+
+    /**
      * Returns some predefined comment substitutions.<p>
      * 
      * @return some predefined comment substitutions
