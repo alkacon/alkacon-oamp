@@ -30,6 +30,9 @@
 			<resourcebundle name="com.alkacon.opencms.calendar.workplace"/>
 			<preview uri="%(previewtempfile)" />
 			<defaults>
+			        <default element="Title" value="New calendar entry" />
+				<default element="Teaser" value="Please edit the calendar entry teaser." />
+				<default element="Text" value="Please edit the calendar entry text." />
 				<default element="Showtime" value="true" />
 			</defaults>
 			<layouts>
@@ -42,8 +45,13 @@
 				<mapping element="Showtime" mapto="property:calendar.showtime" />
 				<mapping element="Date" mapto="property:calendar.startdate" />
 				<mapping element="End" mapto="property:calendar.enddate" />
+				<!-- Enables nice url name for detail pages -->
+				<mapping element="Title" mapto="urlName" />				
 			</mappings>
 			<validationrules/>
+			<formatters>				
+				<formatter uri="/system/modules/com.alkacon.opencms.calendar/formatters/formatter-entry.jsp" searchcontent="false"/>							
+			</formatters>			
 		</xsd:appinfo>
 
 	</xsd:annotation>  

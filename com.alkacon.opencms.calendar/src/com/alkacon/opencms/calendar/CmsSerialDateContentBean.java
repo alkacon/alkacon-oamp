@@ -370,6 +370,17 @@ public class CmsSerialDateContentBean extends CmsJspActionElement implements I_C
         m_detailFile = getRequestContext().getUri();
     }
 
+
+    /**
+     * @param detailFile the detail file to be used instead of the request context URI 
+     * @see org.opencms.jsp.CmsJspBean#init(javax.servlet.jsp.PageContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+     */
+    public void init(PageContext context, HttpServletRequest req, HttpServletResponse res, String detailFile) {
+
+        super.init(context, req, res);
+        m_detailFile = detailFile;
+    }    
+    
     /**
      * Checks if the start and end date have the same date and differ only from their time.<p>
      * 

@@ -152,6 +152,96 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/.config</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/.config</destination>
+			<type>module_config</type>
+			<uuidstructure>a2d1453d-5ae0-11dc-b7ed-5fc9fa232c01</uuidstructure>			
+			<datelastmodified>Mon, 04 Jul 2011 15:59:39 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 04 Jul 2011 15:58:59 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>locale</name>
+					<value><![CDATA[en]]></value>
+				</property>
+				<property>
+					<name>locale-available</name>
+					<value><![CDATA[en]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.calendar/formatters</destination>
+			<type>folder</type>
+			<uuidstructure>a2435d19-5ae0-11dc-b7ed-5fc9fa232c02</uuidstructure>
+			<datelastmodified>Tue, 04 Sep 2007 12:16:15 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 04 Sep 2007 12:16:15 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/formatters/formatter-entry.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/formatters/formatter-entry.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>02b448be-11e7-11dd-b9fc-d3ac683d9e03</uuidstructure>
+			<datelastmodified>Thu, 24 Apr 2008 12:25:41 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 24 Apr 2008 10:12:57 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Formatter for calendar entry]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[uri;params=(count);timeout=720]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/formatters/formatter-serialentry.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/formatters/formatter-serialentry.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>02b448be-11e7-11dd-b9fc-d3ac683d9e04</uuidstructure>
+			<datelastmodified>Thu, 24 Apr 2008 12:25:41 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Thu, 24 Apr 2008 10:12:57 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Formatter for calendar serialentry]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[uri;params=(count);timeout=720]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>				
+		<file>
 			<destination>system/modules/com.alkacon.opencms.calendar/classes</destination>
 			<type>folder</type>
 			<uuidstructure>a2d1453d-5ae0-11dc-b7ed-5fc9fa232cc8</uuidstructure>
@@ -544,6 +634,103 @@
 			<relations/>
 			<accesscontrol/>
 		</file>
+		<file>
+			<destination>system/modules/com.alkacon.opencms.calendar/functions</destination>
+			<type>folder</type>
+			<uuidstructure>441ff7a2-057a-11e1-a03e-7f953b89ceff</uuidstructure>
+			<datelastmodified>Wed, 02 Nov 2011 17:44:08 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Nov 2011 17:44:08 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/functions/calendar-side-currententries.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/functions/calendar-side-currententries.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>666b43a4-057a-11e1-a03e-7f953b89ceff</uuidstructure>
+			<uuidresource>666b43a5-057a-11e1-a03e-7f953b89ceff</uuidresource>
+			<datelastmodified>Wed, 02 Nov 2011 17:48:54 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Nov 2011 17:45:06 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Calendar current entries side element]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[uri;params=(count);timeout=720]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/functions/calendar-side-month.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/functions/calendar-side-month.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>666fb079-057a-11e1-a03e-7f953b89ceff</uuidstructure>
+			<uuidresource>666fb07a-057a-11e1-a03e-7f953b89ceff</uuidresource>
+			<datelastmodified>Thu, 03 Nov 2011 17:22:23 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Nov 2011 17:45:06 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Calendar month side element]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[uri;params=(calYear,calMonth);timeout=720]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.calendar/functions/detail-calendar.jsp</source>
+			<destination>system/modules/com.alkacon.opencms.calendar/functions/detail-calendar.jsp</destination>
+			<type>jsp</type>
+			<uuidstructure>c7b6a4be-057a-11e1-a03e-7f953b89ceff</uuidstructure>
+			<uuidresource>c7b6a4bf-057a-11e1-a03e-7f953b89ceff</uuidresource>
+			<datelastmodified>Wed, 02 Nov 2011 19:25:29 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Wed, 02 Nov 2011 17:47:49 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Calendar views detail page]]></value>
+				</property>
+				<property>
+					<name>cache</name>
+					<value><![CDATA[uri;params=(calYear,calMonth,calDay,calView)]]></value>
+				</property>
+				<property type="shared">
+					<name>export</name>
+					<value><![CDATA[false]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>		
 		<file>
 			<destination>system/modules/com.alkacon.opencms.calendar/lib</destination>
 			<type>folder</type>

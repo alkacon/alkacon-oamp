@@ -1,4 +1,8 @@
-<%@ page session="false" buffer="none" import="java.util.*, org.opencms.jsp.*, com.alkacon.opencms.calendar.*" %><%
+<%@ page session="false" buffer="none" import="java.util.*, org.opencms.jsp.*, com.alkacon.opencms.calendar.*, org.opencms.file.*" %>
+<%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms"  %>
+
+<div>
+<%
 
 // initialize the calendar bean
 CmsJspActionElement cms = new CmsJspActionElement(pageContext, request, response);
@@ -23,5 +27,29 @@ calendarBean.getStyle().setStyleDayEntryLink("cal_mon_day_event");
 calendarBean.getStyle().setStyleDayHoliday("cal_mon_day_holiday");
 calendarBean.getStyle().setStyleDayMaybeHoliday("cal_mon_day_maybeholiday");
 
+// set the URI to the view which is displayed when clicking on a day
+//calendarBean.setViewUri("/flower-en/calendario/");
+
 // show the calender monthly view for the requested locale
 %><%= calendarBean.buildCalendarMonth() %>
+
+
+<%
+CmsObject cmsObject = cms.getCmsObject();
+CmsRequestContext cmsContext = cmsObject.getRequestContext();
+CmsProject Project = cmsContext.currentProject();
+if (!Project.isOnlineProject()) {
+%>
+	<cms:contentload collector="allInFolderDateReleasedDesc" param="/.content/calendar-entry/entry_%(number).html|alkacon-cal-entry|1" editable="true"><div>
+	Click + for new calendar entry
+	</div></cms:contentload>
+	
+	<cms:contentload collector="allInFolderDateReleasedDesc" param="/.content/calendar-serial/serial_%(number).html|alkacon-cal-serial|1" editable="true"><div>
+	Click + for new serial calendar entry
+	</div></cms:contentload>	
+<%
+} // end if (!(Project.isOnlineProject()))
+%>
+
+
+</div>

@@ -37,6 +37,9 @@
 				<default element="Showtime" value="true" />
 				<default element="Change/Showtime" value="true" />
 				<default element="Change/Time" value="%(key.calendar.defaults.time)" />
+				<default element="Title" value="New serial calendar entry" />
+				<default element="Teaser" value="Please edit the serial calendar entry teaser." />
+				<default element="Text" value="Please edit the serial calendar entry text." />
 			</defaults>
 			<layouts>
 				<layout element="Teaser" widget="TextareaWidget" configuration="3" />
@@ -48,8 +51,13 @@
 				<mapping element="Teaser" mapto="property:Description" />
 				<mapping element="Showtime" mapto="property:calendar.showtime" />
 				<mapping element="Serialdate" mapto="property:calendar.startdate" />
+				<!-- Enables nice url name for detail pages -->
+				<mapping element="Title" mapto="urlName" />					
 			</mappings>
 			<validationrules/>
+			<formatters>				
+				<formatter uri="/system/modules/com.alkacon.opencms.calendar/formatters/formatter-serialentry.jsp" searchcontent="false"/>				
+			</formatters>
 		</xsd:appinfo>
 
 	</xsd:annotation>  
