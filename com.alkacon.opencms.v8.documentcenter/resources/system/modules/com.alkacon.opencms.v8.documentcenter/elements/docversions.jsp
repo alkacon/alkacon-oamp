@@ -13,6 +13,9 @@
 
 			// get locale and message properties
 			String locale = request.getParameter("locale");
+			if (locale == null) {
+				locale = cms.getRequestContext().getLocale().toString();
+			}
 			CmsMessages messages = cms.getMessages(
 					"com.alkacon.opencms.v8.documentcenter.messages_documents",
 					locale);

@@ -48,6 +48,7 @@ import org.opencms.xml.content.CmsXmlContent;
 import org.opencms.xml.content.CmsXmlContentFactory;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -238,7 +239,8 @@ public class CmsShowDocumentCenter implements I_CmsResourceInit {
 
         // get the container page to fetch the document center configuration
         CmsXmlContainerPage cPage = CmsXmlContainerPageFactory.unmarshal(cms, resource);
-        CmsContainerPageBean pageBean = cPage.getContainerPage(cms, cms.getRequestContext().getLocale());
+        Locale locale = OpenCms.getLocaleManager().getDefaultLocale(cms, resource);
+        CmsContainerPageBean pageBean = cPage.getContainerPage(cms, locale);
         if (pageBean != null) {
             // found the page bean, look up document center element
             List<CmsContainerElementBean> elements = pageBean.getElements();
@@ -249,7 +251,7 @@ public class CmsShowDocumentCenter implements I_CmsResourceInit {
                 if (element.getResource().getTypeId() == 269) {
                     // read the start folder from the document center configuration
                     CmsXmlContent docConfig = CmsXmlContentFactory.unmarshal(cms, cms.readFile(element.getResource()));
-                    return docConfig.getStringValue(cms, "Folder", cms.getRequestContext().getLocale());
+                    return docConfig.getStringValue(cms, "Folder", locale);
                 }
             }
         }
