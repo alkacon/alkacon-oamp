@@ -266,6 +266,7 @@
 						<fileset dir="${opencms.input}/src-gwt" erroronmissingdir="false">
 							<include name="**/*.gwt.xml" />
 							<include name="**/client/**" />
+							<include name="**/linker/**" />
 						</fileset>
 						<fileset dir="${module.input}/src" erroronmissingdir="false">
 							<include name="**/shared/**" />
