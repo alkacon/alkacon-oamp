@@ -20,7 +20,7 @@ This is the "document management" formatter
 --%><%
 	// initialize document frontend
 	CmsDocumentFrontend cms = new CmsDocumentFrontend(pageContext, request, response);
-
+	CmsRequestUtil.setNoCacheHeaders(response);
 	if (request.getAttribute(CmsDocumentFrontend.ATTR_STARTPATH) == null) {
 		String startPath = (String)pageContext.getAttribute("startfolder");
 		CmsShowDocumentCenter.setDocumentCenterAttributes(startPath, "/", request);

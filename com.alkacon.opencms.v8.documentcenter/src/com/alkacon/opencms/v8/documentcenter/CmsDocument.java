@@ -280,11 +280,19 @@ public class CmsDocument {
 
         if ("pdf".equals(postfix)) {
             return "PDF";
-        } else if ("doc".equals(postfix) || "dot".equals(postfix) || "rtf".equals(postfix)) {
+        } else if ("doc".equals(postfix)
+            || "docx".equals(postfix)
+            || "dot".equals(postfix)
+            || "rtf".equals(postfix)
+            || "odt".equals(postfix)) {
             return "Word";
-        } else if ("xls".equals(postfix)) {
+        } else if ("xls".equals(postfix) || "xlsx".equals(postfix) || "ods".equals(postfix)) {
             return "Excel";
-        } else if ("ppt".equals(postfix)) {
+        } else if ("pps".equals(postfix)
+            || "ppsx".equals(postfix)
+            || "ppt".equals(postfix)
+            || "pptx".equals(postfix)
+            || "odp".equals(postfix)) {
             return "Powerpoint";
         } else if (postfix.startsWith("htm")) {
             return "HTML";
