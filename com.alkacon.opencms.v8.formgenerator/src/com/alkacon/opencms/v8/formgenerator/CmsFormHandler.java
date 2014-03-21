@@ -44,6 +44,7 @@ import org.opencms.i18n.CmsLocaleManager;
 import org.opencms.i18n.CmsMessages;
 import org.opencms.i18n.CmsMultiMessages;
 import org.opencms.jsp.CmsJspActionElement;
+import org.opencms.jsp.util.CmsJspStandardContextBean;
 import org.opencms.mail.CmsHtmlMail;
 import org.opencms.mail.CmsSimpleMail;
 import org.opencms.main.CmsException;
@@ -1460,9 +1461,11 @@ public class CmsFormHandler extends CmsJspActionElement {
         // create the check page
         StringTemplate sTemplate = getOutputTemplate("checkpage");
         // set the necessary attributes to use in the string template
-        sTemplate.setAttribute(
-            "formuri",
-            OpenCms.getLinkManager().substituteLink(getCmsObject(), getCmsObject().getRequestContext().getUri()));
+        String formUri = getCmsObject().getRequestContext().getUri();
+        if (CmsJspStandardContextBean.getInstance(getRequest()).isDetailRequest()) {
+            formUri = CmsJspStandardContextBean.getInstance(getRequest()).getDetailContentSitePath();
+        }
+        sTemplate.setAttribute("formuri", OpenCms.getLinkManager().substituteLink(getCmsObject(), formUri));
         sTemplate.setAttribute("formconfig", getFormConfiguration());
         sTemplate.setAttribute("checktext", getFormCheckText());
 
@@ -1758,9 +1761,11 @@ public class CmsFormHandler extends CmsJspActionElement {
         // create the main form and pass the previously generated field HTML as attribute
         StringTemplate sTemplate = getOutputTemplate("form");
         // set the necessary attributes to use in the string template
-        sTemplate.setAttribute(
-            "formuri",
-            OpenCms.getLinkManager().substituteLink(getCmsObject(), getCmsObject().getRequestContext().getUri()));
+        String formUri = getCmsObject().getRequestContext().getUri();
+        if (CmsJspStandardContextBean.getInstance(getRequest()).isDetailRequest()) {
+            formUri = CmsJspStandardContextBean.getInstance(getRequest()).getDetailContentSitePath();
+        }
+        sTemplate.setAttribute("formuri", OpenCms.getLinkManager().substituteLink(getCmsObject(), formUri));
         sTemplate.setAttribute("enctype", encType);
         sTemplate.setAttribute("errormessage", errorMessage);
         sTemplate.setAttribute("mandatorymessage", mandatoryMessage);
