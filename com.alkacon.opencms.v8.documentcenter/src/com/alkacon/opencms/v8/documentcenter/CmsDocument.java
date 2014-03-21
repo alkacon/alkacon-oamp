@@ -34,6 +34,7 @@ package com.alkacon.opencms.v8.documentcenter;
 
 import org.opencms.file.CmsObject;
 import org.opencms.file.CmsResource;
+import org.opencms.file.CmsResourceFilter;
 import org.opencms.i18n.CmsLocaleManager;
 import org.opencms.main.CmsException;
 import org.opencms.main.OpenCms;
@@ -863,7 +864,7 @@ public class CmsDocument {
 
         //        return m_cmsResource.isFolder();
         if (m_cmsResource.isFolder()) {
-            List<CmsResource> list = cms.getFilesInFolder(m_path);
+            List<CmsResource> list = cms.getResourcesInFolder(m_path, CmsResourceFilter.DEFAULT);
 
             for (int i = 0; i < list.size(); i++) {
                 if ((list.get(i).getName()).startsWith("$")) {
