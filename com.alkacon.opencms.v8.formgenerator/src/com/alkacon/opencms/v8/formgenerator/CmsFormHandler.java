@@ -1027,10 +1027,36 @@ public class CmsFormHandler extends CmsJspActionElement {
     public void init(PageContext context, HttpServletRequest req, HttpServletResponse res, String formConfigUri)
     throws CmsException {
 
+        init(context, req, res, formConfigUri, null);
+    }
+
+    /**
+     * Initializes the form handler and creates the necessary configuration objects.<p>
+     * 
+     * @param context the JSP page context object
+     * @param req the JSP request 
+     * @param res the JSP response 
+     * @param formConfigUri URI of the form configuration file, if not provided, current URI is used for configuration
+     * @param dynamicConfig map of configurations that can overwrite the configuration from the configuration file
+     * 
+     * @throws CmsException if initializing the form message objects fails
+     */
+    public void init(
+        PageContext context,
+        HttpServletRequest req,
+        HttpServletResponse res,
+        String formConfigUri,
+        Map<String, String> dynamicConfig) throws CmsException {
+
         super.init(context, req, res);
         try {
             // initialize the form configuration
-            configureForm(req, formConfigUri);
+            // for backwards compatibility, it is checked, if dynamicConfig really exists
+            if (dynamicConfig == null) {
+                configureForm(req, formConfigUri);
+            } else {
+                configureForm(req, formConfigUri, dynamicConfig);
+            }
             m_initSuccess = true;
         } catch (Exception e) {
             LOG.error(e);
@@ -1825,8 +1851,22 @@ public class CmsFormHandler extends CmsJspActionElement {
      * 
      * @throws Exception if creating the form configuration objects fails
      */
-    @SuppressWarnings("unchecked")
     protected void configureForm(HttpServletRequest req, String formConfigUri) throws Exception {
+
+        configureForm(req, formConfigUri, null);
+    }
+
+    /**
+     * Parses the form configuration and creates the necessary configuration objects.<p>
+     * 
+     * @param req the JSP request 
+     * @param formConfigUri URI of the form configuration file, if not provided, current URI is used for configuration
+     * @param dynamicConfig map of configurations that can overwrite the configuration from the configuration file
+     *  
+     * @throws Exception if creating the form configuration objects fails
+     */
+    protected void configureForm(HttpServletRequest req, String formConfigUri, Map<String, String> dynamicConfig)
+    throws Exception {
 
         // read the form configuration file from VFS
         if (CmsStringUtil.isEmpty(formConfigUri)) {
@@ -1889,7 +1929,15 @@ public class CmsFormHandler extends CmsJspActionElement {
         initMessages(formConfigUri);
 
         // get the form configuration
-        setFormConfiguration(new CmsForm(this, getMessages(), isInitial(), formConfigUri, formAction));
+        // for backwards compatibility, check, if dynamicConfig is really given
+        CmsForm form;
+        if (dynamicConfig == null) {
+            form = new CmsForm(this, getMessages(), isInitial(), formConfigUri, formAction);
+        } else {
+            form = new CmsForm(this, getMessages(), isInitial(), formConfigUri, formAction, dynamicConfig);
+        }
+        setFormConfiguration(form);
+
     }
 
     /**

@@ -598,7 +598,32 @@ public class CmsForm {
     public CmsForm(CmsFormHandler jsp, CmsMessages messages, boolean initial, String formConfigUri, String formAction)
     throws Exception {
 
+        // for backwards compatibility, not calling the next constructor with additional parameter
         init(jsp, messages, initial, formConfigUri, formAction);
+    }
+
+    /**
+     * Constructor which parses the configuration file using a given configuration file URI.<p>
+     * 
+     * @param jsp the initialized CmsJspActionElement to access the OpenCms API
+     * @param messages the localized messages
+     * @param initial if true, field values are filled with values specified in the configuration file, otherwise from the request
+     * @param formConfigUri URI of the form configuration file, if not provided, current URI is used for configuration
+     * @param formAction the desired action submitted by the form
+     * @param dynamicConfig map of configurations that can overwrite the configuration from the configuration file
+     * 
+     * @throws Exception if parsing the configuration fails
+     */
+    public CmsForm(
+        CmsFormHandler jsp,
+        CmsMessages messages,
+        boolean initial,
+        String formConfigUri,
+        String formAction,
+        Map<String, String> dynamicConfig)
+    throws Exception {
+
+        init(jsp, messages, initial, formConfigUri, formAction, dynamicConfig);
     }
 
     /**
@@ -1350,6 +1375,29 @@ public class CmsForm {
     public void init(CmsFormHandler jsp, CmsMessages messages, boolean initial, String formConfigUri, String formAction)
     throws Exception {
 
+        init(jsp, messages, initial, formConfigUri, formAction, null);
+    }
+
+    /**
+     * Initializes the form configuration and creates the necessary form field objects.<p>
+     * 
+     * @param jsp the initialized CmsJspActionElement to access the OpenCms API
+     * @param messages the localized messages
+     * @param initial if true, field values are filled with values specified in the XML configuration
+     * @param formConfigUri URI of the form configuration file, if not provided, current URI is used for configuration
+     * @param formAction the desired action submitted by the form
+     * @param dynamicConfig map of configurations that can overwrite the configuration from the configuration file
+     * 
+     * @throws Exception if parsing the configuration fails
+     */
+    public void init(
+        CmsFormHandler jsp,
+        CmsMessages messages,
+        boolean initial,
+        String formConfigUri,
+        String formAction,
+        Map<String, String> dynamicConfig) throws Exception {
+
         m_parameterMap = jsp.getParameterMap();
         // read the form configuration file from VFS
         if (CmsStringUtil.isEmpty(formConfigUri)) {
@@ -1392,7 +1440,12 @@ public class CmsForm {
         m_jspAction = jsp;
 
         // initialize general form configuration
-        initFormGlobalConfiguration(content, jsp.getCmsObject(), locale, messages);
+        // for backwards compatibility, check if dynamicConfig really exists
+        if (dynamicConfig == null) {
+            initFormGlobalConfiguration(content, jsp.getCmsObject(), locale, messages);
+        } else {
+            initFormGlobalConfiguration(content, jsp.getCmsObject(), locale, messages, dynamicConfig);
+        }
 
         // initialize the form input fields
         initInputFields(content, jsp, locale, messages, initial);
@@ -1716,38 +1769,92 @@ public class CmsForm {
     protected void initFormGlobalConfiguration(CmsXmlContent content, CmsObject cms, Locale locale, CmsMessages messages)
     throws Exception {
 
+        initFormGlobalConfiguration(content, cms, locale, messages, null);
+    }
+
+    /**
+    * Initializes the general online form settings.<p>
+    * 
+    * @param content the XML configuration content
+    * @param cms the CmsObject to access the content values
+    * @param locale the currently active Locale
+    * @param messages the localized messages
+    * @param dynamicConfig map of configurations that can overwrite the configuration from the configuration file
+    * 
+    * @throws Exception if initializing the form settings fails
+    * 
+    */
+    protected void initFormGlobalConfiguration(
+        CmsXmlContent content,
+        CmsObject cms,
+        Locale locale,
+        CmsMessages messages,
+        Map<String, String> dynamicConfig) throws Exception {
+
         // create a macro resolver with the cms object
         CmsMacroResolver resolver = CmsMacroResolver.newInstance().setCmsObject(cms).setKeepEmptyMacros(true);
 
+        String stringValue;
+
         // get the form text
-        String stringValue = getContentStringValue(content, cms, NODE_FORMTEXT, locale);
+        stringValue = getValueFromDynamicConfig(dynamicConfig, NODE_FORMTEXT);
+        if (stringValue == null) {
+            stringValue = getContentStringValue(content, cms, NODE_FORMTEXT, locale);
+        }
         setFormText(getConfigurationValue(resolver, stringValue, ""));
         // get the form title
-        stringValue = getContentStringValue(content, cms, NODE_TITLE, locale);
+        stringValue = getValueFromDynamicConfig(dynamicConfig, NODE_TITLE);
+        if (stringValue == null) {
+            stringValue = getContentStringValue(content, cms, NODE_TITLE, locale);
+        }
         setTitle(getConfigurationValue(resolver, stringValue, ""));
         // get the form middle text
-        stringValue = getContentStringValue(content, cms, NODE_FORMMIDDLETEXT, locale);
+        stringValue = getValueFromDynamicConfig(dynamicConfig, NODE_FORMMIDDLETEXT);
+        if (stringValue == null) {
+            stringValue = getContentStringValue(content, cms, NODE_FORMMIDDLETEXT, locale);
+        }
         setFormMiddleText(getConfigurationValue(resolver, stringValue, ""));
         // get the form footer text
-        stringValue = getContentStringValue(content, cms, NODE_FORMFOOTERTEXT, locale);
+        stringValue = getValueFromDynamicConfig(dynamicConfig, NODE_FORMFOOTERTEXT);
+        if (stringValue == null) {
+            stringValue = getContentStringValue(content, cms, NODE_FORMFOOTERTEXT, locale);
+        }
         setFormFooterText(getConfigurationValue(resolver, stringValue, ""));
         // get the form confirmation text
-        stringValue = getContentStringValue(content, cms, NODE_FORMCONFIRMATION, locale);
+        stringValue = getValueFromDynamicConfig(dynamicConfig, NODE_FORMCONFIRMATION);
+        if (stringValue == null) {
+            stringValue = getContentStringValue(content, cms, NODE_FORMCONFIRMATION, locale);
+        }
         setFormConfirmationText(getConfigurationValue(resolver, stringValue, ""));
         // get the optional target URI
-        stringValue = getContentStringValue(content, cms, NODE_TARGET_URI, locale);
+        stringValue = getValueFromDynamicConfig(dynamicConfig, NODE_TARGET_URI);
+        if (stringValue == null) {
+            stringValue = getContentStringValue(content, cms, NODE_TARGET_URI, locale);
+        }
         setTargetUri(getConfigurationValue(stringValue, ""));
         // get the optional target URI
-        stringValue = getContentStringValue(content, cms, NODE_FORWARD_MODE, locale);
+        stringValue = getValueFromDynamicConfig(dynamicConfig, NODE_FORWARD_MODE);
+        if (stringValue == null) {
+            stringValue = getContentStringValue(content, cms, NODE_FORWARD_MODE, locale);
+        }
         setForwardMode(Boolean.parseBoolean(getConfigurationValue(stringValue, Boolean.FALSE.toString())));
         // get the mail from address
-        stringValue = getContentStringValue(content, cms, NODE_MAILFROM, locale);
+        stringValue = getValueFromDynamicConfig(dynamicConfig, NODE_MAILFROM);
+        if (stringValue == null) {
+            stringValue = getContentStringValue(content, cms, NODE_MAILFROM, locale);
+        }
         setMailFrom(getConfigurationValue(stringValue, ""));
         // get the mail from name
-        stringValue = getContentStringValue(content, cms, NODE_MAILFROMNAME, locale);
+        stringValue = getValueFromDynamicConfig(dynamicConfig, NODE_MAILFROMNAME);
+        if (stringValue == null) {
+            stringValue = getContentStringValue(content, cms, NODE_MAILFROMNAME, locale);
+        }
         setMailFromName(getConfigurationValue(stringValue, ""));
         // get the mail to address(es)
-        stringValue = getContentStringValue(content, cms, NODE_MAILTO, locale);
+        stringValue = getValueFromDynamicConfig(dynamicConfig, NODE_MAILTO);
+        if (stringValue == null) {
+            stringValue = getContentStringValue(content, cms, NODE_MAILTO, locale);
+        }
         String mailto = (cms.readPropertyObject(cms.getRequestContext().getUri(), PROPERTY_MAILTO, false)).getValue("");
         if (CmsStringUtil.isNotEmpty(mailto)) {
             setMailTo(mailto);
@@ -1755,7 +1862,10 @@ public class CmsForm {
             setMailTo(getConfigurationValue(stringValue, ""));
         }
         // get the mail subject
-        stringValue = getContentStringValue(content, cms, NODE_MAILSUBJECT, locale);
+        stringValue = getValueFromDynamicConfig(dynamicConfig, NODE_MAILSUBJECT);
+        if (stringValue == null) {
+            stringValue = getContentStringValue(content, cms, NODE_MAILSUBJECT, locale);
+        }
         setMailSubject(getConfigurationValue(resolver, stringValue, ""));
         // get the optional mail subject prefix from localized messages
         stringValue = messages.key("form.mailsubject.prefix");
@@ -1767,23 +1877,28 @@ public class CmsForm {
             setMailSubjectPrefix("");
         }
 
-        CmsXmlHtmlValue mailTextValue = (CmsXmlHtmlValue)getContentValue(content, NODE_MAILTEXT, locale);
-        if (mailTextValue != null) {
-            // get the mail text
-            stringValue = mailTextValue.getStringValue(cms);
-            stringValue = getConfigurationValue(resolver, stringValue, "");
-            setMailText(stringValue);
-            // get the mail text as plain text
-            stringValue = CmsHtmlToTextConverter.htmlToText(stringValue, cms.getRequestContext().getEncoding());
-            setMailTextPlain(stringValue);
-        } else {
-            setMailTextPlain("");
-            setMailText("");
+        stringValue = getValueFromDynamicConfig(dynamicConfig, NODE_MAILTEXT);
+        if (stringValue == null) {
+            CmsXmlHtmlValue mailTextValue = (CmsXmlHtmlValue)getContentValue(content, NODE_MAILTEXT, locale);
+            if (mailTextValue != null) {
+                // get the mail text
+                stringValue = mailTextValue.getStringValue(cms);
+                stringValue = getConfigurationValue(resolver, stringValue, "");
+            } else {
+                stringValue = "";
+            }
         }
+        setMailText(stringValue);
+        // get the mail text as plain text
+        stringValue = CmsHtmlToTextConverter.htmlToText(stringValue, cms.getRequestContext().getEncoding());
+        setMailTextPlain(stringValue);
 
         // optional data target configuration 
         String pathPrefix = NODE_DATATARGET + "/";
-        stringValue = getContentStringValue(content, cms, pathPrefix + NODE_DATATARGET_TRANSPORT, locale);
+        stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_DATATARGET_TRANSPORT);
+        if (stringValue == null) {
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_DATATARGET_TRANSPORT, locale);
+        }
         stringValue = getConfigurationValue(stringValue, "email");
         if (DATATARGET_EMAIL.equals(stringValue)) {
             this.setTransportEmail(true);
@@ -1801,7 +1916,10 @@ public class CmsForm {
             this.setTransportDatabase(false);
         }
 
-        stringValue = getContentStringValue(content, cms, pathPrefix + NODE_DATATARGET_FORMID, locale);
+        stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_DATATARGET_FORMID);
+        if (stringValue == null) {
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_DATATARGET_FORMID, locale);
+        }
         setFormId(getConfigurationValue(stringValue, content.getFile().getRootPath()));
 
         if (content.hasValue(NODE_OPTIONALCONFIGURATION, locale)) {
@@ -1884,16 +2002,113 @@ public class CmsForm {
             }
         }
 
+        // set or potentially overwrite optional configurations by the dynamic configuration
+        if (dynamicConfig != null) {
+            // get the mail type
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_MAILTYPE);
+            if (stringValue != null) {
+                setMailType(getConfigurationValue(stringValue, MAILTYPE_HTML));
+            }
+            // get the mail CC recipient(s)
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_MAILCC);
+            if (stringValue != null) {
+                setMailCC(getConfigurationValue(stringValue, ""));
+            }
+            // get the mail BCC recipient(s)
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_MAILBCC);
+            if (stringValue != null) {
+                setMailBCC(getConfigurationValue(stringValue, ""));
+            }
+            // get the mail CSS style sheet
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_MAILCSS);
+            if (stringValue != null) {
+                setMailCSS(getConfigurationValue(stringValue, ""));
+            }
+            // get the form check page flag
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_SHOWCHECK);
+            if (stringValue != null) {
+                setShowCheck(Boolean.valueOf(stringValue).booleanValue());
+            }
+            // get the check page text
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_FORMCHECKTEXT);
+            if (stringValue != null) {
+                setFormCheckText(getConfigurationValue(resolver, stringValue, ""));
+            }
+            // get the dynamic fields class
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_DYNAMICFIELDCLASS);
+            if (stringValue != null) {
+                setDynamicFieldClass(getConfigurationValue(stringValue, ""));
+            }
+            // get the CSS file
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_CSS_FILE);
+            if (stringValue != null) {
+                setCssFile(getConfigurationValue(stringValue, ""));
+            }
+            // get the optional HTML template file
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_TEMPLATE_FILE);
+            if (stringValue != null) {
+                String defaultTemplateFile = OpenCms.getModuleManager().getModule(MODULE_NAME).getParameter(
+                    MODULE_PARAM_TEMPLATE_FILE,
+                    VFS_PATH_DEFAULT_TEMPLATEFILE);
+                setTemplateFile(getConfigurationValue(stringValue, defaultTemplateFile));
+            }
+            // get the optional property file
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_PROPERTY_FILE);
+            if (stringValue != null) {
+                setPropertyFile(getConfigurationValue(stringValue, ""));
+            }
+            // get the optional web form action class
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_ACTION_CLASS);
+            if (stringValue != null) {
+                setActionClass(getConfigurationValue(stringValue, ""));
+            }
+            // get the show mandatory setting
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_SHOWMANDATORY);
+            if (stringValue != null) {
+                setShowMandatory(Boolean.valueOf(getConfigurationValue(stringValue, Boolean.TRUE.toString())).booleanValue());
+            }
+            // get the show reset button setting
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_SHOWRESET);
+            if (stringValue != null) {
+                setShowReset(Boolean.valueOf(getConfigurationValue(stringValue, Boolean.TRUE.toString())).booleanValue());
+            }
+            // get the form attributes
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_FORMATTRIBUTES);
+            if (stringValue != null) {
+                setFormAttributes(" " + stringValue);
+            }
+            // get the field attributes
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_FORMFIELDATTRIBUTES);
+            if (stringValue != null) {
+                setFormFieldAttributes(" " + stringValue);
+            }
+            // get the refresh session interval
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_KEEPSESSION);
+            if (stringValue != null) {
+                try {
+                    setRefreshSessionInterval(Integer.parseInt(stringValue) * 1000);
+                } catch (NumberFormatException nfe) {
+                    // invalid value found, just do not set value
+                }
+            }
+        }
+
         // optional confirmation mail nodes
         pathPrefix = NODE_OPTIONALCONFIRMATION + "/";
 
         // get the confirmation mail enabled flag
-        stringValue = getContentStringValue(content, cms, pathPrefix + NODE_CONFIRMATIONMAILENABLED, locale);
+        stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_CONFIRMATIONMAILENABLED);
+        if (stringValue == null) {
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_CONFIRMATIONMAILENABLED, locale);
+        }
         setConfirmationMailEnabled(Boolean.valueOf(stringValue).booleanValue());
         // get other confirmation mail nodes only if confirmation mail is enabled
         if (isConfirmationMailEnabled()) {
             // get the optional confirmation mail from
-            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_CONFIRMATIONMAILFROM, locale);
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_CONFIRMATIONMAILFROM);
+            if (stringValue == null) {
+                stringValue = getContentStringValue(content, cms, pathPrefix + NODE_CONFIRMATIONMAILFROM, locale);
+            }
             if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(stringValue)) {
                 setConfirmationMailFrom(stringValue);
             } else {
@@ -1901,7 +2116,10 @@ public class CmsForm {
             }
 
             // get the optional confirmation mail from name
-            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_CONFIRMATIONMAILFROMNAME, locale);
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_CONFIRMATIONMAILFROMNAME);
+            if (stringValue == null) {
+                stringValue = getContentStringValue(content, cms, pathPrefix + NODE_CONFIRMATIONMAILFROMNAME, locale);
+            }
             if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(stringValue)) {
                 setConfirmationMailFromName(stringValue);
             } else {
@@ -1909,25 +2127,34 @@ public class CmsForm {
             }
 
             // get the confirmation mail subject
-            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_CONFIRMATIONMAILSUBJECT, locale);
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_CONFIRMATIONMAILSUBJECT);
+            if (stringValue == null) {
+                stringValue = getContentStringValue(content, cms, pathPrefix + NODE_CONFIRMATIONMAILSUBJECT, locale);
+            }
             setConfirmationMailSubject(getConfigurationValue(stringValue, ""));
 
-            mailTextValue = (CmsXmlHtmlValue)getContentValue(content, pathPrefix + NODE_CONFIRMATIONMAILTEXT, locale);
-            if (mailTextValue != null) {
-                // get the confirmation mail text
-                stringValue = mailTextValue.getStringValue(cms);
-                stringValue = getConfigurationValue(resolver, stringValue, "");
-                setConfirmationMailText(stringValue);
-                // get the confirmation mail text as plain text
-                stringValue = CmsHtmlToTextConverter.htmlToText(stringValue, cms.getRequestContext().getEncoding());
-                setConfirmationMailTextPlain(stringValue);
-            } else {
-                setConfirmationMailTextPlain("");
-                setConfirmationMailText("");
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_CONFIRMATIONMAILTEXT);
+            if (stringValue == null) {
+                CmsXmlHtmlValue mailTextValue = (CmsXmlHtmlValue)getContentValue(content, pathPrefix
+                    + NODE_CONFIRMATIONMAILTEXT, locale);
+                if (mailTextValue != null) {
+                    // get the confirmation mail text
+                    stringValue = mailTextValue.getStringValue(cms);
+                    stringValue = getConfigurationValue(resolver, stringValue, "");
+                } else {
+                    stringValue = "";
+                }
             }
+            setConfirmationMailText(stringValue);
+            // get the confirmation mail text as plain text
+            stringValue = CmsHtmlToTextConverter.htmlToText(stringValue, cms.getRequestContext().getEncoding());
+            setConfirmationMailTextPlain(stringValue);
 
             // get the confirmation mail field index number
-            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_CONFIRMATIONMAILFIELD, locale);
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_CONFIRMATIONMAILTEXT);
+            if (stringValue == null) {
+                stringValue = getContentStringValue(content, cms, pathPrefix + NODE_CONFIRMATIONMAILFIELD, locale);
+            }
             stringValue = getConfigurationValue(stringValue, "nonumber");
             int fieldIndex = -1;
             try {
@@ -1938,10 +2165,20 @@ public class CmsForm {
             }
             setConfirmationMailField(fieldIndex);
             // get the confirmation mail optional flag
-            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_CONFIRMATIONMAILOPTIONAL, locale);
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_CONFIRMATIONMAILOPTIONAL);
+            if (stringValue == null) {
+                stringValue = getContentStringValue(content, cms, pathPrefix + NODE_CONFIRMATIONMAILOPTIONAL, locale);
+            }
             setConfirmationMailOptional(Boolean.valueOf(stringValue).booleanValue());
             // get the confirmation mail checkbox label text
-            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_CONFIRMATIONMAILCHECKBOXLABEL, locale);
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_CONFIRMATIONMAILCHECKBOXLABEL);
+            if (stringValue == null) {
+                stringValue = getContentStringValue(
+                    content,
+                    cms,
+                    pathPrefix + NODE_CONFIRMATIONMAILCHECKBOXLABEL,
+                    locale);
+            }
             setConfirmationMailCheckboxLabel(getConfigurationValue(
                 stringValue,
                 messages.key("form.confirmation.checkbox")));
@@ -1960,6 +2197,22 @@ public class CmsForm {
             setExpirationText(getConfigurationValue(stringValue, ""));
         }
 
+        // possibly set or overwrite options by the dynamic configuration
+        if (dynamicConfig != null) {
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_DATE);
+            if (stringValue != null) {
+                try {
+                    setExpirationDate(Long.parseLong(stringValue));
+                } catch (Exception e) {
+                    // no valid expiration date defined, ignore setting
+                }
+            }
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_TEXT);
+            if (stringValue != null) {
+                setExpirationText(getConfigurationValue(stringValue, ""));
+            }
+        }
+
         if (content.hasValue(NODE_OPTIONALRELEASE, locale)) {
             // optional form release nodes
             pathPrefix = NODE_OPTIONALRELEASE + "/";
@@ -1973,6 +2226,24 @@ public class CmsForm {
             setReleaseText(getConfigurationValue(stringValue, ""));
         }
 
+        // possibly set or overwrite options by the dynamic configuration
+        if (dynamicConfig != null) {
+            // optional form release nodes
+            pathPrefix = NODE_OPTIONALRELEASE + "/";
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_DATE);
+            if (stringValue != null) {
+                try {
+                    setReleaseDate(Long.parseLong(stringValue));
+                } catch (Exception e) {
+                    // no valid release date defined, ignore setting
+                }
+            }
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_TEXT);
+            if (stringValue != null) {
+                setReleaseText(getConfigurationValue(stringValue, ""));
+            }
+        }
+
         if (content.hasValue(NODE_OPTIONALCONFIGURATION + "/" + NODE_OPTIONALMAXSUBMISSIONS, locale)) {
             // optional form release nodes
             pathPrefix = NODE_OPTIONALCONFIGURATION + "/" + NODE_OPTIONALMAXSUBMISSIONS + "/";
@@ -1984,6 +2255,24 @@ public class CmsForm {
             }
             stringValue = getContentStringValue(content, cms, pathPrefix + NODE_TEXT, locale);
             setMaximumSubmissionsText(getConfigurationValue(stringValue, ""));
+        }
+
+        // possibly set or overwrite options by the dynamic configuration
+        if (dynamicConfig != null) {
+            // optional form release nodes
+            pathPrefix = NODE_OPTIONALCONFIGURATION + "/" + NODE_OPTIONALMAXSUBMISSIONS + "/";
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_VALUE);
+            if (stringValue != null) {
+                try {
+                    setMaximumSubmissions(Long.parseLong(stringValue));
+                } catch (Exception e) {
+                    // no valid release date defined, ignore setting
+                }
+            }
+            stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_TEXT);
+            if (stringValue != null) {
+                setMaximumSubmissionsText(getConfigurationValue(stringValue, ""));
+            }
         }
 
     }
@@ -2957,5 +3246,24 @@ public class CmsForm {
             field.setValue(value.toString());
         }
         return field;
+    }
+
+    /**
+     * Returns the value from the dynamic configuration if it is not empty or whitespace only - if so, it returns null.
+     * @param dynamicConfig the dynamic configuration
+     * @param key the configuration option to read
+     * 
+     * @return If existing, the (non-whitespace-only) value of the configuration option, otherwise null
+     */
+    public static String getValueFromDynamicConfig(Map<String, String> dynamicConfig, String key) {
+
+        String value = null;
+        if (dynamicConfig != null) {
+            value = dynamicConfig.get(key);
+            if ((value != null) && value.trim().isEmpty()) {
+                value = null;
+            }
+        }
+        return value;
     }
 }
