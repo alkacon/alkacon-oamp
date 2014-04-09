@@ -1,4 +1,4 @@
-<%@ page import="com.alkacon.opencms.v8.comments.*,org.opencms.jsp.util.*,org.opencms.main.*"%><%@ taglib
+<%@ page import="com.alkacon.opencms.v8.comments.*,org.opencms.jsp.util.*,org.opencms.main.*, java.util.Map"%><%@ taglib
 	prefix="c" uri="http://java.sun.com/jsp/jstl/core"%><%@ taglib
 	prefix="cms" uri="http://www.opencms.org/taglib/cms"%><%@ taglib
 	prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -48,10 +48,14 @@
 					<c:when test="${cms.detailRequest}">${cms.detailContentSitePath}</c:when>
 					<c:otherwise>${cms.requestContext.uri}</c:otherwise>
 				</c:choose>
+			</c:set>
+			<c:set var="cmtformid">
+				<c:if test="${!content.value.FormId.isEmptyOrWhitespaceOnly}">${content.value.FormId}</c:if>
 			</c:set><%
+				Map<String, String> dynamicConfig = CmsCommentsAccess.generateDynamicConfig(pageContext.getAttribute("cmtformid").toString());
 			    CmsCommentsAccess alkaconCmt = new CmsCommentsAccess(
 											pageContext, request, response,
-											(String) pageContext.getAttribute("configUri"));
+											(String) pageContext.getAttribute("configUri"), dynamicConfig);
 									pageContext.setAttribute("alkaconCmt", alkaconCmt);
 			%><div><div id="commentbox" class="commentbox">
 				<fmt:setLocale value="${cms.requestContext.locale}"/>
@@ -94,6 +98,7 @@
 						        cmtminimized:"${minimized}",
 						        cmtlist:"${list}",
 						        cmtsecurity:"${security}",
+						        cmtformid: "${cmtformid}",
 						        __locale: "${cms.requestContext.locale}"
 						    },
 						    success: function(html){ $("#commentbox").html(html); },

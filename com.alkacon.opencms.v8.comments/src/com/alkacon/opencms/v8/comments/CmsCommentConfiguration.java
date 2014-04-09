@@ -202,6 +202,9 @@ public class CmsCommentConfiguration {
     /** Configuration node name for the style sheet. */
     private static final String NODE_STYLESHEET = "StyleSheet";
 
+    /** Configuration node name for the form id. */
+    private static final String NODE_FORMID = "FormId";
+
     /** Configuration Uri. */
     private String m_configUri;
 
@@ -231,6 +234,9 @@ public class CmsCommentConfiguration {
 
     /** The style sheet. */
     private String m_styleSheet;
+
+    /** The form id. */
+    private String m_formId;
 
     /**
      * Default constructor which parses the configuration file.<p>
@@ -271,6 +277,7 @@ public class CmsCommentConfiguration {
      * @param resourceBundle the resource bundle
      * @param security the security mode
      * @param styleSheet the style sheet
+     * @param formId the form id
      */
     private CmsCommentConfiguration(
         String configUri,
@@ -281,7 +288,8 @@ public class CmsCommentConfiguration {
         List<CmsOrganizationalUnit> orgUnits,
         String resourceBundle,
         CmsCommentSecurityMode security,
-        String styleSheet) {
+        String styleSheet,
+        String formId) {
 
         m_configUri = configUri;
         m_groups = groups;
@@ -292,6 +300,7 @@ public class CmsCommentConfiguration {
         m_resourceBundle = resourceBundle;
         m_security = security;
         m_styleSheet = styleSheet;
+        m_formId = formId;
     }
 
     /**
@@ -309,7 +318,8 @@ public class CmsCommentConfiguration {
             Collections.unmodifiableList(m_orgUnits),
             m_resourceBundle,
             m_security,
-            m_styleSheet);
+            m_styleSheet,
+            m_formId);
     }
 
     /**
@@ -380,6 +390,26 @@ public class CmsCommentConfiguration {
     public String getStyleSheet() {
 
         return m_styleSheet;
+    }
+
+    /** 
+     * Returns the form id.<p>
+     * 
+     * @return the form id
+     */
+    public String getFormId() {
+
+        return m_formId;
+    }
+
+    /** 
+     * Set the form id.<p>
+     * 
+     * @param formId the form id
+     */
+    public void setFormId(String formId) {
+
+        m_formId = formId;
     }
 
     /**
@@ -477,12 +507,22 @@ public class CmsCommentConfiguration {
      * @param content the XML configuration content
      * @param cms the CmsObject to access the content values
      * @param locale the currently active Locale
+     * 
      */
     private void initCommentOptions(CmsXmlContent content, CmsObject cms, Locale locale) {
 
         String path = NODE_OPTIONS + "/";
 
-        String stringValue = content.getStringValue(cms, path + NODE_MODERATED, locale);
+        String stringValue = CmsCommentForm.DEFAULT_FORM_ID;
+        if (content.hasValue(path + NODE_FORMID, locale)) {
+            String newFormId = content.getStringValue(cms, path + NODE_FORMID, locale).trim();
+            if (!newFormId.isEmpty()) {
+                stringValue = newFormId;
+            }
+        }
+        m_formId = stringValue;
+
+        stringValue = content.getStringValue(cms, path + NODE_MODERATED, locale);
         m_moderated = Boolean.valueOf(stringValue).booleanValue();
 
         stringValue = content.getStringValue(cms, path + NODE_LIST, locale);

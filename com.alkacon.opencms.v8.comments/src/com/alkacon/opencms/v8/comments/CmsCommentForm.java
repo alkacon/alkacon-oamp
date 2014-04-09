@@ -31,6 +31,7 @@
  */
 
 package com.alkacon.opencms.v8.comments;
+
 import com.alkacon.opencms.v8.formgenerator.CmsForm;
 import com.alkacon.opencms.v8.formgenerator.CmsFormHandler;
 import com.alkacon.opencms.v8.formgenerator.I_CmsField;
@@ -51,9 +52,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
-
 
 /**
  * Represents a comment form with all configured fields and options.<p>
@@ -66,8 +67,8 @@ import org.apache.commons.logging.Log;
  */
 public class CmsCommentForm extends CmsForm {
 
-    /** Comment form id constant. */
-    public static final String FORM_ID = "__oamp-comment__";
+    /** Default comment form id constant. */
+    public static final String DEFAULT_FORM_ID = "__oamp-comment__";
 
     /** Configuration node name for the mail alert. */
     public static final String NODE_MAILALERT = "MailAlert";
@@ -110,6 +111,7 @@ public class CmsCommentForm extends CmsForm {
      * @param initial if true, field values are filled with values specified in the configuration file, otherwise from the request
      * @param formConfigUri URI of the form configuration file, if not provided, current URI is used for configuration
      * @param formAction the desired action submitted by the form
+     * @param dynamicConfig map of configurations that can overwrite the configuration from the configuration file
      * 
      * @throws Exception if parsing the configuration fails
      */
@@ -118,10 +120,11 @@ public class CmsCommentForm extends CmsForm {
         CmsMessages messages,
         boolean initial,
         String formConfigUri,
-        String formAction)
+        String formAction,
+        Map<String, String> dynamicConfig)
     throws Exception {
 
-        super(jsp, messages, initial, formConfigUri, formAction);
+        super(jsp, messages, initial, formConfigUri, formAction, dynamicConfig);
     }
 
     /**
@@ -157,8 +160,13 @@ public class CmsCommentForm extends CmsForm {
      */
     @SuppressWarnings("deprecation")
     @Override
-    public void init(CmsFormHandler jsp, CmsMessages messages, boolean initial, String formConfigUri, String formAction)
-    throws Exception {
+    public void init(
+        CmsFormHandler jsp,
+        CmsMessages messages,
+        boolean initial,
+        String formConfigUri,
+        String formAction,
+        Map<String, String> dynamicConfig) throws Exception {
 
         m_parameterMap = jsp.getParameterMap();
         // read the form configuration file from VFS
@@ -182,7 +190,7 @@ public class CmsCommentForm extends CmsForm {
         m_formHandler = jsp;
 
         // initialize general form configuration
-        initFormGlobalConfiguration(content, jsp.getCmsObject(), locale, messages);
+        initFormGlobalConfiguration(content, jsp.getCmsObject(), locale, messages, dynamicConfig);
         initFormMailAlert(content, jsp.getCmsObject(), locale, messages);
 
         // disable mail confirmation 
@@ -192,7 +200,7 @@ public class CmsCommentForm extends CmsForm {
         setConfirmationMailField(-1);
         // enable db persistence
         setTransportDatabase(true);
-        setFormId(FORM_ID);
+        //setTransportEmail(false);
 
         // initialize the form input fields
         initInputFields(content, jsp, locale, messages, initial);

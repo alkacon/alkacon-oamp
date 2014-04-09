@@ -1,9 +1,10 @@
-<%@ page import="com.alkacon.opencms.v8.comments.*" %>
+<%@ page import="com.alkacon.opencms.v8.comments.*, java.util.Map" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms"%><cms:secureparams />
 <%
-	CmsCommentsAccess alkaconCmt = new CmsCommentsAccess(pageContext, request, response, request.getParameter("configUri"));
+	Map<String, String> dynamicConfig = CmsCommentsAccess.generateDynamicConfig(request.getParameter("cmtformid"));
+	CmsCommentsAccess alkaconCmt = new CmsCommentsAccess(pageContext, request, response, request.getParameter("configUri"), dynamicConfig);
 	pageContext.setAttribute("alkaconCmt", alkaconCmt);
 %>
 <fmt:setLocale value="${cms:vfs(pageContext).requestContext.locale}" />
@@ -18,6 +19,7 @@
 	    <cms:param name="cmtlist" value="${param.cmtlist}" />
 	    <cms:param name="cmtsecurity" value="${param.cmtsecurity}" />
 		<cms:param name="configUri" value="${param.configUri}" />
+		<cms:param name="cmtformid" value="${param.cmtformid}" />
 		<cms:param name="cmtpage" value="${param.cmtpage}" />
 	</cms:include>
 </div>

@@ -282,7 +282,8 @@ public class CmsCommentFormHandler extends CmsFormHandler {
     public void init(PageContext context, HttpServletRequest req, HttpServletResponse res, CmsCommentsAccess access)
     throws CmsException {
 
-        super.init(context, req, res, access.getConfig().getConfigUri());
+        Map<String, String> dynamicConfig = CmsCommentsAccess.generateDynamicConfig(access.getConfig().getFormId());
+        super.init(context, req, res, access.getConfig().getConfigUri(), dynamicConfig);
         // set URI to access URI
         getCmsObject().getRequestContext().setUri(access.getUri());
     }
@@ -293,10 +294,14 @@ public class CmsCommentFormHandler extends CmsFormHandler {
      * @see com.alkacon.opencms.v8.formgenerator.CmsFormHandler#init(javax.servlet.jsp.PageContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.String)
      */
     @Override
-    public void init(PageContext context, HttpServletRequest req, HttpServletResponse res, String formConfigUri)
-    throws CmsException {
+    public void init(
+        PageContext context,
+        HttpServletRequest req,
+        HttpServletResponse res,
+        String formConfigUri,
+        Map<String, String> dynamicConfig) throws CmsException {
 
-        CmsCommentsAccess access = new CmsCommentsAccess(context, req, res, formConfigUri);
+        CmsCommentsAccess access = new CmsCommentsAccess(context, req, res, formConfigUri, dynamicConfig);
         init(context, req, res, access);
     }
 
@@ -398,6 +403,8 @@ public class CmsCommentFormHandler extends CmsFormHandler {
             getRequest().getParameter("cmtlist")).append("\" />");
         hFieldsBuf.append("<input type=\"hidden\" name=\"cmtsecurity\" value=\"").append(
             getRequest().getParameter("cmtsecurity")).append("\" />");
+        hFieldsBuf.append("<input type=\"hidden\" name=\"cmtformid\" value=\"").append(
+            getRequest().getParameter("cmtformid")).append("\" />");
         hFieldsBuf.append("<input type=\"hidden\" name=\"configUri\" value=\"").append(
             getCommentFormConfiguration().getConfigUri()).append("\" />");
         hFieldsBuf.append("<input type=\"hidden\" name=\"__locale\" value=\"").append(
@@ -432,7 +439,8 @@ public class CmsCommentFormHandler extends CmsFormHandler {
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
-    protected void configureForm(HttpServletRequest req, String formConfigUri) throws Exception {
+    protected void configureForm(HttpServletRequest req, String formConfigUri, Map<String, String> dynamicConfig)
+    throws Exception {
 
         if (formConfigUri == null) {
             return;
@@ -459,7 +467,13 @@ public class CmsCommentFormHandler extends CmsFormHandler {
 
         setMessages(new CmsMessages(para, getRequestContext().getLocale()));
         // get the form configuration
-        setFormConfiguration(new CmsCommentForm(this, getMessages(), isInitial(), formConfigUri, formAction));
+        setFormConfiguration(new CmsCommentForm(
+            this,
+            getMessages(),
+            isInitial(),
+            formConfigUri,
+            formAction,
+            dynamicConfig));
     }
 
     /**
@@ -469,6 +483,7 @@ public class CmsCommentFormHandler extends CmsFormHandler {
      * 
      * @return the parameter value
      */
+    @Override
     protected String getParameter(String parameter) {
 
         try {

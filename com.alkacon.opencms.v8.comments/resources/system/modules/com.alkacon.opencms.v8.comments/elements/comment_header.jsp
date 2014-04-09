@@ -1,10 +1,11 @@
-<%@ page import="com.alkacon.opencms.v8.comments.*" %>
+<%@ page import="com.alkacon.opencms.v8.comments.*, java.util.Map" %>
 <%@ page import="org.opencms.workplace.CmsWorkplace"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %><cms:secureparams /><%
-	CmsCommentsAccess alkaconCmt = new CmsCommentsAccess(pageContext, request, response, request.getParameter("configUri"));
+	Map<String, String> dynamicConfig = CmsCommentsAccess.generateDynamicConfig(request.getParameter("cmtformid"));
+	CmsCommentsAccess alkaconCmt = new CmsCommentsAccess(pageContext, request, response, request.getParameter("configUri"), dynamicConfig);
 	pageContext.setAttribute("alkaconCmt", alkaconCmt);
 %>
 <fmt:setLocale value="${cms:vfs(pageContext).requestContext.locale}" />
@@ -48,7 +49,7 @@
 	<c:if test="${alkaconCmt.guestUser && alkaconCmt.config.offerLogin}">
 	        <a 
 	           title="<fmt:message key="login.message.title" />" 
-	           href="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.v8.comments/elements/comment_login.jsp:563c05e2-15df-11e1-aeb4-9b778fa0dc42)?cmturi=${param.cmturi}&cmtminimized=${param.cmtminimized}&cmtlist=${param.cmtlist}&cmtsecurity=${param.cmtsecurity}&configUri=${param.configUri}&__locale=${cms:vfs(pageContext).requestContext.locale}&width=400&height=200</cms:link>" 
+	           href="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.v8.comments/elements/comment_login.jsp:563c05e2-15df-11e1-aeb4-9b778fa0dc42)?cmturi=${param.cmturi}&cmtminimized=${param.cmtminimized}&cmtlist=${param.cmtlist}&cmtsecurity=${param.cmtsecurity}&configUri=${param.configUri}&cmtformid=${param.cmtformid}&__locale=${cms:vfs(pageContext).requestContext.locale}&width=400&height=200</cms:link>" 
 	           class="cmt_thickbox" >
 			<fmt:message key="header.user.login.1" >
 				<fmt:param value="${fn:escapeXml(alkaconCmt.countComments)}" />
@@ -73,6 +74,7 @@
 		    cmtminimized:"${param.cmtminimized}",
 	        cmtlist:"${param.cmtlist}",
 	        cmtsecurity:"${param.cmtsecurity}",
+	        cmtformid:"${param.cmtformid}",
 		    __locale: '<cms:info property="opencms.request.locale" />'
 		},
 		function(html) { $("#commentbox").html(html); }

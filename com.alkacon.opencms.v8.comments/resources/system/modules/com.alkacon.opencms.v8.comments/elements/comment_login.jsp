@@ -1,9 +1,10 @@
-<%@ page import="com.alkacon.opencms.v8.comments.*" %><%--
+<%@ page import="com.alkacon.opencms.v8.comments.*, java.util.Map" %><%--
 --%><%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms"%><%--
 --%><%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><%--
 --%><%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%><%
 %><%
-    CmsCommentsAccess alkaconCmt = new CmsCommentsAccess(pageContext, request, response, request.getParameter("configUri"));
+	Map<String, String> dynamicConfig = CmsCommentsAccess.generateDynamicConfig(request.getParameter("cmtformid"));
+    CmsCommentsAccess alkaconCmt = new CmsCommentsAccess(pageContext, request, response, request.getParameter("configUri"), dynamicConfig);
     if ("login".equals(request.getParameter("action"))) {
         alkaconCmt.login(request.getParameter("name"), request.getParameter("password"), "Online");
         if (alkaconCmt.getLoginException() == null) {
@@ -34,6 +35,7 @@
 			<input type="hidden" name="cmtminimized" value="${param.cmtminimized}" />
 	    	<input type="hidden" name="cmtlist" value="${param.cmtlist}" />
 	    	<input type="hidden" name="cmtsecurity" value="${param.cmtsecurity}" />
+	    	<input type="hidden" name="cmtformid" value="${param.cmtformid}" />
 			<input type="hidden" name="__locale" value="${param.__locale}" />
 			<input class="cmtButton" type="button" value="<fmt:message key="login.label.login" />" onclick="cmtLogin();"/>
 			<input class="cmtButton" type="button" value="<fmt:message key="login.label.cancel" />" onclick="$.colorbox.close();"/>
@@ -66,6 +68,7 @@ function cmtLogin() {
 					    cmtminimized:"${param.cmtminimized}",
 				        cmtlist:"${param.cmtlist}",
 				        cmtsecurity:"${param.cmtsecurity}",
+				        cmtformid:"${param.cmtformid}",
 					    configUri: '${param.configUri}', 
 					    __locale: '<cms:info property="opencms.request.locale" />' },
 					function(html) { $("#commentbox").html(html); }

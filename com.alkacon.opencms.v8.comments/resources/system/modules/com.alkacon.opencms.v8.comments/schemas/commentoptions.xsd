@@ -12,6 +12,7 @@
 
 	<xsd:complexType name="OpenCmsAlkaconV8CommentFormOption">
 		<xsd:sequence>
+			<xsd:element name="FormId" type="OpenCmsString" minOccurs="0" />
 			<xsd:element name="Moderated" type="OpenCmsBoolean" />
 			<xsd:element name="List" type="OpenCmsString" />
 			<xsd:element name="Security" type="OpenCmsString" />

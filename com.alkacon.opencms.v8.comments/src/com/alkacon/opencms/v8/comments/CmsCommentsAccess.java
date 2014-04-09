@@ -32,6 +32,7 @@
 package com.alkacon.opencms.v8.comments;
 
 import com.alkacon.opencms.v8.comments.CmsCommentConfiguration.CmsCommentSecurityMode;
+import com.alkacon.opencms.v8.formgenerator.CmsForm;
 import com.alkacon.opencms.v8.formgenerator.CmsFormHandlerFactory;
 import com.alkacon.opencms.v8.formgenerator.database.CmsFormDataAccess;
 import com.alkacon.opencms.v8.formgenerator.database.CmsFormDataBean;
@@ -123,6 +124,9 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     /** Parameter name constant. */
     public static final String PARAM_URI = "cmturi";
 
+    /** Parameter name constant. */
+    public static final String PARAM_FORMID = "cmtformid";
+
     /** The log object for this class. */
     protected static final Log LOG = CmsLog.getLog(CmsCommentsAccess.class);
 
@@ -192,6 +196,9 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     /** Cached value, if the current user is valid. */
     private Boolean m_userValid;
 
+    /** Cached value, stores the dynamic configuration that overwrites configurations from the config file. */
+    //private Map<String, String> m_dynamicConfig;
+
     /**
      * Constructor, with parameters.
      * 
@@ -215,8 +222,30 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
      */
     public CmsCommentsAccess(PageContext context, HttpServletRequest req, HttpServletResponse res, String configUri) {
 
+        this(context, req, res, configUri, null);
+    }
+
+    /**
+     * Constructor, with parameters.
+     * 
+     * @param context the JSP page context object
+     * @param req the JSP request 
+     * @param res the JSP response 
+     * @param configUri the URI of the comments configuration
+     * @param dynamicConfig map of configurations that can overwrite the configuration from the configuration file
+     * 
+     */
+    public CmsCommentsAccess(
+        PageContext context,
+        HttpServletRequest req,
+        HttpServletResponse res,
+        String configUri,
+        Map<String, String> dynamicConfig) {
+
         super(context, req, res);
         m_configUri = configUri;
+        //m_dynamicConfig = dynamicConfig;
+
         initConfig(context, req, res);
     }
 
@@ -281,6 +310,23 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     protected static String generateCacheKey(String rootPath, boolean isOnline, Locale locale) {
 
         return rootPath + (isOnline ? "+" : "-") + "[" + locale + "]";
+    }
+
+    /**
+     * Generates a dynamic configuration when a form id is given.<p>
+     * 
+     * @param formId form id value
+     * @return dynamic configuration
+     */
+    public static Map<String, String> generateDynamicConfig(String formId) {
+
+        if ((formId == null) || formId.trim().isEmpty()) {
+            return null;
+        }
+
+        Map<String, String> dynamicConfig = new HashMap<String, String>(1);
+        dynamicConfig.put(CmsForm.NODE_DATATARGET + "/" + CmsForm.NODE_DATATARGET_FORMID, formId);
+        return dynamicConfig;
     }
 
     /**
@@ -414,7 +460,8 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
                     null,
                     null,
                     CmsCommentFormHandler.class.getName(),
-                    null);
+                    null,
+                    generateDynamicConfig(getConfig().getFormId()));
                 // important: initialize manually
                 jsp.init(getJspContext(), getRequest(), getResponse(), this);
                 jsp.getCommentFormConfiguration().removeCaptchaField();
@@ -464,7 +511,7 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
 
         if (m_countApprovedComments == null) {
             CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.HEADERS;
-            filter = filter.filterFormId(CmsCommentForm.FORM_ID);
+            filter = filter.filterFormId(getConfig().getFormId());
             filter = filter.filterResourceId(m_resource.getStructureId());
             filter = filter.filterState(STATE_APPROVED);
             try {
@@ -493,7 +540,7 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
         }
         if (m_countBlockedComments == null) {
             CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.HEADERS;
-            filter = filter.filterFormId(CmsCommentForm.FORM_ID);
+            filter = filter.filterFormId(getConfig().getFormId());
             filter = filter.filterResourceId(m_resource.getStructureId());
             filter = filter.filterState(STATE_BLOCKED);
             try {
@@ -528,7 +575,7 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
 
                     String author = String.valueOf(input);
                     CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.HEADERS;
-                    filter = filter.filterFormId(CmsCommentForm.FORM_ID);
+                    filter = filter.filterFormId(getConfig().getFormId());
                     filter = filter.filterResourceId(getResource().getStructureId());
                     filter = filter.filterField(CmsCommentFormHandler.FIELD_USERNAME, author);
                     try {
@@ -582,7 +629,7 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
         }
         if (m_countNewComments == null) {
             CmsFormDatabaseFilter filter = CmsFormDatabaseFilter.HEADERS;
-            filter = filter.filterFormId(CmsCommentForm.FORM_ID);
+            filter = filter.filterFormId(getConfig().getFormId());
             filter = filter.filterResourceId(m_resource.getStructureId());
             filter = filter.filterState(STATE_NEW);
             try {
@@ -915,7 +962,7 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
         } else {
             filter = CmsFormDatabaseFilter.DEFAULT;
         }
-        filter = filter.filterFormId(CmsCommentForm.FORM_ID);
+        filter = filter.filterFormId(getConfig().getFormId());
         filter = filter.filterResourceId(getResource().getStructureId());
         if (!isUserCanManage()) {
             // if not managing
@@ -939,7 +986,6 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
      * @param req the request
      * @param res the response
      */
-    @SuppressWarnings("unchecked")
     private void initConfig(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         if (LOG.isDebugEnabled()) {
@@ -978,6 +1024,9 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
             }
             if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(req.getParameter(PARAM_SECURITY))) {
                 m_config.setSecurity(CmsCommentSecurityMode.valueOf(req.getParameter(PARAM_SECURITY)));
+            }
+            if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(req.getParameter(PARAM_FORMID))) {
+                m_config.setFormId(req.getParameter(PARAM_FORMID));
             }
             if (LOG.isDebugEnabled()) {
                 LOG.debug(Messages.get().getBundle().key(Messages.LOG_INIT_CONFIG_1, configUri));

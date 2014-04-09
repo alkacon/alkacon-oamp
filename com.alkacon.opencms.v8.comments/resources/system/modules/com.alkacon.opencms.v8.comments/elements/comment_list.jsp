@@ -1,10 +1,11 @@
-<%@ page import="com.alkacon.opencms.v8.comments.*" %>
+<%@ page import="com.alkacon.opencms.v8.comments.*, java.util.Map" %>
 <%@ page import="org.opencms.workplace.CmsWorkplace"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms"%><cms:secureparams />
 <%
-	CmsCommentsAccess alkaconCmt = new CmsCommentsAccess(pageContext, request, response, request.getParameter("configUri"));
+	Map<String, String> dynamicConfig = CmsCommentsAccess.generateDynamicConfig(request.getParameter("cmtformid"));
+	CmsCommentsAccess alkaconCmt = new CmsCommentsAccess(pageContext, request, response, request.getParameter("configUri"), dynamicConfig);
 	pageContext.setAttribute("alkaconCmt", alkaconCmt);
 	if (!alkaconCmt.isUserCanView() && !alkaconCmt.isUserCanManage() && !alkaconCmt.isUserCanPost() && !alkaconCmt.getConfig().isOfferLogin()) {
 		return;
@@ -30,7 +31,7 @@
 <c:when test="${alkaconCmt.userCanPost}">
 	    <a 
 	       title="<fmt:message key="form.message.post" />" 
-	       href="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.v8.comments/elements/comment_form.jsp:562b63fd-15df-11e1-aeb4-9b778fa0dc42)?cmturi=${param.cmturi}&cmtminimized=${param.cmtminimized}&cmtlist=${param.cmtlist}&cmtsecurity=${param.cmtsecurity}&configUri=${param.configUri}&__locale=${cms:vfs(pageContext).requestContext.locale}&width=800&height=530</cms:link>" 
+	       href="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.v8.comments/elements/comment_form.jsp:562b63fd-15df-11e1-aeb4-9b778fa0dc42)?cmturi=${param.cmturi}&cmtminimized=${param.cmtminimized}&cmtlist=${param.cmtlist}&cmtsecurity=${param.cmtsecurity}&configUri=${param.configUri}&cmtformid=${param.cmtformid}&__locale=${cms:vfs(pageContext).requestContext.locale}&width=800&height=530</cms:link>" 
 	       class="cmt_thickbox" >
 			<fmt:message key="post.0" />
 		</a>
@@ -40,7 +41,7 @@
 	<c:if test="${alkaconCmt.guestUser && alkaconCmt.config.offerLogin}">
 	        <a 
 	           title="<fmt:message key="login.message.title" />" 
-	           href="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.v8.comments/elements/comment_login.jsp:563c05e2-15df-11e1-aeb4-9b778fa0dc42)?cmturi=${param.cmturi}&cmtminimized=${param.cmtminimized}&cmtlist=${param.cmtlist}&cmtsecurity=${param.cmtsecurity}&configUri=${param.configUri}&__locale=${cms:vfs(pageContext).requestContext.locale}&width=400&height=200</cms:link>" 
+	           href="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.v8.comments/elements/comment_login.jsp:563c05e2-15df-11e1-aeb4-9b778fa0dc42)?cmturi=${param.cmturi}&cmtminimized=${param.cmtminimized}&cmtlist=${param.cmtlist}&cmtsecurity=${param.cmtsecurity}&configUri=${param.configUri}&cmtformid=${param.cmtformid}&__locale=${cms:vfs(pageContext).requestContext.locale}&width=400&height=200</cms:link>" 
 	           class="cmt_thickbox" >
 			<fmt:message key="post.user.login.0" />
 		</a>
@@ -75,6 +76,7 @@
 	    <cms:param name="cmtlist" value="${param.cmtlist}" />
 	    <cms:param name="cmtsecurity" value="${param.cmtsecurity}" />
 		<cms:param name="configUri" value="${param.configUri}" />
+		<cms:param name="cmtformid" value="${param.cmtformid}" />
 		<cms:param name="cmtpage" value="0" />
 	</cms:include>
 </div>
@@ -88,6 +90,7 @@ function reloadComments(state, page) {
 		        cmtlist:"${param.cmtlist}",
 		        cmtsecurity:"${param.cmtsecurity}",
 		        configUri: '${param.configUri}', 
+		        cmtformid:"${param.cmtformid}",
 		        __locale: '<cms:info property="opencms.request.locale" />', 
 		        cmtstate: '${alkaconCmt.state}', 
 		        cmtpage: 0 
