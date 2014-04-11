@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<XmlVfsBundles xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/org.opencms.ade.config/schemas/xmlvfsbundle.xsd">
+  <Bundle language="en">
+    <Message>
+      <Key><![CDATA[commentlist.nocomment]]></Key>
+      <Value><![CDATA[No comments available.]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[commentlist.madecommenton1]]></Key>
+      <Value><![CDATA[made a comment on]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[commentlist.madecommenton2]]></Key>
+      <Value/>
+    </Message>
+    <Message>
+      <Key><![CDATA[commentlist.subject]]></Key>
+      <Value><![CDATA[Subject]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[commentlist.comment]]></Key>
+      <Value><![CDATA[Comment]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[commentlist.created]]></Key>
+      <Value><![CDATA[created]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[commentlist.at]]></Key>
+      <Value><![CDATA[at]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[commentlist.in]]></Key>
+      <Value><![CDATA[in]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[commentlist.fromip]]></Key>
+      <Value><![CDATA[from ip]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[commentlist.memoryonly]]></Key>
+      <Value><![CDATA[Please edit the comment list.]]></Value>
+    </Message>
+  </Bundle>
+  <Bundle language="de">
+    <Message>
+      <Key><![CDATA[commentlist.nocomment]]></Key>
+      <Value><![CDATA[Keine Kommentare verfügbar.]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[commentlist.madecommenton1]]></Key>
+      <Value><![CDATA[hat den Beitrag]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[commentlist.madecommenton2]]></Key>
+      <Value><![CDATA[kommentiert.]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[commentlist.subject]]></Key>
+      <Value><![CDATA[Betreff]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[commentlist.comment]]></Key>
+      <Value><![CDATA[Kommentar]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[commentlist.created]]></Key>
+      <Value><![CDATA[Erstellt]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[commentlist.at]]></Key>
+      <Value><![CDATA[am]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[commentlist.in]]></Key>
+      <Value><![CDATA[in]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[commentlist.fromip]]></Key>
+      <Value><![CDATA[von der IP-Adresse]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[commentlist.memoryonly]]></Key>
+      <Value><![CDATA[Bitte editieren Sie die Kommentarliste.]]></Value>
+    </Message>
+  </Bundle>
+</XmlVfsBundles>

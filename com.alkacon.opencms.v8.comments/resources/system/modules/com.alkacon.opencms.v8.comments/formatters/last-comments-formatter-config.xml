@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<NewFormatters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/org.opencms.ade.config/schemas/formatters/new_formatter.xsd">
+  <NewFormatter language="en">
+    <NiceName><![CDATA[Sample formatter for Last Comments]]></NiceName>
+    <Type><![CDATA[last-comments]]></Type>
+    <Jsp>
+      <link type="WEAK">
+        <target><![CDATA[/system/modules/com.alkacon.opencms.v8.comments/formatters/last-comments-formatter.jsp]]></target>
+        <uuid>f4458014-bfe8-11e3-96f0-6306da683c37</uuid>
+      </link>
+    </Jsp>
+    <Rank><![CDATA[1000]]></Rank>
+    <Match>
+      <Width>
+        <Width><![CDATA[-1]]></Width>
+      </Width>
+    </Match>
+    <Preview>false</Preview>
+    <SearchContent>true</SearchContent>
+    <AutoEnabled>true</AutoEnabled>
+    <Detail>true</Detail>
+    <HeadIncludeCss>
+      <CssLink>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.v8.comments/resources/comments.css]]></target>
+          <uuid>56708391-15df-11e1-aeb4-9b778fa0dc42</uuid>
+        </link>
+      </CssLink>
+    </HeadIncludeCss>
+  </NewFormatter>
+</NewFormatters>

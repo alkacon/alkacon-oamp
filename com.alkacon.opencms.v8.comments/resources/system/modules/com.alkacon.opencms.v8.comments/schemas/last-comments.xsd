@@ -1,0 +1,53 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
+
+	<xsd:element name="AlkaconV8LastCommentsLists" type="OpenCmsAlkaconV8LastCommentsLists"/>
+
+	<xsd:complexType name="OpenCmsAlkaconV8LastCommentsLists">
+		<xsd:sequence>
+			<xsd:element name="AlkaconV8LastCommentsList" type="OpenCmsAlkaconV8LastCommentsList" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:complexType name="OpenCmsAlkaconV8LastCommentsList">
+		<xsd:sequence>
+			<xsd:element name="Title" type="OpenCmsString" />
+			<xsd:element name="FormId" type="OpenCmsString" />
+			<xsd:element name="MaxNumber" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="Fields" type="OpenCmsString" />
+		</xsd:sequence>
+		<xsd:attribute name="language" type="OpenCmsLocale" use="required"/>
+	</xsd:complexType>
+
+	<xsd:annotation>
+		<xsd:appinfo>
+			<resourcebundle name="com.alkacon.opencms.v8.comments.schemas" />
+			<mappings>
+				<mapping element="Title" mapto="property:Title" />
+				<mapping element="Title" mapto="urlName" />
+			</mappings>
+			<defaults>
+				<default element="Title" value="Add a new title here" />
+				<default element="FormId" value="__oamp-comment__" />
+				<default element="Fields" value="name" />
+			</defaults>
+			<layouts>
+				<layout element="Fields" widget="MultiSelectWidget" 
+						configuration="value='creationdate' option='%(key.AlkaconV8LastCommentsList.creationdate)'
+									  |value='username' option='%(key.AlkaconV8LastCommentsList.username)'
+									  |value='comment' option='%(key.AlkaconV8LastCommentsList.comment)'
+									  |value='email' option='%(key.AlkaconV8LastCommentsList.email)'
+									  |value='ipaddress' option='%(key.AlkaconV8LastCommentsList.ipaddress)'
+									  |value='locale' option='%(key.AlkaconV8LastCommentsList.locale)'
+									  |value='name' option='%(key.AlkaconV8LastCommentsList.name)' default='true'
+									  |value='subject' option='%(key.AlkaconV8LastCommentsList.subject)'" />
+			</layouts>
+			<validationrules>
+				<rule element="MaxNumber" regex="\d{1,4}" type="error" message="%(key.AlkaconV8LastCommentsList.MaxNumber.error) (%(validation.path))" />
+			</validationrules>
+			<searchsettings containerPageOnly="true"/>
+		</xsd:appinfo>
+	</xsd:annotation>
+
+</xsd:schema>
