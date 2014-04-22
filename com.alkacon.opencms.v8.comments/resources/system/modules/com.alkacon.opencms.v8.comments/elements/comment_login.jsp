@@ -17,7 +17,7 @@
     pageContext.setAttribute("alkaconCmt", alkaconCmt);
 %>
 <fmt:setLocale value="${cms:vfs(pageContext).requestContext.locale}" />
-<fmt:setBundle basename="${alkaconCmt.resourceBundle}" />
+<cms:bundle basename="${alkaconCmt.resourceBundle}">
 <div class="cmtDialog">
 	<form class="cmtForm" id="fid">
 		<div id="errmsg" ><fmt:message key="login.message.enterdata" /><br>&nbsp;</div>
@@ -85,3 +85,4 @@ $("#cboxTitle").addClass("cmt_TB_title");
 $("#cboxClose").addClass("cmt_TB_closeAjaxWindow");
 $("#cboxLoadedContent").addClass("cmt_TB_ajaxContent");
 </script>
+</cms:bundle>
