@@ -1,4 +1,6 @@
-<%@ page import="com.alkacon.opencms.v8.comments.*,org.opencms.jsp.util.*,org.opencms.main.*, java.util.Map"%><%@ taglib
+<%@ page import="com.alkacon.opencms.v8.comments.*,org.opencms.jsp.util.*,org.opencms.main.*, java.util.Map"%>
+<%@ page import="org.opencms.workplace.CmsWorkplace"%>
+<%@ taglib
 	prefix="c" uri="http://java.sun.com/jsp/jstl/core"%><%@ taglib
 	prefix="cms" uri="http://www.opencms.org/taglib/cms"%><%@ taglib
 	prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -49,27 +51,29 @@
 					<c:otherwise>${cms.requestContext.uri}</c:otherwise>
 				</c:choose>
 			</c:set>
-			<c:set var="cmtformid">
+			<c:set var="formid">
 				<c:if test="${!content.value.FormId.isEmptyOrWhitespaceOnly}">${content.value.FormId}</c:if>
 			</c:set><%
-				Map<String, String> dynamicConfig = CmsCommentsAccess.generateDynamicConfig(pageContext.getAttribute("cmtformid").toString());
+				Map<String, String> dynamicConfig = CmsCommentsAccess.generateDynamicConfig(pageContext.getAttribute("formid").toString());
 			    CmsCommentsAccess alkaconCmt = new CmsCommentsAccess(
 											pageContext, request, response,
 											(String) pageContext.getAttribute("configUri"), dynamicConfig);
 									pageContext.setAttribute("alkaconCmt", alkaconCmt);
 			%><div><div id="commentbox" class="commentbox">
 				<fmt:setLocale value="${cms.requestContext.locale}"/>
-				<fmt:bundle basename="com.alkacon.opencms.v8.comments.frontend">
-					<div class="cmtLoading"></div>
-					<c:set var="url">
-						<c:choose>
-							<c:when test="${(content.hasValue.Minimized && content.value.Minimized.stringValue=='true')|| not alkaconCmt.maximized}">%(link.weak:/system/modules/com.alkacon.opencms.v8.comments/elements/comment_header.jsp:56328ff3-15df-11e1-aeb4-9b778fa0dc42)</c:when>
-							<c:otherwise>%(link.weak:/system/modules/com.alkacon.opencms.v8.comments/elements/comment_list.jsp:5639bbed-15df-11e1-aeb4-9b778fa0dc42)</c:otherwise>
-						</c:choose>
-					</c:set>
+				<cms:bundle basename="com.alkacon.opencms.v8.comments.formatters">
+					<c:set var="formid">${alkaconCmt.config.formId}</c:set>
 					<c:set var="minimized"><cms:elementsetting name="minimized" default="${content.hasValue.Minimized ? content.value.Minimized.stringValue : ''}"/></c:set>
 					<c:set var="list"><cms:elementsetting name="list" default="${content.hasValue.List ? content.value.List.stringValue : ''}"/></c:set>
 					<c:set var="security"><cms:elementsetting name="security" default="${content.hasValue.Security ? content.value.Security.stringValue : ''}"/></c:set>
+					<c:set var="allowreplies"><cms:elementsetting name="allowreplies" default="${content.hasValue.AllowReplies ? content.value.AllowReplies : alkaconCmt.config.allowReplies}"/></c:set>
+					<div class="cmtLoading"></div>
+					<c:set var="url">
+						<c:choose>
+							<c:when test="${!minimized == 'false' && (minimized == 'true' || (content.hasValue.Minimized && content.value.Minimized.stringValue=='true') || not alkaconCmt.maximized)}">%(link.weak:/system/modules/com.alkacon.opencms.v8.comments/elements/comment_header.jsp:56328ff3-15df-11e1-aeb4-9b778fa0dc42)</c:when>
+							<c:otherwise>%(link.weak:/system/modules/com.alkacon.opencms.v8.comments/elements/comment_list.jsp:5639bbed-15df-11e1-aeb4-9b778fa0dc42)</c:otherwise>
+						</c:choose>
+					</c:set>
 					<script type='text/javascript'>
 						<c:choose>
 						<c:when test="${!empty alkaconCmt.config.styleSheet}" >
@@ -98,14 +102,18 @@
 						        cmtminimized:"${minimized}",
 						        cmtlist:"${list}",
 						        cmtsecurity:"${security}",
-						        cmtformid: "${cmtformid}",
+						        cmtformid: "${formid}",
+								cmtallowreplies: "${allowreplies}",
 						        __locale: "${cms.requestContext.locale}"
 						    },
 						    success: function(html){ $("#commentbox").html(html); },
 						    error: function(){ $("#commentbox").html(""); }
 						});
+						$('a.cmt_thickbox').colorbox(colorboxConfig_comments); //pass where to apply thickbox
+						imgLoader = new Image(); // preload image
+						imgLoader.src = '<%=CmsWorkplace.getSkinUri()%>jquery/css/thickbox/loading.gif';
 					</script>
-				</fmt:bundle>
+				</cms:bundle>
 			</div></div>
 		</c:otherwise>
 	</c:choose>

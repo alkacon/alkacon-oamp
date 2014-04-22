@@ -205,6 +205,9 @@ public class CmsCommentConfiguration {
     /** Configuration node name for the form id. */
     private static final String NODE_FORMID = "FormId";
 
+    /** Configuration node name for the "allow replies" option */
+    private static final String NODE_ALLOWREPLIES = "AllowReplies";
+
     /** Configuration Uri. */
     private String m_configUri;
 
@@ -237,6 +240,12 @@ public class CmsCommentConfiguration {
 
     /** The form id. */
     private String m_formId;
+
+    /** The parent id. */
+    private int m_parentId;
+
+    /** The "allow replies" flag. */
+    private boolean m_allowReplies;
 
     /**
      * Default constructor which parses the configuration file.<p>
@@ -278,6 +287,7 @@ public class CmsCommentConfiguration {
      * @param security the security mode
      * @param styleSheet the style sheet
      * @param formId the form id
+     * @param allowReplies the flag indicating if replies to comments are allowed
      */
     private CmsCommentConfiguration(
         String configUri,
@@ -289,7 +299,8 @@ public class CmsCommentConfiguration {
         String resourceBundle,
         CmsCommentSecurityMode security,
         String styleSheet,
-        String formId) {
+        String formId,
+        boolean allowReplies) {
 
         m_configUri = configUri;
         m_groups = groups;
@@ -301,6 +312,7 @@ public class CmsCommentConfiguration {
         m_security = security;
         m_styleSheet = styleSheet;
         m_formId = formId;
+        m_allowReplies = allowReplies;
     }
 
     /**
@@ -319,7 +331,8 @@ public class CmsCommentConfiguration {
             m_resourceBundle,
             m_security,
             m_styleSheet,
-            m_formId);
+            m_formId,
+            m_allowReplies);
     }
 
     /**
@@ -477,6 +490,26 @@ public class CmsCommentConfiguration {
     }
 
     /**
+     * Returns if replies are allowed.<p>
+     *
+     * @return flag, indicating if replies are allowed
+     */
+    public boolean isAllowReplies() {
+
+        return m_allowReplies;
+    }
+
+    /**
+     * Sets if replies are allowed.<p>
+     *
+     * @param allowReplies flag, indicating if replies are allowed
+     */
+    public void setAllowReplies(String allowReplies) {
+
+        m_allowReplies = Boolean.valueOf(allowReplies).booleanValue();
+    }
+
+    /**
      * Initializes the configuration.<p>
      * 
      * @param jsp the initialized CmsJspActionElement to access the OpenCms API
@@ -521,6 +554,9 @@ public class CmsCommentConfiguration {
             }
         }
         m_formId = stringValue;
+
+        stringValue = content.getStringValue(cms, path + NODE_ALLOWREPLIES, locale);
+        m_allowReplies = Boolean.valueOf(stringValue).booleanValue();
 
         stringValue = content.getStringValue(cms, path + NODE_MODERATED, locale);
         m_moderated = Boolean.valueOf(stringValue).booleanValue();
@@ -572,5 +608,29 @@ public class CmsCommentConfiguration {
 
         stringValue = content.getStringValue(cms, path + NODE_RESOURCEBUNDLE, locale);
         m_resourceBundle = stringValue;
+    }
+
+    /**
+     * Returns the parentId.<p>
+     *
+     * @return the parentId
+     */
+    public int getParentId() {
+
+        return m_parentId;
+    }
+
+    /**
+     * Sets the parentId.<p>
+     *
+     * @param parentId the parentId to set
+     */
+    public void setParentId(String parentId) {
+
+        try {
+            m_parentId = Integer.valueOf(parentId).intValue();
+        } catch (NumberFormatException e) {
+            m_parentId = CmsCommentFormHandler.NO_PARENTID;
+        }
     }
 }

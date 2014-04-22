@@ -42,6 +42,158 @@
       <Key><![CDATA[commentlist.memoryonly]]></Key>
       <Value><![CDATA[Please edit the comment list.]]></Value>
     </Message>
+    <Message>
+      <Key><![CDATA[doReply]]></Key>
+      <Value><![CDATA[reply]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[oneReply]]></Key>
+      <Value><![CDATA[reply]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[manyReplies]]></Key>
+      <Value><![CDATA[replies]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[header.user.manage.2]]></Key>
+      <Value><![CDATA[Manage User Comments ({0} already approved comments, {1} new comments)]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[header.user.manage.1]]></Key>
+      <Value><![CDATA[Manage User Comments ({0} comments)]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[header.user.post.1]]></Key>
+      <Value><![CDATA[View User Comments ({0} comments)]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[header.user.read.1]]></Key>
+      <Value><![CDATA[View User Comments ({0} comments)]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[header.user.login.1]]></Key>
+      <Value><![CDATA[This page has {0} user comments, but you can not see them unless you log in.]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[titel.view.comments]]></Key>
+      <Value><![CDATA[User Comments]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[post.user.login.0]]></Key>
+      <Value><![CDATA[You can not post new comments unless you log in.]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[post.0]]></Key>
+      <Value><![CDATA[Click here to post a new comment.]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[login.message.title]]></Key>
+      <Value><![CDATA[Login]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[login.message.enterdata]]></Key>
+      <Value><![CDATA[Please enter your credentials:]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[login.message.failed]]></Key>
+      <Value><![CDATA[Login failed]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[login.label.username]]></Key>
+      <Value><![CDATA[Name]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[login.label.password]]></Key>
+      <Value><![CDATA[Password]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[login.label.login]]></Key>
+      <Value><![CDATA[Login]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[login.label.cancel]]></Key>
+      <Value><![CDATA[Cancel]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[form.message.post]]></Key>
+      <Value><![CDATA[Post a comment]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.header.view.2]]></Key>
+      <Value><![CDATA[{1} - <b>{0}</b>:]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.manager.username.1]]></Key>
+      <Value><![CDATA[Username: <b>{0}</b>]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.manager.email.1]]></Key>
+      <Value><![CDATA[Email: <b>{0}</b>]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.manager.ipaddress.1]]></Key>
+      <Value><![CDATA[IP Address: <b>{0}</b>]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.manager.count.1]]></Key>
+      <Value><![CDATA[Comments: <b>{0}</b>]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.manager.approve]]></Key>
+      <Value><![CDATA[Approve]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.manager.block]]></Key>
+      <Value><![CDATA[Block]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.manager.delete]]></Key>
+      <Value><![CDATA[Delete]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.manager.delete.conf]]></Key>
+      <Value><![CDATA[Do you really want to delete this comment?]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[pagination.prev]]></Key>
+      <Value><![CDATA[Prev]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[pagination.next]]></Key>
+      <Value><![CDATA[Next]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[pagination.all]]></Key>
+      <Value><![CDATA[All]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[pagination.new]]></Key>
+      <Value><![CDATA[New]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[pagination.blocked]]></Key>
+      <Value><![CDATA[Blocked]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[pagination.approved]]></Key>
+      <Value><![CDATA[Approved]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.image.close]]></Key>
+      <Value><![CDATA[Close]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.image.next]]></Key>
+      <Value><![CDATA[Next >]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.image.prev]]></Key>
+      <Value><![CDATA[< Prev]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.image.count]]></Key>
+      <Value><![CDATA[Image !current of !total]]></Value>
+    </Message>
   </Bundle>
   <Bundle language="de">
     <Message>
@@ -83,6 +235,158 @@
     <Message>
       <Key><![CDATA[commentlist.memoryonly]]></Key>
       <Value><![CDATA[Bitte editieren Sie die Kommentarliste.]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[doReply]]></Key>
+      <Value><![CDATA[Antworten]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[oneReply]]></Key>
+      <Value><![CDATA[Antwort]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[manyReplies]]></Key>
+      <Value><![CDATA[Antworten]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[header.user.manage.2]]></Key>
+      <Value><![CDATA[Kommentare verwalten ({0} schon freigegeben, {1} neue Beiträge)]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[header.user.manage.1]]></Key>
+      <Value><![CDATA[Kommentare verwalten ({0} Beiträge)]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[header.user.post.1]]></Key>
+      <Value><![CDATA[Kommentare lesen ({0} Beiträge)]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[header.user.read.1]]></Key>
+      <Value><![CDATA[Kommentare lesen ({0} Beiträge)]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[header.user.login.1]]></Key>
+      <Value><![CDATA[Diese Seite hat {0} Kommentare , Sie müssen sich aber anmelden, um sie lesen zu können.]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[titel.view.comments]]></Key>
+      <Value><![CDATA[Kommentare]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[post.user.login.0]]></Key>
+      <Value><![CDATA[Sie müssen sich anmelden, um Kommentare zu schreiben.]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[post.0]]></Key>
+      <Value><![CDATA[Klicken Sie hier, um einen neuen Kommentar zu schreiben.]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[login.message.title]]></Key>
+      <Value><![CDATA[Anmeldung]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[login.message.enterdata]]></Key>
+      <Value><![CDATA[Bitte geben Sie Ihre Anmeldedaten an:]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[login.message.failed]]></Key>
+      <Value><![CDATA[Anmeldung fehlgeschlagen]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[login.label.username]]></Key>
+      <Value><![CDATA[Benutzername]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[login.label.password]]></Key>
+      <Value><![CDATA[Kennwort]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[login.label.login]]></Key>
+      <Value><![CDATA[Anmelden]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[login.label.cancel]]></Key>
+      <Value><![CDATA[Abbrechen]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[form.message.post]]></Key>
+      <Value><![CDATA[Neuer Kommentar]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.header.view.2]]></Key>
+      <Value><![CDATA[{1} - <b>{0}</b>:]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.manager.username.1]]></Key>
+      <Value><![CDATA[Benutzername: <b>{0}</b>]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.manager.email.1]]></Key>
+      <Value><![CDATA[E-Mail: <b>{0}</b>]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.manager.ipaddress.1]]></Key>
+      <Value><![CDATA[IP Adresse: <b>{0}</b>]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.manager.count.1]]></Key>
+      <Value><![CDATA[Beiträge: <b>{0}</b>]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.manager.approve]]></Key>
+      <Value><![CDATA[Freigeben]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.manager.block]]></Key>
+      <Value><![CDATA[Blockieren]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.manager.delete]]></Key>
+      <Value><![CDATA[Löschen]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.manager.delete.conf]]></Key>
+      <Value><![CDATA[Wollen Sie diesen Beitrag wirklich löschen?]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[pagination.prev]]></Key>
+      <Value><![CDATA[Zurück]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[pagination.next]]></Key>
+      <Value><![CDATA[Vor]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[pagination.all]]></Key>
+      <Value><![CDATA[Alle]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[pagination.new]]></Key>
+      <Value><![CDATA[Neue]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[pagination.blocked]]></Key>
+      <Value><![CDATA[Blockierte]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[pagination.approved]]></Key>
+      <Value><![CDATA[Freigegebene]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.image.close]]></Key>
+      <Value><![CDATA[Schließen]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.image.next]]></Key>
+      <Value><![CDATA[Vor >]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.image.prev]]></Key>
+      <Value><![CDATA[< Zurück]]></Value>
+    </Message>
+    <Message>
+      <Key><![CDATA[comment.image.count]]></Key>
+      <Value><![CDATA[Bild !current von !total]]></Value>
     </Message>
   </Bundle>
 </XmlVfsBundles>

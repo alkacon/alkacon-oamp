@@ -8,7 +8,7 @@
 
 <c:set var="locale" value="${cms:vfs(pageContext).context.locale}" />
 <fmt:setLocale value="${locale}" />
-<fmt:bundle basename="com.alkacon.opencms.v8.comments.frontend">
+<cms:bundle basename="com.alkacon.opencms.v8.comments.formatters">
 <cms:jquery dynamic='true' />
 <script type='text/javascript' >
 load_script('<cms:link>%(link.weak:/system/modules/org.opencms.jquery/resources/packed/jquery.js:49f92dba-8a92-11e0-ad6c-bff56146ac12)</cms:link>', 'js');
@@ -54,4 +54,4 @@ load_script('<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.v8.commen
 	    error: function(){ $("#commentbox").html(""); }
 	});
 </script>
-</fmt:bundle>
+</cms:bundle>

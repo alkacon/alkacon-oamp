@@ -36,6 +36,7 @@
 	    	<input type="hidden" name="cmtlist" value="${param.cmtlist}" />
 	    	<input type="hidden" name="cmtsecurity" value="${param.cmtsecurity}" />
 	    	<input type="hidden" name="cmtformid" value="${param.cmtformid}" />
+	    	<input type="hidden" name="cmtallowreplies" value="${param.cmtallowreplies}" />
 			<input type="hidden" name="__locale" value="${param.__locale}" />
 			<input class="cmtButton" type="button" value="<fmt:message key="login.label.login" />" onclick="cmtLogin();"/>
 			<input class="cmtButton" type="button" value="<fmt:message key="login.label.cancel" />" onclick="$.colorbox.close();"/>
@@ -69,7 +70,8 @@ function cmtLogin() {
 				        cmtlist:"${param.cmtlist}",
 				        cmtsecurity:"${param.cmtsecurity}",
 				        cmtformid:"${param.cmtformid}",
-					    configUri: '${param.configUri}', 
+					    configUri: '${param.configUri}',
+						cmtallowreplies: "${param.cmtallowreplies}",
 					    __locale: '<cms:info property="opencms.request.locale" />' },
 					function(html) { $("#commentbox").html(html); }
 				);

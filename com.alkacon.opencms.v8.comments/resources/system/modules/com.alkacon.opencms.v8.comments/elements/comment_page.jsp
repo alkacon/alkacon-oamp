@@ -8,8 +8,11 @@
 	CmsCommentsAccess alkaconCmt = new CmsCommentsAccess(pageContext, request, response, request.getParameter("configUri"), dynamicConfig);
 	pageContext.setAttribute("alkaconCmt", alkaconCmt);
 %>
+<c:if test="${alkaconCmt.config.allowReplies}">
+	<jsp:useBean id="alkaconReplies" class="com.alkacon.opencms.v8.comments.CmsRepliesAccessBean" />
+</c:if>
 <fmt:setLocale value="${cms:vfs(pageContext).requestContext.locale}" />
-<fmt:setBundle basename="${alkaconCmt.resourceBundle}" />
+<cms:bundle basename="${alkaconCmt.resourceBundle}" >
 <!-- start: page -->
 <c:choose>
 <c:when test="${alkaconCmt.userCanManage}" >
@@ -33,6 +36,7 @@
 				        cmtlist:"${param.cmtlist}",
 				        cmtsecurity:"${param.cmtsecurity}",
 				        cmtformid:"${param.cmtformid}",
+				        cmtallowreplies:"${param.cmtallowreplies}",
 					    configUri: '${param.configUri}' }, 							
 					function() { reloadComments('${alkaconCmt.state}', page); }
 				);
@@ -49,3 +53,4 @@
 </c:otherwise>
 </c:choose>
 <!-- end: page -->
+</cms:bundle>

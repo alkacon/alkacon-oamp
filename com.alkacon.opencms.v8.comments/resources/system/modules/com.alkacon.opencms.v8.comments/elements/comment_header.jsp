@@ -9,7 +9,7 @@
 	pageContext.setAttribute("alkaconCmt", alkaconCmt);
 %>
 <fmt:setLocale value="${cms:vfs(pageContext).requestContext.locale}" />
-<fmt:setBundle basename="${alkaconCmt.resourceBundle}" />
+<cms:bundle basename="${alkaconCmt.resourceBundle}" >
 <div class="cmtHeader">
 <c:choose>
 <c:when test="${alkaconCmt.userCanManage}">
@@ -49,7 +49,7 @@
 	<c:if test="${alkaconCmt.guestUser && alkaconCmt.config.offerLogin}">
 	        <a 
 	           title="<fmt:message key="login.message.title" />" 
-	           href="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.v8.comments/elements/comment_login.jsp:563c05e2-15df-11e1-aeb4-9b778fa0dc42)?cmturi=${param.cmturi}&cmtminimized=${param.cmtminimized}&cmtlist=${param.cmtlist}&cmtsecurity=${param.cmtsecurity}&configUri=${param.configUri}&cmtformid=${param.cmtformid}&__locale=${cms:vfs(pageContext).requestContext.locale}&width=400&height=200</cms:link>" 
+	           href="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.v8.comments/elements/comment_login.jsp:563c05e2-15df-11e1-aeb4-9b778fa0dc42)?cmturi=${param.cmturi}&cmtminimized=${param.cmtminimized}&cmtlist=${param.cmtlist}&cmtsecurity=${param.cmtsecurity}&configUri=${param.configUri}&cmtformid=${param.cmtformid}&cmtallowreplies=${param.cmtallowreplies}&__locale=${cms:vfs(pageContext).requestContext.locale}&width=400&height=200</cms:link>" 
 	           class="cmt_thickbox" >
 			<fmt:message key="header.user.login.1" >
 				<fmt:param value="${fn:escapeXml(alkaconCmt.countComments)}" />
@@ -59,6 +59,7 @@
 </c:otherwise>
 </c:choose>
 </div>
+</cms:bundle>
 <script type="text/javascript" >
   $('a.cmt_thickbox').colorbox(colorboxConfig_comments); //pass where to apply thickbox
   imgLoader = new Image(); // preload image
@@ -75,6 +76,7 @@
 	        cmtlist:"${param.cmtlist}",
 	        cmtsecurity:"${param.cmtsecurity}",
 	        cmtformid:"${param.cmtformid}",
+			cmtallowreplies: "${param.cmtallowreplies}",
 		    __locale: '<cms:info property="opencms.request.locale" />'
 		},
 		function(html) { $("#commentbox").html(html); }

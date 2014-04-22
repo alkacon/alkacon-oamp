@@ -18,5 +18,9 @@
 			<c:set var="commentcontent">${cms:stripHtml(commentcontent)}</c:set>
 		</c:if>
 		<c:out value="${commentcontent}" escapeXml="false" />
+		
+		<c:if test="${param.cmtallowreplies == 'true'}">
+			   <%@include file="%(link.strong:/system/modules/com.alkacon.opencms.v8.comments/elements/comment_reply_option.jsp:8ecfda3a-c49e-11e3-befc-6306da683c37)" %>
+		</c:if>
 	</div>
 </div>

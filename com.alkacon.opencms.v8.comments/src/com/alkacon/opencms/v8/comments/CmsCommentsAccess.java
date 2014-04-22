@@ -127,6 +127,12 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     /** Parameter name constant. */
     public static final String PARAM_FORMID = "cmtformid";
 
+    /** Parameter name constant */
+    public static final String PARAM_PARENTID = "cmtparentid";
+
+    /** Parameter name constant */
+    public static final String PARAM_ALLOWREPLIES = "cmtallowreplies";
+
     /** The log object for this class. */
     protected static final Log LOG = CmsLog.getLog(CmsCommentsAccess.class);
 
@@ -247,6 +253,10 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
         //m_dynamicConfig = dynamicConfig;
 
         initConfig(context, req, res);
+        String dynamicFormId = getFormIdFromDynamicConfig(dynamicConfig);
+        if (dynamicFormId != null) {
+            m_config.setFormId(dynamicFormId);
+        }
     }
 
     static {
@@ -318,7 +328,7 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
      * @param formId form id value
      * @return dynamic configuration
      */
-    public static Map<String, String> generateDynamicConfig(String formId) {
+    public static final Map<String, String> generateDynamicConfig(String formId) {
 
         if ((formId == null) || formId.trim().isEmpty()) {
             return null;
@@ -327,6 +337,20 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
         Map<String, String> dynamicConfig = new HashMap<String, String>(1);
         dynamicConfig.put(CmsForm.NODE_DATATARGET + "/" + CmsForm.NODE_DATATARGET_FORMID, formId);
         return dynamicConfig;
+    }
+
+    /**
+     * Extracts the formId from a dynamic configuration.
+     * 
+     * @param dynamicConfig dynamic configuration for forms.
+     * @return the formId, or null if not set in the dynamic configuration.
+     */
+    public static final String getFormIdFromDynamicConfig(Map<String, String> dynamicConfig) {
+
+        if (dynamicConfig != null) {
+            return dynamicConfig.get(CmsForm.NODE_DATATARGET + "/" + CmsForm.NODE_DATATARGET_FORMID);
+        }
+        return null;
     }
 
     /**
@@ -378,6 +402,12 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
             return;
         }
         try {
+            CmsRepliesAccessBean repliesBean = new CmsRepliesAccessBean();
+            CmsFormDataAccess dataAccess = CmsFormDataAccess.getInstance();
+            List<CmsFormDataBean> replies = repliesBean.getRepliesForComment(entryId);
+            for (CmsFormDataBean reply : replies) {
+                dataAccess.deleteForm(reply.getEntryId());
+            }
             CmsFormDataAccess.getInstance().deleteForm(entryId);
         } catch (SQLException e) {
             if (LOG.isErrorEnabled()) {
@@ -714,16 +744,16 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     }
 
     /**
-     * Returns the frontend resource bundle name.<p>
+     * Returns the formatter resource bundle name.<p>
      * 
-     * @return the frontend resource bundle name
+     * @return the formatter resource bundle name
      */
     public String getResourceBundle() {
 
         if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(getConfig().getResourceBundle())) {
             return getConfig().getResourceBundle();
         }
-        return "com.alkacon.opencms.v8.comments.frontend";
+        return "com.alkacon.opencms.v8.comments.formatters";
     }
 
     /**
@@ -1027,6 +1057,12 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
             }
             if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(req.getParameter(PARAM_FORMID))) {
                 m_config.setFormId(req.getParameter(PARAM_FORMID));
+            }
+            if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(req.getParameter(PARAM_PARENTID))) {
+                m_config.setParentId(req.getParameter(PARAM_PARENTID));
+            }
+            if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(req.getParameter(PARAM_ALLOWREPLIES))) {
+                m_config.setAllowReplies(req.getParameter(PARAM_ALLOWREPLIES));
             }
             if (LOG.isDebugEnabled()) {
                 LOG.debug(Messages.get().getBundle().key(Messages.LOG_INIT_CONFIG_1, configUri));

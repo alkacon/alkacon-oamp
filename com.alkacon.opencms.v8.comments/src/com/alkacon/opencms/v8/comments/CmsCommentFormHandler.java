@@ -98,6 +98,15 @@ public class CmsCommentFormHandler extends CmsFormHandler {
     /** The user field name constant. */
     public static final String FIELD_USERNAME = "username";
 
+    /** The reply-to field name constant.
+     * 
+     * Used for replies to store the entryId of the comment that is replied to.
+     * 
+     **/
+    public static final String FIELD_REPLYTO = "reply-to";
+
+    /** The parent id parameter */
+    protected static final String PARAM_PARENTID = "cmtparentid";
     /** The module name. */
     public static final String MODULE_NAME = "com.alkacon.opencms.v8.comments";
 
@@ -115,11 +124,17 @@ public class CmsCommentFormHandler extends CmsFormHandler {
     /** The log object for this class. */
     private static final Log LOG = CmsLog.getLog(CmsCommentFormHandler.class);
 
+    /** The parent id value for "no parent" */
+    public static final int NO_PARENTID = -1;
+
     /** The cloned cms context. */
     private CmsObject m_cms;
 
     /** Some predefined comment substitutions. */
     private Map<String, String> m_substitutions;
+
+    /** The parent id, if the comment is an answer */
+    private int m_parentId;
 
     /**
      * Empty constructor, be sure to call one of the available initialization methods afterwards.<p>
@@ -133,6 +148,21 @@ public class CmsCommentFormHandler extends CmsFormHandler {
     public CmsCommentFormHandler() {
 
         super();
+        m_parentId = NO_PARENTID;
+    }
+
+    /**
+     * Create the form to post a reply to a comment.
+     * 
+     * @param parentId the entry id of the comment, to which it is replied
+     * 
+     * @throws IOException just forwarded from createForm()
+     */
+    public void createForm(int parentId) throws IOException {
+
+        m_parentId = parentId;
+        createForm();
+        m_parentId = NO_PARENTID;
     }
 
     /**
@@ -212,6 +242,14 @@ public class CmsCommentFormHandler extends CmsFormHandler {
             }
         }
         return m_cms;
+    }
+
+    /**
+     * @return the entry id of the comment-reply's parent.
+     */
+    public int getParentId() {
+
+        return m_parentId;
     }
 
     /**
@@ -405,6 +443,10 @@ public class CmsCommentFormHandler extends CmsFormHandler {
             getRequest().getParameter("cmtsecurity")).append("\" />");
         hFieldsBuf.append("<input type=\"hidden\" name=\"cmtformid\" value=\"").append(
             getRequest().getParameter("cmtformid")).append("\" />");
+        hFieldsBuf.append("<input type=\"hidden\" name=\"cmtparentid\" value=\"").append(
+            getRequest().getParameter("cmtparentid")).append("\" />");
+        hFieldsBuf.append("<input type=\"hidden\" name=\"cmtallowreplies\" value=\"").append(
+            getRequest().getParameter("cmtallowreplies")).append("\" />");
         hFieldsBuf.append("<input type=\"hidden\" name=\"configUri\" value=\"").append(
             getCommentFormConfiguration().getConfigUri()).append("\" />");
         hFieldsBuf.append("<input type=\"hidden\" name=\"__locale\" value=\"").append(

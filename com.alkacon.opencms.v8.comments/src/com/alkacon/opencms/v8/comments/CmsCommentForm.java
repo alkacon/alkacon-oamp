@@ -32,6 +32,7 @@
 
 package com.alkacon.opencms.v8.comments;
 
+import com.alkacon.opencms.v8.formgenerator.CmsDynamicField;
 import com.alkacon.opencms.v8.formgenerator.CmsForm;
 import com.alkacon.opencms.v8.formgenerator.CmsFormHandler;
 import com.alkacon.opencms.v8.formgenerator.I_CmsField;
@@ -87,6 +88,9 @@ public class CmsCommentForm extends CmsForm {
 
     /** If the resource responsibles should get the email alert or not. */
     private boolean m_responsible;
+
+    /** Reply-to field */
+    protected CmsDynamicField m_replyToField;
 
     /**
      * Default constructor which parses the configuration file.<p>
@@ -211,6 +215,11 @@ public class CmsCommentForm extends CmsForm {
         if (captchaFieldIsOnInputPage() && (m_captchaField != null)) {
             addField(m_captchaField);
         }
+
+        m_replyToField = new CmsDynamicField();
+        m_replyToField.setDbLabel(CmsCommentFormHandler.FIELD_REPLYTO);
+        m_replyToField.setLabel(CmsCommentFormHandler.FIELD_REPLYTO);
+        addField(m_replyToField);
     }
 
     /**

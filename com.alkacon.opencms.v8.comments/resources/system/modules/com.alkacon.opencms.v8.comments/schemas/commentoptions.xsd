@@ -22,6 +22,7 @@
 			<xsd:element name="OfferLogin" type="OpenCmsBoolean" />
 			<xsd:element name="StyleSheet" type="OpenCmsVfsFile" minOccurs="0" />
 			<xsd:element name="ResourceBundle" type="OpenCmsString" minOccurs="0" />
+			<xsd:element name="AllowReplies" type="OpenCmsBoolean" />
 		</xsd:sequence>
 		<xsd:attribute name="language" type="OpenCmsLocale" use="optional"/>
 	</xsd:complexType>
@@ -37,6 +38,7 @@
 			</layouts>
 			<defaults>
 				<default element="OfferLogin" value="true"/>
+				<default element="AllowReplies" value="true"/>
 			</defaults>
 		</xsd:appinfo>
 	</xsd:annotation>

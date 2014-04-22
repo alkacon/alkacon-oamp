@@ -30,6 +30,25 @@ div.cmtCommentSubtitle, div.cmtCommentSubtitle b {
 	font-size: 9px;
 }
 
+/* Reply entries specials */
+div.cmtCommentShowReplies {
+	display: none;
+	margin-left: 10px;
+}
+div.cmtCommentReply {
+	float: right;
+}
+
+div.cmtCommentReplyOptions {
+	border-top: 1px solid #CCCCCC;
+	padding: 5px 0px;
+	margin: 5px 0px;
+}
+
+div.cmtCommentCountReplies {
+	
+}
+
 /* Comment entries in management mode */
 div.cmtCommentApproved { 
 	background: #CCCCCC url(gradient.png) repeat-x scroll center top;

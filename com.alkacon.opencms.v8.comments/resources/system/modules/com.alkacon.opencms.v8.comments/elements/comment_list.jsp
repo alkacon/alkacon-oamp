@@ -12,9 +12,10 @@
 	}
 %>
 <fmt:setLocale value="${cms:vfs(pageContext).requestContext.locale}" />
-<fmt:setBundle basename="${alkaconCmt.resourceBundle}" />
+<cms:bundle basename="${alkaconCmt.resourceBundle}">
 <!-- start: header -->
 <div class="cmtHeader">
+<cms:user property="name" />
 <c:choose>
 <c:when test="${not empty param.title}">
 	${param.title}
@@ -35,7 +36,6 @@
 	       class="cmt_thickbox" >
 			<fmt:message key="post.0" />
 		</a>
-	</a>
 </c:when>
 <c:otherwise>
 	<c:if test="${alkaconCmt.guestUser && alkaconCmt.config.offerLogin}">
@@ -77,6 +77,7 @@
 	    <cms:param name="cmtsecurity" value="${param.cmtsecurity}" />
 		<cms:param name="configUri" value="${param.configUri}" />
 		<cms:param name="cmtformid" value="${param.cmtformid}" />
+		<cms:param name="cmtallowreplies" value="${param.cmtallowreplies}" />
 		<cms:param name="cmtpage" value="0" />
 	</cms:include>
 </div>
@@ -91,6 +92,7 @@ function reloadComments(state, page) {
 		        cmtsecurity:"${param.cmtsecurity}",
 		        configUri: '${param.configUri}', 
 		        cmtformid:"${param.cmtformid}",
+				cmtallowreplies: "${param.cmtallowreplies}",
 		        __locale: '<cms:info property="opencms.request.locale" />', 
 		        cmtstate: '${alkaconCmt.state}', 
 		        cmtpage: 0 
@@ -109,5 +111,17 @@ function reloadComments(state, page) {
 	);
 	$('body').css("cursor", "auto");
 }
+function showReplies(entryId, canManage) {
+	var divId = "#cmtCommentShowReplies-" + entryId;
+	if($(divId).css('display') == 'none') {
+	$(divId).addClass("cmtLoading");
+	$(divId).load("<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.v8.comments/elements/comment_replies.jsp:6623c30f-c489-11e3-9343-6306da683c37)</cms:link>?entryId=" + entryId + "&userCanManage=" + canManage + "&resourceBundle=${alkaconCmt.resourceBundle}",
+		function() {
+			$(divId).removeClass("cmtLoading");
+		});
+	}
+	$(divId).toggle();		
+}
 </script>
+</cms:bundle>
 <!-- end: comments list -->

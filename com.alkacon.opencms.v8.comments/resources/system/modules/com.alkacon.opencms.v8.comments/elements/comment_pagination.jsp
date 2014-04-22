@@ -37,6 +37,8 @@
 				        cmtlist:"${param.cmtlist}",
 				        cmtsecurity:"${param.cmtsecurity}",
 					    configUri: '${param.configUri}', 
+					    cmtallowreplies: '${param.cmtallowreplies}', 
+					    cmtformid: '${param.cmtformid}', 
 					    cmtpage: newPage, 
 					    __locale: '<cms:info property="opencms.request.locale" />', 
 					    cmtstate: '${alkaconCmt.state}' 
