@@ -46,8 +46,11 @@ public class CmsFormCollectorBean extends CmsJspBean {
 
     /** The form id for which form data should be collected. */
     private String m_formId = null;
+    
+    /** The flag to ignore the existence of the form URI. */
+    private boolean m_ignoreFormUri;
 
-    /** 
+	/** 
      * The number of form data sets to collect.
      * 
      * -1 means collect as many form data sets as present.
@@ -74,31 +77,35 @@ public class CmsFormCollectorBean extends CmsJspBean {
             e.printStackTrace();
             return new ArrayList<CmsFormBean>(0);
         }
+        
         // TODO: For performance reasons, handle the number restriction with a filter.
         if (m_numForms == 0) {
             return new ArrayList<CmsFormBean>(0);
-        }
-        if ((m_numForms > 0) && (m_numForms < forms.size())) {
-            forms = forms.subList(0, m_numForms);
-        }
-        return convertForms(forms);
+        } else {
+        	List<CmsFormBean> result = new ArrayList<CmsFormBean>(forms.size());
+        	for (CmsFormDataBean form : forms) {
+        		if (result.size() < m_numForms || m_numForms < 0) {
+        			CmsFormBean test = new CmsFormBean(getCmsObject(), form);
+        			if (isIgnoreFormUri() || test.getUri() != null) {
+        				result.add(test);
+        			}
+        		} else {
+        			break;
+        		}
+        	}
+        	return result;
+        	
+       }
     }
-
+    
     /**
-     * Convert the collected database entry into CmsFormBeans.
-     * 
-     * @param forms list of collected form database entries.
-     * 
-     * @return list of form data sets
-     */
-    private List<CmsFormBean> convertForms(List<CmsFormDataBean> forms) {
-
-        List<CmsFormBean> list = new ArrayList<CmsFormBean>(forms.size());
-        for (CmsFormDataBean form : forms) {
-            list.add(new CmsFormBean(getCmsObject(), form));
-        }
-        return list;
-    }
+	 * Sets the flag to ignore the existence of the form URI.<p>
+	 * 
+	 * @return the flag to ignore the existence of the form URI
+	 */
+    public boolean isIgnoreFormUri() {
+		return m_ignoreFormUri;
+	}
 
     /**
      * Returns the formId.<p>
@@ -119,6 +126,24 @@ public class CmsFormCollectorBean extends CmsJspBean {
 
         m_formId = formId;
     }
+    
+    /**
+     * Returns the flag to ignore the existence of the form URI.<p>
+     * 
+     * @param ignoreFormUri the flag to ignore the existence of the form URI
+     */
+	public void setIgnoreFormUri(boolean ignoreFormUri) {
+		m_ignoreFormUri = ignoreFormUri;
+	}
+	
+	/**
+     * Returns the flag to ignore the existence of the form URI.<p>
+     * 
+     * @param ignoreFormUri the flag to ignore the existence of the form URI
+     */
+	public void setIgnoreFormUri(String ignoreFormUri) {
+		m_ignoreFormUri = Boolean.valueOf(ignoreFormUri).booleanValue();
+	}
 
     /**
      * Returns the number of form datasets to collect maximally (-1 means to collect all).<p>
