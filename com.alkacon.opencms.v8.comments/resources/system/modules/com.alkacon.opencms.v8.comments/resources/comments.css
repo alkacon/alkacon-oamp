@@ -125,6 +125,7 @@ form.cmtForm div.webform_row label {
 	padding-right: 5px;
 	text-align: right;
 	width: 6em;
+	white-space: nowrap;
 }
 form.cmtForm div.webform_row input {
 	width: 300px;
