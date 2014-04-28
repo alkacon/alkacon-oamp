@@ -47,11 +47,6 @@ if (!alkaconCmt.isUserCanView() && !alkaconCmt.isUserCanManage() && !alkaconCmt.
 			</c:when>
 		</c:choose>
 	</p>
-	<script type="text/javascript">
-		$('a.cmt_thickbox').colorbox(colorboxConfig_comments); //pass where to apply thickbox
-		imgLoader = new Image(); // preload image
-		imgLoader.src = '<%=CmsWorkplace.getSkinUri()%>jquery/css/thickbox/loading.gif';
-	</script>
 	<!-- end: post form link -->
 	<c:if test="${alkaconCmt.userCanView}">
 		<!-- start: comments list -->
@@ -93,7 +88,12 @@ if (!alkaconCmt.isUserCanView() && !alkaconCmt.isUserCanManage() && !alkaconCmt.
 					$.post(
 						'<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.v8.comments/elements/comment_innerlist.jsp:5634d9e8-15df-11e1-aeb4-9b778fa0dc42)</cms:link>',
 						data,
-						function(html){ $("#comments").html(html); }
+						function(html){
+							$("#comments").html(html);
+							$('a.cmt_thickbox').colorbox(colorboxConfig_comments); //pass where to apply thickbox
+							imgLoader = new Image(); // preload image
+							imgLoader.src = '<%=CmsWorkplace.getSkinUri()%>jquery/css/thickbox/loading.gif';
+						}
 					);
 				$('body').css("cursor", "auto");
 			}

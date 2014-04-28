@@ -61,10 +61,6 @@
 </div>
 </cms:bundle>
 <script type="text/javascript" >
-  $('a.cmt_thickbox').colorbox(colorboxConfig_comments); //pass where to apply thickbox
-  imgLoader = new Image(); // preload image
-  imgLoader.src = '<%=CmsWorkplace.getSkinUri()%>jquery/css/thickbox/loading.gif';
-
   function loadComments() {
     $("#commentbox").html("<div class='cmtLoading'></div>");
 	$.post(
@@ -79,7 +75,12 @@
 			cmtallowreplies: "${param.cmtallowreplies}",
 		    __locale: '<cms:info property="opencms.request.locale" />'
 		},
-		function(html) { $("#commentbox").html(html); }
+		function(html) {
+			$("#commentbox").html(html);
+			$('a.cmt_thickbox').colorbox(colorboxConfig_comments); //pass where to apply thickbox
+  			imgLoader = new Image(); // preload image
+  			imgLoader.src = '<%=CmsWorkplace.getSkinUri()%>jquery/css/thickbox/loading.gif';
+		}
 	);
   }
 </script>

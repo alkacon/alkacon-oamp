@@ -106,12 +106,19 @@
 								cmtallowreplies: "${allowreplies}",
 						        __locale: "${cms.requestContext.locale}"
 						    },
-						    success: function(html){ $("#commentbox").html(html); },
+						    success: function(html){ 
+								$("#commentbox").html(html);
+								$('a.cmt_thickbox').colorbox(colorboxConfig_comments); //pass where to apply thickbox
+								imgLoader = new Image(); // preload image
+								imgLoader.src = '<%=CmsWorkplace.getSkinUri()%>jquery/css/thickbox/loading.gif';
+							},
 						    error: function(){ $("#commentbox").html(""); }
 						});
-						$('a.cmt_thickbox').colorbox(colorboxConfig_comments); //pass where to apply thickbox
-						imgLoader = new Image(); // preload image
-						imgLoader.src = '<%=CmsWorkplace.getSkinUri()%>jquery/css/thickbox/loading.gif';
+						$(document).bind('cbox_closed', function() {
+							$('a.cmt_thickbox').colorbox(colorboxConfig_comments); //pass where to apply thickbox
+							imgLoader = new Image(); // preload image
+							imgLoader.src = '<%=CmsWorkplace.getSkinUri()%>jquery/css/thickbox/loading.gif';
+						});
 					</script>
 				</cms:bundle>
 			</div></div>
