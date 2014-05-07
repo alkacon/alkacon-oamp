@@ -211,6 +211,7 @@ modules_oamp_all.split(',').each{ moduleName ->
         source = sourceSets[moduleName].allJava
         classpath = project.sourceSets[moduleName].compileClasspath
         destinationDir = file("${buildDir}/docs/javadoc${moduleName}")
+        options.addStringOption("sourcepath", "")
     }
 
     task "javadocJar_$moduleName"(type: Jar) {
@@ -240,6 +241,8 @@ tasks.findAll{ task -> task.name.startsWith('dist_')}.each{ dist_task ->
             sourceSets[dist_task.moduleName].compileClasspath += files("${project.buildDir}/classes/$dep") { builtBy comp_task.name }
             if (dist_task.gwtSourceSetName!=null){
                 sourceSets["${dist_task.gwtSourceSetName}"].compileClasspath += files("${project.buildDir}/classes/$dep") { builtBy comp_task.name }
+                // we need to manipulate the classpath of the java doc task specifically
+                tasks['javadoc_'+dist_task.moduleName].classpath += files("${project.buildDir}/classes/$dep") { builtBy comp_task.name }
             }
         }
     }
