@@ -207,6 +207,25 @@ modules_oamp_all.split(',').each{ moduleName ->
         tasks["dist_$moduleName"].dependsOn tasks["gwt_$moduleName"]
     }
     
+    task "javadoc_$moduleName" (type: Javadoc){
+        source = sourceSets[moduleName].allJava
+        classpath = project.sourceSets[moduleName].compileClasspath
+        destinationDir = file("${buildDir}/docs/javadoc${moduleName}")
+    }
+
+    task "javadocJar_$moduleName"(type: Jar) {
+        it.dependsOn("javadoc_$moduleName")
+        classifier = 'javadoc'
+        from "${buildDir}/docs/javadoc${moduleName}"
+        baseName moduleName
+    }
+
+    task "sourcesJar_$moduleName"(type: Jar) {
+        from sourceSets[moduleName].allSource
+        classifier = 'sources'
+        baseName moduleName
+    }
+    
 }
 task bindist {
     doFirst{
@@ -233,4 +252,59 @@ tasks.findAll{ task -> task.name.startsWith('dist_')}.each{ dist_task ->
 // fixed issue with libraries containing both .java and .class files
 tasks.withType(JavaCompile) {
     options.compilerArgs += ["-sourcepath", ""]
+}
+artifacts {
+    tasks.each{ task ->
+        if (task.name.startsWith("jar_com.alkacon.")){
+            def moduleName=task.baseName
+            archives task
+            archives tasks["javadocJar_$moduleName"]
+            archives tasks["sourcesJar_$moduleName"]
+        }
+    }
+}
+
+install {
+    repositories {
+        mavenInstaller {
+            artifacts.each{ arch ->
+                def filterName=arch.name
+                if (filterName.startsWith("com.alkacon")){
+                    filterName=filterName.substring(0, filterName.lastIndexOf(".jar"))
+                    addFilter(filterName){artifact, file ->
+                        artifact.name.startsWith(filterName)
+                    }
+                    pom(filterName).project {
+                        name 'Alkacon OAMP'
+                        description 'Alkacon OAMP'
+                        packaging 'jar'
+                        groupId 'com.alkacon'
+                        url 'http://www.alkacon.com'
+                        scm {
+                            url 'scm:git@github.com:alkacon/alkacon-oamp.git'
+                            connection 'scm:git@github.com:alkacon/alkacon-oamp.git'
+                            developerConnection 'scm:git@github.com:alkacon/alkacon-oamp.git'
+                        }
+                        licenses {
+                            license {
+                                name 'GNU General Public License'
+                                url 'http://www.gnu.org/licenses/gpl.html'
+                                distribution 'repo'
+                            }
+                        }
+                        organization {
+                            name 'Alkacon Software'
+                            url 'http://www.alkacon.com'
+                        }
+                        developers {
+                            developer {
+                                name 'Alkacon Software'
+                                url 'http://www.alkacon.com'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
