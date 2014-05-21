@@ -179,6 +179,12 @@ public class CmsCommentFormHandler extends CmsFormHandler {
         // check the template group syntax and show eventual errors
         out.write(buildTemplateGroupCheckHtml());
 
+        // set Title
+        if (m_parentId < 0) {
+            getFormConfiguration().setTitle(getMessages().key("form.message.post"));
+        } else {
+            getFormConfiguration().setTitle(getMessages().key("form.message.post.reply"));
+        }
         boolean showForm = showForm();
         if (!showForm) {
             // form has been submitted with correct values
@@ -201,6 +207,7 @@ public class CmsCommentFormHandler extends CmsFormHandler {
                 sTemplate.setAttribute("headline", getMessages().key("form.error.mail.headline"));
                 sTemplate.setAttribute("text", getMessages().key("form.error.mail.text"));
                 sTemplate.setAttribute("error", getErrors().get("sendmail"));
+                sTemplate.setAttribute("closebutton", getMessages().key("form.button.close"));
                 out.write(sTemplate.toString());
             }
             return;
