@@ -62,6 +62,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -920,14 +921,13 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     private void initConfig(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         if (LOG.isDebugEnabled()) {
-            @SuppressWarnings("unchecked")
-            Iterator<Map.Entry<?, ?>> it = req.getParameterMap().entrySet().iterator();
+            Iterator<Entry<String, String[]>> it = req.getParameterMap().entrySet().iterator();
             while (it.hasNext()) {
-                Map.Entry<?, ?> entry = it.next();
+                Map.Entry<String, String[]> entry = it.next();
                 LOG.debug(Messages.get().getBundle().key(
                     Messages.LOG_INIT_PARAM_2,
                     entry.getKey(),
-                    Arrays.asList((String[])entry.getValue())));
+                    Arrays.asList(entry.getValue())));
             }
         }
         try {
