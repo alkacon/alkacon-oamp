@@ -259,16 +259,29 @@ public class CmsCommentConfiguration {
         init(jsp, configUri);
     }
 
+    /**
+     * Internal constructor just used for cloning.
+     * 
+     * @param configUri VFS URI of the comment' config file
+     * @param groups The groups, the users have to be members of
+     * @param minimized Flag, indicating if to start minimized
+     * @param moderated Flag, indicating if comments are moderated
+     * @param offerLogin Flag, indicating if a login possibility should be provided if needed
+     * @param orgUnits The groups, the users have to be members of
+     * @param resourceBundle The resource bundle used for localization
+     * @param security The security level
+     * @param styleSheet The styleSheet to use
+     */
     private CmsCommentConfiguration(
-        String configUri,
-        List<CmsGroup> groups,
-        boolean minimized,
-        boolean moderated,
-        boolean offerLogin,
-        List<CmsOrganizationalUnit> orgUnits,
-        String resourceBundle,
-        CmsCommentSecurityMode security,
-        String styleSheet) {
+        final String configUri,
+        final List<CmsGroup> groups,
+        final boolean minimized,
+        final boolean moderated,
+        final boolean offerLogin,
+        final List<CmsOrganizationalUnit> orgUnits,
+        final String resourceBundle,
+        final CmsCommentSecurityMode security,
+        final String styleSheet) {
 
         m_configUri = configUri;
         m_groups = groups;
