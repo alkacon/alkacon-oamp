@@ -21,28 +21,6 @@
 	   <%@include file="%(link.strong:/system/modules/com.alkacon.opencms.v8.comments/elements/comment_manager.jsp:564331dc-15df-11e1-aeb4-9b778fa0dc42)" %>
 	   <!-- end: manager comment -->
 	</c:forEach>
-	<script>
-		function doAction(actionId, entryId) {
-		    if ((actionId != 'delete') || confirm('<fmt:message key="comment.manager.delete.conf" />')) {
-				$('body').css("cursor", "wait");
-				var page = ($("div.cmtPaginationBox span.current").not(".next").not(".prev").html()*1)-1;
-				$.post(
-					'<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.v8.comments/elements/comment_actions.jsp:5626a908-15df-11e1-aeb4-9b778fa0dc42)</cms:link>', 
-					{ 
-					    cmtaction: actionId, 
-					    cmtentry: entryId, 
-					    cmturi: '${param.cmturi}', 
-					    cmtminimized:"${param.cmtminimized}",
-				        cmtlist:"${param.cmtlist}",
-				        cmtsecurity:"${param.cmtsecurity}",
-				        cmtformid:"${param.cmtformid}",
-				        cmtallowreplies:"${param.cmtallowreplies}",
-					    configUri: '${param.configUri}' }, 							
-					function() { reloadComments('${alkaconCmt.state}', page); }
-				);
-			}
-		}
-	</script>
 </c:when>
 <c:otherwise>
 	<c:forEach var="comment" items="${alkaconCmt.comments}" >

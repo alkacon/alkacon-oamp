@@ -7,7 +7,7 @@
 	CmsCommentsAccess alkaconCmt = new CmsCommentsAccess(pageContext, request, response, request.getParameter("configUri"), dynamicConfig);
 	pageContext.setAttribute("alkaconCmt", alkaconCmt);
 %>
-<fmt:setLocale value="${cms:vfs(pageContext).requestContext.locale}" />
+<fmt:setLocale value="${cms.locale}" />
 <cms:bundle basename="${alkaconCmt.resourceBundle}" >
 <!-- start: pagination -->
 <%@include file="%(link.strong:/system/modules/com.alkacon.opencms.v8.comments/elements/comment_pagination.jsp:564cced6-15df-11e1-aeb4-9b778fa0dc42)" %>
@@ -21,6 +21,7 @@
 		<cms:param name="configUri" value="${param.configUri}" />
 		<cms:param name="cmtformid" value="${param.cmtformid}" />
 		<cms:param name="cmtallowreplies" value="${param.cmtallowreplies}" />
+		<cms:param name="cmtcolor" value="${param.cmtcolor}" />
 		<cms:param name="cmtpage" value="${param.cmtpage}" />
 	</cms:include>
 </div>

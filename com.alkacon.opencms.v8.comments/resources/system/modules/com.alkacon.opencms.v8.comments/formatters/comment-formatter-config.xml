@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<NewFormatters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/org.opencms.ade.config/schemas/formatters/new_formatter.xsd">
+  <NewFormatter language="en">
+    <NiceName><![CDATA[Comments]]></NiceName>
+    <Type><![CDATA[alkacon-v8-comment-display]]></Type>
+    <Jsp>
+      <link type="WEAK">
+        <target><![CDATA[/system/modules/com.alkacon.opencms.v8.comments/formatters/comment-formatter.jsp]]></target>
+        <uuid>5658b5c2-15df-11e1-aeb4-9b778fa0dc42</uuid>
+      </link>
+    </Jsp>
+    <Rank><![CDATA[1000]]></Rank>
+    <Match>
+      <Width>
+        <Width><![CDATA[400]]></Width>
+      </Width>
+    </Match>
+    <Preview>true</Preview>
+    <SearchContent>false</SearchContent>
+    <AutoEnabled>true</AutoEnabled>
+    <Detail>true</Detail>
+    <HeadIncludeJs>
+      <JavascriptLink>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.v8.comments/resources/comments.js]]></target>
+          <uuid>1a9f4301-d051-11e3-942c-6306da683c37</uuid>
+        </link>
+      </JavascriptLink>
+      <JavascriptLink>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/org.opencms.jquery/resources/load.js]]></target>
+          <uuid>63b724af-8a92-11e0-ad6c-bff56146ac12</uuid>
+        </link>
+      </JavascriptLink>
+      <JavascriptLink>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.v8.comments/resources/bootstrap-paginator.min.js]]></target>
+          <uuid>4de52abd-df62-11e3-969f-6306da683c37</uuid>
+        </link>
+      </JavascriptLink>
+    </HeadIncludeJs>
+    <Setting>
+      <PropertyName><![CDATA[minimized]]></PropertyName>
+      <DisplayName><![CDATA[%(key.label.AlkaconV8CommentDisplay.Minimized)]]></DisplayName>
+      <Widget><![CDATA[select]]></Widget>
+      <WidgetConfig><![CDATA[true:Yes|false:No]]></WidgetConfig>
+    </Setting>
+    <Setting>
+      <PropertyName><![CDATA[list]]></PropertyName>
+      <DisplayName><![CDATA[%(key.label.AlkaconV8CommentDisplay.List)]]></DisplayName>
+      <Widget><![CDATA[select]]></Widget>
+      <WidgetConfig><![CDATA[3:3|5:5|10:10|20:20|50:50|all:%(key.label.AlkaconV8CommentFormOption.List.all)]]></WidgetConfig>
+    </Setting>
+    <Setting>
+      <PropertyName><![CDATA[security]]></PropertyName>
+      <DisplayName><![CDATA[%(key.label.AlkaconV8CommentDisplay.Security)]]></DisplayName>
+      <Widget><![CDATA[select]]></Widget>
+      <WidgetConfig><![CDATA[none:%(key.label.AlkaconV8CommentFormOption.Security.none)|write:%(key.label.AlkaconV8CommentFormOption.Security.write)|view:%(key.label.AlkaconV8CommentFormOption.Security.view)|noview:%(key.label.AlkaconV8CommentFormOption.Security.noview)]]></WidgetConfig>
+    </Setting>
+    <Setting>
+      <PropertyName><![CDATA[visibility]]></PropertyName>
+      <DisplayName><![CDATA[%(key.label.setting.visibility)]]></DisplayName>
+      <Widget><![CDATA[select]]></Widget>
+      <Default><![CDATA[always]]></Default>
+      <WidgetConfig><![CDATA[always:%(key.label.setting.visibility.always)|detailview:%(key.label.setting.visibility.detailview)|directview:%(key.label.setting.visibility.directview)]]></WidgetConfig>
+    </Setting>
+    <Setting>
+      <PropertyName><![CDATA[allowreplies]]></PropertyName>
+      <DisplayName><![CDATA[%(key.label.setting.allowreplies)]]></DisplayName>
+      <Widget><![CDATA[select]]></Widget>
+      <WidgetConfig><![CDATA[true:Yes|false:No]]></WidgetConfig>
+    </Setting>
+    <Setting>
+      <PropertyName><![CDATA[color]]></PropertyName>
+      <DisplayName><![CDATA[%(key.setting.AlkaconV8Comments.color)]]></DisplayName>
+      <Description/>
+      <Widget><![CDATA[select]]></Widget>
+      <Default><![CDATA[default]]></Default>
+      <WidgetConfig><![CDATA[grey:%(key.setting.AlkaconV8Comments.color.grey)|red:%(key.setting.AlkaconV8Comments.color.red)|blue:%(key.setting.AlkaconV8Comments.color.blue)|sea:%(key.setting.AlkaconV8Comments.color.sea)|green:%(key.setting.AlkaconV8Comments.color.green)|orange:%(key.setting.AlkaconV8Comments.color.orange)|yellow:%(key.setting.AlkaconV8Comments.color.yellow)|default:%(key.setting.AlkaconV8Comments.color.default)|info:%(key.setting.AlkaconV8Comments.color.info)|success:%(key.setting.AlkaconV8Comments.color.success)|warning:%(key.setting.AlkaconV8Comments.color.warning)|danger:%(key.setting.AlkaconV8Comments.color.danger)]]></WidgetConfig>
+    </Setting>
+  </NewFormatter>
+</NewFormatters>

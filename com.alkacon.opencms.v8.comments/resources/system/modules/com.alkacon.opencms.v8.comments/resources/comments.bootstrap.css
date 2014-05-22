@@ -1,0 +1,40 @@
+/* Overlay displayed while loading */
+div.cmtLoading {
+	background: transparent url(load.gif) no-repeat scroll center;
+	height: 15px;
+	width: 100%;
+}
+
+/* Box where replies to a comment are shown in */
+div.cmtCommentShowReplies {
+	display: none;
+	margin-left: 10px;
+	margin-top:10px;
+	margin-bottom:0px;
+	margin-right:0px;
+}
+
+/* shift reply-button to the right "reply"-Button */
+div.cmtCommentReply {
+	float: right;
+}
+
+/* the comment reply options div */
+div.cmtCommentReplyOptions {
+	border-top: 1px solid #CCCCCC;
+	padding: 5px 0px;
+	margin: 5px 0px;
+}
+
+/* insert some space under the "click here to post a comment" - button */
+div.cmtPostOptions {
+	margin-bottom:10px;
+}
+
+/* let the form Modal appear not directly on top of the page and restrict its width */
+div.cmtFormModalDialog {
+	top: 5%;
+	width: 80%;
+	min-width: 400px;
+	max-width: 800px;
+}

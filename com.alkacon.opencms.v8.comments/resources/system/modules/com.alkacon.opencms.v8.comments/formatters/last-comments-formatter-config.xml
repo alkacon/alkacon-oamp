@@ -19,14 +19,13 @@
     <Preview>false</Preview>
     <SearchContent>true</SearchContent>
     <AutoEnabled>true</AutoEnabled>
-    <Detail>true</Detail>
-    <HeadIncludeCss>
-      <CssLink>
-        <link type="WEAK">
-          <target><![CDATA[/system/modules/com.alkacon.opencms.v8.comments/resources/comments.css]]></target>
-          <uuid>56708391-15df-11e1-aeb4-9b778fa0dc42</uuid>
-        </link>
-      </CssLink>
-    </HeadIncludeCss>
+    <Detail>false</Detail>
+    <Setting>
+      <PropertyName><![CDATA[color]]></PropertyName>
+      <DisplayName><![CDATA[%(key.setting.AlkaconV8Comments.color)]]></DisplayName>
+      <Widget><![CDATA[select]]></Widget>
+      <Default><![CDATA[grey]]></Default>
+      <WidgetConfig><![CDATA[grey:%(key.setting.AlkaconV8Comments.color.grey)|red:%(key.setting.AlkaconV8Comments.color.red)|blue:%(key.setting.AlkaconV8Comments.color.blue)|sea:%(key.setting.AlkaconV8Comments.color.sea)|green:%(key.setting.AlkaconV8Comments.color.green)|orange:%(key.setting.AlkaconV8Comments.color.orange)|yellow:%(key.setting.AlkaconV8Comments.color.yellow)|default:%(key.setting.AlkaconV8Comments.color.default)|info:%(key.setting.AlkaconV8Comments.color.info)|success:%(key.setting.AlkaconV8Comments.color.success)|warning:%(key.setting.AlkaconV8Comments.color.warning)|danger:%(key.setting.AlkaconV8Comments.color.danger)]]></WidgetConfig>
+    </Setting>
   </NewFormatter>
 </NewFormatters>

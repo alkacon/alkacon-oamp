@@ -23,90 +23,104 @@
 						<jsp:setProperty name="commentCollector" property="formId" value="${formId}" />
 						<jsp:setProperty name="commentCollector" property="numForms" value="${maxComments}" />
 						<c:set var="comments" value="${commentCollector.formDataSets}" />
-						<div id="commentbox" class="commentbox">
-							<div class="cmtHeader">
-								${content.value.Title}
+						<c:set var="boxColor"><c:out value="${cms.element.settings.color}" default="default" /></c:set>
+						
+						<%-- Real formatting code --%>
+						<div id="lastcommentbox" class="commentbox">
+							<div class="headline cmtLastCommentsHeader">
+								<h3>
+									${content.value.Title}
+								</h3>
 							</div>
-							<c:set var="commentNum" value="${fn:length(comments)}" />
-							<c:choose>
-								<c:when test="${commentNum < 1}">
-									<div>
-										<fmt:message key="commentlist.nocomment" />No comments available.
-									</div>
-								</c:when>
-								<c:otherwise>
-									<c:set var="fields" value="${fn:split(content.value.Fields, ',')}" />
-									<% List<String> fields = Arrays.asList((String[])pageContext.getAttribute("fields")); %>
-									<c:set var="showUser" value='<%= fields.contains("name") || fields.contains("username") || fields.contains("email") %>' />
-									<c:set var="showCommentDetails" value='<%= fields.contains("subject") || fields.contains("comment") %>' />
-									<c:set var="showCommentMeta" value='<%= fields.contains("locale") || fields.contains("ipaddress") || fields.contains("creationdate") %>' />
-									<c:forEach var="comment" items="${comments}">
-										<div class="cmtCommentEntry">
-											<div class="cmtCommentHeader">
-												<c:if test="${showUser}">
-													<div class="cmtCommentTitle">
-														<c:choose>
-															<c:when test='<%= fields.contains("name") %>'>
-																<c:choose>
-																	<c:when test='<%= fields.contains("email") %>'>
-																		<a href='mailto:${comment.fields["email"]}'>${comment.fields["name"]}</a>
-																	</c:when>
-																	<c:otherwise>
-																		${comment.fields["name"]}
-																	</c:otherwise>
-																</c:choose>
-																<c:if test='<%= fields.contains("username") %>'> (${comment.fields["username"]})</c:if>
-															</c:when>
-															<c:when test='<%= fields.contains("username") %>'>
-																<c:choose>
-																	<c:when test='<%= fields.contains("email") %>'>
-																		<a href='mailto:${comment.fields["email"]}'>${comment.fields["username"]}</a>
-																	</c:when>
-																	<c:otherwise>
-																		${comment.fields["username"]}
-																	</c:otherwise>
-																</c:choose>
-															</c:when>
-															<c:otherwise>
-																<a href='mailto:${comment.fields["email"]}'>${comment.fields["email"]}</a>
-															</c:otherwise>
-														</c:choose>											
-													</div>
-													<fmt:message key="commentlist.madecommenton1" />							
-												</c:if>
-												<div class="cmtCommentTitle">
-													<a href="${comment.uri}">${comment.title}</a>
-												</div>
-												<c:if test="${showUser}"><fmt:message key="commentlist.madecommenton2" /></c:if>
-											</div>
-											<c:if test="${showCommentDetails}">
-												<div>
-													<c:if test='<%= fields.contains("subject") %>'>
-														<strong><fmt:message key="commentlist.subject" />: ${comment.fields["subject"]}</strong><br>
-													</c:if>
-													<c:if test='<%= fields.contains("comment") %>'>
-														<fmt:message key="commentlist.comment" />: ${comment.fields["comment"]}
-													</c:if>
-												</div>
-											</c:if>
-											<c:if test="${showCommentMeta}">
-												<div class="cmtCommentManager">
-													<fmt:message key="commentlist.created" />&nbsp;
-													<c:if test='<%= fields.contains("creationdate") %>'>
-														<fmt:message key="commentlist.at" />&nbsp;<fmt:formatDate value="${cms:convertDate(comment.dateCreated)}" dateStyle="SHORT" timeStyle="SHORT" type="both" />&nbsp;
-													</c:if>
-													<c:if test='<%= fields.contains("locale") %>'>
-														<fmt:message key="commentlist.in" />&nbsp;${comment.fields["locale"]}&nbsp;
-													</c:if>
-													<c:if test='<%= fields.contains("ipaddress") %>'>
-														<fmt:message key="commentlist.fromip" />&nbsp;${comment.fields["ipaddress"]}
-													</c:if>
-												</div>
-											</c:if>
+							<div>
+								<c:set var="commentNum" value="${fn:length(comments)}" />
+								<c:choose>
+									<c:when test="${commentNum < 1}">
+										<div>
+											<fmt:message key="commentlist.nocomment" />No comments available.
 										</div>
-									</c:forEach>
-								</c:otherwise>
-							</c:choose>
+									</c:when>
+									<c:otherwise>
+										<c:set var="fields" value="${fn:split(content.value.Fields, ',')}" />
+										<% List<String> fields = Arrays.asList((String[])pageContext.getAttribute("fields")); %>
+										<c:set var="showUser" value='<%= fields.contains("name") || fields.contains("username") || fields.contains("email") %>' />
+										<c:set var="showCommentDetails" value='<%= fields.contains("subject") || fields.contains("comment") %>' />
+										<c:set var="showCommentMeta" value="${false}" />
+										<c:if test="${!cms.isOnlineProject}">
+											<c:set var="showCommentMeta" value='<%= fields.contains("locale") || fields.contains("ipaddress") || fields.contains("creationdate") %>' />
+										</c:if>
+
+										<%-- formatting each single comment --%>
+										<c:forEach var="comment" items="${comments}">
+											<div class="panel panel-${boxColor}">											
+												<div class="panel-heading cmtCommentEntry">
+													<div class="cmtCommentHeader">
+														<c:if test="${showUser}">
+															<h5 class="panel-title cmtCommentTitle">
+																<c:choose>
+																	<c:when test='<%= fields.contains("name") %>'>
+																		<c:choose>
+																			<c:when test='<%= fields.contains("email") %>'>
+																				<a href='mailto:${comment.fields["email"]}'>${comment.fields["name"]}</a>
+																			</c:when>
+																			<c:otherwise>
+																				${comment.fields["name"]}
+																			</c:otherwise>
+																		</c:choose>
+																		<c:if test='<%= fields.contains("username") %>'> (${comment.fields["username"]})</c:if>
+																	</c:when>
+																	<c:when test='<%= fields.contains("username") %>'>
+																		<c:choose>
+																			<c:when test='<%= fields.contains("email") %>'>
+																				<a href='mailto:${comment.fields["email"]}'>${comment.fields["username"]}</a>
+																			</c:when>
+																			<c:otherwise>
+																				${comment.fields["username"]}
+																			</c:otherwise>
+																		</c:choose>
+																	</c:when>
+																	<c:otherwise>
+																		<a href='mailto:${comment.fields["email"]}'>${comment.fields["email"]}</a>
+																	</c:otherwise>
+																</c:choose>											
+															</h5>
+															<fmt:message key="commentlist.madecommenton1" />							
+														</c:if>
+														<h6 class="panel-title cmtCommentTitle">
+															<a class="panel-title" href="${comment.uri}">${comment.title}</a>
+														</h6>
+														<c:if test="${showUser}"><fmt:message key="commentlist.madecommenton2" /></c:if>
+													</div>
+												</div>												
+												<c:if test="${showCommentDetails}">
+													<div class="panel-body">
+														<c:if test='<%= fields.contains("subject") %>'>
+															<strong><fmt:message key="commentlist.subject" />: ${comment.fields["subject"]}</strong><br>
+														</c:if>
+														<c:if test='<%= fields.contains("comment") %>'>
+															<fmt:message key="commentlist.comment" />: ${comment.fields["comment"]}
+														</c:if>
+													</div>
+												</c:if>
+												<c:if test="${showCommentMeta}">
+													<div class="panel-body cmtCommentManager">
+														<fmt:message key="commentlist.created" />&nbsp;
+														<c:if test='<%= fields.contains("creationdate") %>'>
+															<fmt:message key="commentlist.at" />&nbsp;<fmt:formatDate value="${cms:convertDate(comment.dateCreated)}" dateStyle="SHORT" timeStyle="SHORT" type="both" /><br>
+														</c:if>
+														<c:if test='<%= fields.contains("locale") %>'>
+															<fmt:message key="commentlist.in" />&nbsp;${comment.fields["locale"]}<br>
+														</c:if>
+														<c:if test='<%= fields.contains("ipaddress") %>'>
+															<fmt:message key="commentlist.fromip" />&nbsp;${comment.fields["ipaddress"]}
+														</c:if>
+													</div>
+												</c:if>
+											</div>
+										</c:forEach>
+									</c:otherwise>
+								</c:choose>
+							</div>
 						</div>
 					</jsp:useBean>						
 				</c:otherwise>

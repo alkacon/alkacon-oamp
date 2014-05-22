@@ -1,7 +1,8 @@
 <div class="cmtCommentReplyOptions">
 	<div class="cmtCommentCountReplies">
 		<c:set var="countReplies" value="${alkaconReplies.countReplies[comment.entryId]}" />
-		<a href="javascript:showReplies(${comment.entryId}, ${alkaconCmt.userCanManage})">
+		<c:set var="disabled"><c:if test="${countReplies == 0}">disabled='disabled'</c:if></c:set>
+		<button class="btn btn-primary btn-xs cmtShowRepliesButton" ${disabled} cmt-comment-entry='${comment.entryId}' cmt-user-can-manage='${alkaconCmt.userCanManage}'>
 			<c:choose>
 				<c:when test="${countReplies == 0}">
 					0 <fmt:message key="manyReplies" />
@@ -13,15 +14,19 @@
 					${countReplies} <fmt:message key="manyReplies" />
 				</c:otherwise>
 			</c:choose>
-		</a>			
+		</button>			
 		<c:if test="${alkaconCmt.userCanPost}">
 			<div class="cmtCommentReply">
-				<a 
+				<button 
+				    class="btn btn-primary btn-xs showFormModal"
+					data-toggle="modal"
+					data-target="#cmtFormModal"
 					title="<fmt:message key="form.message.post" />" 
-					href="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.v8.comments/elements/comment_form.jsp:562b63fd-15df-11e1-aeb4-9b778fa0dc42)?cmtparentid=${comment.entryId}&cmturi=${param.cmturi}&cmtminimized=${param.cmtminimized}&cmtlist=${param.cmtlist}&cmtsecurity=${param.cmtsecurity}&configUri=${param.configUri}&cmtformid=${param.cmtformid}&__locale=${cms:vfs(pageContext).requestContext.locale}&width=800&height=530</cms:link>" 
-					class="cmt_thickbox" >
+					cmt-parent-id="${comment.entryId}"
+					href="<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.v8.comments/elements/comment_form.jsp:562b63fd-15df-11e1-aeb4-9b778fa0dc42)?cmtparentid=${comment.entryId}&cmturi=${param.cmturi}&cmtminimized=${param.cmtminimized}&cmtlist=${param.cmtlist}&cmtsecurity=${param.cmtsecurity}&configUri=${param.configUri}&cmtformid=${param.cmtformid}&__locale=${cms.locale}&width=800&height=530</cms:link>" 
+				>
 					<fmt:message key="doReply" />
-				</a>
+				</button>
 			</div>
 			<div class="clear"></div>
 		</c:if>
