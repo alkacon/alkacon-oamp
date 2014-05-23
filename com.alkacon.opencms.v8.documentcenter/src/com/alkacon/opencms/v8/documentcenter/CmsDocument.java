@@ -269,6 +269,32 @@ public class CmsDocument {
     }
 
     /**
+     * returns the adjusted postfix type for Word, Excel and Powerpoint like postfixes.<p>
+     * 
+     * @param postfix the postfix to adjust
+     * @return the adjusted postfix
+     */
+    public static String getPostfixAdjusted(String postfix) {
+
+        if ("doc".equals(postfix)
+            || "docx".equals(postfix)
+            || "dot".equals(postfix)
+            || "rtf".equals(postfix)
+            || "odt".equals(postfix)) {
+            return "doc";
+        } else if ("xls".equals(postfix) || "xlsx".equals(postfix) || "ods".equals(postfix)) {
+            return "xls";
+        } else if ("pps".equals(postfix)
+            || "ppsx".equals(postfix)
+            || "ppt".equals(postfix)
+            || "pptx".equals(postfix)
+            || "odp".equals(postfix)) {
+            return "ppt";
+        }
+        return postfix;
+    }
+
+    /**
      * Check the type of the given resource name.<p>
      * 
      * @param resourceName the filename of the resource

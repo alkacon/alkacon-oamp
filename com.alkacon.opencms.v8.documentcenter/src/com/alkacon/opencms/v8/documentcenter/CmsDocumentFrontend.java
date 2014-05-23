@@ -345,6 +345,7 @@ public class CmsDocumentFrontend extends CmsJspActionElement {
         // file
         else {
             String postfix = CmsDocument.getPostfix(docName);
+            postfix = CmsDocument.getPostfixAdjusted(postfix);
 
             iconSrc = "ic_app_" + postfix;
             iconTitle = messages.keyDefault("documentlist.icon.file.title." + postfix, "");

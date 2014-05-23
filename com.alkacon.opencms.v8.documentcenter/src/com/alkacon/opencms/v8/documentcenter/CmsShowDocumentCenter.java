@@ -240,7 +240,7 @@ public class CmsShowDocumentCenter implements I_CmsResourceInit {
         // get the container page to fetch the document center configuration
         CmsXmlContainerPage cPage = CmsXmlContainerPageFactory.unmarshal(cms, resource);
         Locale locale = OpenCms.getLocaleManager().getDefaultLocale(cms, resource);
-        CmsContainerPageBean pageBean = cPage.getContainerPage(cms, locale);
+        CmsContainerPageBean pageBean = cPage.getContainerPage(cms);
         if (pageBean != null) {
             // found the page bean, look up document center element
             List<CmsContainerElementBean> elements = pageBean.getElements();

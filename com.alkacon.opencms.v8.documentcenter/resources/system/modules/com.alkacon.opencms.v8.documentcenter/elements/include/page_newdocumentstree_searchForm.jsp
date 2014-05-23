@@ -28,35 +28,35 @@
   
   <p style="margin:8px;">
   	<% if (paramUri != null) { %>
-		<a class="button-w btn" href="<%= cms.link(uri) %>"><%= messages.key("newdocuments.button.back") %></a>&nbsp;
+		<a class="<c:choose><c:when test="${cms.template.name == 'mobile'}">btn btn-default</c:when><c:otherwise>button-w btn</c:otherwise></c:choose>" href="<%= cms.link(uri) %>"><%= messages.key("newdocuments.button.back") %></a>&nbsp;
 	<% } %>
   </p>
   
   <form name="searchnew" action="<%= cms.link(uri) %>" method="post" title="<%= headerText %>">
-    <table border="0" cellpadding="2" cellspacing="6">
+    <table border="0" cellpadding="2" cellspacing="6"<c:if test="${cms.template.name == 'mobile'}"> class="table"</c:if>>
   	<% if ("searchText".equalsIgnoreCase(action)) { %>
 	    <tr>
 	      <td valign="top"><strong><label for="docquery"><%= messages.key("newdocuments.query.input") %>:</label></strong></td>
 	      <td valign="top">
-			<input type="text" name="query" id="docquery" style="width:300px" />
+			<input type="text" name="query" class="form-control" id="docquery" style="width:300px" />
 	      </td>
 	    </tr>		
 	<% } else { %>
 	    <tr>
 	      <td valign="top"><strong><label for="fromDate"><%= messages.key("newdocuments.date.from") %></label></strong></td>
 	      <td valign="top">
-		  	<div class="input-append">
-			<input type="text" name="fromDate" id="fromDate" value="<%= df.format(new Date()) %>" />
-			<span class="add-on"><img src="<%=cms.link("/system/modules/com.alkacon.opencms.v8.documentcenter/resources/calendar.png")%>" id="triggercalendarfrom" border="0" title="<%= messages.key("newdocuments.calendar.title") %>" alt="<%= messages.key("newdocuments.calendar.alt") %>"/></span>
+		  	<div class="input-group">
+			<input type="text" class="form-control" name="fromDate" id="fromDate" value="<%= df.format(new Date()) %>" />
+			<span class="input-group-addon"><img src="<%=cms.link("/system/modules/com.alkacon.opencms.v8.documentcenter/resources/calendar.png")%>" id="triggercalendarfrom" border="0" title="<%= messages.key("newdocuments.calendar.title") %>" alt="<%= messages.key("newdocuments.calendar.alt") %>"/></span>
 			</div>
 	      </td>
 	    </tr>
 	    <tr>
 	      <td valign="top"><strong><label for="toDate"><%= messages.key("newdocuments.date.to") %></label></strong></td>
 	      <td valign="top">
-			<div class="input-append">
-			<input type="text" name="toDate" id="toDate" value="<%= df.format(new Date()) %>" />
-			<span class="add-on"><img src="<%=cms.link("/system/modules/com.alkacon.opencms.v8.documentcenter/resources/calendar.png")%>" id="triggercalendarto" border="0" title="<%= messages.key("newdocuments.calendar.title") %>" alt="<%= messages.key("newdocuments.calendar.alt") %>"/></span>
+			<div class="input-group">
+			<input type="text" class="form-control" name="toDate" id="toDate" value="<%= df.format(new Date()) %>" />
+			<span class="input-group-addon"><img src="<%=cms.link("/system/modules/com.alkacon.opencms.v8.documentcenter/resources/calendar.png")%>" id="triggercalendarto" border="0" title="<%= messages.key("newdocuments.calendar.title") %>" alt="<%= messages.key("newdocuments.calendar.alt") %>"/></span>
 			</div>
 	      </td>
 	    </tr>
@@ -86,7 +86,7 @@
         <input type="hidden" name="type" value="<%= action %>" />
         <input type="hidden" name="uri" value="<%= CmsFileUtil.addTrailingSeparator(startfolder) %>" />
         
-        <input type="button" class="button btn" value="<%= messages.key("newdocuments.button.startsearch") %>" onclick="startSearch();" />
+        <input type="button" class="<c:choose><c:when test="${cms.template.name == 'mobile'}">btn btn-default</c:when><c:otherwise>button btn</c:otherwise></c:choose>" value="<%= messages.key("newdocuments.button.startsearch") %>" onclick="startSearch();" />
       </td>
     </tr>
     </table>
