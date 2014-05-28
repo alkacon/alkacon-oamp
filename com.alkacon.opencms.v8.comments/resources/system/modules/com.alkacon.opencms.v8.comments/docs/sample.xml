@@ -75,7 +75,7 @@
   </AlkaconV8CommentForm>
   <AlkaconV8CommentForm language="en">
     <Options>
-      <Moderated>false</Moderated>
+      <Moderated>true</Moderated>
       <List><![CDATA[5]]></List>
       <Security><![CDATA[none]]></Security>
       <Minimized>false</Minimized>

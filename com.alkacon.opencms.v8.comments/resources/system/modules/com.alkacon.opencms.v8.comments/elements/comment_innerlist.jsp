@@ -6,11 +6,10 @@
 	Map<String, String> dynamicConfig = CmsCommentsAccess.generateDynamicConfig(request.getParameter("cmtformid"));
 	CmsCommentsAccess alkaconCmt = new CmsCommentsAccess(pageContext, request, response, request.getParameter("configUri"), dynamicConfig);
 	pageContext.setAttribute("alkaconCmt", alkaconCmt);
+	CmsCommentStringTemplateHandler templateHandler = new CmsCommentStringTemplateHandler(alkaconCmt);
 %>
-<fmt:setLocale value="${cms.locale}" />
-<cms:bundle basename="${alkaconCmt.resourceBundle}" >
 <!-- start: pagination -->
-<%@include file="%(link.strong:/system/modules/com.alkacon.opencms.v8.comments/elements/comment_pagination.jsp:564cced6-15df-11e1-aeb4-9b778fa0dc42)" %>
+<%= templateHandler.buildPaginationHtml() %>
 <!-- end: pagination -->
 <div id="comments_page_${param.cmtpage}" >
 	<cms:include file="%(link.strong:/system/modules/com.alkacon.opencms.v8.comments/elements/comment_page.jsp:5647ecd1-15df-11e1-aeb4-9b778fa0dc42)">
@@ -25,4 +24,3 @@
 		<cms:param name="cmtpage" value="${param.cmtpage}" />
 	</cms:include>
 </div>
-</cms:bundle>

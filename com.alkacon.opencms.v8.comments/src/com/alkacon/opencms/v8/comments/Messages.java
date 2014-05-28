@@ -82,6 +82,9 @@ public final class Messages extends A_CmsMessageBundle {
     /** Message constant for key in the resource bundle. */
     public static final String LOG_INIT_STATE_1 = "LOG_INIT_STATE_1";
 
+    /** Message constant for key in the resource bundle. */
+    public static final String WARN_MESSAGE_BUNDLE_NOT_FOUND_3 = "WARN_MESSAGE_BUNDLE_NOT_FOUND_3";
+
     /** Name of the used resource bundle. */
     private static final String BUNDLE_NAME = "com.alkacon.opencms.v8.comments.messages";
 

@@ -32,6 +32,7 @@
 package com.alkacon.opencms.v8.comments;
 
 import com.alkacon.opencms.v8.comments.CmsCommentConfiguration.CmsCommentSecurityMode;
+import com.alkacon.opencms.v8.comments.util.CmsCommentsUtil;
 import com.alkacon.opencms.v8.formgenerator.CmsForm;
 import com.alkacon.opencms.v8.formgenerator.CmsFormHandlerFactory;
 import com.alkacon.opencms.v8.formgenerator.database.CmsFormDataAccess;
@@ -44,6 +45,7 @@ import org.opencms.file.CmsObject;
 import org.opencms.file.CmsResource;
 import org.opencms.file.CmsResourceFilter;
 import org.opencms.file.CmsUser;
+import org.opencms.i18n.CmsResourceBundleLoader;
 import org.opencms.jsp.CmsJspLoginBean;
 import org.opencms.main.CmsEvent;
 import org.opencms.main.CmsException;
@@ -56,6 +58,7 @@ import org.opencms.util.CmsRequestUtil;
 import org.opencms.util.CmsStringUtil;
 
 import java.sql.SQLException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -85,6 +88,8 @@ import org.apache.commons.logging.Log;
  */
 public class CmsCommentsAccess extends CmsJspLoginBean {
 
+    /** form-id for replies */
+    public static final String REPLIES_FORMID = "__oamp-comment-reply__";
     /** Action name constant. */
     public static final String ACTION_APPROVE = "approve";
 
@@ -752,8 +757,20 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
 
         if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(getConfig().getResourceBundle())) {
             return getConfig().getResourceBundle();
+        } else {
+            String bundle = OpenCms.getModuleManager().getModule(CmsCommentsUtil.MODULE_NAME).getParameter(
+                CmsCommentsUtil.MODULE_PARAM_COMMENTS_BUNDLE,
+                CmsCommentsUtil.COMMENTS_DEFAULT_BUNDLE);
+            if (CmsResourceBundleLoader.getBundle(bundle, getRequestContext().getLocale()) == null) {
+                LOG.warn(Messages.get().getBundle().key(
+                    Messages.WARN_MESSAGE_BUNDLE_NOT_FOUND_3,
+                    bundle,
+                    CmsCommentsUtil.MODULE_PARAM_COMMENTS_BUNDLE,
+                    CmsCommentsUtil.COMMENTS_DEFAULT_BUNDLE));
+                bundle = CmsCommentsUtil.COMMENTS_DEFAULT_BUNDLE;
+            }
+            return bundle;
         }
-        return "com.alkacon.opencms.v8.comments.formatters";
     }
 
     /**
@@ -1126,5 +1143,31 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
             }
         }
         return m_configUri;
+    }
+
+    /**
+     * @param key the message's key
+     * @return the message for this key (from the configured resourcebundle)
+     */
+    public String getMessage(final String key) {
+
+        return getMessage(key, null);
+    }
+
+    /**
+     * @param key the message's key
+     * @param vals the arguments given to the message
+     * @return the message for this key with the arguments filled in (from the configured resourcebundle)
+     */
+    public String getMessage(final String key, final String[] vals) {
+
+        String message = getMessages(getResourceBundle(), getRequestContext().getLocale()).key(key);
+        if ((vals != null) && (vals.length > 0)) {
+            MessageFormat messageform = new MessageFormat(message);
+            return messageform.format(vals);
+        } else {
+            return message;
+        }
+
     }
 }

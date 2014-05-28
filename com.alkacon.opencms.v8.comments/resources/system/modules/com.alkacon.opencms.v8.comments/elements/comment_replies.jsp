@@ -1,19 +1,29 @@
+<%@ page import="com.alkacon.opencms.v8.comments.*, java.util.Map, com.alkacon.opencms.v8.formgenerator.database.CmsFormDataBean" %>
 <%@ page taglibs="c,cms,fn,fmt" %>
-<!-- start: page -->
-<fmt:setLocale value="${cms.locale}" />
-<cms:bundle basename="${param.resourceBundle}">
-	<jsp:useBean id="alkaconReplies" class="com.alkacon.opencms.v8.comments.CmsRepliesAccessBean" />
-	<c:forEach var="comment" items="${alkaconReplies.replies[param.entryId]}" >
-		<!-- start: comment -->
-		<c:choose>
-		<c:when test="${param.userCanManage == 'true'}">
-			<%@include file="%(link.strong:/system/modules/com.alkacon.opencms.v8.comments/elements/comment_manager.jsp?cmtallowreplies=false:564331dc-15df-11e1-aeb4-9b778fa0dc42)" %>
-		</c:when>
-		<c:otherwise>
-			<%@include file="%(link.strong:/system/modules/com.alkacon.opencms.v8.comments/elements/comment_view.jsp?cmtallowreplies=false:564f18cb-15df-11e1-aeb4-9b778fa0dc42)" %>
-		</c:otherwise>
-		</c:choose>
-		<!-- end: comment -->
-	</c:forEach>
-</cms:bundle>
-<!-- end: page -->
+<%
+	Map<String, String> dynamicConfig = CmsCommentsAccess.generateDynamicConfig(request.getParameter("cmtformid"));
+	CmsCommentsAccess alkaconCmt = new CmsCommentsAccess(pageContext, request, response, request.getParameter("configUri"), dynamicConfig);
+	pageContext.setAttribute("alkaconCmt", alkaconCmt);
+	CmsCommentStringTemplateHandler templateHandler = new CmsCommentStringTemplateHandler(alkaconCmt);
+%>
+<c:set var="boxColor"><c:out value="${param.cmtcolor}" default="default" /></c:set>
+
+<jsp:useBean id="alkaconReplies" class="com.alkacon.opencms.v8.comments.CmsRepliesAccessBean" />
+<c:choose>
+	<c:when test="${param.userCanManage == 'true'}">
+		<c:forEach var="comment" items="${alkaconReplies.replies[param.entryId]}" >
+			<%  CmsFormDataBean comment = (CmsFormDataBean) pageContext.getAttribute("comment");
+				String boxColor = (String)pageContext.getAttribute("boxColor");
+			%>
+			<%= templateHandler.buildReplyManagerHtml(comment,boxColor) %>
+		</c:forEach>
+	</c:when>
+	<c:otherwise>
+		<c:forEach var="comment" items="${alkaconReplies.replies[param.entryId]}" >
+			<%  CmsFormDataBean comment = (CmsFormDataBean) pageContext.getAttribute("comment");
+				String boxColor = (String)pageContext.getAttribute("boxColor");
+			%>
+			<%= templateHandler.buildReplyViewHtml(comment,boxColor) %>
+		</c:forEach>
+	</c:otherwise>
+</c:choose>

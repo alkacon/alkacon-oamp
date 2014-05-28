@@ -510,6 +510,14 @@ public class CmsCommentConfiguration {
     }
 
     /**
+     * @return flag, indicating if replies are allowed
+     */
+    public boolean getAllowReplies() {
+
+        return m_allowReplies;
+    }
+
+    /**
      * Initializes the configuration.<p>
      * 
      * @param jsp the initialized CmsJspActionElement to access the OpenCms API

@@ -6,7 +6,7 @@ int parentId;
 Map<String, String> dynamicConfig;
 try {
 	parentId = Integer.valueOf(sParentId);
-	dynamicConfig = CmsCommentsAccess.generateDynamicConfig("__oamp-comment-reply__");
+	dynamicConfig = CmsCommentsAccess.generateDynamicConfig(CmsCommentsAccess.REPLIES_FORMID);
 } catch (NumberFormatException e) {
 	parentId = -1;
  	dynamicConfig = CmsCommentsAccess.generateDynamicConfig(request.getParameter("cmtformid"));

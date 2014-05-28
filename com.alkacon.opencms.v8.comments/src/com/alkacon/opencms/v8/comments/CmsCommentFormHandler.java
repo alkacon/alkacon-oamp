@@ -119,7 +119,7 @@ public class CmsCommentFormHandler extends CmsFormHandler {
     /** The path to the default HTML templates for the form. */
     public static final String VFS_PATH_DEFAULT_TEMPLATEFILE = CmsWorkplace.VFS_PATH_MODULES
         + MODULE_NAME
-        + "/resources/formtemplates/default.st";
+        + "/resources/templates/form/default.st";
 
     /** The log object for this class. */
     private static final Log LOG = CmsLog.getLog(CmsCommentFormHandler.class);
