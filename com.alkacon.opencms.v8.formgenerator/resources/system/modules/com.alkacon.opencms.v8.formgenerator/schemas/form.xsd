@@ -44,6 +44,7 @@
 			<xsd:element name="FormCaptcha" type="OpenCmsAlkaconV8WebFormCaptcha" minOccurs="0" />
 			<xsd:element name="OptionalFormConfiguration" type="OpenCmsOptionalAlkaconV8WebFormConfiguration" minOccurs="0" />
 			<xsd:element name="OptionalFieldText" type="OpenCmsOptionalAlkaconV8WebFormFieldText" minOccurs="0" maxOccurs="unbounded" />
+			<xsd:element name="OptionalCsvExportConfiguration" type="OpenCmsString" minOccurs="0" />
 
 			<xsd:element name="OptionalConfirmationMail" type="OpenCmsOptionalAlkaconV8WebFormConfirmationMail" minOccurs="0" />
 		</xsd:sequence>

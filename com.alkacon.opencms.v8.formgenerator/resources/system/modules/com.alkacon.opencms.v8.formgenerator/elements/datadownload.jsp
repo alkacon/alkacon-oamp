@@ -3,7 +3,7 @@ WARNING: Do not auto - reformat! In case of data download a linebreak will cause
 "java.lang.IllegalStateException: getOutputStream() has already been called for this response".
 --%><%@page buffer="none" session="false" import="org.apache.commons.logging.*,java.io.OutputStreamWriter,org.opencms.module.CmsModule,org.opencms.i18n.*,com.alkacon.opencms.v8.formgenerator.database.export.*,org.opencms.flex.CmsFlexController,com.alkacon.opencms.v8.formgenerator.*,java.util.*,org.opencms.file.*,org.opencms.util.*,org.opencms.widgets.*,org.opencms.main.*,org.antlr.stringtemplate.*"%><%--
 --%><%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms"%><%! 
-private static final Log LOG = CmsLog.getLog(CmsCvsExportBean.class);
+private static final Log LOG = CmsLog.getLog(CmsCsvExportBean.class);
 %>
 <%
     String formUri = null;
@@ -47,13 +47,13 @@ private static final Log LOG = CmsLog.getLog(CmsCvsExportBean.class);
     CmsForm form = cms.getFormConfiguration();
     if (cms.downloadData()) {
 
-    	CmsCvsExportBean exportBean = new CmsCvsExportBean(cms);
+    	CmsCsvExportBean exportBean = new CmsCsvExportBean(cms);
 
         // Preparing the date values for the export bean: 
         Date startDate;
         Date endDate;
-        String startDateStr = request.getParameter(CmsCvsExportBean.PARAM_EXPORT_DATA_TIME_START);
-        String endDateStr = request.getParameter(CmsCvsExportBean.PARAM_EXPORT_DATA_TIME_END);
+        String startDateStr = request.getParameter(CmsCsvExportBean.PARAM_EXPORT_DATA_TIME_START);
+        String endDateStr = request.getParameter(CmsCsvExportBean.PARAM_EXPORT_DATA_TIME_END);
         if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(startDateStr)) {
             long startDateLong = CmsCalendarWidget.getCalendarDate(calendarMessages, startDateStr, true);
             startDate = new Date(startDateLong);
@@ -113,9 +113,9 @@ private static final Log LOG = CmsLog.getLog(CmsCvsExportBean.class);
  <script type="text/javascript">
   <!--	
 	Calendar.setup({
-		inputField     :    "<%= CmsCvsExportBean.PARAM_EXPORT_DATA_TIME_START %>",
+		inputField     :    "<%= CmsCsvExportBean.PARAM_EXPORT_DATA_TIME_START %>",
 		ifFormat       :    "<%=calendarMessages.key(org.opencms.workplace.Messages.GUI_CALENDAR_DATE_FORMAT_0)%> <%=" " + calendarMessages.key(org.opencms.workplace.Messages.GUI_CALENDAR_TIME_FORMAT_0)%>",
-		button         :    "<%= CmsCvsExportBean.PARAM_EXPORT_DATA_TIME_START %>.calendar",
+		button         :    "<%= CmsCsvExportBean.PARAM_EXPORT_DATA_TIME_START %>.calendar",
 		align          :    "cR",
 		singleClick    :    false,
 		weekNumbers    :    false,
@@ -128,9 +128,9 @@ private static final Log LOG = CmsLog.getLog(CmsCvsExportBean.class);
   <script type="text/javascript">
   <!--
 	Calendar.setup({
-		inputField     :    "<%= CmsCvsExportBean.PARAM_EXPORT_DATA_TIME_END %>",
+		inputField     :    "<%= CmsCsvExportBean.PARAM_EXPORT_DATA_TIME_END %>",
 		ifFormat       :    "<%=calendarMessages.key(org.opencms.workplace.Messages.GUI_CALENDAR_DATE_FORMAT_0)%> <%=" " + calendarMessages.key(org.opencms.workplace.Messages.GUI_CALENDAR_TIME_FORMAT_0)%>",
-		button         :    "<%= CmsCvsExportBean.PARAM_EXPORT_DATA_TIME_END %>.calendar",
+		button         :    "<%= CmsCsvExportBean.PARAM_EXPORT_DATA_TIME_END %>.calendar",
 		align          :    "cR",
 		singleClick    :    false,
 		weekNumbers    :    false,
