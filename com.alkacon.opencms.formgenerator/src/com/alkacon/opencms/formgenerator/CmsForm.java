@@ -371,6 +371,9 @@ public class CmsForm {
     /** Configuration node name for the value. */
     public static final String NODE_VALUE = "Value";
 
+    /** Configuration node name for the optional csv export configuration */
+    public static final String NODE_OPTIONAL_CSV_EXPORT_CONFIGURATION = "OptionalCsvExportConfiguration";
+
     /** Request parameter name for the optional send confirmation email checkbox. */
     public static final String PARAM_SENDCONFIRMATION = "sendconfirmation";
 
@@ -385,7 +388,7 @@ public class CmsForm {
         + "/resources/formtemplates/error.st";
 
     /** Resource type ID of XML content forms. */
-    private static final String TYPE_NAME = "alkacon-webform";
+    public static final String TYPE_NAME = "alkacon-webform";
 
     /** configuration value. */
     protected String m_actionClass;
@@ -560,6 +563,9 @@ public class CmsForm {
 
     /** Flag to signal that data should be sent by email - defaults to true. */
     protected boolean m_transportEmail = true;
+
+    /** The optional csv export configuration (unparsed as string) */
+    private String m_csvExportConfiguration;
 
     /**
      * Default constructor which parses the configuration file.<p>
@@ -1730,6 +1736,11 @@ public class CmsForm {
             setMailText("");
         }
 
+        if (content.hasValue(NODE_OPTIONAL_CSV_EXPORT_CONFIGURATION, locale)) {
+            stringValue = getContentStringValue(content, cms, NODE_OPTIONAL_CSV_EXPORT_CONFIGURATION, locale);
+            setCsvExportConfiguration(stringValue);
+        }
+
         // optional data target configuration 
         String pathPrefix = NODE_DATATARGET + "/";
         stringValue = getContentStringValue(content, cms, pathPrefix + NODE_DATATARGET_TRANSPORT, locale);
@@ -2288,6 +2299,26 @@ public class CmsForm {
     protected void setMaximumSubmissionsText(String maxSubmissionsText) {
 
         m_maxSubmissionsText = maxSubmissionsText;
+    }
+
+    /**
+     * Set the column configuration for CSV export.
+     * 
+     * @param stringValue String with the pipe-separated column values
+     */
+    private void setCsvExportConfiguration(final String stringValue) {
+
+        m_csvExportConfiguration = stringValue;
+    }
+
+    /**
+     * Get the column configuration for CSV export.
+     * 
+     * @return the list of columns that should be exported in a csv file (with placeholders for default columns), or null if no configuration is given
+     */
+    public String getCsvExportConfiguration() {
+
+        return m_csvExportConfiguration;
     }
 
     /**
