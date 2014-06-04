@@ -144,9 +144,6 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     /** Cached configurations. */
     protected static Map<String, CmsCommentConfiguration> m_configs = Collections.synchronizedMap(new HashMap<String, CmsCommentConfiguration>());
 
-    /** Property name constant. */
-    private static final String PROPERTY_COMMENTS = "comments";
-
     /** Form state for approved comments. */
     private static final int STATE_APPROVED = 1;
 
@@ -207,22 +204,6 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     /** Cached value, if the current user is valid. */
     private Boolean m_userValid;
 
-    /** Cached value, stores the dynamic configuration that overwrites configurations from the config file. */
-    //private Map<String, String> m_dynamicConfig;
-
-    /**
-     * Constructor, with parameters.
-     * 
-     * @param context the JSP page context object
-     * @param req the JSP request 
-     * @param res the JSP response 
-     */
-    public CmsCommentsAccess(PageContext context, HttpServletRequest req, HttpServletResponse res) {
-
-        super(context, req, res);
-        initConfig(context, req, res);
-    }
-
     /**
      * Constructor, with parameters.
      * 
@@ -255,7 +236,6 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
 
         super(context, req, res);
         m_configUri = configUri;
-        //m_dynamicConfig = dynamicConfig;
 
         initConfig(context, req, res);
         String dynamicFormId = getFormIdFromDynamicConfig(dynamicConfig);
@@ -1050,7 +1030,7 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
             }
             m_resource = getCmsObject().readResource(m_uri);
             getCmsObject().getRequestContext().setUri(m_uri);
-            String configUri = readConfigUri();
+            String configUri = getConfigUri();
             String cacheKey = generateCacheKey(
                 getCmsObject().getRequestContext().addSiteRoot(configUri),
                 getCmsObject().getRequestContext().getCurrentProject().isOnlineProject(),
@@ -1126,22 +1106,10 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     }
 
     /**
-     * Returns the right configuration uri.<p>
-     * 
-     * @return the right configuration uri
-     * 
-     * @throws CmsException if something goes wrong
+     * @return the URI of the configuration
      */
-    private String readConfigUri() throws CmsException {
+    private String getConfigUri() {
 
-        if (CmsStringUtil.isEmptyOrWhitespaceOnly(m_configUri)) {
-            m_configUri = getCmsObject().readPropertyObject(m_resource, PROPERTY_COMMENTS, true).getValue();
-            if (!getCmsObject().existsResource(m_configUri)) {
-                m_configUri = OpenCms.getModuleManager().getModule(CmsCommentFormHandler.MODULE_NAME).getParameter(
-                    CmsCommentFormHandler.MODULE_PARAM_CONFIG_PREFIX + m_configUri,
-                    m_configUri);
-            }
-        }
         return m_configUri;
     }
 

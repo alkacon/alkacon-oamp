@@ -38,7 +38,6 @@
 		<parameters>
 			<param name="bundle-comments">com.alkacon.opencms.v8.comments.comments</param>
 			<param name="bundle-last-comments">com.alkacon.opencms.v8.comments.lastcomments</param>
-			<param name="config:sample">/system/modules/com.alkacon.opencms.v8.comments/docs/</param>
 			<param name="template-comments">/system/modules/com.alkacon.opencms.v8.comments/resources/templates/default-comments.st</param>
 			<param name="template-last-comments">/system/modules/com.alkacon.opencms.v8.comments/resources/templates/default-last-comments.st</param>
 			<param name="templatefile">/system/modules/com.alkacon.opencms.v8.comments/resources/templates/form/default.st</param>

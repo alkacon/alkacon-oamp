@@ -110,9 +110,6 @@ public class CmsCommentFormHandler extends CmsFormHandler {
     /** The module name. */
     public static final String MODULE_NAME = "com.alkacon.opencms.v8.comments";
 
-    /** Module parameter name prefix constant. */
-    public static final String MODULE_PARAM_CONFIG_PREFIX = "config:";
-
     /** Module parameter name for default mail to address. */
     public static final String MODULE_PARAM_DEFAUL_MAIL_TO = "default_mail_to";
 
