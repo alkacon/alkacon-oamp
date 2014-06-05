@@ -1,24 +1,37 @@
 group comment;
 
 
-header(buttonTitle, message, messageType) ::= <<
+header(messageType,countApprovedComments,countNewComments,countBlockedComments,countComments,messages) ::= <<
 	<div class="cmtHeader">
-		$if(messageType.isLogin)$
-			<button 
-				title="$buttonTitle$" 
-				class="btn btn-primary showLoginModal" 
-				data-toggle="modal" 
-				data-target="#cmtLoginModal"
-			>
-				$message$
-			</button>
-		$else$
+	  	$if(messageType.isManageModerated)$
 			<button class="btn btn-primary cmtLoadComments">
-				$message$
+				$countApprovedComments,countNewComments:{p0,p1 | $messages.("header.user.manage.2").stringTemplate$}$
 			</button>
+		$elseif(messageType.isManageUnmoderated)$
+			<button class="btn btn-primary cmtLoadComments">
+				$countComments:{p0 | $messages.("header.user.manage.1").stringTemplate$}$
+			</button>
+		$elseif(messageType.isPost)$
+			<button class="btn btn-primary cmtLoadComments">
+				$countComments:{p0 | $messages.("header.user.post.1").stringTemplate$}$
+			</button>
+		$elseif(messageType.isView)$
+			<button class="btn btn-primary cmtLoadComments">
+				$countComments:{p0 | $messages.("header.user.read.1").stringTemplate$}$
+			</button>
+		$elseif(messageType.isLogin)$
+		<button 
+			title='$messages.("login.message.title")$' 
+			class="btn btn-primary showLoginModal" 
+			data-toggle="modal" 
+			data-target="#cmtLoginModal"
+		>
+			$countComments:{p0 | $messages.("header.user.login.1").stringTemplate$}$
+		</button>
 		$endif$
 	</div>
 >>
+
 
 headline(title) ::= <<
 	$! Modal for the login dialog !$
@@ -33,7 +46,7 @@ headline(title) ::= <<
 	</div>
 >>
 
-post_options(canPostOrOfferLogin,canPost,postButtonTitle,postButtonMessage,loginButtonTitle,loginButtonMessage) ::= <<
+post_options(canPostOrOfferLogin,canPost,messages) ::= <<
 	$if(canPostOrOfferLogin)$
 		<div class="cmtPostOptions">
 			$if(canPost)$
@@ -41,18 +54,18 @@ post_options(canPostOrOfferLogin,canPost,postButtonTitle,postButtonMessage,login
 					class="showFormModal btn btn-default pull-right"
 					data-toggle="modal"
 					data-target="#cmtFormModal"
-					title="$postButtonTitle$" 
+					title="$messages.("form.message.post")$" 
 				>
-						$postButtonMessage$
+						$messages.("post.0")$
 				</button>
 			$else$
 				<button 
 					class="btn btn-default pull-right showLoginModal"
-					title="$loginButtonTitle$" 
+					title='$messages.("login.message.title")$' 
 					data-toggle="modal" 
 					data-target="#cmtLoginModal"
 				>
-					$loginButtonMessage$
+					$messages.("post.user.login.0")$
 				</button>
 			$endif$
 			<div class="clearfix"></div>
@@ -66,28 +79,28 @@ post_options(canPostOrOfferLogin,canPost,postButtonTitle,postButtonMessage,login
 	</div>
 >>
 
-login(hiddenFields,messageTitle,messageEnterData,messageFailed,userNameLabel,passwordLabel,loginButtonMessage,cancelButtonMessage) ::= <<
+login(hiddenFields,messages) ::= <<
 <div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	<h4 class="modal-title">$messageTitle$</h4>
+	<h4 class="modal-title">$messages.("login.message.title")$</h4>
 	</div>
 	<div class="modal-body">
-		<form role="form" class="form-horizontal cmtLoginForm" id="fid" cmt-login-error="$messageFailed$" method="post">
-		<div id="errmsg" >$messageEnterData$<br>&nbsp;</div>
+		<form role="form" class="form-horizontal cmtLoginForm" id="fid" cmt-login-error='$messages.("login.message.failed")$' method="post">
+		<div id="errmsg" >$messages.("login.message.enterdata")$<br>&nbsp;</div>
 			<div class="form-group">
-				<label class="control-label" for="name">$userNameLabel$:</label>
+				<label class="control-label" for="name">$messages.("login.label.username")$:</label>
 				<input class="form-control first" type="text" name="name" autofocus>
 			</div>
 			<div class="form-group">
-				<label class="control-label" for="password">$passwordLabel$:</label>
+				<label class="control-label" for="password">$messages.("login.label.password")$:</label>
 				<input class="form-control" type="password" name="password">
 			</div>
 			$hiddenFields$
 		</form>
 	</div>
 	<div class="modal-footer">
-		<button id="cmtLoginLoginButton" type="button" class="btn btn-primary" data-dissmiss="modal">$loginButtonMessage$</button>
-		<button id="cmtLoginCancelButton" type="button" class="btn btn-default" data-dismiss="modal">$cancelButtonMessage$</button>
+		<button id="cmtLoginLoginButton" type="button" class="btn btn-primary" data-dissmiss="modal">$messages.("login.label.login")$</button>
+		<button id="cmtLoginCancelButton" type="button" class="btn btn-default" data-dismiss="modal">$messages.("login.label.cancel")$</button>
 	</div>
 	<script type="text/javascript">
 		function bindEnter(e,button) {
@@ -105,7 +118,7 @@ login(hiddenFields,messageTitle,messageEnterData,messageFailed,userNameLabel,pas
 	</script>
 >>
 
-pagination(state,stateNum,commentCount,pageNum,list,needFilter,needPagination,messageAll,messageNew,messageBlocked,messageApproved) ::= <<
+pagination(state,stateNum,commentCount,pageNum,list,needFilter,needPagination,messages) ::= <<
 	$! The template is only rendered if needFilter or needPagination is true !$
 	<div>
 		$if(needPagination)$
@@ -120,10 +133,10 @@ pagination(state,stateNum,commentCount,pageNum,list,needFilter,needPagination,me
 		$endif$
 		$if(needFilter)$
 			<ul class="pagination" >
-				<li $if(state.isAll)$class="active"$endif$><a href='#' id="paginationAll">$messageAll$</a></li>
-				<li $if(state.isNew)$class="active"$endif$><a href='#' id="paginationNew">$messageNew$</a></li>
-				<li $if(state.isBlocked)$class="active"$endif$><a href='#' id="paginationBlocked">$messageBlocked$</a></li>
-				<li $if(state.isApproved)$class="active"$endif$><a href='#' id="paginationApproved">$messageApproved$</a></li>
+				<li $if(state.isAll)$class="active"$endif$><a href='#' id="paginationAll">$messages.("pagination.all")$</a></li>
+				<li $if(state.isNew)$class="active"$endif$><a href='#' id="paginationNew">$messages.("pagination.new")$</a></li>
+				<li $if(state.isBlocked)$class="active"$endif$><a href='#' id="paginationBlocked">$messages.("pagination.blocked")$</a></li>
+				<li $if(state.isApproved)$class="active"$endif$><a href='#' id="paginationApproved">$messages.("pagination.approved")$</a></li>
 			</ul>
 		$endif$
 	</div>
@@ -150,36 +163,36 @@ colorClassReply(boxColor) ::= <<
   panel-$boxColor$
 >>
 
-manager(commentId,commentSubject,commentContent,state,stateNum,isModerated,colorClass,messageApprove,messageBlock,messageDelete,messageDeleteConf,messageHeader,messageUsername,messageEmail,messageIpAddress,messageCount,repliesOption) ::= <<
+manager(commentId,commentCreationDate,commentFields,messages,state,stateNum,isModerated,colorClass,repliesOption,countPostsByAuthor) ::= <<
 	<div class="panel $colorClass$" >
 		<div class="panel-heading">
 			<h5>
-				$commentSubject$
+				$commentFields.subject$
 				<span class="pull-right">
 					$if(isModerated)$
 						$if(!state.isApproved)$
-							<a class="cmtAction" cmt-action="approve" cmt-comment-entry="$commentId$" cmt-state="$stateNum$" href="#" title="$messageApprove$"><span class="glyphicon glyphicon-ok text-success"></span></a>
+							<a class="cmtAction" cmt-action="approve" cmt-comment-entry="$commentId$" cmt-state="$stateNum$" href="#" title='$messages.("comment.manager.approve")$'><span class="glyphicon glyphicon-ok text-success"></span></a>
 						$endif$
 						$if(!state.isBlocked)$
-							<a class="cmtAction" cmt-action="block" cmt-comment-entry="$commentId$" cmt-state="$stateNum$" href="#" title="$messageBlock$"><span class="glyphicon glyphicon-ban-circle text-warning"></span></a>
+							<a class="cmtAction" cmt-action="block" cmt-comment-entry="$commentId$" cmt-state="$stateNum$" href="#" title='$messages.("comment.manager.block")$'><span class="glyphicon glyphicon-ban-circle text-warning"></span></a>
 						$endif$
 					$endif$
-					<a class="cmtAction" cmt-action="delete" cmt-comment-entry="$commentId$" cmt-state="$stateNum$" cmt-confirmation-message="$messageDeleteConf$" href="#" title="$messageDelete$"><span class="glyphicon glyphicon-remove text-danger"></span></a>
+					<a class="cmtAction" cmt-action="delete" cmt-comment-entry="$commentId$" cmt-state="$stateNum$" cmt-confirmation-message='$messages.("comment.manager.delete.conf")$' href="#" title='$messages.("comment.manager.delete")$'><span class="glyphicon glyphicon-remove text-danger"></span></a>
 				</span>
 			</h5>
 			<h6>
-				$messageHeader$
+				$commentFields.name.escapeXml,commentCreationDate.dateLongTimeShort:{p0,p1 | $messages.("comment.header.view.2").stringTemplate$}$
 			</h6>
 		</div>
 		<div class="panel-body" >
 			<div>
-				$messageUsername$<br>
-				$messageEmail$<br>
-				$messageIpAddress$<br>
-				$messageCount$
+				$commentFields.username.escapeXml:{p0 | $messages.("comment.manager.username.1").stringTemplate$}$<br>
+				$commentFields.email.escapeXml:{p0 | $messages.("comment.manager.email.1").stringTemplate$}$<br>
+				$commentFields.ipaddress.escapeXml:{p0 | $messages.("comment.manager.ipaddress.1").stringTemplate$}$<br>
+				$countPostsByAuthor:{p0 | $messages.("comment.manager.count.1").stringTemplate$}$
 			</div>
 			<div>
-				$commentContent$				
+				$commentFields.comment$				
 				$repliesOption$
 			</div>
 		</div>	
@@ -192,23 +205,27 @@ disable(doDisable) ::= <<
   $endif$
 >>
 
-repliesOption (noReplies,messageShowRepliesButton,messageReplyButton,messagePost,linkPost,commentId,userCanManage,userCanPost) ::= <<
+repliesOption (noReplies,exactlyOneReply,countReplies,linkPost,commentId,userCanManage,userCanPost,messages) ::= <<
 	<div class="cmtCommentReplyOptions">
 		<div class="cmtCommentCountReplies">
 			<button class="btn btn-primary btn-xs cmtShowRepliesButton" $disable(doDisable=noReplies)$ cmt-comment-entry='$commentId$' cmt-user-can-manage='$userCanManage$'>
-				$messageShowRepliesButton$
-			</button>			
+				$if(exactlyOneReply)$
+					1 $messages.("oneReply")$
+				$else$
+					$countReplies$ $messages.("manyReplies")$
+				$endif$
+			</button>
 			$if(userCanPost)$
 				<div class="cmtCommentReply">
 					<button 
 						class="btn btn-primary btn-xs showFormModal"
 						data-toggle="modal"
 						data-target="#cmtFormModal"
-						title="$messagePost$" 
+						title='$messages.("form.message.post")$' 
 						cmt-parent-id="$commentId$"
 						href="$linkPost$" 
 					>
-						$messageReplyButton$
+						$messages.("doReply")$
 					</button>
 				</div>
 				<div class="clear"></div>
@@ -218,27 +235,27 @@ repliesOption (noReplies,messageShowRepliesButton,messageReplyButton,messagePost
 	</div>
 >>
 
-reply_manager(commentId,commentSubject,commentContent,stateNum,colorClass,messageDelete,messageDeleteConf,messageHeader,messageUsername,messageEmail,messageIpAddress,messageCount) ::= <<
-	$manager(commentId=commentId,commentSubject=commentSubject,commentContent=commentContent,stateNum=stateNum,colorClass=colorClass,messageDelete=messageDelete,messageDeleteConf=messageDeleteConf,messageHeader=messageHeader,messageUsername=messageUsername,messageEmail=messageEmail,messageIpAddress=messageIpAddress,messageCount=messageCount)$
+reply_manager(commentId,commentCreationDate,commentFields,messages,state,stateNum,isModerated,colorClass,repliesOption,countPostsByAuthor) ::= <<
+	$manager(commentId=commentId,commentCreationDate=commentCreationDate,commentFields=commentFields,messages=messages,state=state,stateNum=stateNum,isModerated=isModerated,colorClass=colorClass,repliesOption=repliesOption,countPostsByAuthor=countPostsByAuthor)$
 >>
 
-view(colorClass,commentSubject,header,commentContent,repliesOption) ::= <<
+view(colorClass,commentFields,commentCreationDate,messages,repliesOption) ::= <<
 <div class="panel $colorClass$" >
 	<div class="panel-heading" >
 		<div class="h5">
-			$commentSubject$
+			$commentFields.subject$
 		</div>
 		<div class="h6">
-			$header$
+			$commentFields.name.escapeXml,commentCreationDate.dateLongTimeShort:{p0,p1 | $messages.("comment.header.view.2").stringTemplate$}$
 		</div>
 	</div>
 	<div class="panel-body">
-		$commentContent$
+		$commentFields.comment$
 		$repliesOption$
 	</div>
 </div>
 >>
 
-reply_view(colorClass,commentSubject,header,commentContent) ::= <<
-	$view(colorClass=colorClass,commentSubject=commentSubject,header=header,commentContent=commentContent)$
+reply_view(colorClass,commentFields,commentCreationDate,messages) ::= <<
+	$view(colorClass=colorClass,commentFields=commentFields,commentCreationDate=commentCreationDate,messages=messages)$
 >>

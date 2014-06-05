@@ -28,6 +28,9 @@
 package com.alkacon.opencms.v8.comments;
 
 import com.alkacon.opencms.v8.comments.util.CmsCommentsUtil;
+import com.alkacon.opencms.v8.comments.util.CmsStringTemplateMessageBundleWrapper;
+import com.alkacon.opencms.v8.comments.util.FormattedDate;
+import com.alkacon.opencms.v8.comments.util.SecurableString;
 import com.alkacon.opencms.v8.formgenerator.CmsStringTemplateErrorListener;
 import com.alkacon.opencms.v8.formgenerator.database.CmsFormDataBean;
 
@@ -39,7 +42,8 @@ import org.opencms.main.OpenCms;
 import org.opencms.workplace.CmsWorkplace;
 
 import java.io.StringReader;
-import java.text.DateFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 
@@ -56,6 +60,7 @@ public class CmsCommentStringTemplateHandler {
 
     /** just for private use, set in constructor */
     CmsCommentsAccess m_access;
+    Map<String, SecurableString> m_messages;
 
     /** Stringtemplate group read from the configured file */
     private StringTemplateGroup m_outputTemplates = null;
@@ -79,6 +84,10 @@ public class CmsCommentStringTemplateHandler {
     public CmsCommentStringTemplateHandler(CmsCommentsAccess access) {
 
         m_access = access;
+        CmsStringTemplateMessageBundleWrapper bundleWrapper = new CmsStringTemplateMessageBundleWrapper(
+            m_access.getResourceBundle(),
+            m_access.getRequestContext().getLocale());
+        m_messages = bundleWrapper.getMessageMap();
     }
 
     /**
@@ -215,33 +224,34 @@ public class CmsCommentStringTemplateHandler {
                 return !(getIsPost()) && m_access.isUserCanView();
             }
         };
-        String message;
-        String title = "";
-        String[] commentsCount = new String[] {Integer.toString(m_access.getCountComments())};
-        if (messageType.getIsManageModerated()) {
-            message = m_access.getMessage(
-                "header.user.manage.2",
-                new String[] {
-                    Integer.toString(m_access.getCountApprovedComments()),
-                    Integer.toString(m_access.getCountNewComments())});
-        } else if (messageType.getIsManageUnmoderated()) {
-            message = m_access.getMessage("header.user.manage.1", commentsCount);
-        } else if (messageType.getIsLogin()) {
-            message = m_access.getMessage("header.user.login.1", commentsCount);
-            title = m_access.getMessage("login.message.title");
-        } else if (messageType.getIsPost()) {
-            message = m_access.getMessage("header.user.post.1", commentsCount);
-        } else if (messageType.getIsView()) {
-            message = m_access.getMessage("header.user.read.1", commentsCount);
-        } else {
-            message = ""; // Should not happen
-        }
-
+        /*
+                if (messageType.getIsManageModerated()) {
+                    message = m_access.getMessage(
+                        "header.user.manage.2",
+                        new String[] {
+                            Integer.toString(m_access.getCountApprovedComments()),
+                            Integer.toString(m_access.getCountNewComments())});
+                } else if (messageType.getIsManageUnmoderated()) {
+                    message = m_access.getMessage("header.user.manage.1", commentsCount);
+                } else if (messageType.getIsLogin()) {
+                    message = m_access.getMessage("header.user.login.1", commentsCount);
+                    title = m_access.getMessage("login.message.title");
+                } else if (messageType.getIsPost()) {
+                    message = m_access.getMessage("header.user.post.1", commentsCount);
+                } else if (messageType.getIsView()) {
+                    message = m_access.getMessage("header.user.read.1", commentsCount);
+                } else {
+                    message = ""; // Should not happen
+                }
+        */
         StringTemplate sTemplate = getOutputTemplate("header");
         // set the necessary attributes to use in the string template
-        sTemplate.setAttribute("message", message);
-        sTemplate.setAttribute("buttonTitle", title);
+        sTemplate.setAttribute("countApprovedComments", Integer.valueOf(m_access.getCountApprovedComments()));
+        sTemplate.setAttribute("countBlockedComments", Integer.valueOf(m_access.getCountBlockedComments()));
+        sTemplate.setAttribute("countNewComments", Integer.valueOf(m_access.getCountNewComments()));
+        sTemplate.setAttribute("countComments", Integer.valueOf(m_access.getCountComments()));
         sTemplate.setAttribute("messageType", messageType);
+        sTemplate.setAttribute("messages", m_messages);
         return sTemplate.toString();
     }
 
@@ -266,10 +276,11 @@ public class CmsCommentStringTemplateHandler {
             || (m_access.isGuestUser() && m_access.getConfig().isOfferLogin());
         sTemplate.setAttribute("canPostOrOfferLogin", Boolean.valueOf(postOrLogin));
         sTemplate.setAttribute("canPost", Boolean.valueOf(m_access.isUserCanPost()));
-        sTemplate.setAttribute("postButtonTitle", m_access.getMessage("form.message.post"));
+        sTemplate.setAttribute("messages", m_messages);
+        /*sTemplate.setAttribute("postButtonTitle", m_access.getMessage("form.message.post"));
         sTemplate.setAttribute("postButtonMessage", m_access.getMessage("post.0"));
         sTemplate.setAttribute("loginButtonTitle", m_access.getMessage("login.message.title"));
-        sTemplate.setAttribute("loginButtonMessage", m_access.getMessage("post.user.login.0"));
+        sTemplate.setAttribute("loginButtonMessage", m_access.getMessage("post.user.login.0")); */
         return sTemplate.toString();
     }
 
@@ -302,6 +313,8 @@ public class CmsCommentStringTemplateHandler {
             + "\" />\n";
         StringTemplate sTemplate = getOutputTemplate("login");
         sTemplate.setAttribute("hiddenFields", hiddenFields);
+        sTemplate.setAttribute("messages", m_messages);
+        /*
         sTemplate.setAttribute("messageTitle", m_access.getMessage("login.message.title"));
         sTemplate.setAttribute("messageEnterData", m_access.getMessage("login.message.enterdata"));
         sTemplate.setAttribute("messageFailed", m_access.getMessage("login.message.failed"));
@@ -309,6 +322,7 @@ public class CmsCommentStringTemplateHandler {
         sTemplate.setAttribute("passwordLabel", m_access.getMessage("login.label.password"));
         sTemplate.setAttribute("loginButtonMessage", m_access.getMessage("login.label.login"));
         sTemplate.setAttribute("cancelButtonMessage", m_access.getMessage("login.label.cancel"));
+        */
         return sTemplate.toString();
     }
 
@@ -375,10 +389,6 @@ public class CmsCommentStringTemplateHandler {
             return "";
         }
 
-        //String stateNum = m_access.getState().toString();
-        //String commentCount = Integer.toString(m_access.getCountStateComments());
-        //String pageNum = Integer.toString(m_access.getPage());
-        //String list = m_access.getConfig().getList();
         StringTemplate sTemplate = getOutputTemplate("pagination");
         sTemplate.setAttribute("state", generateState());
         sTemplate.setAttribute("stateNum", m_access.getState());
@@ -387,10 +397,7 @@ public class CmsCommentStringTemplateHandler {
         sTemplate.setAttribute("list", m_access.getConfig().getList());
         sTemplate.setAttribute("needFilter", Boolean.valueOf(m_access.isNeedFilter()));
         sTemplate.setAttribute("needPagination", Boolean.valueOf(m_access.isNeedPagination()));
-        sTemplate.setAttribute("messageAll", m_access.getMessage("pagination.all"));
-        sTemplate.setAttribute("messageNew", m_access.getMessage("pagination.new"));
-        sTemplate.setAttribute("messageBlocked", m_access.getMessage("pagination.blocked"));
-        sTemplate.setAttribute("messageApproved", m_access.getMessage("pagination.approved"));
+        sTemplate.setAttribute("messages", m_messages);
         return sTemplate.toString();
     }
 
@@ -408,15 +415,20 @@ public class CmsCommentStringTemplateHandler {
         CmsRepliesAccessBean replies = new CmsRepliesAccessBean();
         int replyCount = replies.getCountRepliesForComment(comment.getEntryId());
         sTemplate.setAttribute("noReplies", Boolean.valueOf(replyCount == 0));
-        String messageShowRepliesButton;
+        //String messageShowRepliesButton;
+        boolean isSingleReply;
         if (replyCount == 1) {
-            messageShowRepliesButton = "1 " + m_access.getMessage("oneReply");
+            isSingleReply = true;
+            //messageShowRepliesButton = "1 " + m_access.getMessage("oneReply");
         } else {
-            messageShowRepliesButton = Integer.toString(replyCount) + " " + m_access.getMessage("manyReplies");
+            //messageShowRepliesButton = Integer.toString(replyCount) + " " + m_access.getMessage("manyReplies");
+            isSingleReply = false;
         }
-        sTemplate.setAttribute("messageShowRepliesButton", messageShowRepliesButton);
-        sTemplate.setAttribute("messageReplyButton", m_access.getMessage("doReply"));
-        sTemplate.setAttribute("messagePost", m_access.getMessage("form.message.post"));
+        sTemplate.setAttribute("exactlyOneReply", Boolean.valueOf(isSingleReply));
+        sTemplate.setAttribute("countReplies", replyCount);
+        //sTemplate.setAttribute("messageShowRepliesButton", messageShowRepliesButton);
+        //sTemplate.setAttribute("messageReplyButton", m_access.getMessage("doReply"));
+        //sTemplate.setAttribute("messagePost", m_access.getMessage("form.message.post"));
         String link = OpenCms.getLinkManager().substituteLink(
             m_access.getCmsObject(),
             "/system/modules/com.alkacon.opencms.v8.comments/elements/comment_form.jsp"
@@ -440,6 +452,7 @@ public class CmsCommentStringTemplateHandler {
         sTemplate.setAttribute("commentId", comment.getEntryId());
         sTemplate.setAttribute("userCanManage", Boolean.valueOf(m_access.isUserCanManage()));
         sTemplate.setAttribute("userCanPost", Boolean.valueOf(m_access.isUserCanPost()));
+        sTemplate.setAttribute("messages", m_messages);
         return sTemplate.toString();
     }
 
@@ -486,15 +499,13 @@ public class CmsCommentStringTemplateHandler {
 
         StringTemplate sTemplate = isReply ? getOutputTemplate("reply_manager") : getOutputTemplate("manager");
         sTemplate.setAttribute("commentId", comment.getEntryId());
-        sTemplate.setAttribute("commentSubject", CmsEncoder.escapeXml(comment.getFieldValue("subject")));
-        sTemplate.setAttribute("commentContent", CmsCommentsUtil.secureContent(comment.getFieldValue("comment")));
-        sTemplate.setAttribute("stateNum", m_access.getState());
+        sTemplate.setAttribute("commentCreationDate", new FormattedDate(
+            comment.getDateCreated(),
+            m_access.getRequestContext().getLocale()));
+        sTemplate.setAttribute("commentFields", getWithSecurableStringsAsValues(comment.getField()));
+        sTemplate.setAttribute("messages", m_messages);
         String colorClass;
         if (!isReply) {
-            sTemplate.setAttribute(
-                "messageApprove",
-                CmsEncoder.escapeXml(m_access.getMessage("comment.manager.approve")));
-            sTemplate.setAttribute("messageBlock", CmsEncoder.escapeXml(m_access.getMessage("comment.manager.block")));
             sTemplate.setAttribute("state", generateState());
             sTemplate.setAttribute("isModerated", Boolean.valueOf(m_access.getConfig().isModerated()));
             sTemplate.setAttribute("repliesOption", buildRepliesOptionHtml(comment));
@@ -504,25 +515,18 @@ public class CmsCommentStringTemplateHandler {
 
         }
         sTemplate.setAttribute("colorClass", colorClass);
-        sTemplate.setAttribute("messageDeleteConf", m_access.getMessage("comment.manager.delete.conf"));
-        sTemplate.setAttribute("messageDelete", m_access.getMessage("comment.manager.delete"));
-        String[] params = new String[] {
-            CmsEncoder.escapeXml(comment.getFieldValue("name")),
-            CmsEncoder.escapeXml(CmsCommentsUtil.formatDateTime(
-                comment.getDateCreated(),
-                m_access.getRequestContext().getLocale(),
-                DateFormat.LONG,
-                DateFormat.SHORT))};
-        sTemplate.setAttribute("messageHeader", m_access.getMessage("comment.header.view.2", params));
-        params = new String[] {CmsEncoder.escapeXml(comment.getFieldValue("username"))};
-        sTemplate.setAttribute("messageUsername", m_access.getMessage("comment.manager.username.1", params));
-        params = new String[] {CmsEncoder.escapeXml(comment.getFieldValue("email"))};
-        sTemplate.setAttribute("messageEmail", m_access.getMessage("comment.manager.email.1", params));
-        params = new String[] {CmsEncoder.escapeXml(comment.getFieldValue("ipaddress"))};
-        sTemplate.setAttribute("messageIpAddress", m_access.getMessage("comment.manager.ipaddress.1", params));
-        params = new String[] {CmsEncoder.escapeXml(m_access.getCountByAuthor().get(comment.getFieldValue("username")).toString())};
-        sTemplate.setAttribute("messageCount", m_access.getMessage("comment.manager.count.1", params));
+        String countByAuthor = CmsEncoder.escapeXml(m_access.getCountByAuthor().get(comment.getFieldValue("username")).toString());
+        sTemplate.setAttribute("countPostsByAuthor", countByAuthor);
         return sTemplate.toString();
+    }
+
+    private Map<String, SecurableString> getWithSecurableStringsAsValues(Map<String, String> fields) {
+
+        Map<String, SecurableString> result = new HashMap<String, SecurableString>(fields.size());
+        for (String key : fields.keySet()) {
+            result.put(key, new SecurableString(fields.get(key)));
+        }
+        return result;
     }
 
     /**
@@ -555,16 +559,11 @@ public class CmsCommentStringTemplateHandler {
 
         StringTemplate sTemplate = isReply ? getOutputTemplate("reply_view") : getOutputTemplate("view");
         sTemplate.setAttribute("colorClass", getColorClass(comment.getState(), boxColor, isReply));
-        sTemplate.setAttribute("commentSubject", CmsEncoder.escapeXml(comment.getFieldValue("subject")));
-        String[] params = new String[] {
-            CmsEncoder.escapeXml(comment.getFieldValue("name")),
-            CmsEncoder.escapeXml(CmsCommentsUtil.formatDateTime(
-                comment.getDateCreated(),
-                m_access.getRequestContext().getLocale(),
-                DateFormat.LONG,
-                DateFormat.SHORT))};
-        sTemplate.setAttribute("header", m_access.getMessage("comment.header.view.2", params));
-        sTemplate.setAttribute("commentContent", CmsCommentsUtil.secureContent(comment.getFieldValue("comment")));
+        sTemplate.setAttribute("commentCreationDate", new FormattedDate(
+            comment.getDateCreated(),
+            m_access.getRequestContext().getLocale()));
+        sTemplate.setAttribute("commentFields", getWithSecurableStringsAsValues(comment.getField()));
+        sTemplate.setAttribute("messages", m_messages);
         if (!isReply) {
             sTemplate.setAttribute("repliesOption", buildRepliesOptionHtml(comment));
         }

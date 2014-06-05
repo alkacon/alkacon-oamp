@@ -81,6 +81,15 @@ public final class CmsCommentsUtil {
         return buf.toString();
     }
 
+    public static final String formatDate(final long longDate, final Locale locale, final int dateFormat) {
+
+        Date date = new Date(longDate);
+        DateFormat df = DateFormat.getDateInstance(dateFormat, locale);
+        StringBuffer buf = new StringBuffer();
+        buf.append(df.format(date));
+        return buf.toString();
+    }
+
     /**
      * Checks if a string contains script, form or input tags. If yes, then all HTML gets stripped.
      * Finally, for each string HTML is escaped. 
