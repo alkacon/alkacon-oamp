@@ -6,13 +6,13 @@
 <%-- get the stringtemplate Handler --%>
 <%	CmsLastCommentStringTemplateHandler templateHandler = new CmsLastCommentStringTemplateHandler();
 	templateHandler.init(pageContext,request,response);
+	templateHandler.setResourceBundle((String) pageContext.getAttribute("bundle"));
 	String entries = "";
 	String bundle = templateHandler.getResourceBundle();
 	pageContext.setAttribute("bundle", bundle);
 %>
 <cms:bundle basename="${bundle}">
 	<cms:formatter var="content">
-	  <div>
 			<c:choose>
 				<c:when test="${cms.element.inMemoryOnly}"><fmt:message key="commentlist.memoryonly" /></c:when>
 				<c:otherwise>
@@ -39,8 +39,15 @@
 								<% entries = templateHandler.buildLastCommentsNoEntryHtml(); %>
 							</c:when>
 							<c:otherwise>
-								<c:set var="fields" value="${fn:split(content.value.Fields, ',')}" />
-								<% List<String> fields = Arrays.asList((String[])pageContext.getAttribute("fields")); %>
+								<c:if test="${content.value.Fields.exists}">
+									<c:set var="fields" value="${fn:split(content.value.Fields, ',')}" />
+								</c:if>
+								<% Object fieldsAttribute = pageContext.getAttribute("fields");
+								   List<String> fields = null;
+								   if (fieldsAttribute != null) {
+								   		fields = Arrays.asList((String[])fieldsAttribute); 
+								    }
+								%>
 								<c:forEach var="comment" items="${comments}">
 									<% entries += templateHandler.buildLastCommentsEntryHtml(
 											(com.alkacon.opencms.v8.formgenerator.collector.CmsFormBean) pageContext.getAttribute("comment")
@@ -53,7 +60,6 @@
 						<%= templateHandler.buildLastCommentsListHtml(entries,(String) pageContext.getAttribute("title")) %>
 					</jsp:useBean>						
 				</c:otherwise>
-			</c:choose>	  
-	  </div>
+			</c:choose>
 	</cms:formatter>
 </cms:bundle>

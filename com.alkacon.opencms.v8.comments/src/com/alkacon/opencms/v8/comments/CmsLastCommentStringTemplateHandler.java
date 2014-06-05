@@ -28,12 +28,13 @@
 package com.alkacon.opencms.v8.comments;
 
 import com.alkacon.opencms.v8.comments.util.CmsCommentsUtil;
+import com.alkacon.opencms.v8.comments.util.CmsStringTemplateMessageBundleWrapper;
+import com.alkacon.opencms.v8.comments.util.SecurableString;
 import com.alkacon.opencms.v8.formgenerator.CmsStringTemplateErrorListener;
 import com.alkacon.opencms.v8.formgenerator.collector.CmsFormBean;
 
 import org.opencms.cache.CmsVfsMemoryObjectCache;
 import org.opencms.file.CmsFile;
-import org.opencms.i18n.CmsEncoder;
 import org.opencms.i18n.CmsResourceBundleLoader;
 import org.opencms.jsp.CmsJspActionElement;
 import org.opencms.main.CmsLog;
@@ -41,9 +42,11 @@ import org.opencms.main.OpenCms;
 import org.opencms.workplace.CmsWorkplace;
 
 import java.io.StringReader;
-import java.text.DateFormat;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 
@@ -57,6 +60,15 @@ public class CmsLastCommentStringTemplateHandler extends CmsJspActionElement {
 
     /** The stringtemplates read from the configured file */
     StringTemplateGroup m_outputTemplates = null;
+    /** Wraps a message bundle. Securable Strings are used because they can be escaped, secured and rendered as StringTemplate */
+    Map<String, SecurableString> m_messages = null;
+
+    /** special field identifier for fields of the comment that are always present */
+    public static final String FIELDNAME_CREATION_DATE = "_creationdate_";
+    /** special field identifier for fields of the comment that are always present */
+    public static final String FIELDNAME_PAGE_LINK = "_pagelink_";
+    /** special field identifier for fields of the comment that are always present */
+    public static final String FIELDNAME_PAGE_TITLE = "_pagetitle_";
 
     /** The resourcebundle used for localization and initialized with the default resource bundle */
     private String m_resourcebundle = null;
@@ -100,6 +112,21 @@ public class CmsLastCommentStringTemplateHandler extends CmsJspActionElement {
     public void setResourceBundle(final String resourcebundle) {
 
         m_resourcebundle = resourcebundle;
+    }
+
+    /**
+     * @return Messagebundle wrapped for StringTemplate usage.
+     */
+    private Map<String, SecurableString> getMessages() {
+
+        if (m_messages == null) {
+            String resourceBundle = getResourceBundle();
+            CmsStringTemplateMessageBundleWrapper bundleWrapper = new CmsStringTemplateMessageBundleWrapper(
+                resourceBundle,
+                getRequestContext().getLocale());
+            m_messages = bundleWrapper.getMessageMap();
+        }
+        return m_messages;
     }
 
     /**
@@ -217,41 +244,36 @@ public class CmsLastCommentStringTemplateHandler extends CmsJspActionElement {
      */
     public String buildLastCommentsEntryHtml(final CmsFormBean comment, final List<String> fields, final String boxColor) {
 
+        List<String> allFields = new ArrayList<String>(comment.getFields().size() + 3);
+        allFields.addAll(comment.getFields().keySet());
+        allFields.add(FIELDNAME_CREATION_DATE);
+        allFields.add(FIELDNAME_PAGE_LINK);
+        allFields.add(FIELDNAME_PAGE_TITLE);
+        Map<String, Boolean> fieldsToShow = listToMapWithAllValuesTrue(fields == null ? allFields : fields);
         StringTemplate sTemplate = getOutputTemplate("last_comments_entry");
-        StringTemplate colorTemplate = getOutputTemplate("colorClassLastComments");
-        colorTemplate.setAttribute("boxColor", CmsEncoder.escapeXml(boxColor));
-        sTemplate.setAttribute("colorClass", colorTemplate.toString());
-        boolean showUser = fields.contains("name") || fields.contains("username") || fields.contains("email");
-        boolean showCommentDetails = fields.contains("subject") || fields.contains("comment");
-        boolean showCommentMeta = fields.contains("locale")
-            || fields.contains("ipaddress")
-            || fields.contains("creationdate");
-        sTemplate.setAttribute("showUser", Boolean.valueOf(showUser));
-        sTemplate.setAttribute("showCommentDetails", Boolean.valueOf(showCommentDetails));
-        sTemplate.setAttribute("showCommentMeta", Boolean.valueOf(showCommentMeta));
-        sTemplate.setAttribute("name", comment.getFields().get("name"));
-        sTemplate.setAttribute("email", comment.getFields().get("email"));
-        sTemplate.setAttribute("username", comment.getFields().get("username"));
-        sTemplate.setAttribute("messageCommentOn1", getMessage("commentlist.madecommenton1"));
-        sTemplate.setAttribute("messageCommentOn2", getMessage("commentlist.madecommenton2"));
-        sTemplate.setAttribute("link", comment.getUri());
-        sTemplate.setAttribute("commentTitle", CmsEncoder.escapeXml(comment.getTitle()));
-        sTemplate.setAttribute("messageCommentSubject", getMessage("commentlist.subject"));
-        sTemplate.setAttribute("commentSubject", CmsEncoder.escapeXml(comment.getFields().get("subject")));
-        sTemplate.setAttribute("messageCommentContent", getMessage("commentlist.comment"));
-        sTemplate.setAttribute("commentContent", CmsCommentsUtil.secureContent(comment.getFields().get("comment")));
-        sTemplate.setAttribute("messageCreated", getMessage("commentlist.created"));
-        sTemplate.setAttribute("creationDate", CmsCommentsUtil.formatDateTime(
-            comment.getDateCreated().longValue(),
-            getRequestContext().getLocale(),
-            DateFormat.SHORT,
-            DateFormat.SHORT));
-        sTemplate.setAttribute("messageCreationDate", getMessage("commentlist.at"));
-        sTemplate.setAttribute("locale", comment.getFields().get("locale"));
-        sTemplate.setAttribute("messageLocale", getMessage("commentlist.in"));
-        sTemplate.setAttribute("ipAddress", CmsEncoder.escapeXml(comment.getFields().get("ipaddress")));
-        sTemplate.setAttribute("messageIpAddress", getMessage("commentlist.fromip"));
+        sTemplate.setAttribute("boxColor", boxColor);
+        sTemplate.setAttribute("commentFields", comment.getFields());
+        sTemplate.setAttribute("commentCreationDate", comment.getDateCreated());
+        sTemplate.setAttribute("commentPageLink", comment.getUri());
+        sTemplate.setAttribute("commentPageTitle", comment.getTitle());
+        sTemplate.setAttribute("fieldsToShow", fieldsToShow);
+        sTemplate.setAttribute("messages", getMessages());
         return sTemplate.toString();
+    }
+
+    /**
+     * The conversion is just made to provide a suitable datastructure for Stringtemplates to check, if something is in a list or not.
+     * 
+     * @param keyList the list to convert
+     * @return a map with the list entries as keys and the Boolean true as value for each key.
+     */
+    private Map<String, Boolean> listToMapWithAllValuesTrue(final List<String> keyList) {
+
+        Map<String, Boolean> result = new HashMap<String, Boolean>(keyList.size());
+        for (String key : keyList) {
+            result.put(key, Boolean.valueOf(true));
+        }
+        return result;
     }
 
     /**

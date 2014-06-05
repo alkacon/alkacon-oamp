@@ -3,75 +3,11 @@
 <XmlVfsBundles xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/org.opencms.ade.config/schemas/xmlvfsbundle.xsd">
   <Bundle language="en">
     <Message>
-      <Key><![CDATA[AlkaconV8LastCommentsList.creationdate]]></Key>
-      <Value><![CDATA[Date of creation]]></Value>
-    </Message>
-    <Message>
-      <Key><![CDATA[AlkaconV8LastCommentsList.username]]></Key>
-      <Value><![CDATA[User name]]></Value>
-    </Message>
-    <Message>
-      <Key><![CDATA[AlkaconV8LastCommentsList.comment]]></Key>
-      <Value><![CDATA[Comment]]></Value>
-    </Message>
-    <Message>
-      <Key><![CDATA[AlkaconV8LastCommentsList.email]]></Key>
-      <Value><![CDATA[Email address (from the form)]]></Value>
-    </Message>
-    <Message>
-      <Key><![CDATA[AlkaconV8LastCommentsList.ipaddress]]></Key>
-      <Value><![CDATA[Ip address]]></Value>
-    </Message>
-    <Message>
-      <Key><![CDATA[AlkaconV8LastCommentsList.locale]]></Key>
-      <Value><![CDATA[Locale of the comment]]></Value>
-    </Message>
-    <Message>
-      <Key><![CDATA[AlkaconV8LastCommentsList.name]]></Key>
-      <Value><![CDATA[Author name (from the form)]]></Value>
-    </Message>
-    <Message>
-      <Key><![CDATA[AlkaconV8LastCommentsList.subject]]></Key>
-      <Value><![CDATA[Subject]]></Value>
-    </Message>
-    <Message>
       <Key><![CDATA[AlkaconV8LastCommentsList.MaxNumber.error]]></Key>
       <Value><![CDATA[The maximal number of comments must be between 0 and 9999.]]></Value>
     </Message>
   </Bundle>
   <Bundle language="de">
-    <Message>
-      <Key><![CDATA[AlkaconV8LastCommentsList.creationdate]]></Key>
-      <Value><![CDATA[Erstellungsdatum]]></Value>
-    </Message>
-    <Message>
-      <Key><![CDATA[AlkaconV8LastCommentsList.username]]></Key>
-      <Value><![CDATA[Benutzername]]></Value>
-    </Message>
-    <Message>
-      <Key><![CDATA[AlkaconV8LastCommentsList.comment]]></Key>
-      <Value><![CDATA[Kommentar]]></Value>
-    </Message>
-    <Message>
-      <Key><![CDATA[AlkaconV8LastCommentsList.email]]></Key>
-      <Value><![CDATA[Email-Adresse (aus dem Formular)]]></Value>
-    </Message>
-    <Message>
-      <Key><![CDATA[AlkaconV8LastCommentsList.ipaddress]]></Key>
-      <Value><![CDATA[IP-Adresse]]></Value>
-    </Message>
-    <Message>
-      <Key><![CDATA[AlkaconV8LastCommentsList.locale]]></Key>
-      <Value><![CDATA[Locale des Kommentars]]></Value>
-    </Message>
-    <Message>
-      <Key><![CDATA[AlkaconV8LastCommentsList.name]]></Key>
-      <Value><![CDATA[Author des Kommentars (aus dem Formular)]]></Value>
-    </Message>
-    <Message>
-      <Key><![CDATA[AlkaconV8LastCommentsList.subject]]></Key>
-      <Value><![CDATA[Betreff]]></Value>
-    </Message>
     <Message>
       <Key><![CDATA[AlkaconV8LastCommentsList.MaxNumber.error]]></Key>
       <Value><![CDATA[Die Maximale Anzahl der Kommentare muss zwischen 0 und 9999 liegen.]]></Value>

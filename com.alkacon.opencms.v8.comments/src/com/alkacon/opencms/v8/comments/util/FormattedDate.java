@@ -32,57 +32,80 @@ import org.opencms.i18n.CmsEncoder;
 import java.text.DateFormat;
 import java.util.Locale;
 
+/**
+ * Takes a date as long and a locale and wraps it such that it can be formatted in a StringTemplate
+ */
 public class FormattedDate {
 
+    @SuppressWarnings("javadoc")
     long m_date;
+    @SuppressWarnings("javadoc")
     Locale m_locale;
 
+    /**
+     * @param date The date to wrap
+     * @param locale The locale used for formatting
+     */
     public FormattedDate(long date, Locale locale) {
 
         m_date = date;
         m_locale = locale;
     }
 
+    @SuppressWarnings("javadoc")
     private String getDateTime(int dateFormat, int timeFormat) {
 
         return CmsEncoder.escapeXml(CmsCommentsUtil.formatDateTime(m_date, m_locale, dateFormat, timeFormat));
     }
 
+    @SuppressWarnings("javadoc")
     private String getDate(int dateFormat) {
 
         return CmsEncoder.escapeXml(CmsCommentsUtil.formatDate(m_date, m_locale, dateFormat));
     }
 
+    @SuppressWarnings("javadoc")
     public String getDateLongTimeLong() {
 
         return getDateTime(DateFormat.LONG, DateFormat.LONG);
     }
 
+    @SuppressWarnings("javadoc")
     public String getDateLongTimeShort() {
 
         return getDateTime(DateFormat.LONG, DateFormat.SHORT);
     }
 
+    @SuppressWarnings("javadoc")
     public String getDateShortTimeLong() {
 
         return getDateTime(DateFormat.SHORT, DateFormat.LONG);
     }
 
+    @SuppressWarnings("javadoc")
     public String getDateShortTimeShort() {
 
         return getDateTime(DateFormat.SHORT, DateFormat.SHORT);
     }
 
+    @SuppressWarnings("javadoc")
     public String getDateLong() {
 
         return getDate(DateFormat.LONG);
     }
 
+    @SuppressWarnings("javadoc")
     public String getDateShort() {
 
         return getDate(DateFormat.SHORT);
     }
 
+    /**
+     * Default format is rendered (date long, time short)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
     public String toString() {
 
         return getDateLongTimeShort();

@@ -81,6 +81,7 @@ public class CmsCommentForm extends CmsForm {
     private static final Log LOG = CmsLog.getLog(CmsCommentForm.class);
 
     /** Resource type ID of XML content. */
+    @SuppressWarnings("hiding")
     private static final String TYPE_NAME = "oampcomments";
 
     /** The form handler. */

@@ -33,18 +33,30 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * Thic class wraps a whole message bundle in a Map from message-keys to the messages as SecurableString.
+ * Using SecurableString facilitates to convert the messages to StringTemplates that can be filled with parameters.
+ * 
+ */
 public class CmsStringTemplateMessageBundleWrapper {
 
-    CmsMessages m_messages;
+    /** The messages read from the bundle */
+    private CmsMessages m_messages;
+    /** The cached message map after converting the bundle */
     Map<String, SecurableString> m_messageMap = null;
 
-    public CmsStringTemplateMessageBundleWrapper(String bundle, Locale locale) {
+    /**
+     * @param bundle The message bundle to wrap
+     * @param locale The locale to wrap
+     */
+    public CmsStringTemplateMessageBundleWrapper(final String bundle, final Locale locale) {
 
         m_messages = new CmsMessages(bundle, locale);
         createMessageMap();
 
     }
 
+    @SuppressWarnings("javadoc")
     private void createMessageMap() {
 
         m_messageMap = new HashMap<String, SecurableString>(m_messages.getResourceBundle().keySet().size());
@@ -53,12 +65,20 @@ public class CmsStringTemplateMessageBundleWrapper {
         }
     }
 
-    private SecurableString getTransformedMessage(String key) {
+    @SuppressWarnings("javadoc")
+    private SecurableString getTransformedMessage(final String key) {
 
         String message = m_messages.key(key);
         return transformMessageToStringOrStringTemplate(message);
     }
 
+    /**
+     * Here possible parameters {0}, {1}, ... get converted to $p0$, $p1$, ...
+     * This allows to insert the parameters via the StringTemplate engine.
+     * 
+     * @param message The message to convert
+     * @return the converted message
+     */
     private SecurableString transformMessageToStringOrStringTemplate(final String message) {
 
         String regexParameterPlaceHolderMessage = "\\{([0-9]+)\\}";
@@ -67,6 +87,9 @@ public class CmsStringTemplateMessageBundleWrapper {
         return new SecurableString(msg);
     }
 
+    /**
+     * @return The messages map created from the bundle.
+     */
     public Map<String, SecurableString> getMessageMap() {
 
         return m_messageMap;

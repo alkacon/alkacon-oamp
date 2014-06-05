@@ -31,30 +31,55 @@ import org.opencms.i18n.CmsEncoder;
 
 import org.antlr.stringtemplate.StringTemplate;
 
+/**
+ * A String wrapper that is useful in StringTemplates.
+ * 
+ * It allows to 
+ *   - Escape XML
+ *   - Secure HTML by escaping HTML with "dangerous" tags
+ *   - Render a String as a StringTemplate
+ *   
+ * Note that escaping and securing Strings can be combined with other operations.
+ */
 public class SecurableString {
 
-    String m_string;
+    @SuppressWarnings("javadoc")
+    private String m_string;
 
-    public SecurableString(String string) {
+    /**
+     * @param string The String to wrap
+     */
+    public SecurableString(final String string) {
 
         m_string = string;
     }
 
+    /**
+     * Get the string unwrapped.
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
     public String toString() {
 
         return m_string;
     }
 
+    /**
+     * @return The wrapped String converted to a StringTemplate
+     */
     public StringTemplate getStringTemplate() {
 
         return new StringTemplate(m_string);
     }
 
+    @SuppressWarnings("javadoc")
     public SecurableString getEscapeXml() {
 
         return new SecurableString(CmsEncoder.escapeXml(m_string));
     }
 
+    @SuppressWarnings("javadoc")
     public SecurableString getSecureContent() {
 
         return new SecurableString(CmsCommentsUtil.secureContent(m_string));

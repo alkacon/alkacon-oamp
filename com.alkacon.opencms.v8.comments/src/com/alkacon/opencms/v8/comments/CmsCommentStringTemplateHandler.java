@@ -60,6 +60,7 @@ public class CmsCommentStringTemplateHandler {
 
     /** just for private use, set in constructor */
     CmsCommentsAccess m_access;
+    /** Wraps a message bundle. Securable Strings are used because they can be escaped, secured and rendered as StringTemplate */
     Map<String, SecurableString> m_messages;
 
     /** Stringtemplate group read from the configured file */
@@ -520,7 +521,13 @@ public class CmsCommentStringTemplateHandler {
         return sTemplate.toString();
     }
 
-    private Map<String, SecurableString> getWithSecurableStringsAsValues(Map<String, String> fields) {
+    /**
+     * Converts the values to SecurableStrings for use in StringTemplates.
+     * 
+     * @param fields Map with the values that should be secured
+     * @return map with the secured values
+     */
+    private Map<String, SecurableString> getWithSecurableStringsAsValues(final Map<String, String> fields) {
 
         Map<String, SecurableString> result = new HashMap<String, SecurableString>(fields.size());
         for (String key : fields.keySet()) {

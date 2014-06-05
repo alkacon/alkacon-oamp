@@ -15,7 +15,7 @@
 			<xsd:element name="Title" type="OpenCmsString" />
 			<xsd:element name="FormId" type="OpenCmsString" />
 			<xsd:element name="MaxNumber" type="OpenCmsString" minOccurs="0" />
-			<xsd:element name="Fields" type="OpenCmsString" />
+			<xsd:element name="Fields" type="OpenCmsString" minOccurs="0" />
 		</xsd:sequence>
 		<xsd:attribute name="language" type="OpenCmsLocale" use="required"/>
 	</xsd:complexType>
@@ -30,19 +30,7 @@
 			<defaults>
 				<default element="Title" value="Add a new title here" />
 				<default element="FormId" value="__oamp-comment__" />
-				<default element="Fields" value="name" />
 			</defaults>
-			<layouts>
-				<layout element="Fields" widget="MultiSelectWidget" 
-						configuration="value='creationdate' option='%(key.AlkaconV8LastCommentsList.creationdate)'
-									  |value='username' option='%(key.AlkaconV8LastCommentsList.username)'
-									  |value='comment' option='%(key.AlkaconV8LastCommentsList.comment)'
-									  |value='email' option='%(key.AlkaconV8LastCommentsList.email)'
-									  |value='ipaddress' option='%(key.AlkaconV8LastCommentsList.ipaddress)'
-									  |value='locale' option='%(key.AlkaconV8LastCommentsList.locale)'
-									  |value='name' option='%(key.AlkaconV8LastCommentsList.name)' default='true'
-									  |value='subject' option='%(key.AlkaconV8LastCommentsList.subject)'" />
-			</layouts>
 			<validationrules>
 				<rule element="MaxNumber" regex="\d{1,4}" type="error" message="%(key.AlkaconV8LastCommentsList.MaxNumber.error) (%(validation.path))" />
 			</validationrules>

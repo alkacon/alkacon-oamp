@@ -63,7 +63,7 @@ public final class CmsCommentsUtil {
      * @param locale The locale to format the date in
      * @param dateFormat Format of the date, e.g., DateFormat.LONG 
      * @param timeFormat Format of the time, e.g., DateFormat.SHORT
-     * @return The formatted date
+     * @return The formatted date and time
      */
     public static final String formatDateTime(
         final long longDate,
@@ -81,6 +81,12 @@ public final class CmsCommentsUtil {
         return buf.toString();
     }
 
+    /**
+     * @param longDate Date as long
+     * @param locale The locale to format the date in
+     * @param dateFormat Format of the date, e.g., DateFormat.LONG 
+     * @return The formatted date
+     */
     public static final String formatDate(final long longDate, final Locale locale, final int dateFormat) {
 
         Date date = new Date(longDate);
