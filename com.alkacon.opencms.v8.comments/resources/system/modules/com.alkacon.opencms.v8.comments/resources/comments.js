@@ -300,7 +300,7 @@ $(function() {
                     if (getValueOfNameValueArray(formdata,"cmtparentid") == "null") {
                         reloadComments(data.cmtstate);
                     } else {
-                        paginationCallback(pagination.current-1,true);
+                        paginationCallback(pagination.current,true);
                     }
                }
               );
@@ -372,10 +372,11 @@ $(function() {
             cmtPost();
         })  
         $("body").on("click",".cmtLoadComments", function() {
-            var elem = $("div.cmtHeader");
-            elem.attr("id", "comments");
-            elem.removeClass("cmtHeader");
-            reloadComments();
+            $('#commentbox').load(link.list,data,
+                function () {
+                $('#comments').load(link.innerlist,data,pagination.update);
+                }
+            );
         })  
     });
 });
