@@ -282,6 +282,7 @@ public class CmsLastCommentStringTemplateHandler extends CmsJspActionElement {
     public String buildLastCommentsNoEntryHtml() {
 
         StringTemplate sTemplate = getOutputTemplate("last_comments_no_entry");
+        sTemplate.setAttribute("messages", getMessages());
         return sTemplate.toString();
     }
 }

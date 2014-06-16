@@ -1,5 +1,10 @@
 group last-comment;
 
+/* Displays the frame of the comments list.
+ * The arguments are:
+ *   title: the title element node of the "Last Comments" content
+ *   entries: the already rendered HTML for the entries of the list
+ */
 last_comments_list(title,entries) ::= <<
 	<div id="lastcommentbox" class="commentbox">
 		<div class="headline cmtLastCommentsHeader">
@@ -11,6 +16,16 @@ last_comments_list(title,entries) ::= <<
 	</div>
 >>
 
+/* Displays a single comment in the list of last comments.
+ * The arguments are:
+ *    boxColor: The element setting for the color
+ *    commentFields: fields of the comment to display
+ *    commentCreationDate: creation date of the comment do display
+ *    commentPageLink: link to the page where the comment was posted
+ *    commentPageTitle: title property of the page where the comment was posted
+ *    fieldsToShow: list of fields that should be displayed where each entry present is mapped to true
+ *    messages: the configured resource bundle
+ */
 last_comments_entry(boxColor,commentFields,commentCreationDate,commentPageLink,commentPageTitle,fieldsToShow,messages) ::= <<
 	<div class="panel $colorClassLastComments(boxColor)$">											
 		<div class="panel-heading cmtCommentEntry">
@@ -20,11 +35,17 @@ last_comments_entry(boxColor,commentFields,commentCreationDate,commentPageLink,c
 	</div>
 >>
 
-last_comments_no_entry(message) ::= <<
+/* Displayed inside the list if no comments are present 
+ * The arguments are:
+ *   messages: the configured resource bundle
+ */
+last_comments_no_entry(messages) ::= <<
 	<div>
-		$message$
+		$messages.("commentlist.nocomment")$
 	</div>
 >>
+
+/** All remaining templates are just subtemplates of the above templates. They need not to be present. */
 
 colorClassLastComments(boxColor) ::= <<
 	panel-$boxColor$
