@@ -27,7 +27,6 @@
 
 package com.alkacon.opencms.v8.comments.util;
 
-import org.opencms.i18n.CmsEncoder;
 import org.opencms.util.CmsHtmlStripper;
 import org.opencms.workplace.CmsWorkplace;
 
@@ -115,7 +114,7 @@ public final class CmsCommentsUtil {
                 result = "Content was removed because of invalid format.";
             }
         }
-        return CmsEncoder.escapeXml(result);
+        return result;
     }
 
 }
