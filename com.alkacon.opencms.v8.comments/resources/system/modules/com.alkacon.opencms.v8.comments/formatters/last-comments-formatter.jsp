@@ -6,13 +6,13 @@
 <%-- get the stringtemplate Handler --%>
 <%	CmsLastCommentStringTemplateHandler templateHandler = new CmsLastCommentStringTemplateHandler();
 	templateHandler.init(pageContext,request,response);
-	templateHandler.setResourceBundle((String) pageContext.getAttribute("bundle"));
 	String entries = "";
 	String bundle = templateHandler.getResourceBundle();
 	pageContext.setAttribute("bundle", bundle);
 %>
 <cms:bundle basename="${bundle}">
 	<cms:formatter var="content">
+	  <div>
 			<c:choose>
 				<c:when test="${cms.element.inMemoryOnly}"><fmt:message key="commentlist.memoryonly" /></c:when>
 				<c:otherwise>
@@ -61,5 +61,6 @@
 					</jsp:useBean>						
 				</c:otherwise>
 			</c:choose>
+	  </div>
 	</cms:formatter>
 </cms:bundle>
