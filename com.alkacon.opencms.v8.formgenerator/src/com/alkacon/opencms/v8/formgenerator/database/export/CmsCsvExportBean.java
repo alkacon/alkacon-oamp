@@ -430,9 +430,7 @@ public class CmsCsvExportBean {
                                     m_cms,
                                     pageResource);
                                 if (xmlContainerPage != null) {
-                                    CmsContainerPageBean containerPage = xmlContainerPage.getContainerPage(
-                                        m_cms,
-                                        m_locale);
+                                    CmsContainerPageBean containerPage = xmlContainerPage.getContainerPage(m_cms);
                                     if (containerPage != null) {
                                         Iterator<CmsContainerElementBean> pageElements = containerPage.getElements().iterator();
                                         while (pageElements.hasNext()) {
