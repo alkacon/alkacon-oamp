@@ -22,7 +22,9 @@
 		<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
 		<userinstalled/>
 		<dateinstalled/>
-		<dependencies/>
+		<dependencies>
+			<dependency name="com.alkacon.opencms.v8.commons" version="1.0.0"/>
+		</dependencies>
 		<exportpoints>
 			<exportpoint uri="/system/modules/com.alkacon.opencms.v8.formgenerator/classes/" destination="WEB-INF/classes/"/>
 			<exportpoint uri="/system/modules/com.alkacon.opencms.v8.formgenerator/lib/" destination="WEB-INF/lib/"/>
