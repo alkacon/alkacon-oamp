@@ -2,9 +2,9 @@
 
 	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
 
-	<xsd:element name="OptionalAlkaconV8WebFormRelease" type="OpenCmsOptionalAlkaconV8WebFormRelease"/>
+	<xsd:element name="OptionalAlkaconV8WebFormReleases" type="OpenCmsOptionalAlkaconV8WebFormReleases"/>
 
-	<xsd:complexType name="OpenCmsOptionalAlkaconV8WebFormRelease">
+	<xsd:complexType name="OpenCmsOptionalAlkaconV8WebFormReleases">
 		<xsd:sequence>
 			<xsd:element name="OptionalAlkaconV8WebFormRelease" type="OpenCmsOptionalAlkaconV8WebFormRelease" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
