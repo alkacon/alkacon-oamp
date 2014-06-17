@@ -32,6 +32,7 @@
 
 package com.alkacon.opencms.v8.formgenerator;
 
+import com.alkacon.opencms.v8.commons.CmsStringCrypter;
 import com.alkacon.opencms.v8.formgenerator.database.CmsFormDataAccess;
 import com.alkacon.opencms.v8.formgenerator.database.CmsFormDatabaseFilter;
 
@@ -158,6 +159,9 @@ public class CmsFormHandler extends CmsJspActionElement {
 
     /** Request parameter uri for the page parameter. */
     public static final String PARAM_URI = "uri";
+
+    /** Prefix for encrypted String values. */
+    public static final String PREFIX_ENCRYPTED = "encrypted:";
 
     /** The log object for this class. */
     private static final Log LOG = CmsLog.getLog(CmsFormHandler.class);
@@ -1196,6 +1200,12 @@ public class CmsFormHandler extends CmsJspActionElement {
                     && !((field instanceof CmsDisplayField) || (field instanceof CmsHiddenDisplayField))) {
                     fValue = data.getFieldStringValueByName(field.getName());
                 }
+                if (field instanceof CmsDynamicField) {
+                    if (fValue.startsWith(PREFIX_ENCRYPTED)) {
+                        fValue = fValue.substring(PREFIX_ENCRYPTED.length());
+                        fValue = CmsStringCrypter.decrypt(fValue);
+                    }
+                }
                 if (field instanceof CmsFileUploadField) {
                     if (CmsStringUtil.isEmptyOrWhitespaceOnly(fValue)) {
                         // try to read upload item from session attribute
@@ -1865,6 +1875,7 @@ public class CmsFormHandler extends CmsJspActionElement {
      *  
      * @throws Exception if creating the form configuration objects fails
      */
+    @SuppressWarnings("unchecked")
     protected void configureForm(HttpServletRequest req, String formConfigUri, Map<String, String> dynamicConfig)
     throws Exception {
 
@@ -2059,7 +2070,7 @@ public class CmsFormHandler extends CmsJspActionElement {
                         theMail.setFrom(m_macroResolver.resolveMacros(getFormConfiguration().getMailFrom()));
                     }
                 }
-                theMail.setTo(createInternetAddresses(getFormConfiguration().getMailTo()));
+                theMail.setTo(createInternetAddresses(m_macroResolver.resolveMacros(getFormConfiguration().getMailTo())));
                 List<InternetAddress> ccRec = createInternetAddresses(m_macroResolver.resolveMacros(getFormConfiguration().getMailCC()));
                 if (ccRec.size() > 0) {
                     theMail.setCc(ccRec);
@@ -2106,7 +2117,7 @@ public class CmsFormHandler extends CmsJspActionElement {
                         theMail.setFrom(m_macroResolver.resolveMacros(getFormConfiguration().getMailFrom()));
                     }
                 }
-                theMail.setTo(createInternetAddresses(getFormConfiguration().getMailTo()));
+                theMail.setTo(createInternetAddresses(m_macroResolver.resolveMacros(getFormConfiguration().getMailTo())));
                 List<InternetAddress> ccRec = createInternetAddresses(m_macroResolver.resolveMacros(getFormConfiguration().getMailCC()));
                 if (ccRec.size() > 0) {
                     theMail.setCc(ccRec);
