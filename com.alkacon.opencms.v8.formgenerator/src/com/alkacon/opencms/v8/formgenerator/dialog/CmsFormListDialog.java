@@ -34,10 +34,17 @@ package com.alkacon.opencms.v8.formgenerator.dialog;
 
 import com.alkacon.opencms.v8.formgenerator.database.CmsFormDataAccess;
 import com.alkacon.opencms.v8.formgenerator.database.CmsFormDataBean;
+import com.alkacon.opencms.v8.formgenerator.database.CmsFormDatabaseFilter;
 
+import org.opencms.file.CmsResource;
+import org.opencms.file.CmsResourceFilter;
 import org.opencms.jsp.CmsJspActionElement;
+import org.opencms.main.CmsException;
 import org.opencms.main.CmsLog;
 import org.opencms.main.CmsRuntimeException;
+import org.opencms.main.OpenCms;
+import org.opencms.security.CmsPermissionSet;
+import org.opencms.security.CmsRole;
 import org.opencms.workplace.CmsDialog;
 import org.opencms.workplace.list.A_CmsListDialog;
 import org.opencms.workplace.list.CmsListColumnAlignEnum;
@@ -143,13 +150,17 @@ public class CmsFormListDialog extends A_CmsListDialog {
      * 
      * @see org.opencms.workplace.list.A_CmsListDialog#executeListSingleActions()
      */
+    @Override
     public void executeListSingleActions() throws CmsRuntimeException {
 
         if (LIST_ACTION_DELETE.equals(getParamListAction())) {
             try {
-                List entries = CmsFormDataAccess.getInstance().readForms(getSelectedItem().getId(), 0, Long.MAX_VALUE);
-                for (Iterator i = entries.iterator(); i.hasNext();) {
-                    CmsFormDataBean entry = (CmsFormDataBean)i.next();
+                List<CmsFormDataBean> entries = CmsFormDataAccess.getInstance().readForms(
+                    getSelectedItem().getId(),
+                    0,
+                    Long.MAX_VALUE);
+                for (Iterator<CmsFormDataBean> i = entries.iterator(); i.hasNext();) {
+                    CmsFormDataBean entry = i.next();
                     CmsFormDataAccess.getInstance().deleteForm(entry.getEntryId());
                 }
             } catch (Exception e) {
@@ -160,12 +171,12 @@ public class CmsFormListDialog extends A_CmsListDialog {
         } else if (LIST_ACTION_SHOW.equals(getParamListAction()) || LIST_ACTION_NAME.equals(getParamListAction())) {
             // add is clicked
             try {
-                Map params = new HashMap();
+                Map<String, String[]> params = new HashMap<String, String[]>();
 
                 // set style to display report in correct layout
-                params.put(PARAM_STYLE, CmsToolDialog.STYLE_NEW);
-                params.put(PARAM_FORM_ID, getSelectedItem().getId());
-                params.put(CmsDialog.PARAM_ACTION, CmsDialog.DIALOG_INITIAL);
+                params.put(PARAM_STYLE, new String[] {CmsToolDialog.STYLE_NEW});
+                params.put(PARAM_FORM_ID, new String[] {getSelectedItem().getId()});
+                params.put(CmsDialog.PARAM_ACTION, new String[] {CmsDialog.DIALOG_INITIAL});
 
                 // redirect to the report output JSP
                 getToolManager().jspForwardTool(this, getCurrentToolPath() + WORKPLACE_PATH_FORM, params);
@@ -195,20 +206,35 @@ public class CmsFormListDialog extends A_CmsListDialog {
      * @see org.opencms.workplace.list.A_CmsListDialog#getListItems()
      */
     @Override
-    protected List getListItems() {
+    protected List<CmsListItem> getListItems() {
 
         List<CmsListItem> result = new ArrayList<CmsListItem>();
         try {
             // read all form names
             CmsListMetadata meta = getList().getMetadata();
-            Iterator it = CmsFormDataAccess.getInstance().countForms().entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry entry = (Map.Entry)it.next();
-                String name = (String)entry.getKey();
-                CmsListItem item = new CmsListItem(meta, name);
-                item.set(LIST_COLUMN_FORM_NAME, name);
-                item.set(LIST_COLUMN_FORM_COUNT, entry.getValue());
-                result.add(item);
+            for (Map.Entry<String, Integer> entry : CmsFormDataAccess.getInstance().countForms().entrySet()) {
+                String name = entry.getKey();
+                List<CmsFormDataBean> forms = CmsFormDataAccess.getInstance().readForms(
+                    CmsFormDatabaseFilter.HEADERS.filterFormId(name));
+                if (!forms.isEmpty()) {
+                    try {
+                        CmsResource formRes = getCms().readResource(forms.get(0).getResourceId(), CmsResourceFilter.ALL);
+                        boolean editable = OpenCms.getRoleManager().hasRole(getCms(), CmsRole.DATABASE_MANAGER)
+                            || getCms().hasPermissions(
+                                formRes,
+                                CmsPermissionSet.ACCESS_WRITE,
+                                false,
+                                CmsResourceFilter.ALL);
+                        if (editable) {
+                            CmsListItem item = new CmsListItem(meta, name);
+                            item.set(LIST_COLUMN_FORM_NAME, name);
+                            item.set(LIST_COLUMN_FORM_COUNT, entry.getValue());
+                            result.add(item);
+                        }
+                    } catch (CmsException e) {
+                        LOG.error(e);
+                    }
+                }
             }
         } catch (Throwable e) {
             if (LOG.isErrorEnabled()) {
