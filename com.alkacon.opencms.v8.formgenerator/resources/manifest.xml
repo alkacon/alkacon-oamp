@@ -4130,6 +4130,26 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<source>system/modules/com.alkacon.opencms.v8.formgenerator/schemas/form_legacy.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.v8.formgenerator/schemas/form_legacy.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>f0b9dbdb-f622-11e3-b795-c9a60a7588dd</uuidstructure>
+			<uuidresource>f0b9dbdc-f622-11e3-b795-c9a60a7588dd</uuidresource>
+			<datelastmodified>Tue, 17 Jun 2014 13:26:44 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 17 Jun 2014 13:26:07 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Backwards compatible version of the webform content that fits with none-v8 forms]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>		
+		<file>
 			<source>system/modules/com.alkacon.opencms.v8.formgenerator/schemas/formdatatarget.xsd</source>
 			<destination>system/modules/com.alkacon.opencms.v8.formgenerator/schemas/formdatatarget.xsd</destination>
 			<type>plain</type>
@@ -4369,6 +4389,26 @@
 			<relations/>
 			<accesscontrol/>
 		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.v8.formgenerator/schemas/report_legacy.xsd</source>
+			<destination>system/modules/com.alkacon.opencms.v8.formgenerator/schemas/report_legacy.xsd</destination>
+			<type>plain</type>
+			<uuidstructure>1488ba9e-f623-11e3-b795-c9a60a7588dd</uuidstructure>
+			<uuidresource>1488ba9f-f623-11e3-b795-c9a60a7588dd</uuidresource>
+			<datelastmodified>Tue, 17 Jun 2014 13:27:13 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Tue, 17 Jun 2014 13:27:08 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Backwards compatible version of the webform report content that fits with none-v8 forms]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>		
 		<file>
 			<destination>system/workplace</destination>
 			<type>folder</type>
