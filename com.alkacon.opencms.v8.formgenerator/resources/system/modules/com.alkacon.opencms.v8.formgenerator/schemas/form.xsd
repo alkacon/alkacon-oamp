@@ -90,6 +90,7 @@
 				<tab element="FormCaptcha" name="Tab.FormConfig" collapse="false" />
 				<tab element="OptionalConfirmationMail" name="Tab.ConfirmationMail" collapse="true" />		
 			</tabs>
+			<searchsettings containerPageOnly="true" />
 			<settings>
 				<setting name="boxschema" nice-name="Box Schema" type="string" widget="select" widget-config="box_schema1:Schema 1|box_schema2:Schema 2|box_schema3:Schema 3" />
 			</settings>

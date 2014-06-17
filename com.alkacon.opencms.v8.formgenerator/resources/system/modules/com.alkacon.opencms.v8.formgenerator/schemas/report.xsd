@@ -64,6 +64,7 @@
 				<tab element="Title" name="Tab.General" collapse="false" />
 				<tab element="ShowMenu" name="Tab.Layout" collapse="false" />
 			</tabs>				
+			<searchsettings containerPageOnly="true" />			
 		</xsd:appinfo>
 	</xsd:annotation>  
 	
