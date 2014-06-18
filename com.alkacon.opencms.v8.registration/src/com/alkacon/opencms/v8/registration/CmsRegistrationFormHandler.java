@@ -404,7 +404,7 @@ public class CmsRegistrationFormHandler extends CmsFormHandler {
         } else {
             req.getSession().removeAttribute(ATTRIBUTE_FILEITEMS);
         }
-        String formAction = getParameter(PARAM_FORMACTION);
+        String formAction = getRequest().getParameter(PARAM_FORMACTION);
         m_isValidatedCorrect = null;
         setInitial(CmsStringUtil.isEmpty(formAction));
         // get the localized messages

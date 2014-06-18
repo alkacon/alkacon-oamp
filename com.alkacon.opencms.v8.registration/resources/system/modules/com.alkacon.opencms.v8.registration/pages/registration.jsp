@@ -21,15 +21,13 @@
 		// initialize the form handler
 		regForm = (CmsRegistrationFormHandler)CmsFormHandlerFactory.create(pageContext, request, response, CmsRegistrationFormHandler.class.getName(), (String)pageContext.getAttribute("uri"));
 		%>
+		<cms:formatter var="content" val="value">
+			<div>
+				<%
+				regForm.createForm();
+				%>
+			</div>
+		</cms:formatter>
 	</c:otherwise>
 </c:choose>
-
-
-<cms:formatter var="content" val="value">
-	<div>
-		<%
-		regForm.createForm();
-		%>
-	</div>
-</cms:formatter>
 
