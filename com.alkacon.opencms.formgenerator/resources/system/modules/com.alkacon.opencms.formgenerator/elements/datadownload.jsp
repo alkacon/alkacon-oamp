@@ -2,7 +2,9 @@
 WARNING: Do not auto - reformat! In case of data download a linebreak will cause: 
 "java.lang.IllegalStateException: getOutputStream() has already been called for this response".
 --%><%@page buffer="none" session="false" import="org.apache.commons.logging.*,java.io.OutputStreamWriter,org.opencms.module.CmsModule,org.opencms.i18n.*,com.alkacon.opencms.formgenerator.database.export.*,org.opencms.flex.CmsFlexController,com.alkacon.opencms.formgenerator.*,java.util.*,org.opencms.file.*,org.opencms.util.*,org.opencms.widgets.*,org.opencms.main.*,org.antlr.stringtemplate.*"%><%--
---%><%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms"%><%!private static final Log LOG = CmsLog.getLog(CmsCsvExportBean.class);%>
+--%><%@ taglib prefix="cms" uri="http://www.opencms.org/taglib/cms"%><%! 
+private static final Log LOG = CmsLog.getLog(CmsCvsExportBean.class);
+%>
 <%
     String formUri = null;
 %>
@@ -20,10 +22,10 @@ WARNING: Do not auto - reformat! In case of data download a linebreak will cause
     if(paramMap.containsKey(cms.PARAM_URI)) {
         String[] paramValue = (String[])paramMap.get(cms.PARAM_URI);
         if ((paramValue != null) && (paramValue.length > 0)) {
-    formUri = paramValue[0];
+            formUri = paramValue[0];
         }
         else{
-    formUri = cms.getRequestContext().getUri();   
+            formUri = cms.getRequestContext().getUri();   
         }
         cms.init(pageContext, request, response, formUri);
     }
@@ -44,22 +46,22 @@ WARNING: Do not auto - reformat! In case of data download a linebreak will cause
     // get the configured form elements
     CmsForm form = cms.getFormConfiguration();
     if (cms.downloadData()) {
-    	CmsCsvExportBean exportBean = new CmsCsvExportBean(cms);
+    	CmsCvsExportBean exportBean = new CmsCvsExportBean(cms);
 
         // Preparing the date values for the export bean: 
         Date startDate;
         Date endDate;
-        String startDateStr = request.getParameter(CmsCsvExportBean.PARAM_EXPORT_DATA_TIME_START);
-        String endDateStr = request.getParameter(CmsCsvExportBean.PARAM_EXPORT_DATA_TIME_END);
+        String startDateStr = request.getParameter(CmsCvsExportBean.PARAM_EXPORT_DATA_TIME_START);
+        String endDateStr = request.getParameter(CmsCvsExportBean.PARAM_EXPORT_DATA_TIME_END);
         if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(startDateStr)) {
-    long startDateLong = CmsCalendarWidget.getCalendarDate(calendarMessages, startDateStr, true);
-    startDate = new Date(startDateLong);
-    exportBean.setStartTime(startDate);
+            long startDateLong = CmsCalendarWidget.getCalendarDate(calendarMessages, startDateStr, true);
+            startDate = new Date(startDateLong);
+            exportBean.setStartTime(startDate);
         }
         if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(endDateStr)) {
-    long endDateLong = CmsCalendarWidget.getCalendarDate(calendarMessages, endDateStr, true);
-    endDate = new Date(endDateLong);
-    exportBean.setEndTime(endDate);
+            long endDateLong = CmsCalendarWidget.getCalendarDate(calendarMessages, endDateStr, true);
+            endDate = new Date(endDateLong);
+            exportBean.setEndTime(endDate);
         }
 
         CmsFlexController controller = CmsFlexController.getController(request);
@@ -71,21 +73,21 @@ WARNING: Do not auto - reformat! In case of data download a linebreak will cause
         ServletOutputStream output = null;
         OutputStreamWriter writer = null;
         try {	
-    output = res.getOutputStream();
-    CmsModule webformModule = OpenCms.getModuleManager().getModule(CmsForm.MODULE_NAME);
-    String encoding = webformModule.getParameter(CmsForm.MODULE_PARAM_EXPORTENCODING);
-    if(CmsStringUtil.isEmptyOrWhitespaceOnly(encoding)) {
-        encoding = OpenCms.getSystemInfo().getDefaultEncoding();
-    }
-    writer = new OutputStreamWriter(output, encoding);
-    writer.write(exportBean.exportData());
+            output = res.getOutputStream();
+            CmsModule webformModule = OpenCms.getModuleManager().getModule(CmsForm.MODULE_NAME);
+            String encoding = webformModule.getParameter(CmsForm.MODULE_PARAM_EXPORTENCODING);
+            if(CmsStringUtil.isEmptyOrWhitespaceOnly(encoding)) {
+                encoding = OpenCms.getSystemInfo().getDefaultEncoding();
+            }
+            writer = new OutputStreamWriter(output, encoding);
+            writer.write(exportBean.exportData());
         } catch(RuntimeException f) { 
         	LOG.error("Error serving data.", f);
         	throw f;
         } finally {
           if (writer!= null) {
-    writer.flush();
-    writer.close();
+            writer.flush();
+            writer.close();
           }
         }
     }
@@ -104,14 +106,14 @@ WARNING: Do not auto - reformat! In case of data download a linebreak will cause
 	sTemplate.setAttribute("calendaralttext", messages.key("form.html.calendar.alttext"));
 	sTemplate.setAttribute("submitbutton", messages.key("form.button.submit"));
 	sTemplate.setAttribute("resetbutton", messages.key("form.button.reset"));
-%><%=org.opencms.widgets.CmsCalendarWidget.calendarIncludes(locale)%><%=sTemplate.toString()%>
+	%><%=org.opencms.widgets.CmsCalendarWidget.calendarIncludes(locale)%><%= sTemplate.toString() %>
 
  <script type="text/javascript">
   <!--	
 	Calendar.setup({
-		inputField     : CmsCsvExportBean.PARAM_EXPORT_DATA_TIME_START_START %>",
-		ifFormat       : calendarMessages.key(org.opencms.workplace.Messages.GUI_CALENDAR_DATE_FORMAT_0)RMAT_0" " + calendarMessages.key(org.opencms.workplace.Messages.GUI_CALENDAR_TIME_FORMAT_0)RMAT_0)%>",
-		button         : CmsCsvExportBean.PARAM_EXPORT_DATA_TIME_START_START %>.calendar",
+		inputField     :    "<%= CmsCvsExportBean.PARAM_EXPORT_DATA_TIME_START %>",
+		ifFormat       :    "<%=calendarMessages.key(org.opencms.workplace.Messages.GUI_CALENDAR_DATE_FORMAT_0)%> <%=" " + calendarMessages.key(org.opencms.workplace.Messages.GUI_CALENDAR_TIME_FORMAT_0)%>",
+		button         :    "<%= CmsCvsExportBean.PARAM_EXPORT_DATA_TIME_START %>.calendar",
 		align          :    "cR",
 		singleClick    :    false,
 		weekNumbers    :    false,
@@ -124,9 +126,9 @@ WARNING: Do not auto - reformat! In case of data download a linebreak will cause
   <script type="text/javascript">
   <!--
 	Calendar.setup({
-		inputField     : CmsCsvExportBean.PARAM_EXPORT_DATA_TIME_ENDME_END %>",
-		ifFormat       : calendarMessages.key(org.opencms.workplace.Messages.GUI_CALENDAR_DATE_FORMAT_0)RMAT_0" " + calendarMessages.key(org.opencms.workplace.Messages.GUI_CALENDAR_TIME_FORMAT_0)RMAT_0)%>",
-		button         : CmsCsvExportBean.PARAM_EXPORT_DATA_TIME_ENDME_END %>.calendar",
+		inputField     :    "<%= CmsCvsExportBean.PARAM_EXPORT_DATA_TIME_END %>",
+		ifFormat       :    "<%=calendarMessages.key(org.opencms.workplace.Messages.GUI_CALENDAR_DATE_FORMAT_0)%> <%=" " + calendarMessages.key(org.opencms.workplace.Messages.GUI_CALENDAR_TIME_FORMAT_0)%>",
+		button         :    "<%= CmsCvsExportBean.PARAM_EXPORT_DATA_TIME_END %>.calendar",
 		align          :    "cR",
 		singleClick    :    false,
 		weekNumbers    :    false,

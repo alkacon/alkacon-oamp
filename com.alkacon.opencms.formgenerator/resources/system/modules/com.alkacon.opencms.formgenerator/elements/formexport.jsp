@@ -9,14 +9,16 @@
 	org.opencms.util.*,
 	org.opencms.flex.CmsFlexController,
 	com.alkacon.opencms.formgenerator.dialog.*,
-	org.apache.commons.logging.*"%><%!private static final Log LOG = CmsLog.getLog(CmsCsvExportBean.class);%><%
-    CmsJspActionElement jsp = new CmsJspActionElement(pageContext, request, response);
+	org.apache.commons.logging.*"%><%! 
+private static final Log LOG = CmsLog.getLog(CmsCvsExportBean.class);
+%><%
+ 	CmsJspActionElement jsp = new CmsJspActionElement(pageContext, request, response);
 
 	// get the form id 
 	String formid=request.getParameter(CmsFormListDialog.PARAM_FORM_ID);
 	if(formid!=null)
 	{
-		CmsCsvExportBean exportBean = new CmsCsvExportBean(jsp.getCmsObject(),formid);
+		CmsCvsExportBean exportBean = new CmsCvsExportBean(jsp.getCmsObject());
 		exportBean.setEndTime(new Date(Long.MAX_VALUE));
 		exportBean.setStartTime(new Date(0));
 		
@@ -31,23 +33,24 @@
         ServletOutputStream output = null;
         OutputStreamWriter writer = null;
         try {	
-    output = res.getOutputStream();
-    CmsModule webformModule = OpenCms.getModuleManager().getModule(CmsForm.MODULE_NAME);
-    String encoding = webformModule.getParameter(CmsForm.MODULE_PARAM_EXPORTENCODING);
-    if(CmsStringUtil.isEmptyOrWhitespaceOnly(encoding)) {
-        encoding = OpenCms.getSystemInfo().getDefaultEncoding();
-    }
-    writer = new OutputStreamWriter(output, encoding);
-    writer.write(exportBean.exportData());
+            output = res.getOutputStream();
+            CmsModule webformModule = OpenCms.getModuleManager().getModule(CmsForm.MODULE_NAME);
+            String encoding = webformModule.getParameter(CmsForm.MODULE_PARAM_EXPORTENCODING);
+            if(CmsStringUtil.isEmptyOrWhitespaceOnly(encoding)) {
+                encoding = OpenCms.getSystemInfo().getDefaultEncoding();
+            }
+            writer = new OutputStreamWriter(output, encoding);
+            writer.write(exportBean.exportData(formid,request.getLocale()));
         } catch(RuntimeException f) { 
         	LOG.error("Error serving data.", f);
         	throw f;
         } finally {
           if (writer!= null) {
-    writer.flush();
-    writer.close();
+            writer.flush();
+            writer.close();
           }
         }
 		
 	}
+
 %>
