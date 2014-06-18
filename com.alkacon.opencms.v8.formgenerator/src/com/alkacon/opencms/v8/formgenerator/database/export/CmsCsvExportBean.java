@@ -227,15 +227,18 @@ public class CmsCsvExportBean {
         String csvDelimiter = getCsvDelimiter();
         List<String> columnNames = getColumnNames();
         Iterator<String> itColumns = columnNames.iterator();
+        boolean hasPrevious = false;
         while (itColumns.hasNext()) {
+            if (hasPrevious) {
+                csv.append(csvDelimiter);
+            } else {
+                hasPrevious = true;
+            }
             String columnName = itColumns.next();
             // skip empty columns (previous versions saved CmsEmptyField with empty values which will not be deleted):
             if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(columnName)) {
                 columnName = escapeExcelCsv(columnName);
                 csv.append(columnName);
-                if (itColumns.hasNext()) {
-                    csv.append(csvDelimiter);
-                }
             }
         }
         csv.append("\r\n");
@@ -267,41 +270,43 @@ public class CmsCsvExportBean {
             // c) developer errors,  hw /sw problems... 
             uuid = row.getResourceId();
             Iterator<String> itColumns = getColumnNames().iterator();
+            boolean hasPrevious = false; // useful to handle possible empty colum as last column.
             while (itColumns.hasNext()) {
                 String columnName = itColumns.next();
-                // handle default columns
-                if (columnName == DEFAULT_COLUMN_NAME_CREATION_DATE) {
-                    Date creationDate = new Date(row.getDateCreated());
-                    DateFormat dateTimeFormat = getDateTimeFormat();
-                    if (dateTimeFormat == null) {
-                        csv.append(creationDate);
-                    } else {
-                        csv.append(dateTimeFormat.format(creationDate));
-                    }
-                    //DateFormat.getDateTimeInstance();
-                    csv.append(getCsvDelimiter());
-                } else if (columnName == DEFAULT_COLUMN_NAME_RESOURCE_PATH) {
-                    try {
-                        path = m_cms.readResource(uuid).getRootPath();
-                    } catch (Exception e) {
-                        path = uuid.toString();
-                    }
-                    csv.append(path);
-                    csv.append(getCsvDelimiter());
-                } else if (columnName == DEFAULT_COLUMN_NAME_RESOURCE_UUID) {
-                    csv.append(String.valueOf(uuid));
-                    csv.append(getCsvDelimiter());
-                    //next: handle custom columns
-                } else if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(columnName)) {
-                    // skip empty columns (previous versions saved CmsEmptyField with empty values which will not be deleted):
-                    String value = row.getFieldValue(columnName);
-                    if (value != null) {
-                        value = transformLineSeparators(value);
-                        value = escapeExcelCsv(value);
-                        csv.append(value);
-                    }
-                    if (itColumns.hasNext()) {
+                // skip empty columns (previous versions saved CmsEmptyField with empty values which will not be deleted):
+                if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(columnName)) {
+                    // add column separator if previous column is present
+                    if (hasPrevious) {
                         csv.append(getCsvDelimiter());
+                    } else { // tell that this column will be the previous of the next column
+                        hasPrevious = true;
+                    }
+                    // handle default columns
+                    if (columnName.equals(DEFAULT_COLUMN_NAME_CREATION_DATE)) {
+                        Date creationDate = new Date(row.getDateCreated());
+                        DateFormat dateTimeFormat = getDateTimeFormat();
+                        if (dateTimeFormat == null) {
+                            csv.append(creationDate);
+                        } else {
+                            csv.append(dateTimeFormat.format(creationDate));
+                        }
+                    } else if (columnName.equals(DEFAULT_COLUMN_NAME_RESOURCE_PATH)) {
+                        try {
+                            path = m_cms.readResource(uuid).getRootPath();
+                        } catch (Exception e) {
+                            path = uuid.toString();
+                        }
+                        csv.append(path);
+                    } else if (columnName.equals(DEFAULT_COLUMN_NAME_RESOURCE_UUID)) {
+                        csv.append(String.valueOf(uuid));
+                        //next: handle custom columns
+                    } else {
+                        String value = row.getFieldValue(columnName);
+                        if (value != null) {
+                            value = transformLineSeparators(value);
+                            value = escapeExcelCsv(value);
+                            csv.append(value);
+                        }
                     }
                 }
             }
