@@ -71,6 +71,7 @@
 						<cms:param name="itemsPerPage" value="${thumbs.value['ItemsPerPage']}" />
 						<cms:param name="maxImageSize" value="${content.value['MaxImageSize']}" />
 						<cms:param name="albumid" value="${albumid}" />
+						<cms:param name="templateVariant" value="${cms.template.name}" />
 					</cms:include>
 				</div>
 			</div>
@@ -140,7 +141,8 @@
 				    			page: page,
 				    			itemsPerPage: '${thumbs.value['ItemsPerPage']}',
 				    			maxImageSize: '${content.value['MaxImageSize']}',
-				    			albumid: '${albumid}'
+				    			albumid: '${albumid}',
+				    			templateVariant: '${cms.template.name}'
 				    		}, function(){
 				    		    // initialize the colorbox for the new page
 				    		    $("a.imagelink_${albumid}").colorbox(colorboxConfig_${albumid});

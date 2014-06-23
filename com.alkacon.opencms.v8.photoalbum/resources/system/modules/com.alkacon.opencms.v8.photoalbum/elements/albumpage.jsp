@@ -8,6 +8,7 @@
 
 <c:set var="start" value="${((param.page-1) * param.itemsPerPage) + 1}" />
 <c:set var="end" value="${param.page * param.itemsPerPage}" />
+<c:set var="templatevariant" value="${param.templateVariant}" />
 
 <c:forEach items="${cms.readImages[param.vfsFolder]}" var="photo" varStatus="status"><%--
 
@@ -34,7 +35,7 @@
 						</cms:img>
 					</a>
 				</div>
-				
+
 				<%-- Title of the image --%>
 				<div style="text-align: ${param.alignTitle}">
 					<c:if test="${param.showTitle == 'true'}">

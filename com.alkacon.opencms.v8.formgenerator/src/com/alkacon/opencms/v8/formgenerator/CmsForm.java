@@ -3109,6 +3109,11 @@ public class CmsForm {
 
                 cms, inputFieldPath + NODE_FIELDDEFAULTVALUE, locale);
                 if (CmsStringUtil.isNotEmpty(fieldValue)) {
+                    CmsMacroResolver resolver = CmsMacroResolver.newInstance().setCmsObject(m_jspAction.getCmsObject());
+                    fieldValue = resolver.resolveMacros(fieldValue);
+                }
+
+                if (CmsStringUtil.isNotEmpty(fieldValue)) {
                     // get items from String 
                     boolean showInRow = false;
                     if (fieldValue.startsWith(MACRO_SHOW_ITEMS_IN_ROW)) {
