@@ -1,6 +1,9 @@
 apply plugin: 'java'
 apply plugin: 'maven'
 
+sourceCompatibility = java_target_version
+targetCompatibility = java_target_version
+
 buildDir = build_directory
 project.ext.currentDate=new Date().format('dd.MM.yy')
 project.ext.modulesDistsDir = file("${project.buildDir}/modulesZip")
