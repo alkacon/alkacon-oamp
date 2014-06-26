@@ -570,11 +570,11 @@ public class CmsForm {
     /** Flag to signal that data should be sent by email - defaults to true. */
     protected boolean m_transportEmail = true;
 
-    /** The forward mode. */
-    private boolean m_forwardMode;
-
     /** The optional csv export configuration (unparsed as string) */
     private String m_csvExportConfiguration;
+
+    /** The forward mode. */
+    private boolean m_forwardMode;
 
     /**
      * Default constructor which parses the configuration file.<p>
@@ -3142,6 +3142,10 @@ public class CmsForm {
 
                 cms, inputFieldPath + NODE_FIELDDEFAULTVALUE, locale);
                 if (CmsStringUtil.isNotEmpty(fieldValue)) {
+                    // substitute eventual macros
+                    CmsMacroResolver resolver = CmsMacroResolver.newInstance().setCmsObject(cms).setJspPageContext(
+                        jsp.getJspContext());
+                    fieldValue = resolver.resolveMacros(fieldValue);
                     // get items from String 
                     boolean showInRow = false;
                     if (fieldValue.startsWith(MACRO_SHOW_ITEMS_IN_ROW)) {
