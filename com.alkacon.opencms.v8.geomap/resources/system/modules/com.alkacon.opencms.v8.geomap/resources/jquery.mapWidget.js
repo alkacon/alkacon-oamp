@@ -113,17 +113,17 @@
          var /**AsocArray*/ opts = $.metadata ? $.extend({}, config, $container.metadata()) : config;
          
          // cache some controls
-         var /**jQuery*/ $base = $container.find('input[type=hidden]:first');
-         var /**jQuery*/ $lat = $container.find('input[type=text].map-lat');
-         var /**jQuery*/ $lng = $container.find('input[type=text].map-lng');
-         var /**jQuery*/ $address = $container.find('input[type=text].map-address');
-         var /**jQuery*/ $zoom = $container.find('input[type=text].map-zoom');
-         var /**jQuery*/ $width = $container.find('input[type=text].map-width');
-         var /**jQuery*/ $height = $container.find('input[type=text].map-height');
+         var /**jQuery*/ $base = $container.find('input:hidden:first');
+         var /**jQuery*/ $lat = $container.find('input:text.map-lat');
+         var /**jQuery*/ $lng = $container.find('input:text.map-lng');
+         var /**jQuery*/ $address = $container.find('input:text.map-address');
+         var /**jQuery*/ $zoom = $container.find('input:text.map-zoom');
+         var /**jQuery*/ $width = $container.find('input:text.map-width');
+         var /**jQuery*/ $height = $container.find('input:text.map-height');
          var /**jQuery*/ $type = $container.find('select.map-type');
          var /**jQuery*/ $map = $container.find('div.map-container');
-         var /**jQuery*/ $mode = $container.find('input[type=radio][name=mode]');
-         var /**jQuery*/ $allow = $container.find('input[type=checkbox].map-allow');
+         var /**jQuery*/ $mode = $container.find('input:radio[name=mode]');
+         var /**jQuery*/ $allow = $container.find('input:checkbox.map-allow');
          
          var /**Map*/ map = null;
          
@@ -392,7 +392,7 @@
          })).val('');
          
          // select the initial mode
-         $container.find('input[type=radio].map-mode-' + vals.mode).attr('checked', 'checked');
+         $container.find('input:radio.map-mode-' + vals.mode).attr('checked', 'checked');
          
          // ensure all controls of the same type have the same value
          $address.change(function() {
@@ -423,9 +423,9 @@
          // style check boxes
          $allow.AlkaconV8GeoMapToggleBar();
          // style input text boxes
-         $container.find('input[type=text]').AlkaconV8GeoMapInput();
+         $container.find('input:text').AlkaconV8GeoMapInput();
          // style radio buttons
-         $container.find('input[type=radio]').AlkaconV8GeoMapRadio();
+         $container.find('input:radio').AlkaconV8GeoMapRadio();
          
          // enable option panel expander
          $container.find('a.collapsible').AlkaconV8GeoMapCollapsible({
@@ -609,7 +609,7 @@
    /**
     * Plugin Defaults:
     *
-    * idPre : {String}  string to prefix all control ids, or false to use input[type=hidden]:first id
+    * idPre : {String}  string to prefix all control ids, or false to use input:hidden:first id
     * edit  : {Array}   the list of editable properties
     */
    $.fn.AlkaconV8GeoMapMap.defaults = {
@@ -624,7 +624,7 @@
    
    // install the widgets after loading
    $(document).ready(function() {
-      $('input[type=hidden].map-widget').each(function() {
+      $('input:hidden.map-widget').each(function() {
          $(this).parent('div').AlkaconV8GeoMapMap({
             idPre: this.id.replace(/[\._]/g, '-')
          });
