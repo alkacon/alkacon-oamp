@@ -99,6 +99,7 @@
 	<script type='text/javascript'>
      // colorbox configuration
      var colorboxConfig_${albumid} = {
+       rel: '.imagelink_${albumid}',
        close: '<fmt:message key="photoalbum.image.close" />',
        next: '<fmt:message key="photoalbum.image.next" />',
        previous: '<fmt:message key="photoalbum.image.prev" />',
@@ -113,7 +114,7 @@
      // execute on document ready
      $(document).ready(function(){
          // initialize the colorbox for this album
-     	$("a.imagelink_${albumid}").colorbox(colorboxConfig_${albumid});
+     	$(".imagelink_${albumid}").colorbox(colorboxConfig_${albumid});
          // initialize the pagination for this album
      	$("#pagination_${albumid}").pagination(${imageCount},
      	    {
