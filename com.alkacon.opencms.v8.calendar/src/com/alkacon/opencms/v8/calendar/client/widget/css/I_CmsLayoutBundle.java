@@ -27,7 +27,7 @@
 
 package com.alkacon.opencms.v8.calendar.client.widget.css;
 
-import com.alkacon.acacia.client.css.I_LayoutBundle.I_Widgets;
+import org.opencms.acacia.client.css.I_CmsLayoutBundle.I_Widgets;
 
 import com.google.gwt.core.client.GWT;
 

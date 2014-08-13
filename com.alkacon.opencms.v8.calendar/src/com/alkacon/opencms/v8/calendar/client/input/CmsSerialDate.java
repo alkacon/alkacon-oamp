@@ -267,9 +267,9 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
         setLowPanel();
 
         m_dateboxbegin.getTextField().getTextBoxContainer().addStyleName(
-            org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().calendarStyle());
+            org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().calendarStyle());
         m_dateboxend.getTextField().getTextBoxContainer().addStyleName(
-            org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().calendarStyle());
+            org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().calendarStyle());
 
         m_table.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDataTabel());
         m_table.insertRow(0);
@@ -301,7 +301,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
         m_table.setWidget(1, 2, m_patterPanel);
 
         for (int i = 0; i < m_arrayRadiobox.length; i++) {
-            m_arrayRadiobox[i].addStyleName(org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
+            m_arrayRadiobox[i].addStyleName(org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
             m_arrayRadiobox[i].addClickHandler(new ClickHandler() {
 
                 public void onClick(ClickEvent event) {
@@ -880,7 +880,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
         sel1.setGroup(m_groupDuration);
         sel1.setChecked(true);
         sel1.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDatelowPanelSelection());
-        sel1.addStyleName(org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
+        sel1.addStyleName(org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
         sel1.getElement().getStyle().setMarginLeft(13, Unit.PX);
         sel1.getElement().getStyle().setMarginTop(0, Unit.PX);
         sel1.addClickHandler(new ClickHandler() {
@@ -898,7 +898,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
         m_lowRadioButton[1] = sel2;
         sel2.setGroup(m_groupDuration);
         sel2.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDatelowPanelSelection());
-        sel2.addStyleName(org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
+        sel2.addStyleName(org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
         sel2.getElement().setAttribute("style", "clear:left");
         sel2.getElement().getStyle().setMarginLeft(13, Unit.PX);
         sel2.getElement().getStyle().setMarginTop(6, Unit.PX);
@@ -920,7 +920,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
         m_lowRadioButton[2] = sel3;
         sel3.setGroup(m_groupDuration);
         sel3.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDatelowPanelSelection());
-        sel3.addStyleName(org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
+        sel3.addStyleName(org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
         sel3.getElement().setAttribute("style", "clear:left");
         sel3.getElement().getStyle().setMarginLeft(13, Unit.PX);
         sel3.getElement().getStyle().setMarginTop(6, Unit.PX);
@@ -1079,7 +1079,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
         m_duration.getElement().getStyle().setMarginBottom(3, Unit.PX);
         m_duration.getOpener().setWidth("118px");
         m_duration.getOpener().setStyleName(
-            org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
+            org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
         m_duration.getSelectorPopup().addStyleName(I_CmsLayoutBundle.INSTANCE.globalWidgetCss().selectBoxPopup());
 
         m_duration.addOption("0", m_labels.get("GUI_SERIALDATE_DURATION_DURATION_SAMEDAY_0").isString().stringValue());

@@ -100,7 +100,7 @@ public class CmsPatternPanelMonthly extends FlowPanel implements HasValueChangeH
         m_radio[0] = sel1;
         sel1.setChecked(true);
         sel1.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateMonthSelection());
-        sel1.addStyleName(org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
+        sel1.addStyleName(org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
         createEverPanel();
         CmsRadioButton sel2 = new CmsRadioButton(
             "sel2",
@@ -108,7 +108,7 @@ public class CmsPatternPanelMonthly extends FlowPanel implements HasValueChangeH
         m_radio[1] = sel2;
         sel2.setGroup(m_group);
         sel2.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateMonthSelection());
-        sel2.addStyleName(org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
+        sel2.addStyleName(org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
         createAtPanel();
         this.add(sel1);
         this.add(m_everyPanel);
@@ -261,7 +261,7 @@ public class CmsPatternPanelMonthly extends FlowPanel implements HasValueChangeH
         m_atPanel.add(m_atNummer);
         m_atNummer.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxPanel());
         m_atNummer.getOpener().setStyleName(
-            org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
+            org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
         m_atNummer.getSelectorPopup().addStyleName(I_CmsLayoutBundle.INSTANCE.globalWidgetCss().selectBoxPopup());
         m_atNummer.addOption("1", m_labels.get("GUI_SERIALDATE_WEEKDAYNUMBER_1_0").isString().stringValue());
         m_atNummer.addOption("2", m_labels.get("GUI_SERIALDATE_WEEKDAYNUMBER_2_0").isString().stringValue());
@@ -273,7 +273,7 @@ public class CmsPatternPanelMonthly extends FlowPanel implements HasValueChangeH
         m_atPanel.add(m_atDay);
         m_atDay.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxPanel());
         m_atDay.getOpener().setStyleName(
-            org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
+            org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
         m_atDay.getSelectorPopup().addStyleName(I_CmsLayoutBundle.INSTANCE.globalWidgetCss().selectBoxPopup());
         m_atDay.addOption("1", m_labels.get("GUI_SERIALDATE_DAY_SUNDAY_0").isString().stringValue());
         m_atDay.addOption("2", m_labels.get("GUI_SERIALDATE_DAY_MONDAY_0").isString().stringValue());

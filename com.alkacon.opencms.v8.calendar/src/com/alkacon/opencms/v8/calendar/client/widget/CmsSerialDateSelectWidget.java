@@ -29,11 +29,11 @@ package com.alkacon.opencms.v8.calendar.client.widget;
 
 import com.alkacon.opencms.v8.calendar.shared.rpc.I_CmsSerialDateService;
 import com.alkacon.opencms.v8.calendar.shared.rpc.I_CmsSerialDateServiceAsync;
-import com.alkacon.vie.client.Entity;
 
+import org.opencms.acacia.client.widgets.CmsSelectWidget;
+import org.opencms.acacia.shared.CmsEntity;
 import org.opencms.ade.contenteditor.client.CmsContentEditor;
 import org.opencms.ade.contenteditor.client.I_CmsEntityChangeListener;
-import org.opencms.ade.contenteditor.client.widgets.CmsSelectWidget;
 import org.opencms.ade.contenteditor.shared.CmsContentDefinition;
 import org.opencms.gwt.client.CmsCoreProvider;
 import org.opencms.gwt.client.rpc.CmsRpcAction;
@@ -81,7 +81,7 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
         getNewValues(CmsContentDefinition.getValueForPath(CmsContentEditor.getEntity(), "Serialdate"));
         CmsContentEditor.addEntityChangeListener(new I_CmsEntityChangeListener() {
 
-            public void onEntityChange(Entity entity) {
+            public void onEntityChange(CmsEntity entity) {
 
                 getNewValues(CmsContentDefinition.getValueForPath(entity, "Serialdate"));
             }
@@ -109,7 +109,18 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
     }
 
     /**
-     * @see org.opencms.ade.contenteditor.client.widgets.CmsSelectWidget#setValue(java.lang.String, boolean)
+     * @see org.opencms.acacia.client.widgets.CmsSelectWidget#fireChangeEvent()
+     */
+    @Override
+    public void fireChangeEvent() {
+
+        m_value = m_selectBox.getFormValueAsString();
+        ValueChangeEvent.fire(this, m_selectBox.getFormValueAsString());
+
+    }
+
+    /**
+     * @see org.opencms.acacia.client.widgets.CmsSelectWidget#setValue(java.lang.String, boolean)
      */
     @Override
     public void setValue(String value, boolean fireEvents) {
@@ -121,17 +132,6 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
         }
         super.setValue(value, fireEvents);
         m_value = value;
-    }
-
-    /**
-     * @see org.opencms.ade.contenteditor.client.widgets.CmsSelectWidget#fireChangeEvent()
-     */
-    @Override
-    public void fireChangeEvent() {
-
-        m_value = m_selectBox.getFormValueAsString();
-        ValueChangeEvent.fire(this, m_selectBox.getFormValueAsString());
-
     }
 
     /**

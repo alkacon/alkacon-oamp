@@ -27,10 +27,9 @@
 
 package com.alkacon.opencms.v8.calendar.client.widget;
 
-import com.alkacon.acacia.client.widgets.FormWidgetWrapper;
-import com.alkacon.acacia.client.widgets.I_EditWidget;
-import com.alkacon.acacia.client.widgets.I_FormEditWidget;
-
+import org.opencms.acacia.client.widgets.CmsFormWidgetWrapper;
+import org.opencms.acacia.client.widgets.I_CmsEditWidget;
+import org.opencms.acacia.client.widgets.I_CmsFormEditWidget;
 import org.opencms.ade.contenteditor.widgetregistry.client.A_NativeWidgetFactory;
 
 import com.google.gwt.dom.client.Element;
@@ -41,17 +40,17 @@ import com.google.gwt.dom.client.Element;
 public class CmsSerialDateSelectWidgetFactory extends A_NativeWidgetFactory {
 
     /**
-     * @see com.alkacon.acacia.client.I_WidgetFactory#createFormWidget(java.lang.String)
+     * @see org.opencms.acacia.client.I_CmsWidgetFactory#createFormWidget(java.lang.String)
      */
-    public I_FormEditWidget createFormWidget(String configuration) {
+    public I_CmsFormEditWidget createFormWidget(String configuration) {
 
-        return new FormWidgetWrapper(new CmsSerialDateSelectWidget(configuration));
+        return new CmsFormWidgetWrapper(new CmsSerialDateSelectWidget(configuration));
     }
 
     /**
-     * @see com.alkacon.acacia.client.I_WidgetFactory#createInlineWidget(java.lang.String, com.google.gwt.dom.client.Element)
+     * @see org.opencms.acacia.client.I_CmsWidgetFactory#createInlineWidget(java.lang.String, com.google.gwt.dom.client.Element)
      */
-    public I_EditWidget createInlineWidget(String configuration, Element element) {
+    public I_CmsEditWidget createInlineWidget(String configuration, Element element) {
 
         return null;
     }

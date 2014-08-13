@@ -100,14 +100,14 @@ public class CmsPatternPanelYearly extends FlowPanel implements HasValueChangeHa
         sel1.setGroup(m_group);
         sel1.setChecked(true);
         sel1.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateYearSelection());
-        sel1.addStyleName(org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
+        sel1.addStyleName(org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
         createEverPanel();
         CmsRadioButton sel2 = new CmsRadioButton(
             "sel2",
             m_labels.get("GUI_SERIALDATE_YEARLY_AT_0").isString().stringValue());
         m_radio[1] = sel2;
         sel2.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateYearSelection());
-        sel2.addStyleName(org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
+        sel2.addStyleName(org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
         sel2.setGroup(m_group);
         createAtPanel();
         this.add(sel1);
@@ -263,7 +263,7 @@ public class CmsPatternPanelYearly extends FlowPanel implements HasValueChangeHa
         m_atPanel.add(m_atNummer);
         m_atNummer.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxPanel());
         m_atNummer.getOpener().setStyleName(
-            org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
+            org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
         m_atNummer.getSelectorPopup().addStyleName(I_CmsLayoutBundle.INSTANCE.globalWidgetCss().selectBoxPopup());
         m_atNummer.setWidth("80px");
         m_atNummer.addOption("1", m_labels.get("GUI_SERIALDATE_WEEKDAYNUMBER_1_0").isString().stringValue());
@@ -274,7 +274,7 @@ public class CmsPatternPanelYearly extends FlowPanel implements HasValueChangeHa
         m_atPanel.add(m_atDay);
         m_atDay.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxPanel());
         m_atDay.getOpener().setStyleName(
-            org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
+            org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
         m_atDay.getSelectorPopup().addStyleName(I_CmsLayoutBundle.INSTANCE.globalWidgetCss().selectBoxPopup());
         m_atDay.setWidth("100px");
         m_atDay.addOption("1", m_labels.get("GUI_SERIALDATE_DAY_SUNDAY_0").isString().stringValue());
@@ -289,7 +289,7 @@ public class CmsPatternPanelYearly extends FlowPanel implements HasValueChangeHa
         m_atPanel.add(m_atMonth);
         m_atMonth.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxPanel());
         m_atMonth.getOpener().setStyleName(
-            org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
+            org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
         m_everyMonth.getSelectorPopup().addStyleName(I_CmsLayoutBundle.INSTANCE.globalWidgetCss().selectBoxPopup());
         m_atMonth.setWidth("100px");
         m_atMonth.addOption("0", m_labels.get("GUI_SERIALDATE_YEARLY_JAN_0").isString().stringValue());
@@ -328,7 +328,7 @@ public class CmsPatternPanelYearly extends FlowPanel implements HasValueChangeHa
         m_everyPanel.add(m_everyMonth);
         m_everyMonth.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxPanel());
         m_everyMonth.getOpener().setStyleName(
-            org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
+            org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
         m_everyMonth.getSelectorPopup().addStyleName(I_CmsLayoutBundle.INSTANCE.globalWidgetCss().selectBoxPopup());
         m_everyMonth.setWidth("100px");
         m_everyMonth.addOption("0", m_labels.get("GUI_SERIALDATE_YEARLY_JAN_0").isString().stringValue());

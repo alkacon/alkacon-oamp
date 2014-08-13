@@ -27,10 +27,10 @@
 
 package com.alkacon.opencms.v8.calendar.client.widget;
 
-import com.alkacon.acacia.client.css.I_LayoutBundle;
-import com.alkacon.acacia.client.widgets.I_EditWidget;
 import com.alkacon.opencms.v8.calendar.client.input.CmsSerialDate;
 import com.alkacon.opencms.v8.calendar.client.widget.css.I_CmsLayoutBundle;
+
+import org.opencms.acacia.client.widgets.I_CmsEditWidget;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.FocusHandler;
@@ -45,7 +45,7 @@ import com.google.gwt.user.client.ui.Composite;
  * Provides a DHTML calendar widget, for use on a widget dialog.<p>
  * 
  * */
-public class CmsSerialDateWidget extends Composite implements I_EditWidget {
+public class CmsSerialDateWidget extends Composite implements I_CmsEditWidget {
 
     /** Value of the activation. */
     private boolean m_active = true;
@@ -117,7 +117,7 @@ public class CmsSerialDateWidget extends Composite implements I_EditWidget {
     }
 
     /**
-     * @see com.alkacon.acacia.client.widgets.I_EditWidget#isActive()
+     * @see org.opencms.acacia.client.widgets.I_CmsEditWidget#isActive()
      */
     public boolean isActive() {
 
@@ -125,7 +125,7 @@ public class CmsSerialDateWidget extends Composite implements I_EditWidget {
     }
 
     /**
-     * @see com.alkacon.acacia.client.widgets.I_EditWidget#onAttachWidget()
+     * @see org.opencms.acacia.client.widgets.I_CmsEditWidget#onAttachWidget()
      */
     public void onAttachWidget() {
 
@@ -133,7 +133,7 @@ public class CmsSerialDateWidget extends Composite implements I_EditWidget {
     }
 
     /**
-     * @see com.alkacon.acacia.client.widgets.I_EditWidget#owns(com.google.gwt.dom.client.Element)
+     * @see org.opencms.acacia.client.widgets.I_CmsEditWidget#owns(com.google.gwt.dom.client.Element)
      */
     public boolean owns(Element element) {
 
@@ -141,7 +141,7 @@ public class CmsSerialDateWidget extends Composite implements I_EditWidget {
     }
 
     /**
-     * @see com.alkacon.acacia.client.widgets.I_EditWidget#setActive(boolean)
+     * @see org.opencms.acacia.client.widgets.I_CmsEditWidget#setActive(boolean)
      */
     public void setActive(boolean active) {
 
@@ -151,10 +151,10 @@ public class CmsSerialDateWidget extends Composite implements I_EditWidget {
         m_active = active;
 
         if (m_active) {
-            getElement().removeClassName(I_LayoutBundle.INSTANCE.form().inActive());
+            getElement().removeClassName(org.opencms.acacia.client.css.I_CmsLayoutBundle.INSTANCE.form().inActive());
             getElement().focus();
         } else {
-            getElement().addClassName(I_LayoutBundle.INSTANCE.form().inActive());
+            getElement().addClassName(org.opencms.acacia.client.css.I_CmsLayoutBundle.INSTANCE.form().inActive());
             m_serialDate.clearFealds();
         }
         m_serialDate.setActive(m_active);
@@ -164,7 +164,7 @@ public class CmsSerialDateWidget extends Composite implements I_EditWidget {
     }
 
     /**
-     * @see com.alkacon.acacia.client.widgets.I_EditWidget#setName(java.lang.String)
+     * @see org.opencms.acacia.client.widgets.I_CmsEditWidget#setName(java.lang.String)
      */
     public void setName(String name) {
 
