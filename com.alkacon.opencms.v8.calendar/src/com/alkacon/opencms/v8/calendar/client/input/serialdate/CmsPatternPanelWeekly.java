@@ -27,42 +27,58 @@
 
 package com.alkacon.opencms.v8.calendar.client.input.serialdate;
 
-import com.alkacon.opencms.v8.calendar.client.widget.css.I_CmsLayoutBundle;
-
 import org.opencms.gwt.client.ui.input.CmsCheckBox;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
+import com.google.gwt.core.shared.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
- * 
+ * The weekly pattern panel.<p>
  * */
-public class CmsPatternPanelWeekly extends FlowPanel implements HasValueChangeHandlers<String> {
+public class CmsPatternPanelWeekly extends Composite implements HasValueChangeHandlers<String> {
 
-    /** The panel for all values of 'every'. */
-    private FlowPanel m_everyPanel = new FlowPanel();
+    /** The UI binder interface. */
+    interface I_CmsPatternPanelWeekly extends UiBinder<HTMLPanel, CmsPatternPanelWeekly> {
+        // nothing to do
+    }
 
-    /** The panel for all values of the day selection. */
-    private FlowPanel m_dayPanel = new FlowPanel();
-
-    /** The text box for the date input. */
-    private TextBox m_everyDay = new TextBox();
+    /** The UI binder instance. */
+    private static I_CmsPatternPanelWeekly uiBinder = GWT.create(I_CmsPatternPanelWeekly.class);
 
     /** The array of all checkboxes. */
     List<CmsCheckBox> m_checkboxes = new ArrayList<CmsCheckBox>();
+
+    /** The panel for all values of the day selection. */
+    @UiField
+    FlowPanel m_dayPanel = new FlowPanel();
+
+    /** The text box for the date input. */
+    @UiField
+    TextBox m_everyDay = new TextBox();
+
+    /** The every label. */
+    @UiField
+    Element m_labelEvery;
+
+    /** The weeks label. */
+    @UiField
+    Element m_labelWeeks;
 
     /** The handler. */
     private ValueChangeHandler<String> m_handler;
@@ -77,17 +93,10 @@ public class CmsPatternPanelWeekly extends FlowPanel implements HasValueChangeHa
     public CmsPatternPanelWeekly(JSONObject labels) {
 
         m_labels = labels;
-
-        addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateWeek());
-        createEverPanel();
-        this.add(m_everyPanel);
+        initWidget(uiBinder.createAndBindUi(this));
+        m_labelEvery.setInnerText(m_labels.get("GUI_SERIALDATE_WEEKLY_EVERY_0").isString().stringValue());
+        m_labelWeeks.setInnerText(m_labels.get("GUI_SERIALDATE_WEEKLY_WEEK_AT_0").isString().stringValue());
         createDayPanel();
-        for (CmsCheckBox box : m_checkboxes) {
-            box.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateCheckBox());
-            m_dayPanel.add(box);
-        }
-        this.add(m_dayPanel);
-
     }
 
     /**
@@ -150,22 +159,14 @@ public class CmsPatternPanelWeekly extends FlowPanel implements HasValueChangeHa
     }
 
     /**
-     * @see com.google.gwt.user.client.ui.HasWidgets#iterator()
+     * Handles the days key press event.<p>
+     * 
+     * @param event the key press event
      */
-    @Override
-    public Iterator<Widget> iterator() {
+    @UiHandler("m_everyDay")
+    public void onDaysKeyPress(KeyPressEvent event) {
 
-        Iterator<Widget> result = getChildren().iterator();
-        return result;
-    }
-
-    /**
-     * @see com.google.gwt.user.client.ui.Panel#remove(com.google.gwt.user.client.ui.Widget)
-     */
-    @Override
-    public boolean remove(Widget child) {
-
-        return remove(child);
+        fireValueChange();
     }
 
     /**
@@ -208,47 +209,32 @@ public class CmsPatternPanelWeekly extends FlowPanel implements HasValueChangeHa
      * */
     private void createDayPanel() {
 
-        CmsCheckBox test = new CmsCheckBox(m_labels.get("GUI_SERIALDATE_DAY_MONDAY_0").isString().stringValue());
-        test.setInternalValue("2");
-        m_checkboxes.add(test);
-        test = new CmsCheckBox(m_labels.get("GUI_SERIALDATE_DAY_TUESDAY_0").isString().stringValue());
-        test.setInternalValue("3");
-        m_checkboxes.add(test);
-        test = new CmsCheckBox(m_labels.get("GUI_SERIALDATE_DAY_WEDNESDAY_0").isString().stringValue());
-        test.setInternalValue("4");
-        m_checkboxes.add(test);
-        test = new CmsCheckBox(m_labels.get("GUI_SERIALDATE_DAY_THURSDAY_0").isString().stringValue());
-        test.setInternalValue("5");
-        m_checkboxes.add(test);
-        test = new CmsCheckBox(m_labels.get("GUI_SERIALDATE_DAY_FRIDAY_0").isString().stringValue());
-        test.setInternalValue("6");
-        m_checkboxes.add(test);
-        test = new CmsCheckBox(m_labels.get("GUI_SERIALDATE_DAY_SATURDAY_0").isString().stringValue());
-        test.setInternalValue("7");
-        m_checkboxes.add(test);
-        test = new CmsCheckBox(m_labels.get("GUI_SERIALDATE_DAY_SUNDAY_0").isString().stringValue());
-        test.setInternalValue("1");
-        m_checkboxes.add(test);
-    }
-
-    /**
-     * Creates the 'every' selection view.<p>
-     * 
-     * */
-    private void createEverPanel() {
-
-        m_everyPanel.add(new Label(m_labels.get("GUI_SERIALDATE_WEEKLY_EVERY_0").isString().stringValue()));
-        m_everyPanel.add(m_everyDay);
-        m_everyDay.setStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().textBoxSerialDate());
-        m_everyDay.setText("1");
-        m_everyDay.addKeyPressHandler(new KeyPressHandler() {
-
-            public void onKeyPress(KeyPressEvent event) {
-
-                fireValueChange();
-
-            }
-        });
-        m_everyPanel.add(new Label(m_labels.get("GUI_SERIALDATE_WEEKLY_WEEK_AT_0").isString().stringValue()));
+        CmsCheckBox box = new CmsCheckBox(m_labels.get("GUI_SERIALDATE_DAY_MONDAY_0").isString().stringValue());
+        box.setInternalValue("2");
+        m_checkboxes.add(box);
+        m_dayPanel.add(box);
+        box = new CmsCheckBox(m_labels.get("GUI_SERIALDATE_DAY_TUESDAY_0").isString().stringValue());
+        box.setInternalValue("3");
+        m_checkboxes.add(box);
+        m_dayPanel.add(box);
+        box = new CmsCheckBox(m_labels.get("GUI_SERIALDATE_DAY_WEDNESDAY_0").isString().stringValue());
+        box.setInternalValue("4");
+        m_checkboxes.add(box);
+        m_dayPanel.add(box);
+        box = new CmsCheckBox(m_labels.get("GUI_SERIALDATE_DAY_THURSDAY_0").isString().stringValue());
+        box.setInternalValue("5");
+        m_checkboxes.add(box);
+        m_dayPanel.add(box);
+        box = new CmsCheckBox(m_labels.get("GUI_SERIALDATE_DAY_FRIDAY_0").isString().stringValue());
+        box.setInternalValue("6");
+        m_checkboxes.add(box);
+        box = new CmsCheckBox(m_labels.get("GUI_SERIALDATE_DAY_SATURDAY_0").isString().stringValue());
+        box.setInternalValue("7");
+        m_checkboxes.add(box);
+        m_dayPanel.add(box);
+        box = new CmsCheckBox(m_labels.get("GUI_SERIALDATE_DAY_SUNDAY_0").isString().stringValue());
+        box.setInternalValue("1");
+        m_checkboxes.add(box);
+        m_dayPanel.add(box);
     }
 }

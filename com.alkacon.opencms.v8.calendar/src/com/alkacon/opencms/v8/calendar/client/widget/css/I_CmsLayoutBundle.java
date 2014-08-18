@@ -44,28 +44,21 @@ public interface I_CmsLayoutBundle extends org.opencms.gwt.client.ui.css.I_CmsLa
          * 
          * @return the css class
          */
-        String selectBoxPanel();
+        String patternInput();
 
         /**
          * Css class reader.<p>
          * 
          * @return the css class
          */
-        String serialDataTabel();
+        String patternRadio();
 
         /**
          * Css class reader.<p>
          * 
          * @return the css class
          */
-        String serialDataTabelBorderBottom();
-
-        /**
-         * Css class reader.<p>
-         * 
-         * @return the css class
-         */
-        String serialDataTabelBorderRight();
+        String patternRow();
 
         /**
          * Css class reader.<p>
@@ -73,83 +66,6 @@ public interface I_CmsLayoutBundle extends org.opencms.gwt.client.ui.css.I_CmsLa
          * @return the css class
          */
         String serialDataWidget();
-
-        /**
-         * Css class reader.<p>
-         * 
-         * @return the css class
-         */
-        String serialDateCheckBox();
-
-        /**
-         * Css class reader.<p>
-         * 
-         * @return the css class
-         */
-        String serialDateDay();
-
-        /**
-         * Css class reader.<p>
-         * 
-         * @return the css class
-         */
-        String serialDateLable();
-
-        /**
-         * Css class reader.<p>
-         * 
-         * @return the css class
-         */
-        String serialDatelowPanel();
-
-        /**
-         * Css class reader.<p>
-         * 
-         * @return the css class
-         */
-        String serialDatelowPanelSelection();
-
-        /**
-         * Css class reader.<p>
-         * 
-         * @return the css class
-         */
-        String serialDateMonth();
-
-        /**
-         * Css class reader.<p>
-         * 
-         * @return the css class
-         */
-        String serialDateMonthSelection();
-
-        /**
-         * Css class reader.<p>
-         * 
-         * @return the css class
-         */
-        String serialDateWeek();
-
-        /**
-         * Css class reader.<p>
-         * 
-         * @return the css class
-         */
-        String serialDateYear();
-
-        /**
-         * Css class reader.<p>
-         * 
-         * @return the css class
-         */
-        String serialDateYearSelection();
-
-        /**
-         * Css class reader.<p>
-         * 
-         * @return the css class
-         */
-        String textBoxSerialDate();
 
     }
 

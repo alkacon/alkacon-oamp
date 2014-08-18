@@ -28,7 +28,7 @@
 			<resourcebundle name="com.alkacon.opencms.v8.calendar.workplace"/>
 			<handler class="com.alkacon.opencms.v8.calendar.CmsSerialDateXmlContentHandler" />
 			<layouts>
-				<layout element="Change" widget="V8SerialDateSelectWidget" configuration="property:calendar.startdate|count:52" />
+				<layout element="Change" widget="com.alkacon.opencms.v8.calendar.CmsSerialDateSelectWidget" configuration="property:calendar.startdate|count:52" />
 				<layout element="Teaser" widget="TextareaWidget" configuration="3" />
 				<layout element="Text" widget="HtmlWidget" configuration="formatselect,anchor,link,image,table,downloadgallery,imagegallery" />
 			</layouts>

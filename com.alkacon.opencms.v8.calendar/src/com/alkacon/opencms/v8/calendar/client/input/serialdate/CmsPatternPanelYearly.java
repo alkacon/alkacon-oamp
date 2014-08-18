@@ -33,50 +33,63 @@ import org.opencms.gwt.client.ui.input.CmsRadioButton;
 import org.opencms.gwt.client.ui.input.CmsRadioButtonGroup;
 import org.opencms.gwt.client.ui.input.CmsSelectBox;
 
-import java.util.Iterator;
-
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.core.shared.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
- * 
+ * The yearly pattern panel.<p>
  * */
-public class CmsPatternPanelYearly extends FlowPanel implements HasValueChangeHandlers<String> {
+public class CmsPatternPanelYearly extends Composite implements HasValueChangeHandlers<String> {
+
+    /** The UI binder interface. */
+    interface I_CmsPatternPanelYearlyUiBinder extends UiBinder<HTMLPanel, CmsPatternPanelYearly> {
+        // nothing to do
+    }
+
+    /** The UI binder instance. */
+    private static I_CmsPatternPanelYearlyUiBinder uiBinder = GWT.create(I_CmsPatternPanelYearlyUiBinder.class);
+
+    /** The select box for the day selection. */
+    @UiField
+    CmsSelectBox m_atDay;
+
+    /** The select box for the month selection. */
+    @UiField
+    CmsSelectBox m_atMonth;
+    /** The select box for the nummeric selection. */
+    @UiField
+    CmsSelectBox m_atNumber;
+
+    /** The at radio button. */
+    @UiField(provided = true)
+    CmsRadioButton m_atRadioButton;
+    /** The text box for the date input. */
+    @UiField
+    TextBox m_everyDay;
+    /** The select box for the month selection. */
+    @UiField
+    CmsSelectBox m_everyMonth;
+
+    /** The every radio butoon. */
+    @UiField(provided = true)
+    CmsRadioButton m_everyRadioButton;
+
+    /** The in label. */
+    @UiField
+    Element m_labelIn;
 
     /** Group off all radio buttons. */
-    private CmsRadioButtonGroup m_group = new CmsRadioButtonGroup();
-
-    /** The panel for all values of 'every'. */
-    private FlowPanel m_everyPanel = new FlowPanel();
-
-    /** The panel for all values of 'at'. */
-    private FlowPanel m_atPanel = new FlowPanel();
-
-    /** The text box for the date input. */
-    private TextBox m_everyDay = new TextBox();
-    /** The select box for the month selection. */
-    private CmsSelectBox m_everyMonth = new CmsSelectBox();
-
-    /** The select box for the nummeric selection. */
-    private CmsSelectBox m_atNummer = new CmsSelectBox();
-    /** The select box for the day selection. */
-    private CmsSelectBox m_atDay = new CmsSelectBox();
-    /** The select box for the month selection. */
-    private CmsSelectBox m_atMonth = new CmsSelectBox();
-
-    /** The array of all radio button. */
-    private CmsRadioButton[] m_radio = new CmsRadioButton[2];
+    private CmsRadioButtonGroup m_group;
 
     /** The value change handler. */
     private ValueChangeHandler<String> m_handler;
@@ -92,30 +105,27 @@ public class CmsPatternPanelYearly extends FlowPanel implements HasValueChangeHa
 
         m_labels = labels;
 
-        addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateYear());
-        CmsRadioButton sel1 = new CmsRadioButton(
+        m_group = new CmsRadioButtonGroup();
+        m_everyRadioButton = new CmsRadioButton(
             "sel1",
             m_labels.get("GUI_SERIALDATE_YEARLY_EVERY_0").isString().stringValue());
-        m_radio[0] = sel1;
-        sel1.setGroup(m_group);
-        sel1.setChecked(true);
-        sel1.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateYearSelection());
-        sel1.addStyleName(org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
-        createEverPanel();
-        CmsRadioButton sel2 = new CmsRadioButton(
+        m_everyRadioButton.setGroup(m_group);
+        m_everyRadioButton.setChecked(true);
+        m_atRadioButton = new CmsRadioButton(
             "sel2",
             m_labels.get("GUI_SERIALDATE_YEARLY_AT_0").isString().stringValue());
-        m_radio[1] = sel2;
-        sel2.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateYearSelection());
-        sel2.addStyleName(org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
-        sel2.setGroup(m_group);
-        createAtPanel();
-        this.add(sel1);
-        this.add(m_everyPanel);
+        m_atRadioButton.setGroup(m_group);
+        m_group.addValueChangeHandler(new ValueChangeHandler<String>() {
 
-        this.add(sel2);
-        this.add(m_atPanel);
+            public void onValueChange(ValueChangeEvent<String> event) {
 
+                fireValueChange();
+            }
+        });
+        initWidget(uiBinder.createAndBindUi(this));
+        m_everyDay.setText("1");
+        m_labelIn.setInnerText(m_labels.get("GUI_SERIALDATE_YEARLY_IN_0").isString().stringValue());
+        initSelectBoxes();
     }
 
     /**
@@ -124,21 +134,11 @@ public class CmsPatternPanelYearly extends FlowPanel implements HasValueChangeHa
     public HandlerRegistration addValueChangeHandler(ValueChangeHandler<String> handler) {
 
         m_handler = handler;
-        m_atNummer.addValueChangeHandler(m_handler);
+        m_atNumber.addValueChangeHandler(m_handler);
         m_atDay.addValueChangeHandler(m_handler);
         m_atMonth.addValueChangeHandler(m_handler);
         m_everyDay.addValueChangeHandler(m_handler);
         m_everyMonth.addValueChangeHandler(m_handler);
-        for (int i = 0; i < m_radio.length; i++) {
-            m_radio[i].addClickHandler(new ClickHandler() {
-
-                public void onClick(ClickEvent event) {
-
-                    fireValueChange();
-
-                }
-            });
-        }
         return addHandler(handler, ValueChangeEvent.getType());
     }
 
@@ -156,10 +156,10 @@ public class CmsPatternPanelYearly extends FlowPanel implements HasValueChangeHa
      * */
     public String getDayOfMonth() {
 
-        if (m_group.getSelectedButton().equals(m_radio[0])) {
+        if (m_group.getSelectedButton().equals(m_everyRadioButton)) {
             return m_everyDay.getText();
         } else {
-            return m_atNummer.getFormValueAsString();
+            return m_atNumber.getFormValueAsString();
         }
     }
 
@@ -169,7 +169,7 @@ public class CmsPatternPanelYearly extends FlowPanel implements HasValueChangeHa
      * */
     public String getMonth() {
 
-        if (m_group.getSelectedButton().equals(m_radio[0])) {
+        if (m_group.getSelectedButton().equals(m_everyRadioButton)) {
             return m_everyMonth.getFormValueAsString();
         } else {
             return m_atMonth.getFormValueAsString();
@@ -183,31 +183,12 @@ public class CmsPatternPanelYearly extends FlowPanel implements HasValueChangeHa
      * */
     public String getWeekDays() {
 
-        if (m_group.getSelectedButton().equals(m_radio[0])) {
+        if (m_group.getSelectedButton().equals(m_everyRadioButton)) {
             return "-1";
         } else {
             return m_atDay.getFormValueAsString();
         }
 
-    }
-
-    /**
-     * @see com.google.gwt.user.client.ui.HasWidgets#iterator()
-     */
-    @Override
-    public Iterator<Widget> iterator() {
-
-        Iterator<Widget> result = getChildren().iterator();
-        return result;
-    }
-
-    /**
-     * @see com.google.gwt.user.client.ui.Panel#remove(com.google.gwt.user.client.ui.Widget)
-     */
-    @Override
-    public boolean remove(Widget child) {
-
-        return remove(child);
     }
 
     /**
@@ -217,10 +198,10 @@ public class CmsPatternPanelYearly extends FlowPanel implements HasValueChangeHa
      * */
     public void setDayOfMonth(int dayOfMonth) {
 
-        if (m_group.getSelectedButton().equals(m_radio[0])) {
+        if (m_group.getSelectedButton().equals(m_everyRadioButton)) {
             m_everyDay.setText(dayOfMonth + "");
         } else {
-            m_atNummer.selectValue(dayOfMonth + "");
+            m_atNumber.selectValue(dayOfMonth + "");
         }
 
     }
@@ -231,7 +212,7 @@ public class CmsPatternPanelYearly extends FlowPanel implements HasValueChangeHa
      * */
     public void setMonth(int month) {
 
-        if (m_group.getSelectedButton().equals(m_radio[0])) {
+        if (m_group.getSelectedButton().equals(m_everyRadioButton)) {
             m_everyMonth.selectValue(month + "");
         } else {
             m_atMonth.selectValue(month + "");
@@ -247,9 +228,9 @@ public class CmsPatternPanelYearly extends FlowPanel implements HasValueChangeHa
     public void setWeekDay(int weekDay) {
 
         if (weekDay == -1) {
-            m_group.selectButton(m_radio[0]);
+            m_group.selectButton(m_everyRadioButton);
         } else {
-            m_group.selectButton(m_radio[1]);
+            m_group.selectButton(m_atRadioButton);
             m_atDay.selectValue(weekDay + "");
         }
 
@@ -258,21 +239,17 @@ public class CmsPatternPanelYearly extends FlowPanel implements HasValueChangeHa
     /**
      * Creates the 'at' selection view.<p>
      * */
-    private void createAtPanel() {
+    private void initSelectBoxes() {
 
-        m_atPanel.add(m_atNummer);
-        m_atNummer.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxPanel());
-        m_atNummer.getOpener().setStyleName(
+        m_atNumber.getOpener().setStyleName(
             org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
-        m_atNummer.getSelectorPopup().addStyleName(I_CmsLayoutBundle.INSTANCE.globalWidgetCss().selectBoxPopup());
-        m_atNummer.setWidth("80px");
-        m_atNummer.addOption("1", m_labels.get("GUI_SERIALDATE_WEEKDAYNUMBER_1_0").isString().stringValue());
-        m_atNummer.addOption("2", m_labels.get("GUI_SERIALDATE_WEEKDAYNUMBER_2_0").isString().stringValue());
-        m_atNummer.addOption("3", m_labels.get("GUI_SERIALDATE_WEEKDAYNUMBER_3_0").isString().stringValue());
-        m_atNummer.addOption("4", m_labels.get("GUI_SERIALDATE_WEEKDAYNUMBER_4_0").isString().stringValue());
-        m_atNummer.addOption("5", m_labels.get("GUI_SERIALDATE_WEEKDAYNUMBER_5_0").isString().stringValue());
-        m_atPanel.add(m_atDay);
-        m_atDay.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxPanel());
+        m_atNumber.getSelectorPopup().addStyleName(I_CmsLayoutBundle.INSTANCE.globalWidgetCss().selectBoxPopup());
+        m_atNumber.setWidth("80px");
+        m_atNumber.addOption("1", m_labels.get("GUI_SERIALDATE_WEEKDAYNUMBER_1_0").isString().stringValue());
+        m_atNumber.addOption("2", m_labels.get("GUI_SERIALDATE_WEEKDAYNUMBER_2_0").isString().stringValue());
+        m_atNumber.addOption("3", m_labels.get("GUI_SERIALDATE_WEEKDAYNUMBER_3_0").isString().stringValue());
+        m_atNumber.addOption("4", m_labels.get("GUI_SERIALDATE_WEEKDAYNUMBER_4_0").isString().stringValue());
+        m_atNumber.addOption("5", m_labels.get("GUI_SERIALDATE_WEEKDAYNUMBER_5_0").isString().stringValue());
         m_atDay.getOpener().setStyleName(
             org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
         m_atDay.getSelectorPopup().addStyleName(I_CmsLayoutBundle.INSTANCE.globalWidgetCss().selectBoxPopup());
@@ -285,9 +262,6 @@ public class CmsPatternPanelYearly extends FlowPanel implements HasValueChangeHa
         m_atDay.addOption("6", m_labels.get("GUI_SERIALDATE_DAY_FRIDAY_0").isString().stringValue());
         m_atDay.addOption("7", m_labels.get("GUI_SERIALDATE_DAY_SATURDAY_0").isString().stringValue());
 
-        m_atPanel.add(new Label(m_labels.get("GUI_SERIALDATE_YEARLY_IN_0").isString().stringValue()));
-        m_atPanel.add(m_atMonth);
-        m_atMonth.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxPanel());
         m_atMonth.getOpener().setStyleName(
             org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
         m_everyMonth.getSelectorPopup().addStyleName(I_CmsLayoutBundle.INSTANCE.globalWidgetCss().selectBoxPopup());
@@ -305,28 +279,6 @@ public class CmsPatternPanelYearly extends FlowPanel implements HasValueChangeHa
         m_atMonth.addOption("10", m_labels.get("GUI_SERIALDATE_YEARLY_NOV_0").isString().stringValue());
         m_atMonth.addOption("11", m_labels.get("GUI_SERIALDATE_YEARLY_DEC_0").isString().stringValue());
 
-    }
-
-    /**
-     * Creates the 'every' selection view.<p>
-     * 
-     * */
-    private void createEverPanel() {
-
-        m_everyPanel.add(m_everyDay);
-        m_everyDay.setStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().textBoxSerialDate());
-        m_everyDay.setText("1");
-        m_everyDay.addKeyPressHandler(new KeyPressHandler() {
-
-            public void onKeyPress(KeyPressEvent event) {
-
-                fireValueChange();
-
-            }
-        });
-        m_everyPanel.add(new Label(""));
-        m_everyPanel.add(m_everyMonth);
-        m_everyMonth.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().selectBoxPanel());
         m_everyMonth.getOpener().setStyleName(
             org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().selectBoxSelected());
         m_everyMonth.getSelectorPopup().addStyleName(I_CmsLayoutBundle.INSTANCE.globalWidgetCss().selectBoxPopup());

@@ -27,45 +27,55 @@
 
 package com.alkacon.opencms.v8.calendar.client.input.serialdate;
 
-import com.alkacon.opencms.v8.calendar.client.widget.css.I_CmsLayoutBundle;
-
 import org.opencms.gwt.client.ui.input.CmsRadioButton;
 import org.opencms.gwt.client.ui.input.CmsRadioButtonGroup;
 
-import java.util.Iterator;
-
-import com.google.gwt.dom.client.Style.Float;
-import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.core.shared.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
- * 
+ * The daily pattern panel.<p>
  * */
-public class CmsPatternPanelDaily extends FlowPanel implements HasValueChangeHandlers<String> {
+public class CmsPatternPanelDaily extends Composite implements HasValueChangeHandlers<String> {
 
-    /** Group off all radio buttons. */
-    private CmsRadioButtonGroup m_group = new CmsRadioButtonGroup();
+    /** The UI binder interface. */
+    interface I_CmsPatternPanelDailyUiBinder extends UiBinder<HTMLPanel, CmsPatternPanelDaily> {
+        // nothing to do
+    }
 
-    /** The panel for all values of 'every'. */
-    private FlowPanel m_everyPanel = new FlowPanel();
+    /** The UI binder instance. */
+    private static I_CmsPatternPanelDailyUiBinder uiBinder = GWT.create(I_CmsPatternPanelDailyUiBinder.class);
 
     /** The text box for the date input. */
-    private TextBox m_everyDay = new TextBox();
+    @UiField
+    TextBox m_everyDay;
 
-    /** Array of all selections. */
-    CmsRadioButton[] m_selection = new CmsRadioButton[2];
+    /** The every day radio button. */
+    @UiField(provided = true)
+    CmsRadioButton m_everyRadioButton;
+
+    /** The days label. */
+    @UiField
+    Element m_labelDays;
+
+    /** The every working day radio button. */
+    @UiField(provided = true)
+    CmsRadioButton m_workingRadioButton;
+
+    /** Group off all radio buttons. */
+    private CmsRadioButtonGroup m_group;
 
     /** Value change handler. */
     private ValueChangeHandler<String> m_handler;
@@ -80,45 +90,29 @@ public class CmsPatternPanelDaily extends FlowPanel implements HasValueChangeHan
     public CmsPatternPanelDaily(JSONObject labels) {
 
         m_labels = labels;
-        addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateDay());
-        CmsRadioButton sel1 = new CmsRadioButton(
+
+        // init radio buttons
+        m_group = new CmsRadioButtonGroup();
+        m_everyRadioButton = new CmsRadioButton(
             "sel1",
             m_labels.get("GUI_SERIALDATE_DAILY_EVERY_0").isString().stringValue());
 
-        sel1.addClickHandler(new ClickHandler() {
-
-            public void onClick(ClickEvent event) {
-
-                fireValueChange();
-
-            }
-
-        });
-        m_selection[0] = sel1;
-        sel1.addStyleName(org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
-        sel1.setGroup(m_group);
-        sel1.setChecked(true);
-        sel1.getElement().getStyle().setFloat(Float.LEFT);
-
-        createEverPanel();
-        CmsRadioButton sel2 = new CmsRadioButton(
+        m_everyRadioButton.setGroup(m_group);
+        m_everyRadioButton.setChecked(true);
+        m_workingRadioButton = new CmsRadioButton(
             "sel2",
             m_labels.get("GUI_SERIALDATE_DAILY_EVERYWORKINGDAY_0").isString().stringValue());
-        sel2.addStyleName(org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
-        sel2.addClickHandler(new ClickHandler() {
+        m_workingRadioButton.setGroup(m_group);
+        m_group.addValueChangeHandler(new ValueChangeHandler<String>() {
 
-            public void onClick(ClickEvent event) {
+            public void onValueChange(ValueChangeEvent<String> event) {
 
                 fireValueChange();
-
             }
         });
-        m_selection[1] = sel2;
-        sel2.setGroup(m_group);
-        this.add(sel1);
-        this.add(m_everyPanel);
-
-        this.add(sel2);
+        initWidget(uiBinder.createAndBindUi(this));
+        m_labelDays.setInnerText(m_labels.get("GUI_SERIALDATE_DAILY_DAYS_0").isString().stringValue());
+        m_everyDay.setValue("1");
 
     }
 
@@ -144,18 +138,9 @@ public class CmsPatternPanelDaily extends FlowPanel implements HasValueChangeHan
      * Returns the interval.<p>
      * @return the interval
      * */
-    public String getIterval() {
+    public String getInterval() {
 
         return m_everyDay.getText();
-    }
-
-    /**
-     * Returns the selection.<p>
-     * @return the selection
-     * */
-    public CmsRadioButton[] getSelection() {
-
-        return m_selection;
     }
 
     /**
@@ -170,22 +155,33 @@ public class CmsPatternPanelDaily extends FlowPanel implements HasValueChangeHan
     }
 
     /**
-     * @see com.google.gwt.user.client.ui.HasWidgets#iterator()
+     * Handles the days key press event.<p>
+     * 
+     * @param event the event
      */
-    @Override
-    public Iterator<Widget> iterator() {
+    @UiHandler("m_everyDay")
+    public void onDaysKeyPress(KeyPressEvent event) {
 
-        Iterator<Widget> result = getChildren().iterator();
-        return result;
+        fireValueChange();
     }
 
     /**
-     * @see com.google.gwt.user.client.ui.Panel#remove(com.google.gwt.user.client.ui.Widget)
+     * Sets the panel active.<p>
+     * 
+     * @param active if active
      */
-    @Override
-    public boolean remove(Widget child) {
+    public void setActive(boolean active) {
 
-        return remove(child);
+        m_everyRadioButton.setEnabled(active);
+        m_workingRadioButton.setEnabled(active);
+        m_everyDay.setEnabled(active);
+        if (active) {
+            m_everyDay.setText("1");
+            m_everyRadioButton.setChecked(true);
+        } else {
+            m_group.deselectButton();
+            m_everyDay.setText("");
+        }
     }
 
     /**
@@ -203,32 +199,6 @@ public class CmsPatternPanelDaily extends FlowPanel implements HasValueChangeHan
      * */
     public void setSelection(int selection) {
 
-        m_group.selectButton(m_selection[selection - 1]);
-
+        m_group.selectButton(selection == 0 ? m_everyRadioButton : m_workingRadioButton);
     }
-
-    /**
-     * Creates the 'every' selection view.<p>
-     * 
-     * */
-    private void createEverPanel() {
-
-        m_everyPanel.add(m_everyDay);
-        m_everyDay.setStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().textBoxSerialDate());
-        m_everyDay.setText("1");
-        m_everyDay.getElement().getStyle().setWidth(25, Unit.PX);
-        m_everyDay.addKeyPressHandler(new KeyPressHandler() {
-
-            public void onKeyPress(KeyPressEvent event) {
-
-                fireValueChange();
-
-            }
-        });
-
-        Label days = new Label(m_labels.get("GUI_SERIALDATE_DAILY_DAYS_0").isString().stringValue());
-        days.addStyleName(I_CmsLayoutBundle.INSTANCE.widgetCss().serialDateLable());
-        m_everyPanel.add(days);
-    }
-
 }

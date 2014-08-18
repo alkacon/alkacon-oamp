@@ -41,7 +41,7 @@
 			<layouts>
 				<layout element="Teaser" widget="TextareaWidget" configuration="3" />
 				<layout element="Text" widget="HtmlWidget" configuration="formatselect,anchor,link,image,table,downloadgallery,imagegallery" />
-				<layout element="Serialdate" widget="V8SerialDateWidget" configuration="" />
+				<layout element="Serialdate" widget="com.alkacon.opencms.v8.calendar.CmsSerialDateWidget" configuration="" />
 			</layouts>
 			<mappings>
 				<mapping element="Title" mapto="property:Title" />
