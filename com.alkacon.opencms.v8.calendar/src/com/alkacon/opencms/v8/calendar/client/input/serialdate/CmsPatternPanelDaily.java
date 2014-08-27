@@ -197,8 +197,8 @@ public class CmsPatternPanelDaily extends Composite implements HasValueChangeHan
      * Sets the right selection.<p>
      * @param selection the selection that should be selected
      * */
-    public void setSelection(int selection) {
+    public void setWorkingDaySelection(boolean selection) {
 
-        m_group.selectButton(selection == 0 ? m_everyRadioButton : m_workingRadioButton);
+        m_group.selectButton(selection ? m_workingRadioButton : m_everyRadioButton);
     }
 }

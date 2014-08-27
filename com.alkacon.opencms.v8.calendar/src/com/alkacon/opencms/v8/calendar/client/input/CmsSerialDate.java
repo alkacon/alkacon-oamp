@@ -281,6 +281,9 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
     /** The used time format. */
     private DateTimeFormat m_timeFormat;
 
+    /** Flag indicating the widget value is currently being changed. */
+    private boolean m_changingValues;
+
     /**
      * Category field widgets for ADE forms.<p>
      * @param labels a JSON of all needed labels
@@ -296,7 +299,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
 
             public void onValueChange(ValueChangeEvent<String> event) {
 
-                fireValueChange();
+                fireChangeIfChanged();
 
             }
         });
@@ -305,7 +308,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
 
             public void onValueChange(ValueChangeEvent<String> event) {
 
-                fireValueChange();
+                fireChangeIfChanged();
 
             }
 
@@ -315,7 +318,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
 
             public void onValueChange(ValueChangeEvent<String> event) {
 
-                fireValueChange();
+                fireChangeIfChanged();
 
             }
 
@@ -325,7 +328,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
 
             public void onValueChange(ValueChangeEvent<String> event) {
 
-                fireValueChange();
+                fireChangeIfChanged();
 
             }
 
@@ -370,7 +373,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
 
             public void onClick(ClickEvent event) {
 
-                fireValueChange();
+                fireChangeIfChanged();
 
             }
         });
@@ -386,7 +389,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
                 if (m_endsAfter.getText().isEmpty()) {
                     m_endsAfter.setValue("1");
                 }
-                fireValueChange();
+                fireChangeIfChanged();
 
             }
         });
@@ -400,7 +403,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
             public void onClick(ClickEvent event) {
 
                 m_endDate.setValue(new Date());
-                fireValueChange();
+                fireChangeIfChanged();
 
             }
         });
@@ -586,7 +589,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
     @UiHandler("m_duration")
     public void onDurationChange(ValueChangeEvent<String> event) {
 
-        fireValueChange();
+        fireChangeIfChanged();
     }
 
     /**
@@ -598,7 +601,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
     public void onEndDateChange(ValueChangeEvent<Date> event) {
 
         m_groupDuration.selectButton(m_endsAtRadioButton);
-        fireValueChange();
+        fireChangeIfChanged();
     }
 
     /**
@@ -609,7 +612,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
     @UiHandler("m_endsAfter")
     public void onEndsAfterChange(ValueChangeEvent<String> event) {
 
-        fireValueChange();
+        fireChangeIfChanged();
     }
 
     /**
@@ -631,7 +634,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
     @UiHandler("m_endsAfter")
     public void onEndsAfterKeyPress(KeyPressEvent event) {
 
-        fireValueChange();
+        fireChangeIfChanged();
     }
 
     /**
@@ -642,7 +645,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
     @UiHandler("m_endTime")
     public void onEndTimeChange(ValueChangeEvent<String> event) {
 
-        fireValueChange();
+        fireChangeIfChanged();
     }
 
     /**
@@ -653,7 +656,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
     @UiHandler("m_startDate")
     public void onStartDateChange(ValueChangeEvent<Date> event) {
 
-        fireValueChange();
+        fireChangeIfChanged();
     }
 
     /**
@@ -664,7 +667,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
     @UiHandler("m_startTime")
     public void onStartTimeChange(ValueChangeEvent<String> event) {
 
-        fireValueChange();
+        fireChangeIfChanged();
     }
 
     /**
@@ -735,6 +738,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
     public void setFormValueAsString(String value) {
 
         if (!value.isEmpty()) {
+            CmsDebugLog.getInstance().printLine("Setting value: " + value);
             Map<String, String> values = new HashMap<String, String>();
             String[] split = value.split("\\|");
             for (int i = 0; i < split.length; i++) {
@@ -744,115 +748,9 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
                 values.put(key, val);
             }
             setValues(values);
-            m_previousValue = value;
+            CmsDebugLog.getInstance().printLine("Value set");
         }
-
-    }
-
-    /**
-     * Creates a serial date entry from the given property value.<p>
-     * 
-     * If no matching serial date could be created, <code>null</code> is returned.<p>
-     * 
-     * @param values the Map containing the date configuration values
-     */
-    public void setValues(Map<String, String> values) {
-
-        // first set serial date fields used by all serial types
-
-        // fetch the start date and time
-
-        String startLong = values.get(CONFIG_STARTDATE);
-        m_startDateValue = new Date(getLongValue(startLong, 0));
-        m_startTime.setValue(m_timeFormat.format(m_startDateValue));
-
-        m_startDate.setValue(m_startDateValue);
-        // the end date and time (this means the duration of a single entry)
-
-        String endLong = values.get(CONFIG_ENDDATE);
-        m_endDateValue = new Date(getLongValue(endLong, 0));
-        m_endTime.setValue(m_timeFormat.format(m_endDateValue));
-
-        if (getLongValue(endLong, 0) > getLongValue(startLong, 0)) {
-            // duration at least one day, calculate it
-            long delta = getLongValue(endLong, 0) - getLongValue(startLong, 0);
-            int test = (int)(delta / MILLIS_02_PER_DAY);
-            m_duration.selectValue((test) + "");
-        }
-
-        // determine the serial end type
-        String endTypeStr = values.get(CONFIG_END_TYPE);
-        int endType = getIntValue(endTypeStr, END_TYPE_NEVER);
-        m_groupDuration.selectButton(getDurationButtonForType(endType));
-        if (endType == END_TYPE_TIMES) {
-            // end type: after a number of occurences
-            String occurStr = values.get(CONFIG_OCCURENCES);
-            m_endsAfter.setText(occurStr);
-        } else if (endType == END_TYPE_DATE) {
-            // end type: ends at a specified date
-            String endDateStr = values.get(CONFIG_SERIAL_ENDDATE);
-            long endDate = getLongValue(endDateStr, 0);
-            m_endDate.setValue(new Date(endDate));
-
-        }
-
-        // now determine the serial date options depending on the serial date type
-
-        String type = values.get(CONFIG_TYPE);
-        int entryType = getIntValue(type, 1);
-        m_groupPattern.selectButton(getPatternButtonForType(entryType));
-        changePattern();
-        switch (entryType) {
-            case TYPE_DAILY:
-                // daily series entry, get interval and working days flag
-                String intervalStr = values.get(CONFIG_INTERVAL);
-                String workingDaysStr = values.get(CONFIG_EVERY_WORKING_DAY);
-                boolean workingDays = Boolean.valueOf(workingDaysStr).booleanValue();
-                m_dailyPattern.setInterval(intervalStr);
-                if (workingDays) {
-                    m_dailyPattern.setSelection(2);
-                } else {
-                    m_dailyPattern.setSelection(1);
-                }
-
-                break;
-            case TYPE_WEEKLY:
-                // weekly series entry
-                intervalStr = values.get(CONFIG_INTERVAL);
-                String weekDaysStr = values.get(CONFIG_WEEKDAYS);
-                List<String> weekDaysStrList = CmsStringUtil.splitAsList(weekDaysStr, SEPARATOR_WEEKDAYS, true);
-                m_weeklyPattern.setInterval(intervalStr);
-                m_weeklyPattern.setWeekDays(weekDaysStrList);
-                break;
-            case TYPE_MONTHLY:
-                // monthly series entry
-                intervalStr = values.get(CONFIG_INTERVAL);
-                String dayOfMonthStr = values.get(CONFIG_DAY_OF_MONTH);
-                int dayOfMonth = getIntValue(dayOfMonthStr, 1);
-                String weekDayStr = values.get(CONFIG_WEEKDAYS);
-                int weekDay = getIntValue(weekDayStr, -1);
-                m_monthlyPattern.setWeekDay(weekDay);
-                m_monthlyPattern.setInterval(intervalStr);
-                m_monthlyPattern.setDayOfMonth(dayOfMonth);
-
-                break;
-            case TYPE_YEARLY:
-                // yearly series entry
-                dayOfMonthStr = values.get(CONFIG_DAY_OF_MONTH);
-                dayOfMonth = getIntValue(dayOfMonthStr, 1);
-                weekDayStr = values.get(CONFIG_WEEKDAYS);
-                weekDay = getIntValue(weekDayStr, -1);
-                String monthStr = values.get(CONFIG_MONTH);
-                int month = getIntValue(monthStr, 0);
-                m_yearlyPattern.setWeekDay(weekDay);
-                m_yearlyPattern.setDayOfMonth(dayOfMonth);
-                m_yearlyPattern.setMonth(month);
-
-                break;
-            default:
-
-        }
-        selectValues();
+        m_previousValue = value;
     }
 
     /**
@@ -872,7 +770,8 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
             } else if (buttonName.equals(KEY_YEARLY)) {
                 m_patternOptions.setWidget(m_yearlyPattern);
             }
-            fireValueChange();
+            fireChangeIfChanged();
+            CmsDebugLog.getInstance().printLine("Pattern changed");
         }
     }
 
@@ -881,7 +780,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
      */
     protected void fireChangeIfChanged() {
 
-        if (m_active) {
+        if (!m_changingValues && m_active) {
             String current = getFormValueAsString();
             if (!current.equals(m_previousValue)) {
                 m_previousValue = current;
@@ -901,13 +800,13 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
 
         CmsRadioButton duration = null;
         switch (type) {
-            case 0:
+            case END_TYPE_NEVER:
                 duration = m_noEndingRadioButton;
                 break;
-            case 1:
+            case END_TYPE_TIMES:
                 duration = m_endsAfterRadioButton;
                 break;
-            case 2:
+            case END_TYPE_DATE:
                 duration = m_endsAtRadioButton;
         }
         return duration;
@@ -924,16 +823,16 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
 
         CmsRadioButton pattern = null;
         switch (type) {
-            case 0:
+            case TYPE_DAILY:
                 pattern = m_dailyRadioButton;
                 break;
-            case 1:
+            case TYPE_WEEKLY:
                 pattern = m_weeklyRadioButton;
                 break;
-            case 2:
+            case TYPE_MONTHLY:
                 pattern = m_monthlyRadioButton;
                 break;
-            case 3:
+            case TYPE_YEARLY:
                 pattern = m_yearlyRadioButton;
         }
         return pattern;
@@ -947,6 +846,7 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
     @SuppressWarnings("deprecation")
     private String selectValues() {
 
+        CmsDebugLog.getInstance().printLine("Selecting values");
         String result = "";
         String type = "1";
         if (m_groupPattern.getSelectedButton() != null) {
@@ -954,23 +854,23 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
         }
         result += CONFIG_TYPE + "=" + type + "|";
         switch (Integer.parseInt(type)) {
-            case (1):
+            case (TYPE_DAILY):
                 result += CONFIG_INTERVAL + "=" + m_dailyPattern.getInterval() + "|";
                 result += CONFIG_EVERY_WORKING_DAY + "=" + m_dailyPattern.getWorkingDay() + "|";
                 break;
-            case (2):
+            case (TYPE_WEEKLY):
                 result += CONFIG_INTERVAL + "=" + m_weeklyPattern.getInterval() + "|";
                 result += CONFIG_WEEKDAYS + "=" + m_weeklyPattern.getWeekDays() + "|";
 
                 break;
-            case (3):
+            case (TYPE_MONTHLY):
                 result += CONFIG_INTERVAL + "=" + m_monthlyPattern.getInterval() + "|";
                 result += CONFIG_DAY_OF_MONTH + "=" + m_monthlyPattern.getDayOfMonth() + "|";
                 if (!m_monthlyPattern.getWeekDays().equals("-1")) {
                     result += CONFIG_WEEKDAYS + "=" + m_monthlyPattern.getWeekDays() + "|";
                 }
                 break;
-            case (4):
+            case (TYPE_YEARLY):
                 result += CONFIG_DAY_OF_MONTH + "=" + m_yearlyPattern.getDayOfMonth() + "|";
                 result += CONFIG_MONTH + "=" + m_yearlyPattern.getMonth() + "|";
                 if (!m_yearlyPattern.getWeekDays().equals("-1")) {
@@ -986,8 +886,6 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
         m_startDateValue = m_startDate.getValue();
         if (m_startDateValue == null) {
             m_startDateValue = new Date();
-            m_startTime.setText(m_timeFormat.format(m_startDateValue));
-
         }
 
         switch (Integer.parseInt(m_duration.getFormValueAsString())) {
@@ -1054,6 +952,117 @@ public class CmsSerialDate extends Composite implements I_CmsFormWidget, I_CmsHa
 
         result += CONFIG_END_TYPE + "=" + endtype;
         return result;
+    }
+
+    /**
+     * Creates a serial date entry from the given property value.<p>
+     * 
+     * If no matching serial date could be created, <code>null</code> is returned.<p>
+     * 
+     * @param values the Map containing the date configuration values
+     */
+    private void setValues(Map<String, String> values) {
+
+        m_changingValues = true;
+        // first set serial date fields used by all serial types
+
+        // fetch the start date and time
+
+        String startLong = values.get(CONFIG_STARTDATE);
+        m_startDateValue = new Date(getLongValue(startLong, 0));
+        m_startTime.setValue(m_timeFormat.format(m_startDateValue));
+
+        m_startDate.setValue(m_startDateValue);
+        // the end date and time (this means the duration of a single entry)
+
+        String endLong = values.get(CONFIG_ENDDATE);
+        m_endDateValue = new Date(getLongValue(endLong, 0));
+        m_endTime.setValue(m_timeFormat.format(m_endDateValue));
+        CmsDebugLog.getInstance().printLine("Step 1");
+        if (getLongValue(endLong, 0) > getLongValue(startLong, 0)) {
+            // duration at least one day, calculate it
+            long delta = getLongValue(endLong, 0) - getLongValue(startLong, 0);
+            int test = (int)(delta / MILLIS_02_PER_DAY);
+            m_duration.selectValue((test) + "");
+        }
+        CmsDebugLog.getInstance().printLine("Step 1.5");
+        // determine the serial end type
+        String endTypeStr = values.get(CONFIG_END_TYPE);
+        int endType = getIntValue(endTypeStr, END_TYPE_NEVER);
+        CmsDebugLog.getInstance().printLine("Setting end type to: " + endType);
+        m_groupDuration.selectButton(getDurationButtonForType(endType));
+        if (endType == END_TYPE_TIMES) {
+            // end type: after a number of occurences
+            String occurStr = values.get(CONFIG_OCCURENCES);
+            CmsDebugLog.getInstance().printLine("Setting occurrences to: " + occurStr);
+            m_endsAfter.setText(occurStr);
+        } else if (endType == END_TYPE_DATE) {
+            // end type: ends at a specified date
+            String endDateStr = values.get(CONFIG_SERIAL_ENDDATE);
+            long endDate = getLongValue(endDateStr, 0);
+            m_endDate.setValue(new Date(endDate));
+
+        }
+        CmsDebugLog.getInstance().printLine("Step 2");
+        // now determine the serial date options depending on the serial date type
+
+        String type = values.get(CONFIG_TYPE);
+        int entryType = getIntValue(type, 1);
+        m_groupPattern.selectButton(getPatternButtonForType(entryType));
+        CmsDebugLog.getInstance().printLine("Step 3");
+        String intervalStr = values.get(CONFIG_INTERVAL);
+        CmsDebugLog.getInstance().printLine(CONFIG_INTERVAL + ": " + intervalStr);
+        switch (entryType) {
+            case TYPE_DAILY:
+                // daily series entry, get interval and working days flag
+                CmsDebugLog.getInstance().printLine("Setting daily");
+                String workingDaysStr = values.get(CONFIG_EVERY_WORKING_DAY);
+                CmsDebugLog.getInstance().printLine(CONFIG_EVERY_WORKING_DAY + ": " + workingDaysStr);
+                boolean workingDays = Boolean.valueOf(workingDaysStr).booleanValue();
+                m_dailyPattern.setInterval(intervalStr);
+                CmsDebugLog.getInstance().printLine("Interval has been set");
+                m_dailyPattern.setWorkingDaySelection(workingDays);
+                break;
+            case TYPE_WEEKLY:
+                // weekly series entry
+                CmsDebugLog.getInstance().printLine("Setting weekly");
+                String weekDaysStr = values.get(CONFIG_WEEKDAYS);
+                List<String> weekDaysStrList = CmsStringUtil.splitAsList(weekDaysStr, SEPARATOR_WEEKDAYS, true);
+                m_weeklyPattern.setInterval(intervalStr);
+                m_weeklyPattern.setWeekDays(weekDaysStrList);
+                break;
+            case TYPE_MONTHLY:
+                // monthly series entry
+                CmsDebugLog.getInstance().printLine("Setting monthly");
+                String dayOfMonthStrMonthly = values.get(CONFIG_DAY_OF_MONTH);
+                int dayOfMonthMonthly = getIntValue(dayOfMonthStrMonthly, 1);
+                String weekDayStrMonthly = values.get(CONFIG_WEEKDAYS);
+                int weekDayMonthly = getIntValue(weekDayStrMonthly, -1);
+                m_monthlyPattern.setWeekDay(weekDayMonthly);
+                m_monthlyPattern.setInterval(intervalStr);
+                m_monthlyPattern.setDayOfMonth(dayOfMonthMonthly);
+
+                break;
+            case TYPE_YEARLY:
+                // yearly series entry
+                CmsDebugLog.getInstance().printLine("Setting yearly");
+                String dayOfMonthStr = values.get(CONFIG_DAY_OF_MONTH);
+                int dayOfMonth = getIntValue(dayOfMonthStr, 1);
+                String weekDayStr = values.get(CONFIG_WEEKDAYS);
+                int weekDay = getIntValue(weekDayStr, -1);
+                String monthStr = values.get(CONFIG_MONTH);
+                int month = getIntValue(monthStr, 0);
+                m_yearlyPattern.setWeekDay(weekDay);
+                m_yearlyPattern.setDayOfMonth(dayOfMonth);
+                m_yearlyPattern.setMonth(month);
+
+                break;
+            default:
+
+        }
+        m_changingValues = false;
+
+        //      selectValues();
     }
 
 }

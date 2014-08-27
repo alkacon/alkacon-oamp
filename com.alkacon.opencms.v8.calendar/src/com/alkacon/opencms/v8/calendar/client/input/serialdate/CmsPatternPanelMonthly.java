@@ -177,7 +177,7 @@ public class CmsPatternPanelMonthly extends Composite implements HasValueChangeH
      * */
     public String getDayOfMonth() {
 
-        if (m_group.getSelectedButton().getName().equals("sel1")) {
+        if (m_group.getSelectedButton() == m_dayMonthRadioButton) {
             return m_everyDay.getText();
         } else {
             return m_atWeek.getFormValueAsString();
@@ -190,7 +190,7 @@ public class CmsPatternPanelMonthly extends Composite implements HasValueChangeH
      * */
     public String getInterval() {
 
-        if (m_group.getSelectedButton().getName().equals("sel1")) {
+        if (m_group.getSelectedButton() == m_dayMonthRadioButton) {
             return m_everyMonth.getText();
         } else {
             return m_atMonth.getText();
@@ -203,7 +203,7 @@ public class CmsPatternPanelMonthly extends Composite implements HasValueChangeH
      * */
     public String getWeekDays() {
 
-        if (m_group.getSelectedButton().getName().equals("sel1")) {
+        if (m_group.getSelectedButton() == m_dayMonthRadioButton) {
             return "-1";
         } else {
             return m_atDay.getFormValueAsString();
@@ -252,7 +252,7 @@ public class CmsPatternPanelMonthly extends Composite implements HasValueChangeH
      */
     public void setDayOfMonth(int dayOfMonthStr) {
 
-        if (m_group.getSelectedButton().getName().equals("sel1")) {
+        if (m_group.getSelectedButton() == m_dayMonthRadioButton) {
             m_everyDay.setText(dayOfMonthStr + "");
         } else {
             m_atWeek.selectValue(dayOfMonthStr + "");
@@ -266,7 +266,7 @@ public class CmsPatternPanelMonthly extends Composite implements HasValueChangeH
      */
     public void setInterval(String intervalStr) {
 
-        if (m_group.getSelectedButton().getName().equals("sel1")) {
+        if (m_group.getSelectedButton() == m_dayMonthRadioButton) {
             m_everyMonth.setText(intervalStr);
         } else {
             m_atMonth.setText(intervalStr);
