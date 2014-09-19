@@ -16,7 +16,7 @@
 <div class="cmtHeader">
 <c:choose>
 <c:when test="${not empty param.title}">
-	${param.title}
+	${cms:unescape(param.title, cms:vfs(pageContext).requestContext.encoding)}
 </c:when>
 <c:otherwise>
 	<fmt:message key="titel.view.comments" />

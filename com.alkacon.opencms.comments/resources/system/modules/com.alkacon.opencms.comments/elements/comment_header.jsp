@@ -68,7 +68,8 @@
 	$.post(
 		"<cms:link>%(link.weak:/system/modules/com.alkacon.opencms.comments/elements/comment_list.jsp:f11cf62d-ec2e-11dc-990f-dfec94299cf1)</cms:link>",
 		{ 
-		    cmturi: '${param.cmturi}', 
+		    title: '${param.title}',
+			cmturi: '${param.cmturi}', 
 		    configUri: '${param.configUri}', 
 		    cmtminimized:"${param.cmtminimized}",
 	        cmtlist:"${param.cmtlist}",

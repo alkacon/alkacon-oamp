@@ -90,7 +90,7 @@
 						    data: { 
 						        cmturi:"${alkaconCmt.uri}", 
 						        configUri: "${configUri}", 
-						        title:"${content.hasValue.Headline ? content.value.Headline.stringValue : ''}",
+						        title:"${content.hasValue.Headline ? cms:escape(content.value.Headline.stringValue, cms.requestContext.encoding) : ''}",
 						        cmtminimized:"${minimized}",
 						        cmtlist:"${list}",
 						        cmtsecurity:"${security}",
