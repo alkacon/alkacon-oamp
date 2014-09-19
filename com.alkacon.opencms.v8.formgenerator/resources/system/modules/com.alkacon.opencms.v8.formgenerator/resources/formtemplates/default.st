@@ -504,7 +504,7 @@ $checktext$
 $if(captchafield)$
 	<script type="text/javascript">
 		function runConfirmValues() {
-			document.getElementById("webformconfirmvalues").$captchafield.name$.value = "" + document.getElementById("webformcaptcha").$captchafield.name$.value;
+			document.getElementById("webformconfirmvalues$formconfig.configId$").elements["$captchafield.name$"].value = "" + document.getElementById("webformcaptcha$formconfig.configId$").elements["$captchafield.name$"].value;
 			return true;
 		}
 	</script>
@@ -550,7 +550,7 @@ $endif$
 		<form id="webformconfirmvalues$formconfig.configId$" method="post" enctype="multipart/form-data" action="$formuri$" onsubmit="return runConfirmValues();">
 		<div style="display: none;">
 		<input type="hidden" name="formaction$formconfig.configId$" value="confirmed" />
-		<input type="hidden" name="captchaphrase" value="" />
+		<input type="hidden" name="captchaphrase$formconfig.configId$" value="" />
 		$hiddenfields$
 		</div><div class="webform_check_button">
 		<input type="submit" value="$checkbutton$" class="formbutton" />&nbsp;&nbsp;&nbsp;&nbsp;</div>
