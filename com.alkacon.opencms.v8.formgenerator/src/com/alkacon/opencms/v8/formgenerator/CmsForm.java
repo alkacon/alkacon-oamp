@@ -1655,7 +1655,7 @@ public class CmsForm {
         field.setLabel(messages.key("form.confirmation.label"));
         // check the field status
         boolean isChecked = false;
-        if (!initial && Boolean.valueOf(getParameter(PARAM_SENDCONFIRMATION)).booleanValue()) {
+        if (!initial && Boolean.valueOf(getParameter(PARAM_SENDCONFIRMATION + getConfigId())).booleanValue()) {
             // checkbox is checked by user
             isChecked = true;
         }

@@ -1984,7 +1984,7 @@ public class CmsFormHandler extends CmsJspActionElement {
      */
     protected String getParameter(String parameter) {
 
-        if (PARAM_FORMACTION.equals(parameter)) {
+        if (PARAM_FORMACTION.equals(parameter) || CmsForm.PARAM_SENDCONFIRMATION.equals(parameter)) {
             parameter += getFormConfiguration().getConfigId();
         }
         try {
