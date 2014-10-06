@@ -326,4 +326,9 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
         return result;
     }
 
+    /** XXX: Workaround <a href="https://github.com/alkacon/alkacon-oamp/issues/31">#31</a> */
+    @Override
+    public List<CmsResource> getResults(CmsObject cms, String collectorName, String params, int numResults) throws CmsException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
