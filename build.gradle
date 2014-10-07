@@ -310,4 +310,12 @@ install {
             }
         }
     }
+
+    if (JavaVersion.current().isJava8Compatible()) {
+        allprojects {
+            tasks.withType(Javadoc) {
+                failOnError = false
+            }
+        }
+    }
 }
