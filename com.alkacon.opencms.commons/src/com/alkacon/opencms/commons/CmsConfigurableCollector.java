@@ -168,12 +168,21 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
     public List<CmsResource> getResults(CmsObject cms, String collectorName, String param)
     throws CmsDataAccessException, CmsException {
 
+        return getResults(cms, collectorName, param, -1);
+    }
+
+    /**
+     * @see org.opencms.file.collectors.I_CmsResourceCollector#getResults(org.opencms.file.CmsObject, java.lang.String, java.lang.String, int)
+     */
+    public List<CmsResource> getResults(CmsObject cms, String collectorName, String param, int numResults)
+    throws CmsDataAccessException, CmsException {
+
         // if action is not set use default
         if (collectorName == null) {
             collectorName = COLLECTOR_NAME;
         }
 
-        return getAllInFolder(cms, param);
+        return getAllInFolder(cms, param, numResults);
     }
 
     /**
@@ -192,6 +201,7 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
      * 
      * @param cms the current OpenCms user context
      * @param param the folder name to use
+     * @param numResults the number of results that should be returned (currently unused)
      * 
      * @return all resources in the folder matching the given criteria
      * 
@@ -199,7 +209,7 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
      * @throws CmsIllegalArgumentException if the given param argument is not a link to a single file
      * 
      */
-    protected List<CmsResource> getAllInFolder(CmsObject cms, String param)
+    protected List<CmsResource> getAllInFolder(CmsObject cms, String param, int numResults)
     throws CmsException, CmsIllegalArgumentException {
 
         List<CmsCollectorConfiguration> collectorConfigurations = getCollectorConfigurations();

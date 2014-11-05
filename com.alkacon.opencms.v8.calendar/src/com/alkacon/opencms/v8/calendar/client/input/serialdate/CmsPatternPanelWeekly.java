@@ -228,6 +228,7 @@ public class CmsPatternPanelWeekly extends Composite implements HasValueChangeHa
         box = new CmsCheckBox(m_labels.get("GUI_SERIALDATE_DAY_FRIDAY_0").isString().stringValue());
         box.setInternalValue("6");
         m_checkboxes.add(box);
+        m_dayPanel.add(box);
         box = new CmsCheckBox(m_labels.get("GUI_SERIALDATE_DAY_SATURDAY_0").isString().stringValue());
         box.setInternalValue("7");
         m_checkboxes.add(box);
