@@ -30,7 +30,7 @@
 			<resourcebundle name="com.alkacon.opencms.v8.photoalbum.workplace"/>
 			<layouts>
 				<layout element="AlignTitle" widget="SelectorWidget" configuration="left:${key.photoalbum.text.align.left}|center:${key.photoalbum.text.align.center}|right:${key.photoalbum.text.align.right}" />
-				<layout element="Size" widget="SelectorWidget" configuration="120x80*:120 x 80 ${key.photoalbum.thumbs.size.pixel}|150x100*:150 x 100 ${key.photoalbum.thumbs.size.pixel}|200x134*:200 x 134 ${key.photoalbum.thumbs.size.pixel}|300x200:300 x 200 ${key.photoalbum.thumbs.size.pixel}|400x268:400 x 268 ${key.photoalbum.thumbs.size.pixel}|600x400:600 x 400 ${key.photoalbum.thumbs.size.pixel}" />
+				<layout element="Size" widget="ComboWidget" configuration="120x80*:120 x 80 ${key.photoalbum.thumbs.size.pixel}|150x100*:150 x 100 ${key.photoalbum.thumbs.size.pixel}|200x134*:200 x 134 ${key.photoalbum.thumbs.size.pixel}|300x200:300 x 200 ${key.photoalbum.thumbs.size.pixel}|400x268:400 x 268 ${key.photoalbum.thumbs.size.pixel}|600x400:600 x 400 ${key.photoalbum.thumbs.size.pixel}" />
 				<layout element="Filter" widget="SelectorWidget" configuration="none:${key.photoalbum.filter.none}|shadow:${key.photoalbum.filter.shadow}|grayscale:${key.photoalbum.filter.grayscale}|grayscale.shadow:${key.photoalbum.filter.both}" />
 				<layout element="ItemsPerPage" widget="SelectorWidget" configuration="-1*:All|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20" />
 			</layouts>

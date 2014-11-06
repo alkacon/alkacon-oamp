@@ -38,6 +38,7 @@
 			<defaults>
 				<default element="ShowNavigationBorder" value="true" />
 				<default element="Thumbs/ItemsPerPage" value="12" />
+				<default element="Thumbs/Size" value="120x80" />
 			</defaults>
 			<mappings>
 				<mapping element="Title" mapto="property:Title" />
