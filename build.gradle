@@ -95,7 +95,11 @@ modules_oamp_all.split(',').each{ moduleName ->
         ext.dependencies = moduleDependencies
         ext.gwtSourceSetName = gwtSourceSetName
         ext.gwtRenameTo = gwtRename
-        version moduleVersion
+        if (project.hasProperty('noVersion')) {
+        	version 
+        } else {
+         	version moduleVersion
+        }
         destinationDir modulesDistsDir
         // include the jar file
         from( "${project.buildDir}/libs") {
