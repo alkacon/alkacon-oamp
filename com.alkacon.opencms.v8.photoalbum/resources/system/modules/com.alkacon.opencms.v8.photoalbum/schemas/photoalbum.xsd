@@ -55,6 +55,9 @@
 				<headinclude type="css" uri="/system/modules/com.alkacon.opencms.v8.photoalbum/resources/album.css"/>
 			</headincludes>
 			<searchsettings containerPageOnly="true" />
+			<validationrules>
+				<rule element="VfsFolder" regex=".+" type="error" message="%(key.alkacon-v8-photoalbum.error.vfsfolder.empty)"/>
+			</validationrules>
 		</xsd:appinfo>
 
 	</xsd:annotation>  
