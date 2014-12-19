@@ -87,8 +87,6 @@ public class CmsEditMailinglistDialog extends A_CmsEditGroupDialog {
      */
     public void actionCommit() {
 
-        m_group.setProjectCoWorker(false);
-        m_group.setProjectManager(false);
         m_group.setEnabled(true);
         setParentGroup("");
         super.actionCommit();

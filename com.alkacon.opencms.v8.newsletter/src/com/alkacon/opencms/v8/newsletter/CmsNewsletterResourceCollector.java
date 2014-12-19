@@ -123,6 +123,15 @@ public class CmsNewsletterResourceCollector extends A_CmsResourceCollector {
     public List<CmsResource> getResults(CmsObject cms, String collectorName, String param)
     throws CmsDataAccessException, CmsException {
 
+        return getResults(cms, collectorName, param, -1);
+    }
+
+    /**
+     * @see org.opencms.file.collectors.I_CmsResourceCollector#getResults(org.opencms.file.CmsObject, java.lang.String, java.lang.String, int)
+     */
+    public List<CmsResource> getResults(CmsObject cms, String collectorName, String param, int numResults)
+    throws CmsDataAccessException, CmsException {
+
         // if action is not set use default
         if (collectorName == null) {
             collectorName = COLLECTORS[0];
@@ -131,10 +140,10 @@ public class CmsNewsletterResourceCollector extends A_CmsResourceCollector {
         switch (COLLECTORS_LIST.indexOf(collectorName)) {
             case 0:
                 // "allNewslettersInFolder"
-                return allNewslettersInFolder(cms, param, false);
+                return allNewslettersInFolder(cms, param, false, numResults);
             case 1:
                 // "allNewslettersInSubTree"
-                return allNewslettersInFolder(cms, param, true);
+                return allNewslettersInFolder(cms, param, true, numResults);
             default:
                 throw new CmsDataAccessException(Messages.get().container(
                     Messages.ERR_COLLECTOR_NAME_INVALID_1,
@@ -149,12 +158,14 @@ public class CmsNewsletterResourceCollector extends A_CmsResourceCollector {
      * @param cms the current CmsObject
      * @param param must contain an extended collector parameter set as described by {@link CmsExtendedCollectorData}
      * @param tree if true, look in folder and all child folders, if false, look only in given folder
+     * @param numResults the number of results that should be returned
      * 
      * @return a list of all newsletter resources in the folder pointed to by the parameter sorted by the send dates
      * 
      * @throws CmsException if something goes wrong
      */
-    protected List<CmsResource> allNewslettersInFolder(CmsObject cms, String param, boolean tree) throws CmsException {
+    protected List<CmsResource> allNewslettersInFolder(CmsObject cms, String param, boolean tree, int numResults)
+    throws CmsException {
 
         CmsExtendedCollectorData data = new CmsExtendedCollectorData(param);
         String foldername = CmsResource.getFolderPath(data.getFileName());
@@ -193,6 +204,9 @@ public class CmsNewsletterResourceCollector extends A_CmsResourceCollector {
         CmsNewsletterDateResourceComparator comparator = new CmsNewsletterDateResourceComparator(cms, asc);
         Collections.sort(result, comparator);
 
+        if (numResults > data.getCount()) {
+            return shrinkToFit(result, numResults);
+        }
         return shrinkToFit(result, data.getCount());
     }
 }
