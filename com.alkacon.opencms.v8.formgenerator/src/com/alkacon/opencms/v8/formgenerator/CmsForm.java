@@ -260,6 +260,9 @@ public class CmsForm {
     /** Configuration node name for the form field attributes node. */
     public static final String NODE_FORMFIELDATTRIBUTES = "FormFieldAttributes";
 
+    /** Configuration node name for the form field width ratio node. */
+    public static final String NODE_FORMFIELDWIDTHRATIO = "FormFieldWidthRatio";
+
     /** Configuration node name for the form footer text node. */
     public static final String NODE_FORMFOOTERTEXT = "FormFooterText";
 
@@ -473,6 +476,9 @@ public class CmsForm {
 
     /** configuration value. */
     protected String m_formFieldAttributes;
+
+    /** configuration value. */
+    protected int m_formFieldWidthRatio;
 
     /** configuration value. */
     protected String m_formFooterText;
@@ -1058,6 +1064,16 @@ public class CmsForm {
     public String getFormFieldAttributes() {
 
         return m_formFieldAttributes;
+    }
+
+    /**
+     * Returns the optional form field width ratio.<p>
+     * 
+     * @return the optional form field width ratio
+     */
+    public int getFormFieldWidthRatio() {
+
+        return m_formFieldWidthRatio;
     }
 
     /**
@@ -1998,6 +2014,16 @@ public class CmsForm {
                     setFormFieldAttributes(" " + defaultAttributes);
                 }
             }
+            // get the field width ratio if set
+            stringValue = getContentStringValue(content, cms, pathPrefix + NODE_FORMFIELDWIDTHRATIO, locale);
+            if (CmsStringUtil.isNotEmpty(stringValue)) {
+                try {
+                    setFormFieldWidthRatio(Integer.parseInt(stringValue));
+                } catch (NumberFormatException nfe) {
+                    // invalid value, ignore setting
+                }
+            }
+
             // get the refresh session interval
             stringValue = getContentStringValue(content, cms, pathPrefix + NODE_KEEPSESSION, locale);
             if (CmsStringUtil.isNotEmpty(stringValue)) {
@@ -2658,6 +2684,16 @@ public class CmsForm {
     protected void setFormFieldAttributes(String formFieldAttributes) {
 
         m_formFieldAttributes = formFieldAttributes;
+    }
+
+    /**
+     * Sets the optional form field width ratio.<p>
+     * 
+     * @param formFieldWidthRatio the optional form field width ratio
+     */
+    protected void setFormFieldWidthRatio(int formFieldWidthRatio) {
+
+        m_formFieldWidthRatio = formFieldWidthRatio;
     }
 
     /**

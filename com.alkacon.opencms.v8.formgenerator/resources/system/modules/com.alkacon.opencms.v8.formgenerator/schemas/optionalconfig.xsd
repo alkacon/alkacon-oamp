@@ -23,6 +23,7 @@
 			<xsd:element name="ShowReset" type="OpenCmsBoolean" />
 			<xsd:element name="FormAttributes" type="OpenCmsString" />
 			<xsd:element name="FormFieldAttributes" type="OpenCmsString" />
+			<xsd:element name="FormFieldWidthRatio" type="OpenCmsString" minOccurs="0" />
 			<xsd:element name="DynamicFieldClass" type="OpenCmsString" />
 			<xsd:element name="CSS" type="OpenCmsVfsFile" minOccurs="0" />
 			<xsd:element name="TemplateFile" type="OpenCmsVfsFile" minOccurs="0" />
@@ -40,6 +41,7 @@
 				<layout element="MailType" widget="SelectorWidget" configuration="html*:${key.form.email.type.html}|text:${key.form.email.type.text}" />
 				<layout element="MailCSS" widget="TextareaWidget" configuration="6" />
 				<layout element="CheckText" widget="HtmlWidget" configuration="imagegallery,downloadgallery,linkgallery,htmlgallery,formatselect,source,link,anchor,table" />
+				<layout element="FormFieldWidthRatio" widget="ComboWidget" configuration="30*:30% / 70%|40*:40% / 60%||50*:50% / 50%|60*:60% / 40%" />
 			</layouts>
 		</xsd:appinfo>
 	</xsd:annotation>  

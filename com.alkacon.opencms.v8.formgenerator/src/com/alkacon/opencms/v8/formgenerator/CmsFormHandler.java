@@ -960,6 +960,16 @@ public class CmsFormHandler extends CmsJspActionElement {
         }
 
         result.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"").append(link(configuredCss)).append("\" />");
+        if ((getFormConfiguration() != null) && (getFormConfiguration().getFormFieldWidthRatio() > 0)) {
+            result.append("<style type=\"text/css\">\n");
+            result.append("div.webform_label, div.webform_label_multi, div.webform_label_table, div.webform_text_left { width: ");
+            result.append(getFormConfiguration().getFormFieldWidthRatio());
+            result.append("%; }\n");
+            result.append("div.webform_field, div.webform_field_multi, div.webform_field_table, div.webform_text_right { width: ");
+            result.append(99 - getFormConfiguration().getFormFieldWidthRatio());
+            result.append("%; }\n");
+            result.append("</style>\n");
+        }
         return result.toString();
     }
 
@@ -1875,7 +1885,6 @@ public class CmsFormHandler extends CmsJspActionElement {
      *  
      * @throws Exception if creating the form configuration objects fails
      */
-    @SuppressWarnings("unchecked")
     protected void configureForm(HttpServletRequest req, String formConfigUri, Map<String, String> dynamicConfig)
     throws Exception {
 
