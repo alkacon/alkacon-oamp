@@ -14,6 +14,11 @@
 			<fmt:message key="photoalbum.javascript_disabled" />
 		</p>
 	</c:when>
+	<c:when test="${empty content.value['VfsFolder'].stringValue}">
+		<p style="color:red; font-weight: bold;">
+			<fmt:message key="photoalbum.no_gallery_folder" />
+		</p>
+	</c:when>
 <c:otherwise>
 
 <c:set var="currentPage"><c:out value="${param.page}" default="1"/></c:set>
