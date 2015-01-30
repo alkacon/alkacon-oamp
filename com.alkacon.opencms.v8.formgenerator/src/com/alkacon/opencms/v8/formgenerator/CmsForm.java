@@ -2201,6 +2201,9 @@ public class CmsForm {
                 fieldIndex = Integer.parseInt(stringValue) - 1;
             } catch (Exception e) {
                 // no field number given, store DB label
+                if (stringValue.contains("|")) {
+                    stringValue = stringValue.substring(stringValue.indexOf("|") + 1);
+                }
                 setConfirmationMailFieldDbLabel(stringValue);
             }
             setConfirmationMailField(fieldIndex);
@@ -2374,6 +2377,9 @@ public class CmsForm {
                 jsp.getCmsObject(),
                 subField.getPath() + "/" + NODE_PARENTFIELD,
                 locale);
+            if (fieldLabel.contains("|")) {
+                fieldLabel = fieldLabel.substring(fieldLabel.indexOf("|") + 1);
+            }
             List<String> storedPaths = subFieldPaths.get(fieldLabel);
             if (storedPaths == null) {
                 storedPaths = new ArrayList<String>();

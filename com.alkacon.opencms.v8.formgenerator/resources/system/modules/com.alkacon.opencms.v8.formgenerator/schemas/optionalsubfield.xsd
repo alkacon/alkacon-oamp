@@ -24,7 +24,7 @@
 		<xsd:appinfo>
 			<resourcebundle name="com.alkacon.opencms.v8.formgenerator.workplace"/>
 			<layouts>
-				<layout element="ParentField" widget="com.alkacon.opencms.v8.formgenerator.CmsSelectFieldWidget" configuration="referencebylabel=true" />
+				<layout element="ParentField" widget="org.opencms.widgets.CmsDependentSelectWidget" configuration="InputField|FieldLabel" />
 			</layouts>
 			<validationrules>
 				<rule element="Value" regex=".+" type="error" message="%(key.alkacon-v8-webform.err.xmlcontent.field.empty)"/>
