@@ -33,7 +33,7 @@ import com.alkacon.vie.client.Entity;
 
 import org.opencms.ade.contenteditor.client.CmsContentEditor;
 import org.opencms.ade.contenteditor.client.I_CmsEntityChangeListener;
-import org.opencms.ade.contenteditor.client.widgets.CmsSelectWidget;
+import org.opencms.acacia.client.widgets.CmsSelectWidget;
 import org.opencms.ade.contenteditor.shared.CmsContentDefinition;
 import org.opencms.gwt.client.CmsCoreProvider;
 import org.opencms.gwt.client.rpc.CmsRpcAction;
