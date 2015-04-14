@@ -88,8 +88,9 @@ import org.apache.commons.logging.Log;
  */
 public class CmsCommentsAccess extends CmsJspLoginBean {
 
-    /** form-id for replies */
+    /** Form id for replies. */
     public static final String REPLIES_FORMID = "__oamp-comment-reply__";
+
     /** Action name constant. */
     public static final String ACTION_APPROVE = "approve";
 
@@ -204,46 +205,6 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     /** Cached value, if the current user is valid. */
     private Boolean m_userValid;
 
-    /**
-     * Constructor, with parameters.
-     * 
-     * @param context the JSP page context object
-     * @param req the JSP request 
-     * @param res the JSP response 
-     * @param configUri the URI of the comments configuration
-     */
-    public CmsCommentsAccess(PageContext context, HttpServletRequest req, HttpServletResponse res, String configUri) {
-
-        this(context, req, res, configUri, null);
-    }
-
-    /**
-     * Constructor, with parameters.
-     * 
-     * @param context the JSP page context object
-     * @param req the JSP request 
-     * @param res the JSP response 
-     * @param configUri the URI of the comments configuration
-     * @param dynamicConfig map of configurations that can overwrite the configuration from the configuration file
-     * 
-     */
-    public CmsCommentsAccess(
-        PageContext context,
-        HttpServletRequest req,
-        HttpServletResponse res,
-        String configUri,
-        Map<String, String> dynamicConfig) {
-
-        super(context, req, res);
-        m_configUri = configUri;
-
-        initConfig(context, req, res);
-        String dynamicFormId = getFormIdFromDynamicConfig(dynamicConfig);
-        if (dynamicFormId != null) {
-            m_config.setFormId(dynamicFormId);
-        }
-    }
-
     static {
         OpenCms.addCmsEventListener(new I_CmsEventListener() {
 
@@ -294,17 +255,43 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     }
 
     /**
-     * Returns the cache key for the given data.<p>
+     * Constructor, with parameters.
      * 
-     * @param rootPath the resource root path
-     * @param isOnline <code>true</code> to cache for the online project
-     * @param locale the requested locale
-     * 
-     * @return the cache key
+     * @param context the JSP page context object
+     * @param req the JSP request 
+     * @param res the JSP response 
+     * @param configUri the URI of the comments configuration
      */
-    protected static String generateCacheKey(String rootPath, boolean isOnline, Locale locale) {
+    public CmsCommentsAccess(PageContext context, HttpServletRequest req, HttpServletResponse res, String configUri) {
 
-        return rootPath + (isOnline ? "+" : "-") + "[" + locale + "]";
+        this(context, req, res, configUri, null);
+    }
+
+    /**
+     * Constructor, with parameters.
+     * 
+     * @param context the JSP page context object
+     * @param req the JSP request 
+     * @param res the JSP response 
+     * @param configUri the URI of the comments configuration
+     * @param dynamicConfig map of configurations that can overwrite the configuration from the configuration file
+     * 
+     */
+    public CmsCommentsAccess(
+        PageContext context,
+        HttpServletRequest req,
+        HttpServletResponse res,
+        String configUri,
+        Map<String, String> dynamicConfig) {
+
+        super(context, req, res);
+        m_configUri = configUri;
+
+        initConfig(context, req, res);
+        String dynamicFormId = getFormIdFromDynamicConfig(dynamicConfig);
+        if (dynamicFormId != null) {
+            m_config.setFormId(dynamicFormId);
+        }
     }
 
     /**
@@ -336,6 +323,32 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
             return dynamicConfig.get(CmsForm.NODE_DATATARGET + "/" + CmsForm.NODE_DATATARGET_FORMID);
         }
         return null;
+    }
+
+    /**
+     * Appends the replies form id suffix to the given id.<p>
+     * 
+     * @param formId the form id
+     * 
+     * @return the reply form id
+     */
+    public static String getReplyFromId(String formId) {
+
+        return (formId != null ? formId : "") + REPLIES_FORMID;
+    }
+
+    /**
+     * Returns the cache key for the given data.<p>
+     * 
+     * @param rootPath the resource root path
+     * @param isOnline <code>true</code> to cache for the online project
+     * @param locale the requested locale
+     * 
+     * @return the cache key
+     */
+    protected static String generateCacheKey(String rootPath, boolean isOnline, Locale locale) {
+
+        return rootPath + (isOnline ? "+" : "-") + "[" + locale + "]";
     }
 
     /**
@@ -695,6 +708,32 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     }
 
     /**
+     * @param key the message's key
+     * @return the message for this key (from the configured resourcebundle)
+     */
+    public String getMessage(final String key) {
+
+        return getMessage(key, null);
+    }
+
+    /**
+     * @param key the message's key
+     * @param vals the arguments given to the message
+     * @return the message for this key with the arguments filled in (from the configured resourcebundle)
+     */
+    public String getMessage(final String key, final String[] vals) {
+
+        String message = getMessages(getResourceBundle(), getRequestContext().getLocale()).key(key);
+        if ((vals != null) && (vals.length > 0)) {
+            MessageFormat messageform = new MessageFormat(message);
+            return messageform.format(vals);
+        } else {
+            return message;
+        }
+
+    }
+
+    /**
      * Returns the page.<p>
      *
      * @return the page
@@ -1008,6 +1047,14 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     }
 
     /**
+     * @return the URI of the configuration
+     */
+    private String getConfigUri() {
+
+        return m_configUri;
+    }
+
+    /**
      * Initializes the comment configuration.<p>
      * @param context the page context
      * @param req the request
@@ -1103,39 +1150,5 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
         if (LOG.isDebugEnabled()) {
             LOG.debug(Messages.get().getBundle().key(Messages.LOG_INIT_PAGE_1, "" + m_page));
         }
-    }
-
-    /**
-     * @return the URI of the configuration
-     */
-    private String getConfigUri() {
-
-        return m_configUri;
-    }
-
-    /**
-     * @param key the message's key
-     * @return the message for this key (from the configured resourcebundle)
-     */
-    public String getMessage(final String key) {
-
-        return getMessage(key, null);
-    }
-
-    /**
-     * @param key the message's key
-     * @param vals the arguments given to the message
-     * @return the message for this key with the arguments filled in (from the configured resourcebundle)
-     */
-    public String getMessage(final String key, final String[] vals) {
-
-        String message = getMessages(getResourceBundle(), getRequestContext().getLocale()).key(key);
-        if ((vals != null) && (vals.length > 0)) {
-            MessageFormat messageform = new MessageFormat(message);
-            return messageform.format(vals);
-        } else {
-            return message;
-        }
-
     }
 }

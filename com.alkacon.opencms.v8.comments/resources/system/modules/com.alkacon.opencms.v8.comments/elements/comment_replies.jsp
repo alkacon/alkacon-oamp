@@ -9,6 +9,7 @@
 <c:set var="boxColor"><c:out value="${param.cmtcolor}" default="default" /></c:set>
 
 <jsp:useBean id="alkaconReplies" class="com.alkacon.opencms.v8.comments.CmsRepliesAccessBean" />
+<jsp:setProperty property="formId" name="alkaconReplies" value="${param.cmtformid}"/>
 <c:choose>
 	<c:when test="${param.userCanManage == 'true'}">
 		<c:forEach var="comment" items="${alkaconReplies.replies[param.entryId]}" >

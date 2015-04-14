@@ -92,6 +92,7 @@
 						<c:set var="data">
 							{       "cmturi" :"${alkaconCmt.uri}", 
 									"configUri" : "${configUri}", 
+									"currenturi" : "${cms.requestContext.currentUri}",
 									"cmtminimized" : "${minimized}",
 									"cmtlist" :"${list}",
 									"cmtsecurity" :"${security}",
