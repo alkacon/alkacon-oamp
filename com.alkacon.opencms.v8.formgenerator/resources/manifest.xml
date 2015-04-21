@@ -3,8 +3,8 @@
 <export>
 	<info>
 		<creator>Admin</creator>
-		<opencms_version>8.0.3</opencms_version>
-		<createdate>Mon, 02 Jan 2012 10:17:23 GMT</createdate>
+		<opencms_version>9.7.x</opencms_version>
+		<createdate>Tue, 21 Apr 2015 14:59:08 GMT</createdate>
 		<infoproject>Offline</infoproject>
 		<export_version>7</export_version>
 	</info>
@@ -93,10 +93,10 @@
 		<file>
 			<destination>system</destination>
 			<type>folder</type>
-			<uuidstructure>f1138ef7-20ac-11e1-a228-27f2fbbdf126</uuidstructure>
-			<datelastmodified>Wed, 07 Dec 2011 08:24:54 GMT</datelastmodified>
+			<uuidstructure>8c0da842-cd8f-11e4-a67d-ebe27368f1ae</uuidstructure>
+			<datelastmodified>Wed, 18 Mar 2015 16:55:14 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Wed, 07 Dec 2011 08:24:54 GMT</datecreated>
+			<datecreated>Wed, 18 Mar 2015 16:55:14 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -115,10 +115,10 @@
 		<file>
 			<destination>system/modules</destination>
 			<type>folder</type>
-			<uuidstructure>f20df4c3-20ac-11e1-a228-27f2fbbdf126</uuidstructure>
-			<datelastmodified>Wed, 07 Dec 2011 08:24:56 GMT</datelastmodified>
+			<uuidstructure>8f97b99e-cd8f-11e4-a67d-ebe27368f1ae</uuidstructure>
+			<datelastmodified>Wed, 18 Mar 2015 16:55:20 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
-			<datecreated>Wed, 07 Dec 2011 08:24:56 GMT</datecreated>
+			<datecreated>Wed, 18 Mar 2015 16:55:20 GMT</datecreated>
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
@@ -1335,6 +1335,26 @@
 				<property>
 					<name>Title</name>
 					<value><![CDATA[Error template]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.v8.formgenerator/resources/formtemplates/sky-forms-based.st</source>
+			<destination>system/modules/com.alkacon.opencms.v8.formgenerator/resources/formtemplates/sky-forms-based.st</destination>
+			<type>plain</type>
+			<uuidstructure>d108c354-e75b-11e4-8996-ebe27368f1ae</uuidstructure>
+			<uuidresource>d108c355-e75b-11e4-8996-ebe27368f1ae</uuidresource>
+			<datelastmodified>Tue, 21 Apr 2015 14:48:43 GMT</datelastmodified>
+			<userlastmodified>Admin</userlastmodified>
+			<datecreated>Mon, 20 Apr 2015 12:50:26 GMT</datecreated>
+			<usercreated>Admin</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>Title</name>
+					<value><![CDATA[Sky forms based form templates]]></value>
 				</property>
 			</properties>
 			<relations/>
@@ -4148,7 +4168,7 @@
 			</properties>
 			<relations/>
 			<accesscontrol/>
-		</file>		
+		</file>
 		<file>
 			<source>system/modules/com.alkacon.opencms.v8.formgenerator/schemas/formdatatarget.xsd</source>
 			<destination>system/modules/com.alkacon.opencms.v8.formgenerator/schemas/formdatatarget.xsd</destination>
@@ -4408,11 +4428,11 @@
 			</properties>
 			<relations/>
 			<accesscontrol/>
-		</file>		
+		</file>
 		<file>
 			<destination>system/workplace</destination>
 			<type>folder</type>
-			<uuidstructure>6dbd9558-8db6-11e0-972f-8f51174189b7</uuidstructure>
+			<uuidstructure>825afce2-11b7-11db-91cd-fdbae480bac9</uuidstructure>
 			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
@@ -4844,7 +4864,7 @@
 		<file>
 			<destination>system/workplace/resources</destination>
 			<type>folder</type>
-			<uuidstructure>6dbfdf50-8db6-11e0-972f-8f51174189b7</uuidstructure>
+			<uuidstructure>82c16052-11b7-11db-91cd-fdbae480bac9</uuidstructure>
 			<datelastmodified>Mon, 27 Mar 2006 12:00:00 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
@@ -4857,7 +4877,7 @@
 		<file>
 			<destination>system/workplace/resources/filetypes</destination>
 			<type>folder</type>
-			<uuidstructure>6dc24f52-8db6-11e0-972f-8f51174189b7</uuidstructure>
+			<uuidstructure>83ca1dcc-11b7-11db-91cd-fdbae480bac9</uuidstructure>
 			<datelastmodified>Mon, 27 Jun 2005 08:00:00 GMT</datelastmodified>
 			<userlastmodified>Admin</userlastmodified>
 			<datecreated>Mon, 27 Jun 2005 08:00:00 GMT</datecreated>
