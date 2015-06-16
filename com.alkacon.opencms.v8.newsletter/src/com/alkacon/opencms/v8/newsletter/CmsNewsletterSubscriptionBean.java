@@ -32,7 +32,7 @@
 
 package com.alkacon.opencms.v8.newsletter;
 
-import com.alkacon.opencms.commons.CmsStringCrypter;
+import com.alkacon.opencms.v8.commons.CmsStringCrypter;
 
 import org.opencms.file.CmsFile;
 import org.opencms.file.CmsResource;
@@ -552,16 +552,6 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
     }
 
     /**
-     * Sets if the subscription was successful.<p>
-     * 
-     * @param success the result of the subscription process
-     */
-    private void setSubscribeSuccess(boolean success) {
-
-        m_subscribeSuccess = success;
-    }
-
-    /**
      * Returns if validation errors are found for the subscription process.<p>
      * 
      * @return <code>true</code> if validation errors are found, otherwise <code>false</code>
@@ -742,6 +732,16 @@ public class CmsNewsletterSubscriptionBean extends CmsJspActionElement {
         result.append("</a>");
         // add the link macro to the resolver
         getMacroResolver().addMacro(MACRO_LINK, result.toString());
+    }
+
+    /**
+     * Sets if the subscription was successful.<p>
+     * 
+     * @param success the result of the subscription process
+     */
+    private void setSubscribeSuccess(boolean success) {
+
+        m_subscribeSuccess = success;
     }
 
     /**

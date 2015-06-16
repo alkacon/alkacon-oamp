@@ -7,11 +7,6 @@
 CmsNewsletterSubscriptionBean cmsBean = new CmsNewsletterSubscriptionBean(pageContext, request, response, (String)pageContext.getAttribute("uri"));
 %>
 
-
-
-
-
-
 <cms:formatter var="content" val="value">
 <div>
 	<%-- Title of the article --%>
@@ -21,44 +16,46 @@ CmsNewsletterSubscriptionBean cmsBean = new CmsNewsletterSubscriptionBean(pageCo
 switch (cmsBean.getAction()) {
 
 case CmsNewsletterSubscriptionBean.ACTION_SUBSCRIBE:
-	%><h1><%= cmsBean.getConfigText("Subscribe/Headline") %></h1><p><%
+	%><div class="headline"><h2><%= cmsBean.getConfigText("Subscribe/Headline") %></h2></div><div class="alert alert-info" role="alert"><%
 	out.print(cmsBean.actionSubscribe());
 
 	if (!cmsBean.isConfirmationEnabled() && cmsBean.isShowSendLastNewsletter()) { %>
+		</div><div>
 		<%@include file="%(link.strong:/system/modules/com.alkacon.opencms.v8.newsletter/pages/includes/form-sendlast.jsp:7fd76711-1f60-11e1-818e-9b778fa0dc42)" %>
 	<%}
-	%></p><%
+	%></div><%
 break;
 
 case CmsNewsletterSubscriptionBean.ACTION_UNSUBSCRIBE:
 	// the unsubscription action
-	%><h1><%= cmsBean.getConfigText("Subscribe/Headline") %></h1><p><%
+	%><div class="headline"><h2><%= cmsBean.getConfigText("Subscribe/Headline") %></h2></div><div class="alert alert-info" role="alert"><%
 	out.print(cmsBean.actionUnsubscribe());
-	%></p><%
+	%></div><%
 break;
 
 case CmsNewsletterSubscriptionBean.ACTION_CONFIRMSUBSCRIPTION:
 	// the confirm action: subscribe
-	%><h1><%= cmsBean.getConfigText("Confirm/Subscribe/Headline") %></h1><p><%
+	%><div class="headline"><h2><%= cmsBean.getConfigText("Confirm/Subscribe/Headline") %></h2></div><div class="alert alert-success" role="alert"><%
 	out.print(cmsBean.actionConfirmSubscribe());
 	if (cmsBean.isShowSendLastNewsletter()) { %>
+		</div><div>
 		<%@include file="%(link.strong:/system/modules/com.alkacon.opencms.v8.newsletter/pages/includes/form-sendlast.jsp:7fd76711-1f60-11e1-818e-9b778fa0dc42)" %>
 	<%}
-	%></p><%
+	%></div><%
 break;
 
 case CmsNewsletterSubscriptionBean.ACTION_CONFIRMUNSUBSCRIPTION:
 	// the confirm action: unsubscribe
-	%><h1><%= cmsBean.getConfigText("Confirm/UnSubscribe/Headline") %></h1><p><%
+	%><div class="headline"><h2><%= cmsBean.getConfigText("Confirm/UnSubscribe/Headline") %></h2></div><div class="alert alert-success" role="alert"><%
 	out.print(cmsBean.actionConfirmUnsubscribe());
-	%></p><%
+	%></div><%
 break;
 
 case CmsNewsletterSubscriptionBean.ACTION_SENDLASTNEWSLETTER:
 	// the action: send last newsletter
-	%><h1><%= cmsBean.getConfigText("Subscribe/SendLast/Headline") %></h1><p><%
+	%><div class="headline"><h2><%= cmsBean.getConfigText("Subscribe/SendLast/Headline") %></h2></div><div class="alert alert-success" role="alert"><%
 	out.print(cmsBean.actionSendLastNewsletter());
-	%></p><%
+	%></div><%
 break;
 
 default:
@@ -66,22 +63,23 @@ default:
 	%>
 <c:choose>
 	<c:when test="${cms.element.inMemoryOnly}">
-		<h3><%= cmsBean.key("v8.newsletter.newNewsletterSubscription") %></h3>
+		<div class="headline"><h2><%= cmsBean.key("v8.newsletter.newNewsletterSubscription") %></h2></div>
 	</c:when>
 	<c:otherwise>
-		<h1><%= cmsBean.getConfigText("Subscribe/Headline") %></h1>
+		<div class="headline"><h2><%= cmsBean.getConfigText("Subscribe/Headline") %></h2></div>
 		<%= cmsBean.getConfigText("Subscribe/Text") %>
 	</c:otherwise>
 </c:choose>
-	
+
 	<%
-	
+
 	if (!cmsBean.isValid()) {
 		%>
-		<p class="newslettersubscription-error"><%= cmsBean.key("validation.alknewsletter.error.headline") %></p>
+		<div class="alert alert-danger newslettersubscription-error" role="alert"><strong><%= cmsBean.key("validation.alknewsletter.error.headline") %></strong>
 		<ul class="newslettersubscription-error">
 		<%= cmsBean.getValidationErrorsHtml("li") %>
 		</ul>
+		</div>
 		<%
 	}
 
@@ -89,29 +87,31 @@ default:
 
 	<p>
 	<form name="subscription" class="newslettersubscription-form" action="<%= cmsBean.link(cmsBean.getRequestContext().getUri()) %>" method="post">
-		<div class="newslettersubscription-radio">
-			<input type="radio" name="action" class="newslettersubscription-radio" value="<%= CmsNewsletterSubscriptionBean.ACTION_SUBSCRIBE  %>"<% if (cmsBean.getCheckedAction() <= CmsNewsletterSubscriptionBean.ACTION_SUBSCRIBE) { %> checked="checked"<% } %> />
-			<%= cmsBean.key("form.alknewsletter.subscribe") %>
+		<div class="radio newslettersubscription-radio">
+			<label>
+				<input type="radio" name="action" class="newslettersubscription-radio" value="<%= CmsNewsletterSubscriptionBean.ACTION_SUBSCRIBE  %>"<% if (cmsBean.getCheckedAction() <= CmsNewsletterSubscriptionBean.ACTION_SUBSCRIBE) { %> checked="checked"<% } %> />
+				<%= cmsBean.key("form.alknewsletter.subscribe") %>
+			</label>
 		</div>
-		<div class="newslettersubscription-radio">
-			<input type="radio" name="action" class="newslettersubscription-radio" value="<%= CmsNewsletterSubscriptionBean.ACTION_UNSUBSCRIBE  %>"<% if (cmsBean.getCheckedAction() == CmsNewsletterSubscriptionBean.ACTION_UNSUBSCRIBE) { %> checked="checked"<% } %> />
-			<%= cmsBean.key("form.alknewsletter.unsubscribe") %>
+		<div class="radio newslettersubscription-radio">
+			<label>
+				<input type="radio" name="action" class="newslettersubscription-radio" value="<%= CmsNewsletterSubscriptionBean.ACTION_UNSUBSCRIBE  %>"<% if (cmsBean.getCheckedAction() == CmsNewsletterSubscriptionBean.ACTION_UNSUBSCRIBE) { %> checked="checked"<% } %> />
+				<%= cmsBean.key("form.alknewsletter.unsubscribe") %>
+			</label>
 		</div>
-		<div class="newslettersubscription-email">
-			<%= cmsBean.key("form.alknewsletter.email") %>
-			<input type="text" name="email" class="newslettersubscription-email" value="<%= cmsBean.getEmail() %>" />
+		<div class="form-group newslettersubscription-email">
+			<label for="nlSubscriptionEmail"><%= cmsBean.key("form.alknewsletter.email") %></label>
+			<input type="text" name="email" id="nlSubscriptionEmail" class="form-control newslettersubscription-email" value="<%= cmsBean.getEmail() %>" />
 		</div>
 		<div class="newslettersubscription-buttons">
-			<input type="submit" value=" <%= cmsBean.key("form.alknewsletter.buttonok") %> " />&nbsp;&nbsp;<input type="reset" value=" <%= cmsBean.key("form.alknewsletter.buttonreset") %> " />
+			<button type="submit" class="btn btn-default"><%= cmsBean.key("form.alknewsletter.buttonok") %></button>
 		</div>
 	</form>
 	</p>
-	
-	
+
 <%
 }
 %>
-
 
 	</div>
 </div>

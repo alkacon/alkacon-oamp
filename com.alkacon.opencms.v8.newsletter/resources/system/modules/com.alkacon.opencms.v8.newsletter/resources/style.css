@@ -34,7 +34,7 @@ input.newslettersubscription-email {
 }
 
 /* Form buttons */
-div.newslettersubscription-buttons input {
+div.newslettersubscription-buttons input, div.newslettersubscription-buttons button {
 	border: 1px solid #555555;
 	background-color: #CCCCCC;
 }
@@ -89,7 +89,7 @@ input.newslettersubscription-email-sm {
 }
 
 /* Form buttons */
-div.newslettersubscription-buttons-sm input {
+div.newslettersubscription-buttons-sm input, div.newslettersubscription-buttons-sm button {
 	border: 1px solid #555555;
 	background-color: #CCCCCC;
 	font-size: 10px;

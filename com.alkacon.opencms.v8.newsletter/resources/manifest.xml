@@ -271,6 +271,26 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<source>system/modules/com.alkacon.opencms.v8.newsletter/classes/com/alkacon/opencms/v8/newsletter/messages_it.properties</source>
+			<destination>system/modules/com.alkacon.opencms.v8.newsletter/classes/com/alkacon/opencms/v8/newsletter/messages_it.properties</destination>
+			<type>plain</type>
+			<uuidstructure>1c6f8ed9-d958-11e4-bf39-919c0d6c882e</uuidstructure>
+			<uuidresource>1c6f8eda-d958-11e4-bf39-919c0d6c882e</uuidresource>
+			<datelastmodified>Wed, 08 Apr 2015 15:41:13 GMT</datelastmodified>
+			<userlastmodified>acordeddu</userlastmodified>
+			<datecreated>Thu, 02 Apr 2015 16:48:38 GMT</datecreated>
+			<usercreated>acordeddu</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>content-encoding</name>
+					<value><![CDATA[ISO-8859-1]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
 			<source>system/modules/com.alkacon.opencms.v8.newsletter/classes/com/alkacon/opencms/v8/newsletter/workplace.properties</source>
 			<destination>system/modules/com.alkacon.opencms.v8.newsletter/classes/com/alkacon/opencms/v8/newsletter/workplace.properties</destination>
 			<type>plain</type>
@@ -301,6 +321,26 @@
 			<accesscontrol/>
 		</file>
 		<file>
+			<source>system/modules/com.alkacon.opencms.v8.newsletter/classes/com/alkacon/opencms/v8/newsletter/workplace_it.properties</source>
+			<destination>system/modules/com.alkacon.opencms.v8.newsletter/classes/com/alkacon/opencms/v8/newsletter/workplace_it.properties</destination>
+			<type>plain</type>
+			<uuidstructure>cbe12d72-d915-11e4-a734-919c0d6c882e</uuidstructure>
+			<uuidresource>cbe12d73-d915-11e4-a734-919c0d6c882e</uuidresource>
+			<datelastmodified>Tue, 07 Apr 2015 14:33:40 GMT</datelastmodified>
+			<userlastmodified>acordeddu</userlastmodified>
+			<datecreated>Thu, 02 Apr 2015 08:53:56 GMT</datecreated>
+			<usercreated>acordeddu</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>content-encoding</name>
+					<value><![CDATA[ISO-8859-1]]></value>
+				</property>
+			</properties>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
 			<destination>system/modules/com.alkacon.opencms.v8.newsletter/classes/com/alkacon/opencms/v8/newsletter/admin</destination>
 			<type>folder</type>
 			<uuidstructure>7f8d8d84-1f60-11e1-818e-9b778fa0dc42</uuidstructure>
@@ -325,6 +365,26 @@
 			<usercreated>Admin</usercreated>
 			<flags>0</flags>
 			<properties/>
+			<relations/>
+			<accesscontrol/>
+		</file>
+		<file>
+			<source>system/modules/com.alkacon.opencms.v8.newsletter/classes/com/alkacon/opencms/v8/newsletter/admin/messages_it.properties</source>
+			<destination>system/modules/com.alkacon.opencms.v8.newsletter/classes/com/alkacon/opencms/v8/newsletter/admin/messages_it.properties</destination>
+			<type>plain</type>
+			<uuidstructure>0257ded7-d958-11e4-bf39-919c0d6c882e</uuidstructure>
+			<uuidresource>0257ded8-d958-11e4-bf39-919c0d6c882e</uuidresource>
+			<datelastmodified>Wed, 08 Apr 2015 15:42:53 GMT</datelastmodified>
+			<userlastmodified>acordeddu</userlastmodified>
+			<datecreated>Thu, 02 Apr 2015 16:47:54 GMT</datecreated>
+			<usercreated>acordeddu</usercreated>
+			<flags>0</flags>
+			<properties>
+				<property>
+					<name>content-encoding</name>
+					<value><![CDATA[ISO-8859-1]]></value>
+				</property>
+			</properties>
 			<relations/>
 			<accesscontrol/>
 		</file>
