@@ -49,6 +49,7 @@
 			</mappings>
 			<formatters>
 				<formatter minwidth="400" maxwidth="800" uri="/system/modules/com.alkacon.opencms.v8.newsletter/formatters/newsletter-center.jsp" />
+                <formatter type="*" uri="/system/modules/com.alkacon.opencms.v8.newsletter/formatters/newsletter-center.jsp" />
 			</formatters>
 			<settings>
 				<setting name="boxschema" nice-name="Box Schema" default="box_schema1" type="string" widget="select" widget-config="box_schema1:Schema 1|box_schema2:Schema 2|box_schema3:Schema 3" />

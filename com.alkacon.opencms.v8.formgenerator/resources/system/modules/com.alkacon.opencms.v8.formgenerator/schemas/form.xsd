@@ -5,12 +5,12 @@
 	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.formgenerator/schemas/optionalconfig.xsd"/>
 	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.formgenerator/schemas/optionalconfirmation.xsd"/>
 	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.formgenerator/schemas/optionalexpiration.xsd"/>
-        <xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.formgenerator/schemas/optionalrelease.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.formgenerator/schemas/optionalrelease.xsd"/>
 	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.formgenerator/schemas/optionalfieldtext.xsd"/>
 	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.formgenerator/schemas/optionalformcaptcha.xsd"/>
 	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.formgenerator/schemas/optionalsubfield.xsd"/>
 	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.formgenerator/schemas/formdatatarget.xsd"/>
-		
+	
 	<xsd:element name="AlkaconV8WebForms" type="OpenCmsAlkaconV8WebForms"/>
 	
 	<xsd:complexType name="OpenCmsAlkaconV8WebForms">
@@ -34,6 +34,7 @@
 			<xsd:element name="FormConfirmation" type="OpenCmsHtml" />
 			<xsd:element name="TargetUri" type="OpenCmsVfsFile" minOccurs="0" />
 			<xsd:element name="ForwardMode" type="OpenCmsBoolean" minOccurs="0" />
+            <xsd:element name="InstantRedirect" type="OpenCmsBoolean" minOccurs="0" />
 			<xsd:element name="OptionalFormRelease" type="OpenCmsOptionalAlkaconV8WebFormRelease" minOccurs="0" />
 			<xsd:element name="OptionalFormExpiration" type="OpenCmsOptionalAlkaconV8WebFormExpiration" minOccurs="0" />
 
@@ -56,6 +57,8 @@
 			<resourcebundle name="com.alkacon.opencms.v8.formgenerator.workplace"/>
 			<preview uri="${previewtempfile}" />
 			<defaults>
+                <default element="ForwardMode" value="true" />
+                <default element="InstantRedirect" value="true" />
 				<default element="OptionalFormConfiguration/MailCSS" value="%(key.form.email.css)" />
 				<default element="OptionalFormConfiguration/ShowMandatory" value="true" />
 				<default element="OptionalFormConfiguration/ShowReset" value="true" />

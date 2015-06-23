@@ -388,7 +388,7 @@ public class CmsFormHandler extends CmsJspActionElement {
                 }
                 if (sendData()) {
                     // successfully sent email, decide further actions
-                    if (getFormConfiguration().hasTargetUri()) {
+                    if (getFormConfiguration().hasTargetUri() && !getFormConfiguration().isInstantRedirect()) {
                         if (getFormConfiguration().isForwardMode()) {
                             CmsRequestUtil.forwardRequest(
                                 link(getFormConfiguration().getTargetUri()),
@@ -1807,10 +1807,16 @@ public class CmsFormHandler extends CmsJspActionElement {
         // create the main form and pass the previously generated field HTML as attribute
         StringTemplate sTemplate = getOutputTemplate("form");
         // set the necessary attributes to use in the string template
-        String formUri = getCmsObject().getRequestContext().getUri();
-        if (CmsJspStandardContextBean.getInstance(getRequest()).isDetailRequest()) {
-            formUri = CmsJspStandardContextBean.getInstance(getRequest()).getDetailContentSitePath();
+        String formUri;
+        if (getFormConfiguration().hasTargetUri() && getFormConfiguration().isInstantRedirect()) {
+            formUri = getFormConfiguration().getTargetUri();
+        } else {
+            formUri = getCmsObject().getRequestContext().getUri();
+            if (CmsJspStandardContextBean.getInstance(getRequest()).isDetailRequest()) {
+                formUri = CmsJspStandardContextBean.getInstance(getRequest()).getDetailContentSitePath();
+            }
         }
+
         sTemplate.setAttribute("formuri", OpenCms.getLinkManager().substituteLink(getCmsObject(), formUri));
         sTemplate.setAttribute("enctype", encType);
         sTemplate.setAttribute("errormessage", errorMessage);

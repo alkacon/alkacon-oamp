@@ -278,6 +278,9 @@ public class CmsForm {
     /** Configuration node name for the input field node. */
     public static final String NODE_INPUTFIELD = "InputField";
 
+    /** Configuration node name for the instant redirect node. */
+    public static final String NODE_INSTANTREDIRECT = "InstantRedirect";
+
     /** Configuration node name for the item description node. */
     public static final String NODE_ITEMDESCRIPTION = "ItemDescription";
 
@@ -495,6 +498,9 @@ public class CmsForm {
     /** If there is at least one mandatory field. */
     protected boolean m_hasMandatoryFields;
 
+    /** indicates if an instant redirect is configured. */
+    protected boolean m_instantRedirect;
+
     /** The current jsp action element. */
     protected CmsJspActionElement m_jspAction;
 
@@ -576,7 +582,7 @@ public class CmsForm {
     /** Flag to signal that data should be sent by email - defaults to true. */
     protected boolean m_transportEmail = true;
 
-    /** The optional csv export configuration (unparsed as string) */
+    /** The optional CSV export configuration, unparsed as string. */
     private String m_csvExportConfiguration;
 
     /** The forward mode. */
@@ -679,6 +685,25 @@ public class CmsForm {
     public static String getStaticType() {
 
         return TYPE_NAME;
+    }
+
+    /**
+     * Returns the value from the dynamic configuration if it is not empty or whitespace only - if so, it returns null.
+     * @param dynamicConfig the dynamic configuration
+     * @param key the configuration option to read
+     * 
+     * @return If existing, the (non-whitespace-only) value of the configuration option, otherwise null
+     */
+    public static String getValueFromDynamicConfig(Map<String, String> dynamicConfig, String key) {
+
+        String value = null;
+        if (dynamicConfig != null) {
+            value = dynamicConfig.get(key);
+            if ((value != null) && value.trim().isEmpty()) {
+                value = null;
+            }
+        }
+        return value;
     }
 
     /**
@@ -932,6 +957,16 @@ public class CmsForm {
     public String getCssFile() {
 
         return m_cssFile;
+    }
+
+    /**
+     * Get the column configuration for CSV export.
+     * 
+     * @return the list of columns that should be exported in a csv file (with placeholders for default columns), or null if no configuration is given
+     */
+    public String getCsvExportConfiguration() {
+
+        return m_csvExportConfiguration;
     }
 
     /**
@@ -1533,6 +1568,16 @@ public class CmsForm {
     }
 
     /**
+     * Returns the flag if an instant redirect to the configured target URI should be executed.<p>
+     *
+     * @return the flag if an instant redirect to the configured target URI should be executed
+     */
+    public boolean isInstantRedirect() {
+
+        return m_instantRedirect;
+    }
+
+    /**
      * Returns if the session should be refreshed when displaying the form.<p>
      * 
      * @return <code>true</code> if the session should be refreshed, otherwise <code>false</code>
@@ -1854,12 +1899,18 @@ public class CmsForm {
             stringValue = getContentStringValue(content, cms, NODE_TARGET_URI, locale);
         }
         setTargetUri(getConfigurationValue(stringValue, ""));
-        // get the optional target URI
+        // get the optional forward mode
         stringValue = getValueFromDynamicConfig(dynamicConfig, NODE_FORWARD_MODE);
         if (stringValue == null) {
             stringValue = getContentStringValue(content, cms, NODE_FORWARD_MODE, locale);
         }
         setForwardMode(Boolean.parseBoolean(getConfigurationValue(stringValue, Boolean.FALSE.toString())));
+        // get the optional instant redirect
+        stringValue = getValueFromDynamicConfig(dynamicConfig, NODE_INSTANTREDIRECT);
+        if (stringValue == null) {
+            stringValue = getContentStringValue(content, cms, NODE_INSTANTREDIRECT, locale);
+        }
+        setInstantRedirect(Boolean.parseBoolean(getConfigurationValue(stringValue, Boolean.FALSE.toString())));
         // get the mail from address
         stringValue = getValueFromDynamicConfig(dynamicConfig, NODE_MAILFROM);
         if (stringValue == null) {
@@ -2320,26 +2371,6 @@ public class CmsForm {
     }
 
     /**
-     * Set the column configuration for CSV export.
-     * 
-     * @param stringValue String with the pipe-separated column values
-     */
-    private void setCsvExportConfiguration(final String stringValue) {
-
-        m_csvExportConfiguration = stringValue;
-    }
-
-    /**
-     * Get the column configuration for CSV export.
-     * 
-     * @return the list of columns that should be exported in a csv file (with placeholders for default columns), or null if no configuration is given
-     */
-    public String getCsvExportConfiguration() {
-
-        return m_csvExportConfiguration;
-    }
-
-    /**
      * Initializes the field objects of the form.<p>
      * 
      * @param content the XML configuration content
@@ -2750,6 +2781,16 @@ public class CmsForm {
     protected void setHasMandatoryFields(boolean hasMandatoryFields) {
 
         m_hasMandatoryFields = hasMandatoryFields;
+    }
+
+    /**
+     * Sets the flag if an instant redirect to the configured target URI should be executed.<p>
+     *
+     * @param instantRedirect the flag if an instant redirect to the configured target URI should be executed
+     */
+    protected void setInstantRedirect(boolean instantRedirect) {
+
+        m_instantRedirect = instantRedirect;
     }
 
     /**
@@ -3328,21 +3369,12 @@ public class CmsForm {
     }
 
     /**
-     * Returns the value from the dynamic configuration if it is not empty or whitespace only - if so, it returns null.
-     * @param dynamicConfig the dynamic configuration
-     * @param key the configuration option to read
+     * Set the column configuration for CSV export.
      * 
-     * @return If existing, the (non-whitespace-only) value of the configuration option, otherwise null
+     * @param stringValue String with the pipe-separated column values
      */
-    public static String getValueFromDynamicConfig(Map<String, String> dynamicConfig, String key) {
+    private void setCsvExportConfiguration(final String stringValue) {
 
-        String value = null;
-        if (dynamicConfig != null) {
-            value = dynamicConfig.get(key);
-            if ((value != null) && value.trim().isEmpty()) {
-                value = null;
-            }
-        }
-        return value;
+        m_csvExportConfiguration = stringValue;
     }
 }
