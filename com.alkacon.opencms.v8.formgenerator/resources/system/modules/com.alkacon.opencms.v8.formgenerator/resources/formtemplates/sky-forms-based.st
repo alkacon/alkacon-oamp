@@ -5,7 +5,7 @@ form_twocolumns() ::= "false"
 
 form(formuri,enctype,errormessage,mandatorymessage,formconfig,fields,downloadbutton,submitbutton,resetbutton,hiddenfields,prevbutton,subfieldjs) ::= <<
 $! ###### Main input form ###### !$
-$formconfig.formText$
+$if(formconfig.formText)$$formconfig.formText$$endif$
 
 <form name="emailform$formconfig.configId$" id="emailform$formconfig.configId$" action="$formuri$"
 	method="post"$enctype$ $formconfig.formAttributes$>
@@ -22,10 +22,12 @@ $endif$
 	$fields$
 </fieldset>
 
-$! --- show form middle text --- !$
-<div class="webform_middletext"><br/> 
-	$formconfig.formMiddleText$
-</div>
+$if(formconfig.formMiddleText)$
+  $! --- show form middle text --- !$
+  <div class="webform_middletext"><br/> 
+  	$formconfig.formMiddleText$
+  </div>
+$endif$
 
 <footer>
 $! --- show mandatory note --- !$
@@ -35,7 +37,7 @@ $endif$
 
 $! --- show submit, reset and previous button --- !$
 $if(submitbutton)$
-	
+
 		$hiddenfields$
 		$if(prevbutton)$
 			<input type="submit" value="$prevbutton$" name="back" class="formbutton btn btn-gray prevbutton" />
@@ -62,8 +64,10 @@ $if(subfieldjs)$
 	<script type="text/javascript">$subfieldjs$</script>
 $endif$
 
-$! --- show form footer text --- !$
-$formconfig.formFooterText$
+$if(formconfig.formFooterText)$
+  $! --- show form footer text --- !$
+  $formconfig.formFooterText$
+$endif$
 >>
 
 

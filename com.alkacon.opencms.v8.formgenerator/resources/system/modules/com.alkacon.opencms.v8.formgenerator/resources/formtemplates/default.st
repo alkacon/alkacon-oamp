@@ -5,7 +5,7 @@ form_twocolumns() ::= "false"
 
 form(formuri,enctype,errormessage,mandatorymessage,formconfig,fields,downloadbutton,submitbutton,resetbutton,hiddenfields,prevbutton,subfieldjs) ::= <<
 $! ###### Main input form ###### !$
-$formconfig.formText$
+$if(formconfig.formText)$$formconfig.formText$$endif$
 $! --- show validation errors -- !$
 $if(errormessage)$
 	<p><span class="webform_msg_error">
@@ -19,10 +19,12 @@ $endif$
 <div class="webform_wrapper">
 $fields$
 
-$! --- show form middle text --- !$
-<div class="webform_middletext"><br/> 
-	$formconfig.formMiddleText$
-</div>
+$if(formconfig.formMiddleText)$
+  $! --- show form middle text --- !$
+  <div class="webform_middletext"><br/> 
+  	$formconfig.formMiddleText$
+  </div>
+$endif$
 
 $! --- show mandatory note --- !$
 $if(mandatorymessage)$
@@ -59,8 +61,10 @@ $if(subfieldjs)$
 	<script type="text/javascript">$subfieldjs$</script>
 $endif$
 
-$! --- show form footer text --- !$
-$formconfig.formFooterText$
+$if(formconfig.formFooterText)$
+  $! --- show form footer text --- !$
+  $formconfig.formFooterText$
+$endif$
 >>
 
 

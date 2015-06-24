@@ -1868,7 +1868,7 @@ public class CmsForm {
         if (stringValue == null) {
             stringValue = getContentStringValue(content, cms, NODE_FORMTEXT, locale);
         }
-        setFormText(getConfigurationValue(resolver, stringValue, ""));
+        setFormText(getConfigurationValue(resolver, stringValue, null));
         // get the form title
         stringValue = getValueFromDynamicConfig(dynamicConfig, NODE_TITLE);
         if (stringValue == null) {
@@ -1880,13 +1880,13 @@ public class CmsForm {
         if (stringValue == null) {
             stringValue = getContentStringValue(content, cms, NODE_FORMMIDDLETEXT, locale);
         }
-        setFormMiddleText(getConfigurationValue(resolver, stringValue, ""));
+        setFormMiddleText(getConfigurationValue(resolver, stringValue, null));
         // get the form footer text
         stringValue = getValueFromDynamicConfig(dynamicConfig, NODE_FORMFOOTERTEXT);
         if (stringValue == null) {
             stringValue = getContentStringValue(content, cms, NODE_FORMFOOTERTEXT, locale);
         }
-        setFormFooterText(getConfigurationValue(resolver, stringValue, ""));
+        setFormFooterText(getConfigurationValue(resolver, stringValue, null));
         // get the form confirmation text
         stringValue = getValueFromDynamicConfig(dynamicConfig, NODE_FORMCONFIRMATION);
         if (stringValue == null) {
