@@ -1680,8 +1680,7 @@ public class CmsFormHandler extends CmsJspActionElement {
 
         // determine if form type has to be set to "multipart/form-data" in case of upload fields
         String encType = null;
-        for (Iterator<I_CmsField> i = getFormConfiguration().getFields().iterator(); i.hasNext();) {
-            I_CmsField field = i.next();
+        for (I_CmsField field : getFormConfiguration().getAllFields(false, true, false)) {
             if (field.getType().equals(CmsFileUploadField.getStaticType())) {
                 encType = " enctype=\"multipart/form-data\"";
                 break;
