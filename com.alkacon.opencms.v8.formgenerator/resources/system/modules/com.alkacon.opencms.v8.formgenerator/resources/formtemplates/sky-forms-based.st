@@ -8,7 +8,7 @@ $! ###### Main input form ###### !$
 $if(formconfig.formText)$$formconfig.formText$$endif$
 
 <form name="emailform$formconfig.configId$" id="emailform$formconfig.configId$" action="$formuri$"
-	method="post"$enctype$ $formconfig.formAttributes$>
+	method="post" class="sky-form"$enctype$ $formconfig.formAttributes$>
 
 $! --- show validation errors -- !$
 $if(errormessage)$
@@ -24,15 +24,15 @@ $endif$
 
 $if(formconfig.formMiddleText)$
   $! --- show form middle text --- !$
-  <div class="webform_middletext"><br/> 
+  <fieldset> 
   	$formconfig.formMiddleText$
-  </div>
+  </fieldset>
 $endif$
 
 <footer>
 $! --- show mandatory note --- !$
 $if(mandatorymessage)$
-	<div class="webform_mandatory">$mandatorymessage$</div>
+	<section><div class="note">$mandatorymessage$</div></section>
 $endif$
 
 $! --- show submit, reset and previous button --- !$
@@ -66,8 +66,9 @@ $endif$
 
 $if(formconfig.formFooterText)$
   $! --- show form footer text --- !$
-  $formconfig.formFooterText$
+  <div class="mt-20">$formconfig.formFooterText$</div>
 $endif$
+
 >>
 
 
@@ -292,66 +293,60 @@ $row_end(field=field,formconfig=formconfig)$
 field_table(field,formconfig,attributes,errormessage,mandatory,cols,rows,rowswithitems,editable) ::= <<
 $! ###### TABLE field ###### !$
 $if(!field.showRowStart)$
-	</div>
+	</section>
 $endif$
-<div class="webform_row">
+<section>
 <div class="webform_label_table">
 	$field_table_labels(field=field,formconfig=formconfig,errormessage=errormessage,mandatory=mandatory,rows=rows)$
 </div>
 <div class="webform_field_table">
 	$field_table_fields(formconfig=formconfig,cols=cols,rowswithitems=rowswithitems,editable=editable)$
 	$if(errormessage)$
-	<br/><span class="webform_label_error">$errormessage$</span>
+	<div class="note note-error">$errormessage$</div>
 	$endif$
 </div>
-</div>
+</section>
 $subtext(field=field,formconfig=formconfig)$
 >>
 
 
 field_table_labels(field,formconfig,errormessage,mandatory,rows) ::= <<
 $! ###### Labels for the TABLE field, separate sub template because also used for email generation ###### !$
-<table cellpadding="1" cellspacing="1" class="webform_label_table" width="100%"><thead>
-	<tr style="height: 20px;">
-		<th align='left' valign='top' style='font-weight: normal; '>
-			$if(errormessage)$
-				<span class="webform_msg_error">
-					$field.label$$mandatory$
-				</span>
-			$else$
-				$field.label$$mandatory$
-			$endif$
+<table class="table table-bordered table-wf-label"><thead>
+	<tr>
+		<th>
+			$field.label$$mandatory$
 		</th>
 	</tr>
 	$! --- iterate the row names --- !$
 	$rows:{
-	<tr style="height: 20px;">
-		<th align='right' >$it$</th>
+	<tr>
+		<th><section>$it$</section></th>
 	</tr>
 	}$
-</thead><tbody><tr><td></td></tr></tbody></table>
+</thead></table>
 >>
 
 
 field_table_fields(formconfig,cols,rowswithitems,editable) ::= <<
 $! ###### Rows for the TABLE field, separate sub template because also used for email generation ###### !$
-<table cellpadding="1" cellspacing="1" class="webform_field_table" width="100%"><thead>
-	<tr style="height: 20px;">
+<table class="table table-bordered table-wf-field"><thead>
+	<tr>
 	$! --- iterate the column names --- !$
 	$cols:{
-		<th align='center' >$it$</th>
+		<th>$it$</th>
 	}$
 	</tr>
 	</thead>
 	<tbody>
 	$! --- iterate the rows --- !$
 	$rowswithitems:{
-	<tr style="height: 20px;">
+	<tr">
 		$! --- iterate the items of the row --- !$
 		$it:{
 		<td>
 			$if(editable)$
-			<input type="text" name="$it.name$" value="$it.valueEscaped$" class="table"/>
+			<label class="input"><input type="text" name="$it.name$" value="$it.valueEscaped$" class="table"/></label>
 			$else$
 			<span class="table">$it.valueEscaped$</span>
 			$endif$
@@ -440,25 +435,23 @@ subtext(field,formconfig) ::= <<
 $! ###### Intermediate texts for the fields ###### !$
 $if(field.hasText)$
 	$if(field.showRowStart)$
-		<div class="webform_row">
+		<section>
 	$endif$
 	$if(field.text.columnLeft)$
-		<div class="webform_text_left">
+		<div class="pull-left">
 		$field.text.text$
 		</div>
-		<div class="webform_field"></div>
 	$elseif(field.text.columnRight)$
-		<div class="webform_label"></div>
-		<div class="webform_text_right">
+		<div class="pull-right">
 		$field.text.text$
-		</div>
+		</div><div class="clearfix"></div>
 	$else$
-		<div class="webform_text">
+		<div>
 		$field.text.text$
 		</div>
 	$endif$
 	$if(field.showRowEnd)$
-		</div>
+		</section>
 	$endif$
 $endif$
 >>
@@ -467,6 +460,15 @@ $endif$
 checkpage(formuri,formconfig,checktext,captchafield,captchaerror,captchaimagelink,checkfields,hiddenfields,checkbutton,correctbutton) ::= <<
 $! ###### CHECK page of the form ###### !$
 $checktext$
+<table class="table table-bordered table-striped">
+$checkfields:{
+	<tr>
+		<td>$it.label$</td>
+		<td>$it.value$</td>
+	</tr>
+}$
+</table>
+
 $if(captchafield)$
 	<script type="text/javascript">
 		function runConfirmValues() {
@@ -474,61 +476,42 @@ $if(captchafield)$
 			return true;
 		}
 	</script>
-	<form id="webformcaptcha$formconfig.configId$" action="" method="post" enctype="multipart/form-data">
-$endif$
-<div class="webform_check_wrapper">
-$checkfields:{
-	<div class="webform_row">
-		<div class="webform_label">$it.label$</div>
-		<div class="webform_field">$it.value$</div>
+	<form id="webformcaptcha$formconfig.configId$" action="" method="post" enctype="multipart/form-data" class="sky-form">
+	<fieldset>
+	$row_start(field=captchafield)$
+	<label class="label">
+		$captchafield.label$
+	</label>
+	<div>
+		<img src="$captchaimagelink$" class="img-responsive" alt="" />
 	</div>
-}$
-
-$if(captchafield)$
-	<div class="webform_row">
-		<div class="webform_label">
-			$if(captchaerror)$
-				<span class="webform_msg_error">
-					$captchafield.label$
-				</span>
-			$else$
-				$captchafield.label$
-			$endif$
-		</div>
-		<div class="webform_field">
-			<img src="$captchaimagelink$" width="$captchafield.captchaSettings.imageWidth$" height="$captchafield.captchaSettings.imageHeight$" alt="" /><br />
-			<input type="text" name="$captchafield.name$" value="" />
-			$if(captchaerror)$
-				<br/><span class="webform_label_error">
-				$captchaerror$
-				</span>
-			$endif$
-		</div>
-	</div>
-$endif$
-</div>
-$if(captchafield)$
+	<label class="input$if(captchaerror)$ state-error$endif$">
+		<input type="text" name="$captchafield.name$" value="" />
+	</label>
+	$if(captchaerror)$
+		<div class="note note-error">$captchaerror$</div>
+	$endif$
+	$row_end(field=captchafield,formconfig=formconfig)$
+	</fieldset>
 	</form>
 $endif$
 
-<div class="webform_check_wrapper">
-	<div class="webform_row">
-		<form id="webformconfirmvalues$formconfig.configId$" method="post" enctype="multipart/form-data" action="$formuri$" onsubmit="return runConfirmValues();">
-		<div style="display: none;">
-		<input type="hidden" name="formaction$formconfig.configId$" value="confirmed" />
-		<input type="hidden" name="captchaphrase$formconfig.configId$" value="" />
-		$hiddenfields$
-		</div><div class="webform_check_button">
-		<input type="submit" value="$checkbutton$" class="formbutton" />&nbsp;&nbsp;&nbsp;&nbsp;</div>
-		</form>
-		<form id="webformdisplayvalues$formconfig.configId$" method="post" enctype="multipart/form-data" action="$formuri$">
-		<div style="display: none;">
-		<input type="hidden" name="formaction$formconfig.configId$" value="correct" />
-		$hiddenfields$
-		</div><div class="webform_check_button">
-		<input type="submit" value="$correctbutton$" class="formbutton" /></div>
-		</form>
-	</div>
+<div class="sky-form">
+	<form id="webformconfirmvalues$formconfig.configId$" method="post" enctype="multipart/form-data" action="$formuri$" onsubmit="return runConfirmValues();">
+	<span style="display: none;">
+	<input type="hidden" name="formaction$formconfig.configId$" value="confirmed" />
+	<input type="hidden" name="captchaphrase$formconfig.configId$" value="" />
+	$hiddenfields$
+	</span><footer style="border-top: none;">
+	<input type="submit" value="$checkbutton$" class="formbutton btn btn-success submitbutton" />
+	</form>
+	<form id="webformdisplayvalues$formconfig.configId$" method="post" enctype="multipart/form-data" action="$formuri$" class="pull-right">
+	<span style="display: none;">
+	<input type="hidden" name="formaction$formconfig.configId$" value="correct" />
+	$hiddenfields$
+	</span>
+	<input type="submit" value="$correctbutton$" class="formbutton btn btn-danger correctbutton"/></footer>
+	</form>
 </div>
 >>
 
@@ -536,14 +519,14 @@ $endif$
 confirmationpage(formconfig,confirmtext,confirmfields) ::= <<
 $! ###### CONFIRMATION page of the form ###### !$
 $confirmtext$
-<div class="webform_confirm_wrapper">
+<table class="table table-bordered table-striped">
 $confirmfields:{
-	<div class="webform_row">
-		<div class="webform_label">$it.label$</div>
-		<div class="webform_field">$it.value$</div>
-	</div>
+	<tr>
+		<td>$it.label$</td>
+		<td>$it.value$</td>
+	</tr>
 }$
-</div>
+</table>
 >>
 
 
@@ -605,13 +588,13 @@ table.dataform { border-collapse: collapse; border: 1px solid #333; }
 table.dataform tr td { border-top: 1px solid #ccc; vertical-align:top; padding: 8px; }
 table.dataform tr td.first { border-top: none; }
 td.data { font-weight: bold; }
-table.webform_label_table { vertical-align: top; }
-table.webform_label_table tr th, table.webform_label_table tr td, table.webform_field_table tr th, table.webform_field_table tr td { white-space: nowrap; }
-td.webform_label_table { vertical-align: top; }
-table.webform_field_table thead, table.webform_field_table tbody, table.webform_label_table thead { margin: 0; padding: 0; }
-table.webform_label_table tr th, table.webform_field_table tr td, table.webform_field_table tr th { height: 25px; }
-table.webform_field_table tr td { padding-top: 0 !important; padding-bottom: 0 !important; }
-table.webform_label_table tr th:first-child { vertical-align: middle; }
+table.table-wf-label { vertical-align: top; }
+table.table-wf-label tr th, table.table-wf-label tr td, table.table-wf-field tr th, table.table-wf-field tr td { white-space: nowrap; }
+td.table-wf-label { vertical-align: top; }
+table.table-wf-field thead, table.table-wf-field tbody, table.table-wf-label thead { margin: 0; padding: 0; }
+table.table-wf-label tr th, table.table-wf-field tr td, table.table-wf-field tr th { height: 25px; }
+table.table-wf-field tr td { padding-top: 0 !important; padding-bottom: 0 !important; }
+table.wtable-wf-label tr th:first-child { vertical-align: middle; }
 $endif$
 </style>
 </head><body>

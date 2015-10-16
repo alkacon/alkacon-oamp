@@ -209,6 +209,15 @@
 		text-align: center;
 	}
 
+	/* specific styles for sky forms table field */
+	.sky-form .webform_label_table th, .sky-form .webform_field_table span.table {
+		height: 71px;
+	}
+	
+	.sky-form .webform_label_table tr:first-child th {
+		height: auto;
+	}
+
 	/* error */
 	span.webform_label_error {
 		color: #C00;

@@ -7,20 +7,20 @@
  *
  * Copyright (c) 2010 Alkacon Software GmbH (http://www.alkacon.com)
  *
- * The Alkacon OpenCms Add-On Module Package is free software: 
+ * The Alkacon OpenCms Add-On Module Package is free software:
  * you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
- * The Alkacon OpenCms Add-On Module Package is distributed 
+ *
+ * The Alkacon OpenCms Add-On Module Package is distributed
  * in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
- * along with the Alkacon OpenCms Add-On Module Package.  
+ * along with the Alkacon OpenCms Add-On Module Package.
  * If not, see http://www.gnu.org/licenses/.
  *
  * For further information about Alkacon Software GmbH, please see the
@@ -63,16 +63,16 @@ import org.apache.commons.fileupload.FileItem;
 
 /**
  * Represents an input form with all configured fields and options.<p>
- * 
+ *
  * Provides the necessary information to create an input form, email messages and confirmation outputs.<p>
- * 
- * @author Andreas Zahner 
- * @author Thomas Weckert 
+ *
+ * @author Andreas Zahner
+ * @author Thomas Weckert
  * @author Jan Baudisch
- * 
+ *
  * @version $Revision: 1.29 $
- * 
- * @since 7.0.4 
+ *
+ * @since 7.0.4
  */
 public class CmsForm {
 
@@ -118,15 +118,15 @@ public class CmsForm {
     /** Name of the module parameter for the configuration of the time format of the export data. */
     public static final String MODULE_PARAM_EXPORT_TIMEFORMAT = "export.timeformat";
 
-    /** 
-     * Module parameter for the content encoding (text encoding) of the exported csv data. This encoding may vary 
-     * from the value of the content-encoding property of the webform XML content because e.g. Microsoft Excel seems 
-     * to be hard-wired to use the windows-1252 encoding. 
+    /**
+     * Module parameter for the content encoding (text encoding) of the exported csv data. This encoding may vary
+     * from the value of the content-encoding property of the webform XML content because e.g. Microsoft Excel seems
+     * to be hard-wired to use the windows-1252 encoding.
      */
     public static final String MODULE_PARAM_EXPORTENCODING = "export.encoding";
 
-    /** 
-     * Module parameter for the line separator of the exported csv data. If set to 
+    /**
+     * Module parameter for the line separator of the exported csv data. If set to
      * {@link #MODULE_PARAMVALUE_EXPORTLINESEPARATOR_WINDOWS} exported "\n" will be transformed to "\r\n".
      */
     public static final String MODULE_PARAM_EXPORTLINESEPARATOR = "export.lineseparator";
@@ -149,20 +149,20 @@ public class CmsForm {
     /** Name of the upload VFS module parameter. */
     public static final String MODULE_PARAM_UPLOADVFS = "uploadvfs";
 
-    /** 
-     * Constant value for the module parameter {@link #MODULE_PARAM_EXPORTLINESEPARATOR} to have "\r\n" transformed to 
+    /**
+     * Constant value for the module parameter {@link #MODULE_PARAM_EXPORTLINESEPARATOR} to have "\r\n" transformed to
      * "\n", which is required for viewing the cvs in Microsoft (Windows!) Excel.
      */
     public static final String MODULE_PARAMVALUE_EXPORTLINESEPARATOR_EXCEL = "excel";
 
-    /** 
-     * Constant value for the module parameter {@link #MODULE_PARAM_EXPORTLINESEPARATOR} to have "\r\n" transformed to 
-     * "\r\n". 
+    /**
+     * Constant value for the module parameter {@link #MODULE_PARAM_EXPORTLINESEPARATOR} to have "\r\n" transformed to
+     * "\r\n".
      */
     public static final String MODULE_PARAMVALUE_EXPORTLINESEPARATOR_UNIX = "unix";
 
-    /** 
-     * Constant value for the module parameter {@link #MODULE_PARAM_EXPORTLINESEPARATOR} to have "\n" transformed to 
+    /**
+     * Constant value for the module parameter {@link #MODULE_PARAM_EXPORTLINESEPARATOR} to have "\n" transformed to
      * "\r\n".
      */
     public static final String MODULE_PARAMVALUE_EXPORTLINESEPARATOR_WINDOWS = "windows";
@@ -590,7 +590,7 @@ public class CmsForm {
 
     /**
      * Default constructor which parses the configuration file.<p>
-     * 
+     *
      * @param jsp the initialized CmsJspActionElement to access the OpenCms API
      * @param messages the localized messages
      * @param initial if true, field values are filled with values specified in the configuration file, otherwise from the request
@@ -604,13 +604,13 @@ public class CmsForm {
 
     /**
      * Constructor which parses the configuration file using a given configuration file URI.<p>
-     * 
+     *
      * @param jsp the initialized CmsJspActionElement to access the OpenCms API
      * @param messages the localized messages
      * @param initial if true, field values are filled with values specified in the configuration file, otherwise from the request
      * @param formConfigUri URI of the form configuration file, if not provided, current URI is used for configuration
      * @param formAction the desired action submitted by the form
-     * 
+     *
      * @throws Exception if parsing the configuration fails
      */
     public CmsForm(CmsFormHandler jsp, CmsMessages messages, boolean initial, String formConfigUri, String formAction)
@@ -622,14 +622,14 @@ public class CmsForm {
 
     /**
      * Constructor which parses the configuration file using a given configuration file URI.<p>
-     * 
+     *
      * @param jsp the initialized CmsJspActionElement to access the OpenCms API
      * @param messages the localized messages
      * @param initial if true, field values are filled with values specified in the configuration file, otherwise from the request
      * @param formConfigUri URI of the form configuration file, if not provided, current URI is used for configuration
      * @param formAction the desired action submitted by the form
      * @param dynamicConfig map of configurations that can overwrite the configuration from the configuration file
-     * 
+     *
      * @throws Exception if parsing the configuration fails
      */
     public CmsForm(
@@ -639,18 +639,18 @@ public class CmsForm {
         String formConfigUri,
         String formAction,
         Map<String, String> dynamicConfig)
-    throws Exception {
+        throws Exception {
 
         init(jsp, messages, initial, formConfigUri, formAction, dynamicConfig);
     }
 
     /**
      * If the given value is not empty, macros in it will be resolved, otherwise returns the default value.<p>
-     * 
+     *
      * @param resolver the macro resolver to use
      * @param value the configuration value to check and resolve macros in
      * @param defaultValue the default value to return in case the value is empty
-     * 
+     *
      * @return the checked value
      */
     public static String getConfigurationValue(CmsMacroResolver resolver, String value, String defaultValue) {
@@ -664,7 +664,7 @@ public class CmsForm {
 
     /**
      * Checks if the given value is empty and returns in that case the default value.<p>
-     * 
+     *
      * @param value the configuration value to check
      * @param defaultValue the default value to return in case the value is empty
      * @return the checked value
@@ -679,7 +679,7 @@ public class CmsForm {
 
     /**
      * Returns the resource type name of XML content forms.<p>
-     * 
+     *
      * @return the resource type name of XML content forms
      */
     public static String getStaticType() {
@@ -691,7 +691,7 @@ public class CmsForm {
      * Returns the value from the dynamic configuration if it is not empty or whitespace only - if so, it returns null.
      * @param dynamicConfig the dynamic configuration
      * @param key the configuration option to read
-     * 
+     *
      * @return If existing, the (non-whitespace-only) value of the configuration option, otherwise null
      */
     public static String getValueFromDynamicConfig(Map<String, String> dynamicConfig, String key) {
@@ -708,7 +708,7 @@ public class CmsForm {
 
     /**
      * Tests, if the captcha field (if configured at all) should be displayed on the check page.<p>
-     * 
+     *
      * @return true, if the captcha field should be displayed on the check page
      */
     public boolean captchaFieldIsOnCheckPage() {
@@ -718,7 +718,7 @@ public class CmsForm {
 
     /**
      * Tests, if the captcha field (if configured at all) should be displayed on the input page.<p>
-     * 
+     *
      * @return true, if the captcha field should be displayed on the input page
      */
     public boolean captchaFieldIsOnInputPage() {
@@ -727,9 +727,9 @@ public class CmsForm {
     }
 
     /**
-     * Returns the action class. 
-     * <p> 
-     * 
+     * Returns the action class.
+     * <p>
+     *
      * @return the action class.
      */
     public String getActionClass() {
@@ -739,7 +739,7 @@ public class CmsForm {
 
     /**
      * Returns a list of field objects, exclusive sub fields, inclusive dynamic fields, for the online form.<p>
-     * 
+     *
      * @return a list of field objects, exclusive sub fields, inclusive dynamic fields
      */
     public List<I_CmsField> getAllFields() {
@@ -752,7 +752,7 @@ public class CmsForm {
      * @param includeShownSubFields indicates if only the shown sub fields should be included
      * @param includeAllSubFields indicates if all possible sub fields should be included
      * @param includeDynamicFields indicates if the dynamic fields should be included
-     * 
+     *
      * @return a list of field objects, depending on the given parameters
      */
     public List<I_CmsField> getAllFields(
@@ -799,7 +799,7 @@ public class CmsForm {
 
     /**
      * Returns the (opt.) captcha field of this form.<p>
-     * 
+     *
      * @return the (opt.) captcha field of this form
      */
     public CmsCaptchaField getCaptchaField() {
@@ -809,10 +809,10 @@ public class CmsForm {
 
     /**
      * Returns the configuration ID of this form.<p>
-     * 
+     *
      * This ID is used as suffix for form field names and other field specific stuff,
      * making it possible to have more than one form on a page.<p>
-     * 
+     *
      * @return the configuration ID of this form
      */
     public int getConfigId() {
@@ -855,7 +855,7 @@ public class CmsForm {
 
     /**
      * Returns the confirmation mail receiver email address.<p>
-     * 
+     *
      * @return the confirmation mail receiver email address or <code>null</code> if not found
      */
     public String getConfirmationMailEmail() {
@@ -880,7 +880,7 @@ public class CmsForm {
      * Returns the index number of the input field containing the email address for the optional confirmation mail.<p>
      *
      * @return the index number of the input field containing the email address for the optional confirmation mail
-     * 
+     *
      * @deprecated use {@link #getConfirmationMailFieldDbLabel()} instead
      */
     @Deprecated
@@ -951,7 +951,7 @@ public class CmsForm {
 
     /**
      * Returns the name of the CSS file to use for the form.<p>
-     * 
+     *
      * @return the name of the CSS file to use for the form
      */
     public String getCssFile() {
@@ -961,7 +961,7 @@ public class CmsForm {
 
     /**
      * Get the column configuration for CSV export.
-     * 
+     *
      * @return the list of columns that should be exported in a csv file (with placeholders for default columns), or null if no configuration is given
      */
     public String getCsvExportConfiguration() {
@@ -981,7 +981,7 @@ public class CmsForm {
 
     /**
      * Returns the optional form expiration date.<p>
-     * 
+     *
      * @return the optional form expiration date
      */
     public long getExpirationDate() {
@@ -991,7 +991,7 @@ public class CmsForm {
 
     /**
      * Returns the form expiration text.<p>
-     * 
+     *
      * @return the form expiration text
      */
     public String getExpirationText() {
@@ -1001,9 +1001,9 @@ public class CmsForm {
 
     /**
      * Returns the field with the given database label.<p>
-     * 
+     *
      * @param dbLabel the database label
-     * 
+     *
      * @return the field with the given database label or <code>null</code> if not found
      */
     public I_CmsField getFieldByDbLabel(String dbLabel) {
@@ -1020,9 +1020,9 @@ public class CmsForm {
 
     /**
      * Returns the field specified by it's name (Xpath).<p>
-     * 
+     *
      * @param fieldName the field's name (Xpath)
-     * 
+     *
      * @return the field, or null
      */
     public I_CmsField getFieldByName(String fieldName) {
@@ -1032,7 +1032,7 @@ public class CmsForm {
 
     /**
      * Returns a list of field objects for the online form.<p>
-     * 
+     *
      * @return a list of field objects for the online form
      */
     public List<I_CmsField> getFields() {
@@ -1042,9 +1042,9 @@ public class CmsForm {
 
     /**
      * Returns the value for a field specified by it's name (Xpath).<p>
-     * 
+     *
      * @param fieldName the field's name (Xpath)
-     * 
+     *
      * @return the field value, or null
      */
     public String getFieldStringValueByName(String fieldName) {
@@ -1061,9 +1061,9 @@ public class CmsForm {
         return "";
     }
 
-    /** 
+    /**
      * Returns the global form attributes.<p>
-     * 
+     *
      * @return the global form attributes
      */
     public String getFormAttributes() {
@@ -1073,7 +1073,7 @@ public class CmsForm {
 
     /**
      * Returns the form check text.<p>
-     * 
+     *
      * @return the form check text
      */
     public String getFormCheckText() {
@@ -1083,7 +1083,7 @@ public class CmsForm {
 
     /**
      * Returns the form confirmation text.<p>
-     * 
+     *
      * @return the form confirmation text
      */
     public String getFormConfirmationText() {
@@ -1093,7 +1093,7 @@ public class CmsForm {
 
     /**
      * Returns the optional form input field attributes.<p>
-     * 
+     *
      * @return the optional form input field attributes
      */
     public String getFormFieldAttributes() {
@@ -1103,7 +1103,7 @@ public class CmsForm {
 
     /**
      * Returns the optional form field width ratio.<p>
-     * 
+     *
      * @return the optional form field width ratio
      */
     public int getFormFieldWidthRatio() {
@@ -1113,7 +1113,7 @@ public class CmsForm {
 
     /**
      * Returns the form footer text.<p>
-     * 
+     *
      * @return the form footer text
      */
     public String getFormFooterText() {
@@ -1123,7 +1123,7 @@ public class CmsForm {
 
     /**
      * Returns the id identifying the form entries that came from this form in the database.<p>
-     * 
+     *
      * @return the id identifying the form entries that came from this form in the database
      */
     public String getFormId() {
@@ -1133,7 +1133,7 @@ public class CmsForm {
 
     /**
      * Returns the form middle text.<p>
-     * 
+     *
      * @return the form middle text
      */
     public String getFormMiddleText() {
@@ -1143,7 +1143,7 @@ public class CmsForm {
 
     /**
      * Returns the form text.<p>
-     * 
+     *
      * @return the form text
      */
     public String getFormText() {
@@ -1163,7 +1163,7 @@ public class CmsForm {
 
     /**
      * Returns the mail bcc recipient(s).<p>
-     * 
+     *
      * @return the mail bcc recipient(s)
      */
     public String getMailBCC() {
@@ -1173,7 +1173,7 @@ public class CmsForm {
 
     /**
      * Returns the mail cc recipient(s).<p>
-     * 
+     *
      * @return the mail cc recipient(s)
      */
     public String getMailCC() {
@@ -1183,7 +1183,7 @@ public class CmsForm {
 
     /**
      * Returns the optional email CSS style sheet.<p>
-     * 
+     *
      * @return the optional email CSS style sheet
      */
     public String getMailCSS() {
@@ -1193,7 +1193,7 @@ public class CmsForm {
 
     /**
      * Returns the mail sender address.<p>
-     * 
+     *
      * @return the mail sender address
      */
     public String getMailFrom() {
@@ -1203,7 +1203,7 @@ public class CmsForm {
 
     /**
      * Returns the mail sender name.<p>
-     * 
+     *
      * @return the mail sender name
      */
     public String getMailFromName() {
@@ -1213,7 +1213,7 @@ public class CmsForm {
 
     /**
      * Returns the mail subject.<p>
-     * 
+     *
      * @return the mail subject
      */
     public String getMailSubject() {
@@ -1223,7 +1223,7 @@ public class CmsForm {
 
     /**
      * Returns the mail subject prefix.<p>
-     * 
+     *
      * @return the mail subject prefix
      */
     public String getMailSubjectPrefix() {
@@ -1233,7 +1233,7 @@ public class CmsForm {
 
     /**
      * Returns the mail text.<p>
-     * 
+     *
      * @return the mail text
      */
     public String getMailText() {
@@ -1243,7 +1243,7 @@ public class CmsForm {
 
     /**
      * Returns the mail text as plain text.<p>
-     * 
+     *
      * @return the mail text as plain text
      */
     public String getMailTextPlain() {
@@ -1253,7 +1253,7 @@ public class CmsForm {
 
     /**
      * Returns the mail recipient(s).<p>
-     * 
+     *
      * @return the mail recipient(s)
      */
     public String getMailTo() {
@@ -1263,7 +1263,7 @@ public class CmsForm {
 
     /**
      * Returns the mail type ("text" or "html").<p>
-     * 
+     *
      * @return the mail type
      */
     public String getMailType() {
@@ -1292,9 +1292,9 @@ public class CmsForm {
     }
 
     /**
-     * Returns the property file. 
-     * <p> 
-     * 
+     * Returns the property file.
+     * <p>
+     *
      * @return the property file.
      */
     public String getPropertyFile() {
@@ -1304,7 +1304,7 @@ public class CmsForm {
 
     /**
      * Returns the interval to refresh the session.<p>
-     * 
+     *
      * @return the interval to refresh the session
      */
     public int getRefreshSessionInterval() {
@@ -1344,10 +1344,10 @@ public class CmsForm {
 
     /**
      * Returns the target URI of this form.<p>
-     * 
+     *
      * This optional target URI can be used to redirect the user to an OpenCms page instead of displaying a confirmation
      * text from the form's XML content.<p>
-     * 
+     *
      * @return the target URI
      */
     public String getTargetUri() {
@@ -1356,8 +1356,8 @@ public class CmsForm {
     }
 
     /**
-     * Returns the optional HTML template file.<p> 
-     * 
+     * Returns the optional HTML template file.<p>
+     *
      * @return the optional HTML template file
      */
     public String getTemplateFile() {
@@ -1367,7 +1367,7 @@ public class CmsForm {
 
     /**
      * Returns the form title.<p>
-     * 
+     *
      * @return the form title
      */
     public String getTitle() {
@@ -1377,7 +1377,7 @@ public class CmsForm {
 
     /**
          * Tests if a captcha field is configured for this form.<p>
-         * 
+         *
          * @return true, if a captcha field is configured for this form
          */
     public boolean hasCaptchaField() {
@@ -1407,10 +1407,10 @@ public class CmsForm {
 
     /**
      * Tests if this form has a target URI specified.<p>
-     * 
+     *
      * This optional target URI can be used to redirect the user to an OpenCms page instead of displaying a confirmation
      * text from the form's XML content.<p>
-     * 
+     *
      * @return the target URI
      */
     public boolean hasTargetUri() {
@@ -1420,13 +1420,13 @@ public class CmsForm {
 
     /**
      * Initializes the form configuration and creates the necessary form field objects.<p>
-     * 
+     *
      * @param jsp the initialized CmsJspActionElement to access the OpenCms API
      * @param messages the localized messages
      * @param initial if true, field values are filled with values specified in the XML configuration
      * @param formConfigUri URI of the form configuration file, if not provided, current URI is used for configuration
      * @param formAction the desired action submitted by the form
-     * 
+     *
      * @throws Exception if parsing the configuration fails
      */
     public void init(CmsFormHandler jsp, CmsMessages messages, boolean initial, String formConfigUri, String formAction)
@@ -1437,14 +1437,14 @@ public class CmsForm {
 
     /**
      * Initializes the form configuration and creates the necessary form field objects.<p>
-     * 
+     *
      * @param jsp the initialized CmsJspActionElement to access the OpenCms API
      * @param messages the localized messages
      * @param initial if true, field values are filled with values specified in the XML configuration
      * @param formConfigUri URI of the form configuration file, if not provided, current URI is used for configuration
      * @param formAction the desired action submitted by the form
      * @param dynamicConfig map of configurations that can overwrite the configuration from the configuration file
-     * 
+     *
      * @throws Exception if parsing the configuration fails
      */
     public void init(
@@ -1518,7 +1518,7 @@ public class CmsForm {
 
     /**
      * Tests if the check page was submitted.<p>
-     * 
+     *
      * @return true, if the check page was submitted
      */
     public boolean isCheckPageSubmitted() {
@@ -1547,9 +1547,9 @@ public class CmsForm {
     }
 
     /**
-     * Returns <code>true</code> if the request should be forwarded to 
+     * Returns <code>true</code> if the request should be forwarded to
      * the given target URI, <code>false</code> otherwise.<p>
-     * 
+     *
      * @return the <code>true</code> if the request should be forwarded
      */
     public boolean isForwardMode() {
@@ -1559,7 +1559,7 @@ public class CmsForm {
 
     /**
      * Tests if the input page was submitted.<p>
-     * 
+     *
      * @return true, if the input page was submitted
      */
     public boolean isInputFormSubmitted() {
@@ -1579,7 +1579,7 @@ public class CmsForm {
 
     /**
      * Returns if the session should be refreshed when displaying the form.<p>
-     * 
+     *
      * @return <code>true</code> if the session should be refreshed, otherwise <code>false</code>
      */
     public boolean isRefreshSession() {
@@ -1589,7 +1589,7 @@ public class CmsForm {
 
     /**
      * Returns if the mandatory marks and text should be shown.<p>
-     * 
+     *
      * @return true if the mandatory marks and text should be shown, otherwise false
      */
     public boolean isShowMandatory() {
@@ -1599,7 +1599,7 @@ public class CmsForm {
 
     /**
      * Returns if the reset button should be shown.<p>
-     * 
+     *
      * @return true if the reset button should be shown, otherwise false
      */
     public boolean isShowReset() {
@@ -1609,7 +1609,7 @@ public class CmsForm {
 
     /**
      * Returns true to signal that data should be stored in the database or false (default).<p>
-     * 
+     *
      * @return true to signal that data should be stored in the database or false (default)
      */
     public boolean isTransportDatabase() {
@@ -1619,7 +1619,7 @@ public class CmsForm {
 
     /**
      * Returns true to signal that data should be sent by email (default) or false.<p>
-     * 
+     *
      * @return true to signal that data should be sent by email (default) or false
      */
     public boolean isTransportEmail() {
@@ -1644,7 +1644,7 @@ public class CmsForm {
 
     /**
      * Sets the form text.<p>
-     * 
+     *
      * @param formText the form text
      */
     public void setFormText(String formText) {
@@ -1654,7 +1654,7 @@ public class CmsForm {
 
     /**
      * Sets if the mandatory marks and text should be shown.<p>
-     * 
+     *
      * @param showMandatory the setting for the mandatory marks
      */
     public void setShowMandatory(boolean showMandatory) {
@@ -1664,7 +1664,7 @@ public class CmsForm {
 
     /**
      * Sets if the reset button should be shown.<p>
-     * 
+     *
      * @param showReset the setting for the reset button
      */
     public void setShowReset(boolean showReset) {
@@ -1673,8 +1673,20 @@ public class CmsForm {
     }
 
     /**
+     * Sets the HTML template file.<p>
+     *
+     * This is public to be able to set the template file from a formatter JSP file.<p>
+     *
+     * @param templateFile the HTML template file
+     */
+    public void setTemplateFile(final String templateFile) {
+
+        m_templateFile = templateFile;
+    }
+
+    /**
      * Sets the form title.<p>
-     * 
+     *
      * @param title the form title
      */
     public void setTitle(String title) {
@@ -1684,7 +1696,7 @@ public class CmsForm {
 
     /**
      * Adds a field to the form.<p>
-     * 
+     *
      * @param field the field to be added to the form
      */
     protected void addField(I_CmsField field) {
@@ -1702,10 +1714,10 @@ public class CmsForm {
 
     /**
      * Creates the checkbox field to activate the confirmation mail in the input form.<p>
-     * 
+     *
      * @param messages the localized messages
      * @param initial if true, field values are filled with values specified in the XML configuration, otherwise values are read from the request
-     * 
+     *
      * @return the checkbox field to activate the confirmation mail in the input form
      */
     protected I_CmsField createConfirmationMailCheckbox(CmsMessages messages, boolean initial) {
@@ -1734,16 +1746,17 @@ public class CmsForm {
 
     /**
      * Resolves the value of a dynamic field.<p>
-     * 
+     *
      * @param field the field to resolve the value for
-     * 
+     *
      * @return the value of the given dynamic field
      */
     protected String getDynamicFieldValue(CmsDynamicField field) {
 
         if (field.getResolvedValue() == null) {
             try {
-                I_CmsDynamicFieldResolver resolver = (I_CmsDynamicFieldResolver)Class.forName(getDynamicFieldClass()).newInstance();
+                I_CmsDynamicFieldResolver resolver = (I_CmsDynamicFieldResolver)Class.forName(
+                    getDynamicFieldClass()).newInstance();
                 field.setResolvedValue(resolver.resolveValue(field, this));
             } catch (Throwable e) {
                 field.setResolvedValue(e.getLocalizedMessage());
@@ -1754,9 +1767,9 @@ public class CmsForm {
 
     /**
      * Instantiates a new type instance of the given field type.<p>
-     * 
+     *
      * @param fieldType the field type to instantiate
-     * 
+     *
      * @return the instantiated field type or <code>null</code> is fails
      */
     protected I_CmsField getField(String fieldType) {
@@ -1766,9 +1779,9 @@ public class CmsForm {
 
     /**
      * Returns the request parameter with the specified name.<p>
-     * 
+     *
      * @param parameter the parameter to return
-     * 
+     *
      * @return the parameter value
      */
     protected String getParameter(String parameter) {
@@ -1782,7 +1795,7 @@ public class CmsForm {
 
     /**
      * Initializes the optional captcha field.<p>
-     * 
+     *
      * @param jsp the initialized CmsJspActionElement to access the OpenCms API
      * @param content the XML configuration content
      * @param locale the currently active Locale
@@ -1826,30 +1839,33 @@ public class CmsForm {
 
     /**
      * Initializes the general online form settings.<p>
-     * 
+     *
      * @param content the XML configuration content
      * @param cms the CmsObject to access the content values
      * @param locale the currently active Locale
      * @param messages the localized messages
      * @throws Exception if initializing the form settings fails
      */
-    protected void initFormGlobalConfiguration(CmsXmlContent content, CmsObject cms, Locale locale, CmsMessages messages)
-    throws Exception {
+    protected void initFormGlobalConfiguration(
+        CmsXmlContent content,
+        CmsObject cms,
+        Locale locale,
+        CmsMessages messages) throws Exception {
 
         initFormGlobalConfiguration(content, cms, locale, messages, null);
     }
 
     /**
     * Initializes the general online form settings.<p>
-    * 
+    *
     * @param content the XML configuration content
     * @param cms the CmsObject to access the content values
     * @param locale the currently active Locale
     * @param messages the localized messages
     * @param dynamicConfig map of configurations that can overwrite the configuration from the configuration file
-    * 
+    *
     * @throws Exception if initializing the form settings fails
-    * 
+    *
     */
     protected void initFormGlobalConfiguration(
         CmsXmlContent content,
@@ -1974,7 +1990,7 @@ public class CmsForm {
         }
         setCsvExportConfiguration(stringValue);
 
-        // optional data target configuration 
+        // optional data target configuration
         String pathPrefix = NODE_DATATARGET + "/";
         stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_DATATARGET_TRANSPORT);
         if (stringValue == null) {
@@ -1992,7 +2008,7 @@ public class CmsForm {
             this.setTransportDatabase(true);
 
         } else {
-            // default behavior: 
+            // default behavior:
             this.setTransportEmail(true);
             this.setTransportDatabase(false);
         }
@@ -2045,7 +2061,8 @@ public class CmsForm {
             setActionClass(getConfigurationValue(stringValue, ""));
             // get the show mandatory setting
             stringValue = getContentStringValue(content, cms, pathPrefix + NODE_SHOWMANDATORY, locale);
-            setShowMandatory(Boolean.valueOf(getConfigurationValue(stringValue, Boolean.TRUE.toString())).booleanValue());
+            setShowMandatory(
+                Boolean.valueOf(getConfigurationValue(stringValue, Boolean.TRUE.toString())).booleanValue());
             // get the show reset button setting
             stringValue = getContentStringValue(content, cms, pathPrefix + NODE_SHOWRESET, locale);
             setShowReset(Boolean.valueOf(getConfigurationValue(stringValue, Boolean.TRUE.toString())).booleanValue());
@@ -2156,12 +2173,14 @@ public class CmsForm {
             // get the show mandatory setting
             stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_SHOWMANDATORY);
             if (stringValue != null) {
-                setShowMandatory(Boolean.valueOf(getConfigurationValue(stringValue, Boolean.TRUE.toString())).booleanValue());
+                setShowMandatory(
+                    Boolean.valueOf(getConfigurationValue(stringValue, Boolean.TRUE.toString())).booleanValue());
             }
             // get the show reset button setting
             stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_SHOWRESET);
             if (stringValue != null) {
-                setShowReset(Boolean.valueOf(getConfigurationValue(stringValue, Boolean.TRUE.toString())).booleanValue());
+                setShowReset(
+                    Boolean.valueOf(getConfigurationValue(stringValue, Boolean.TRUE.toString())).booleanValue());
             }
             // get the form attributes
             stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_FORMATTRIBUTES);
@@ -2226,8 +2245,10 @@ public class CmsForm {
 
             stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_CONFIRMATIONMAILTEXT);
             if (stringValue == null) {
-                CmsXmlHtmlValue mailTextValue = (CmsXmlHtmlValue)getContentValue(content, pathPrefix
-                    + NODE_CONFIRMATIONMAILTEXT, locale);
+                CmsXmlHtmlValue mailTextValue = (CmsXmlHtmlValue)getContentValue(
+                    content,
+                    pathPrefix + NODE_CONFIRMATIONMAILTEXT,
+                    locale);
                 if (mailTextValue != null) {
                     // get the confirmation mail text
                     stringValue = mailTextValue.getStringValue(cms);
@@ -2273,9 +2294,8 @@ public class CmsForm {
                     pathPrefix + NODE_CONFIRMATIONMAILCHECKBOXLABEL,
                     locale);
             }
-            setConfirmationMailCheckboxLabel(getConfigurationValue(
-                stringValue,
-                messages.key("form.confirmation.checkbox")));
+            setConfirmationMailCheckboxLabel(
+                getConfigurationValue(stringValue, messages.key("form.confirmation.checkbox")));
         }
 
         if (content.hasValue(NODE_OPTIONALEXPIRATION, locale)) {
@@ -2372,13 +2392,13 @@ public class CmsForm {
 
     /**
      * Initializes the field objects of the form.<p>
-     * 
+     *
      * @param content the XML configuration content
      * @param jsp the initialized CmsJspActionElement to access the OpenCms API
      * @param locale the currently active Locale
      * @param messages the localized messages
      * @param initial if true, field values are filled with values specified in the XML configuration, otherwise values are read from the request
-     * @throws CmsConfigurationException if parsing the configuration fails 
+     * @throws CmsConfigurationException if parsing the configuration fails
      */
     protected void initInputFields(
         CmsXmlContent content,
@@ -2428,18 +2448,19 @@ public class CmsForm {
         List<I_CmsXmlContentValue> fieldValues = getContentValues(content, NODE_INPUTFIELD, locale);
         for (Iterator<I_CmsXmlContentValue> i = fieldValues.iterator(); i.hasNext();) {
             // add the initialized field
-            addField(createInputField(
-                i.next().getPath(),
-                content,
-                jsp,
-                locale,
-                messages,
-                fieldTexts,
-                subFieldPaths,
-                fileUploads,
-                "",
-                initial,
-                false));
+            addField(
+                createInputField(
+                    i.next().getPath(),
+                    content,
+                    jsp,
+                    locale,
+                    messages,
+                    fieldTexts,
+                    subFieldPaths,
+                    fileUploads,
+                    "",
+                    initial,
+                    false));
         }
 
         if (!jsp.getRequestContext().getCurrentProject().isOnlineProject()) {
@@ -2489,10 +2510,10 @@ public class CmsForm {
 
     /**
      * Marks the individual items of checkboxes, selectboxes and radiobuttons as selected depending on the given request parameters.<p>
-     * 
+     *
      * @param field the current field
      * @param value the value of the input field
-     * 
+     *
      * @return <code>"true"</code> if the current item is selected or checked, otherwise false
      */
     protected String readSelectedFromRequest(I_CmsField field, String value) {
@@ -2520,9 +2541,9 @@ public class CmsForm {
     }
 
     /**
-     * Sets the action class. 
-     * <p> 
-     * 
+     * Sets the action class.
+     * <p>
+     *
      * @param actionClass the action class.
      */
     protected void setActionClass(final String actionClass) {
@@ -2564,7 +2585,7 @@ public class CmsForm {
      * Sets the index number of the input field containing the email address for the optional confirmation mail.<p>
      *
      * @param confirmationMailFieldName the name of the input field containing the email address for the optional confirmation mail
-     * 
+     *
      * @deprecated use {@link #setConfirmationMailFieldDbLabel(String)} instead
      */
     @Deprecated
@@ -2645,7 +2666,7 @@ public class CmsForm {
 
     /**
      * Sets the name of the CSS file to use for the form.<p>
-     * 
+     *
      * @param cssFile the name of the CSS file to use for the form
      */
     protected void setCssFile(String cssFile) {
@@ -2655,7 +2676,7 @@ public class CmsForm {
 
     /**
      * Sets the class name for the dynamic field value resolver.<p>
-     * 
+     *
      * @param className the class name to set
      */
     protected void setDynamicFieldClass(String className) {
@@ -2665,7 +2686,7 @@ public class CmsForm {
 
     /**
      * Sets the optional form expiration date.<p>
-     * 
+     *
      * @param expirationDate the optional form expiration date
      */
     protected void setExpirationDate(long expirationDate) {
@@ -2675,7 +2696,7 @@ public class CmsForm {
 
     /**
      * Sets the form expiration text.<p>
-     * 
+     *
      * @param expirationText the form expiration text
      */
     protected void setExpirationText(String expirationText) {
@@ -2685,7 +2706,7 @@ public class CmsForm {
 
     /**
      * Sets the global form attributes.<p>
-     * 
+     *
      * @param formAttributes the global form attributes
      */
     protected void setFormAttributes(String formAttributes) {
@@ -2695,7 +2716,7 @@ public class CmsForm {
 
     /**
      * Sets the form check text.<p>
-     * 
+     *
      * @param formCheckText the form confirmation text
      */
     protected void setFormCheckText(String formCheckText) {
@@ -2705,7 +2726,7 @@ public class CmsForm {
 
     /**
      * Sets the form confirmation text.<p>
-     * 
+     *
      * @param formConfirmationText the form confirmation text
      */
     protected void setFormConfirmationText(String formConfirmationText) {
@@ -2715,7 +2736,7 @@ public class CmsForm {
 
     /**
      * Sets the optional form input field attributes.<p>
-     * 
+     *
      * @param formFieldAttributes the optional form input field attributes
      */
     protected void setFormFieldAttributes(String formFieldAttributes) {
@@ -2725,7 +2746,7 @@ public class CmsForm {
 
     /**
      * Sets the optional form field width ratio.<p>
-     * 
+     *
      * @param formFieldWidthRatio the optional form field width ratio
      */
     protected void setFormFieldWidthRatio(int formFieldWidthRatio) {
@@ -2735,7 +2756,7 @@ public class CmsForm {
 
     /**
      * Sets the form footer text.<p>
-     * 
+     *
      * @param formFooterText the form text
      */
     protected void setFormFooterText(String formFooterText) {
@@ -2745,7 +2766,7 @@ public class CmsForm {
 
     /**
      * Sets the id identifying the form entries that came from this form in the database.<p>
-     * 
+     *
      * @param formId the id identifying the form entries that came from this form in the database
      */
     protected void setFormId(final String formId) {
@@ -2755,7 +2776,7 @@ public class CmsForm {
 
     /**
      * Sets the form middle text.<p>
-     * 
+     *
      * @param formMiddleText the form text
      */
     protected void setFormMiddleText(String formMiddleText) {
@@ -2765,8 +2786,8 @@ public class CmsForm {
 
     /**
      * Sets the optional forward mode.<p>
-     * 
-     * @param isForward 
+     *
+     * @param isForward
      */
     protected void setForwardMode(boolean isForward) {
 
@@ -2795,7 +2816,7 @@ public class CmsForm {
 
     /**
      * Sets the mail bcc recipient(s).<p>
-     * 
+     *
      * @param mailBCC the mail bcc recipient(s)
      */
     protected void setMailBCC(String mailBCC) {
@@ -2805,7 +2826,7 @@ public class CmsForm {
 
     /**
      * Sets the mail cc recipient(s).<p>
-     * 
+     *
      * @param mailCC the mail cc recipient(s)
      */
     protected void setMailCC(String mailCC) {
@@ -2815,7 +2836,7 @@ public class CmsForm {
 
     /**
      * Sets the optional email CSS style sheet.<p>
-     * 
+     *
      * @param mailCSS the optional email CSS style sheet
      */
     protected void setMailCSS(String mailCSS) {
@@ -2825,7 +2846,7 @@ public class CmsForm {
 
     /**
      * Sets the mail sender address.<p>
-     * 
+     *
      * @param mailFrom the mail sender address
      */
     protected void setMailFrom(String mailFrom) {
@@ -2835,7 +2856,7 @@ public class CmsForm {
 
     /**
      * Sets the mail sender name.<p>
-     * 
+     *
      * @param mailFromName the mail sender name
      */
     protected void setMailFromName(String mailFromName) {
@@ -2845,7 +2866,7 @@ public class CmsForm {
 
     /**
      * Sets the mail subject.<p>
-     * 
+     *
      * @param mailSubject the mail subject
      */
     protected void setMailSubject(String mailSubject) {
@@ -2855,7 +2876,7 @@ public class CmsForm {
 
     /**
      * Sets the mail subject prefix.<p>
-     * 
+     *
      * @param mailSubjectPrefix the mail subject prefix
      */
     protected void setMailSubjectPrefix(String mailSubjectPrefix) {
@@ -2865,7 +2886,7 @@ public class CmsForm {
 
     /**
      * Sets the mail text.<p>
-     * 
+     *
      * @param mailText the mail text
      */
     protected void setMailText(String mailText) {
@@ -2875,7 +2896,7 @@ public class CmsForm {
 
     /**
      * Sets the mail text as plain text.<p>
-     * 
+     *
      * @param mailTextPlain the mail text as plain text
      */
     protected void setMailTextPlain(String mailTextPlain) {
@@ -2885,7 +2906,7 @@ public class CmsForm {
 
     /**
      * Sets the mail recipient(s).<p>
-     * 
+     *
      * @param mailTo the mail recipient(s)
      */
     protected void setMailTo(String mailTo) {
@@ -2895,7 +2916,7 @@ public class CmsForm {
 
     /**
      * Sets the mail type ("text" or "html").<p>
-     * 
+     *
      * @param mailType the mail type
      */
     protected void setMailType(String mailType) {
@@ -2924,9 +2945,9 @@ public class CmsForm {
     }
 
     /**
-     * Sets the property file. 
-     * <p> 
-     * 
+     * Sets the property file.
+     * <p>
+     *
      * @param propertyFile the property file.
      */
     protected void setPropertyFile(final String propertyFile) {
@@ -2936,7 +2957,7 @@ public class CmsForm {
 
     /**
      * Sets the interval to refresh the session.<p>
-     * 
+     *
      * @param refreshSessionInterval the interval to refresh the session
      */
     protected void setRefreshSessionInterval(int refreshSessionInterval) {
@@ -2976,10 +2997,10 @@ public class CmsForm {
 
     /**
      * Sets the target URI of this form.<p>
-     * 
+     *
      * This optional target URI can be used to redirect the user to an OpenCms page instead of displaying a confirmation
      * text from the form's XML content.<p>
-     * 
+     *
      * @param targetUri the target URI
      */
     protected void setTargetUri(String targetUri) {
@@ -2988,18 +3009,8 @@ public class CmsForm {
     }
 
     /**
-     * Sets the HTML template file.<p> 
-     * 
-     * @param templateFile the HTML template file
-     */
-    protected void setTemplateFile(final String templateFile) {
-
-        m_templateFile = templateFile;
-    }
-
-    /**
      * Sets if data should be stored to database or not (default).<p>
-     * 
+     *
      * @param transportDatabase flag to decide if data should be stored to database or not (default)
      */
     protected void setTransportDatabase(final boolean transportDatabase) {
@@ -3009,7 +3020,7 @@ public class CmsForm {
 
     /**
      * Sets if data should be sent by email (default) or not.<p>
-     * 
+     *
      * @param transportEmail flag to decide if data should be sent by email (default) or not
      */
     protected void setTransportEmail(final boolean transportEmail) {
@@ -3019,7 +3030,7 @@ public class CmsForm {
 
     /**
      * Validates the loaded online form configuration and creates a list of error messages, if necessary.<p>
-     * 
+     *
      * @param messages the localized messages
      */
     protected void validateFormConfiguration(CmsMessages messages) {
@@ -3054,7 +3065,7 @@ public class CmsForm {
 
     /**
      * Initializes the field objects of the form.<p>
-     * 
+     *
      * @param xPath the xPath of the input field to initialize
      * @param content the XML configuration content
      * @param jsp the initialized CmsJspActionElement to access the OpenCms API
@@ -3066,10 +3077,10 @@ public class CmsForm {
      * @param subFieldNameSuffix the suffix for the sub field name used to create the HTML code and request parameter names
      * @param initial if true, field values are filled with values specified in the XML configuration, otherwise values are read from the request
      * @param subField indicates if a sub field should be created
-     * 
+     *
      * @return an initialized input field
-     * 
-     * @throws CmsConfigurationException if parsing the configuration fails 
+     *
+     * @throws CmsConfigurationException if parsing the configuration fails
      */
     private I_CmsField createInputField(
         String xPath,
@@ -3113,7 +3124,7 @@ public class CmsForm {
 
         // create the field name
         String fieldName = xPath;
-        // cut off the XML content index ("[number]") 
+        // cut off the XML content index ("[number]")
         int indexStart = fieldName.lastIndexOf('[') + 1;
         String index = fieldName.substring(indexStart, fieldName.length() - 1);
         if (useDbLabel) {
@@ -3148,7 +3159,8 @@ public class CmsForm {
                     String fieldValue = content.getStringValue(cms, subPath + NODE_VALUE, locale);
                     if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(fieldValue)) {
                         // a field value is specified, add the sub fields for the value
-                        String suffix = new StringBuffer("-").append(index).append("-").append(fieldValue.hashCode()).toString();
+                        String suffix = new StringBuffer("-").append(index).append("-").append(
+                            fieldValue.hashCode()).toString();
                         List<I_CmsXmlContentValue> fieldValues = content.getValues(subPath + NODE_INPUTFIELD, locale);
                         for (Iterator<I_CmsXmlContentValue> k = fieldValues.iterator(); k.hasNext();) {
                             field.addSubField(
@@ -3210,12 +3222,14 @@ public class CmsForm {
                 setHasMandatoryFields(true);
             }
 
-            // special case by table fields 
+            // special case by table fields
             if (CmsTableField.class.isAssignableFrom(field.getClass())) {
                 CmsTableField tableField = (CmsTableField)field;
                 String fieldValue = content.getStringValue(
 
-                cms, inputFieldPath + NODE_FIELDDEFAULTVALUE, locale);
+                    cms,
+                    inputFieldPath + NODE_FIELDDEFAULTVALUE,
+                    locale);
                 tableField.parseDefault(fieldValue, m_parameterMap);
             }
 
@@ -3223,13 +3237,15 @@ public class CmsForm {
                 // create items for checkboxes, radio buttons and selectboxes
                 String fieldValue = content.getStringValue(
 
-                cms, inputFieldPath + NODE_FIELDDEFAULTVALUE, locale);
+                    cms,
+                    inputFieldPath + NODE_FIELDDEFAULTVALUE,
+                    locale);
                 if (CmsStringUtil.isNotEmpty(fieldValue)) {
                     // substitute eventual macros
                     CmsMacroResolver resolver = CmsMacroResolver.newInstance().setCmsObject(cms).setJspPageContext(
                         jsp.getJspContext());
                     fieldValue = resolver.resolveMacros(fieldValue);
-                    // get items from String 
+                    // get items from String
                     boolean showInRow = false;
                     if (fieldValue.startsWith(MACRO_SHOW_ITEMS_IN_ROW)) {
                         showInRow = true;
@@ -3278,10 +3294,11 @@ public class CmsForm {
                     field.setItems(items);
                 } else {
                     // no items specified for checkbox, radio button or selectbox
-                    throw new CmsConfigurationException(Messages.get().container(
-                        Messages.ERR_INIT_INPUT_FIELD_MISSING_ITEM_2,
-                        field.getName(),
-                        field.getType()));
+                    throw new CmsConfigurationException(
+                        Messages.get().container(
+                            Messages.ERR_INIT_INPUT_FIELD_MISSING_ITEM_2,
+                            field.getName(),
+                            field.getType()));
                 }
             }
         }
@@ -3305,7 +3322,7 @@ public class CmsForm {
                     }
                 }
             } else {
-                // for field that needs items, 
+                // for field that needs items,
                 // the default value is used to set the items and not really a value
                 field.setValue(null);
             }
@@ -3370,7 +3387,7 @@ public class CmsForm {
 
     /**
      * Set the column configuration for CSV export.
-     * 
+     *
      * @param stringValue String with the pipe-separated column values
      */
     private void setCsvExportConfiguration(final String stringValue) {
