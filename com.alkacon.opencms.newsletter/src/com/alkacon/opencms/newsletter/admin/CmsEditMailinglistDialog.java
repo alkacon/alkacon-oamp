@@ -85,10 +85,9 @@ public class CmsEditMailinglistDialog extends A_CmsEditGroupDialog {
     /**
      * @see org.opencms.workplace.tools.accounts.A_CmsEditGroupDialog#actionCommit()
      */
+    @Override
     public void actionCommit() {
 
-        m_group.setProjectCoWorker(false);
-        m_group.setProjectManager(false);
         m_group.setEnabled(true);
         setParentGroup("");
         super.actionCommit();
@@ -97,6 +96,7 @@ public class CmsEditMailinglistDialog extends A_CmsEditGroupDialog {
     /**
      * @see org.opencms.workplace.tools.accounts.A_CmsEditGroupDialog#createDialogHtml(java.lang.String)
      */
+    @Override
     protected String createDialogHtml(String dialog) {
 
         StringBuffer result = new StringBuffer(1024);
@@ -121,6 +121,7 @@ public class CmsEditMailinglistDialog extends A_CmsEditGroupDialog {
     /**
      * @see org.opencms.workplace.tools.accounts.A_CmsEditGroupDialog#defineWidgets()
      */
+    @Override
     protected void defineWidgets() {
 
         // initialize the user object to use for the dialog
@@ -140,6 +141,7 @@ public class CmsEditMailinglistDialog extends A_CmsEditGroupDialog {
     /**
      * @see org.opencms.workplace.tools.accounts.A_CmsEditGroupDialog#getListClass()
      */
+    @Override
     protected String getListClass() {
 
         return CmsMailinglistsList.class.getName();
@@ -148,6 +150,7 @@ public class CmsEditMailinglistDialog extends A_CmsEditGroupDialog {
     /**
      * @see org.opencms.workplace.tools.accounts.A_CmsEditGroupDialog#getListRootPath()
      */
+    @Override
     protected String getListRootPath() {
 
         return "/newsletter/orgunit/mailinglists";
@@ -156,6 +159,7 @@ public class CmsEditMailinglistDialog extends A_CmsEditGroupDialog {
     /**
      * @see org.opencms.workplace.CmsWorkplace#initMessages()
      */
+    @Override
     protected void initMessages() {
 
         // add specific dialog resource bundle
@@ -167,6 +171,7 @@ public class CmsEditMailinglistDialog extends A_CmsEditGroupDialog {
     /**
      * @see org.opencms.workplace.tools.accounts.A_CmsEditGroupDialog#isEditable(CmsGroup)
      */
+    @Override
     protected boolean isEditable(CmsGroup group) {
 
         return true;
@@ -175,6 +180,7 @@ public class CmsEditMailinglistDialog extends A_CmsEditGroupDialog {
     /**
      * @see org.opencms.workplace.tools.accounts.A_CmsEditGroupDialog#validateParamaters()
      */
+    @Override
     protected void validateParamaters() throws Exception {
 
         super.validateParamaters();

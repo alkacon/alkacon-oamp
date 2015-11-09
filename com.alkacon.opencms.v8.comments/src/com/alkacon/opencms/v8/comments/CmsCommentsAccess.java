@@ -1016,7 +1016,9 @@ public class CmsCommentsAccess extends CmsJspLoginBean {
     private void initConfig(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         if (LOG.isDebugEnabled()) {
-            for (Map.Entry<String, String[]> entry : CmsRequestUtil.createParameterMap(req.getParameterMap()).entrySet()) {
+            @SuppressWarnings("unchecked")
+            Map<String, ?> reqParam = req.getParameterMap();
+            for (Map.Entry<String, String[]> entry : CmsRequestUtil.createParameterMap(reqParam).entrySet()) {
                 LOG.debug(Messages.get().getBundle().key(
                     Messages.LOG_INIT_PARAM_2,
                     entry.getKey(),

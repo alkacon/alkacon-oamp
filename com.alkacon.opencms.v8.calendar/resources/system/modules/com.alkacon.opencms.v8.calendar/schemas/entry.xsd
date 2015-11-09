@@ -1,7 +1,7 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 	
 	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
-	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.calendar/schemas/entrylink.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.calendar/schemas/nested/entrylink.xsd"/>
 		
 	<xsd:element name="AlkaconV8CalendarDates" type="OpenCmsAlkaconV8CalendarDates"/>
 	
@@ -45,7 +45,7 @@
 				<mapping element="Title" mapto="urlName" />
 			</mappings>
 			<formatters>
-				<formatter minwidth="200" uri="/system/modules/com.alkacon.opencms.v8.calendar/pages/detail-entry.jsp"/>
+				<formatter minwidth="200" uri="/system/modules/com.alkacon.opencms.v8.calendar/formatters/detail-entry.jsp"/>
 			</formatters>
 			<validationrules/>
 		</xsd:appinfo>

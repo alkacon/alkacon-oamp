@@ -95,7 +95,7 @@ public class CmsPatternPanelDaily extends FlowPanel implements HasValueChangeHan
 
         });
         m_selection[0] = sel1;
-        sel1.addStyleName(org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
+        sel1.addStyleName(org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
         sel1.setGroup(m_group);
         sel1.setChecked(true);
         sel1.getElement().getStyle().setFloat(Float.LEFT);
@@ -104,7 +104,7 @@ public class CmsPatternPanelDaily extends FlowPanel implements HasValueChangeHan
         CmsRadioButton sel2 = new CmsRadioButton(
             "sel2",
             m_labels.get("GUI_SERIALDATE_DAILY_EVERYWORKINGDAY_0").isString().stringValue());
-        sel2.addStyleName(org.opencms.ade.contenteditor.client.css.I_CmsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
+        sel2.addStyleName(org.opencms.acacia.client.css.I_CmsWidgetsLayoutBundle.INSTANCE.widgetCss().radioButtonlabel());
         sel2.addClickHandler(new ClickHandler() {
 
             public void onClick(ClickEvent event) {

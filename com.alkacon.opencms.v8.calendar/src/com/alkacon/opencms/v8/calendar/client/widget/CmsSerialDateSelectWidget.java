@@ -29,11 +29,10 @@ package com.alkacon.opencms.v8.calendar.client.widget;
 
 import com.alkacon.opencms.v8.calendar.shared.rpc.I_CmsSerialDateService;
 import com.alkacon.opencms.v8.calendar.shared.rpc.I_CmsSerialDateServiceAsync;
-import com.alkacon.vie.client.Entity;
 
 import org.opencms.ade.contenteditor.client.CmsContentEditor;
 import org.opencms.ade.contenteditor.client.I_CmsEntityChangeListener;
-import org.opencms.ade.contenteditor.client.widgets.CmsSelectWidget;
+import org.opencms.acacia.client.widgets.CmsSelectWidget;
 import org.opencms.ade.contenteditor.shared.CmsContentDefinition;
 import org.opencms.gwt.client.CmsCoreProvider;
 import org.opencms.gwt.client.rpc.CmsRpcAction;
@@ -46,6 +45,7 @@ import java.util.Map;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
+import org.opencms.acacia.shared.CmsEntity;
 
 /**
  * Provides a DHTML calendar widget, for use on a widget dialog.<p>
@@ -81,7 +81,8 @@ public class CmsSerialDateSelectWidget extends CmsSelectWidget {
         getNewValues(CmsContentDefinition.getValueForPath(CmsContentEditor.getEntity(), "Serialdate"));
         CmsContentEditor.addEntityChangeListener(new I_CmsEntityChangeListener() {
 
-            public void onEntityChange(Entity entity) {
+            @Override
+            public void onEntityChange(CmsEntity entity) {
 
                 getNewValues(CmsContentDefinition.getValueForPath(entity, "Serialdate"));
             }

@@ -56,20 +56,20 @@ public interface I_CmsCalendarView {
      * 
      * @return the comparator to use to determine if a calendar entry belongs to the view
      */
-    Comparator getComparator();
+    Comparator<CmsCalendarEntryDate> getComparator();
 
     /**
      * Returns the dates for the view.<p>
      * 
      * @return the dates for the view
      */
-    List getDates();
+    List<CmsCalendarEntryDate> getDates();
 
     /**
      * Sorts the returned matching calendar entries to display them on the frontend.<p>
      * 
      * @param entries the list of {@link CmsCalendarEntry} objects to sort
      */
-    void sort(List entries);
+    void sort(List<CmsCalendarEntry> entries);
 
 }

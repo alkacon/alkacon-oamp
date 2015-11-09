@@ -16,7 +16,7 @@
     <description><![CDATA[<p>This module provides a calendar functionality for displaying date entries, serial dates or other time based information.</p>
             <p>It can easily be included in JSP templates.</p>
 			<p><i>(c) 2008 by Alkacon Software GmbH (http://www.alkacon.com).</i></p>]]></description>
-    <version>2.0.0</version>
+    <version>2.1.0</version>
     <authorname><![CDATA[Alkacon Software GmbH]]></authorname>
     <authoremail/>
     <datecreated/>
@@ -45,7 +45,7 @@
         <properties>
           <property>
             <name>template-elements</name>
-            <value type="shared"><![CDATA[/system/modules/com.alkacon.opencms.v8.calendar/pages/detail-entry.jsp]]></value>
+            <value type="shared"><![CDATA[/system/modules/com.alkacon.opencms.v8.calendar/formatters/detail-entry.jsp]]></value>
           </property>
         </properties>
         <param name="schema">/system/modules/com.alkacon.opencms.v8.calendar/schemas/entry.xsd</param>
@@ -54,7 +54,7 @@
         <properties>
           <property>
             <name>template-elements</name>
-            <value type="shared"><![CDATA[/system/modules/com.alkacon.opencms.v8.calendar/pages/detail-serialentry.jsp]]></value>
+            <value type="shared"><![CDATA[/system/modules/com.alkacon.opencms.v8.calendar/formatters/detail-serialentry.jsp]]></value>
           </property>
         </properties>
         <param name="schema">/system/modules/com.alkacon.opencms.v8.calendar/schemas/serialentry.xsd</param>
@@ -63,7 +63,7 @@
         <properties>
           <property>
             <name>template-elements</name>
-            <value type="shared"><![CDATA[/system/modules/com.alkacon.opencms.v8.calendar/pages/detail-calendar.jsp]]></value>
+            <value type="shared"><![CDATA[/system/modules/com.alkacon.opencms.v8.calendar/formatters/detail-calendar.jsp]]></value>
           </property>
         </properties>
         <param name="schema">/system/modules/com.alkacon.opencms.v8.calendar/schemas/calendarview.xsd</param>
@@ -554,7 +554,7 @@
       <accesscontrol/>
     </file>
     <file>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/formatter</destination>
+      <destination>system/modules/com.alkacon.opencms.v8.calendar/formatters</destination>
       <type>folder</type>
       <uuidstructure>e552ef9e-20e6-11e1-8989-27f2fbbdf126</uuidstructure>
       <datelastmodified>Wed, 07 Dec 2011 15:19:45 GMT</datelastmodified>
@@ -567,8 +567,8 @@
       <accesscontrol/>
     </file>
     <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/formatter/side.jsp</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/formatter/side.jsp</destination>
+      <source>system/modules/com.alkacon.opencms.v8.calendar/formatters/side.jsp</source>
+      <destination>system/modules/com.alkacon.opencms.v8.calendar/formatters/side.jsp</destination>
       <type>jsp</type>
       <uuidstructure>ef3489c0-20e6-11e1-8989-27f2fbbdf126</uuidstructure>
       <uuidresource>ef3489c1-20e6-11e1-8989-27f2fbbdf126</uuidresource>
@@ -633,8 +633,8 @@
       <accesscontrol/>
     </file>
     <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/pages/detail-calendar.jsp</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/pages/detail-calendar.jsp</destination>
+      <source>system/modules/com.alkacon.opencms.v8.calendar/formatters/detail-calendar.jsp</source>
+      <destination>system/modules/com.alkacon.opencms.v8.calendar/formatters/detail-calendar.jsp</destination>
       <type>jsp</type>
       <uuidstructure>e02ce8a7-20be-11e1-9585-27f2fbbdf126</uuidstructure>
       <uuidresource>e02ce8a8-20be-11e1-9585-27f2fbbdf126</uuidresource>
@@ -661,8 +661,8 @@
       <accesscontrol/>
     </file>
     <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/pages/detail-entry.jsp</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/pages/detail-entry.jsp</destination>
+      <source>system/modules/com.alkacon.opencms.v8.calendar/formatters/detail-entry.jsp</source>
+      <destination>system/modules/com.alkacon.opencms.v8.calendar/formatters/detail-entry.jsp</destination>
       <type>jsp</type>
       <uuidstructure>e034149c-20be-11e1-9585-27f2fbbdf126</uuidstructure>
       <uuidresource>e034149d-20be-11e1-9585-27f2fbbdf126</uuidresource>
@@ -689,8 +689,40 @@
       <accesscontrol/>
     </file>
     <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/pages/detail-serialentry.jsp</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/pages/detail-serialentry.jsp</destination>
+        <source>system/modules/com.alkacon.opencms.v8.calendar/formatters/detail-entry.xml</source>
+        <destination>system/modules/com.alkacon.opencms.v8.calendar/formatters/detail-entry.xml</destination>
+        <type>formatter_config</type>
+        <uuidstructure>aee99bf6-849f-11e5-9301-0ef3fc544e0e</uuidstructure>
+        <uuidresource>aee99bf7-849f-11e5-9301-0ef3fc544e0e</uuidresource>
+        <datelastmodified>Fri, 06 Nov 2015 16:16:04 GMT</datelastmodified>
+        <userlastmodified>Admin</userlastmodified>
+        <datecreated>Fri, 06 Nov 2015 16:01:47 GMT</datecreated>
+        <usercreated>Admin</usercreated>
+        <flags>0</flags>
+        <properties>
+                <property>
+                        <name>Title</name>
+                        <value><![CDATA[v8 Calendar event]]></value>
+                </property>
+                <property>
+                        <name>locale</name>
+                        <value><![CDATA[en]]></value>
+                </property>
+                <property>
+                        <name>locale-available</name>
+                        <value><![CDATA[en]]></value>
+                </property>
+                <property>
+                        <name>search.exclude</name>
+                        <value><![CDATA[all]]></value>
+                </property>
+        </properties>
+        <relations/>
+        <accesscontrol/>
+    </file>
+    <file>
+      <source>system/modules/com.alkacon.opencms.v8.calendar/formatters/detail-serialentry.jsp</source>
+      <destination>system/modules/com.alkacon.opencms.v8.calendar/formatters/detail-serialentry.jsp</destination>
       <type>jsp</type>
       <uuidstructure>e03685a1-20be-11e1-9585-27f2fbbdf126</uuidstructure>
       <uuidresource>e03685a2-20be-11e1-9585-27f2fbbdf126</uuidresource>
@@ -717,6 +749,38 @@
       <accesscontrol/>
     </file>
     <file>
+            <source>system/modules/com.alkacon.opencms.v8.calendar/formatters/detail-serialentry.xml</source>
+            <destination>system/modules/com.alkacon.opencms.v8.calendar/formatters/detail-serialentry.xml</destination>
+            <type>formatter_config</type>
+            <uuidstructure>22e2c9ac-84a0-11e5-9301-0ef3fc544e0e</uuidstructure>
+            <uuidresource>22e2c9ad-84a0-11e5-9301-0ef3fc544e0e</uuidresource>
+            <datelastmodified>Fri, 06 Nov 2015 16:13:14 GMT</datelastmodified>
+            <userlastmodified>Admin</userlastmodified>
+            <datecreated>Fri, 06 Nov 2015 16:05:01 GMT</datecreated>
+            <usercreated>Admin</usercreated>
+            <flags>0</flags>
+            <properties>
+                    <property>
+                            <name>Title</name>
+                            <value><![CDATA[v8 Calendar serial event]]></value>
+                    </property>
+                    <property>
+                            <name>locale</name>
+                            <value><![CDATA[en]]></value>
+                    </property>
+                    <property>
+                            <name>locale-available</name>
+                            <value><![CDATA[en]]></value>
+                    </property>
+                    <property>
+                            <name>search.exclude</name>
+                            <value><![CDATA[all]]></value>
+                    </property>
+            </properties>
+            <relations/>
+            <accesscontrol/>
+    </file>
+    <file>
       <source>system/modules/com.alkacon.opencms.v8.calendar/pages/example.jsp</source>
       <destination>system/modules/com.alkacon.opencms.v8.calendar/pages/example.jsp</destination>
       <type>jsp</type>
@@ -741,8 +805,8 @@
       <accesscontrol/>
     </file>
     <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/pages/modern_items.jsp</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/pages/modern_items.jsp</destination>
+      <source>system/modules/com.alkacon.opencms.v8.calendar/elements/fullcalendar-event-list-json.jsp</source>
+      <destination>system/modules/com.alkacon.opencms.v8.calendar/elements/fullcalendar-event-list-json.jsp</destination>
       <type>jsp</type>
       <uuidstructure>100598cd-2183-11e1-80b6-27f2fbbdf126</uuidstructure>
       <uuidresource>100598ce-2183-11e1-80b6-27f2fbbdf126</uuidresource>
@@ -754,7 +818,7 @@
       <properties>
         <property>
           <name>Title</name>
-          <value><![CDATA[modern_items]]></value>
+          <value><![CDATA[fullcalendar-event-list-json]]></value>
         </property>
         <property type="shared">
           <name>export</name>
@@ -765,8 +829,8 @@
       <accesscontrol/>
     </file>
     <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/pages/modernoverview.html</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/pages/modernoverview.html</destination>
+      <source>system/modules/com.alkacon.opencms.v8.calendar/formatters/fullcalendar.jsp</source>
+      <destination>system/modules/com.alkacon.opencms.v8.calendar/formatters/fullcalendar.jsp</destination>
       <type>jsp</type>
       <uuidstructure>0b44f215-217a-11e1-80b6-27f2fbbdf126</uuidstructure>
       <uuidresource>0b44f216-217a-11e1-80b6-27f2fbbdf126</uuidresource>
@@ -778,11 +842,11 @@
       <properties>
         <property>
           <name>Title</name>
-          <value><![CDATA[Calendar modern overview]]></value>
+          <value><![CDATA[Calendar modern overview (FullCalendar.io)]]></value>
         </property>
         <property>
           <name>cache</name>
-          <value><![CDATA[site;params=(calYear, calMonth, calDay, uri, notemplate)]]></value>
+          <value><![CDATA[site;params=(calYear, calMonth, calDay, calendarViewResource, notemplate)]]></value>
         </property>
         <property type="shared">
           <name>export</name>
@@ -792,6 +856,38 @@
       <relations/>
       <accesscontrol/>
     </file>
+    <file>
+            <source>system/modules/com.alkacon.opencms.v8.calendar/formatters/fullcalendar.xml</source>
+            <destination>system/modules/com.alkacon.opencms.v8.calendar/formatters/fullcalendar.xml</destination>
+            <type>formatter_config</type>
+            <uuidstructure>5038bbe0-849f-11e5-9301-0ef3fc544e0e</uuidstructure>
+            <uuidresource>5038bbe1-849f-11e5-9301-0ef3fc544e0e</uuidresource>
+            <datelastmodified>Fri, 06 Nov 2015 16:13:23 GMT</datelastmodified>
+            <userlastmodified>Admin</userlastmodified>
+            <datecreated>Fri, 06 Nov 2015 15:59:08 GMT</datecreated>
+            <usercreated>Admin</usercreated>
+            <flags>0</flags>
+            <properties>
+                    <property>
+                            <name>Title</name>
+                            <value><![CDATA[v8 Calendar]]></value>
+                    </property>
+                    <property>
+                            <name>locale</name>
+                            <value><![CDATA[en]]></value>
+                    </property>
+                    <property>
+                            <name>locale-available</name>
+                            <value><![CDATA[en]]></value>
+                    </property>
+                    <property>
+                            <name>search.exclude</name>
+                            <value><![CDATA[all]]></value>
+                    </property>
+            </properties>
+            <relations/>
+            <accesscontrol/>
+    </file>    
     <file>
       <source>system/modules/com.alkacon.opencms.v8.calendar/pages/test-calendar.jsp</source>
       <destination>system/modules/com.alkacon.opencms.v8.calendar/pages/test-calendar.jsp</destination>
@@ -911,6 +1007,42 @@
       <accesscontrol/>
     </file>
     <file>
+      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/fullcalendar.js</source>
+      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/fullcalendar.js</destination>
+      <type>plain</type>
+      <datelastmodified>Thu, 08 Dec 2011 09:56:17 GMT</datelastmodified>
+      <userlastmodified>Admin</userlastmodified>
+      <datecreated>Thu, 08 Dec 2011 09:56:17 GMT</datecreated>
+      <usercreated>Admin</usercreated>
+      <flags>0</flags>
+      <properties>
+        <property>
+          <name>Title</name>
+          <value><![CDATA[fullcalendar v2.3.1]]></value>
+        </property>
+      </properties>
+      <relations/>
+      <accesscontrol/>
+    </file>
+    <file>
+      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/moment.min.js</source>
+      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/moment.min.js</destination>
+      <type>plain</type>
+      <datelastmodified>Thu, 08 Dec 2011 09:56:17 GMT</datelastmodified>
+      <userlastmodified>Admin</userlastmodified>
+      <datecreated>Thu, 08 Dec 2011 09:56:17 GMT</datecreated>
+      <usercreated>Admin</usercreated>
+      <flags>0</flags>
+      <properties>
+        <property>
+          <name>Title</name>
+          <value><![CDATA[moment.min 2.9.0]]></value>
+        </property>
+      </properties>
+      <relations/>
+      <accesscontrol/>
+    </file>
+    <file>
       <source>system/modules/com.alkacon.opencms.v8.calendar/resources/ic_available.png</source>
       <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/ic_available.png</destination>
       <type>image</type>
@@ -972,7 +1104,7 @@
       <properties>
         <property>
           <name>Title</name>
-          <value><![CDATA[jquery.qtip.min]]></value>
+          <value><![CDATA[jquery.qtip.min v2.2.1]]></value>
         </property>
       </properties>
       <relations/>
@@ -1003,6 +1135,32 @@
       <accesscontrol/>
     </file>
     <file>
+      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/fullcalendar-lang</destination>
+      <type>folder</type>
+      <flags>0</flags>
+      <properties/>
+      <relations/>
+      <accesscontrol/>
+    </file>    
+    <file>
+      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/fullcalendar-lang/de.js</source>
+      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/fullcalendar-lang/de.js</destination>
+      <type>plain</type>
+      <flags>0</flags>
+      <properties/>
+      <relations/>
+      <accesscontrol/>
+    </file>
+    <file>
+      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/fullcalendar-lang/en-gb.js</source>
+      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/fullcalendar-lang/en-gb.js</destination>
+      <type>plain</type>
+      <flags>0</flags>
+      <properties/>
+      <relations/>
+      <accesscontrol/>
+    </file>
+    <file>
       <destination>system/modules/com.alkacon.opencms.v8.calendar/schemas</destination>
       <type>folder</type>
       <uuidstructure>e0426c90-20be-11e1-9585-27f2fbbdf126</uuidstructure>
@@ -1010,6 +1168,14 @@
       <userlastmodified>Admin</userlastmodified>
       <datecreated>Tue, 22 Apr 2008 10:21:06 GMT</datecreated>
       <usercreated>Admin</usercreated>
+      <flags>0</flags>
+      <properties/>
+      <relations/>
+      <accesscontrol/>
+    </file>
+    <file>
+      <destination>system/modules/com.alkacon.opencms.v8.calendar/schemas/nested</destination>
+      <type>folder</type>
       <flags>0</flags>
       <properties/>
       <relations/>
@@ -1029,15 +1195,15 @@
       <properties>
         <property>
           <name>Title</name>
-          <value><![CDATA[XSD for calendar oveerview page]]></value>
+          <value><![CDATA[XSD for calendar overview page]]></value>
         </property>
       </properties>
       <relations/>
       <accesscontrol/>
     </file>
     <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/schemas/calendarviewresconf.xsd</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/schemas/calendarviewresconf.xsd</destination>
+      <source>system/modules/com.alkacon.opencms.v8.calendar/schemas/nested/calendarviewresconf.xsd</source>
+      <destination>system/modules/com.alkacon.opencms.v8.calendar/schemas/nested/calendarviewresconf.xsd</destination>
       <type>plain</type>
       <uuidstructure>e0472785-20be-11e1-9585-27f2fbbdf126</uuidstructure>
       <uuidresource>e0472786-20be-11e1-9585-27f2fbbdf126</uuidresource>
@@ -1076,8 +1242,8 @@
       <accesscontrol/>
     </file>
     <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/schemas/entrylink.xsd</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/schemas/entrylink.xsd</destination>
+      <source>system/modules/com.alkacon.opencms.v8.calendar/schemas/nested/entrylink.xsd</source>
+      <destination>system/modules/com.alkacon.opencms.v8.calendar/schemas/nested/entrylink.xsd</destination>
       <type>plain</type>
       <uuidstructure>e04c098b-20be-11e1-9585-27f2fbbdf126</uuidstructure>
       <uuidresource>e04c098c-20be-11e1-9585-27f2fbbdf126</uuidresource>
@@ -1096,8 +1262,8 @@
       <accesscontrol/>
     </file>
     <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/schemas/serialchange.xsd</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/schemas/serialchange.xsd</destination>
+      <source>system/modules/com.alkacon.opencms.v8.calendar/schemas/nested/serialchange.xsd</source>
+      <destination>system/modules/com.alkacon.opencms.v8.calendar/schemas/nested/serialchange.xsd</destination>
       <type>plain</type>
       <uuidstructure>e04e537e-20be-11e1-9585-27f2fbbdf126</uuidstructure>
       <uuidresource>e04e537f-20be-11e1-9585-27f2fbbdf126</uuidresource>
@@ -1136,8 +1302,8 @@
       <accesscontrol/>
     </file>
     <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/schemas/serialinterruption.xsd</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/schemas/serialinterruption.xsd</destination>
+      <source>system/modules/com.alkacon.opencms.v8.calendar/schemas/nested/serialinterruption.xsd</source>
+      <destination>system/modules/com.alkacon.opencms.v8.calendar/schemas/nested/serialinterruption.xsd</destination>
       <type>plain</type>
       <uuidstructure>e0557f74-20be-11e1-9585-27f2fbbdf126</uuidstructure>
       <uuidresource>e0557f75-20be-11e1-9585-27f2fbbdf126</uuidresource>
@@ -1397,965 +1563,6 @@
       <datelastmodified>Mon, 05 Nov 2012 14:04:48 GMT</datelastmodified>
       <userlastmodified>Admin</userlastmodified>
       <datecreated>Mon, 05 Nov 2012 14:04:48 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/07B79EDA917A4EB940EFF2814B61B238.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/07B79EDA917A4EB940EFF2814B61B238.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>675ae346-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>675ae347-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/0A9476898799A150D840F0B1C3672921.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/0A9476898799A150D840F0B1C3672921.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>675d2d38-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>675d2d39-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/0C2636863EBF1B7E60FACEDA96D6E448.cache.gif</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/0C2636863EBF1B7E60FACEDA96D6E448.cache.gif</destination>
-      <type>image</type>
-      <uuidstructure>675f9e3a-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>675f9e3b-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/124DCEE507CAB7576C003C7BAF0D9924.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/124DCEE507CAB7576C003C7BAF0D9924.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>675f9e3c-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>675f9e3d-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/130216F44FAF2CA3A53FBD439D3CA97A.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/130216F44FAF2CA3A53FBD439D3CA97A.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>6761e82e-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>6761e82f-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/157263C9722C7F5A5AD963F6B5594F87.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/157263C9722C7F5A5AD963F6B5594F87.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>6761e830-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>6761e831-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/1BA570A78005D17EB033A5D959952436.cache.gif</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/1BA570A78005D17EB033A5D959952436.cache.gif</destination>
-      <type>image</type>
-      <uuidstructure>67645932-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>67645933-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/1D0A264C2E6019D983DD72D1EE01457E.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/1D0A264C2E6019D983DD72D1EE01457E.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>67645934-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>67645935-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/1E38309FDCC2E9CF350C33A2C8BF6B3D.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/1E38309FDCC2E9CF350C33A2C8BF6B3D.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>6766ca36-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>6766ca37-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/1EB21E0511BDD60227C036B4CC11F99B.cache.html</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/1EB21E0511BDD60227C036B4CC11F99B.cache.html</destination>
-      <type>plain</type>
-      <uuidstructure>63ac53c3-276e-11e2-b6a9-2bf8be1a6ca5</uuidstructure>
-      <uuidresource>63ac53c4-276e-11e2-b6a9-2bf8be1a6ca5</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 17:29:44 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 17:29:44 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/21998B27314C5C5FC843A89E07E05FCF.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/21998B27314C5C5FC843A89E07E05FCF.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>6766ca38-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>6766ca39-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/2504A645642997C1DF7023CD97BFE880.cache.gif</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/2504A645642997C1DF7023CD97BFE880.cache.gif</destination>
-      <type>image</type>
-      <uuidstructure>6766ca3a-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>6769142b-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/28876666747FD7CF017B39F122F45BFC.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/28876666747FD7CF017B39F122F45BFC.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>6769142c-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>6769142d-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/28900C5A986D9BEE9FC75B51403369F9.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/28900C5A986D9BEE9FC75B51403369F9.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>6769142e-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>6769142f-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/2D5DCEC84E5ECEEC13AE608620DDA715.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/2D5DCEC84E5ECEEC13AE608620DDA715.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>676b8532-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>676b8533-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/2DEFE4429494EC4398B219CEADD32C22.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/2DEFE4429494EC4398B219CEADD32C22.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>676df634-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>676df635-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/2E9915E25840535E3FAEA0FF4FC665BA.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/2E9915E25840535E3FAEA0FF4FC665BA.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>676df636-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>676df637-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/396F806CD63ABD414BFBB9D57429F05B.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/396F806CD63ABD414BFBB9D57429F05B.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>67704028-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>67704029-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/3E1B3C4D2B52FD7957DA6E43F8D5D4C9.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/3E1B3C4D2B52FD7957DA6E43F8D5D4C9.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>6770402a-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>6770402b-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/4ED1C0B9BE23F2D66FC198C0FD3527D2.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/4ED1C0B9BE23F2D66FC198C0FD3527D2.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>6772b12c-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>6772b12d-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/528F1389CBD23A696B89EF4D65007A96.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/528F1389CBD23A696B89EF4D65007A96.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>6772b12e-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>6772b12f-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/5466C750817CCF4C39A207CAC0703AAA.cache.html</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/5466C750817CCF4C39A207CAC0703AAA.cache.html</destination>
-      <type>plain</type>
-      <uuidstructure>63ae9db5-276e-11e2-b6a9-2bf8be1a6ca5</uuidstructure>
-      <uuidresource>63ae9db6-276e-11e2-b6a9-2bf8be1a6ca5</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 17:29:44 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 17:29:44 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/55E6EF5AA7ECB5C3456D0C233F3D34A1.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/55E6EF5AA7ECB5C3456D0C233F3D34A1.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>6774fb20-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>6774fb21-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/588C4DA28DB8FF451F98C17E3DB78A1B.cache.gif</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/588C4DA28DB8FF451F98C17E3DB78A1B.cache.gif</destination>
-      <type>image</type>
-      <uuidstructure>67776c24-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>67776c25-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/607C234F8298753CFE48C010F4F5B7C2.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/607C234F8298753CFE48C010F4F5B7C2.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>67776c26-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>67776c27-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/67F03376FF6E2527B53E363D94D0F88C.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/67F03376FF6E2527B53E363D94D0F88C.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>67776c28-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>67776c29-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/6C2B5BDF0A7B5F0A11DB17A1F8A75A56.cache.ico</destination>
-      <type>folder</type>
-      <uuidstructure>6779dd2a-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>6779dd2b-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/6D3132A22AB5F69684CA5AB4BFD9E123.cache.html</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/6D3132A22AB5F69684CA5AB4BFD9E123.cache.html</destination>
-      <type>plain</type>
-      <uuidstructure>63b10eb7-276e-11e2-b6a9-2bf8be1a6ca5</uuidstructure>
-      <uuidresource>63b10eb8-276e-11e2-b6a9-2bf8be1a6ca5</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 17:29:44 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 17:29:44 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/6D49AA540BF48A6BC5BB40598BB369C1.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/6D49AA540BF48A6BC5BB40598BB369C1.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>6779dd2c-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>6779dd2d-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/7415529CBF3DFBE4DE91AFB4497CCBA7.cache.html</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/7415529CBF3DFBE4DE91AFB4497CCBA7.cache.html</destination>
-      <type>plain</type>
-      <uuidstructure>63b10eb9-276e-11e2-b6a9-2bf8be1a6ca5</uuidstructure>
-      <uuidresource>63b37fba-276e-11e2-b6a9-2bf8be1a6ca5</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 17:29:44 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 17:29:44 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/7E76FDCA9138C1F6988CF904B0281C64.cache.gif</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/7E76FDCA9138C1F6988CF904B0281C64.cache.gif</destination>
-      <type>image</type>
-      <uuidstructure>677c271e-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>677c271f-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/806F8EE738687B189D7F262612700F41.cache.gif</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/806F8EE738687B189D7F262612700F41.cache.gif</destination>
-      <type>image</type>
-      <uuidstructure>677c2720-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>677c2721-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/846FD3C4DB495760C57444AB15F06126.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/846FD3C4DB495760C57444AB15F06126.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>677e9822-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>677e9823-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/87ED19AD4E669155E9D7E4958154FD56.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/87ED19AD4E669155E9D7E4958154FD56.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>677e9824-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>677e9825-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/8AA3C50791DF9AA6DC608FDE692C9390.cache.gif</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/8AA3C50791DF9AA6DC608FDE692C9390.cache.gif</destination>
-      <type>image</type>
-      <uuidstructure>67810926-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>67810927-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/8FBDBF2C058ACA8C7B7681D8E5194E8B.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/8FBDBF2C058ACA8C7B7681D8E5194E8B.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>67810928-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>67810929-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/90583D1788B44DDC496D964A8FC3C94F.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/90583D1788B44DDC496D964A8FC3C94F.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>6783531a-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>6783531b-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/9B56DF4CD68CC5BCB6821A8DE7E4830C.cache.gif</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/9B56DF4CD68CC5BCB6821A8DE7E4830C.cache.gif</destination>
-      <type>image</type>
-      <uuidstructure>6783531c-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>6783531d-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/9CD9E89705393612AADC9A55D28EBC00.cache.gif</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/9CD9E89705393612AADC9A55D28EBC00.cache.gif</destination>
-      <type>image</type>
-      <uuidstructure>6785c41e-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>6785c41f-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/A3E30CCBF7AFC58EDCC069857295C9EA.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/A3E30CCBF7AFC58EDCC069857295C9EA.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>67880e12-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>67880e13-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/A561A3D036C6711C97A1ACB01B3E9688.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/A561A3D036C6711C97A1ACB01B3E9688.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>67880e14-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>678a7f15-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/AB193F88C59FE43073B7E3554AE1E4E1.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/AB193F88C59FE43073B7E3554AE1E4E1.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>678a7f16-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>678a7f17-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/BA0A0820E8FA852BCF619F53CDB348E2.cache.html</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/BA0A0820E8FA852BCF619F53CDB348E2.cache.html</destination>
-      <type>plain</type>
-      <uuidstructure>63b5c9ab-276e-11e2-b6a9-2bf8be1a6ca5</uuidstructure>
-      <uuidresource>63b5c9ac-276e-11e2-b6a9-2bf8be1a6ca5</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 17:29:44 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 17:29:44 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/BBE79FE9C388A062A6B594894C4044E8.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/BBE79FE9C388A062A6B594894C4044E8.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>678cf018-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>678cf019-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/BC31847090F12A42F8370C7772D75499.cache.gif</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/BC31847090F12A42F8370C7772D75499.cache.gif</destination>
-      <type>image</type>
-      <uuidstructure>678cf01a-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>678cf01b-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/BC4060A672A6E9FEC3C40F408301EFC6.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/BC4060A672A6E9FEC3C40F408301EFC6.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>678f3a0c-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>678f3a0d-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/C29BCC38F643DCCD8FA9D97D284D8A5A.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/C29BCC38F643DCCD8FA9D97D284D8A5A.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>678f3a0e-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>678f3a0f-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/C4E7AE2AFCDCAD9F4590E02BBF69A6EA.cache.gif</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/C4E7AE2AFCDCAD9F4590E02BBF69A6EA.cache.gif</destination>
-      <type>image</type>
-      <uuidstructure>6791ab10-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>6791ab11-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/C62A1C906AE595C56C586D0305BB6C50.cache.gif</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/C62A1C906AE595C56C586D0305BB6C50.cache.gif</destination>
-      <type>image</type>
-      <uuidstructure>6791ab12-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>6791ab13-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/CD452626E44B1D27115781B923D2F971.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/CD452626E44B1D27115781B923D2F971.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>67966608-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>67966609-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/clear.cache.gif</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/clear.cache.gif</destination>
-      <type>image</type>
-      <uuidstructure>6798d70a-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>6798d70b-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/com.alkacon.opencms.v8.calendar.SerialDateWidget.nocache.js</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/com.alkacon.opencms.v8.calendar.SerialDateWidget.nocache.js</destination>
-      <type>plain</type>
-      <uuidstructure>6798d70c-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>6798d70d-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/D164AE4B2C36F7E2EC3E7B33F7880692.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/D164AE4B2C36F7E2EC3E7B33F7880692.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>679b20fe-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>679b20ff-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/D5F586C438B34AD62B41411FC16B0579.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/D5F586C438B34AD62B41411FC16B0579.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>679b2100-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>679b2101-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/DB77414A9B90F3BC2249D073D7FA8FFA.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/DB77414A9B90F3BC2249D073D7FA8FFA.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>679d9202-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>679d9203-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/DE6D506998BC702C9DB949F7F80C8A14.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/DE6D506998BC702C9DB949F7F80C8A14.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>679d9204-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>679d9205-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/DF7764EEC1903CD03C9545B354D8D8E4.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/DF7764EEC1903CD03C9545B354D8D8E4.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>67a00306-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>67a00307-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/E30C58794782F528AA8C1B61B8014A21.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/E30C58794782F528AA8C1B61B8014A21.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>67a24cf8-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>67a24cf9-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/E44767377485D18D6B6864F65BA8EF73.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/E44767377485D18D6B6864F65BA8EF73.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>67a24cfa-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>67a24cfb-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/E5410C4FBA247FAF319663A7DFEBA0C9.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/E5410C4FBA247FAF319663A7DFEBA0C9.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>67a4bdfc-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>67a4bdfd-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/EDC7827FEEA59EE44AD790B1C6430C45.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/EDC7827FEEA59EE44AD790B1C6430C45.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>67a72efe-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>67a72eff-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/F237BC86717AA7023191B4C2E7A9B757.cache.html</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/F237BC86717AA7023191B4C2E7A9B757.cache.html</destination>
-      <type>plain</type>
-      <uuidstructure>63b83aad-276e-11e2-b6a9-2bf8be1a6ca5</uuidstructure>
-      <uuidresource>63b83aae-276e-11e2-b6a9-2bf8be1a6ca5</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 17:29:44 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 17:29:44 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/FABA47515896922C62828F7194DD4D7B.cache.png</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/FABA47515896922C62828F7194DD4D7B.cache.png</destination>
-      <type>image</type>
-      <uuidstructure>67a978f2-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>67a978f3-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
-      <usercreated>Admin</usercreated>
-      <flags>0</flags>
-      <properties/>
-      <relations/>
-      <accesscontrol/>
-    </file>
-    <file>
-      <source>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/hosted.html</source>
-      <destination>system/modules/com.alkacon.opencms.v8.calendar/resources/com.alkacon.opencms.v8.calendar.SerialDateWidget/hosted.html</destination>
-      <type>plain</type>
-      <uuidstructure>67a978f4-2751-11e2-8ece-85686efd5941</uuidstructure>
-      <uuidresource>67a978f5-2751-11e2-8ece-85686efd5941</uuidresource>
-      <datelastmodified>Mon, 05 Nov 2012 14:02:15 GMT</datelastmodified>
-      <userlastmodified>Admin</userlastmodified>
-      <datecreated>Mon, 05 Nov 2012 14:02:15 GMT</datecreated>
       <usercreated>Admin</usercreated>
       <flags>0</flags>
       <properties/>

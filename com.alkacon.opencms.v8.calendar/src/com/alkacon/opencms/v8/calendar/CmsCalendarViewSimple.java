@@ -53,24 +53,20 @@ public class CmsCalendarViewSimple implements I_CmsCalendarView {
     /**
      * This comparator is used to sort the filtered entries for the views by their start dates ascending.<p>
      */
-    public static final Comparator COMPARE_SORT_ENTRIES_DATE_ASC = new Comparator() {
+    public static final Comparator<CmsCalendarEntry> COMPARE_SORT_ENTRIES_DATE_ASC = new Comparator<CmsCalendarEntry>() {
 
         /**
          * Compares two {@link CmsCalendarEntry} objects by their start dates.<p>
-         * 
-         * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
-        public int compare(Object arg0, Object arg1) {
+        @Override
+        public int compare(CmsCalendarEntry arg0, CmsCalendarEntry arg1) {
 
-            if ((arg0 == arg1) || !(arg0 instanceof CmsCalendarEntry) || !(arg1 instanceof CmsCalendarEntry)) {
+            if (arg0 == arg1) {
                 return -1;
             }
 
-            CmsCalendarEntry entry0 = (CmsCalendarEntry)arg0;
-            CmsCalendarEntry entry1 = (CmsCalendarEntry)arg1;
-
-            long start0 = entry0.getEntryDate().getStartDate().getTimeInMillis();
-            long start1 = entry1.getEntryDate().getStartDate().getTimeInMillis();
+            long start0 = arg0.getEntryDate().getStartDate().getTimeInMillis();
+            long start1 = arg1.getEntryDate().getStartDate().getTimeInMillis();
 
             if (start0 < start1) {
                 return -1;
@@ -88,7 +84,7 @@ public class CmsCalendarViewSimple implements I_CmsCalendarView {
      * 
      * Can be used for simple date comparisons that are not serial dates.<p>
      */
-    public static final Comparator COMPARE_VIEW_DATE = new Comparator() {
+    public static final Comparator<CmsCalendarEntryDate> COMPARE_VIEW_DATE = new Comparator<CmsCalendarEntryDate>() {
 
         /**
          * Compares two {@link CmsCalendarEntryDate} objects.<p>
@@ -96,21 +92,17 @@ public class CmsCalendarViewSimple implements I_CmsCalendarView {
          * The first argument is the view date object, the second the entry date object.
          * If 0 is returned, the entry date object matches the view date object
          * and should be added to the view result entries.<p>
-         * 
-         * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
          */
-        public int compare(Object arg0, Object arg1) {
+        @Override
+        public int compare(CmsCalendarEntryDate arg0, CmsCalendarEntryDate arg1) {
 
-            if ((arg0 == arg1) || !(arg0 instanceof CmsCalendarEntryDate) || !(arg1 instanceof CmsCalendarEntryDate)) {
+            if (arg0 == arg1) {
                 return -1;
             }
 
-            CmsCalendarEntryDate date0 = (CmsCalendarEntryDate)arg0;
-            CmsCalendarEntryDate date1 = (CmsCalendarEntryDate)arg1;
-
-            long viewStart = date0.getStartDate().getTimeInMillis();
-            long viewEnd = date0.getEndDate().getTimeInMillis();
-            long entryStart = date1.getStartDate().getTimeInMillis();
+            long viewStart = arg0.getStartDate().getTimeInMillis();
+            long viewEnd = arg0.getEndDate().getTimeInMillis();
+            long entryStart = arg1.getStartDate().getTimeInMillis();
 
             if ((entryStart >= viewStart) && (entryStart <= viewEnd)) {
                 // entry is in view range
@@ -125,39 +117,33 @@ public class CmsCalendarViewSimple implements I_CmsCalendarView {
         }
     };
 
-    /** The dates for the view.<p> */
-    private List m_dates;
+    /** The dates for the view. */
+    private final List<CmsCalendarEntryDate> m_dates;
 
     /**
      * Constructor that sets the required member variables.<p>
      * 
      * @param dates the list of dates to get for the view
      */
-    public CmsCalendarViewSimple(List dates) {
+    public CmsCalendarViewSimple(List<CmsCalendarEntryDate> dates) {
 
         m_dates = dates;
     }
 
-    /**
-     * @see com.alkacon.opencms.v8.calendar.I_CmsCalendarView#getComparator()
-     */
-    public Comparator getComparator() {
+    @Override
+    public Comparator<CmsCalendarEntryDate> getComparator() {
 
         return COMPARE_VIEW_DATE;
     }
 
-    /**
-     * @see com.alkacon.opencms.v8.calendar.I_CmsCalendarView#getDates()
-     */
-    public List getDates() {
+    @Override
+    public List<CmsCalendarEntryDate> getDates() {
 
         return m_dates;
     }
 
-    /**
-     * @see com.alkacon.opencms.v8.calendar.I_CmsCalendarView#sort(java.util.List)
-     */
-    public void sort(List entries) {
+    @Override
+    public void sort(List<CmsCalendarEntry> entries) {
 
         Collections.sort(entries, COMPARE_SORT_ENTRIES_DATE_ASC);
     }

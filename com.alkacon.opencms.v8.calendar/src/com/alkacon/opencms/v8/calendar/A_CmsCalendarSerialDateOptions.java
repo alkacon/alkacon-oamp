@@ -46,78 +46,60 @@ import java.util.Map;
 public abstract class A_CmsCalendarSerialDateOptions implements I_CmsCalendarSerialDateOptions {
 
     /** The serial date changes. */
-    private List m_serialDateChanges;
+    private List<CmsCalendarSerialDateChange> m_serialDateChanges;
 
     /** The serial date interruptions. */
-    private List m_serialDateInterruptions;
+    private List<CmsCalendarSerialDateInterruption> m_serialDateInterruptions;
 
-    /**
-     * @see com.alkacon.opencms.v8.calendar.I_CmsCalendarSerialDateOptions#addSerialDateChange(com.alkacon.opencms.v8.calendar.CmsCalendarSerialDateChange)
-     */
+    @Override
     public void addSerialDateChange(CmsCalendarSerialDateChange change) {
 
         if (m_serialDateChanges == null) {
-            m_serialDateChanges = new ArrayList();
+            m_serialDateChanges = new ArrayList<CmsCalendarSerialDateChange>();
         }
         m_serialDateChanges.add(change);
 
     }
 
-    /**
-     * @see com.alkacon.opencms.v8.calendar.I_CmsCalendarSerialDateOptions#addSerialDateInterruption(com.alkacon.opencms.v8.calendar.CmsCalendarSerialDateInterruption)
-     */
+    @Override
     public void addSerialDateInterruption(CmsCalendarSerialDateInterruption interruption) {
 
         if (m_serialDateInterruptions == null) {
-            m_serialDateInterruptions = new ArrayList();
+            m_serialDateInterruptions = new ArrayList<CmsCalendarSerialDateInterruption>();
         }
         m_serialDateInterruptions.add(interruption);
 
     }
 
-    /**
-     * @see com.alkacon.opencms.v8.calendar.I_CmsCalendarSerialDateOptions#getConfigurationValuesAsMap()
-     */
-    public abstract Map getConfigurationValuesAsMap();
+    @Override
+    public abstract Map<String,String> getConfigurationValuesAsMap();
 
-    /**
-     * @see com.alkacon.opencms.v8.calendar.I_CmsCalendarSerialDateOptions#getSerialDateChanges()
-     */
-    public List getSerialDateChanges() {
+    @Override
+    public List<CmsCalendarSerialDateChange> getSerialDateChanges() {
 
         return m_serialDateChanges;
     }
 
-    /**
-     * @see com.alkacon.opencms.v8.calendar.I_CmsCalendarSerialDateOptions#getSerialDateInterruptions()
-     */
-    public List getSerialDateInterruptions() {
+    @Override
+    public List<CmsCalendarSerialDateInterruption> getSerialDateInterruptions() {
 
         return m_serialDateInterruptions;
     }
 
-    /**
-     * @see com.alkacon.opencms.v8.calendar.I_CmsCalendarSerialDateOptions#getSerialType()
-     */
+    @Override
     public abstract int getSerialType();
 
-    /**
-     * @see com.alkacon.opencms.v8.calendar.I_CmsCalendarSerialDateOptions#matchCalendarView(com.alkacon.opencms.v8.calendar.CmsCalendarEntry, com.alkacon.opencms.v8.calendar.I_CmsCalendarView, int)
-     */
-    public abstract List matchCalendarView(CmsCalendarEntry entry, I_CmsCalendarView calendarView, int maxCount);
+    @Override
+    public abstract List<CmsCalendarEntry> matchCalendarView(CmsCalendarEntry entry, I_CmsCalendarView calendarView, int maxCount);
 
-    /**
-     * @see com.alkacon.opencms.v8.calendar.I_CmsCalendarSerialDateOptions#setSerialDateChanges(java.util.List)
-     */
-    public void setSerialDateChanges(List serialDateChanges) {
+    @Override
+    public void setSerialDateChanges(List<CmsCalendarSerialDateChange> serialDateChanges) {
 
         m_serialDateChanges = serialDateChanges;
     }
 
-    /**
-     * @see com.alkacon.opencms.v8.calendar.I_CmsCalendarSerialDateOptions#setSerialDateInterruptions(java.util.List)
-     */
-    public void setSerialDateInterruptions(List serialDateInterruptions) {
+    @Override
+    public void setSerialDateInterruptions(List<CmsCalendarSerialDateInterruption> serialDateInterruptions) {
 
         m_serialDateInterruptions = serialDateInterruptions;
     }
@@ -139,9 +121,9 @@ public abstract class A_CmsCalendarSerialDateOptions implements I_CmsCalendarSer
 
         if (getSerialDateInterruptions() != null) {
             // check if the entry is in an interruption time interval
-            Iterator i = getSerialDateInterruptions().iterator();
+            Iterator<CmsCalendarSerialDateInterruption> i = getSerialDateInterruptions().iterator();
             while (i.hasNext()) {
-                CmsCalendarSerialDateInterruption intrpt = (CmsCalendarSerialDateInterruption)i.next();
+                CmsCalendarSerialDateInterruption intrpt = i.next();
                 Calendar entryStartDate = entry.getEntryDate().getStartDate();
                 if (intrpt.getStartDate().before(entryStartDate) && intrpt.getEndDate().after(entryStartDate)) {
                     // entry is in interruption time interval, return null to remove it
@@ -158,8 +140,8 @@ public abstract class A_CmsCalendarSerialDateOptions implements I_CmsCalendarSer
             int changeIndex = getSerialDateChanges().indexOf(changeTest);
             if (changeIndex != -1) {
                 // found a match, use the changed entry data
-                CmsCalendarSerialDateChange change = (CmsCalendarSerialDateChange)getSerialDateChanges().get(
-                    changeIndex);
+                CmsCalendarSerialDateChange change = getSerialDateChanges().get(
+                        changeIndex);
                 if (change.isRemoved()) {
                     // entry has to be removed, return null
                     return null;
@@ -204,12 +186,6 @@ public abstract class A_CmsCalendarSerialDateOptions implements I_CmsCalendarSer
         }
 
         // check if the run date is before the end date
-        if (runDate.after(viewDate.getEndDate())) {
-            // the run date is after the view date, interrupt loop
-            return true;
-        }
-
-        return false;
+        return runDate.after(viewDate.getEndDate());
     }
-
 }

@@ -55,7 +55,7 @@ import java.util.Map;
 public class CmsCalendarSerialDateWeeklyOptions extends A_CmsCalendarSerialDateOptions {
 
     /** The week days on which the serial calendar entry occurs. */
-    private List m_weekDays;
+    private List<Integer> m_weekDays;
 
     /** The weekly interval for the serial calendar entry. */
     private int m_weeklyInterval;
@@ -67,14 +67,7 @@ public class CmsCalendarSerialDateWeeklyOptions extends A_CmsCalendarSerialDateO
      */
     public CmsCalendarSerialDateWeeklyOptions() {
 
-        m_weekDays = Arrays.asList(new Integer[] {
-            new Integer(1),
-            new Integer(2),
-            new Integer(3),
-            new Integer(4),
-            new Integer(5),
-            new Integer(6),
-            new Integer(7)});
+        m_weekDays = Arrays.asList(new Integer[] {1, 2, 3, 4, 5, 6, 7});
         m_weeklyInterval = 1;
     }
 
@@ -84,7 +77,7 @@ public class CmsCalendarSerialDateWeeklyOptions extends A_CmsCalendarSerialDateO
      * @param weekDays the week days for the week series
      * @param weeklyInterval the weekly interval for the week day series
      */
-    public CmsCalendarSerialDateWeeklyOptions(List weekDays, int weeklyInterval) {
+    public CmsCalendarSerialDateWeeklyOptions(List<Integer> weekDays, int weeklyInterval) {
 
         m_weekDays = weekDays;
         m_weeklyInterval = 1;
@@ -96,10 +89,11 @@ public class CmsCalendarSerialDateWeeklyOptions extends A_CmsCalendarSerialDateO
     /**
      * @see com.alkacon.opencms.v8.calendar.I_CmsCalendarSerialDateOptions#getConfigurationValuesAsMap()
      */
-    public Map getConfigurationValuesAsMap() {
+    @Override
+    public Map<String, String> getConfigurationValuesAsMap() {
 
         // create the Map containing the date settings
-        Map values = new HashMap();
+        Map<String, String> values = new HashMap<String, String>();
 
         // put interval and week days to Map
         values.put(I_CmsCalendarSerialDateOptions.CONFIG_INTERVAL, String.valueOf(getWeeklyInterval()));
@@ -112,6 +106,7 @@ public class CmsCalendarSerialDateWeeklyOptions extends A_CmsCalendarSerialDateO
     /**
      * @see com.alkacon.opencms.v8.calendar.I_CmsCalendarSerialDateOptions#getSerialType()
      */
+    @Override
     public int getSerialType() {
 
         return I_CmsCalendarSerialDateOptions.TYPE_WEEKLY;
@@ -122,27 +117,26 @@ public class CmsCalendarSerialDateWeeklyOptions extends A_CmsCalendarSerialDateO
      *
      * @return the week days on which the calendar entry occurs
      */
-    public List getWeekDays() {
+    public List<Integer> getWeekDays() {
 
         return m_weekDays;
     }
 
     /**
-     * Returns the weekly interval for the calendar entry occurences.<p>
+     * Returns the weekly interval for the calendar entry occurrences.<p>
      *
-     * @return the weekly interval for the calendar entry occurences
+     * @return the weekly interval for the calendar entry occurrences
      */
     public int getWeeklyInterval() {
 
         return m_weeklyInterval;
     }
 
-    /**
-     * @see com.alkacon.opencms.v8.calendar.I_CmsCalendarSerialDateOptions#matchCalendarView(com.alkacon.opencms.v8.calendar.CmsCalendarEntry, com.alkacon.opencms.v8.calendar.I_CmsCalendarView, int)
-     */
-    public List matchCalendarView(CmsCalendarEntry entry, I_CmsCalendarView calendarView, int maxCount) {
+    @Override
+    public List<CmsCalendarEntry> matchCalendarView(CmsCalendarEntry entry,
+            I_CmsCalendarView calendarView, int maxCount) {
 
-        List result = new ArrayList();
+        List<CmsCalendarEntry> result = new ArrayList<CmsCalendarEntry>();
         int matches = 0;
 
         CmsCalendarEntryDateSerial entryDate = (CmsCalendarEntryDateSerial)entry.getEntryDate();
@@ -152,7 +146,7 @@ public class CmsCalendarSerialDateWeeklyOptions extends A_CmsCalendarSerialDateO
         // loop the view date ranges
         for (int i = 0; i < calendarView.getDates().size(); i++) {
             // get the current view date object
-            CmsCalendarEntryDate viewDate = (CmsCalendarEntryDate)calendarView.getDates().get(i);
+            CmsCalendarEntryDate viewDate = calendarView.getDates().get(i);
             // get the start and end times of the view
             long viewStart = viewDate.getStartDate().getTimeInMillis();
             long viewEnd = viewDate.getEndDate().getTimeInMillis();
@@ -182,7 +176,7 @@ public class CmsCalendarSerialDateWeeklyOptions extends A_CmsCalendarSerialDateO
 
                 // get the current week day
                 int runWeekDay = runDate.get(Calendar.DAY_OF_WEEK);
-                Integer runWeekDayInteger = new Integer(runWeekDay);
+                Integer runWeekDayInteger = runWeekDay;
                 if (getWeekDays().contains(runWeekDayInteger)) {
                     // the current day contains a series entry
                     occurences++;
@@ -190,7 +184,7 @@ public class CmsCalendarSerialDateWeeklyOptions extends A_CmsCalendarSerialDateO
                     // check if current entry is in view range
                     if ((entryStart >= viewStart) && (entryStart <= viewEnd)) {
                         // the entry is in the view time range, clone the entry 
-                        CmsCalendarEntry cloneEntry = (CmsCalendarEntry)entry.clone();
+                        CmsCalendarEntry cloneEntry = entry.clone();
                         cloneEntry.getEntryDate().setStartDay(runDate.getTimeInMillis());
                         cloneEntry = checkChanges(cloneEntry);
                         if (cloneEntry != null) {
@@ -219,15 +213,15 @@ public class CmsCalendarSerialDateWeeklyOptions extends A_CmsCalendarSerialDateO
      *
      * @param weekDays the week days on which the calendar entry occurs
      */
-    public void setWeekDays(List weekDays) {
+    public void setWeekDays(List<Integer> weekDays) {
 
         m_weekDays = weekDays;
     }
 
     /**
-     * Sets the weekly interval for the calendar entry occurences.<p>
+     * Sets the weekly interval for the calendar entry occurrences.<p>
      *
-     * @param weeklyInterval the weekly interval for the calendar entry occurences
+     * @param weeklyInterval the weekly interval for the calendar entry occurrences
      */
     public void setWeeklyInterval(int weeklyInterval) {
 

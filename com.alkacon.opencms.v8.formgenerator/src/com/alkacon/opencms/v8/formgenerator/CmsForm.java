@@ -371,9 +371,6 @@ public class CmsForm {
     /** Configuration node name for the value. */
     public static final String NODE_VALUE = "Value";
 
-    /** Configuration node name for the optional csv export configuration */
-    public static final String NODE_OPTIONAL_CSV_EXPORT_CONFIGURATION = "OptionalCsvExportConfiguration";
-
     /** Request parameter name for the optional send confirmation email checkbox. */
     public static final String PARAM_SENDCONFIRMATION = "sendconfirmation";
 
@@ -391,7 +388,7 @@ public class CmsForm {
         + "/resources/formtemplates/error.st";
 
     /** Resource type ID of XML content forms. */
-    public static final String TYPE_NAME = "alkacon-v8-webform";
+    private static final String TYPE_NAME = "alkacon-v8-webform";
 
     /** configuration value. */
     protected String m_actionClass;
@@ -569,9 +566,6 @@ public class CmsForm {
 
     /** Flag to signal that data should be sent by email - defaults to true. */
     protected boolean m_transportEmail = true;
-
-    /** The optional csv export configuration (unparsed as string) */
-    private String m_csvExportConfiguration;
 
     /** The forward mode. */
     private boolean m_forwardMode;
@@ -1899,14 +1893,6 @@ public class CmsForm {
         stringValue = CmsHtmlToTextConverter.htmlToText(stringValue, cms.getRequestContext().getEncoding());
         setMailTextPlain(stringValue);
 
-        stringValue = getValueFromDynamicConfig(dynamicConfig, NODE_OPTIONAL_CSV_EXPORT_CONFIGURATION);
-        if (stringValue == null) {
-            if (content.hasValue(NODE_OPTIONAL_CSV_EXPORT_CONFIGURATION, locale)) {
-                stringValue = getContentStringValue(content, cms, NODE_OPTIONAL_CSV_EXPORT_CONFIGURATION, locale);
-            }
-        }
-        setCsvExportConfiguration(stringValue);
-
         // optional data target configuration 
         String pathPrefix = NODE_DATATARGET + "/";
         stringValue = getValueFromDynamicConfig(dynamicConfig, pathPrefix + NODE_DATATARGET_TRANSPORT);
@@ -2288,26 +2274,7 @@ public class CmsForm {
                 setMaximumSubmissionsText(getConfigurationValue(stringValue, ""));
             }
         }
-    }
 
-    /**
-     * Set the column configuration for CSV export.
-     * 
-     * @param stringValue String with the pipe-separated column values
-     */
-    private void setCsvExportConfiguration(final String stringValue) {
-
-        m_csvExportConfiguration = stringValue;
-    }
-
-    /**
-     * Get the column configuration for CSV export.
-     * 
-     * @return the list of columns that should be exported in a csv file (with placeholders for default columns), or null if no configuration is given
-     */
-    public String getCsvExportConfiguration() {
-
-        return m_csvExportConfiguration;
     }
 
     /**
@@ -3142,10 +3109,11 @@ public class CmsForm {
 
                 cms, inputFieldPath + NODE_FIELDDEFAULTVALUE, locale);
                 if (CmsStringUtil.isNotEmpty(fieldValue)) {
-                    // substitute eventual macros
-                    CmsMacroResolver resolver = CmsMacroResolver.newInstance().setCmsObject(cms).setJspPageContext(
-                        jsp.getJspContext());
+                    CmsMacroResolver resolver = CmsMacroResolver.newInstance().setCmsObject(m_jspAction.getCmsObject());
                     fieldValue = resolver.resolveMacros(fieldValue);
+                }
+
+                if (CmsStringUtil.isNotEmpty(fieldValue)) {
                     // get items from String 
                     boolean showInRow = false;
                     if (fieldValue.startsWith(MACRO_SHOW_ITEMS_IN_ROW)) {

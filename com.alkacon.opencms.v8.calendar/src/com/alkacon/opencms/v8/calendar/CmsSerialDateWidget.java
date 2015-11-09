@@ -261,9 +261,6 @@ public class CmsSerialDateWidget extends CmsCalendarWidget {
         return df.format(cal.getTime());
     }
 
-    /**
-     * @see org.opencms.widgets.I_CmsADEWidget#getConfiguration(org.opencms.file.CmsObject, org.opencms.xml.types.A_CmsXmlContentValue, org.opencms.i18n.CmsMessages, org.opencms.file.CmsResource, java.util.Locale)
-     */
     @Override
     public String getConfiguration(
         CmsObject cms,
@@ -385,13 +382,10 @@ public class CmsSerialDateWidget extends CmsCalendarWidget {
         return message.toString();
     }
 
-    /**
-     * @see org.opencms.widgets.I_CmsWidget#getDialogIncludes(org.opencms.file.CmsObject, org.opencms.widgets.I_CmsWidgetDialog)
-     */
     @Override
     public String getDialogIncludes(CmsObject cms, I_CmsWidgetDialog widgetDialog) {
 
-        StringBuffer result = new StringBuffer(4096);
+        StringBuilder result = new StringBuilder(4096);
 
         // check if the calendar widget is already used to avoid including the calendar scripts twice
         boolean hasCalendarIncludes = false;
@@ -419,22 +413,16 @@ public class CmsSerialDateWidget extends CmsCalendarWidget {
         return result.toString();
     }
 
-    /**
-     * @see org.opencms.widgets.A_CmsWidget#getDialogInitCall(org.opencms.file.CmsObject, org.opencms.widgets.I_CmsWidgetDialog)
-     */
     @Override
     public String getDialogInitCall(CmsObject cms, I_CmsWidgetDialog widgetDialog) {
 
         return "\tsetTimeout(\"initSerialTab()\", 100);\n";
     }
 
-    /**
-     * @see org.opencms.widgets.I_CmsWidget#getDialogWidget(org.opencms.file.CmsObject, org.opencms.widgets.I_CmsWidgetDialog, org.opencms.widgets.I_CmsWidgetParameter)
-     */
     @Override
     public String getDialogWidget(CmsObject cms, I_CmsWidgetDialog widgetDialog, I_CmsWidgetParameter param) {
 
-        StringBuffer result = new StringBuffer(16384);
+        StringBuilder result = new StringBuilder(16384);
         result.append("<td class=\"xmlTd\">");
 
         // first get html with macros to resolve for form from VFS cache
@@ -467,18 +455,12 @@ public class CmsSerialDateWidget extends CmsCalendarWidget {
         return result.toString();
     }
 
-    /**
-     * @see org.opencms.widgets.CmsCalendarWidget#getInitCall()
-     */
     @Override
     public String getInitCall() {
 
         return "initSerialDateWidget";
     }
 
-    /**
-     * @see org.opencms.widgets.CmsCalendarWidget#getJavaScriptResourceLinks(org.opencms.file.CmsObject)
-     */
     @Override
     public List<String> getJavaScriptResourceLinks(CmsObject cms) {
 
@@ -486,36 +468,24 @@ public class CmsSerialDateWidget extends CmsCalendarWidget {
         return Collections.singletonList(OpenCms.getLinkManager().substituteLink(cms, link));
     }
 
-    /**
-     * @see org.opencms.widgets.I_CmsADEWidget#getWidgetName()
-     */
     @Override
     public String getWidgetName() {
 
         return CmsSerialDateWidget.class.getName();
     }
 
-    /**
-     * @see org.opencms.widgets.I_CmsADEWidget#isInternal()
-     */
     @Override
     public boolean isInternal() {
 
         return false;
     }
 
-    /**
-     * @see org.opencms.widgets.I_CmsWidget#newInstance()
-     */
     @Override
     public I_CmsWidget newInstance() {
 
         return new CmsSerialDateWidget(getConfiguration());
     }
 
-    /**
-     * @see org.opencms.widgets.I_CmsWidget#setEditorValue(org.opencms.file.CmsObject, java.util.Map, org.opencms.widgets.I_CmsWidgetDialog, org.opencms.widgets.I_CmsWidgetParameter)
-     */
     @Override
     public void setEditorValue(
         CmsObject cms,
@@ -548,21 +518,21 @@ public class CmsSerialDateWidget extends CmsCalendarWidget {
                         formParameters));
                     String[] weekDays = formParameters.get(PARAM_WEEK_WEEKDAY);
                     // create list of week days
-                    StringBuffer weekDaysList = new StringBuffer(14);
+                    StringBuilder weekDaysList = new StringBuilder(14);
                     boolean isFirst = true;
-                    for (int i = 0; i < weekDays.length; i++) {
+                    for (String weekDay : weekDays) {
                         // create comma separated week day string
                         if (!isFirst) {
                             weekDaysList.append(CmsCalendarSerialDateFactory.SEPARATOR_WEEKDAYS);
                         }
-                        weekDaysList.append(weekDays[i]);
+                        weekDaysList.append(weekDay);
                         isFirst = false;
                     }
-                    params.put(I_CmsCalendarSerialDateOptions.CONFIG_WEEKDAYS, weekDaysList.toString());
+            params.put(I_CmsCalendarSerialDateOptions.CONFIG_WEEKDAYS, weekDaysList.toString());
                     break;
                 case I_CmsCalendarSerialDateOptions.TYPE_MONTHLY:
                     // monthly series
-                    boolean isMonthDay = Boolean.valueOf(getParameterValue(PARAM_MONTH_SERIALMONTHDAY, formParameters)).booleanValue();
+                    boolean isMonthDay = Boolean.parseBoolean(getParameterValue(PARAM_MONTH_SERIALMONTHDAY, formParameters));
                     if (!isMonthDay) {
                         // no week day selected
                         params.put(I_CmsCalendarSerialDateOptions.CONFIG_DAY_OF_MONTH, getParameterValue(
@@ -586,7 +556,7 @@ public class CmsSerialDateWidget extends CmsCalendarWidget {
                     break;
                 case I_CmsCalendarSerialDateOptions.TYPE_YEARLY:
                     // yearly series
-                    boolean isYearday = Boolean.valueOf(getParameterValue(PARAM_YEAR_SERIALYEARDAY, formParameters)).booleanValue();
+                    boolean isYearday = Boolean.parseBoolean(getParameterValue(PARAM_YEAR_SERIALYEARDAY, formParameters));
                     if (!isYearday) {
                         // no week day selected
                         params.put(I_CmsCalendarSerialDateOptions.CONFIG_DAY_OF_MONTH, getParameterValue(
@@ -700,7 +670,7 @@ public class CmsSerialDateWidget extends CmsCalendarWidget {
      */
     protected String buildDateInput(String name, I_CmsWidgetDialog widgetDialog, Calendar displayDate) {
 
-        StringBuffer result = new StringBuffer(2048);
+        StringBuilder result = new StringBuilder(2048);
         result.append("<input class=\"xmlInputSmall");
         result.append("\" style=\"width: 100px;\" value=\"");
         String dateTimeValue = getCalendarLocalizedTime(
@@ -952,25 +922,25 @@ public class CmsSerialDateWidget extends CmsCalendarWidget {
                     weekWeeklyInterval = String.valueOf(weeklyOptions.getWeeklyInterval());
                     // check the chosen week day checkboxes
                     serialTypeMacroPrefix = MACRO_PREFIX_PARAMVALUE + PARAM_WEEK_WEEKDAY + ".";
-                    if (weeklyOptions.getWeekDays().contains(new Integer(Calendar.MONDAY))) {
+                    if (weeklyOptions.getWeekDays().contains(Calendar.MONDAY)) {
                         resolver.addMacro(serialTypeMacroPrefix + Calendar.MONDAY, ATTR_CHECKED);
                     }
-                    if (weeklyOptions.getWeekDays().contains(new Integer(Calendar.TUESDAY))) {
+                    if (weeklyOptions.getWeekDays().contains(Calendar.TUESDAY)) {
                         resolver.addMacro(serialTypeMacroPrefix + Calendar.TUESDAY, ATTR_CHECKED);
                     }
-                    if (weeklyOptions.getWeekDays().contains(new Integer(Calendar.WEDNESDAY))) {
+                    if (weeklyOptions.getWeekDays().contains(Calendar.WEDNESDAY)) {
                         resolver.addMacro(serialTypeMacroPrefix + Calendar.WEDNESDAY, ATTR_CHECKED);
                     }
-                    if (weeklyOptions.getWeekDays().contains(new Integer(Calendar.THURSDAY))) {
+                    if (weeklyOptions.getWeekDays().contains(Calendar.THURSDAY)) {
                         resolver.addMacro(serialTypeMacroPrefix + Calendar.THURSDAY, ATTR_CHECKED);
                     }
-                    if (weeklyOptions.getWeekDays().contains(new Integer(Calendar.FRIDAY))) {
+                    if (weeklyOptions.getWeekDays().contains(Calendar.FRIDAY)) {
                         resolver.addMacro(serialTypeMacroPrefix + Calendar.FRIDAY, ATTR_CHECKED);
                     }
-                    if (weeklyOptions.getWeekDays().contains(new Integer(Calendar.SATURDAY))) {
+                    if (weeklyOptions.getWeekDays().contains(Calendar.SATURDAY)) {
                         resolver.addMacro(serialTypeMacroPrefix + Calendar.SATURDAY, ATTR_CHECKED);
                     }
-                    if (weeklyOptions.getWeekDays().contains(new Integer(Calendar.SUNDAY))) {
+                    if (weeklyOptions.getWeekDays().contains(Calendar.SUNDAY)) {
                         resolver.addMacro(serialTypeMacroPrefix + Calendar.SUNDAY, ATTR_CHECKED);
                     }
                     break;

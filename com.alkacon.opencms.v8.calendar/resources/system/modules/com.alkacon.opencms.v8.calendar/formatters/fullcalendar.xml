@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<NewFormatters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/org.opencms.ade.config/schemas/formatters/new_formatter.xsd">
+  <NewFormatter language="en">
+    <NiceName><![CDATA[v8 Calendar]]></NiceName>
+    <Type><![CDATA[alkacon-v8-cal-view]]></Type>
+    <Jsp>
+      <link type="WEAK">
+        <target><![CDATA[/system/modules/com.alkacon.opencms.v8.calendar/formatters/fullcalendar.jsp]]></target>
+        <uuid>0b44f215-217a-11e1-80b6-27f2fbbdf126</uuid>
+      </link>
+    </Jsp>
+    <Rank><![CDATA[1000]]></Rank>
+    <Match>
+      <Types>
+        <ContainerType><![CDATA[full]]></ContainerType>
+        <ContainerType><![CDATA[onehalf]]></ContainerType>
+        <ContainerType><![CDATA[onethird]]></ContainerType>
+        <ContainerType><![CDATA[twothirds]]></ContainerType>
+        <ContainerType><![CDATA[onequarter]]></ContainerType>
+        <ContainerType><![CDATA[threequarters]]></ContainerType>
+        <ContainerType><![CDATA[contentandlayoutrows]]></ContainerType>
+      </Types>
+    </Match>
+    <Preview>true</Preview>
+    <SearchContent>true</SearchContent>
+    <AutoEnabled>true</AutoEnabled>
+    <Detail>true</Detail>
+    <NestedContainers>false</NestedContainers>
+    <HeadIncludeCss>
+      <CssLink>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.v8.calendar/resources/calendar.css]]></target>
+        </link>
+      </CssLink>
+      <CssLink>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.v8.calendar/resources/fullcalendar.css]]></target>
+        </link>
+      </CssLink>
+    </HeadIncludeCss>
+    <HeadIncludeJs>
+      <JavascriptLink>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.v8.calendar/resources/moment.min.js]]></target>
+        </link>
+      </JavascriptLink>
+      <JavascriptLink>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.v8.calendar/resources/fullcalendar.min.js]]></target>
+        </link>
+      </JavascriptLink>
+      <JavascriptLink>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.v8.calendar/resources/fullcalendar-lang/de.js]]></target>
+        </link>
+      </JavascriptLink>
+      <JavascriptLink>
+        <link type="WEAK">
+          <target><![CDATA[/system/modules/com.alkacon.opencms.v8.calendar/resources/fullcalendar-lang/en-gb.js]]></target>
+        </link>
+      </JavascriptLink>
+    </HeadIncludeJs>  </NewFormatter>
+</NewFormatters>

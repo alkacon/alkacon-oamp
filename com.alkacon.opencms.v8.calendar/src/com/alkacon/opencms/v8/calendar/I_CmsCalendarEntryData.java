@@ -60,7 +60,7 @@ public interface I_CmsCalendarEntryData {
      * 
      * @return a clone of this instance
      */
-    Object clone();
+    I_CmsCalendarEntryData clone();
 
     /**
      * Returns the description of the entry.<p>

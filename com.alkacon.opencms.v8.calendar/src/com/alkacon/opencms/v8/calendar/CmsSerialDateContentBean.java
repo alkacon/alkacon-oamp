@@ -144,7 +144,7 @@ public class CmsSerialDateContentBean extends CmsJspActionElement implements I_C
                 int duration = serialDate.getDuration();
                 serialDate.setStartDate(startDate, true);
                 serialDate.setStartDate(startDate);
-                Calendar endDate = (GregorianCalendar)startDate.clone();
+                Calendar endDate = (Calendar)startDate.clone();
                 endDate.add(Calendar.DATE, duration);
                 long endTime = serialDate.getEndTime();
 
@@ -161,17 +161,42 @@ public class CmsSerialDateContentBean extends CmsJspActionElement implements I_C
     }
 
     /**
-     * Returns the serial entry for the calendar generation of the passed resource.<p>
+     * Returns the serial entry for the calendar generation of the passed resource. <p>
+     * Note.- Contrary to the super class contract, this method does not require
+     * to invoke {@link #init(javax.servlet.jsp.PageContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse) init }.
+     * <p>
+     * If possible, prefer the static version of this method:
+     * {@link #getSerialEntryFrom(org.opencms.file.CmsObject, org.opencms.file.CmsResource) }
      * 
      * @param cms the current users context
      * @param resource the resource to generate the serial entry from
      * @return the serial entry
      */
+    @Override
     public CmsCalendarEntry getSerialEntryForCalendar(CmsObject cms, CmsResource resource) {
+        return getSerialEntryFrom(cms,resource);
+    }
+    
+    /**
+     * Returns the serial entry for the calendar generation of the passed resource.<p>
+     * 
+     * @param cms the current users context
+     * @param resource the OpenCms serial-entry resource to generate the serial entry from
+     * @return the serial entry
+     * 
+     * @XXX This method signature is very unfortunate, as {@link CmsCalendarEntry} doesn't
+     * provide access to the specialized <tt>CmsCalendarEntryDateSerial</tt> without casting (!)
+     * Ideally, this should return an instance of a new <tt>CmsCalendarEntrySerial</tt>
+     * class that does provide an accessor to the <tt>CmsCalendarEntryDateSerial</tt>.
+     * Trying to refactor the code is very expensive, as there are many dependencies
+     * on this method signature, and even a very evil cyclic dependency
+     * <tt>CmsCalendarEntry-CmsCalendarEntryDate</tt> that doesn't make it easier.
+     */
+    public static CmsCalendarEntry getSerialEntryFrom(CmsObject cms, CmsResource resource) {
 
         // first create the entry data
         CmsCalendarEntryData entryData = new CmsCalendarEntryData();
-        Map values = new HashMap();
+        Map<String,String> values = new HashMap<String,String>();
         try {
             String title = cms.readPropertyObject(resource, CmsPropertyDefinition.PROPERTY_TITLE, false).getValue("");
             String showTimeStr = cms.readPropertyObject(
@@ -180,7 +205,7 @@ public class CmsSerialDateContentBean extends CmsJspActionElement implements I_C
                 false).getValue(CmsStringUtil.TRUE);
             String type = OpenCms.getResourceManager().getResourceType(resource.getTypeId()).getTypeName();
             entryData.setTitle(title);
-            entryData.setShowTime(Boolean.valueOf(showTimeStr).booleanValue());
+            entryData.setShowTime(Boolean.parseBoolean(showTimeStr));
             entryData.setType(type);
             entryData.setDetailUri(cms.getRequestContext().getSitePath(resource));
             entryData.setDescription(cms.readPropertyObject(resource, CmsPropertyDefinition.PROPERTY_DESCRIPTION, false).getValue(
@@ -195,7 +220,7 @@ public class CmsSerialDateContentBean extends CmsJspActionElement implements I_C
         Locale locale = cms.getRequestContext().getLocale();
         // second create the serial date
         CmsCalendarEntryDateSerial serialDate = CmsCalendarSerialDateFactory.getSerialDate(values, locale);
-        String serialChanges = null;
+        String serialChanges = "";
         try {
             serialChanges = cms.readPropertyObject(
                 resource,
@@ -203,12 +228,11 @@ public class CmsSerialDateContentBean extends CmsJspActionElement implements I_C
                 false).getValue();
         } catch (CmsException e) {
             // failed to read property, ignore
-            serialChanges = "";
         }
         if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(serialChanges)) {
             // there are some changes in the series we have to check
             CmsXmlContent content = null;
-            if (serialChanges.indexOf(CmsSerialDateXmlContentHandler.SERIES_FLAG_CHANGED) != -1) {
+            if (serialChanges.contains(CmsSerialDateXmlContentHandler.SERIES_FLAG_CHANGED)) {
                 // there are changes, we have to unmarshal the content
                 try {
                     content = CmsXmlContentFactory.unmarshal(cms, cms.readFile(resource));
@@ -216,9 +240,9 @@ public class CmsSerialDateContentBean extends CmsJspActionElement implements I_C
                     // ignore
                 }
             }
-            List changeList = CmsStringUtil.splitAsList(serialChanges, CmsProperty.VALUE_LIST_DELIMITER);
+            List<String> changeList = CmsStringUtil.splitAsList(serialChanges, CmsProperty.VALUE_LIST_DELIMITER);
             for (int i = 0; i < changeList.size(); i++) {
-                String change = (String)changeList.get(i);
+                String change = changeList.get(i);
                 String[] changeEntry = CmsStringUtil.splitAsArray(change, CmsProperty.VALUE_MAP_DELIMITER);
                 // get the start date from the string part
                 Calendar startDate = new GregorianCalendar(locale);
@@ -226,7 +250,7 @@ public class CmsSerialDateContentBean extends CmsJspActionElement implements I_C
                 CmsCalendarEntryData entryDataClone = null;
                 if (changeEntry[1].equals(CmsSerialDateXmlContentHandler.SERIES_FLAG_CHANGED)) {
                     // this is an entry that should be changed
-                    entryDataClone = (CmsCalendarEntryData)entryData.clone();
+                    entryDataClone = entryData.clone();
                     String xPath = CmsSerialDateXmlContentHandler.NODE_CHANGE + "[" + (i + 1) + "]/";
                     if (content != null) {
                         if (content.hasValue(xPath + NODE_TITLE, locale)) {
@@ -236,8 +260,8 @@ public class CmsSerialDateContentBean extends CmsJspActionElement implements I_C
                             entryDataClone.setDescription(content.getStringValue(cms, xPath + NODE_TEASER, locale));
                         }
                         if (content.hasValue(xPath + NODE_SHOWTIME, locale)) {
-                            entryDataClone.setShowTime(Boolean.valueOf(
-                                content.getStringValue(cms, xPath + NODE_SHOWTIME, locale)).booleanValue());
+                            entryDataClone.setShowTime(Boolean.parseBoolean(
+                                    content.getStringValue(cms, xPath + NODE_SHOWTIME, locale)));
                         }
                     }
                 }
@@ -258,9 +282,8 @@ public class CmsSerialDateContentBean extends CmsJspActionElement implements I_C
         }
         if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(serialInterruptions)) {
             // get the interruptions and analyze the String
-            List interruptionList = CmsStringUtil.splitAsList(serialInterruptions, CmsProperty.VALUE_LIST_DELIMITER);
-            for (int i = 0; i < interruptionList.size(); i++) {
-                String interruption = (String)interruptionList.get(i);
+            List<String> interruptionList = CmsStringUtil.splitAsList(serialInterruptions, CmsProperty.VALUE_LIST_DELIMITER);
+            for (String interruption : interruptionList) {
                 String[] interruptionEntry = CmsStringUtil.splitAsArray(interruption, CmsProperty.VALUE_MAP_DELIMITER);
                 // get the start date of the interruption
                 Calendar startDate = new GregorianCalendar(locale);
@@ -270,7 +293,7 @@ public class CmsSerialDateContentBean extends CmsJspActionElement implements I_C
                 endDate.setTimeInMillis(Long.parseLong(interruptionEntry[1]));
                 // add the interruption to the serial date
                 serialDate.getSerialOptions().addSerialDateInterruption(
-                    new CmsCalendarSerialDateInterruption(startDate, endDate));
+                        new CmsCalendarSerialDateInterruption(startDate, endDate));
             }
         }
         return new CmsCalendarEntry(entryData, serialDate);
@@ -361,9 +384,7 @@ public class CmsSerialDateContentBean extends CmsJspActionElement implements I_C
         return getContent().hasValue(xPath, getRequestContext().getLocale());
     }
 
-    /**
-     * @see org.opencms.jsp.CmsJspBean#init(javax.servlet.jsp.PageContext, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-     */
+    @Override
     public void init(PageContext context, HttpServletRequest req, HttpServletResponse res) {
 
         super.init(context, req, res);
@@ -420,7 +441,7 @@ public class CmsSerialDateContentBean extends CmsJspActionElement implements I_C
     public boolean isShowTime() {
 
         String showTimeValue = getStringValue(NODE_SHOWTIME);
-        return Boolean.valueOf(showTimeValue).booleanValue();
+        return Boolean.parseBoolean(showTimeValue);
     }
 
     /**
@@ -462,12 +483,13 @@ public class CmsSerialDateContentBean extends CmsJspActionElement implements I_C
     protected CmsCalendarEntryDateSerial getSerialDate() {
 
         if (m_serialDateEntry == null) {
-            Map values = new HashMap();
+            Map<String,String> values = new HashMap<String,String>();
             try {
                 values = getCmsObject().readPropertyObject(
-                    getDetailFile(),
-                    CmsCalendarDisplay.PROPERTY_CALENDAR_STARTDATE,
-                    false).getValueMap(values);
+                        getDetailFile(),
+                        CmsCalendarDisplay.PROPERTY_CALENDAR_STARTDATE,
+                        false)
+                        .getValueMap(values);
             } catch (CmsException e) {
                 // failed to read property
             }
@@ -489,12 +511,14 @@ public class CmsSerialDateContentBean extends CmsJspActionElement implements I_C
             if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(calDatParam)) {
                 // found a calendar date parameter, check if a changed date should be shown
                 try {
-                    List changeDateValues = getCmsObject().readPropertyObject(
-                        getDetailFile(),
-                        CmsSerialDateXmlContentHandler.PROPERTY_SERIALDATE_CHANGE,
-                        false).getValueList(Collections.EMPTY_LIST);
+                    @SuppressWarnings("unchecked")
+                    List<String> changeDateValues = getCmsObject().readPropertyObject(
+                            getDetailFile(),
+                            CmsSerialDateXmlContentHandler.PROPERTY_SERIALDATE_CHANGE,
+                            false)
+                            .getValueList(Collections.EMPTY_LIST);
                     for (int i = 0; i < changeDateValues.size(); i++) {
-                        String currentDate = (String)changeDateValues.get(i);
+                        String currentDate = changeDateValues.get(i);
                         currentDate = currentDate.substring(0, currentDate.indexOf(CmsProperty.VALUE_MAP_DELIMITER));
                         if (calDatParam.equals(currentDate)) {
                             m_xpathPrefix = CmsSerialDateXmlContentHandler.NODE_CHANGE + "[" + (i + 1) + "]/";

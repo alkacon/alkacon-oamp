@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<NewFormatters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="opencms://system/modules/org.opencms.ade.config/schemas/formatters/new_formatter.xsd">
+  <NewFormatter language="en">
+    <NiceName><![CDATA[v8 Calendar serial event]]></NiceName>
+    <Type><![CDATA[alkacon-v8-cal-serial]]></Type>
+    <Jsp>
+      <link type="WEAK">
+        <target><![CDATA[/system/modules/com.alkacon.opencms.v8.calendar/formatters/detail-serialentry.jsp]]></target>
+        <uuid>e03685a1-20be-11e1-9585-27f2fbbdf126</uuid>
+      </link>
+    </Jsp>
+    <Rank><![CDATA[1000]]></Rank>
+    <Match>
+      <Types>
+        <ContainerType><![CDATA[full]]></ContainerType>
+        <ContainerType><![CDATA[onehalf]]></ContainerType>
+        <ContainerType><![CDATA[onethird]]></ContainerType>
+        <ContainerType><![CDATA[twothirds]]></ContainerType>
+        <ContainerType><![CDATA[onequarter]]></ContainerType>
+        <ContainerType><![CDATA[threequarters]]></ContainerType>
+        <ContainerType><![CDATA[contentandlayoutrows]]></ContainerType>
+      </Types>
+    </Match>
+    <Preview>true</Preview>
+    <SearchContent>true</SearchContent>
+    <AutoEnabled>true</AutoEnabled>
+    <Detail>true</Detail>
+    <NestedContainers>false</NestedContainers>
+  </NewFormatter>
+</NewFormatters>

@@ -47,13 +47,7 @@ import org.opencms.i18n.I_CmsMessageBundle;
 public final class Messages extends A_CmsMessageBundle {
 
     /** Message constant for key in the resource bundle. */
-    public static final String LOG_WARN_EXPORT_NONEXISTING_COLUMNS_CONFIGURED_0 = "LOG_WARN_EXPORT_NONEXISTING_COLUMNS_CONFIGURED_0";
-
-    /** Message constant for key in the resource bundle. */
     public static final String LOG_WARN_EXPORT_DATEFORMAT_ILLEGAL_2 = "LOG_WARN_EXPORT_DATEFORMAT_ILLEGAL_2";
-
-    /** Message constant for key in the resource bundle. */
-    public static final String LOG_WARN_EXPORT_RESOURCE_NOT_PRESENT_1 = "LOG_WARN_EXPORT_RESOURCE_NOT_PRESENT_1";
 
     /** Name of the used resource bundle. */
     private static final String BUNDLE_NAME = "com.alkacon.opencms.v8.formgenerator.database.export.messages";

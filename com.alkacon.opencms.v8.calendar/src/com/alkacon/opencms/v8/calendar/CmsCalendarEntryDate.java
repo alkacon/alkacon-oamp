@@ -50,7 +50,7 @@ import java.util.List;
  * 
  * @since 6.0.1 
  */
-public class CmsCalendarEntryDate {
+public class CmsCalendarEntryDate implements Cloneable {
 
     /** Number of milliseconds per minute. */
     public static final long MILLIS_00_PER_MINUTE = 1000 * 60;
@@ -126,9 +126,17 @@ public class CmsCalendarEntryDate {
     }
 
     /**
-     * @see java.lang.Object#clone()
+     * Warning: This method currently breaks the {@link Object#clone() }
+     * contract as it uses this class constructor to create the copy instead of
+     * <tt>Object.clone()</tt>. <p>
+     * <strong>Children of this class overriding this method mustn't invoke
+     * <tt>super.clone()</tt>!!!</strong>
+     * 
+     * @return new instance of {@link CmsCalendarEntryDate} (shallow + deep
+     *          copy of this object!)
      */
-    public Object clone() {
+    @Override
+    public CmsCalendarEntryDate clone() {
 
         return new CmsCalendarEntryDate(m_startDate, m_endDate);
     }
@@ -156,7 +164,7 @@ public class CmsCalendarEntryDate {
     /**
      * Returns the end time of the entry.<p>
      *
-     * @return the end time of the entry
+     * @return in milliseconds from beginning of the day
      */
     public long getEndTime() {
 
@@ -187,7 +195,7 @@ public class CmsCalendarEntryDate {
     /**
      * Returns the start time of the entry.<p>
      *
-     * @return the start time of the entry
+     * @return in milliseconds from beginning of the day
      */
     public long getStartTime() {
 
@@ -212,15 +220,16 @@ public class CmsCalendarEntryDate {
      * @param calendarView the calendar view 
      * @return the matching calendar entries
      */
-    public List matchCalendarView(CmsCalendarEntry entry, I_CmsCalendarView calendarView) {
+    public List<CmsCalendarEntry> matchCalendarView(CmsCalendarEntry entry,
+            I_CmsCalendarView calendarView) {
 
-        List result = new ArrayList();
-        Comparator comparator = calendarView.getComparator();
+        List<CmsCalendarEntry> result = new ArrayList<CmsCalendarEntry>();
+        Comparator<CmsCalendarEntryDate> comparator =
+                calendarView.getComparator();
 
-        for (int i = 0; i < calendarView.getDates().size(); i++) {
-            CmsCalendarEntryDate viewDate = (CmsCalendarEntryDate)calendarView.getDates().get(i);
-
+        for (CmsCalendarEntryDate viewDate : calendarView.getDates()) {
             // check if the entry date matches the view date, if so, add it to the list
+            // XXX: But this could add 'entry' many times!!!
             if (comparator.compare(viewDate, this) == 0) {
                 result.add(entry);
             }

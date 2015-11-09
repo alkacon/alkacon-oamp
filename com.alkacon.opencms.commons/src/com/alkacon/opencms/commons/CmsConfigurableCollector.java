@@ -32,14 +32,12 @@
 
 package com.alkacon.opencms.commons;
 
-import org.opencms.file.CmsDataAccessException;
 import org.opencms.file.CmsObject;
 import org.opencms.file.CmsResource;
 import org.opencms.file.CmsResourceFilter;
 import org.opencms.file.I_CmsResource;
 import org.opencms.file.collectors.A_CmsResourceCollector;
 import org.opencms.main.CmsException;
-import org.opencms.main.CmsIllegalArgumentException;
 import org.opencms.relations.CmsCategory;
 import org.opencms.relations.CmsCategoryService;
 import org.opencms.util.CmsStringUtil;
@@ -136,17 +134,20 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
         return m_collectorConfigurations;
     }
 
-    /**
-     * @see org.opencms.file.collectors.I_CmsResourceCollector#getCollectorNames()
-     */
+    @Override
     public List<String> getCollectorNames() {
 
         return Collections.singletonList(COLLECTOR_NAME);
     }
 
     /**
-     * @see org.opencms.file.collectors.I_CmsResourceCollector#getCreateLink(org.opencms.file.CmsObject, java.lang.String, java.lang.String)
+     * 
+     * @param cms ignored
+     * @param collectorName ignored
+     * @param param ignored
+     * @return <tt>null</tt>
      */
+    @Override
     public String getCreateLink(CmsObject cms, String collectorName, String param) {
 
         // this collector does not support resource creation links
@@ -154,8 +155,13 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
     }
 
     /**
-     * @see org.opencms.file.collectors.I_CmsResourceCollector#getCreateParam(org.opencms.file.CmsObject, java.lang.String, java.lang.String)
+     * 
+     * @param cms ignored
+     * @param collectorName ignored
+     * @param param ignored
+     * @return <tt>null</tt>
      */
+    @Override
     public String getCreateParam(CmsObject cms, String collectorName, String param) {
 
         // this collector does not support resource creation parameters
@@ -163,17 +169,42 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
     }
 
     /**
-     * @see org.opencms.file.collectors.I_CmsResourceCollector#getResults(org.opencms.file.CmsObject, java.lang.String, java.lang.String)
+     * Returns all resources that fulfill the collector criteria defined in
+     * configFilePath.
+     * <p>
+     * @param cms            the current OpenCms user context
+     * @param ignored
+     * @param configFilePath absolute path to the VFS resource that defines the
+     *                       collector configuration
+     * @return the list of resources that fulfill the collector criteria
+     * @throws CmsXmlException if error reading the collector configuration
+     *                         specified in configFilePath
+     * @throws CmsException    if error reading any of the collected resources
      */
-    public List<CmsResource> getResults(CmsObject cms, String collectorName, String param)
-    throws CmsDataAccessException, CmsException {
+    @Override
+    public List<CmsResource> getResults(CmsObject cms, String ignored,
+            String configFilePath)
+            throws CmsXmlException, CmsException {
 
         // if action is not set use default
-        if (collectorName == null) {
-            collectorName = COLLECTOR_NAME;
+        // XXX: AG 2015-04-22 - This doesn't feel good. Overwriting collectorName
+        // does not have any effect.
+        if (ignored == null) {
+            ignored = COLLECTOR_NAME;
         }
 
-        return getAllInFolder(cms, param);
+        return getResourcesMatchingCollectorConfig(cms, configFilePath);
+    }
+
+    // Overriden for documenting purposes
+    /**
+     * 
+     * @param configFilePath absolute path to the VFS resource that defines
+     *          the collector configuration
+     */
+    @Override
+    public void setDefaultCollectorParam(String configFilePath) {
+        super.setDefaultCollectorParam(configFilePath);
     }
 
     /**
@@ -188,35 +219,37 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
     }
 
     /**
-     * Returns all resources in the folder pointed to by the parameter.<p>
+     * Returns all resources that fulfill the collector criteria defined
+     * in <tt>configFilePath</tt>.<p>
      * 
      * @param cms the current OpenCms user context
-     * @param param the folder name to use
+     * @param configFilePath absolute path to the VFS resource that defines the
+     *      collector configuration
      * 
-     * @return all resources in the folder matching the given criteria
+     * @return all resources that fulfill the collector criteria
      * 
-     * @throws CmsException if something goes wrong
-     * @throws CmsIllegalArgumentException if the given param argument is not a link to a single file
+     * @throws CmsXmlException if error reading the collector configuration
+     *      specified in <tt>configFilePath</tt>
+     * @throws CmsException if error reading any of the collected resources
      * 
      */
-    protected List<CmsResource> getAllInFolder(CmsObject cms, String param)
-    throws CmsException, CmsIllegalArgumentException {
+    protected List<CmsResource> getResourcesMatchingCollectorConfig(CmsObject cms,
+            String configFilePath)
+            throws CmsXmlException, CmsException {
 
         List<CmsCollectorConfiguration> collectorConfigurations = getCollectorConfigurations();
-        if (CmsStringUtil.isNotEmpty(param)) {
+        if (CmsStringUtil.isNotEmpty(configFilePath)) {
             // read configuration from param specifying config file in VFS
             try {
-                collectorConfigurations = readConfigurationFromFile(cms, param);
+                collectorConfigurations = readConfigurationFromFile(cms, configFilePath);
             } catch (CmsException e) {
                 // error reading collector configuration file
-                throw new CmsXmlException(Messages.get().container(Messages.ERR_COLLECTOR_CONFIG_INVALID_1, param));
+                throw new CmsXmlException(Messages.get().container(Messages.ERR_COLLECTOR_CONFIG_INVALID_1, configFilePath));
             }
         }
 
         Set<CmsResource> collected = new HashSet<CmsResource>();
-        for (int i = 0; i < collectorConfigurations.size(); i++) {
-            // loop all configurations and collect the resources
-            CmsCollectorConfiguration config = collectorConfigurations.get(i);
+        for (CmsCollectorConfiguration config : collectorConfigurations) {
             CmsResourceFilter filter = CmsResourceFilter.DEFAULT.addExcludeFlags(CmsResource.FLAG_TEMPFILE);
             if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(config.getResourceType())) {
                 filter = filter.addRequireType(config.getResourceTypeId());
@@ -275,20 +308,21 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
      * Returns the collector configuration that is read from an XmlContent resource.<p>
      * 
      * @param cms the current OpenCms user context
-     * @param resourceName the absolute path to the VFS resource to read
+     * @param configFilePath the absolute path to the VFS resource to read
      * 
-     * @return the collector configuration that is read from an XmlContent resource
+     * @return the collector configuration read from the XmlContent resource
      * 
-     * @throws CmsException if something goes wrong
+     * @throws CmsException if error reading the config file, or if the config
+     *          file declares categories that cannot be read
      */
-    private List<CmsCollectorConfiguration> readConfigurationFromFile(CmsObject cms, String resourceName)
+    private List<CmsCollectorConfiguration> readConfigurationFromFile(CmsObject cms, String configFilePath)
     throws CmsException {
 
         List<CmsCollectorConfiguration> result = new ArrayList<CmsCollectorConfiguration>();
         Locale locale = cms.getRequestContext().getLocale();
 
         // get the resource
-        CmsResource res = cms.readResource(resourceName);
+        CmsResource res = cms.readResource(configFilePath);
         CmsXmlContent xml = CmsXmlContentFactory.unmarshal(cms, cms.readFile(res));
         // get the configuration nodes
         String prefix = "";
@@ -326,4 +360,9 @@ public class CmsConfigurableCollector extends A_CmsResourceCollector {
         return result;
     }
 
+    /** XXX: Workaround <a href="https://github.com/alkacon/alkacon-oamp/issues/31">#31</a> */
+    @Override
+    public List<CmsResource> getResults(CmsObject cms, String collectorName, String params, int numResults) throws CmsException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

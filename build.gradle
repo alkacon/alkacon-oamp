@@ -53,7 +53,17 @@ modules_oamp_all.split(',').each{ moduleName ->
             gwtModule = moduleProperties['module.gwt']
             gwtSourceSetName = moduleName.replace(".", "_")+'_gwt'
             println "found GWT module $gwtModule"
-            def moduleXml = (new XmlParser()).parse(srcGwtDir.toString()+"/" +gwtModule.replaceAll('\\.','/')+'.gwt.xml')
+            println "gradle version: " + project.getGradle().getGradleVersion()
+            println "groovy version: " + GroovySystem.getVersion()
+            def xmlParser
+            try { // If groovy constructor available (groovy 2_1_9+, 2_2_0_RC2+), disable feature "load-external-dtd"
+                xmlParser = new XmlParser(false,false,true)
+                xmlParser.getXMLReader().setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
+            } catch (e) { // Old groovy parser. No need to disable feature
+                assert e instanceof groovy.lang.GroovyRuntimeException // Could not find matching constructor for: groovy.util.XmlParser(java.lang.Boolean, java.lang.Boolean, java.lang.Boolean)
+                xmlParser = new XmlParser()
+            }
+            def moduleXml = xmlParser.parse(srcGwtDir.toString()+"/" +gwtModule.replaceAll('\\.','/')+'.gwt.xml')
             gwtRename = moduleXml['@rename-to']
             if (gwtRename==null){
                 gwtRename=gwtModule
@@ -168,7 +178,7 @@ modules_oamp_all.split(',').each{ moduleName ->
                 // to clean the output directory, delete it first
                 def dir = file(buildDir)
                 if (dir.exists()){
-                    delete{ delete dir }
+                    delete dir
                 }
                 dir.mkdirs()
             }
@@ -314,3 +324,11 @@ install {
         }
     }
 }
+
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+        tasks.withType(Javadoc) {
+            failOnError = false
+        }
+    }
+}    

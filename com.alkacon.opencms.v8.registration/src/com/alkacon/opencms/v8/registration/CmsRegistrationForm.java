@@ -213,6 +213,7 @@ public class CmsRegistrationForm extends CmsForm {
         if (CmsStringUtil.isEmpty(formConfigUri)) {
             formConfigUri = jsp.getRequestContext().getUri();
         }
+        m_configUri = formConfigUri;
         CmsFile file = jsp.getCmsObject().readFile(formConfigUri);
         CmsXmlContent content = CmsXmlContentFactory.unmarshal(jsp.getCmsObject(), file);
 

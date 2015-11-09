@@ -40,6 +40,7 @@ import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -83,10 +84,14 @@ public class CmsCalendarMonthBean extends CmsCalendarDisplay {
      * Constructor with an initialized calendar object and JSP action element.<p>
      * 
      * @param jsp the JSP action element to use
+     * @deprecated Use the default constructor and call {@link #init(org.opencms.jsp.CmsJspActionElement) }
      */
+    @Deprecated
     public CmsCalendarMonthBean(CmsJspActionElement jsp) {
-
-        super(jsp);
+        throw new UnsupportedOperationException("CmsCalendarDisplay(CmsJspActionElement)"
+                + " not supported anymore."
+                + " Use the default constructor and invoke"
+                + " init(org.opencms.jsp.CmsJspActionElement)");
     }
 
     /**
@@ -130,10 +135,10 @@ public class CmsCalendarMonthBean extends CmsCalendarDisplay {
      */
     public String buildCalendarMonth(int year, int month, Locale calendarLocale, boolean showNavigation) {
 
-        StringBuffer result = new StringBuffer(1024);
+        StringBuilder result = new StringBuilder(1024);
 
-        Map dates = getMonthDaysMatrix(year, month, calendarLocale);
-        Map monthEntries = getEntriesForMonth(year, month);
+        Map<Integer,Calendar> dates = getMonthDaysMatrix(year, month, calendarLocale);
+        Map<Date, List<CmsCalendarEntry>> monthEntries = getEntriesForMonth(year, month);
 
         // calculate the start day of the week
         Calendar calendar = new GregorianCalendar(calendarLocale);
@@ -175,11 +180,11 @@ public class CmsCalendarMonthBean extends CmsCalendarDisplay {
         result.append("<tr>\n");
 
         // iterate the index entries of the matrix
-        Iterator i = dates.keySet().iterator();
+        Iterator<Integer> i = dates.keySet().iterator();
         while (i.hasNext()) {
-            Integer index = (Integer)i.next();
+            Integer index = i.next();
             result.append("\t<td class=\"");
-            Calendar currDay = (Calendar)dates.get(index);
+            Calendar currDay = dates.get(index);
             if (currDay != null) {
                 // current index represents a day, create day output
                 String styleDayCell = getStyle().getStyleDay();
@@ -188,7 +193,7 @@ public class CmsCalendarMonthBean extends CmsCalendarDisplay {
                     styleDayCell = getStyle().getStyleDayCurrent();
                 }
                 // get entries for the day
-                List dayEntries = (List)monthEntries.get(currDay.getTime());
+                List<CmsCalendarEntry> dayEntries = monthEntries.get(currDay.getTime());
                 if (dayEntries.size() > 0) {
                     // current day has calendar entries
                     int weekdayStatus = 0;
@@ -197,7 +202,7 @@ public class CmsCalendarMonthBean extends CmsCalendarDisplay {
                     StringBuffer dayText = new StringBuffer(128);
                     // check all entries for special weekday status entries
                     for (int k = 0; k < commonEntries; k++) {
-                        CmsCalendarEntry entry = (CmsCalendarEntry)dayEntries.get(k);
+                        CmsCalendarEntry entry = dayEntries.get(k);
                         int entryWeekdayStatus = entry.getEntryData().getWeekdayStatus();
                         if (entryWeekdayStatus > 0) {
                             // entry is a special weekday
@@ -269,7 +274,7 @@ public class CmsCalendarMonthBean extends CmsCalendarDisplay {
                 result.append("\">");
             }
             result.append("</td>\n");
-            if ((index.intValue() % 7) == 0) {
+            if ((index % 7) == 0) {
                 // append closing row tag
                 result.append("</tr>\n");
                 if (i.hasNext()) {
@@ -327,9 +332,9 @@ public class CmsCalendarMonthBean extends CmsCalendarDisplay {
      * @param calendarLocale the Locale for the calendar to determine the start day of the week
      * @return the days of a month to display in a matrix, depending on the start day of the week
      */
-    public Map getMonthDaysMatrix(int year, int month, Locale calendarLocale) {
+    public Map<Integer,Calendar> getMonthDaysMatrix(int year, int month, Locale calendarLocale) {
 
-        Map monthDays = new TreeMap();
+        Map<Integer,Calendar> monthDays = new TreeMap<Integer,Calendar>();
         Calendar startDay = new GregorianCalendar(year, month, 1);
 
         Calendar runDay = startDay;
@@ -341,7 +346,7 @@ public class CmsCalendarMonthBean extends CmsCalendarDisplay {
 
         // create empty indexes before the first day of the month
         while (runDay.get(Calendar.DAY_OF_WEEK) != weekStart) {
-            monthDays.put(new Integer(index), null);
+            monthDays.put(index, null);
             index++;
 
             if (weekStart == Calendar.SATURDAY) {
@@ -353,7 +358,7 @@ public class CmsCalendarMonthBean extends CmsCalendarDisplay {
 
         // create the indexes for the month dates
         while (true) {
-            monthDays.put(new Integer(index), runDay.clone());
+            monthDays.put(index, (Calendar)runDay.clone());
             // increase day to next day
             runDay.roll(Calendar.DAY_OF_MONTH, true);
             index++;
@@ -369,7 +374,7 @@ public class CmsCalendarMonthBean extends CmsCalendarDisplay {
             rest = 7 - rest;
         }
         for (int i = 0; i < rest; i++) {
-            monthDays.put(new Integer(index), null);
+            monthDays.put(index, null);
             index++;
         }
 
@@ -380,13 +385,16 @@ public class CmsCalendarMonthBean extends CmsCalendarDisplay {
      * Sets the view URI and the default view period.<p>
      * 
      * @see com.alkacon.opencms.v8.calendar.CmsCalendarDisplay#init(org.opencms.jsp.CmsJspActionElement)
+     * @return this instance, for expressiveness (chain methods calling)
      */
-    public void init(CmsJspActionElement jsp) {
+    @Override
+    public CmsCalendarMonthBean init(CmsJspActionElement jsp) {
 
         // call super initialisation
         super.init(jsp);
         setViewPeriod(CmsCalendarDisplay.PERIOD_DAY);
         setViewUri(jsp.property(CmsCalendarDisplay.PROPERTY_CALENDAR_URI, "search", ""));
+        return this;
     }
 
     /**
@@ -416,8 +424,7 @@ public class CmsCalendarMonthBean extends CmsCalendarDisplay {
         Locale calendarLocale,
         boolean showNavigation) {
 
-        StringBuffer result = new StringBuffer(256);
-        StringBuffer navLink = new StringBuffer(64);
+        StringBuilder result = new StringBuilder(256);
         Calendar calendar;
         int monthSpan = 7;
         result.append("<tr>\n");
@@ -436,10 +443,11 @@ public class CmsCalendarMonthBean extends CmsCalendarDisplay {
                 result.append("javascript:void(0);\" onclick=\"calendarSidePagination('prev');");
             } else {
                 calendar = getPreviousPeriod(new GregorianCalendar(year, month, 1), CmsCalendarDisplay.PERIOD_MONTH);
-                navLink.append(getJsp().getRequestContext().getUri());
-                navLink.append("?").append(PARAM_YEAR).append("=").append(calendar.get(Calendar.YEAR));
-                navLink.append("&amp;").append(PARAM_MONTH).append("=").append(calendar.get(Calendar.MONTH));
-                result.append(getJsp().link(navLink.toString()));
+                StringBuilder navLinkPreviousMonth = new StringBuilder(64);
+                navLinkPreviousMonth.append(getJsp().getRequestContext().getUri());
+                navLinkPreviousMonth.append("?").append(PARAM_YEAR).append("=").append(calendar.get(Calendar.YEAR));
+                navLinkPreviousMonth.append("&amp;").append(PARAM_MONTH).append("=").append(calendar.get(Calendar.MONTH));
+                result.append(getJsp().link(navLinkPreviousMonth.toString()));
             }
 
             result.append("\">&laquo;</a></td>\n");
@@ -466,11 +474,11 @@ public class CmsCalendarMonthBean extends CmsCalendarDisplay {
             if (isUseAjaxLinks()) {
                 result.append("javascript:void(0);\" onclick=\"calendarSidePagination('current');");
             } else {
-                navLink = new StringBuffer(64);
-                navLink.append(getJsp().getRequestContext().getUri());
-                navLink.append("?").append(PARAM_YEAR).append("=").append(currentCalendar.get(Calendar.YEAR));
-                navLink.append("&amp;").append(PARAM_MONTH).append("=").append(currentCalendar.get(Calendar.MONTH));
-                result.append(getJsp().link(navLink.toString()));
+                StringBuilder navLinkCurrentMonth = new StringBuilder(64);
+                navLinkCurrentMonth.append(getJsp().getRequestContext().getUri());
+                navLinkCurrentMonth.append("?").append(PARAM_YEAR).append("=").append(currentCalendar.get(Calendar.YEAR));
+                navLinkCurrentMonth.append("&amp;").append(PARAM_MONTH).append("=").append(currentCalendar.get(Calendar.MONTH));
+                result.append(getJsp().link(navLinkCurrentMonth.toString()));
             }
             result.append("\">");
             result.append(df.format(calendar.getTime()));
@@ -495,11 +503,11 @@ public class CmsCalendarMonthBean extends CmsCalendarDisplay {
             if (isUseAjaxLinks()) {
                 result.append("javascript:void(0);\" onclick=\"calendarSidePagination('next');");
             } else {
-                navLink = new StringBuffer(64);
-                navLink.append(getJsp().getRequestContext().getUri());
-                navLink.append("?").append(PARAM_YEAR).append("=").append(calendar.get(Calendar.YEAR));
-                navLink.append("&amp;").append(PARAM_MONTH).append("=").append(calendar.get(Calendar.MONTH));
-                result.append(getJsp().link(navLink.toString()));
+                StringBuilder navLinkPreviousMonth = new StringBuilder(64);
+                navLinkPreviousMonth.append(getJsp().getRequestContext().getUri());
+                navLinkPreviousMonth.append("?").append(PARAM_YEAR).append("=").append(calendar.get(Calendar.YEAR));
+                navLinkPreviousMonth.append("&amp;").append(PARAM_MONTH).append("=").append(calendar.get(Calendar.MONTH));
+                result.append(getJsp().link(navLinkPreviousMonth.toString()));
             }
             result.append("\">&raquo;</a></td>\n");
         }

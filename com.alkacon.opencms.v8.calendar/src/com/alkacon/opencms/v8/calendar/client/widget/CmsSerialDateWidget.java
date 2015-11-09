@@ -27,8 +27,7 @@
 
 package com.alkacon.opencms.v8.calendar.client.widget;
 
-import com.alkacon.acacia.client.css.I_LayoutBundle;
-import com.alkacon.acacia.client.widgets.I_EditWidget;
+import org.opencms.acacia.client.widgets.I_CmsEditWidget;
 import com.alkacon.opencms.v8.calendar.client.input.CmsSerialDate;
 import com.alkacon.opencms.v8.calendar.client.widget.css.I_CmsLayoutBundle;
 
@@ -45,7 +44,7 @@ import com.google.gwt.user.client.ui.Composite;
  * Provides a DHTML calendar widget, for use on a widget dialog.<p>
  * 
  * */
-public class CmsSerialDateWidget extends Composite implements I_EditWidget {
+public class CmsSerialDateWidget extends Composite implements I_CmsEditWidget {
 
     /** Value of the activation. */
     private boolean m_active = true;
@@ -69,6 +68,7 @@ public class CmsSerialDateWidget extends Composite implements I_EditWidget {
 
         ValueChangeHandler<String> handler = new ValueChangeHandler<String>() {
 
+            @Override
             public void onValueChange(ValueChangeEvent<String> arg0) {
 
                 fireChangeEvent();
@@ -82,17 +82,13 @@ public class CmsSerialDateWidget extends Composite implements I_EditWidget {
         m_serialDate.addValueChangeHandler(handler);
     }
 
-    /**
-     * @see com.google.gwt.event.dom.client.HasFocusHandlers#addFocusHandler(com.google.gwt.event.dom.client.FocusHandler)
-     */
+    @Override
     public HandlerRegistration addFocusHandler(FocusHandler handler) {
 
         return null;
     }
 
-    /**
-     * @see com.google.gwt.event.logical.shared.HasValueChangeHandlers#addValueChangeHandler(com.google.gwt.event.logical.shared.ValueChangeHandler)
-     */
+    @Override
     public HandlerRegistration addValueChangeHandler(ValueChangeHandler<String> handler) {
 
         return addHandler(handler, ValueChangeEvent.getType());
@@ -108,41 +104,31 @@ public class CmsSerialDateWidget extends Composite implements I_EditWidget {
 
     }
 
-    /**
-     * @see com.google.gwt.user.client.ui.HasValue#getValue()
-     */
+    @Override
     public String getValue() {
 
         return m_serialDate.getFormValueAsString();
     }
 
-    /**
-     * @see com.alkacon.acacia.client.widgets.I_EditWidget#isActive()
-     */
+    @Override
     public boolean isActive() {
 
         return m_active;
     }
 
-    /**
-     * @see com.alkacon.acacia.client.widgets.I_EditWidget#onAttachWidget()
-     */
+    @Override
     public void onAttachWidget() {
 
         super.onAttach();
     }
 
-    /**
-     * @see com.alkacon.acacia.client.widgets.I_EditWidget#owns(com.google.gwt.dom.client.Element)
-     */
+    @Override
     public boolean owns(Element element) {
 
         return getElement().isOrHasChild(element);
     }
 
-    /**
-     * @see com.alkacon.acacia.client.widgets.I_EditWidget#setActive(boolean)
-     */
+    @Override
     public void setActive(boolean active) {
 
         if (active == m_active) {
@@ -151,10 +137,10 @@ public class CmsSerialDateWidget extends Composite implements I_EditWidget {
         m_active = active;
 
         if (m_active) {
-            getElement().removeClassName(I_LayoutBundle.INSTANCE.form().inActive());
+            getElement().removeClassName(org.opencms.acacia.client.css.I_CmsLayoutBundle.INSTANCE.form().inActive());
             getElement().focus();
         } else {
-            getElement().addClassName(I_LayoutBundle.INSTANCE.form().inActive());
+            getElement().addClassName(org.opencms.acacia.client.css.I_CmsLayoutBundle.INSTANCE.form().inActive());
             m_serialDate.clearFealds();
         }
         m_serialDate.setActive(m_active);
@@ -163,26 +149,20 @@ public class CmsSerialDateWidget extends Composite implements I_EditWidget {
         }
     }
 
-    /**
-     * @see com.alkacon.acacia.client.widgets.I_EditWidget#setName(java.lang.String)
-     */
+    @Override
     public void setName(String name) {
 
         //m_serialDate.setName(name);
     }
 
-    /**
-     * @see com.google.gwt.user.client.ui.HasValue#setValue(java.lang.Object)
-     */
+    @Override
     public void setValue(String value) {
 
         setValue(value, false);
 
     }
 
-    /**
-     * @see com.google.gwt.user.client.ui.HasValue#setValue(java.lang.Object, boolean)
-     */
+    @Override
     public void setValue(String value, boolean fireEvents) {
 
         m_serialDate.setFormValueAsString(value);

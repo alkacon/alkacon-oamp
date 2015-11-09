@@ -10,7 +10,7 @@
 	org.opencms.flex.CmsFlexController,
 	com.alkacon.opencms.v8.formgenerator.dialog.*,
 	org.apache.commons.logging.*"%><%! 
-private static final Log LOG = CmsLog.getLog(CmsCsvExportBean.class);
+private static final Log LOG = CmsLog.getLog(CmsCvsExportBean.class);
 %><%
  	CmsJspActionElement jsp = new CmsJspActionElement(pageContext, request, response);
 
@@ -18,7 +18,7 @@ private static final Log LOG = CmsLog.getLog(CmsCsvExportBean.class);
 	String formid=request.getParameter(CmsFormListDialog.PARAM_FORM_ID);
 	if(formid!=null)
 	{
-		CmsCsvExportBean exportBean = new CmsCsvExportBean(jsp.getCmsObject(),formid);
+		CmsCvsExportBean exportBean = new CmsCvsExportBean(jsp.getCmsObject());
 		exportBean.setEndTime(new Date(Long.MAX_VALUE));
 		exportBean.setStartTime(new Date(0));
 		
@@ -40,7 +40,7 @@ private static final Log LOG = CmsLog.getLog(CmsCsvExportBean.class);
                 encoding = OpenCms.getSystemInfo().getDefaultEncoding();
             }
             writer = new OutputStreamWriter(output, encoding);
-            writer.write(exportBean.exportData());
+            writer.write(exportBean.exportData(formid,request.getLocale()));
         } catch(RuntimeException f) { 
         	LOG.error("Error serving data.", f);
         	throw f;

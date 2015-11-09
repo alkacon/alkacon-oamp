@@ -123,21 +123,21 @@ public interface I_CmsCalendarSerialDateOptions {
      * 
      * @return the configuration values for the serial date as Map
      */
-    Map getConfigurationValuesAsMap();
+    Map<String,String> getConfigurationValuesAsMap();
 
     /**
      * Returns a list with changes to the serial date containing {@link CmsCalendarSerialDateChange} objects.<p>
      * 
      * @return a list with changes to the serial date
      */
-    List getSerialDateChanges();
+    List<CmsCalendarSerialDateChange> getSerialDateChanges();
 
     /**
      * Returns a list of interruptions to the serial date containing {@link CmsCalendarSerialDateInterruption} objects.<p>
      * 
      * @return a list with interruptions to the serial date
      */
-    List getSerialDateInterruptions();
+    List<CmsCalendarSerialDateInterruption> getSerialDateInterruptions();
 
     /**
      * Returns the date serial type (e.g. daily, weekly, monthly, yearly).<p>
@@ -154,20 +154,20 @@ public interface I_CmsCalendarSerialDateOptions {
      * @param maxCount the maximum count of returned serial entries
      * @return the matching calendar entries
      */
-    List matchCalendarView(CmsCalendarEntry entry, I_CmsCalendarView calendarView, int maxCount);
+    List<CmsCalendarEntry> matchCalendarView(CmsCalendarEntry entry, I_CmsCalendarView calendarView, int maxCount);
 
     /**
      * Sets the list with changes to the serial date.<p>
      * 
      * @param serialDateChanges the list with changes to the serial date
      */
-    void setSerialDateChanges(List serialDateChanges);
+    void setSerialDateChanges(List<CmsCalendarSerialDateChange> serialDateChanges);
 
     /**
      * Sets the list with interruptions of the serial date.<p>
      * 
      * @param serialDateInterruptions the list with interruptions of the serial date
      */
-    void setSerialDateInterruptions(List serialDateInterruptions);
+    void setSerialDateInterruptions(List<CmsCalendarSerialDateInterruption> serialDateInterruptions);
 
 }

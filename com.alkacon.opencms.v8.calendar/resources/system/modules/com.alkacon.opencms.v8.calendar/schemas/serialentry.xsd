@@ -1,9 +1,9 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 	
 	<xsd:include schemaLocation="opencms://opencms-xmlcontent.xsd"/>
-	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.calendar/schemas/serialchange.xsd"/>
-	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.calendar/schemas/serialinterruption.xsd"/>
-	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.calendar/schemas/entrylink.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.calendar/schemas/nested/serialchange.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.calendar/schemas/nested/serialinterruption.xsd"/>
+	<xsd:include schemaLocation="opencms://system/modules/com.alkacon.opencms.v8.calendar/schemas/nested/entrylink.xsd"/>
 		
 	<xsd:element name="AlkaconV8CalendarSerialDates" type="OpenCmsAlkaconV8CalendarSerialDates"/>
 	
@@ -50,7 +50,7 @@
 				<mapping element="Serialdate" mapto="property:calendar.startdate" />
 			</mappings>
 			<formatters>
-				<formatter minwidth="200" uri="/system/modules/com.alkacon.opencms.v8.calendar/pages/detail-serialentry.jsp" searchcontent="true" />
+				<formatter minwidth="200" uri="/system/modules/com.alkacon.opencms.v8.calendar/formatters/detail-serialentry.jsp" searchcontent="true" />
 			</formatters>
 			<validationrules/>
 		</xsd:appinfo>

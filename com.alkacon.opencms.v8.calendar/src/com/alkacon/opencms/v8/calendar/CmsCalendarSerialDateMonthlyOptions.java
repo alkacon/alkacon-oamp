@@ -98,13 +98,11 @@ public class CmsCalendarSerialDateMonthlyOptions extends A_CmsCalendarSerialDate
         }
     }
 
-    /**
-     * @see com.alkacon.opencms.v8.calendar.I_CmsCalendarSerialDateOptions#getConfigurationValuesAsMap()
-     */
-    public Map getConfigurationValuesAsMap() {
+    @Override
+    public Map<String,String> getConfigurationValuesAsMap() {
 
         // create the Map containing the date settings
-        Map values = new HashMap();
+        Map<String,String> values = new HashMap<String,String>();
 
         // put interval, day of month and week days to Map
         values.put(I_CmsCalendarSerialDateOptions.CONFIG_INTERVAL, String.valueOf(getMonthlyInterval()));
@@ -134,9 +132,7 @@ public class CmsCalendarSerialDateMonthlyOptions extends A_CmsCalendarSerialDate
         return m_monthlyInterval;
     }
 
-    /**
-     * @see com.alkacon.opencms.v8.calendar.I_CmsCalendarSerialDateOptions#getSerialType()
-     */
+    @Override
     public int getSerialType() {
 
         return I_CmsCalendarSerialDateOptions.TYPE_MONTHLY;
@@ -162,12 +158,11 @@ public class CmsCalendarSerialDateMonthlyOptions extends A_CmsCalendarSerialDate
         return m_useWeekDay;
     }
 
-    /**
-     * @see com.alkacon.opencms.v8.calendar.I_CmsCalendarSerialDateOptions#matchCalendarView(com.alkacon.opencms.v8.calendar.CmsCalendarEntry, com.alkacon.opencms.v8.calendar.I_CmsCalendarView, int)
-     */
-    public List matchCalendarView(CmsCalendarEntry entry, I_CmsCalendarView calendarView, int maxCount) {
+    @Override
+    public List<CmsCalendarEntry> matchCalendarView(CmsCalendarEntry entry,
+            I_CmsCalendarView calendarView, int maxCount) {
 
-        List result = new ArrayList();
+        List<CmsCalendarEntry> result = new ArrayList<CmsCalendarEntry>();
         int matches = 0;
 
         CmsCalendarEntryDateSerial entryDate = (CmsCalendarEntryDateSerial)entry.getEntryDate();
@@ -177,7 +172,7 @@ public class CmsCalendarSerialDateMonthlyOptions extends A_CmsCalendarSerialDate
         // loop the view date ranges
         for (int i = 0; i < calendarView.getDates().size(); i++) {
             // get the current view date object
-            CmsCalendarEntryDate viewDate = (CmsCalendarEntryDate)calendarView.getDates().get(i);
+            CmsCalendarEntryDate viewDate = calendarView.getDates().get(i);
             // get the start and end times of the view
             long viewStart = viewDate.getStartDate().getTimeInMillis();
             long viewEnd = viewDate.getEndDate().getTimeInMillis();
@@ -225,7 +220,7 @@ public class CmsCalendarSerialDateMonthlyOptions extends A_CmsCalendarSerialDate
                     // check if current entry is in view range
                     if ((entryStart >= viewStart) && (entryStart <= viewEnd)) {
                         // the entry is in the view time range, clone the entry 
-                        CmsCalendarEntry cloneEntry = (CmsCalendarEntry)entry.clone();
+                        CmsCalendarEntry cloneEntry = entry.clone();
                         cloneEntry.getEntryDate().setStartDay(runDate.getTimeInMillis());
                         cloneEntry = checkChanges(cloneEntry);
                         if (cloneEntry != null) {

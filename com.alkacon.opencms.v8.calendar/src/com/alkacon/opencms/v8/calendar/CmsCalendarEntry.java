@@ -44,7 +44,7 @@ import java.util.List;
  * 
  * @since 6.0.1
  */
-public class CmsCalendarEntry {
+public class CmsCalendarEntry implements Cloneable {
 
     /** The calendar entry data. */
     private I_CmsCalendarEntryData m_entryData;
@@ -74,13 +74,21 @@ public class CmsCalendarEntry {
     }
 
     /**
-     * @see java.lang.Object#clone()
+     * Warning: This method currently breaks the {@link Object#clone() }
+     * contract as it uses this class constructor to create the copy instead of
+     * <tt>Object.clone()</tt>. <p>
+     * <strong>Children of this class overriding this method mustn't invoke
+     * <tt>super.clone()</tt>!!!</strong>
+     * 
+     * @return new instance of {@link CmsCalendarEntry} (shallow copy of
+     *          this object)
      */
-    public Object clone() {
+    @Override
+    public CmsCalendarEntry clone() {
 
         return new CmsCalendarEntry(
-            (I_CmsCalendarEntryData)m_entryData.clone(),
-            (CmsCalendarEntryDate)m_entryDate.clone());
+            m_entryData.clone(),
+            m_entryDate.clone());
     }
 
     /**
@@ -109,7 +117,7 @@ public class CmsCalendarEntry {
      * @param calendarView the calendar view 
      * @return the matching calendar entries
      */
-    public List matchCalendarView(I_CmsCalendarView calendarView) {
+    public List<CmsCalendarEntry> matchCalendarView(I_CmsCalendarView calendarView) {
 
         return m_entryDate.matchCalendarView(this, calendarView);
     }
