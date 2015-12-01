@@ -39,29 +39,25 @@ import org.opencms.util.CmsStringUtil;
 
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
-import java.awt.image.ImageFilter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 
-import com.jhlabs.image.WaterFilter;
 import com.octo.captcha.CaptchaFactory;
 import com.octo.captcha.component.image.backgroundgenerator.BackgroundGenerator;
 import com.octo.captcha.component.image.backgroundgenerator.FileReaderRandomBackgroundGenerator;
 import com.octo.captcha.component.image.backgroundgenerator.UniColorBackgroundGenerator;
 import com.octo.captcha.component.image.color.ColorGenerator;
 import com.octo.captcha.component.image.color.SingleColorGenerator;
-import com.octo.captcha.component.image.deformation.ImageDeformation;
-import com.octo.captcha.component.image.deformation.ImageDeformationByFilters;
 import com.octo.captcha.component.image.fontgenerator.FontGenerator;
 import com.octo.captcha.component.image.fontgenerator.RandomFontGenerator;
 import com.octo.captcha.component.image.textpaster.DecoratedRandomTextPaster;
 import com.octo.captcha.component.image.textpaster.TextPaster;
 import com.octo.captcha.component.image.textpaster.textdecorator.BaffleTextDecorator;
 import com.octo.captcha.component.image.textpaster.textdecorator.TextDecorator;
-import com.octo.captcha.component.image.wordtoimage.DeformedComposedWordToImage;
+import com.octo.captcha.component.image.wordtoimage.ComposedWordToImage;
 import com.octo.captcha.component.image.wordtoimage.WordToImage;
 import com.octo.captcha.component.word.FileDictionary;
 import com.octo.captcha.component.word.wordgenerator.DictionaryWordGenerator;
@@ -171,16 +167,6 @@ public class CmsCaptchaEngine extends ImageCaptchaEngine {
      */
     protected void initGimpyFactory() {
 
-        WaterFilter water = new WaterFilter();
-        water.setAmplitude(m_settings.getFilterAmplitude());
-        water.setAntialias(true);
-        water.setPhase(0);
-        water.setWavelength(m_settings.getFilterWaveLength());
-
-        ImageDeformation backgroundDeformation = new ImageDeformationByFilters(new ImageFilter[] {});
-        ImageDeformation textDeformation = new ImageDeformationByFilters(new ImageFilter[] {});
-        ImageDeformation postDeformation = new ImageDeformationByFilters(new ImageFilter[] {water});
-
         WordGenerator dictionary = null;
         if (CmsStringUtil.isNotEmptyOrWhitespaceOnly(m_settings.getDictionary())) {
             // The argument denotes a java.util.ResourceBundle properties file: toddlist.properties e.g. in root of jcaptcha jar
@@ -239,13 +225,7 @@ public class CmsCaptchaEngine extends ImageCaptchaEngine {
             }
         }
 
-        WordToImage wordToImage = new DeformedComposedWordToImage(
-            font,
-            background,
-            paster,
-            backgroundDeformation,
-            textDeformation,
-            postDeformation);
+        WordToImage wordToImage = new ComposedWordToImage(font, background, paster);
 
         m_factory = new GimpyFactory(dictionary, wordToImage);
     }
