@@ -172,7 +172,7 @@ modules_oamp_all.split(',').each{ moduleName ->
                 // to clean the output directory, delete it first
                 def dir = file(buildDir)
                 if (dir.exists()){
-                    delete{ delete dir }
+                    delete dir
                 }
                 dir.mkdirs()
             }
