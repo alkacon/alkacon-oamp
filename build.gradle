@@ -263,6 +263,14 @@ tasks.findAll{ task -> task.name.startsWith('dist_')}.each{ dist_task ->
 tasks.withType(JavaCompile) {
     options.compilerArgs += ["-sourcepath", ""]
 }
+
+tasks.withType(Javadoc) {
+    options.addStringOption("sourcepath", "")
+    if (JavaVersion.current().isJava8Compatible()) {
+        options.addStringOption("Xdoclint:none", "-quiet")
+    } 
+}
+
 artifacts {
     tasks.each{ task ->
         if (task.name.startsWith("jar_com.alkacon.")){
@@ -318,3 +326,4 @@ install {
         }
     }
 }
+
