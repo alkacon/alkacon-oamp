@@ -12,6 +12,8 @@ dependencies {
     compile group: 'org.opencms', name: 'org.opencms.workplace.tools.searchindex', version: opencms_version
     compile group: 'org.opencms', name: 'org.opencms.workplace.tools.modules', version: opencms_version
     compile group: 'org.opencms', name: 'org.opencms.workplace.tools.sites', version: opencms_version
+    
+    compile group: 'com.alkacon', name: 'acacia-editor-client', version: '3.0'
 
     // used in old an v8 version of the modules
     compile files('com.alkacon.opencms.counter/resources/system/modules/com.alkacon.opencms.counter/lib/com.alkacon.opencms.util.jar')
