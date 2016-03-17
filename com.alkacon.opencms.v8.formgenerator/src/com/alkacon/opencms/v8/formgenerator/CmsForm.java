@@ -3241,16 +3241,16 @@ public class CmsForm {
                     inputFieldPath + NODE_FIELDDEFAULTVALUE,
                     locale);
                 if (CmsStringUtil.isNotEmpty(fieldValue)) {
-                    // substitute eventual macros
-                    CmsMacroResolver resolver = CmsMacroResolver.newInstance().setCmsObject(cms).setJspPageContext(
-                        jsp.getJspContext());
-                    fieldValue = resolver.resolveMacros(fieldValue);
-                    // get items from String
+                    // look for %(row) makro before resolving other macros
                     boolean showInRow = false;
                     if (fieldValue.startsWith(MACRO_SHOW_ITEMS_IN_ROW)) {
                         showInRow = true;
                         fieldValue = fieldValue.substring(MACRO_SHOW_ITEMS_IN_ROW.length());
                     }
+                    // substitute eventual macros
+                    CmsMacroResolver resolver = CmsMacroResolver.newInstance().setCmsObject(cms).setJspPageContext(
+                        jsp.getJspContext());
+                    fieldValue = resolver.resolveMacros(fieldValue);
                     StringTokenizer T = new StringTokenizer(fieldValue, "|");
                     List<CmsFieldItem> items = new ArrayList<CmsFieldItem>(T.countTokens());
                     while (T.hasMoreTokens()) {
