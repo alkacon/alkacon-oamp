@@ -141,7 +141,7 @@ public class CmsCaptchaField extends A_CmsField {
                 formHandler.getCmsObject());
             captchaHtml.append("<div style=\"margin: 0 0 2px 0;\">");
             captchaHtml.append(service.getTextChallengeForID(
-                sessionId,
+                sessionId + m_captchaSettings.getConfigId(),
                 formHandler.getCmsObject().getRequestContext().getLocale()));
             captchaHtml.append("</div>\n");
         } else {
